@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Wiring every condition straight to the paging channel "so nothing is missed." Nothing is missed and everything is ignored, at roughly equal rates.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Audit alert quality
 
@@ -133,7 +133,7 @@ EOF
 
 **Negative test:** Judging alert quality by incident count ("we caught 340 disk events!"). Fires are cost, not value; the value column is *acted on*.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — The alert retrospective
 
@@ -172,7 +172,7 @@ EOF
 
 **Negative test:** A postmortem that assigns action items to the *service* and none to the *alerting*. The next incident replays the same nine silent minutes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

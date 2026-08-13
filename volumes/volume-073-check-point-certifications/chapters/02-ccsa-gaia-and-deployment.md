@@ -74,7 +74,7 @@ show interface eth0
 **Negative test:** configure the interface without **`save config`**; changes are lost on reboot —
 save them.
 
-**Cleanup:** revert in a lab as needed.
+**Rollback:** revert in a lab as needed.
 
 ### Lab 2.2 — Verify SIC
 
@@ -93,7 +93,7 @@ gateway.
 **Negative test:** add a gateway object with **no SIC**; policy install fails — establish SIC
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Inspect the gateway
 
@@ -109,7 +109,7 @@ cpstat fw    2>/dev/null | head || echo "cpstat fw shows firewall status/policy;
 **Negative test:** assume the gateway is enforcing without checking; **cpstat/SmartConsole** confirm
 policy is installed — verify.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Navigate SmartConsole objects
 
@@ -127,7 +127,7 @@ foundation for Chapter 3).
 **Negative test:** hard-code IPs in every rule; **objects** make policy readable and maintainable —
 use them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — Save and back up the configuration
 
@@ -145,7 +145,7 @@ deployment.
 **Negative test:** change policy/config with no backup; a failure is then hard to recover — back up
 first.
 
-**Cleanup:** none (keep the backup).
+**Rollback:** none (keep the backup).
 
 ## Lab Verification
 

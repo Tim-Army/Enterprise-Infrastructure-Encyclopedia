@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** "Immutability" configured only as a retention rule in the backup software — an attacker with console admin simply shortens retention and then deletes, and the control evaporates exactly when needed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Detect ransomware from backup behavior
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Alerting only on job failures — the Thursday backup **succeeded**. It faithfully protected encrypted garbage, and a success-only monitoring posture sees nothing wrong at all.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Threat Scan and clean recovery-point selection
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Choosing the most recent backup that "completed successfully and showed no anomaly" — that is 30 July, and it reinfects you.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

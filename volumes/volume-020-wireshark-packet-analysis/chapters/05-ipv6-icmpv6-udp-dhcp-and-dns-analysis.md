@@ -330,7 +330,7 @@ walk.
 has no header checksum and routers do not fragment — reading the actual header prevents
 carrying over IPv4-only expectations.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — ICMPv6 and Neighbor Discovery (Topic: ICMPv6/NDP)
 
@@ -350,7 +350,7 @@ onboarding lives.
 **Negative test:** look for ARP in an IPv6-only capture to troubleshoot address resolution;
 there is none — IPv6 uses ICMPv6 NS/NA, so you must filter on `icmpv6`, not `arp`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — UDP and DHCP (Topic: UDP/DHCP)
 
@@ -369,7 +369,7 @@ lightweight transport DHCP/DNS/VoIP ride on, and DORA is how a host obtains its 
 unreliable), so a dropped Offer just stalls until the client re-Discovers — the absence of the
 next DORA step is the diagnostic signal.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — DNS analysis (Topic: DNS)
 
@@ -388,7 +388,7 @@ whether resolution succeeded, failed, or the name does not exist.
 a query with no response; the failure is name resolution, not connectivity — the DNS view
 distinguishes them in seconds.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

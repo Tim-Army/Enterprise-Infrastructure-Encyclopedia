@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Treating Purple AI's output as authoritative and acting without validation. It suggests "consistent with credential dumping" — which could be a legitimate security tool; the analyst must understand security to judge the finding, keeping AI as amplifier not authority.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — The AI-augmented SOC does more with the same team
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Solving SOC overload by hiring more analysts alone. Skilled analysts are scarce and expensive, and the data grows faster than hiring; amplifying the existing team with autonomous response and AI assistance scales where headcount cannot.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

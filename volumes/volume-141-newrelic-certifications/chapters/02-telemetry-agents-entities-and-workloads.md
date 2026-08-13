@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Answering the 90-day trend question from Transaction events. It works, and it scans ninety days of per-request records to produce twelve numbers a metric already held.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Tags slice, workloads answer
 
@@ -140,7 +140,7 @@ EOF
 
 **Negative test:** Building the workload as a hand-picked entity list. The next service the payments team ships is silently outside it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Custom attributes pay for themselves
 
@@ -185,7 +185,7 @@ EOF
 
 **Negative test:** Adding `customer_id` instead of `customer_tier` "for more detail." Unbounded values, cardinality bill, and a privacy review — the bounded version answered the question.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

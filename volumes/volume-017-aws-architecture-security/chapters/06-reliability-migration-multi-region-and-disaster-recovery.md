@@ -458,7 +458,7 @@ of one AZ removes half the fleet, not the service.
 `unhealthy` and the load balancer stops routing to it, proving fault
 tolerance is automatic.
 
-**Cleanup:** deregister targets and delete the target group.
+**Rollback:** deregister targets and delete the target group.
 
 ### Lab 6.2 — Route 53 failover routing (integrative)
 
@@ -548,7 +548,7 @@ health check charges.
    now returns `secondary-endpoint.example.com`, confirming automatic
    failover occurred without any manual DNS change.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws route53 change-resource-record-sets --hosted-zone-id "$ZONE_ID" \

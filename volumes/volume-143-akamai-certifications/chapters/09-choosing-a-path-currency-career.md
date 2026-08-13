@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Collecting course badges as if they were certifications. They attest attendance; for a segmentation career, GCSA Advanced is the credential that says you can actually do the work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — The Guardicore study plan (with a real lab)
 
@@ -142,7 +142,7 @@ EOF
 
 **Negative test:** Preparing for GCSA from documentation alone. The Advanced credential lists "hands-on lab proficiency" as a skill; reading about segmentation does not build it, doing Volume XCV does.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Summary and Completion Checklist
 

@@ -71,7 +71,7 @@ EOF
 
 **Negative test:** Attempting IC33/IC34/IC37 without Certificate 1 — not allowed; the Fundamentals gate is a hard prerequisite, and the exam program enforces it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Stand up the study lab
 
@@ -88,7 +88,7 @@ echo "lab ready: namespaces model zones, nftables models conduits, python models
 
 **Negative test:** Expecting the labs to *be* an IACS — they model the **concepts** the certificates test; the actual standard and ISA courses carry the authoritative detail this volume points you to.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

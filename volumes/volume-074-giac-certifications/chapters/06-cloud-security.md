@@ -76,7 +76,7 @@ model.
 **Negative test:** assume the provider patches your **IaaS guest OS**; that's the **customer's** job
 — know the boundary per service model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — GCSA: scan infrastructure-as-code for misconfig
 
@@ -99,7 +99,7 @@ PY
 **Negative test:** deploy IaC with no scan; the public bucket ships and leaks — **scan in the
 pipeline** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — GCFR: analyze a cloud audit log
 
@@ -120,7 +120,7 @@ new key — cloud forensics (GCFR).
 **Negative test:** investigate a cloud incident with audit logging **disabled**; there's no trail —
 enable it **before** you need it.
 
-**Cleanup:** `rm -f /tmp/trail.json`.
+**Rollback:** `rm -f /tmp/trail.json`.
 
 ### Lab 6.4 — GWEB: set secure response headers
 
@@ -141,7 +141,7 @@ defense-by-default.
 **Negative test:** ship with no CSP/HSTS and "fix later"; whole weakness classes stay open — set
 **secure defaults** from the start.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

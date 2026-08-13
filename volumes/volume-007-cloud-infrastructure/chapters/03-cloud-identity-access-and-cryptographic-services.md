@@ -545,7 +545,7 @@ attached to a real identity. No cloud account or credentials are required.
    prefix wildcard, confirming the guardrail does not create false-positive
    friction against legitimate least-privilege patterns.
 
-**Cleanup**
+**Rollback**
 
 8. Remove the lab directory:
 

@@ -350,7 +350,7 @@ can update from Dell-validated content without any internet access.
 version reference and cannot evaluate compliance — the exported **catalog** is what makes the
 offline content usable as a baseline.
 
-**Cleanup:** none (retain the repository for the update).
+**Rollback:** none (retain the repository for the update).
 
 ### Lab 7.2 — Host the offline catalog (Topic: Repository hosting)
 
@@ -370,7 +370,7 @@ path the appliance can reach on the isolated network.
 **Negative test:** leave the repository on the DRM workstation outside the air gap; OME cannot
 reach it — the content must be transferred in and hosted on the isolated network.
 
-**Cleanup:** stop the lab web server (`kill %1`).
+**Rollback:** stop the lab web server (`kill %1`).
 
 ### Lab 7.3 — Point OME at the offline catalog (Topic: Offline catalogs)
 
@@ -389,7 +389,7 @@ identical; only the catalog *source* changes for an air-gapped fleet.
 **Negative test:** enter the network path with wrong credentials or an unreachable host; catalog
 validation fails — the offline catalog must be reachable and authenticated like any other source.
 
-**Cleanup:** remove the lab offline catalog if created only for the exercise.
+**Rollback:** remove the lab offline catalog if created only for the exercise.
 
 ### Lab 7.4 — Air-gapped update and validation (Topic: Air-gapped updates)
 
@@ -410,7 +410,7 @@ with no outbound internet — this proves the air-gapped workflow end to end: DR
 falls behind on critical firmware — an isolated network needs the deliberate DRM offline workflow
 to stay current.
 
-**Cleanup:** none (leave the canary at the updated firmware).
+**Rollback:** none (leave the canary at the updated firmware).
 
 ## Lab Verification
 

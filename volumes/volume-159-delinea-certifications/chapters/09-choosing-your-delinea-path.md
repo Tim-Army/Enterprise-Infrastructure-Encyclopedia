@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Aiming straight for Consultant. It is invitation-only for partners and assumes Engineer-level hands-on capability; build Associate → Engineer first, on the products you actually operate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Delinea in the identity-security career
 
@@ -112,7 +112,7 @@ EOF
 
 **Negative test:** Treating PAM as a standalone silo. Privileged access is one part of identity security; Delinea skills fully pay off combined with governance, access management, and identity threat detection in an integrated identity-security program.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

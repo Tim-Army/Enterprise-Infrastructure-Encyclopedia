@@ -33,7 +33,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet8*" -AddressFamily IPv4 |
 
 **Negative test.** Change the VMnet8 subnet after building VMs and every guest loses egress until re-addressed. Fix the subnet now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Configure VMnet2 (host-only — Data Center)
 
@@ -59,7 +59,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet2*" -AddressFamily IPv4 |
 
 **Negative test.** Leave DHCP enabled here; when you later prove a policy blocks a host, a DHCP lease renewal can mask the result. Off is deliberate.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Configure VMnet3 (host-only — OT Cell, fully isolated)
 
@@ -84,7 +84,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Tick "Connect a host virtual adapter" for VMnet3 and the host gains a direct path to the PLC that bypasses `il-gw`. Every enforcement result in Chapter 08 would then be a lie, because you would be testing from a host that does not traverse the choke point. Leave it unchecked.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Plan the management route
 
@@ -100,7 +100,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Add a persistent host route `10.10.30.0/24 → 10.10.20.254` and then "prove" the PLC is blocked from the host; you would be measuring the wrong path. Do not add it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

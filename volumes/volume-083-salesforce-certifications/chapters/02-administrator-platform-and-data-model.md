@@ -76,7 +76,7 @@ PY
 **Negative test:** store project data in the Notes field of Account; create a **custom object** with
 proper fields instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Choose lookup vs master-detail
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** use a **lookup** where you need rollup summary totals; only **master-detail**
 supports rollups — choose it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Apply record types
 
@@ -118,7 +118,7 @@ configuration.
 **Negative test:** create separate **custom objects** for New Business vs Renewal opportunities; use
 **record types** on one object instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Set up users and licenses
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** delete a departing user's record; Salesforce **deactivates** users (records
 reference them) — deactivate, don't delete.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

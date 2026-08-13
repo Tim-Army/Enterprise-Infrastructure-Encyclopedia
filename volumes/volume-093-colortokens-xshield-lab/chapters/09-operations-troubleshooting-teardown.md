@@ -83,7 +83,7 @@ enabled. You are blind — which is why E2 turned on `log`/`LogBlocked`
 from the start. Observability is a prerequisite for troubleshooting, not
 an afterthought.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -149,7 +149,7 @@ directly. This is the production nightmare that the retained management
 path (Chapter 01 (Topology)) and the Observe-first discipline exist to prevent.
 Never enforce without a break-glass.
 
-**Cleanup.** Reapply your intended policies after testing rollback.
+**Rollback.** Reapply your intended policies after testing rollback.
 
 ### Lab 9.3 — Full teardown and host restoration
 
@@ -212,7 +212,7 @@ Integrity disabled on your daily driver for months. You have traded a
 permanent reduction in your own host’s security for a lab that ended
 weeks ago. Restore it.
 
-**Cleanup.** This exercise *is* the cleanup.
+**Rollback.** This exercise *is* the cleanup.
 
 ## Appendix A — Consolidated command reference
 

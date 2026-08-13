@@ -300,6 +300,8 @@ Rejected alternative : ______________________  because ______________
 **Expected result:** a filled chain where the decision traces to a quoted
 requirement — not to a preference.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.2 — Infrastructure meeting technical requirements *(topic 1.2)*
 
 ```bash
@@ -310,6 +312,8 @@ gcloud compute regions list --filter="name:(us-central1 europe-west1)" \
 **Expected result:** both regions `UP` with quota figures. Record which
 technical requirement (latency, residency, quota headroom) each region
 satisfies, and which it fails.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.3 — Designing network, storage, and compute *(topic 1.3)*
 
@@ -323,6 +327,8 @@ gcloud storage buckets list --format='value(name, location, storageClass)' 2>/de
 Choose one machine type and one storage class, and state the requirement
 that eliminated each rejected option.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.4 — Creating a migration plan *(topic 1.4)*
 
 ```bash
@@ -333,6 +339,8 @@ gcloud services list --available --filter="name:migrationcenter OR name:datamigr
 **Expected result:** migration-related APIs listed as available. Then map
 a workload to one of the 7 Rs (rehost, replatform, refactor, repurchase,
 retire, retain, relocate) and state the constraint that selected it.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.5 — Envisioning future solution improvements *(topic 1.5)*
 
@@ -347,6 +355,8 @@ gcloud recommender recommendations list \
 project has no sustained workload history — both are informative. The
 Recommender API is Google's own answer to "where would this design
 improve next?"
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.6 — Configuring network topologies *(topic 2.1)*
 
@@ -364,6 +374,8 @@ gcloud compute networks subnets list --network=vpc-pca \
 network — the global-VPC property that removes the need for peering
 between regions.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.7 — Configuring individual storage systems *(topic 2.2)*
 
 ```bash
@@ -377,6 +389,8 @@ gcloud storage buckets describe "gs://pca-lab-${PROJECT_ID}" \
 **Expected result:** `NEARLINE US-CENTRAL1`. Nearline is the correct
 answer only when access is infrequent — state the access pattern that
 justified it.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 5.8 — Configuring compute systems *(topic 2.3)*
 
@@ -392,6 +406,8 @@ gcloud compute instance-templates describe tpl-pca \
 the unit a managed instance group scales from, which is why it is the
 architect's compute artifact rather than a single VM.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.9 — Gemini Enterprise Agent Platform for ML workflows *(topic 2.4)*
 
 ```bash
@@ -406,6 +422,8 @@ entered the guide with the **Google Cloud Next '26 refresh**
 confirm the current guide wording before studying it in depth, since it is
 the newest content on the exam.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.10 — Prebuilt solutions and APIs with Agent Platform *(topic 2.5)*
 
 ```bash
@@ -417,6 +435,8 @@ gcloud services list --enabled --filter="name:aiplatform" --format='value(config
 API is the architect-level decision point — it is where a prebuilt service
 becomes available to a project, and where org policy can prevent it.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.11 — Designing for security *(topic 3.1)*
 
 ```bash
@@ -427,6 +447,8 @@ gcloud resource-manager org-policies list --project="$PROJECT_ID" \
 **Expected result:** the constraints in force, inherited ones included. A
 security design that names only IAM is incomplete — organization policy is
 the half that binds Owners.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.12 — Designing for compliance *(topic 3.2)*
 
@@ -440,6 +462,8 @@ gcloud resource-manager org-policies describe \
 Data-residency compliance is expressed as this constraint, not as a
 promise in a design document.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.13 — Analyzing and defining technical processes *(topic 4.1)*
 
 ```bash
@@ -450,6 +474,8 @@ gcloud logging read 'protoPayload.methodName:"SetIamPolicy"' \
 **Expected result:** recent IAM changes with the principal who made them —
 or an empty set on a new project. This is the audit trail a change-control
 process is built on.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.14 — Analyzing and defining business processes *(topic 4.2)*
 
@@ -463,6 +489,8 @@ gcloud billing budgets list --billing-account="$(gcloud billing projects describ
 message. A budget is where a business process (cost ownership) becomes a
 technical control.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.15 — Advising development and operation teams *(topic 5.1)*
 
 ```bash
@@ -475,6 +503,8 @@ gcloud projects get-iam-policy "$PROJECT_ID" \
 deploys, who approves, who is paged. An architecture without named
 ownership is not deployable advice.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.16 — Interacting with Google Cloud programmatically *(topic 5.2)*
 
 ```bash
@@ -485,6 +515,8 @@ gcloud compute instance-templates list --format='value(name)' --limit=3
 **Expected result:** JSON output (possibly `[]`) and the template from
 Lab 5.8. The architect is expected to read the API surface, not only the
 console — `--format=json` is that surface.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.17 — Google Cloud Observability solutions *(topic 6.2)*
 
@@ -498,6 +530,8 @@ gcloud monitoring dashboards list --format='value(displayName)' 2>/dev/null | he
 messages. Observability is a design input: name the SLI before the system
 ships, per [Chapter 06](06-infrastructure-professionals-network-engineer-devops-engineer-and-developer.md).
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.18 — Deployment, release management, and quality control *(topics 6.3, 6.5)*
 
 ```bash
@@ -510,6 +544,8 @@ gcloud compute instance-templates list --format='table(name, properties.machineT
 **Expected result:** both `tpl-pca` and `tpl-pca-v2` listed. Two immutable
 templates side by side **is** the release mechanism — a managed instance
 group rolls between them, and rollback is selecting the previous template.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 5.19 — Negative test and cleanup
 
@@ -535,6 +571,8 @@ gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
 
 **Expected result:** `DELETE_REQUESTED`, removing the VPC, templates,
 bucket, and policy together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

@@ -83,7 +83,7 @@ Routing, Automation**) — confirming scope.
 **Negative test:** trust a pre-2025 cert list; the program was **revised** — confirm on
 training.arista.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path
 
@@ -105,7 +105,7 @@ PY
 **Negative test:** attempt a Specialist track first; start with **Network Foundations
 (Associate)** for the base.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

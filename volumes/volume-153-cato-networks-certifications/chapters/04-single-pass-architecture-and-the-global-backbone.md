@@ -67,7 +67,7 @@ EOF
 
 **Negative test:** Assuming a converged platform is just as slow as a chain of the same functions. Single-pass does the expensive decrypt/parse once, so each added function costs little — service chaining repeats the expensive work per engine, which single-pass avoids.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — The private backbone versus the public internet
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Delivering global cloud security over the public internet alone. Routing is best-effort and congested, so performance is unpredictable — a private optimized backbone of PoPs is what makes edge inspection near users and fast inter-region transport possible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -73,7 +73,7 @@ PY
 
 **Negative test:** call a single-AZ deployment "highly available"; an AZ outage kills it — span **AZs**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Configure Auto Scaling
 
@@ -93,7 +93,7 @@ capacity.
 
 **Negative test:** fix the fleet at peak size 24/7; you overpay off-peak — use **Auto Scaling**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Optimize cost by pricing model
 
@@ -113,7 +113,7 @@ PY
 **Negative test:** run everything **pay-as-you-go** including a steady baseline; **subscription** is
 cheaper for always-on — mix models.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Apply the well-architected pillars
 
@@ -133,7 +133,7 @@ PY
 **Negative test:** optimize only for **cost** and ignore reliability/security; a cheap fragile system
 fails — balance all **pillars**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

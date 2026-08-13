@@ -42,7 +42,7 @@ Match the dropped 5-tuple against your intended rule; the mismatch is your bug (
 
 **Negative test.** "Fix" a blocked-flow problem by reverting to Visibility Only and declaring success. The flow works because nothing is enforced — you have removed the protection, not fixed the rule. Re-enforce and fix the actual rule.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -74,7 +74,7 @@ sudo nft -f /etc/nftables.conf          # re-enforce
 
 **Negative test.** Enforce a default-deny on `il-db01` that omits the SSH management allow, then try to manage it over the enforced path only. You are locked out until you use the out-of-band adapter or the snapshot. This is why the management allow and the OOB path exist.
 
-**Cleanup.** Ensure `il-db01` is back under enforcement with the SSH management rule intact.
+**Rollback.** Ensure `il-db01` is back under enforcement with the SSH management rule intact.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -108,7 +108,7 @@ Then turn Core isolation back on in Windows Security and reboot.
 
 **Negative test.** Delete the VMs but leave VMnet3 configured with no host adapter; harmless, but a later lab that reuses VMnet3 may inherit surprising isolation. Clean it up to avoid confusion.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

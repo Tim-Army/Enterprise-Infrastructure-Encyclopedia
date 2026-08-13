@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Assuming Cohesity is only the modern Data Cloud. Since the Veritas merger it also spans NetBackup and NetBackup Appliances (with their own Protection Professional certifications); the program covers both lineages.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

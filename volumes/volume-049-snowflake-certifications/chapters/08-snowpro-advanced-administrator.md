@@ -83,7 +83,7 @@ administration domain.
 **Negative test:** leave the account open to all IPs; a **network policy** limits
 access to trusted ranges.
 
-**Cleanup:** `DROP NETWORK POLICY IF EXISTS corp_only; DROP ROLE IF EXISTS app_admin; DROP ROLE IF EXISTS app_read;`
+**Rollback:** `DROP NETWORK POLICY IF EXISTS corp_only; DROP ROLE IF EXISTS app_admin; DROP ROLE IF EXISTS app_read;`
 
 ### Lab 8.2 — Cost management: resource monitors
 
@@ -102,7 +102,7 @@ of a 100-credit quota — the cost-management domain.
 **Negative test:** run warehouses with no monitor; a runaway query/warehouse burns
 credits — **cap with a resource monitor**.
 
-**Cleanup:** `ALTER WAREHOUSE lab_wh UNSET RESOURCE_MONITOR; DROP RESOURCE MONITOR IF EXISTS monthly_cap;`
+**Rollback:** `ALTER WAREHOUSE lab_wh UNSET RESOURCE_MONITOR; DROP RESOURCE MONITOR IF EXISTS monthly_cap;`
 
 ### Lab 8.3 — Data governance
 
@@ -121,7 +121,7 @@ SELECT SYSTEM$GET_TAG('cost_center','lab_wh','WAREHOUSE');
 **Negative test:** govern by naming conventions alone; **tags + policies** are
 enforceable metadata — use them.
 
-**Cleanup:** `ALTER WAREHOUSE lab_wh UNSET TAG cost_center; DROP TAG IF EXISTS cost_center;`
+**Rollback:** `ALTER WAREHOUSE lab_wh UNSET TAG cost_center; DROP TAG IF EXISTS cost_center;`
 
 ### Lab 8.4 — Performance monitoring
 
@@ -139,7 +139,7 @@ scanned — the performance-monitoring domain.
 **Negative test:** guess at slow queries; **QUERY_HISTORY** shows the facts —
 monitor, then tune.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — Business continuity: replication and failover
 
@@ -158,7 +158,7 @@ business-continuity domain.
 **Negative test:** rely on a single region for critical data; **replication +
 failover** provide cross-region DR — configure it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -70,7 +70,7 @@ authenticated subscriber access.
 **Negative test:** enable PPPoE with **no profile/pool**; users can't get an address/policy —
 define them.
 
-**Cleanup:** remove the server, profile, pool, and secret.
+**Rollback:** remove the server, profile, pool, and secret.
 
 ### Lab 6.2 — Hotspot captive portal
 
@@ -89,7 +89,7 @@ public access.
 **Negative test:** put guests straight on the LAN with no portal/limits; use a **hotspot** for
 controlled access.
 
-**Cleanup:** remove the hotspot and user.
+**Rollback:** remove the hotspot and user.
 
 ### Lab 6.3 — RADIUS client
 
@@ -106,7 +106,7 @@ controlled access.
 **Negative test:** manage credentials as **local secrets** on every router; **RADIUS** centralizes
 them — point AAA at it.
 
-**Cleanup:** `/ppp aaa set use-radius=no; /radius remove [find address=10.0.0.50]`.
+**Rollback:** `/ppp aaa set use-radius=no; /radius remove [find address=10.0.0.50]`.
 
 ### Lab 6.4 — User Manager concept
 
@@ -123,7 +123,7 @@ them — point AAA at it.
 **Negative test:** scale subscriber management with per-router secrets; **User Manager** centralizes
 it — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Cleaning up an incident by manually hunting for artifacts. Under time pressure a responder misses subtle persistence (a service, a scheduled task), and one missed mechanism brings the attacker back — the recorded Storyline enables complete automated reversal instead.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Ransomware rollback and recovery at scale
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Recovering a ransomware incident by reimaging every affected endpoint. It costs hours per machine and loses local data; rollback restores the encrypted files in place in minutes with no reimage and no data loss.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

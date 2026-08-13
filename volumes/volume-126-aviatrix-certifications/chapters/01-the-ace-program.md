@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Attempting ACE Professional without the Associate — blocked; the Associate certificate is a hard prerequisite, not a suggestion.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Build the study lab
 
@@ -84,7 +84,7 @@ echo "lab ready: namespaces model VPCs/gateways, nftables models egress/firewall
 
 **Negative test:** Expecting the labs to *be* Aviatrix — they model the **concepts** the exams test; the real Controller/CoPilot need cloud accounts and appear at design level.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

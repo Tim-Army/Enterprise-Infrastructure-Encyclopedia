@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Choosing hyperconverged for a workload that needs a large, independently scaled shared storage array, or keeping all cold archive data on expensive on-premises flash. The architecture fights the workload, or cost balloons; matching converged vs hyperconverged to the need and tiering cold data to cloud is the point.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

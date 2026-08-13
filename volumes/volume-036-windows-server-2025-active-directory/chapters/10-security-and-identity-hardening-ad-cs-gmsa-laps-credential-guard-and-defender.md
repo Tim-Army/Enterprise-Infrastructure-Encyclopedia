@@ -173,7 +173,7 @@ retrieve the rotating password with no human ever knowing it.
 `GG-Web-Servers`; it returns `False` — only authorized principals can use the
 gMSA.
 
-**Cleanup:** `Remove-ADServiceAccount "gmsa-web" -Confirm:$false`.
+**Rollback:** `Remove-ADServiceAccount "gmsa-web" -Confirm:$false`.
 
 ### Lab 10.2 — Enable Windows LAPS on an OU (Topic: Local admin password rotation)
 
@@ -193,7 +193,7 @@ admin password is now unique.
 **Negative test:** try `Get-LapsADPassword` as a non-authorized user; access
 is denied — LAPS read rights are tightly scoped.
 
-**Cleanup:** none (leave LAPS enabled; it is a best practice).
+**Rollback:** none (leave LAPS enabled; it is a best practice).
 
 ### Lab 10.3 — Enable a Defender ASR rule in audit then enforce (Topic: Attack-surface reduction)
 
@@ -217,7 +217,7 @@ legitimate application.
 without auditing; a legitimate line-of-business app may be blocked — always
 audit first.
 
-**Cleanup:** set the rule back to `Disabled` if it was lab-only.
+**Rollback:** set the rule back to `Disabled` if it was lab-only.
 
 ### Lab 10.4 — Confirm Credential Guard and Defender status (Topic: Credential protection)
 
@@ -236,7 +236,7 @@ accounts appear in `Protected Users` — layered credential defenses in place.
 **Negative test:** query Credential Guard on hardware without VBS/Secure
 Boot; it reports not running — the platform prerequisites are mandatory.
 
-**Cleanup:** none (leave protections enabled).
+**Rollback:** none (leave protections enabled).
 
 ## Lab Verification
 

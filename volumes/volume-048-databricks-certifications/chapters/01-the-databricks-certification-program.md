@@ -111,7 +111,7 @@ Developer — the program in one view.
 **Negative test:** rely on an old list; it misses the **Generative AI Engineer**
 and **Context Engineer** certs — use the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Explore the lakehouse platform (Topic: Foundation)
 
@@ -128,7 +128,7 @@ Delta Lake foundation every Databricks cert builds on.
 **Negative test:** write as CSV and expect ACID/time-travel; use **Delta** for
 reliable lakehouse tables.
 
-**Cleanup:** `spark.sql("DROP TABLE IF EXISTS demo_delta")`
+**Rollback:** `spark.sql("DROP TABLE IF EXISTS demo_delta")`
 
 ### Lab 1.3 — Read Unity Catalog context (Topic: Governance)
 
@@ -145,7 +145,7 @@ governance model Unity Catalog enforces (a recurring exam theme).
 **Negative test:** reference tables by `schema.table` only under Unity Catalog; use
 the full **`catalog.schema.table`** name to avoid ambiguity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

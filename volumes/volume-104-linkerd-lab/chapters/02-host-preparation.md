@@ -29,7 +29,7 @@ docker run --rm hello-world && kind version && kubectl version --client
 
 **Negative test.** Skip the `usermod`/re-login and every `docker`/`kind` command needs `sudo`. Fix the group membership now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install the linkerd CLI
 
@@ -47,7 +47,7 @@ linkerd version --client
 
 **Negative test.** Run `linkerd check` now; it warns there is no cluster or control plane. Both arrive in Chapter 03.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

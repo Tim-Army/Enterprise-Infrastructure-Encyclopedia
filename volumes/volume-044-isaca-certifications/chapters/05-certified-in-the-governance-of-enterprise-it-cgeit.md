@@ -99,7 +99,7 @@ PY
 **Negative test:** leave IT decision rights undefined; governance requires clear
 **accountability** for each decision — define it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — CGEIT D2: IT Resources (15%)
 
@@ -120,7 +120,7 @@ transform — the resource-allocation governance of Domain 2.
 **Negative test:** spend everything on "keep the lights on"; governance balances
 **run vs grow vs transform** — allocate deliberately.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — CGEIT D3: Benefits Realization (26%)
 
@@ -141,7 +141,7 @@ benefits-realization domain (D3), CGEIT's second-largest.
 **Negative test:** approve an investment and never track its benefits; governance
 **monitors value delivery**, not just approval.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — CGEIT D4: Risk Optimization (19%)
 
@@ -161,7 +161,7 @@ risk **optimization** (Domain 4), not blanket minimization.
 **Negative test:** minimize all risk regardless of opportunity cost; governance
 **optimizes** risk to enable value — over-controlling destroys value too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

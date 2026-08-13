@@ -46,7 +46,7 @@ sudo dmesg | grep -o 'KILL-SWITCH.*DST=10.100.1.20' | tail -1
 
 A `KILL-SWITCH` log line confirms the sever is active and total.
 
-**Cleanup.** The switch stays until you disengage it in Exercise 6.2.
+**Rollback.** The switch stays until you disengage it in Exercise 6.2.
 
 ### Exercise 6.2 — Disengage and restore
 
@@ -72,7 +72,7 @@ Normal least-privilege policy is back: the sanctioned flow works, lateral moveme
 
 **Negative test.** Disengaging the kill switch must restore the *prior* policy exactly — if it left east-west open, containment would end in an unsafe state. The saved policy (`/tmp/airgap-policy.txt`) is the reference to verify against.
 
-**Cleanup.** Kill switch disengaged; normal policy restored.
+**Rollback.** Kill switch disengaged; normal policy restored.
 
 ## Summary and Completion Checklist
 

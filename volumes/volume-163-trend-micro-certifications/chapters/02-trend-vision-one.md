@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Running endpoint, email, network, and cloud security as separate products. Each sees only its slice, so multi-stage cross-layer attacks slip through the gaps; Trend Vision One unifies them for XDR correlation and holistic risk management.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

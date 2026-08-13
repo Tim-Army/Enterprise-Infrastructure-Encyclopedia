@@ -82,7 +82,7 @@ curl -sk -u "admin:" "https://10.0.0.1/rest/ip/address" 2>/dev/null \
 **Negative test:** screen-scrape CLI output for automation; the **REST API** returns structured
 JSON — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — RouterOS scripting
 
@@ -104,7 +104,7 @@ automation.
 **Negative test:** do repetitive tasks by hand; **scripting + scheduler** automate them — script
 it.
 
-**Cleanup:** `/system script remove log-clients`.
+**Rollback:** `/system script remove log-clients`.
 
 ### Lab 9.3 — Verify the current program
 
@@ -120,7 +120,7 @@ curl -sSL -A "Mozilla/5.0" "https://mikrotik.com/training/about" \
 **Negative test:** rely on an old certificate list; the program **adds certificates** (MTCSWE/
 MTCIPv6E/MTCEWE) — verify on mikrotik.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

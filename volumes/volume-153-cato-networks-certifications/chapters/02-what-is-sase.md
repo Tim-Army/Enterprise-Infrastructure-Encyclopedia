@@ -71,7 +71,7 @@ EOF
 
 **Negative test:** Keeping the data-center appliance stack as the security chokepoint for remote users and cloud apps. Their traffic hair-pins across the world and back to reach nearby cloud apps — SASE's edge inspection near the user eliminates the backhaul.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

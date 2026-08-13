@@ -93,7 +93,7 @@ Technology”) or **AMD-V** / **SVM Mode**. Save and reboot. VMware
 Workstation will install without VT-x but every 64-bit guest will refuse
 to power on, which is a confusing failure to debug later.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Resolve the Hyper-V / VBS conflict
 
@@ -228,7 +228,7 @@ theoretical; you will see it. This is worth doing once so that when a
 colleague reports “Workstation is slow on my Windows 11 box” you know
 the first question to ask.
 
-**Cleanup / reversal.** To restore VBS at any time:
+**Rollback / reversal.** To restore VBS at any time:
 
 ```powershell
 bcdedit /set hypervisorlaunchtype auto
@@ -337,7 +337,7 @@ VT-x is disabled”* or *“Virtualized Intel VT-x/EPT is not supported on
 this platform.”* Recognizing this message saves you a support ticket; it
 always means firmware, not Workstation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

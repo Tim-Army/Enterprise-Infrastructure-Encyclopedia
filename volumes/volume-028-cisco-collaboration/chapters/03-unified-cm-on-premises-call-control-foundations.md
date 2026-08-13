@@ -216,7 +216,7 @@ list/gateway.
 it even though the pattern exists — reachability is CSS∩partition, not the
 pattern alone.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Implement toll fraud prevention in Cisco UCM (Objective 3.2)
 
@@ -237,7 +237,7 @@ toll patterns.
 default; an external caller can transfer to another external number, the classic
 toll-fraud vector — the control is what closes it.
 
-**Cleanup:** revert any test service-parameter change.
+**Rollback:** revert any test service-parameter change.
 
 ### Lab 3.3 — Configure globalized call routing in Cisco UCM (Objective 3.3)
 
@@ -257,7 +257,7 @@ overlapping patterns.
 cluster; inbound caller-ID and callback break — globalization must be consistent
 end to end.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Troubleshoot dial-plan issues with monitoring tools (Objective 3.4)
 
@@ -276,7 +276,7 @@ explicit.
 **Negative test:** blame the gateway for a call that DNA shows matching a more
 specific wrong pattern — the dial plan, not the gateway, selected the route.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Describe Cisco USM APIs (Objective 3.5)
 
@@ -295,7 +295,7 @@ config queries programmatically.
 **Negative test:** call AXL with an app user lacking the "Standard AXL API
 Access" role; UCM returns `403` — AXL access is role-gated.
 
-**Cleanup:** none (read-only `list` call).
+**Rollback:** none (read-only `list` call).
 
 ### Lab 3.6 — Configure Cisco Unity Connection (Objective 3.6)
 
@@ -316,7 +316,7 @@ ports) with a voicemail pilot, profile, and MWI on/off.
 MWI and calls do not forward to voicemail — the UCM-side integration objects are
 required, not just the mailbox.
 
-**Cleanup:** remove the test mailbox if one was created.
+**Rollback:** remove the test mailbox if one was created.
 
 ### Lab 3.7 — Configure on-premises user management (Objective 3.7)
 
@@ -337,7 +337,7 @@ UCM.
 in UCM (they are LDAP-owned); editing must happen in the directory — the sync
 model dictates the source of truth.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

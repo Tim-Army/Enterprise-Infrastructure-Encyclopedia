@@ -79,7 +79,7 @@ SOBR-01  DataLocality
 **Negative test:** keep a dozen separate repositories and re-point jobs by hand as they fill; use a
 **SOBR** so capacity scales transparently.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Remove-VBRScaleOutBackupRepository -Repository (Get-VBRScaleOutBackupRepository -Name "SOBR-01")
@@ -105,7 +105,7 @@ early.
 **Negative test:** add object storage without immutability; ransomware or an insider can delete the
 cloud copy — enable **Object Lock / immutability**.
 
-**Cleanup:** none (immutable objects persist until retention expires — expected).
+**Rollback:** none (immutable objects persist until retention expires — expected).
 
 ### Lab 5.3 — Create a backup copy job (3-2-1-1-0)
 
@@ -128,7 +128,7 @@ offsite/immutable legs of 3-2-1-1-0.
 **Negative test:** keep only the primary backup on one repository; one site loss destroys all copies —
 add a **backup copy** offsite.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Remove-VBRJob -Job (Get-VBRJob -Name "Copy-App-Offsite") -Confirm:$false
@@ -155,7 +155,7 @@ PY
 **Negative test:** hand-roll object-lock IAM under time pressure and misconfigure it; **Data Cloud
 Vault** ships pre-secured and immutable — use it when you want managed resilience.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

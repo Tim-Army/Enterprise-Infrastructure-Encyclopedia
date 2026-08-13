@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Letting every analyst connect to raw databases and define metrics themselves. "Revenue" ends up meaning different things in different dashboards and nobody trusts the numbers; a certified data source defines it once for everyone.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

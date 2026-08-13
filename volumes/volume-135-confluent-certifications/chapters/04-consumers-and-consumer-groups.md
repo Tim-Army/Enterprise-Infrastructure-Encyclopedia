@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Autoscaling consumers on CPU with no regard for partition count — the platform launches pods that join the group, sit idle, and trigger a rebalance each time they arrive.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Commit strategies and their failure modes
 
@@ -121,7 +121,7 @@ EOF
 
 **Negative test:** Leaving auto-commit enabled in a consumer doing slow processing — the background timer commits offsets for records still in flight, and a crash loses them with no error.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Read consumer lag correctly
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Alerting at "lag > 1000" — the audit consumer pages constantly while healthily draining, and the analytics consumer stays under the threshold for hours while diverging.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

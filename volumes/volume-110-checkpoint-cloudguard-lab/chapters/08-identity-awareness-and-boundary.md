@@ -25,7 +25,7 @@ mgmt> mgmt_cli set access-rule name "hmi-to-plc" layer "Network" \
 
 **Negative test (reasoning).** Assume network segmentation alone is enough for the OT jump path. A shared workstation used by any employee would pass a network-only rule; Identity Awareness is what ties the flow to authorized operators.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 8.2 — Scale with one policy package across gateways
 
@@ -42,7 +42,7 @@ mgmt> mgmt_cli install-policy policy-package "Standard" access true \
 
 **Negative test.** Editing a rule but not re-installing leaves the gateways on the old policy — on Check Point, *install* is the action that changes enforcement, not *publish*. Always install after publishing.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -62,7 +62,7 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.40.2.11 5432 2>/dev/null || echo "in
 
 **Negative test.** Assume one flat segment with a "deny same-subnet" rule suffices — same-subnet traffic never reaches the gateway, so the rule never applies. Segmentation design decides what the gateway can enforce.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

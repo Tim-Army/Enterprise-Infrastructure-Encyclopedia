@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: Guardians per site feeding one Vantage; assertions authored centrally; enforcement pushed to OT-aware firewalls/IPS at the cell boundaries.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — More protocols, more assertions (model)
 
@@ -35,7 +35,7 @@ tail -3 /etc/nozomi/baseline
 
 **Expected result.** A short set of protocol-aware assertions — read-allowed, control-operations-denied — showing the model is protocol-general: parse the command, permit safe functions, deny control functions from the wrong source.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -56,7 +56,7 @@ echo "Guardian sees and asserts; an OT-aware enforcer blocks. No enforcer, detec
 
 **Negative test.** Assume deploying Guardian secures the process. It detects superbly but blocks nothing itself — without an enforcer, the unauthorized write is alerted, not prevented.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

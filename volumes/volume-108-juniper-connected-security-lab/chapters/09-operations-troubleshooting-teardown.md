@@ -35,7 +35,7 @@ sudo nft list set inet jsec quarantine
 
 **Expected result.** The three artifacts mirror the Junos commands.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -56,7 +56,7 @@ sudo nft list set inet jsec quarantine
 
 **Negative test.** Rebooting the SRX rarely fixes a policy problem — SRX faults are almost always zone assignment, policy order, or a stray permit-any. Diagnose with the six commands first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -88,7 +88,7 @@ sudo nft list ruleset | grep -c jsec
 
 **Negative test.** Deleting the namespaces but leaving the `jsec` table leaves stale rules that match nothing yet persist; remove the table too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

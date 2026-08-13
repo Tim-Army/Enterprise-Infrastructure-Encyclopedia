@@ -175,7 +175,7 @@ resource permissioning.
 **Negative test:** try `Add-ADGroupMember` to put a Domain Local group into
 a Global group; AD rejects it — scope rules forbid that nesting direction.
 
-**Cleanup:** remove the two groups and the OU.
+**Rollback:** remove the two groups and the OU.
 
 ### Lab 4.2 — Create a user and confirm placement (Topic: Manage users)
 
@@ -197,7 +197,7 @@ accounts go into Global role groups (the "A into G" of AGDLP).
 **Negative test:** create the user without `-Path`; it lands in the default
 `Users` container where OU-linked GPOs and delegation do not apply.
 
-**Cleanup:** `Remove-ADUser aruiz -Confirm:$false`.
+**Rollback:** `Remove-ADUser aruiz -Confirm:$false`.
 
 ### Lab 4.3 — Delegate password resets to the help desk (Topic: Delegate administration)
 
@@ -218,7 +218,7 @@ a scope.
 control including group membership — over-delegation is a privilege-escalation
 path, so grant the specific control right only.
 
-**Cleanup:** `dsacls "OU=Sales,OU=Users,DC=corp,DC=contoso,DC=lab" /R "CORP\GG-Helpdesk"`.
+**Rollback:** `dsacls "OU=Sales,OU=Users,DC=corp,DC=contoso,DC=lab" /R "CORP\GG-Helpdesk"`.
 
 ### Lab 4.4 — Apply a fine-grained password policy (Topic: Configure password policies)
 
@@ -239,7 +239,7 @@ group without changing the domain default.
 **Negative test:** create a second PSO with the same precedence; AD requires
 unique precedence values to resolve ties deterministically.
 
-**Cleanup:** remove the PSO and the temporary membership.
+**Rollback:** remove the PSO and the temporary membership.
 
 ## Lab Verification
 

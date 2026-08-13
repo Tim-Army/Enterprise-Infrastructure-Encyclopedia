@@ -75,7 +75,7 @@ PY
 **Negative test:** script the whole onboarding in a Business Rule; **Flow Designer** is clearer and
 maintainable — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Separate sensitive HR data
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** store HR cases in general ITSM tables; IT agents see salary/PII — **separate** HR
 data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Design a Service Portal page
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** send users into the raw platform UI; the **Service Portal** is the intended
 front-end — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Apply an SLA
 
@@ -136,7 +136,7 @@ PY
 **Negative test:** promise service levels with no **SLA** tracking; breaches go unnoticed — define and
 measure SLAs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

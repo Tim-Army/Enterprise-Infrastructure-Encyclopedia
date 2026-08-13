@@ -307,7 +307,7 @@ example if unavailable).
    **Expected result:** a single reference file covering all four systems
    for your environment.
 
-**Cleanup:** Remove any captured directory query output containing real
+**Rollback:** Remove any captured directory query output containing real
 personal data before storing or sharing the card; retain only the
 structural format, not populated personal identifiers, if the card will
 be shared outside your immediate team.

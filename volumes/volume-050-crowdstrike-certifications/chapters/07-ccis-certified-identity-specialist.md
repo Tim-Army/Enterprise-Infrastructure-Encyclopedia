@@ -88,7 +88,7 @@ Architecture domain.
 **Negative test:** trust an authenticated session forever; Zero Trust **re-verifies**
 continuously — never implicitly trust.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Identity Protection Tenets
 
@@ -106,7 +106,7 @@ enforcement (the Identity Protection Tenets domain).
 **Negative test:** protect human users only; **service accounts** are prime targets —
 cover all identities.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Falcon Identity Protection Fundamentals
 
@@ -122,7 +122,7 @@ fundamentals (telemetry + scoring) are working.
 **Negative test:** assume it's active after install; **query an entity** — no data
 means the connector isn't feeding it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Domain Security Assessment
 
@@ -138,7 +138,7 @@ severity — the Domain Security Assessment domain.
 **Negative test:** assess users only; the **domain** posture (protocols, policies)
 is a distinct assessment — run it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Risk Assessment
 
@@ -154,7 +154,7 @@ Assessment domain.
 
 **Negative test:** treat all entities equally; **risk-rank** to focus remediation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — User Assessment
 
@@ -171,7 +171,7 @@ Assessment domain.
 **Negative test:** judge a user by title; the **risk factors** (stale password,
 privileged, exposed) are what matter.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — Threat Hunting and Investigation
 
@@ -188,7 +188,7 @@ the Threat Hunting and Investigation domain.
 **Negative test:** wait for an alert; **hunt** the auth timeline for patterns before
 they escalate.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.8 — Risk Management with Policy Rules
 
@@ -206,7 +206,7 @@ Management with Policy Rules domain (the core control).
 **Negative test:** hard-block high risk; **step-up MFA** preserves productivity while
 containing risk.
 
-**Cleanup:** delete the rule if it was for the lab.
+**Rollback:** delete the rule if it was for the lab.
 
 ### Lab 7.9 — Configuration and Connectors
 
@@ -222,7 +222,7 @@ Connectors domain (coverage of DCs/IdPs).
 **Negative test:** deploy one connector for many DCs; **cover every DC** or you have
 identity blind spots.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.10 — MFA and IDaaS
 
@@ -238,7 +238,7 @@ and IDaaS domain.
 **Negative test:** rely on native MFA only; **integrate existing IDaaS** (Okta, Entra
 ID, Ping) for consistent enforcement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.11 — Falcon Fusion SOAR for Identity Protection
 
@@ -255,7 +255,7 @@ action** — the Fusion SOAR domain.
 **Negative test:** respond to identity threats by hand; **SOAR** contains them at
 machine speed.
 
-**Cleanup:** disable the workflow if it was for the lab.
+**Rollback:** disable the workflow if it was for the lab.
 
 ### Lab 7.12 — GraphQL API
 
@@ -273,7 +273,7 @@ domain (programmatic access to Identity Protection).
 **Negative test:** scrape the console UI; the **GraphQL API** is the supported,
 scriptable interface — use it.
 
-**Cleanup:** let the token expire.
+**Rollback:** let the token expire.
 
 ## Lab Verification
 

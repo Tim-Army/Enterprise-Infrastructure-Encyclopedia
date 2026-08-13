@@ -120,7 +120,7 @@ while the provider's grows — the shared-responsibility model CCSP centers on.
 always owns at least the data and access — misplacing the boundary causes
 breaches.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — CCSP: Cloud Data Security (20%)
 
@@ -142,7 +142,7 @@ key custody) that dominates Domain 2.
 keys for the most sensitive data; the provider (and a subpoena) can access it —
 hold your own keys when the threat model requires.
 
-**Cleanup:** `rm -f dek.key record.txt record.enc`
+**Rollback:** `rm -f dek.key record.txt record.enc`
 
 ### Lab 6.3 — CCSP: Cloud Platform and Infrastructure Security (17%)
 
@@ -164,7 +164,7 @@ the app tier and never the internet — cloud infrastructure segmentation.
 **Negative test:** open the database port to `0.0.0.0/0` "temporarily"; public
 database exposure is a top cloud breach cause — never do it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — CCSP: Cloud Application Security (17%)
 
@@ -186,7 +186,7 @@ token-validation discipline of cloud application security (Domain 4).
 **Negative test:** decode a JWT and trust its claims without verifying the
 signature; anyone can forge unsigned claims — always verify first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — CCSP: Cloud Security Operations (16%)
 
@@ -208,7 +208,7 @@ operations — the monitoring foundation of Domain 5.
 **Negative test:** store audit logs in the same account they record; an attacker
 with access deletes them — isolate logs in a separate, append-only location.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — CCSP: Legal, Risk and Compliance (13%)
 
@@ -230,7 +230,7 @@ Domain 6.
 **Negative test:** pick a cloud region purely on latency or price for regulated
 data; **data residency and jurisdiction** can override both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

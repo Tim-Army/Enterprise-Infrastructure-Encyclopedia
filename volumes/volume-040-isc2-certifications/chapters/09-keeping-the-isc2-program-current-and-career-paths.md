@@ -130,7 +130,7 @@ superseded outline.
 **Negative test:** trust a course's "updated 2022" label; outlines changed since
 — confirm against isc2.org.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a CPE-compliant renewal (Topic: Maintain the credential)
 
@@ -152,7 +152,7 @@ minimum met each year and the three-year total satisfied).
 **Negative test:** back-load all CPEs into year three; ISC2 requires an **annual
 minimum** as well as the total — pace the credits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

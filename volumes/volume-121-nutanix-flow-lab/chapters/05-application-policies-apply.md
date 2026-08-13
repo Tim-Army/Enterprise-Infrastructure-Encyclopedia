@@ -37,7 +37,7 @@ The final bare `counter` rule counts everything that falls through to the defaul
 
 **Negative test.** Attempt the policy from the wrong place: the rules exist only in the host's table — `sudo ip netns exec web nft list ruleset` still prints nothing. The guest cannot even see the policy that governs it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 5.2 — Verify: sanctioned lives, lateral dies
 
@@ -70,7 +70,7 @@ counter packets 4 bytes 240
 
 **Negative test.** Ping between guests now also dies (`sudo ip netns exec web ping -c1 -W2 10.150.0.30` reports `0 received`) — ICMP is not in any permit, and default-deny means *default*.
 
-**Cleanup.** None — the applied policy is the estate's steady state.
+**Rollback.** None — the applied policy is the estate's steady state.
 
 ## Summary and Completion Checklist
 

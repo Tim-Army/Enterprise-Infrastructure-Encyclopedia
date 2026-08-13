@@ -87,7 +87,7 @@ retired.
 **Negative test:** trust a course citing COF-C02; the current Core is **COF-C03** —
 confirm on learn.snowflake.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path (Topic: Career)
 
@@ -109,7 +109,7 @@ this volume supports.
 **Negative test:** attempt an Advanced exam first; **Core is required** — earn it
 before Advanced.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -126,7 +126,7 @@ EOF
 
 **Negative test:** Governing a large estate by hand — analysts manually documenting and classifying thousands of columns. It never finishes and drifts immediately; CLAIRE's automated scanning, lineage capture, and auto-classification is what makes enterprise governance feasible, with humans reviewing rather than labeling from scratch.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

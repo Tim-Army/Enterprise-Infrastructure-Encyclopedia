@@ -114,7 +114,7 @@ NCP-AII/AIO/AIN/ADS/GENL/AAI/OUSD — the whole program in one view.
 **Negative test:** rely on an old list; it misses **NCP-AAI (Agentic AI)** and
 **NCP-OUSD (OpenUSD)** — use the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Inspect the GPU stack (Topic: AI-infra foundation)
 
@@ -131,7 +131,7 @@ and utilization — the foundational inspection every NVIDIA infra role begins w
 **Negative test:** assume CUDA works without a matching **driver**; the driver and
 CUDA versions must be compatible — check both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Map the AI-infrastructure stack (Topic: Understand the layers)
 
@@ -152,7 +152,7 @@ frameworks — the map that organizes the whole NVIDIA program.
 **Negative test:** study only frameworks; the Professional infra exams test the
 **whole stack** (driver, container, orchestration) — learn each layer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

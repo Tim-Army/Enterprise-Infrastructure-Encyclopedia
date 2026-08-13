@@ -37,7 +37,7 @@ The usual cause is a label the selector does not match, or — for L7 — a meth
 
 **Negative test.** "Fix" a 403 by deleting the L7 policy. You removed the L7 protection to make a POST work — which was exactly the abuse you were preventing. Adjust the rule, do not delete it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Safe rollback
 
@@ -60,7 +60,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db STILL blocked 
 
 **Negative test.** Delete both the namespace and cluster-wide policies for the db and the lateral movement returns. Re-apply both.
 
-**Cleanup.** Ensure both controls are back.
+**Rollback.** Ensure both controls are back.
 
 ### Lab 9.3 — Teardown
 
@@ -79,7 +79,7 @@ Optionally remove the `kind`, `kubectl`, `cilium`, and `hubble` binaries from `/
 
 **Negative test.** Deleting the kind containers by hand leaves kind metadata behind; a later recreate may conflict. Use `kind delete cluster`.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

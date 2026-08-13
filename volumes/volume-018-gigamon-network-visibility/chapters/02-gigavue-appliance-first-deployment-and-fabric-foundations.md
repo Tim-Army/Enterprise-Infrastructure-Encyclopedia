@@ -346,7 +346,7 @@ orientation on any node before you type ports or build maps.
 **Negative test:** build maps referencing a slot whose card is down or not inventoried; the
 port IDs do not resolve — confirm cards are up (this lab) before referencing their ports.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Port types and enablement (Topic: Port configuration)
 
@@ -371,7 +371,7 @@ later maps readable (`tap-core` → `ids-1` instead of raw port IDs).
 **Negative test:** enable a port without setting its type; it defaults and cannot serve as a
 map source/destination as intended — type must be assigned explicitly per the port's role.
 
-**Cleanup:** `no port 1/1/x1 params admin enable` / `no port 1/1/x5 params admin enable`.
+**Rollback:** `no port 1/1/x1 params admin enable` / `no port 1/1/x5 params admin enable`.
 
 ### Lab 2.3 — GigaStream tool delivery (Topic: GigaStream)
 
@@ -394,7 +394,7 @@ to; traffic is hashed across members so a tool farm scales beyond a single port'
 overflow — a GigaStream across enough members is what matches delivery capacity to the
 aggregated volume.
 
-**Cleanup:** `no gigastream alias ids-farm`; disable the ports if lab-only.
+**Rollback:** `no gigastream alias ids-farm`; disable the ports if lab-only.
 
 ### Lab 2.4 — Clustering and stack links (Topic: Fabric foundations)
 
@@ -419,7 +419,7 @@ tool on another, so the fabric spans multiple chassis as one logical broker.
 / a formed cluster; the traffic has no path between chassis — stack links are the fabric's
 inter-node backbone.
 
-**Cleanup:** remove the node from the cluster and `no port 1/1/x9 params admin enable` if
+**Rollback:** remove the node from the cluster and `no port 1/1/x9 params admin enable` if
 lab-only.
 
 ## Lab Verification

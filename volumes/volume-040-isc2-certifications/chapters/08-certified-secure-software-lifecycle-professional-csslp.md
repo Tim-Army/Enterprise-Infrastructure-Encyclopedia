@@ -116,7 +116,7 @@ the security-mindset (assume abuse) that underpins CSSLP concepts.
 **Negative test:** design only for the happy path; attackers target the misuse
 cases — enumerate them explicitly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — CSSLP: Secure Software Lifecycle Management (11%)
 
@@ -137,7 +137,7 @@ governance CSSLP Domain 2 manages (aligned to NIST SSDF).
 **Negative test:** run one security scan at the end; late findings are expensive
 — gate every phase.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — CSSLP: Secure Software Requirements (13%)
 
@@ -160,7 +160,7 @@ requirements — the traceable requirements CSSLP Domain 3 produces.
 **Negative test:** write "the system shall be secure"; untestable requirements
 cannot be verified — make each measurable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — CSSLP: Secure Software Architecture and Design (15%)
 
@@ -184,7 +184,7 @@ mitigating control — the threat-modeling core of CSSLP's heaviest domain.
 **Negative test:** review code for bugs without a threat model; design flaws (not
 just bugs) cause the worst breaches — model threats first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — CSSLP: Secure Software Implementation (14%)
 
@@ -207,7 +207,7 @@ untrusted string HTML-encoded to `&lt;script&gt;…` — two implementation cont
 **Negative test:** hard-code a password or echo untrusted input verbatim; the
 first leaks in source control, the second is stored/reflected XSS.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — CSSLP: Secure Software Testing (14%)
 
@@ -231,7 +231,7 @@ proving input validation holds, the evidence CSSLP Domain 6 requires.
 **Negative test:** test only valid inputs; security tests must assert that
 *invalid* inputs are **rejected**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — CSSLP: Secure Software Deployment, Operations, Maintenance (11%)
 
@@ -252,7 +252,7 @@ deploy-and-operate controls of CSSLP Domain 7.
 **Negative test:** ship with `debug=true` or verbose stack traces; both leak
 internals to attackers — disable in production.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.8 — CSSLP: Secure Software Supply Chain (10%)
 
@@ -273,7 +273,7 @@ supply-chain domain (Domain 8).
 a tampered build (SolarWinds-class) passes unnoticed — verify integrity and
 provenance.
 
-**Cleanup:** `rm -f app.bin app.bin.sha256`
+**Rollback:** `rm -f app.bin app.bin.sha256`
 
 ## Lab Verification
 

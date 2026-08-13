@@ -281,6 +281,8 @@ TCA is the orchestration/VNF-manager layer above them, per ETSI MANO.
 **Negative test:** treating TCA as a VIM itself is wrong; it orchestrates
 VIMs (vSphere, VCD, Kubernetes), it is not one.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.2 — Role of OVF within a network function (Objective 1.2)
 
 **Objective:** Read the OVF a VNF descriptor references.
@@ -294,6 +296,8 @@ OVF is the VM image/packaging format a VNF is instantiated from.
 
 **Negative test:** a CNF uses a Helm chart, not an OVF; conflating the two
 packaging formats is the trap.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.3 — Role of a Helm chart with a CNF (Objective 1.3)
 
@@ -309,6 +313,8 @@ as a Helm chart on Kubernetes.
 **Negative test:** expecting an OVF for a CNF; container network functions
 have no OVF — Helm/images are their packaging.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.4 — Life Cycle Management events (Objective 1.4)
 
 **Objective:** Read LCM operation history for a network function.
@@ -322,6 +328,8 @@ with state — the managed lifecycle events TCA drives.
 
 **Negative test:** a manual VM power-on is not an LCM event; LCM is the
 orchestrated, descriptor-driven operation set.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.5 — Characteristics of self-healing (Objective 1.5)
 
@@ -337,6 +345,8 @@ detects a failed VNF/CNF and re-instantiates it automatically.
 **Negative test:** vSphere HA restarts a VM but does not re-run VNF
 onboarding; TCA self-healing restores the network function, not just the VM.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.6 — TCA distributed architecture (Objective 2.1)
 
 **Objective:** Read the TCA Manager / TCA control-plane appliances.
@@ -351,6 +361,8 @@ distributed, with a central Manager and per-VIM control-plane instances.
 **Negative test:** expecting a single monolithic appliance; the TCA-CP is
 deployed near each VIM for local orchestration.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.7 — Why a TCA control-plane element is required (Objective 2.2)
 
 **Objective:** Read the TCA-CP registered against a VIM.
@@ -364,6 +376,8 @@ orchestration workflows locally at the VIM.
 
 **Negative test:** a VIM with no TCA-CP cannot run CaaS/infra automation;
 the CP is the required local executor.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.8 — Integrate a VIM infrastructure (Objective 2.4)
 
@@ -380,6 +394,8 @@ the integration TCA needs to place workloads.
 connection-error status; integration requires reachable, authenticated
 endpoints.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.9 — Integrate vRO with virtual infrastructures (Objective 2.5)
 
 **Objective:** Read the vRealize Orchestrator endpoint TCA calls for
@@ -395,6 +411,8 @@ custom infrastructure automation during onboarding.
 **Negative test:** expecting TCA to run arbitrary scripts natively; complex
 custom automation is delegated to vRO workflows.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.10 — Tags in TCA (Objective 2.6)
 
 **Objective:** Read the tags TCA uses for placement and RBAC filtering.
@@ -408,6 +426,8 @@ and tag-based permission filtering.
 
 **Negative test:** untagged resources fall outside tag-scoped permissions and
 placement policies; tags are the selector.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.11 — Verify the VIM connection URL (Objective 3.1)
 
@@ -424,6 +444,8 @@ and authenticate for TCA to place workloads.
 **Negative test:** an unreachable VIM URL blocks all placement to that VIM;
 verify the URL, not just the credentials.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.12 — Configure a compute profile for a VIM (Objective 3.2)
 
 **Objective:** Read the compute profiles that scope CaaS placement.
@@ -437,6 +459,8 @@ CaaS — the placement scope for cluster nodes.
 
 **Negative test:** deploying a workload cluster with no matching compute
 profile fails placement; the profile is a prerequisite.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.13 — Business benefits of automated CaaS (Objective 4.1)
 
@@ -452,6 +476,8 @@ consistent, repeatable clusters at telco scale (the business benefit).
 **Negative test:** hand-built clusters drift and do not scale to hundreds of
 sites; automation is the benefit.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.14 — Kubernetes vs Tanzu Kubernetes (Objective 4.2)
 
 **Objective:** Read the TKG cluster's distribution.
@@ -465,6 +491,8 @@ supported, lifecycle-managed Kubernetes distribution atop upstream k8s.
 
 **Negative test:** upstream vanilla Kubernetes has no TKG lifecycle
 integration with TCA; TCA manages TKG clusters specifically.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.15 — TKG cluster types (Objective 4.3)
 
@@ -481,6 +509,8 @@ clusters (run CNFs) — the two TKG cluster roles.
 **Negative test:** running CNFs on the management cluster is unsupported;
 workloads belong on workload clusters.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.16 — Deploy a Management cluster (Objective 4.4)
 
 **Objective:** Confirm the management cluster is up and serving Cluster API.
@@ -495,6 +525,8 @@ cluster — it is the control plane that provisions workload clusters.
 
 **Negative test:** a management cluster with Cluster API pods crashing cannot
 create workload clusters; it is the prerequisite for all CaaS.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.17 — Deploy a Workload cluster (Objective 4.5)
 
@@ -511,6 +543,8 @@ by the management cluster, ready for CNFs.
 **Negative test:** nodes stuck `NotReady` usually mean a CNI or compute-
 profile issue; the cluster is not usable until nodes are Ready.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.18 — Scale a node pool (Objective 4.6)
 
 **Objective:** Read the node pool's current and desired replica count.
@@ -524,6 +558,8 @@ kubectl get machinedeployments -A -o custom-columns=NAME:.metadata.name,REPLICAS
 
 **Negative test:** editing nodes directly (kubeadm) instead of the node pool
 is not reconciled by Cluster API and drifts; scale via the pool.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.19 — CaaS with no internet connectivity (Objective 4.7)
 
@@ -540,6 +576,8 @@ internet — the prerequisite for air-gapped CaaS.
 **Negative test:** a cluster whose images reference `docker.io` cannot deploy
 air-gapped; images must be mirrored locally first.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.20 — Integrate Harbor with TCA (Objective 5.1)
 
 **Objective:** Confirm the Harbor registry TCA/partners use.
@@ -555,6 +593,8 @@ that stores CNF images and Helm charts for onboarding.
 **Negative test:** onboarding a CNF whose chart references an unreachable
 registry fails image pull; Harbor integration must be reachable.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.21 — Business benefit of infrastructure automation (Objective 6.1)
 
 **Objective:** Read the infra-automation (SDDC) tasks TCA has run.
@@ -568,6 +608,8 @@ benefit is repeatable, error-free infrastructure at many sites.
 
 **Negative test:** manual per-site infrastructure build does not scale to a
 telco edge footprint; automation is the benefit.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.22 — Infrastructure automation versioning (Objective 6.2)
 
@@ -583,6 +625,8 @@ versioned so a site can be built to a known, repeatable spec.
 **Negative test:** an unversioned ad-hoc build cannot be reproduced or
 rolled back; versioning is what makes it deterministic.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.23 — Network services vs network functions (Objective 7.1)
 
 **Objective:** Distinguish an NS from its member NFs.
@@ -597,6 +641,8 @@ network functions — an NS orchestrates and connects NFs.
 **Negative test:** treating an NS as a single NF misses the
 service-composition and connectivity an NSD defines.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.24 — CNF vs VNF (Objective 7.2)
 
 **Objective:** Classify onboarded functions by type.
@@ -610,6 +656,8 @@ based) — the two network-function packaging models.
 
 **Negative test:** a CNF cannot run on a bare VIM without Kubernetes; VNF and
 CNF have different infrastructure requirements.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.25 — Characteristics of NFD and NSD (Objective 7.3)
 
@@ -626,6 +674,8 @@ NSD (service composition) — the TOSCA/descriptor artifacts onboarding uses.
 **Negative test:** onboarding without a valid descriptor fails; the NFD/NSD
 is the contract TCA instantiates from.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.26 — Identify a descriptor attribute (Objective 7.4)
 
 **Objective:** Read a specific attribute from a descriptor.
@@ -639,6 +689,8 @@ policies — the fields a descriptor question asks you to locate.
 
 **Negative test:** an attribute in the wrong descriptor section is ignored at
 instantiation; attribute placement matters.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.27 — Onboard a network function (Objective 7.5)
 
@@ -654,6 +706,8 @@ descriptor + artifacts into the catalog, ready to instantiate.
 **Negative test:** an onboarding with a missing artifact stays in an error
 state and cannot be instantiated; all referenced artifacts must be present.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.28 — Prerequisites for onboarding a network service (Objective 7.6)
 
 **Objective:** Confirm the member NFs an NSD requires exist first.
@@ -667,6 +721,8 @@ before the network service can be.
 
 **Negative test:** onboarding an NSD that references a missing NFD fails; the
 member functions are a prerequisite.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.29 — Role of late binding (Objective 7.7)
 
@@ -684,6 +740,8 @@ deployment.
 **Negative test:** hard-coding a VIM in the descriptor defeats late binding
 and prevents reusing the descriptor across sites.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.30 — Instantiate a VNF (Objective 7.9)
 
 **Objective:** Read a VNF instance and its state.
@@ -698,6 +756,8 @@ the VNF onto a VIM per its descriptor and late-bound inputs.
 **Negative test:** instantiating without required late-bound inputs (network,
 compute) fails; the inputs complete the descriptor.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.31 — Network function inventory (Objective 7.11)
 
 **Objective:** Read the inventory of instantiated functions.
@@ -711,6 +771,8 @@ inventory of what is deployed where.
 
 **Negative test:** relying on VIM inventory alone misses TCA's function-level
 metadata (descriptor, LCM history); TCA's inventory is authoritative for NFs.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.32 — vCenter's role in credentials (Objective 8.1)
 
@@ -727,6 +789,8 @@ authenticates TCA's infrastructure operations for VNF placement.
 **Negative test:** an expired vCenter credential blocks VNF instantiation;
 the VIM credential is the auth path to infrastructure.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.33 — Create a role within TCA (Objective 8.2)
 
 **Objective:** Read the TCA roles available for assignment.
@@ -740,6 +804,8 @@ TCA privileges assigned to a user/group.
 
 **Negative test:** granting individual privileges instead of a role is
 unmanageable at scale; roles are the unit of RBAC.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.34 — Create a permission within TCA (Objective 8.3)
 
@@ -755,6 +821,8 @@ a user/group over a scope.
 **Negative test:** a role with no permission binding grants nothing; the
 permission is what activates the role for a user.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.35 — Tag-based permission filtering (Objective 8.4)
 
 **Objective:** Read a permission scoped by tag.
@@ -768,6 +836,8 @@ only resources carrying the matching tag.
 
 **Negative test:** without a tag filter, a permission spans all resources;
 tag filtering is what narrows visibility per tenant/site.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.36 — Steps after upgrading TCA (Objective 9.1)
 
@@ -783,6 +853,8 @@ versions — after upgrading Manager, each CP must be upgraded to match.
 **Negative test:** a TCA-CP left on the old version after a Manager upgrade
 causes orchestration errors; version alignment is a required post-step.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.37 — LCM events for a VNF (Objective 9.2)
 
 **Objective:** Read the VNF's LCM operation set.
@@ -796,6 +868,8 @@ modify) — the VM-based function's managed lifecycle.
 
 **Negative test:** a VNF update replaces/upgrades the VM image, distinct from
 a CNF's Helm-based update — the mechanisms differ by type.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.38 — LCM events for a CNF (Objective 9.3)
 
@@ -811,6 +885,8 @@ Helm install/upgrade/rollback operations on Kubernetes.
 **Negative test:** power-cycling CNF pods is not an LCM event; the descriptor/
 Helm-driven operations are.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.39 — LCM events for a network service (Objective 9.4)
 
 **Objective:** Read the NS-level LCM operations.
@@ -824,6 +900,8 @@ scale or heal cascades to the functions it composes.
 
 **Negative test:** healing one member NF is not the same as an NS-level
 operation; NS LCM coordinates across members.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.40 — CNF update vs VNF update (Objective 9.5)
 
@@ -840,6 +918,8 @@ update = new VM image/descriptor version — different rollback semantics.
 **Negative test:** applying a VNF-style image swap to a CNF is meaningless;
 each type's update path is distinct.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.41 — Healing a network function (Objective 9.6)
 
 **Objective:** Read the healing capability configured on an instance.
@@ -853,6 +933,8 @@ re-instantiates a failed function to its descriptor's desired state.
 
 **Negative test:** healing restores to the descriptor, not to a manually
 drifted state; out-of-band changes are lost on heal.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.42 — Identify the log to view for a problem (Objective 10.4)
 
@@ -869,6 +951,10 @@ pods.
 
 **Negative test:** reading only the Manager log for a CNF pod crash misses
 the Kubernetes logs where the real error is; match the log to the layer.
+
+**Rollback:** None — viewing logs and generating a support bundle are
+diagnostic reads that change no configuration; delete the generated bundle
+from the appliance (or let TCA age it out) to reclaim space.
 
 **Telco Cloud NFV (5V0-37.22) — Labs 20.43–20.73 (VMware Cloud Director for NFV)**
 
@@ -887,6 +973,8 @@ hosting.
 **Negative test:** treating Telco Cloud as a single-tenant vSphere ignores
 the multi-tenancy VCD adds — a core function.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.44 — Components of Telco Cloud Infrastructure (Objective 1.2)
 
 **Objective:** Read the underlying vCenter/NSX the infrastructure is built
@@ -901,6 +989,8 @@ compute/network components of the Telco Cloud Infrastructure.
 
 **Negative test:** VCD with no attached vCenter has no compute to allocate;
 the VIM components are foundational.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.45 — Deployment options (Objective 1.3)
 
@@ -917,6 +1007,8 @@ options range from a single appliance to a multi-cell HA cluster.
 **Negative test:** a single VCD cell is not highly available; a telco
 deployment uses multiple cells behind a load balancer.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.46 — VMware Cloud Director architecture components (Objective 1.4)
 
 **Objective:** Read the provider VDCs that abstract vCenter resources.
@@ -930,6 +1022,8 @@ clusters into provider VDCs, then carves org VDCs for tenants.
 
 **Negative test:** exposing vCenter directly to tenants breaks multi-tenancy;
 the provider/org VDC abstraction is the architecture.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.47 — Key VCD components (Objective 2.2)
 
@@ -945,6 +1039,8 @@ cells, the database, and the NSX edge/network services.
 **Negative test:** VCD networking without NSX integration cannot provide
 tenant edge services; NSX is a key component.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.48 — Physical and virtual infrastructure characteristics (Objective 3.1)
 
 **Objective:** Read the physical hosts backing the virtual infrastructure.
@@ -958,6 +1054,8 @@ NFVI runs virtual functions on abstracted physical hardware.
 
 **Negative test:** assuming unlimited virtual capacity ignores the physical
 ceiling the virtual layer is bounded by.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.49 — NFVI advantages and components (Objective 3.2)
 
@@ -973,6 +1071,8 @@ pools these so VNFs run on shared, elastic infrastructure.
 **Negative test:** dedicating hardware per VNF forfeits the consolidation and
 elasticity NFVI's shared pool provides.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.50 — Network virtualization in NFVI (Objective 3.3)
 
 **Objective:** Read the NSX overlay providing NFVI networking.
@@ -986,6 +1086,8 @@ virtualization decouples VNF connectivity from physical topology.
 
 **Negative test:** VLAN-only networking cannot scale to per-tenant isolation
 across the NFVI; the overlay is what virtualizes it.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.51 — NFVI requirements on VMware Cloud Director (Objective 3.4)
 
@@ -1001,6 +1103,8 @@ guaranteed, policy-backed resources for deterministic VNF performance.
 **Negative test:** over-committing a provider VDC beyond NFVI's guarantees
 risks VNF performance SLAs.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.52 — Key networking use cases (Objective 3.5)
 
 **Objective:** Read the edge/routed vs isolated network types.
@@ -1014,6 +1118,8 @@ types — the connectivity patterns VNFs use.
 
 **Negative test:** placing a VNF that needs north-south routing on an isolated
 network strands it; match the network type to the use case.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.53 — Storage options of VMware Cloud Director (Objective 3.6)
 
@@ -1029,6 +1135,8 @@ storage to tenants via policies.
 **Negative test:** a single storage tier cannot meet mixed VNF latency needs;
 policies expose the tiers.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.54 — Function of resource pools (Objective 4.2)
 
 **Objective:** Read the resource pools backing org VDCs.
@@ -1042,6 +1150,8 @@ provider capacity into guaranteed slices for org VDCs.
 
 **Negative test:** without resource pools, tenants contend uncontrolled;
 pools enforce the allocation.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.55 — vSAN storage policy characteristics (Objective 4.3)
 
@@ -1057,6 +1167,8 @@ policy defines per-object availability and performance.
 **Negative test:** FTT=0 gives no redundancy; a VNF's storage policy must
 match its availability requirement.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.56 — How compute resources are provided to VCD (Objective 4.4)
 
 **Objective:** Read the provider VDC → org VDC compute mapping.
@@ -1070,6 +1182,8 @@ provider VDC → org VDC per the allocation model.
 
 **Negative test:** an org VDC cannot exceed its provider VDC's capacity; the
 provider is the source.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.57 — How storage resources are provided to VCD (Objective 4.5)
 
@@ -1085,6 +1199,8 @@ provided as a capped policy allocation to each tenant.
 **Negative test:** an unlimited tenant storage grant risks provider
 exhaustion; the limit is the control.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.58 — VMware Cloud Director organizations (Objective 4.6)
 
 **Objective:** Read the organizations (tenants).
@@ -1098,6 +1214,8 @@ tenant boundary with its own users, catalogs, and VDCs.
 
 **Negative test:** cross-org resource sharing is disallowed by default; the
 org is the isolation boundary.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.59 — Organization VDC characteristics (Objective 4.7)
 
@@ -1113,6 +1231,8 @@ tenant's slice of provider compute/storage/network.
 **Negative test:** deploying tenant workloads directly to a provider VDC
 bypasses tenant accounting; workloads belong in org VDCs.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.60 — Organization VDC allocation models (Objective 4.8)
 
 **Objective:** Distinguish the allocation models in use.
@@ -1126,6 +1246,8 @@ ReservationPool, Flex) — each trades guarantee vs elasticity differently.
 
 **Negative test:** PayAsYouGo gives no capacity guarantee; a VNF needing
 reserved performance requires a reservation model.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.61 — Types of allocatable resources (Objective 4.9)
 
@@ -1141,6 +1263,8 @@ types — plus network via edge/NSX.
 **Negative test:** allocating CPU/memory without a storage profile leaves the
 VDC unable to place disks; all types are needed.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.62 — Adding and modifying catalog elements (Objective 4.11)
 
 **Objective:** Read a catalog's templates/media.
@@ -1154,6 +1278,8 @@ published to catalogs for tenant self-service instantiation.
 
 **Negative test:** a catalog with no published template offers nothing to
 deploy; elements must be added first.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.63 — Characteristics of vApps (Objective 4.12)
 
@@ -1169,6 +1295,8 @@ a VNF often maps to a vApp of related VMs.
 **Negative test:** managing member VMs independently loses the vApp's
 start-order and network encapsulation.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.64 — Networking use cases in VCD (Objective 4.14)
 
 **Objective:** Read the edge gateway services (NAT, firewall, VPN).
@@ -1182,6 +1310,8 @@ curl -sk -H "$VT" "$VCD/api/query?type=edgeGateway" -H "Accept: application/*+js
 
 **Negative test:** expecting L2 stretch without an NSX-backed network fails;
 the use case dictates the network object.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.65 — NSX-T architecture in VCD (Objective 4.17)
 
@@ -1197,6 +1327,8 @@ Tier-1 gateways and overlay segments for tenant networking.
 **Negative test:** NSX-V constructs do not apply; current VCD networking is
 NSX-T (now "NSX") architecture.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.66 — VCD supported features (Objective 4.18)
 
 **Objective:** Read the API version to confirm supported feature set.
@@ -1211,6 +1343,8 @@ features (data solutions, container service extension) are available.
 **Negative test:** calling a feature from a newer API version than the cell
 supports returns an error; features track the version.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.67 — Networking between VDCs (Objective 4.19)
 
 **Objective:** Read data-center groups that span VDCs.
@@ -1224,6 +1358,8 @@ the mechanism (and its complexity) for inter-VDC connectivity.
 
 **Negative test:** routing between isolated org VDCs without a VDC group or
 external network is not possible; connectivity must be explicit.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.68 — Key resources to manage (Objective 5.1)
 
@@ -1241,6 +1377,8 @@ resource classes an operator monitors.
 **Negative test:** monitoring VMs alone misses provider-capacity and edge
 health that gate every tenant.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.69 — vRealize Operations Manager features (Objective 5.2)
 
 **Objective:** Read the vROps adapter monitoring the Telco Cloud.
@@ -1256,6 +1394,8 @@ capacity, performance, and health analytics across the NFV stack.
 **Negative test:** without the VCD adapter, tenant-level metrics are missing;
 the adapter set defines vROps' visibility.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.70 — Purpose of the vROps Tenant App (Objective 5.3)
 
 **Objective:** Confirm the Tenant App that exposes per-tenant metrics.
@@ -1269,6 +1409,8 @@ dashboards/metering so tenants see only their own resources.
 
 **Negative test:** giving tenants the full vROps exposes other tenants' data;
 the Tenant App enforces the org boundary.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.71 — Steps to monitor VCD with vROps (Objective 5.4)
 
@@ -1285,6 +1427,8 @@ requires installing the pack, adding the adapter, and validating collection.
 **Negative test:** an adapter added but not collecting shows empty
 dashboards; collection state must be verified.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.72 — Use of logs in VMware Cloud Director (Objective 6.3)
 
 **Objective:** Locate the VCD cell logs for troubleshooting.
@@ -1299,6 +1443,8 @@ authoritative record for VCD-side faults.
 
 **Negative test:** reading vCenter logs for a VCD API error misses the cell
 log where the actual failure is; match the log to the layer.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.73 — Characteristics of role-based access (Objective 7.1)
 
@@ -1316,6 +1462,8 @@ separates provider from tenant scope.
 
 **Telco Cloud Platform (5V0-36.22) — Labs 20.74–20.98 (vSphere + Tanzu + TCA)**
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.74 — TCP architecture (Objective 1.1)
 
 **Objective:** Read the TCP stack layers (vSphere → Tanzu → TCA).
@@ -1331,6 +1479,8 @@ kubectl get nodes 2>/dev/null | head -3
 **Negative test:** treating TCP as just Kubernetes ignores the vSphere NFVI
 and TCA orchestration layers it depends on.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.75 — TCA architecture (Objective 1.2)
 
 **Objective:** Read the TCA Manager/CP roles (as in Lab 20.6).
@@ -1345,6 +1495,8 @@ layer TCP is driven by.
 **Negative test:** a TCP site with no TCA-CP cannot automate CaaS/infra; the
 CP is required locally.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.76 — TCA deployment (Objective 1.3)
 
 **Objective:** Read the VIMs TCA drives in the TCP deployment.
@@ -1358,6 +1510,8 @@ the vSphere VIM and the CaaS clusters TCA manages.
 
 **Negative test:** a deployment missing the Kubernetes VIM cannot onboard
 CNFs; both VIM types are needed for TCP.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.77 — vSphere architecture (Objective 1.4)
 
@@ -1374,6 +1528,8 @@ foundation Tanzu and VNFs run on.
 **Negative test:** assuming TCP abstracts vSphere entirely; vSphere
 constructs (clusters, DRS) still govern placement.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.78 — Key vSphere components (Objective 2.1)
 
 **Objective:** Read vCenter, ESXi, and the distributed switch.
@@ -1387,6 +1543,8 @@ govc dvs.portgroup.info 2>/dev/null | grep -i name | head
 
 **Negative test:** standard switches per host do not scale for TCP; the VDS
 is the standard component.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.79 — vSphere networking options (Objective 2.2)
 
@@ -1402,6 +1560,8 @@ networking options a VNF attaches to.
 **Negative test:** a latency-sensitive VNF on a standard port group misses
 SR-IOV/DPDK acceleration; the option must match the requirement.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.80 — vSphere storage options (Objective 2.3)
 
 **Objective:** Read the datastore types available.
@@ -1415,6 +1575,8 @@ VNF disks and CaaS persistent volumes.
 
 **Negative test:** placing a stateful CNF's PV on non-redundant local storage
 risks data loss; the storage option must meet durability needs.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.81 — Role of containers in TCP (Objective 2.4)
 
@@ -1430,6 +1592,8 @@ for density and fast lifecycle vs VMs.
 **Negative test:** running a CNF as a VM forfeits container density and
 rolling-update speed; the container is the point.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.82 — Kubernetes architecture (Objective 2.5)
 
 **Objective:** Read the control-plane and worker components.
@@ -1443,6 +1607,8 @@ Kubernetes control plane that schedules CNFs.
 
 **Negative test:** a failed etcd loses cluster state; the control-plane
 components are the architecture's core.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.83 — Role of nodes and clusters (Objective 2.6)
 
@@ -1458,6 +1624,8 @@ provide capacity, the cluster provides scheduling/HA.
 **Negative test:** scheduling CNFs onto control-plane nodes is discouraged;
 workers carry the workload.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.84 — Supporting components of Kubernetes (Objective 2.7)
 
 **Objective:** Read the CNI, CSI, and DNS add-ons.
@@ -1471,6 +1639,8 @@ components that make a cluster usable for CNFs.
 
 **Negative test:** a cluster with no CNI leaves pods `NotReady`; the add-ons
 are prerequisites, not optional.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.85 — Tanzu Kubernetes architecture (Objective 2.8)
 
@@ -1486,6 +1656,8 @@ for declarative, lifecycle-managed clusters.
 **Negative test:** editing nodes outside Cluster API drifts from the declared
 state; TKG reconciles to the spec.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.86 — Types of network functions (Objective 2.9)
 
 **Objective:** Classify onboarded functions (VNF/CNF) as in Lab 20.24.
@@ -1499,6 +1671,8 @@ each with its own infrastructure requirements.
 
 **Negative test:** onboarding a CNF against a VM-only VIM fails; the type
 dictates the target VIM.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.87 — Key vSphere operations for VNFs (Objective 2.11)
 
@@ -1514,6 +1688,8 @@ vMotion, snapshot) apply to VNF VMs.
 **Negative test:** vMotioning a VNF with SR-IOV/passthrough is restricted;
 some vSphere operations are constrained by VNF device use.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.88 — Special requirements of containers for NFs (Objective 2.12)
 
 **Objective:** Read pod resource/hugepage/SR-IOV requests on a CNF.
@@ -1527,6 +1703,8 @@ need special resources for data-plane performance.
 
 **Negative test:** a data-plane CNF on a node without SR-IOV/hugepages runs
 slowly or fails to schedule; the requirements are hard.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.89 — Type of descriptors for containers (Objective 2.13)
 
@@ -1542,6 +1720,8 @@ Helm charts packaged in a CSAR for onboarding.
 **Negative test:** a CNF onboarded with a VNFD (VM descriptor) instead of a
 Helm-based CSAR is invalid; the descriptor type must match the function type.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.90 — Role of Harbor (Objective 2.14)
 
 **Objective:** Confirm Harbor as the image/chart registry (as in Lab 20.20).
@@ -1555,6 +1735,8 @@ Helm charts CNFs are pulled from, including for air-gapped sites.
 
 **Negative test:** a CNF whose images reference an external registry cannot
 deploy air-gapped; Harbor holds the local copies.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.91 — Requirements for infrastructure (Objective 4.1)
 
@@ -1570,6 +1752,8 @@ node-pool and VNF flavor requirements before onboarding.
 **Negative test:** undersized hosts cannot place a large node pool; the infra
 requirement gates deployment.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.92 — Process of deploying VMs (Objective 4.2)
 
 **Objective:** Read a deployed VNF VM and its template origin.
@@ -1583,6 +1767,8 @@ from the catalog template, then customizes.
 
 **Negative test:** building a VNF VM by hand skips the descriptor-driven
 customization TCA applies; use the onboarding flow.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.93 — VM onboarding requirements (Objective 4.3)
 
@@ -1598,6 +1784,8 @@ components — onboarding validates these against the target VIM.
 **Negative test:** onboarding a VNF whose required network is absent fails;
 the requirements must be satisfiable at the VIM.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.94 — CNF onboarding requirements (Objective 4.4)
 
 **Objective:** Read the CNF's Kubernetes/Helm prerequisites.
@@ -1611,6 +1799,8 @@ class — a CNF onboards only where these prerequisites exist.
 
 **Negative test:** installing the chart on a cluster missing the required
 storage class leaves PVCs pending; prerequisites must be met.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.95 — Late-binding concepts (Objective 5.1)
 
@@ -1627,6 +1817,8 @@ one descriptor deploy across many sites with site-specific inputs.
 **Negative test:** hard-coding site values in the descriptor breaks reuse;
 late binding is what makes it portable.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.96 — Use of logs in TCP (Objective 6.4)
 
 **Objective:** Locate the log for a TCP-layer fault.
@@ -1642,6 +1834,10 @@ curl -sk -H "$T" "$TCA/hybridity/api/admin/support/bundle" -X POST 2>/dev/null |
 **Negative test:** reading vSphere logs for a CNF crash misses the pod log
 where the container error is; layer matters.
 
+**Rollback:** None — viewing pod logs and generating a support bundle are
+diagnostic reads that change no configuration; delete the generated bundle
+from the appliance (or let TCA age it out) to reclaim space.
+
 ### Lab 20.97 — CLI tools for troubleshooting (Objective 6.5)
 
 **Objective:** Confirm the TCP troubleshooting CLI set.
@@ -1656,6 +1852,8 @@ kubectl version --short 2>/dev/null; helm version --short 2>/dev/null; govc abou
 **Negative test:** using only `kubectl` cannot diagnose a vSphere placement
 fault; each tool addresses its own layer.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 20.98 — VNF life cycle management (Objective 7.1)
 
 **Objective:** Read the VNF's LCM operation occurrences (as in Lab 20.37).
@@ -1669,6 +1867,8 @@ LCM is the descriptor-driven lifecycle TCA enforces on the VNF.
 
 **Negative test:** a manual VM edit is outside LCM and is lost on the next
 heal/update; LCM is the managed path.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 20.99 — Program currency check (integrative)
 
@@ -1723,7 +1923,7 @@ maintenance skill this chapter teaches, exercised for real.
    **Expected result:** the three sources are consistent, or the
    inconsistency is logged.
 
-6. **Cleanup:** file the drift log with the repository; there is no
+6. **Rollback:** file the drift log with the repository; there is no
    infrastructure to tear down.
 
 ## Lab Verification

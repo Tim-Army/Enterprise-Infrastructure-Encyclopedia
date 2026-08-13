@@ -85,7 +85,7 @@ program is unchanged before you study or recertify.
 **Negative test:** rely on a cached course outline from years ago; law and mandates change —
 **verify on ther2c.com/iccp.org**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a governance career path
 
@@ -108,7 +108,7 @@ privacy/governance credentials.
 **Negative test:** target PSDGP with no core knowledge or experience; meet the **prerequisite**
 (degree+experience or a core ICCP cert) first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

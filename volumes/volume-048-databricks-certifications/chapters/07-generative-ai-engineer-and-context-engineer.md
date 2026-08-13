@@ -93,7 +93,7 @@ preparation the GenAI exam tests.
 **Negative test:** embed whole documents without chunking; retrieval quality drops
 — chunk to retrievable units.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — GenAI: Mosaic AI Vector Search retrieval
 
@@ -110,7 +110,7 @@ half of RAG on Databricks.
 **Negative test:** keyword-search a plain table for semantic queries; **Vector
 Search** does semantic retrieval — use it for RAG.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — GenAI: model selection and Foundation Model APIs
 
@@ -128,7 +128,7 @@ model-selection/generation area of the exam.
 **Negative test:** pick the largest model regardless of latency/cost; select by
 **quality/latency/cost** for the use case.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — GenAI: evaluation
 
@@ -146,7 +146,7 @@ import mlflow
 **Negative test:** ship without evaluation; **measure** groundedness/quality before
 and after changes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — GenAI: deploy with Model Serving + governance
 
@@ -163,7 +163,7 @@ the deployment/governance area of the exam.
 **Negative test:** expose an ungoverned model on raw data; govern with **Unity
 Catalog** and add guardrails.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — Context Engineer: assemble agent context
 
@@ -185,7 +185,7 @@ memory) — the core of the Context Engineer credential.
 **Negative test:** stuff everything into the prompt; curate **relevant** context —
 too much dilutes and raises cost/risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.7 — Context Engineer: tools and memory for agents
 
@@ -202,7 +202,7 @@ agent design a Context Engineer produces.
 **Negative test:** give an agent a broad write tool with no approval; gate
 **high-impact** actions and scope tools.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

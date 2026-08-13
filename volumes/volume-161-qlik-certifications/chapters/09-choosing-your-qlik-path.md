@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Aiming for the expert QSBA certification without the fundamentals or hands-on modeling. The certification assumes real proficiency in the associative model and set analysis; build via the Qualification and hands-on practice, then take the expert exam.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Qlik in the analytics career
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Treating Qlik as just another chart tool. Its associative engine (free exploration, the power of gray) is a distinct strength, and the role spans modeling, analysis, governance, and interpretation — a full analytics career, not a single feature.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

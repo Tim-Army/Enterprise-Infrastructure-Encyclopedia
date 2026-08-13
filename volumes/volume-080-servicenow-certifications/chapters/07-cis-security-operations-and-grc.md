@@ -81,7 +81,7 @@ lab finding — VR risk-based prioritization.
 **Negative test:** remediate by **CVSS alone**; you fix the lab box before payment-prod — add
 **business/CMDB context**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Run a Security Incident playbook (SIR)
 
@@ -101,7 +101,7 @@ PY
 **Negative test:** handle each security incident ad hoc; response is slow and inconsistent — use a
 **playbook**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Map an IRM control
 
@@ -121,7 +121,7 @@ PY
 **Negative test:** track compliance in spreadsheets with no **authority mapping**; audits need
 traceability — map controls in IRM.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Close the VR-to-change loop
 
@@ -142,7 +142,7 @@ VR/ITSM integration.
 **Negative test:** email IT to "please patch" with no tracking; it stalls — orchestrate a **change**
 and verify.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

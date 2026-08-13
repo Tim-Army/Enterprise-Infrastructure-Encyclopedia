@@ -386,7 +386,7 @@ to a tier/block, and you scale by adding blocks rather than redesigning.
 scale, faults propagate widely, and troubleshooting is hard — hierarchy contains failure domains and
 simplifies growth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — First-hop and path redundancy (Topic: Resilience)
 
@@ -407,7 +407,7 @@ every layer, and FHRP specifically keeps hosts' gateway alive across a router fa
 **Negative test:** give hosts a single default gateway on a single router; that router's failure
 isolates the whole subnet — FHRP (a virtual gateway shared by two routers) is what survives it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Segmentation design (Topic: Segmentation)
 
@@ -428,7 +428,7 @@ corporate) and enforces least-privilege between traffic classes at the L3 bounda
 has direct L2 reach to corporate and management — segmentation with routed policy is what contains
 that.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Design Exercise: a resilient small-enterprise network (Topic: Synthesis)
 
@@ -450,7 +450,7 @@ and resilient to any single failure, with each choice justified by the requireme
 segmentation; the first switch/router/gateway failure isolates users and a single compromise spreads
 — resilience and segmentation are requirements, not extras.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

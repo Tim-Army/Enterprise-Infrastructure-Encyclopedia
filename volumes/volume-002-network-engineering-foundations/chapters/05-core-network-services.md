@@ -454,7 +454,7 @@ time-limited lease.
 Discover goes unanswered and the host self-assigns a useless link-local (169.254.x) — a reachable
 DHCP server (or static config) is required.
 
-**Cleanup:** none (or `sudo dhclient -r eth0` to release).
+**Rollback:** none (or `sudo dhclient -r eth0` to release).
 
 ### Lab 5.2 — DNS resolution (Topic: Name resolution)
 
@@ -474,7 +474,7 @@ resolves names to addresses; a resolver walks root → TLD → authoritative (or
 failure is name resolution, not connectivity — `dig` distinguishes a DNS problem from a reachability
 problem.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — NTP time synchronization (Topic: Time)
 
@@ -493,7 +493,7 @@ to correlate, TLS certificates to validate, and Kerberos/2FA to work.
 **Negative test:** operate with an unsynchronized clock; log timestamps across hosts do not correlate
 and certificate/time-sensitive auth fails — NTP is a quiet but critical core service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — NAT (Topic: Address translation)
 
@@ -514,7 +514,7 @@ source IP/port, which is how private IPv4 networks reach the internet.
 **Negative test:** expect private (RFC 1918) addresses to be routable on the internet directly; they
 are not — NAT (or IPv6 global addressing) is what gives private hosts external reachability.
 
-**Cleanup:** `sudo nft delete table ip nat; sudo sysctl -w net.ipv4.ip_forward=0`.
+**Rollback:** `sudo nft delete table ip nat; sudo sysctl -w net.ipv4.ip_forward=0`.
 
 ## Lab Verification
 

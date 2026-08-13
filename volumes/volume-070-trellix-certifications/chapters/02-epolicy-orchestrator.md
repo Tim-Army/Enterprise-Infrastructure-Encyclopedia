@@ -73,7 +73,7 @@ ePO walkthroughs. **Shared prerequisites** — an ePO instance (or the console/A
 **Negative test:** put every system in the root with no grouping; policy assignment becomes
 unmanageable — **group** them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Create a dynamic tag
 
@@ -90,7 +90,7 @@ unmanageable — **group** them.
 **Negative test:** manually tag hundreds of systems; **criteria-based tags** apply automatically —
 define the criteria.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Assign a policy
 
@@ -107,7 +107,7 @@ define the criteria.
 **Negative test:** assign the same policy to every system individually; use **group assignment +
 inheritance** — set once, inherit widely.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Query ePO via the API
 
@@ -125,7 +125,7 @@ reporting.
 **Negative test:** export reports from the console by hand for automation; the **API** feeds it —
 use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Schedule a client task
 
@@ -143,7 +143,7 @@ maintenance.
 **Negative test:** run scans manually per endpoint; **client tasks** schedule them fleet-wide —
 automate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

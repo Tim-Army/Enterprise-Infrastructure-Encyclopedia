@@ -43,7 +43,7 @@ cat /etc/cts/sgt-names
 
 **Expected result.** The five names map to their values — the local equivalent of ISE's Security Groups list.
 
-**Cleanup.** Keep the definitions.
+**Rollback.** Keep the definitions.
 
 ### Exercise 3.2 — Register the enforcer as a Network Device
 
@@ -79,7 +79,7 @@ show cts environment-data
 sudo nft list ruleset | head -1 || echo "nftables ready (empty)"
 ```
 
-**Cleanup.** Keep the registration.
+**Rollback.** Keep the registration.
 
 ### Exercise 3.3 — Turn on role-based enforcement
 
@@ -114,7 +114,7 @@ sudo nft list table inet cts
 
 **Expected result.** A `forward` chain with `policy accept` — enforcement armed, matrix empty, traffic still permitted.
 
-**Cleanup.** Keep the scaffold; Chapter 05 proves the flat network, Chapter 06 fills the matrix.
+**Rollback.** Keep the scaffold; Chapter 05 proves the flat network, Chapter 06 fills the matrix.
 
 ## Summary and Completion Checklist
 

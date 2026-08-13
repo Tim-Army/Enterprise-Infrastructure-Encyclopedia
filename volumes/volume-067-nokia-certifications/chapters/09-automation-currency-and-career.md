@@ -82,7 +82,7 @@ model-driven automation.
 **Negative test:** parse `show router interface` text; **pySROS/the model** returns structured data
 — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Use NETCONF
 
@@ -100,7 +100,7 @@ XML
 **Negative test:** automate via scraped CLI over telnet; use **NETCONF/gNMI** on the model — it is
 structured and secure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Verify the current program
 
@@ -116,7 +116,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.nokia.com/networks/training/src/exams/" 
 **Negative test:** rely on a years-old exam list; the **SRC program evolves** — verify on
 nokia.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

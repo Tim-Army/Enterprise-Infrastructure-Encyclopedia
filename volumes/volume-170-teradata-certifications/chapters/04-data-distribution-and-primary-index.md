@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Choosing a low-cardinality column (country, status) as the primary index. Most rows pile onto a few AMPs (skew), and queries run at the speed of the overloaded AMP; a high-cardinality, evenly-distributed primary index is what keeps the MPP engine balanced.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

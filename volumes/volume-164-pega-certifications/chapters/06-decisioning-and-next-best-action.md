@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Blasting every customer with the highest-business-value offer regardless of relevance or suitability. That ignores propensity (irrelevant offers) and suitability (pushing harmful products); NBA arbitrates relevance and value gated by eligibility and suitability, delivering the responsible 1:1 next best action.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

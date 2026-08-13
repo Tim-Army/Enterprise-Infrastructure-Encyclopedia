@@ -249,6 +249,8 @@ az sql db show --server "$SRV" --name db-dp300 --query "{name:name, tier:current
 GeneralPurpose/BusinessCritical/Hyperscale are selected by a stated
 performance and HA requirement.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.2 — Configure a deployment and evaluate service tiers
 
 ```bash
@@ -261,6 +263,8 @@ local SSD and built-in HA (always-on) — the tier for low-latency,
 high-availability OLTP.
 
 ### DP-300 Domain 2 — Implement a secure environment (20–25%)
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.3 — Configure the server firewall and authentication
 
@@ -280,6 +284,8 @@ az sql server ad-admin list --server "$SRV" --query "[].login" -o tsv || echo "n
 **Expected result:** the Entra admin, or the note — Entra auth with
 conditional access is the recommended posture.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.4 — Configure encryption and auditing
 
 ```bash
@@ -292,6 +298,8 @@ controls this domain adds.
 
 ### DP-300 Domain 3 — Monitor, configure, and optimize (20–25%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.5 — Monitor database resources
 
 ```bash
@@ -303,6 +311,8 @@ az monitor metrics list --resource "$(az sql db show --server "$SRV" --name db-d
 **Expected result:** a DTU-consumption data point (or the note on a fresh
 DB). DTU/vCore consumption is the signal for right-sizing — the
 optimization skill.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.6 — Interpret performance and optimize
 
@@ -317,6 +327,8 @@ finding, an under-provisioned one a throttling finding.
 
 ### DP-300 Domain 4 — Automation of tasks (15–20%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.7 — Automate with elastic pools / policies
 
 ```bash
@@ -328,6 +340,8 @@ az sql elastic-pool list --server "$SRV" --query "[].name" -o tsv
 databases — the automation-and-cost lever for many small databases.
 
 ### DP-420 — Cosmos DB (data models 35–40%, optimize 15–20%, maintain 25–30%)
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 7.8 — Create a Cosmos DB account and database *(integrate)*
 
@@ -343,6 +357,8 @@ az cosmosdb show --name "$COS" --query "{name:name, consistency:consistencyPolic
 (`Session`). Serverless suits spiky/dev workloads; provisioned throughput
 suits steady load.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.9 — Design and implement a data model with a partition key *(data models, 35–40%)*
 
 ```bash
@@ -356,6 +372,8 @@ az cosmosdb sql container show --account-name "$COS" --database-name appdb \
 dominant DP-420 decision — it governs performance and cost and cannot be
 changed without moving data.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.10 — Data distribution and consistency *(distribution 5–10%)*
 
 ```bash
@@ -367,6 +385,8 @@ az cosmosdb show --name "$COS" \
 The five levels trade latency/availability against staleness; global
 distribution adds regions with per-region write options.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.11 — Optimize a Cosmos DB solution *(optimize 15–20%)*
 
 ```bash
@@ -377,6 +397,8 @@ az cosmosdb sql container show --account-name "$COS" --database-name appdb \
 **Expected result:** `consistent`. Indexing policy and request-unit (RU)
 provisioning are the optimization levers — a cross-partition query burns
 RUs disproportionately, which is the signal a partition key is wrong.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.12 — Maintain a Cosmos DB solution *(maintain 25–30%)*
 
@@ -393,6 +415,8 @@ guarantee.
 
 ### DP-750 — Databricks Data Engineer (section level)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.13 — Databricks workspace and the lakehouse pattern
 
 ```bash
@@ -403,6 +427,8 @@ az provider show --namespace Microsoft.Databricks --query "registrationState" -o
 **Expected result:** `Registered` or the note. DP-750 covers building
 pipelines and the lakehouse (bronze/silver/gold) on Azure Databricks;
 confirm the current guide, as this certification is new.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 7.14 — Storage foundation for the lakehouse
 
@@ -415,6 +441,8 @@ az storage account show --name "$SA" --query "isHnsEnabled" -o tsv
 
 **Expected result:** `true` — ADLS Gen2 (hierarchical namespace) is the
 lakehouse storage layer Databricks reads and writes.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 7.15 — Negative test: prove TDE is enforced / firewall blocks
 
@@ -429,6 +457,8 @@ gone, a client connection from Azure services is now refused at the network
 layer — proving the firewall, not the database, controls reachability.
 (Re-add the rule if you want to connect.)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.16 — Cleanup
 
 ```bash
@@ -439,6 +469,8 @@ az group exists --name rg-data-lab
 **Expected result:** `false` shortly after — the SQL server, Cosmos
 account, and storage accounts removed together. Cosmos provisioned
 throughput and SQL databases bill continuously, so confirm deletion.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

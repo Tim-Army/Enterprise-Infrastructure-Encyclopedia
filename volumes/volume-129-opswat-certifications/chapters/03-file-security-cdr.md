@@ -75,7 +75,7 @@ The macro (`vbaProject.bin`) is removed and a clean, still-usable document is re
 
 **Negative test:** "Detecting and quarantining" the macro instead — if the macro is a novel variant AV doesn't flag, detection passes it through; CDR removes it whether recognized or not, which is why CIP uses CDR for the file boundary.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — CDR handles nested and evasive structures
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** A scanner that only inspects the top-level archive — the nested `.exe` sails through; recursion (with a sane depth limit) is mandatory for the file boundary.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — When CDR must preserve function
 
@@ -141,7 +141,7 @@ EOF
 
 **Negative test:** Disabling CDR because "it broke a spreadsheet" — you reopen the whole active-content vector; the correct response is a scoped, signed exception, not turning off the control.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

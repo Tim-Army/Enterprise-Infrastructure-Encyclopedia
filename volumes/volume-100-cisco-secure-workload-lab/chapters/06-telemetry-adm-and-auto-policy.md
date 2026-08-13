@@ -35,7 +35,7 @@ This is the core of the lab. Each exercise carries both tracks. Secure Workload'
 
 **Negative test.** Plan to install the agent on `cw-ot01`. It cannot run one; the PLC appears in telemetry only as the far end of the HMI's flows, and is protected from its neighbors in Chapter 08.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Collect comprehensive telemetry
 
@@ -60,7 +60,7 @@ sudo conntrack -L 2>/dev/null \
 
 **Negative test.** Collect telemetry while the Lab 5.3 attack runs, and the attack flow (`10.10.20.21,10.10.20.12,5432`) lands in the log. ADM faithfully learns whatever it sees, so the collection window must observe clean traffic — and the result must be reviewed against ground truth.
 
-**Cleanup.** Keep the telemetry log.
+**Rollback.** Keep the telemetry log.
 
 ### Lab 6.3 — Application Dependency Mapping and auto-generated policy
 
@@ -97,7 +97,7 @@ Compare it to the Chapter 05 ground truth: the two legitimate flows, and nothing
 
 **Negative test.** If `allow HMI -> Database :5432` appears, your telemetry window captured the attack. Delete that rule before it becomes policy — ADM proposes, a human disposes.
 
-**Cleanup.** Keep the generated policy; Chapter 07 analyzes and enforces it.
+**Rollback.** Keep the generated policy; Chapter 07 analyzes and enforces it.
 
 ## Summary and Completion Checklist
 

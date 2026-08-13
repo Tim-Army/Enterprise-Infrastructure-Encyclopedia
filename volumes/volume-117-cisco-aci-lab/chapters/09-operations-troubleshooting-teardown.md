@@ -25,7 +25,7 @@ sudo dmesg | grep -cE 'ACI-DENY|USEG-QUARANTINE|INTRA-EPG-DENY'       # denies r
 
 **Expected result.** Membership correct, default-drop with the two contracts, quarantine as expected, denies recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -46,7 +46,7 @@ sudo dmesg | grep -cE 'ACI-DENY|USEG-QUARANTINE|INTRA-EPG-DENY'       # denies r
 
 **Negative test.** The subtle failure is a **permit-all contract**: a contract whose filter allows any port defeats the whitelist between those EPGs. Scope every contract to its exact application ports.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -66,7 +66,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the `aci` table behind keeps enforcing on the host; remove it too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

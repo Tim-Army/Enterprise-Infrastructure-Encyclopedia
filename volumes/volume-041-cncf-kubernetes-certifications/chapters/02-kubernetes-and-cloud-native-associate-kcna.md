@@ -100,7 +100,7 @@ reads it.
 **Negative test:** expect `kubectl run` to create a Deployment; with
 `--restart=Never` it creates a bare Pod — know the difference.
 
-**Cleanup:** `kubectl delete pod web`
+**Rollback:** `kubectl delete pod web`
 
 ### Lab 2.2 — KCNA: Container Orchestration (28%)
 
@@ -120,7 +120,7 @@ self-healing.
 **Negative test:** delete a pod and expect it to stay gone; the Deployment
 controller reconciles back to 3 — that is orchestration working.
 
-**Cleanup:** `kubectl delete deploy web`
+**Rollback:** `kubectl delete deploy web`
 
 ### Lab 2.3 — KCNA: Cloud Native Application Delivery (16%)
 
@@ -139,7 +139,7 @@ history — the zero-downtime delivery pattern KCNA introduces.
 **Negative test:** change the image by editing pods directly; the Deployment
 would revert them — update the Deployment template so the rollout is managed.
 
-**Cleanup:** `kubectl delete deploy web`
+**Rollback:** `kubectl delete deploy web`
 
 ### Lab 2.4 — KCNA: Cloud Native Architecture (12%)
 
@@ -158,7 +158,7 @@ cloud-native architecture KCNA describes.
 the front door and the scheduler only *assigns* nodes — each component has one
 job.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

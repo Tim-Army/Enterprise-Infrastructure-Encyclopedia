@@ -78,7 +78,7 @@ the front door.
 **Negative test:** let privileged access rely on password alone; credential theft = full compromise —
 require **adaptive MFA**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Grant just-in-time cloud access
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** assign the PowerUser role permanently; it's a standing target — grant **JIT** and
 revoke.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Enforce zero standing privileges
 
@@ -120,7 +120,7 @@ zero standing privileges.
 **Negative test:** keep a break-glass account with permanent Administrator; secure and monitor it, but
 **default to ZSP** for everyone else.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Audit a cloud elevation
 
@@ -138,7 +138,7 @@ PY
 
 **Negative test:** grant cloud access with no reason or record; audits fail — **log** who/what/when/why.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

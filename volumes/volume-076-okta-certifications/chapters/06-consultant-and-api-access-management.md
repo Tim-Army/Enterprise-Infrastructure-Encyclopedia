@@ -74,7 +74,7 @@ Management).
 **Negative test:** grant the mobile app **write:orders** it never uses; that widens blast radius —
 grant the **minimum** scope.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Enforce scope at the API
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** trust that the client only calls what it should; a compromised client will try
 more — **enforce scope at the API**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Validate an access token
 
@@ -119,7 +119,7 @@ validation.
 **Negative test:** validate only the signature and skip **exp/aud**; an expired or wrong-audience
 token passes — check **all** claims.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Plan a migration with coexistence
 
@@ -139,7 +139,7 @@ PY
 **Negative test:** big-bang cut over everything at once; one failure breaks all logins — migrate in
 **waves**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

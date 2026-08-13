@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Assuming an attacker who crafts an assertion can impersonate a user. Without the IdP's signing key they cannot produce a valid signature, and the SP rejects the forgery — the signature, not the assertion's contents alone, is the trust.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Least-privilege OAuth scopes
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Granting an app all scopes to avoid permission errors. A leaked over-scoped token lets an attacker write files and make payments; least-privilege scopes cap the damage to the app's actual task.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

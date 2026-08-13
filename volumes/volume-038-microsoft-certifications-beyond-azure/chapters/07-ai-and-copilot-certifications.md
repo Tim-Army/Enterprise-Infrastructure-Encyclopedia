@@ -140,7 +140,7 @@ az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | head
 **Negative test:** deploy AI with no responsible-AI review; fairness,
 reliability, and privacy are exam considerations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — AI-901: Describe fundamental principles of machine learning on Azure (15–20%)
 
@@ -157,7 +157,7 @@ fundamentals.
 
 **Negative test:** score a regression model with accuracy; use RMSE/R².
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — AI-901: Describe features of computer vision workloads on Azure (15–20%)
 
@@ -173,7 +173,7 @@ face workloads.
 **Negative test:** expect custom object detection from the prebuilt Read API;
 custom models use Custom Vision / AI Foundry.
 
-**Cleanup:** `az cognitiveservices account delete -n lab-vision -g rg-lab`.
+**Rollback:** `az cognitiveservices account delete -n lab-vision -g rg-lab`.
 
 ### Lab 7.4 — AI-901: Describe features of Natural Language Processing (NLP) workloads on Azure (15–20%)
 
@@ -188,7 +188,7 @@ recognition, and question answering.
 
 **Negative test:** expect translation here; use the Translator resource.
 
-**Cleanup:** `az cognitiveservices account delete -n lab-lang -g rg-lab`.
+**Rollback:** `az cognitiveservices account delete -n lab-lang -g rg-lab`.
 
 ### Lab 7.5 — AI-901: Describe features of generative AI workloads on Azure (20–25%)
 
@@ -204,7 +204,7 @@ generative-AI workload.
 **Negative test:** send unbounded prompts expecting unlimited context; models
 have token limits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — AI-102: Plan and manage an Azure AI solution (20–25%)
 
@@ -221,7 +221,7 @@ AI-102 plans.
 **Negative test:** embed the key in client code; use Entra/managed identity and
 Key Vault.
 
-**Cleanup:** `az cognitiveservices account delete -n lab-aisvc -g rg-lab`.
+**Rollback:** `az cognitiveservices account delete -n lab-aisvc -g rg-lab`.
 
 ### Lab 7.7 — AI-102: Implement generative AI solutions (15–20%)
 
@@ -239,7 +239,7 @@ generative-AI call.
 **Negative test:** send PII with no content filtering/logging controls;
 configure data-privacy settings.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.8 — AI-102: Implement an agentic solution (5–10%)
 
@@ -256,7 +256,7 @@ tools + instructions).
 **Negative test:** grant broad tool access with no guardrails; scope tools and
 add approvals.
 
-**Cleanup:** delete the agent.
+**Rollback:** delete the agent.
 
 ### Lab 7.9 — AI-102: Implement computer vision solutions (10–15%)
 
@@ -273,7 +273,7 @@ curl "$VISION/computervision/imageanalysis:analyze?api-version=2024-02-01&featur
 **Negative test:** trust OCR of a rotated low-DPI scan blindly; preprocess and
 validate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.10 — AI-102: Implement natural language processing solutions (15–20%)
 
@@ -290,7 +290,7 @@ curl "$LANG/language/:analyze-text?api-version=2023-04-01" \
 **Negative test:** use sentiment for intent; use conversational language
 understanding (CLU) for intent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.11 — AI-102: Implement knowledge mining and information extraction solutions (15–20%)
 
@@ -306,7 +306,7 @@ search for RAG/knowledge mining.
 **Negative test:** build RAG with no chunking; indexing whole documents degrades
 retrieval.
 
-**Cleanup:** `az search service delete -n lab-search -g rg-lab -y`.
+**Rollback:** `az search service delete -n lab-search -g rg-lab -y`.
 
 ### Lab 7.12 — AI-103: Plan and manage an Azure AI solution (25–30%)
 
@@ -322,7 +322,7 @@ environment AI-103 plans.
 **Negative test:** share one project across unrelated teams; isolate with
 projects and RBAC.
 
-**Cleanup:** delete the project.
+**Rollback:** delete the project.
 
 ### Lab 7.13 — AI-103: Implement generative AI and agentic solutions (30–35%)
 
@@ -339,7 +339,7 @@ agentic development.
 
 **Negative test:** fine-tune for changing facts; ground with retrieval instead.
 
-**Cleanup:** delete the agent.
+**Rollback:** delete the agent.
 
 ### Lab 7.14 — AI-103: Implement computer vision solutions (10–15%)
 
@@ -354,7 +354,7 @@ print(result.caption.text)
 
 **Negative test:** display captions with no moderation; apply content safety.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.15 — AI-103: Implement text analysis solutions (10–15%)
 
@@ -371,7 +371,7 @@ text analysis.
 **Negative test:** run one language model over mixed-language text; detect
 language first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.16 — AI-103: Implement information extraction solutions (10–15%)
 
@@ -389,7 +389,7 @@ structured field extraction.
 **Negative test:** regex-parse a PDF invoice; use Document Intelligence
 prebuilt/custom models.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.17 — AI-500: Architect multi-agent solutions (15–20%)
 
@@ -406,7 +406,7 @@ architecture.
 **Negative test:** build one giant agent for every task; decompose into
 specialists.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.18 — AI-500: Develop multi-agent solutions in Azure (30–35%)
 
@@ -424,7 +424,7 @@ development on Azure.
 **Negative test:** let agents loop with no termination strategy; set
 turn/termination limits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.19 — AI-500: Evaluate, optimize, and monitor multi-agent solutions (20–25%)
 
@@ -440,7 +440,7 @@ monitoring agents.
 
 **Negative test:** ship agents with no eval harness; regressions go unnoticed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.20 — AI-500: Secure, govern, and deploy multi-agent solutions (20–25%)
 
@@ -456,7 +456,7 @@ deployments (identity, safety, quotas).
 **Negative test:** expose agent tools publicly with no auth; require Entra and
 network controls.
 
-**Cleanup:** `az cognitiveservices account delete -n lab-safety -g rg-lab`.
+**Rollback:** `az cognitiveservices account delete -n lab-safety -g rg-lab`.
 
 ### Lab 7.21 — AI-300: Design and implement an MLOps infrastructure (15–20%)
 
@@ -473,7 +473,7 @@ infrastructure AI-300 designs.
 **Negative test:** train on a single fixed VM; MLOps needs elastic, reproducible
 compute.
 
-**Cleanup:** delete the compute.
+**Rollback:** delete the compute.
 
 ### Lab 7.22 — AI-300: Implement machine learning model lifecycle and operations (25–30%)
 
@@ -491,7 +491,7 @@ lifecycle (register → deploy → monitor).
 **Negative test:** overwrite a production model in place; version models for
 rollback and lineage.
 
-**Cleanup:** delete the deployment.
+**Rollback:** delete the deployment.
 
 ### Lab 7.23 — AI-300: Design and implement a GenAIOps infrastructure (20–25%)
 
@@ -508,7 +508,7 @@ pipeline — GenAIOps infrastructure.
 **Negative test:** ship a flow with no evaluation gate; GenAIOps requires
 automated quality checks before promotion.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.24 — AI-300: Implement generative AI quality assurance and observability (10–15%)
 
@@ -525,7 +525,7 @@ observability for generative AI.
 **Negative test:** rely on manual spot-checks; automated evaluators catch
 regressions across releases.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.25 — AI-300: Optimize generative AI systems and model performance (10–15%)
 
@@ -542,7 +542,7 @@ generative system.
 **Negative test:** raise `max_tokens` "to be safe"; unbounded tokens inflate cost
 and latency.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.26 — AB-900: Identify the core features and objects of Microsoft 365 services (30–35%)
 
@@ -559,7 +559,7 @@ objects a Copilot admin governs.
 **Negative test:** assume Copilot ignores permissions; it honors the user's
 existing access to these objects.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.27 — AB-900: Understand data protection and governance tasks for Microsoft 365 and Copilot (35–40%)
 
@@ -576,7 +576,7 @@ what Copilot can surface and generate.
 **Negative test:** deploy Copilot with unlabeled oversharing; Copilot can surface
 over-permissioned content — fix access first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.28 — AB-900: Perform basic administrative tasks for Copilot and agents (25–30%)
 
@@ -592,7 +592,7 @@ task (licensing, agent management, usage).
 **Negative test:** enable agents org-wide with no governance review; scope agent
 availability and data access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.29 — AB-730: Understand generative AI fundamentals (25–30%)
 
@@ -609,7 +609,7 @@ Business Professional.
 **Negative test:** treat a model's fluent answer as fact; verify — models can
 hallucinate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.30 — AB-730: Manage prompts and conversations by using AI (35–40%)
 
@@ -626,7 +626,7 @@ managing prompts/conversations at work.
 **Negative test:** paste confidential data into a consumer AI tool; use the
 approved, governed tenant tools.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.31 — AB-730: Draft and analyze business content by using AI (25–30%)
 
@@ -643,7 +643,7 @@ Analyze: extract action items, sentiment, risks from a document; verify outputs
 **Negative test:** send AI output unreviewed to a customer; the human is
 accountable for accuracy and tone.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.32 — AB-731: Identify the business value of generative AI solutions (35–40%)
 
@@ -659,7 +659,7 @@ core skill.
 
 **Negative test:** adopt AI for novelty with no KPI; value must be measurable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.33 — AB-731: Identify benefits, capabilities, and opportunities for Microsoft's AI apps and services (35–40%)
 
@@ -675,7 +675,7 @@ Match each opportunity to the right product tier and licensing
 **Negative test:** propose custom-built AI where Copilot already solves it; buy
 before build when it fits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.34 — AB-731: Identify an implementation and adoption strategy for Microsoft's AI apps and services (20–25%)
 
@@ -692,7 +692,7 @@ the transformation.
 **Negative test:** roll out org-wide with no pilot or training; adoption stalls
 without enablement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.35 — AB-100: Plan AI-powered business solutions (25–30%)
 
@@ -709,7 +709,7 @@ architect's planning domain.
 **Negative test:** plan an agent with no human oversight for high-risk actions;
 insert approvals.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.36 — AB-100: Design AI-powered business solutions (25–30%)
 
@@ -725,7 +725,7 @@ design domain.
 
 **Negative test:** grant an agent broad write connectors; scope tools to the task.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.37 — AB-100: Deploy AI-powered business solutions (40–45%)
 
@@ -742,7 +742,7 @@ agentic business solution.
 **Negative test:** deploy unmanaged to production; export as managed and promote
 via pipelines.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.38 — AB-410: Create a foundation for intelligent applications (25–30%)
 
@@ -758,7 +758,7 @@ build on (models + retrieval).
 
 **Negative test:** build RAG with no index; retrieval needs a search/vector store.
 
-**Cleanup:** delete both resources.
+**Rollback:** delete both resources.
 
 ### Lab 7.39 — AB-410: Create intelligent applications (25–30%)
 
@@ -778,7 +778,7 @@ intelligent application.
 **Negative test:** answer without grounding for company-specific questions; the
 model guesses.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.40 — AB-410: Build business application logic and automation (40–45%)
 
@@ -795,7 +795,7 @@ Logic: validation, approvals, error handling, and audit of AI outputs
 **Negative test:** auto-commit AI output to a system of record with no validation;
 add checks and approvals.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -93,7 +93,7 @@ EOF
 
 **Negative test:** Publishing the component SLOs as the team's reliability report. Every number is true, and the sum of true numbers misstates what users got.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Which services get an SLO
 
@@ -133,7 +133,7 @@ EOF
 
 **Negative test:** An SLO per microservice because the platform makes it easy. Sixty commitments, none of which anyone can name, is the same as none — with more dashboards.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Fixtures as code, and drift detection
 
@@ -186,7 +186,7 @@ EOF
 
 **Negative test:** Managing fixtures as code but never running the diff. The code becomes documentation of intentions, drifting exactly as fast as the console-clicked reality it no longer describes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

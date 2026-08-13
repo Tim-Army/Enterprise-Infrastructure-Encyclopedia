@@ -53,7 +53,7 @@ Category-based filtering with per-category actions — including **coach** (warn
 
 **Negative test:** Block-only policy for social media when the marketing team needs it — you generate tickets; **coaching** balances risk and productivity, which the exam highlights.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — SSL/TLS inspection decisions
 
@@ -84,7 +84,7 @@ SSL inspection is what makes threat and DLP visibility possible (most traffic is
 
 **Negative test:** Decrypt everything including banking/health — a compliance and trust problem (and some apps pin certificates and break); selective bypass is mandatory, not optional.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Certificate-pinning and bypass reality
 
@@ -104,7 +104,7 @@ EOF
 
 **Negative test:** Enabling SSL inspection without deploying the CA to endpoints — every HTTPS site throws certificate errors; the CA distribution is a prerequisite the exam checks.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Inline threat protection
 
@@ -136,7 +136,7 @@ Inline threat protection combines signatures (known malware) with **sandboxing**
 
 **Negative test:** Signature-only protection misses zero-days; the sandbox is what catches novel malware, and the exam expects you to know inline threat protection combines both.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

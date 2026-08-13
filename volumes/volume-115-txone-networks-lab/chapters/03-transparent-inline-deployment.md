@@ -60,7 +60,7 @@ VALUE=50
 
 **Negative test.** The operator's command did not change (`10.90.2.40:502`) — proof the insertion is transparent. A device that required re-addressing the PLC could not be inserted into a live plant.
 
-**Cleanup.** Keep the inspector; Chapter 04 adds the virtual patch.
+**Rollback.** Keep the inspector; Chapter 04 adds the virtual patch.
 
 ### Exercise 3.2 — The exploit still lands (no signature yet)
 
@@ -82,7 +82,7 @@ The device is inline but is still passing everything — the exploit reaches the
 
 **Negative test.** Assume being inline is protection. It is only opportunity — without a signature or policy, an inline device that passes traffic protects nothing. Chapter 04 arms it.
 
-**Cleanup.** Keep the inline inspector for Chapter 04.
+**Rollback.** Keep the inline inspector for Chapter 04.
 
 ## Summary and Completion Checklist
 

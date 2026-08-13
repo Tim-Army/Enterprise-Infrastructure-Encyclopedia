@@ -155,7 +155,7 @@ with status — the platform correlates across all of them.
 endpoint/identity signal; cross-source correlation needs breadth of
 ingestion.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.2 — Confirm data ingestion and normalization
 
@@ -174,7 +174,7 @@ normalized events — ingestion plus parsing into the data model.
 **Negative test:** a custom log source with no parser lands as raw text and
 is not queryable by field; normalization is what makes it analyzable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.3 — Query telemetry with XQL
 
@@ -195,7 +195,7 @@ platform's investigation and detection query language.
 **Negative test:** querying a field that the source did not populate returns
 nulls; know the data model each source maps to.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.4 — Read correlation/detection rules
 
@@ -213,7 +213,7 @@ state — the logic that promotes raw telemetry to alerts.
 **Negative test:** a disabled correlation rule generates no alerts even as
 matching events stream in; enablement, not authorship, activates detection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.5 — Manage an incident lifecycle
 
@@ -232,7 +232,7 @@ platform reduces alert volume by aggregating related alerts into incidents.
 analyst effort; incident grouping is the volume-reduction the platform
 provides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.6 — SOC track-map planning (integrative)
 
@@ -243,6 +243,8 @@ learning modules, capstone). Where a Cortex evaluation tenant or the
 free digital-learning labs are available, complete one guided XQL
 investigation and document the causality chain; otherwise runbook the
 investigation workflow against the product docs.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Lab Verification
 

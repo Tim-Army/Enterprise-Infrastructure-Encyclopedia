@@ -404,7 +404,7 @@ callbacks/integrations do not break on a lease change.
 DNS records, OME onboarding, and alert destinations — static/reserved addressing is the norm for
 out-of-band management.
 
-**Cleanup:** restore the lab's intended addressing (or DHCP) if changed only for the exercise.
+**Rollback:** restore the lab's intended addressing (or DHCP) if changed only for the exercise.
 
 ### Lab 3.2 — IPv6 addressing (Topic: IPv6)
 
@@ -424,7 +424,7 @@ managed over IPv6-only or dual-stack networks.
 unreachable until IPv6 is enabled and addressed — match the controller's stack to the management
 network.
 
-**Cleanup:** `racadm set iDRAC.IPv6.Enable Disabled` if enabled only for the lab.
+**Rollback:** `racadm set iDRAC.IPv6.Enable Disabled` if enabled only for the lab.
 
 ### Lab 3.3 — DNS configuration (Topic: DNS)
 
@@ -445,7 +445,7 @@ IP, and is required for name-based certificates and integrations.
 **Negative test:** manage dozens of iDRACs by IP with no DNS; a re-addressing breaks every
 bookmark and script — DNS names decouple access from the address.
 
-**Cleanup:** revert the DNS name/registration if lab-only.
+**Rollback:** revert the DNS name/registration if lab-only.
 
 ### Lab 3.4 — NTP and connectivity verification (Topic: Time and connectivity)
 
@@ -465,7 +465,7 @@ certificate validation, and the built-in ping verifies management-network connec
 **Negative test:** leave the iDRAC clock unsynchronized; log timestamps across the fleet do not
 correlate and certificate checks may fail — NTP keeps the controller's time trustworthy.
 
-**Cleanup:** none (leave NTP enabled).
+**Rollback:** none (leave NTP enabled).
 
 ## Lab Verification
 

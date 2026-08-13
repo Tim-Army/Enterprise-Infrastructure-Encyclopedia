@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Trying to patch every vulnerability by raw CVSS score alone. That ignores exposure, asset value, and whether a flaw is actually being exploited, so effort is wasted on low-risk issues; ASRM's risk scoring prioritizes what actually matters, and discovery finds the assets you didn't know you had.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

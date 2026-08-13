@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Granting standing cloud/SaaS admin roles because requesting access each time is slow. Standing cloud privilege is the dominant cloud risk; Entitle removes the friction with self-service JIT and auto-expiry, so access exists only for the task.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -76,7 +76,7 @@ context.
 **Negative test:** treat a bare hostname list as your inventory; without **context** you can't
 prioritize — enrich it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Discover the external attack surface
 
@@ -98,7 +98,7 @@ Management.
 **Negative test:** scan only known assets; **unknown** internet-facing systems remain exposed — run
 EASM.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Flag end-of-life software
 
@@ -119,7 +119,7 @@ PY
 **Negative test:** keep scanning EOL systems for patches that will never come; they need
 **replacement/isolation** — flag and plan.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Detect unauthorized software
 
@@ -140,7 +140,7 @@ PY
 **Negative test:** track only vulnerabilities and ignore **unauthorized apps**; risky tools persist —
 flag them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

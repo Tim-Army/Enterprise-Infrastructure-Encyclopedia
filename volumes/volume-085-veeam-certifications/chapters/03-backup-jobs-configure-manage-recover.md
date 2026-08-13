@@ -81,7 +81,7 @@ Daily-App  Success    Stopped
 **Negative test:** create a job but never run or schedule it; there is no restore point — schedule and
 run it.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Remove-VBRJob -Job (Get-VBRJob -Name "Daily-App") -Confirm:$false
@@ -106,7 +106,7 @@ RetainCycles
 **Negative test:** keep only 14 daily restore points for a 7-year compliance need; you cannot restore
 last year — enable **GFS**.
 
-**Cleanup:** none (removed with the job).
+**Rollback:** none (removed with the job).
 
 ### Lab 3.3 — Enable application-aware processing
 
@@ -129,7 +129,7 @@ restores.
 **Negative test:** back up a SQL Server crash-consistently; logs are never truncated and restores may
 be inconsistent — enable application-aware processing.
 
-**Cleanup:** none (removed with the job).
+**Rollback:** none (removed with the job).
 
 ### Lab 3.4 — Perform a restore
 
@@ -150,7 +150,7 @@ Daily-App        Working Success
 **Negative test:** assume a backup is good without ever restoring; test recovery regularly — an
 untested backup is not a guarantee.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Stop-VBRWindowsFileRestore -FileRestore (Get-VBRWindowsFileRestore)

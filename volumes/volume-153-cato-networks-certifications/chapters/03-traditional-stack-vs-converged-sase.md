@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Assuming best-of-breed point products are more secure than a converged platform. The seams between them — inconsistent policy, lost context at handoffs, un-inspected traffic — are where attacks slip through; convergence eliminates the seams, not just the console count.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

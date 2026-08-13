@@ -331,7 +331,7 @@ toolset.
 you "fix" symptoms while the property still never resolves — diagnose bottom-up before
 changing policy.
 
-**Cleanup:** none (read-only diagnostics).
+**Rollback:** none (read-only diagnostics).
 
 ### Lab 6.2 — Virtual appliance performance tuning (Topic: Performance and scoping)
 
@@ -353,7 +353,7 @@ before they saturate.
 hardware; discovery lags and enforcement slows — scoping to real load, not wishful
 consolidation, is what keeps the deployment responsive.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Network configuration considerations (Topic: Network integration)
 
@@ -374,7 +374,7 @@ unreachable switch is a common root cause.
 the un-spanned VLANs are invisible — the monitor channel must carry every VLAN you intend
 to see.
 
-**Cleanup:** none (read-only unless you corrected a real misconfiguration).
+**Rollback:** none (read-only unless you corrected a real misconfiguration).
 
 ### Lab 6.4 — Enterprise Manager and appliance resilience (Topic: High availability / DR)
 
@@ -394,7 +394,7 @@ survives an appliance loss plus a tested restore path, not just redundant hardwa
 management and enforcement coordination — an EM failure without a recovery plan is a
 single point of failure this lab exists to expose.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

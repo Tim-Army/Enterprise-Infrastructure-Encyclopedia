@@ -95,7 +95,7 @@ EOF
 
 **Negative test.** Omit the `connect-inject` annotation and the pod runs without a sidecar — it is not in the mesh, so intentions do not apply to it. Add the annotation and restart.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy the un-meshed PLC
 
@@ -132,7 +132,7 @@ kubectl get pods
 
 **Negative test.** Add the connect-inject annotation to the PLC and it joins the mesh — but a real PLC could not run a dataplane. Omitting the annotation models that.
 
-**Cleanup.** Keep the workloads.
+**Rollback.** Keep the workloads.
 
 ## Summary and Completion Checklist
 

@@ -82,7 +82,7 @@ domain (least privilege).
 **Negative test:** give analysts engineer/admin rights; scope to **analyst** roles —
 only engineers manage ingestion/parsers.
 
-**Cleanup:** revoke the role if it was for the lab.
+**Rollback:** revoke the role if it was for the lab.
 
 ### Lab 6.2 — Data Ingestion
 
@@ -100,7 +100,7 @@ ingesting (the Data Ingestion domain).
 **Negative test:** assume a new connector works; **query its counts** — silence means
 misconfigured ingestion.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Parsing
 
@@ -119,7 +119,7 @@ parseKeyValue(field=@rawstring)
 **Negative test:** search on `@rawstring` substrings; **parse to fields** so rules and
 aggregations work reliably.
 
-**Cleanup:** none (parser test).
+**Rollback:** none (parser test).
 
 ### Lab 6.4 — Content Creation
 
@@ -138,7 +138,7 @@ Content Creation domain (correlation content).
 **Negative test:** alert on a single failed logon; **correlate** for a real pattern to
 cut noise.
 
-**Cleanup:** remove the saved search if it was for the lab.
+**Rollback:** remove the saved search if it was for the lab.
 
 ### Lab 6.5 — Automation and Integration
 
@@ -157,7 +157,7 @@ notify/ticket** — the Automation and Integration domain.
 **Negative test:** route every alert to email only; **SOAR automation** enriches,
 tickets, and can contain — build the integration.
 
-**Cleanup:** disable the workflow if it was for the lab.
+**Rollback:** disable the workflow if it was for the lab.
 
 ## Lab Verification
 

@@ -72,7 +72,7 @@ sudo nft add rule inet fgt forward ip saddr 10.30.3.10 ip daddr 10.30.4.10 tcp d
 
 **Expected result.** Two accept rules — the exact legitimate flows.
 
-**Cleanup.** Keep the permits.
+**Rollback.** Keep the permits.
 
 ### Exercise 5.2 — Remove permit-all and confirm implicit deny
 
@@ -129,7 +129,7 @@ sudo nft list chain inet fgt forward
 
 **Expected result.** The forward chain permits the two flows, logs-and-drops MGMT→DB, and drops all other east-west traffic.
 
-**Cleanup.** Keep the ruleset; Chapter 06 verifies enforcement.
+**Rollback.** Keep the ruleset; Chapter 06 verifies enforcement.
 
 ## Summary and Completion Checklist
 

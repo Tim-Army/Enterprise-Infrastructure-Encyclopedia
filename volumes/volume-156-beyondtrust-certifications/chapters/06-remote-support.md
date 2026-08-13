@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Using exposed RDP or a consumer screen-sharing tool for enterprise support. Those grant broad, unaudited control, often without consent, and are routinely abused; enterprise Remote Support bounds capabilities by role, requires consent, and records every session.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

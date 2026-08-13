@@ -96,7 +96,7 @@ PY
 **Negative test:** assume one certification covers everything; each targets a **level × domain** —
 choose accordingly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map Alibaba service names
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** call object storage "S3" on the exam; Alibaba's is **OSS** — learn the native
 names.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -134,7 +134,7 @@ PY
 
 **Negative test:** attempt **ACE** first; it's expert-level — build from **ACA/ACP**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

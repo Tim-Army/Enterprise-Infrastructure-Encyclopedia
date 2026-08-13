@@ -423,7 +423,7 @@ metrics, traces, and logs to any compatible backend, avoiding per-vendor agents.
 **Negative test:** hard-code a vendor-specific agent/SDK into the app; switching backends means
 re-instrumenting everything — OTel's vendor-neutral API is what keeps instrumentation portable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The OpenTelemetry Collector pipeline (Topic: Pipelines)
 
@@ -454,7 +454,7 @@ apps.
 reconfiguring every app, and there is no central place to batch/filter/enrich — the Collector is the
 control point that avoids that.
 
-**Cleanup:** stop the lab Collector.
+**Rollback:** stop the lab Collector.
 
 ### Lab 2.3 — Correlate metrics, logs, and traces (Topic: Signal correlation)
 
@@ -476,7 +476,7 @@ requests was slow" into one, turning three separate data stores into one investi
 spike to the specific trace/log that caused it — correlation IDs (trace_id in logs, exemplars on
 metrics) are the linkage that makes the pillars work together.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Sampling and cardinality control (Topic: Data volume)
 
@@ -501,7 +501,7 @@ while cutting the noise.
 metric dimension; storage and cost explode and Prometheus struggles — sampling and cardinality
 control are what make observability affordable at scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

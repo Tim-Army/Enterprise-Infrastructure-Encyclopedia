@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Keeping backups that an admin (or a stolen admin credential) can delete, with no anomaly detection. Attackers delete such backups first, and without detection you cannot tell which copy predates the encryption; immutability plus anomaly detection is what makes recovery reliable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

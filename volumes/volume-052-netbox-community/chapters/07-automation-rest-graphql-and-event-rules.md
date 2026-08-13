@@ -68,7 +68,7 @@ curl -sS -H "Authorization: Token $TOKEN" \
 **Negative test:** fetch all devices and filter client-side; use **server-side
 filters** (`?role=`) to cut payload.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — GraphQL: fetch exact fields
 
@@ -86,7 +86,7 @@ round-trip, no over-fetch.
 **Negative test:** call REST per device to get its site; **GraphQL** returns the graph
 in one request.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — REST bulk create
 
@@ -104,7 +104,7 @@ curl -sS -H "Authorization: Token $TOKEN" -H "Content-Type: application/json" \
 **Negative test:** POST each VLAN separately in a loop; a **list payload** is one
 transaction — bulk it.
 
-**Cleanup:** delete VLANs 201–202.
+**Rollback:** delete VLANs 201–202.
 
 ### Lab 7.4 — Event rule + webhook
 
@@ -127,7 +127,7 @@ outbound automation.
 **Negative test:** poll NetBox on a timer for new devices; an **event rule** pushes
 instantly — prefer event-driven.
 
-**Cleanup:** `er.delete(); wh.delete()`.
+**Rollback:** `er.delete(); wh.delete()`.
 
 ## Lab Verification
 

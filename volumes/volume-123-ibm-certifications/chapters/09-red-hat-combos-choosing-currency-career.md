@@ -65,7 +65,7 @@ cat my-ibm-plan.md
 
 **Negative test:** A plan without the catalog code — the 62-item catalog has many similarly named version-pinned certifications; the code disambiguates.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Verify the catalog is still current
 
@@ -81,7 +81,7 @@ browser> ibm.com/training/search > Learning type: Certification
 
 **Negative test:** Registering off a cached third-party list — version churn and retirements make that how people study for a withdrawn exam.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** A mover implementation that only grants — Jane accumulates Financial Analyst *and* Sales Rep, which is both a least-privilege failure and, if those roles conflict, a separation-of-duties violation (Chapter 05).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Requested access with an approval chain
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Provisioning first and checking policy later ("we'll catch it in the next campaign") — the violation is live for months, and the campaign becomes a cleanup queue instead of a control.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Privilege creep over a career
 
@@ -144,7 +144,7 @@ EOF
 
 **Negative test:** Relying on annual access reviews to undo creep — reviewers see a long-tenured employee's large access set and assume it is justified; the accumulation persists.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

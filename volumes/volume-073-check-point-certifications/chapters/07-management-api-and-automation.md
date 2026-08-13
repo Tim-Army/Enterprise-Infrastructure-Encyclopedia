@@ -69,7 +69,7 @@ mgmt_cli login user "admin" password "<pw>" > id.txt 2>/dev/null \
 
 **Negative test:** call `add access-rule` with **no session** (`-s`); it's rejected — log in first.
 
-**Cleanup:** `mgmt_cli logout -s id.txt`.
+**Rollback:** `mgmt_cli logout -s id.txt`.
 
 ### Lab 7.2 — Add a rule via the API
 
@@ -87,7 +87,7 @@ mgmt_cli add access-rule layer "Network" position top name "Lab-API-rule" \
 **Negative test:** reference an object name that doesn't exist; the call errors — create objects
 first (or in the same script).
 
-**Cleanup:** delete the rule via API before publishing, or discard the session.
+**Rollback:** delete the rule via API before publishing, or discard the session.
 
 ### Lab 7.3 — Publish and install
 
@@ -104,7 +104,7 @@ mgmt_cli install-policy policy-package "Standard" access true -s id.txt 2>/dev/n
 **Negative test:** `install-policy` **without publish**; the unpublished change isn't installed —
 publish first.
 
-**Cleanup:** revert the lab rule (API) and re-publish/install.
+**Rollback:** revert the lab rule (API) and re-publish/install.
 
 ### Lab 7.4 — Outline an Ansible workflow
 
@@ -132,7 +132,7 @@ Git/CI.
 **Negative test:** apply straight to production with no lab test or review; automation multiplies
 mistakes — test and review first.
 
-**Cleanup:** none (conceptual).
+**Rollback:** none (conceptual).
 
 ## Lab Verification
 

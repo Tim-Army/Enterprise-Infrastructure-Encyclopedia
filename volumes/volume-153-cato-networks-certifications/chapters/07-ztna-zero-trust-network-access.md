@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Using a VPN for remote access in a zero-trust world. Once on the VPN, a compromised user reaches and pivots across the whole internal network; ZTNA connects verified identities to only authorized applications and hides the rest, eliminating the lateral movement.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

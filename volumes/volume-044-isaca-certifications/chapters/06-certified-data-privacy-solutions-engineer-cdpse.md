@@ -98,7 +98,7 @@ foundation (Domain 1) that assigns responsibility for processing.
 **Negative test:** treat a processor as accountable for purpose; the
 **controller** determines purpose and bears accountability — know the roles.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — CDPSE D2: Privacy Risk Management and Compliance (18%)
 
@@ -119,7 +119,7 @@ PY
 **Negative test:** rely on consent for everything; different activities have
 different **legal bases** — match each correctly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — CDPSE D3: Data Life Cycle Management (23%)
 
@@ -140,7 +140,7 @@ the data-lifecycle management of Domain 3.
 **Negative test:** keep personal data indefinitely "just in case"; **retention
 limitation** requires deletion at end of purpose — schedule it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — CDPSE D4: Privacy Engineering (39%)
 
@@ -163,7 +163,7 @@ privacy engineering (Domain 4), CDPSE's largest and most technical domain.
 **Negative test:** call keyed pseudonymization "anonymization"; it is reversible
 with the key — true anonymization removes any path back to the individual.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

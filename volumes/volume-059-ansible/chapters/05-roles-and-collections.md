@@ -66,7 +66,7 @@ reusable unit.
 **Negative test:** put everything in one giant playbook; a **role** structures and reuses
 it — factor it out.
 
-**Cleanup:** `rm -rf roles`.
+**Rollback:** `rm -rf roles`.
 
 ### Lab 5.2 — Use a role
 
@@ -86,7 +86,7 @@ it — factor it out.
 **Negative test:** duplicate the role's tasks inline in every play; **include the role** to
 stay DRY.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Install a collection
 
@@ -103,7 +103,7 @@ listable — extended module set.
 **Negative test:** call a module from a collection you haven't installed; install the
 **collection** first (or it's not found).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Pin dependencies
 
@@ -127,7 +127,7 @@ reproducible dependencies.
 **Negative test:** install collections ad hoc with no file; **requirements.yml** makes the
 set reproducible across machines/CI.
 
-**Cleanup:** `rm -f requirements.yml`.
+**Rollback:** `rm -f requirements.yml`.
 
 ## Lab Verification
 

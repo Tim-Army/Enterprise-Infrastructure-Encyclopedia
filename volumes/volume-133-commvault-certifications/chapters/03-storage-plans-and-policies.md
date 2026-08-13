@@ -71,7 +71,7 @@ EOF
 
 **Negative test:** Giving every application its own plan — hundreds of plans with slightly different retention, no two alike, and no way to answer "what is our retention policy?" in an audit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Cycle-based retention and why space does not free
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Manually deleting backup jobs to free space — you break the dependency chain and can render the remaining jobs in that cycle unrestorable, converting a capacity problem into a data-loss problem.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Tier for cost without breaking recovery
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Tiering aggressively to cut the storage bill without checking RTO — the savings are real and invisible until the recovery, at which point the six-hour retrieval turns a one-hour outage into a day-long one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

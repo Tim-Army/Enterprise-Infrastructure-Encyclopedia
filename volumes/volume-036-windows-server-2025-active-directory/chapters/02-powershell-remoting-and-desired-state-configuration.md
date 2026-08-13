@@ -176,7 +176,7 @@ is the core of PowerShell administration.
 (single `=`); it errors or matches everything — `=` assigns, `-eq`
 compares. Use the comparison operator.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Run a command across multiple servers (Topic: Remote administration)
 
@@ -196,7 +196,7 @@ origin, so results from many servers stay attributable.
 domain; it fails with an access-denied/trust error — remoting requires
 Kerberos (domain) or an explicit trust.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Install a module from the Gallery with a pinned version (Topic: Extend PowerShell)
 
@@ -213,7 +213,7 @@ later Gallery release from silently changing automation behavior.
 **Negative test:** run `Install-Module SomeTypo-Module`; it fails with "no
 match found" — module names are exact and the Gallery is the trust boundary.
 
-**Cleanup:** `Uninstall-Module PSWindowsUpdate -AllVersions`.
+**Rollback:** `Uninstall-Module PSWindowsUpdate -AllVersions`.
 
 ### Lab 2.4 — Enforce state with DSC (Topic: Configuration as code)
 
@@ -238,7 +238,7 @@ corrects drift.
 DSC removes the role and dependent services stop — declared state is
 authoritative, so review a configuration before applying it.
 
-**Cleanup:** `Remove-Item C:\DSC -Recurse -Force`; uninstall the DNS feature if lab-only.
+**Rollback:** `Remove-Item C:\DSC -Recurse -Force`; uninstall the DNS feature if lab-only.
 
 ## Lab Verification
 

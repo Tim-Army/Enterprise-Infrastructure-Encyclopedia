@@ -80,7 +80,7 @@ sign-in — adaptive MFA.
 **Negative test:** require the same heavy MFA for every login regardless of context; users seek
 workarounds — make it **adaptive**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Order authentication policy rules
 
@@ -102,7 +102,7 @@ precedence.
 **Negative test:** put the catch-all first; the admin rule never evaluates — order **specific
 first**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Choose phishing-resistant factors
 
@@ -124,7 +124,7 @@ selection.
 **Negative test:** protect admins with **SMS OTP**; it's phishable and SIM-swappable — use
 **phishing-resistant** factors.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Apply ThreatInsight
 
@@ -147,7 +147,7 @@ action.
 **Negative test:** ignore ThreatInsight and rely on lockouts alone; you miss distributed credential
 attacks — enable **ThreatInsight**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -70,7 +70,7 @@ model.
 **Negative test:** put credentials on each host; use **groups/defaults** to avoid
 repetition.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Initialize and filter
 
@@ -89,7 +89,7 @@ print(sorted(core.inventory.hosts))   # ['r1', 'r2']
 **Negative test:** run tasks against **all** hosts unfiltered; **filter** to the intended
 set to limit blast radius.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Run a task in parallel
 
@@ -107,7 +107,7 @@ for host, r in result.items():
 **Negative test:** loop devices serially in Python; **Nornir** parallelizes and aggregates
 results — use it at scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Combine plugins (render + push)
 
@@ -127,7 +127,7 @@ automation.
 **Negative test:** render and push in separate ad-hoc scripts; **chain** them in one
 Nornir task for consistency.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

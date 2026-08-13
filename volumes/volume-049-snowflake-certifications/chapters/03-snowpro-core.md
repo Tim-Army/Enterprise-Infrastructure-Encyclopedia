@@ -96,7 +96,7 @@ separated three-layer architecture, the largest Core domain.
 **Negative test:** assume scaling storage scales compute; they are **independent** —
 resize the warehouse for compute.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Domain 2: Account Access and Security (20%)
 
@@ -115,7 +115,7 @@ RBAC security model (Domain 2).
 **Negative test:** grant `ACCOUNTADMIN` for convenience; scope a **custom role** to
 least privilege.
 
-**Cleanup:** `DROP ROLE IF EXISTS analyst_role;`
+**Rollback:** `DROP ROLE IF EXISTS analyst_role;`
 
 ### Lab 3.3 — Domain 3: Performance Concepts (15%)
 
@@ -133,7 +133,7 @@ result caching — the performance domain.
 **Negative test:** size up a single cluster to handle many concurrent users;
 **multi-cluster** scales concurrency better than a bigger single cluster.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Domain 4: Data Loading and Transformation (20%)
 
@@ -151,7 +151,7 @@ transformation domain.
 **Negative test:** row-by-row inserts for bulk data; use **`COPY INTO`** from a
 stage — it's far faster.
 
-**Cleanup:** `DROP TABLE IF EXISTS demo_db.sales.orders_clean;`
+**Rollback:** `DROP TABLE IF EXISTS demo_db.sales.orders_clean;`
 
 ### Lab 3.5 — Domain 5: Data Protection and Data Sharing (10%)
 
@@ -169,7 +169,7 @@ concept — the protection/sharing domain.
 **Negative test:** back up by exporting/copying data; **time travel + zero-copy
 clone** protect data without duplication.
 
-**Cleanup:** `DROP TABLE IF EXISTS orders_bak;`
+**Rollback:** `DROP TABLE IF EXISTS orders_bak;`
 
 ### Lab 3.6 — Domain 6: Data Pipelines (10%)
 
@@ -188,7 +188,7 @@ the continuous-pipeline domain (with Snowpipe for ingest).
 **Negative test:** poll the whole table on a schedule; a **stream** captures only
 changes — process incrementally.
 
-**Cleanup:** `DROP TASK IF EXISTS load_task; DROP STREAM IF EXISTS orders_stream;`
+**Rollback:** `DROP TASK IF EXISTS load_task; DROP STREAM IF EXISTS orders_stream;`
 
 ## Lab Verification
 

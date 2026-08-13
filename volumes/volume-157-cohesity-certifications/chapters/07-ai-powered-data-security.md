@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Treating backup as a passive store with no analysis. You would restore infected data, not know where sensitive data lives, and leave the corpus's value untapped; AI-driven detection, classification, and search turn visibility into security insight.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

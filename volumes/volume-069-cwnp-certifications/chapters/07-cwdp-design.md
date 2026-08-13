@@ -76,7 +76,7 @@ design driver.
 **Negative test:** design a 300-seat auditorium for coverage; high density needs a **capacity**
 design — more APs, tighter cells.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Capacity AP count
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** place APs by "one per room" with no capacity math; **compute** from client count
 and demand.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Choose a survey type
 
@@ -117,7 +117,7 @@ validate.
 **Negative test:** rely only on a **predictive** model and never validate on site; **passive/active
 surveys** confirm reality — do them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Validation plan
 
@@ -137,7 +137,7 @@ the design works.
 **Negative test:** declare the WLAN done at install with no validation; **measure** against the
 checklist first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

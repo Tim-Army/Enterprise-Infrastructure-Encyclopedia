@@ -111,7 +111,7 @@ seven-credential program.
 **Negative test:** rely on a third-party "CrowdStrike certs" list; vendors change
 lineups — confirm on crowdstrike.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Obtain an API bearer token (OAuth2)
 
@@ -130,7 +130,7 @@ subsequent calls (tokens expire in ~30 minutes).
 **Negative test:** call a data endpoint with no token; the API returns **401
 Unauthorized** — authenticate first.
 
-**Cleanup:** let the token expire; revoke the API client in the console if it was
+**Rollback:** let the token expire; revoke the API client in the console if it was
 temporary.
 
 ### Lab 1.3 — Confirm the exam format
@@ -150,7 +150,7 @@ format for all seven exams — the program's testing model.
 **Negative test:** assume differing formats per exam; all seven share the same
 format — verify on the guide.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

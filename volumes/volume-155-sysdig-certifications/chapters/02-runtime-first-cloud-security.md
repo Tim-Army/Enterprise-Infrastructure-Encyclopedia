@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Securing cloud-native workloads with posture and image scanning alone. It catches known pre-deploy issues but is blind to zero-days, runtime drift, and insider actions — runtime detection is required to catch what prevention missed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

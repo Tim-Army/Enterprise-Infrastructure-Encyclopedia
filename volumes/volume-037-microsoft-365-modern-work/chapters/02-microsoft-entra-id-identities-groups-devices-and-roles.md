@@ -168,7 +168,7 @@ location is required before most licenses can be assigned.
 **Negative test:** omit `-UsageLocation` and later assign a license; it fails
 with a location error — licensing needs a usage location.
 
-**Cleanup:** `Remove-MgUser -UserId "aruiz@$dom"`.
+**Rollback:** `Remove-MgUser -UserId "aruiz@$dom"`.
 
 ### Lab 2.2 — Build a dynamic group (Topic: Manage groups)
 
@@ -188,7 +188,7 @@ Get-MgGroup -Filter "displayName eq 'DYN-Sales'" -Property Members | Select-Obje
 **Negative test:** set the rule to reference a blank attribute; the group stays
 empty — the attribute must be populated for the rule to match.
 
-**Cleanup:** remove the group.
+**Rollback:** remove the group.
 
 ### Lab 2.3 — Inspect device join states (Topic: Manage devices)
 
@@ -204,7 +204,7 @@ Get-MgDevice -Top 10 | Select-Object DisplayName, TrustType, IsManaged, Operatin
 **Negative test:** query devices in a brand-new tenant with none enrolled; the
 list is empty — device identity requires join/registration first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Scope a help desk with an administrative unit (Topic: Delegate administration)
 
@@ -225,7 +225,7 @@ AU would grant rights only over its members — least privilege by scope.
 limited to the AU; it is not — tenant roles are not AU-scoped unless assigned
 over the AU.
 
-**Cleanup:** `Remove-MgDirectoryAdministrativeUnit -AdministrativeUnitId $au.Id`.
+**Rollback:** `Remove-MgDirectoryAdministrativeUnit -AdministrativeUnitId $au.Id`.
 
 ## Lab Verification
 

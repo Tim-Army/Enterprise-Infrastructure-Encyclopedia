@@ -65,7 +65,7 @@ EOF
 
 **Negative test:** Assuming the certifications never expire — some Associate badges carry a validity window; the exam program and Credly show expiry, so re-verify rather than assume permanence.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Stand up the study lab
 
@@ -82,7 +82,7 @@ echo "           endpoint posture, NAC decisions, and secure-transfer scanning"
 
 **Negative test:** Expecting the labs to *be* MetaDefender — they model the **defensive concepts** the certifications teach; the real MetaDefender platform (30+ engines, production CDR) carries the authoritative implementation this volume points to.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

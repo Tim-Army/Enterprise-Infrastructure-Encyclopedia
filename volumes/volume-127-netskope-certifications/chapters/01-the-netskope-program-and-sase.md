@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Registering for NSK100 — retired; the current NCCSA exam is NSK101. Exam-code churn is why re-verification precedes booking.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Build the study lab
 
@@ -91,7 +91,7 @@ echo "lab ready: squid=SWG/steering, python regex=DLP, namespaces/nginx=ZTNA bro
 
 **Negative test:** Expecting the labs to *be* Netskope — they model the **SSE concepts** the exams test; the real Netskope One console appears at design level.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Relying on access management alone to control access. It correctly enforces whatever access exists — including the excessive, crept access nobody reviewed; only governance's periodic certification asks whether the access *should* exist and removes it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

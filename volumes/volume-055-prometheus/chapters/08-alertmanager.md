@@ -80,7 +80,7 @@ alertname/cluster — the routing tree.
 **Negative test:** route everything to one receiver with no grouping; you get an alert
 **storm** — group and route by labels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Validate the config
 
@@ -96,7 +96,7 @@ docker run --rm -v "$PWD/alertmanager.yml:/a.yml" \
 **Negative test:** reference a receiver that isn't defined; `amtool check-config`
 **errors** — catch it before reload.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Add an inhibition rule
 
@@ -115,7 +115,7 @@ inhibit_rules:
 **Negative test:** page for every node alert during a full cluster outage; **inhibition**
 mutes the noise — configure it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Create a silence
 
@@ -133,7 +133,7 @@ work.
 **Negative test:** create a silence with no expiry; it mutes alerts **indefinitely** —
 always set a duration.
 
-**Cleanup:** expire/remove the silence with `amtool silence expire`.
+**Rollback:** expire/remove the silence with `amtool silence expire`.
 
 ## Lab Verification
 

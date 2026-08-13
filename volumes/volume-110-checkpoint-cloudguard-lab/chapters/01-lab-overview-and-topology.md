@@ -81,7 +81,7 @@ The rulebase permits `web → db` (PostgreSQL) and `hmi → plc` (Modbus); the C
 | `mgmt>` / `gw>` | Management API host / gateway CLI (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

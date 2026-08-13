@@ -74,7 +74,7 @@ policy for the site tunnel — a hardened, encrypted router.
 **Negative test:** leave telnet/ftp/www and open WinBox on the WAN; **harden** — disable and
 restrict them.
 
-**Cleanup:** re-enable services as needed and remove the IPsec peer/policy (in a lab).
+**Rollback:** re-enable services as needed and remove the IPsec peer/policy (in a lab).
 
 ### Lab 8.2 — VLAN-aware bridge (MTCSWE)
 
@@ -96,7 +96,7 @@ segmentation.
 **Negative test:** rely on `pvid` alone with **vlan-filtering=no**; enable **VLAN filtering** for
 real 802.1Q isolation.
 
-**Cleanup:** `/interface bridge remove br-vlan`.
+**Rollback:** `/interface bridge remove br-vlan`.
 
 ### Lab 8.3 — IPv6 addressing and firewall (MTCIPv6E)
 
@@ -114,7 +114,7 @@ input — dual-stack done safely.
 
 **Negative test:** enable IPv6 with **no firewall**; IPv6 needs filtering **too** — add IPv6 rules.
 
-**Cleanup:** remove the IPv6 address and firewall rules.
+**Rollback:** remove the IPv6 address and firewall rules.
 
 ## Lab Verification
 

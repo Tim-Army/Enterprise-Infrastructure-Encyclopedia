@@ -171,7 +171,7 @@ rights and marks documents — protection travels with the file.
 **Negative test:** apply the label without publishing a **label policy**; users
 never see it — the policy scopes the label to people.
 
-**Cleanup:** remove the label policy and label.
+**Rollback:** remove the label policy and label.
 
 ### Lab 10.2 — Create a staged DLP policy (Topic: Data loss prevention)
 
@@ -191,7 +191,7 @@ and generates incidents without blocking — the safe first stage.
 immediately; users are blocked and false positives spike — stage through test
 first.
 
-**Cleanup:** remove the DLP policy.
+**Rollback:** remove the DLP policy.
 
 ### Lab 10.3 — Create a retention policy (Topic: Data lifecycle)
 
@@ -210,7 +210,7 @@ against premature deletion.
 content; the **principles of retention** resolve the conflict (retention wins
 over deletion) — understand precedence before layering policies.
 
-**Cleanup:** remove the retention policy.
+**Rollback:** remove the retention policy.
 
 ### Lab 10.4 — Confirm the unified audit log is on (Topic: Compliance solutions)
 
@@ -229,7 +229,7 @@ searchable — the basis for eDiscovery and investigations.
 **Negative test:** search the audit log with it disabled; no results — enable
 `UnifiedAuditLogIngestionEnabled` first.
 
-**Cleanup:** none (leave auditing enabled — a best practice).
+**Rollback:** none (leave auditing enabled — a best practice).
 
 ## Lab Verification
 

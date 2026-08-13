@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Expecting an expensive, proctored certification gate. Cato's program is free, badged, and education-first; it validates learning the SASE discipline, and its CPE credits even help maintain other certifications.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Convergence: one service versus a stack
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Assembling SASE from separate best-of-breed point products. Each has its own console and policy, traffic hair-pins through them in sequence, and gaps open between them — convergence into one service is the SASE proposition Cato pioneered.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

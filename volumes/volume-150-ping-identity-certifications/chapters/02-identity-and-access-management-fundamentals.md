@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Assuming a successful login grants access to everything. Authentication only proves identity; authorization is a separate gate, and a logged-in user is denied any action their permissions do not cover.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — SSO and federated trust
 
@@ -131,7 +131,7 @@ EOF
 
 **Negative test:** Giving each SaaS app its own separate login. The user juggles many passwords and every vendor stores a copy of a corporate credential — federation replaces that with one login and a trusted assertion no app can leak.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

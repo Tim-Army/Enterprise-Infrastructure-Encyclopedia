@@ -405,7 +405,7 @@ measures how far the host is from that baseline.
 **Negative test:** deploy a host with defaults (root SSH enabled, weak sysctls); its attack
 surface is wide open — a hardening pass is what closes the common, well-known exposures.
 
-**Cleanup:** none (read-only audit).
+**Rollback:** none (read-only audit).
 
 ### Lab 3.2 — Endpoint telemetry (Topic: Endpoint defense)
 
@@ -427,7 +427,7 @@ auditd records security-relevant syscalls, giving the visibility that host-based
 you cannot tell what ran or when — endpoint telemetry must be collected *before* the incident to
 be useful during one.
 
-**Cleanup:** `sudo auditctl -d always,exit -F arch=b64 -S execve -k exec_watch 2>/dev/null; true`.
+**Rollback:** `sudo auditctl -d always,exit -F arch=b64 -S execve -k exec_watch 2>/dev/null; true`.
 
 ### Lab 3.3 — File integrity monitoring (Topic: Host artifacts)
 
@@ -449,7 +449,7 @@ tampering with binaries, config, or web content is detected even when it evades 
 binary or adds a web shell and you never notice — the baseline-and-compare is what makes the
 change visible.
 
-**Cleanup:** `rm -rf ~/ep/watched ~/ep/baseline.sha256`.
+**Rollback:** `rm -rf ~/ep/watched ~/ep/baseline.sha256`.
 
 ### Lab 3.4 — Malware detection with signatures (Topic: Malware analysis)
 
@@ -475,7 +475,7 @@ behavioral EDR, it catches both known and novel threats.
 and passes — signatures catch the known, so pair them with behavioral detection and file
 reputation for the unknown.
 
-**Cleanup:** `rm -f ~/ep/rule.yar ~/ep/sample.txt`.
+**Rollback:** `rm -f ~/ep/rule.yar ~/ep/sample.txt`.
 
 ## Lab Verification
 

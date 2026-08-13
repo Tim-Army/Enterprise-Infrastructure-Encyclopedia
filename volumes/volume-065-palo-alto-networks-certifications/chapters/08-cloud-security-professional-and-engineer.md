@@ -71,7 +71,7 @@ config from cloud.resource where api.name = 'aws-s3api-get-bucket-acl'
 **Negative test:** click through each bucket in the console; **RQL** finds them across all
 accounts — query centrally.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Shift left: scan IaC
 
@@ -95,7 +95,7 @@ left.
 **Negative test:** deploy first and scan the running bucket; **IaC scanning** catches it earlier
 — scan in the pipeline.
 
-**Cleanup:** `rm -f main.tf`.
+**Rollback:** `rm -f main.tf`.
 
 ### Lab 8.3 — Review a CIEM finding
 
@@ -113,7 +113,7 @@ recommendation — the CIEM view.
 **Negative test:** grant broad admin "to be safe"; **CIEM** right-sizes to used permissions —
 least privilege.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Query findings via the API
 
@@ -132,7 +132,7 @@ remediation.
 **Negative test:** export findings from the console to report; the **API** feeds automation — use
 it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

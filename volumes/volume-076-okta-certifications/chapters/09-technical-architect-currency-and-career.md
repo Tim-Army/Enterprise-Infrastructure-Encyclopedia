@@ -76,7 +76,7 @@ PY
 **Negative test:** pick the architecture you like best regardless of requirements; the **requirement**
 (data residency) must drive it — justify to requirements.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Outline a board-defense design
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** present a design with no **trade-off justification**; the board probes exactly
 there — justify every choice.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -118,7 +118,7 @@ ladder plan.
 **Negative test:** let a cert lapse past **two years**; it's no longer current — **re-examine** ahead
 of expiry.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

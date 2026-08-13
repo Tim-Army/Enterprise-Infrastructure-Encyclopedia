@@ -54,7 +54,7 @@ cat /etc/jsec/zones
 
 **Expected result.** Four subnet→zone rows — the Track 2 zone table.
 
-**Cleanup.** Keep the zones.
+**Rollback.** Keep the zones.
 
 ### Exercise 3.2 — Build the address book
 
@@ -101,7 +101,7 @@ sudo nft list set inet jsec app_servers
 
 **Expected result.** The `app_servers` set contains the web address — the Track 2 address-set.
 
-**Cleanup.** Keep the address book.
+**Rollback.** Keep the address book.
 
 ## Summary and Completion Checklist
 

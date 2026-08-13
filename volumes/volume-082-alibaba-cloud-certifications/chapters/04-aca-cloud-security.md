@@ -77,7 +77,7 @@ PY
 **Negative test:** grant `Action:"*"` on `Resource:"*"`; that's admin everywhere — scope to the
 **specific** actions/resources.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Apply Security Center protection
 
@@ -98,7 +98,7 @@ workload security.
 **Negative test:** rely on the perimeter alone; **Security Center** detects intrusions on the hosts —
 enable it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Protect a web app with WAF
 
@@ -120,7 +120,7 @@ protection.
 
 **Negative test:** put a public web app behind no **WAF**; common attacks reach it — enable WAF.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Plan Anti-DDoS protection
 
@@ -140,7 +140,7 @@ PY
 **Negative test:** leave a high-value public service on **Basic** only; a large attack overwhelms it —
 use **Pro/Premium**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -44,7 +44,7 @@ sudo ip netns exec spokeX ping -c1 -W2 10.60.1.20 | grep -o "1 received" && echo
 
 **Negative test:** Remove the via-firewall routes and the spokes talk directly (uninspected) — FireNet's value is that the fabric *forces* the path through inspection; skip the steering and inspection is bypassed.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 6.2 — The firewall inspects and can block
 
@@ -64,7 +64,7 @@ sudo ip netns exec fw nft list chain ip insp fwd | grep dport
 
 **Negative test:** Assume the firewall inspects traffic that never traverses it — only steered flows are inspected; unsteered east-west or egress bypasses FireNet unless policy routes it in.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 6.3 — DCF: distributed segmentation in the gateways
 
@@ -97,7 +97,7 @@ DCF evaluates **tag/group-based policy distributed across the gateways** — seg
 
 **Negative test:** Building the same segmentation as FireNet redirect rules — works but hairpins all east-west through the firewall (latency, cost); DCF distributes the enforcement instead.
 
-**Cleanup:** `for ns in spokeX spokeY fw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del fabric`.
+**Rollback:** `for ns in spokeX spokeY fw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del fabric`.
 
 ## Summary and Completion Checklist
 

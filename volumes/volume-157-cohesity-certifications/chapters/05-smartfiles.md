@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Leaving unstructured data on standalone NAS filers with no immutability or anomaly detection. Each is a separate silo and attack surface with none of the ransomware protections; SmartFiles consolidates them onto a security-aware, deduplicated platform.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

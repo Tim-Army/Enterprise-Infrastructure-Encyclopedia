@@ -100,7 +100,7 @@ curl -sSL "https://www.offsec.com/courses/" \
 **Negative test:** trust a pre-2025 OffSec chart; it omits AI-300 and CyberCore
 and predates the OSCP+ change — confirm on offsec.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a renewal (Topic: Maintain the credential)
 
@@ -123,7 +123,7 @@ that the paired lifetime OSCP does not expire — the "+" model in practice.
 **Negative test:** assume every OffSec credential is lifetime; **OSCP+/OSCC/OSTH/
 OSIR/OSAI+** renew every three years — track them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

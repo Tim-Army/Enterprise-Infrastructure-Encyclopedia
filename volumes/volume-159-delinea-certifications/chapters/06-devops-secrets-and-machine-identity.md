@@ -67,7 +67,7 @@ EOF
 
 **Negative test:** Hardcoding credentials in code or config "because it's just a service account." Those leak and never rotate; vaulting them and issuing short-lived dynamic secrets retrieved at runtime removes the standing, embedded credential attackers exploit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

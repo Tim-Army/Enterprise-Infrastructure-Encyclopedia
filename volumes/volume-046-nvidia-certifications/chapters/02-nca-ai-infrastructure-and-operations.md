@@ -97,7 +97,7 @@ options) — the fundamentals NCA-AIIO tests.
 **Negative test:** assume more CPU cores match a GPU for training; GPU parallelism
 and memory bandwidth are the differentiator — use GPUs for AI math.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — NVIDIA AI software stack (CUDA, NGC, NIM)
 
@@ -120,7 +120,7 @@ the stack NCA-AIIO covers.
 **Negative test:** pull random model containers from anywhere; **NGC** provides
 validated, optimized images — prefer it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — AI infrastructure (DGX and networking)
 
@@ -141,7 +141,7 @@ AI-infrastructure area of NCA-AIIO.
 scaling; **InfiniBand/Spectrum-X** and NVLink are what make distributed training
 scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — AI operations: MIG partitioning
 
@@ -161,7 +161,7 @@ PY
 **Negative test:** give every small job a whole GPU; **MIG** improves utilization
 by partitioning — use it for small workloads.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — AI operations: monitoring and health
 
@@ -179,7 +179,7 @@ monitoring signals AI operations tracks (via DCGM at scale).
 **Negative test:** monitor only CPU/RAM on a GPU host; **GPU** utilization,
 memory, and temperature are the signals that matter — monitor the GPUs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — AI operations: orchestration
 
@@ -199,7 +199,7 @@ Slurm) and when to use each — the operations orchestration of NCA-AIIO.
 **Negative test:** schedule GPU pods without the **GPU Operator/device plugin**;
 Kubernetes needs it to expose and manage GPUs — install it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -75,7 +75,7 @@ PY
 **Negative test:** give every group **manage** on the safe; anyone can alter credentials — separate
 **use** from **manage**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Onboard a privileged account
 
@@ -95,7 +95,7 @@ it under control.
 
 **Negative test:** leave the local Administrator unmanaged; it's an untracked risk — **onboard** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Run CPM password operations
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** rotate a password in CyberArk but not on the target (or vice versa); they drift out
 of sync — **reconcile** restores it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Detect an unmanaged account
 
@@ -139,7 +139,7 @@ gap.
 **Negative test:** assume all privileged accounts are vaulted without **discovery**; shadow admins
 persist — discover and onboard.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

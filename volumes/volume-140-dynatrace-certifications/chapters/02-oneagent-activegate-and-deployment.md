@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Treating the auto-detected service list as the inventory. It is a subset by construction, and the gap is exactly where your unusual, oldest, and riskiest systems live.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Size the ActiveGate tier
 
@@ -152,7 +152,7 @@ EOF
 
 **Negative test:** Sizing gateways on host count alone and putting one ActiveGate in the isolated zone. When it restarts, every host in that zone goes dark at once.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — SaaS versus Managed
 
@@ -189,7 +189,7 @@ EOF
 
 **Negative test:** Running a weighted score and picking the winner when one criterion is a hard legal constraint — the model is decision support, not the decision.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

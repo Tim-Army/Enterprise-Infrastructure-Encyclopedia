@@ -64,7 +64,7 @@ sudo systemctl enable --now nftables
 
 **Negative test.** Skip `net.ipv4.ip_forward=1` and internal hosts reach `aw-gw` but not the internet.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Build `aw-db01`, the PostgreSQL tier
 
@@ -98,7 +98,7 @@ sudo systemctl restart postgresql
 
 **Negative test.** Restricting `listen_addresses` to the underlay only would block overlay clients in Chapter 07; listening on `*` lets the database serve whichever interface policy permits.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Build `aw-app01`, the nginx application tier
 
@@ -126,7 +126,7 @@ chmod +x ~/checkdb.sh
 
 **Negative test.** Stop PostgreSQL and re-run `~/checkdb.sh`; it fails. This is the flow the overlay must permit.
 
-**Cleanup.** Restart PostgreSQL if you stopped it.
+**Rollback.** Restart PostgreSQL if you stopped it.
 
 ### Lab 4.4 — Build `aw-win01`, the Windows SCADA/HMI workstation
 
@@ -156,7 +156,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # HMI -> DB (should be 
 
 **Negative test.** Note the HMI can reach the database at all; after cloaking and overlay policy (Chapters 06–07) it will not.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Build `aw-ot01`, the agentless PLC
 
@@ -197,7 +197,7 @@ sudo ss -ltnp | grep 502
 
 **Negative test.** From the Windows host, `Test-NetConnection 10.10.30.50 -Port 502` fails — the host has no adapter on VMnet3. The PLC will reach the overlay only through the `aw-gw` gateway.
 
-**Cleanup.** None. Do not install anything else here — it cannot run an overlay agent, which is why Chapter 08 uses a gateway.
+**Rollback.** None. Do not install anything else here — it cannot run an overlay agent, which is why Chapter 08 uses a gateway.
 
 ### Lab 4.6 — Snapshot the baseline
 
@@ -211,7 +211,7 @@ Shut down all five guests cleanly, then take a snapshot named `baseline` on each
 
 **Negative test.** Skip snapshots and an overlay mistake in Chapter 07 leaves you rebuilding. Take them.
 
-**Cleanup.** Leave the VMs powered off until Chapter 05.
+**Rollback.** Leave the VMs powered off until Chapter 05.
 
 ## Summary and Completion Checklist
 

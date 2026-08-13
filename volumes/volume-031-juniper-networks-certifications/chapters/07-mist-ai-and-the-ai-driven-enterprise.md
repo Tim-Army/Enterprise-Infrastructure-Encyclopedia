@@ -153,7 +153,7 @@ controller), delivering assurance and automation via one dashboard/API.
 **Negative test:** query with a token whose privileges exclude the org; the API
 returns `403` — Mist RBAC scopes every call to the admin's role.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Juniper Mist Configuration Basics (Objective: Juniper Mist Configuration Basics)
 
@@ -172,7 +172,7 @@ account roles and authentication (SSO), subscriptions, and certificates (RadSec)
 **Negative test:** claim a device to the org but never assign it to a site; it stays
 unconfigured — device onboarding requires site assignment for templates to apply.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Juniper Mist Network Operations and Management (Objective: Juniper Mist Network Operations and Management)
 
@@ -191,7 +191,7 @@ service with SLE-based operations.
 **Negative test:** an AP claimed but disconnected shows `status: disconnected`; its
 assurance data is stale — the device must be cloud-connected for live assurance.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Juniper Mist Monitoring and Analytics (Objective: Juniper Mist Monitoring and Analytics)
 
@@ -211,7 +211,7 @@ alerts, and audit logs, turning telemetry into experience metrics.
 tells you *why* users struggle — reading the metric alone (without the classifier)
 misses the root cause the SLE provides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Marvis Virtual Network Assistant (Objective: Marvis Virtual Network Assistant AI)
 
@@ -230,7 +230,7 @@ natural-language troubleshooting, and **Marvis Minis** proactively probe the net
 **Negative test:** expect Marvis Actions on a brand-new org with no telemetry; it has
 nothing to analyze yet — Marvis needs operational data to generate actions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Location-based Services (Objective: Location-based Services)
 
@@ -249,7 +249,7 @@ indoor location without external beacons: **asset visibility** (BLE tags) and
 **Negative test:** expect location on a site with APs lacking the vBLE array or no
 map; location is unavailable — LBS depends on vBLE-capable APs and a calibrated map.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — Juniper Mist Cloud Operations and APIs (Objective: Juniper Mist Cloud Operations)
 
@@ -268,7 +268,7 @@ occupancy) to external systems, so everything in the dashboard is automatable.
 **Negative test:** a webhook whose target URL does not return `200` is retried then
 disabled — the receiver must acknowledge deliveries.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

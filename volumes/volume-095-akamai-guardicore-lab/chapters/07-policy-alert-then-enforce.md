@@ -75,7 +75,7 @@ sudo nft chain inet guardicore input '{ policy drop; }'
 
 **Negative test.** Add `10.10.20.21` to `app_tier` "to be safe" and re-run the attack — it succeeds. An over-broad group re-authorizes the lateral movement. Remove it.
 
-**Cleanup.** Keep the enforced ring-fence.
+**Rollback.** Keep the enforced ring-fence.
 
 ### Lab 7.2 — Ordered rules and label-based scale
 
@@ -99,7 +99,7 @@ Order: in nftables the first matching rule wins, so a `drop` for a dangerous por
 
 **Negative test.** Rewrite the rule to name the address `10.10.20.11` directly; it works until the app is rebuilt with a new address, then fails silently. Address-based rules are the debt label-based policy retires. Revert to the set.
 
-**Cleanup.** `app_tier` contains only `10.10.20.11`.
+**Rollback.** `app_tier` contains only `10.10.20.11`.
 
 ### Lab 7.3 — Enforce on Windows through the Windows Filtering Platform
 
@@ -131,7 +131,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # expect False
 
 **Negative test.** Remove the management RDP allow and reboot; you may lock yourself out. Re-add it before continuing. Lab 9.2 rehearses this.
 
-**Cleanup.** Keep the enforced Windows posture.
+**Rollback.** Keep the enforced Windows posture.
 
 ### Lab 7.4 — Process-scoped policy (Design Exercise)
 
@@ -151,7 +151,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # expect False
 
 **Negative test.** Argue process scope is unnecessary because "the host is trusted." Trust at host granularity is what lateral movement exploits — a compromised host is still an allowed host. Process scope narrows trust to the software that earned it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

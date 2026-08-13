@@ -48,7 +48,7 @@ az network vnet subnet create -g $RG --vnet-name microseg-vnet -n bad --address-
 ... Subnet 'bad' is not valid because its IP address range overlaps ...
 ```
 
-**Cleanup.** Deferred to Chapter 09.
+**Rollback.** Deferred to Chapter 09.
 
 ### Exercise 4.2 — Launch three VMs
 
@@ -93,7 +93,7 @@ db   VM running
 hmi  VM running
 ```
 
-**Cleanup.** Deferred to Chapter 09.
+**Rollback.** Deferred to Chapter 09.
 
 ### Exercise 4.3 — Prove the lateral movement
 
@@ -123,7 +123,7 @@ az network nsg rule list -g $RG --nsg-name dbNSG --include-default \
 65000   Allow
 ```
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.4 — Segment by Application Security Group
 
@@ -181,7 +181,7 @@ az network nsg rule create -g $RG --nsg-name dbNSG -n deny-mgmt --priority 120 \
 
 This still blocks `hmi` because the source ASG is specific, but it teaches the rule: **the first matching rule by ascending priority wins** — always place a specific deny above a broad allow. Restore `deny-mgmt` to priority 100 when done.
 
-**Cleanup.** Keep the ASGs and rules for Chapter 06; teardown is Chapter 09.
+**Rollback.** Keep the ASGs and rules for Chapter 06; teardown is Chapter 09.
 
 ## Summary and Completion Checklist
 

@@ -30,7 +30,7 @@ kubectl get nodes
 
 **Negative test.** Omit `disableDefaultCNI: true` and kind installs `kindnet`; you would then be running two CNIs or the wrong one. Recreate with the config above.
 
-**Cleanup.** None yet.
+**Rollback.** None yet.
 
 ### Lab 3.2 — Install Cilium and enable Hubble
 
@@ -60,7 +60,7 @@ hubble status
 
 **Negative test.** Deploy a workload before `cilium status` is OK and its pod stays `ContainerCreating` — no CNI, no networking. Wait for the status.
 
-**Cleanup.** Keep the cluster; Chapter 04 deploys the workloads.
+**Rollback.** Keep the cluster; Chapter 04 deploys the workloads.
 
 ### Lab 3.3 — Meet Cilium identities
 
@@ -77,7 +77,7 @@ kubectl -n kube-system exec ds/cilium -- cilium identity list | head
 
 **Negative test.** Look for an identity keyed on pod IP; there is none. Identity is label-derived, so it survives the pod's IP changing.
 
-**Cleanup.** Keep the cluster.
+**Rollback.** Keep the cluster.
 
 ## Summary and Completion Checklist
 

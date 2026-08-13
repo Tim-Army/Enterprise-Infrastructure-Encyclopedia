@@ -82,7 +82,7 @@ PY
 
 **Negative test:** run bare pods for a scaled app; a **Deployment** manages replicas and rolling updates.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Scan an image for vulnerabilities
 
@@ -101,7 +101,7 @@ docker scout cves nginx:alpine --only-severity critical,high 2>/dev/null | tail 
 
 **Negative test:** deploy an unscanned base image; **scan** it and patch/upgrade high-severity CVEs first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Reason about content trust
 
@@ -122,7 +122,7 @@ PY
 **Negative test:** pull and run any tag without verification; enable **Docker Content Trust** to require
 signatures.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Run a hardened non-root container
 
@@ -147,7 +147,7 @@ privilege escalation — a hardened runtime.
 **Negative test:** run as **root** with default capabilities and a writable root filesystem; drop
 privileges (**non-root**, `--cap-drop ALL`, `--read-only`, `no-new-privileges`).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

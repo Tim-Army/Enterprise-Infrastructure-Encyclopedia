@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Forwarding every discovered label because "more context is better" — you get context and a cardinality problem that degrades query performance and inflates cost, and removing labels later does not retract the series already created.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Route each signal to the right backend
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Sending everything to one store "for simplicity" — you inherit the worst properties of each mismatch, and unpicking it later means re-instrumenting collection.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Validate ingestion instead of trusting the agent
 
@@ -173,7 +173,7 @@ EOF
 
 **Negative test:** Treating a green agent status as confirmation — the collector is reporting on itself, not on whether the backend accepted anything.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

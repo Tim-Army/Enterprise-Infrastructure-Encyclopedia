@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Relying on siloed alerts and business-hours staff. Multi-stage attacks span domains and strike off-hours; XDR correlation reveals the full attack and 24/7 MDR analysts respond when no in-house SOC could, which is the service's value.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

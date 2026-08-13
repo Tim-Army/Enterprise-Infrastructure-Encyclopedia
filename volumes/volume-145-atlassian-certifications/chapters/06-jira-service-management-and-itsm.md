@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Measuring SLAs by wall-clock time. Agents get penalized for the hours customers take to reply, and the metric stops meaning "how fast is the team."
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Size the agent team
 
@@ -128,7 +128,7 @@ EOF
 
 **Negative test:** Staffing for average daily volume. Every Monday-morning peak breaches the response SLA, and the fix "hire more agents" ignores the cheaper deflection levers.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — JSM versus a dedicated ITSM platform
 
@@ -169,7 +169,7 @@ EOF
 
 **Negative test:** Choosing JSM for a deep ITIL, CMDB-heavy enterprise ITSM program on its own merits. It is capable but not as deep as the dedicated platforms; the reason to choose it is the Atlassian unification, and if that does not apply, the case weakens.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

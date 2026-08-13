@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Expecting a measure's numbers to stay fixed regardless of the view. SUM(Sales) changes with the dimensions present — a total, per-region, or per-region-and-category — because measures aggregate by whatever dimensions slice the view.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Discrete (blue) versus continuous (green)
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Assuming discrete/continuous is the same as dimension/measure. A date dimension can be discrete (month headers) or continuous (a timeline axis), producing different charts; blue-header versus green-axis is an orthogonal distinction.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

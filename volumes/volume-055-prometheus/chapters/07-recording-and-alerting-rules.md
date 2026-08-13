@@ -70,7 +70,7 @@ groups:
 **Negative test:** recompute the same heavy query in every dashboard; a **recording
 rule** computes it once — reuse it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Write an alerting rule
 
@@ -93,7 +93,7 @@ labeled, annotated alert.
 **Negative test:** omit `for`; a single failed scrape **flaps** an alert — add a `for`
 duration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Validate the rules
 
@@ -109,7 +109,7 @@ docker run --rm -v "$PWD/rules.yml:/r.yml" prom/prometheus:latest \
 **Negative test:** load rules with a PromQL error; Prometheus **won't evaluate** them —
 `promtool check rules` catches it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Unit-test an alert
 
@@ -136,7 +136,7 @@ docker run --rm -v "$PWD:/w" -w /w prom/prometheus:latest promtool test rules te
 **Negative test:** ship alert rules with no tests; **unit-test** them so logic changes
 don't silently break alerting.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

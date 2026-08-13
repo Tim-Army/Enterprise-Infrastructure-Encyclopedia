@@ -73,7 +73,7 @@ EOF
 
 **Expected result:** A map of the current VantageCloud Lake track (Associate 2.0 flagship) versus the legacy Vantage 2 track (with the Analytics/Data Science/Architecture exams retired in July 2024). The lesson is that Teradata's program is transitioning to a cloud/lakehouse focus: target the VantageCloud Lake Associate as the current entry credential, and treat the older role-based Vantage 2 exams as legacy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Record the mechanics and entry path
 
@@ -101,7 +101,7 @@ EOF
 
 **Expected result:** A record of the mechanics — Pearson VUE delivery, digital badges, no prerequisites, no expiration, and the Associate VantageCloud Lake 2.0 flagship ($149, 75 minutes). The lesson is that Teradata certification is accessible (no prerequisites, no expiration) and the Associate VantageCloud Lake is the foundational entry point validating platform, architecture, and SQL knowledge.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

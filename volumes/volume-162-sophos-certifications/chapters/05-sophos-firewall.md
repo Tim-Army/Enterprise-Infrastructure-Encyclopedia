@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Trusting a port-based firewall because "443 is HTTPS." Threats hide in encrypted traffic and misuse allowed ports (BitTorrent, C2 on 443); an NGFW with TLS inspection, IPS, and app control sees the content and intent, which port rules cannot.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

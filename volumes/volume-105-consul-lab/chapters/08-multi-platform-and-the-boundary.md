@@ -39,7 +39,7 @@ The **same** `web → db allow` intention from Chapter 07 now authorizes the Kub
 
 **Negative test.** Assume you must re-write the policy when `db` moves from a VM to a pod. You do not — the intention is by service name, so the move is transparent to policy. That portability is the point.
 
-**Cleanup.** None (no VM was provisioned in this single-host lab).
+**Rollback.** None (no VM was provisioned in this single-host lab).
 
 ### Lab 8.2 — The un-meshed PLC still needs a network policy
 
@@ -63,7 +63,7 @@ spec:
 
 **Negative test.** Argue the mesh alone protects the PLC. It cannot govern a service it has no dataplane for. Pair it with a network policy.
 
-**Cleanup.** No NetworkPolicy applied (kind's default CNI may not enforce it); the plan is the deliverable.
+**Rollback.** No NetworkPolicy applied (kind's default CNI may not enforce it); the plan is the deliverable.
 
 ### Lab 8.3 — Validate the mesh segmentation
 
@@ -82,7 +82,7 @@ kubectl exec deploy/web -c web -- curl -s -o /dev/null -w "POST /post 403? %{htt
 
 **Negative test.** Delete the `deny-all` and the specific allows; the mesh returns to flat. Intentions are the whole control. Re-apply.
 
-**Cleanup.** Leave the intentions for Chapter 09.
+**Rollback.** Leave the intentions for Chapter 09.
 
 ## Summary and Completion Checklist
 

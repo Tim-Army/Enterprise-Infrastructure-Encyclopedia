@@ -73,7 +73,7 @@ machine.
 **Negative test:** create every VM with a **thick** disk on a small datastore; **thin** (monitored)
 conserves space — choose per need.
 
-**Cleanup:** `Remove-VM web01 -DeletePermanently -Confirm:$false`.
+**Rollback:** `Remove-VM web01 -DeletePermanently -Confirm:$false`.
 
 ### Lab 4.2 — Convert to a template and deploy
 
@@ -91,7 +91,7 @@ repeatable provisioning.
 **Negative test:** build each VM from scratch; **templates** guarantee consistency — deploy from
 them.
 
-**Cleanup:** remove web02 and the template.
+**Rollback:** remove web02 and the template.
 
 ### Lab 4.3 — Content Library
 
@@ -109,7 +109,7 @@ consistent content.
 **Negative test:** copy ISOs/templates to each host/datastore manually; the **Content Library**
 centralizes and syncs them.
 
-**Cleanup:** `Remove-ContentLibrary Lib1 -Confirm:$false`.
+**Rollback:** `Remove-ContentLibrary Lib1 -Confirm:$false`.
 
 ### Lab 4.4 — Take and delete a snapshot
 
@@ -129,7 +129,7 @@ lingering disk growth.
 **Negative test:** keep the snapshot indefinitely as a "backup"; snapshots **grow and slow the VM** —
 delete promptly and back up properly.
 
-**Cleanup:** ensure no snapshots remain.
+**Rollback:** ensure no snapshots remain.
 
 ### Lab 4.5 — Verify VMware Tools
 
@@ -145,7 +145,7 @@ operations.
 **Negative test:** run production VMs with **Tools not installed**; graceful shutdown, time sync,
 and quiescing need Tools — install them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

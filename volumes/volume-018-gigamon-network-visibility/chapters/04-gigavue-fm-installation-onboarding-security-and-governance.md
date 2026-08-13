@@ -332,7 +332,7 @@ node, replacing per-node CLI for day-to-day work.
 read-only or fails to push config — FM management needs node credentials with sufficient
 privilege.
 
-**Cleanup:** remove the lab node from FM if onboarded only for the exercise.
+**Rollback:** remove the lab node from FM if onboarded only for the exercise.
 
 ### Lab 4.2 — Role-based access control (Topic: RBAC)
 
@@ -351,7 +351,7 @@ appropriate slice of the shared fabric.
 **Negative test:** grant every user the admin role; any one can delete a production map and
 blind a security tool — role scoping is what prevents that on a shared visibility fabric.
 
-**Cleanup:** delete the lab role/user.
+**Rollback:** delete the lab role/user.
 
 ### Lab 4.3 — Directory integration (Topic: Centralized authentication)
 
@@ -371,7 +371,7 @@ group membership drive fabric access, so onboarding/offboarding happens in one p
 you lose per-person attribution and central revocation — directory-backed accounts are what
 make access auditable and revocable.
 
-**Cleanup:** revert to local auth if the integration was lab-only.
+**Rollback:** revert to local auth if the integration was lab-only.
 
 ### Lab 4.4 — Audit logging (Topic: Governance)
 
@@ -391,7 +391,7 @@ feeds change history into security monitoring.
 blinded a tool has no forensic trail of who changed what and when — exported audit is what
 answers that.
 
-**Cleanup:** revert the benign change; keep audit/syslog enabled (it is the intended state).
+**Rollback:** revert the benign change; keep audit/syslog enabled (it is the intended state).
 
 ## Lab Verification
 

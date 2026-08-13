@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Auditing identities by their attached policies. "analyst" and "intern" have the same read-only policy, so a policy audit clears both — but analyst's assume-role chain grants full control, which only resolving effective permissions reveals.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Data discovery and exposure (DSPM)
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Protecting only the known production data store. The locked-down prod store is fine; the risk is the forgotten public dev copy of the same PII — DSPM finds it precisely because it discovers and classifies data across the whole estate, not just the expected locations.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

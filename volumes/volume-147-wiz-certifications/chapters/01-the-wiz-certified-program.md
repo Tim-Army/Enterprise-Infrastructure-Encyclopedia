@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Assuming a fixed, complete exam catalog like a mature vendor's. Wiz Certified launched in 2025 and is explicitly expanding — treating today's three exams as the final list will date quickly; the durable knowledge is the shape.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map a pillar to the job
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Treating Wiz Code, Cloud, and Defend as three separate products to learn in isolation. They share one Security Graph; the value — and the exams' framing — is the code-to-cloud-to-runtime continuity, not three silos.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

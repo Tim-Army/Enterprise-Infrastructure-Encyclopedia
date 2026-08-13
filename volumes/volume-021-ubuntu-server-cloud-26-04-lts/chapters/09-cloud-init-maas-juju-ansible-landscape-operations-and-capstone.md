@@ -445,7 +445,7 @@ identically on launch.
 image must be rebuilt for every change and cannot adapt per-instance — cloud-init parameterizes a
 single image at boot.
 
-**Cleanup:** `rm -f user-data.yaml`.
+**Rollback:** `rm -f user-data.yaml`.
 
 ### Lab 9.2 — Model-driven operations with Juju (Topic: Deployment technologies)
 
@@ -467,7 +467,7 @@ encode an application's operational knowledge (deploy, configure, scale, integra
 **Negative test:** script postgres install/config/backup by hand across environments; each drifts
 and reinvents the operations — a charm packages that operational logic once, applied consistently.
 
-**Cleanup:** `juju destroy-model lab --no-prompt; juju destroy-controller lxd-controller
+**Rollback:** `juju destroy-model lab --no-prompt; juju destroy-controller lxd-controller
 --no-prompt` if lab-only.
 
 ### Lab 9.3 — Configuration management with Ansible (Topic: Automation and updating)
@@ -502,7 +502,7 @@ alongside Canonical's stack for cross-distro automation and updating.
 **Negative test:** use `command: apt install` instead of the `apt` module; it reports `changed`
 every run and is not idempotent — prefer state-based modules.
 
-**Cleanup:** `rm -f site.yml`.
+**Rollback:** `rm -f site.yml`.
 
 ### Lab 9.4 — Capstone Design Exercise: an Ubuntu fleet from metal to apps (Topic: Synthesis)
 
@@ -534,7 +534,7 @@ intervention — the deliverable that Canonical's SysAdmin/DevOps competencies b
 drifts immediately, and cannot be patched or audited consistently — the automation stack (MAAS,
 cloud-init, Juju/Ansible, Landscape) is what makes the fleet operable.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

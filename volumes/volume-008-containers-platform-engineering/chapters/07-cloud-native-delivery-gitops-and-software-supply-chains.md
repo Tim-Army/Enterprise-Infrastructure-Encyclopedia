@@ -489,7 +489,7 @@ unit.
 chart; they drift and there is no atomic rollback — Helm's release/revision model is what makes
 deploys repeatable and reversible.
 
-**Cleanup:** `helm uninstall web; rm -rf demo`.
+**Rollback:** `helm uninstall web; rm -rf demo`.
 
 ### Lab 7.2 — GitOps with Argo CD (Topic: GitOps)
 
@@ -517,7 +517,7 @@ controller reconciles the cluster, giving auditability and automatic drift corre
 Git-declared state — with GitOps, the cluster is changed by committing to Git, not by editing
 live objects.
 
-**Cleanup:** `kubectl delete application guestbook -n argocd`.
+**Rollback:** `kubectl delete application guestbook -n argocd`.
 
 ### Lab 7.3 — Software supply chain: signing and SBOM (Topic: Supply chain security)
 
@@ -539,7 +539,7 @@ vulnerable images.
 image runs unnoticed — signature verification at admission is what blocks unverified
 provenance.
 
-**Cleanup:** `rm -f cosign.key cosign.pub sbom.json`.
+**Rollback:** `rm -f cosign.key cosign.pub sbom.json`.
 
 ### Lab 7.4 — Enforce provenance at admission (Topic: Delivery security)
 
@@ -570,7 +570,7 @@ verification policy closes the loop, so only provenance-verified images reach th
 **Negative test:** sign images but never enforce verification at admission; unsigned images
 still run — signing without enforcement is documentation, not a control.
 
-**Cleanup:** `kubectl delete clusterpolicy verify-images`.
+**Rollback:** `kubectl delete clusterpolicy verify-images`.
 
 ## Lab Verification
 

@@ -34,7 +34,7 @@ mgmt> mgmt_cli login user admin password <pw> > sid.txt   # API session for late
 
 **Negative test.** A wrong SIC one-time password leaves the gateway "SIC: not communicating" and no policy can install — trust is the prerequisite for everything that follows.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ### Exercise 2.2 — Track 1: address the gateway's segment interfaces
 
@@ -62,7 +62,7 @@ eth3  10.40.3.1/24   eth4  10.40.4.1/24
 
 **Negative test.** Until a policy is installed (next chapters), the gateway's default posture drops unmatched transit — addressing alone forwards nothing.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ### Exercise 2.3 — Track 2: build the native segment host
 
@@ -102,7 +102,7 @@ sudo ip netns exec web ping -c1 10.40.9.9 | grep -o "0 received"
 0 received
 ```
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.4 — Start the workload services
 
@@ -131,7 +131,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.2.10 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

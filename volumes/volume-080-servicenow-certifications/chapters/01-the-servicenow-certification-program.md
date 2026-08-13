@@ -98,7 +98,7 @@ PY
 **Negative test:** assume any certification is a fine starting point; most require **CSA** first —
 start there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Understand the exam model
 
@@ -118,7 +118,7 @@ PY
 **Negative test:** expect an in-person lab exam for CSA; it's **online-proctored** multiple-choice —
 confirm the format on servicenow.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** target **CTA** with no implementation experience; it expects it — build the track
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

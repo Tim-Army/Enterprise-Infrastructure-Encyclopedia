@@ -165,7 +165,7 @@ ones blocked before delivery — protection beyond baseline EOP.
 **Negative test:** create the rule scoped to a domain you do not own; it never
 matches your mail — the recipient scope must be your accepted domain.
 
-**Cleanup:** remove the Safe Attachments rule and policy.
+**Rollback:** remove the Safe Attachments rule and policy.
 
 ### Lab 11.2 — Read the incidents queue (Topic: Investigation)
 
@@ -183,7 +183,7 @@ correlates alerts across workloads into a single incident per attack.
 **Negative test:** expect incidents from a workload that is not enabled (e.g.,
 Cloud Apps) — none appear until that workload is licensed and turned on.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.3 — Read Secure Score (Topic: Posture management)
 
@@ -201,7 +201,7 @@ scorecard whose improvement actions guide hardening.
 **Negative test:** implement one action and re-check immediately; the score may
 not move until the next recalculation — Secure Score updates on a cycle.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.4 — Capstone: onboard-to-protect a new user and device (Topic: Integrate the volume)
 
@@ -228,7 +228,7 @@ onboarding.
 lacks services and is not covered by access policies — group membership drives
 entitlement and protection.
 
-**Cleanup:** `Remove-MgUser -UserId "slee@$dom"` and remove any test device.
+**Rollback:** `Remove-MgUser -UserId "slee@$dom"` and remove any test device.
 
 ## Lab Verification
 

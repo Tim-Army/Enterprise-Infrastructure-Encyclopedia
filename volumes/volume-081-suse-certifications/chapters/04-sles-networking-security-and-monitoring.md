@@ -70,7 +70,7 @@ echo "SLES: default-deny inbound; allow only required services (ssh, http)"
 **Negative test:** stop firewalld "to make it work"; that removes protection — **allow the service**
 instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Check AppArmor confinement
 
@@ -86,7 +86,7 @@ echo "SLES: AppArmor confines programs to declared file/capability access (defau
 **Negative test:** disable AppArmor for convenience; a compromised service is then unconfined — keep
 profiles in **enforce**.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Manage a process
 
@@ -102,7 +102,7 @@ echo "top / systemctl / kill: inspect + control processes; systemd manages servi
 **Negative test:** `kill -9` a systemd-managed service directly; systemd restarts it — use
 **`systemctl stop`**.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Monitor with journalctl
 
@@ -118,7 +118,7 @@ journalctl --disk-usage 2>/dev/null || echo "journalctl: unified systemd logs (f
 **Negative test:** hunt through scattered `/var/log` files; **journalctl** is the unified, filterable
 log — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

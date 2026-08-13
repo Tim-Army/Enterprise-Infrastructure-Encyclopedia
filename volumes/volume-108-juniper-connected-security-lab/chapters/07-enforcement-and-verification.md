@@ -40,7 +40,7 @@ The lateral path is closed by the zone policy; both legitimate flows are untouch
 
 **Negative test.** Change the `web-to-db` policy application from `junos-postgresql` to `junos-ssh` and watch `web->db:5432` break while ssh would pass — proof the *application* match, not just the zone pair, is doing the work. Restore it.
 
-**Cleanup.** Restore any temporary change.
+**Rollback.** Restore any temporary change.
 
 ### Exercise 7.2 — Read the session table and hit counts
 
@@ -75,7 +75,7 @@ sudo nft list chain inet jsec forward | grep -A0 'JSEC-DENY'
 
 **Expected result.** The deny rule's counter increments after the `hmi->db` attempt.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Correlate the denial in the log
 
@@ -101,7 +101,7 @@ sudo dmesg | grep -o 'JSEC-DENY.*SRC=10.20.3.10.*DPT=5432' | tail -1
 
 **Negative test.** Without logging, drops are silent — you would see the failure but have no evidence. Log denies during rollout so a working policy is distinguishable from a broken path.
 
-**Cleanup.** Keep logging for Chapter 09.
+**Rollback.** Keep logging for Chapter 09.
 
 ## Summary and Completion Checklist
 

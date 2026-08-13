@@ -515,7 +515,7 @@ device count and data retention is what keeps discovery, inventory, and updates 
 and update jobs slow and the database fills — appliance sizing must follow the managed-device
 count, not the default minimum.
 
-**Cleanup:** power off/remove the appliance if deployed only for the lab.
+**Rollback:** power off/remove the appliance if deployed only for the lab.
 
 ### Lab 1.2 — First-run setup wizard (Topic: First configuration)
 
@@ -542,7 +542,7 @@ time is a prerequisite for correct alert/job timestamps and certificate validati
 console and breaks device-to-OME callbacks and integrations — a static/reserved address is
 required for a management appliance.
 
-**Cleanup:** none (keep the configured appliance).
+**Rollback:** none (keep the configured appliance).
 
 ### Lab 1.3 — Position OME vs iDRAC vs OME-Modular (Topic: Architecture)
 
@@ -563,7 +563,7 @@ so understanding the boundary prevents doing per-server work where fleet automat
 **Negative test:** try to do fleet-wide firmware compliance by logging into each iDRAC; it does
 not scale — OME exists precisely to drive those per-server controllers from one console.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Verify appliance health and services (Topic: Operational readiness)
 
@@ -582,7 +582,7 @@ inventory have a stable platform, and gives a baseline for later troubleshooting
 **Negative test:** begin discovering hundreds of devices onto an appliance already low on disk or
 with a stopped service; jobs fail unpredictably — confirm appliance health first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -75,7 +75,7 @@ PY
 **Negative test:** manage each domain in its own tool; cross-domain attack paths are invisible —
 **unify** them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Compute a Cyber Exposure Score
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** report raw counts to the board; a single **CES trend** communicates risk reduction —
 use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Analyze an attack path
 
@@ -117,7 +117,7 @@ prioritization.
 **Negative test:** fix the medium web vuln in isolation and ignore the path; the account still
 bridges to the crown jewels — fix the **choke point**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Discover the external attack surface
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** scan only the assets you already track; **unknown** exposed assets remain
 unassessed — run **ASM**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

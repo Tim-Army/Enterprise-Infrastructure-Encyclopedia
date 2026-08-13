@@ -402,7 +402,7 @@ so least privilege gives each operator only the rights their role needs.
 controller, mount virtual media, and re-flash firmware — the privilege mask is what scopes them
 down.
 
-**Cleanup:** `racadm set iDRAC.Users.3.Enable Disabled` (or clear the slot).
+**Rollback:** `racadm set iDRAC.Users.3.Enable Disabled` (or clear the slot).
 
 ### Lab 4.2 — Directory integration (Topic: Centralized identity)
 
@@ -423,7 +423,7 @@ membership drives privilege, rather than maintaining local accounts on every con
 **Negative test:** manage access with local accounts on hundreds of iDRACs; offboarding a person
 means editing each one — directory-backed access is revoked once, centrally.
 
-**Cleanup:** `racadm set iDRAC.ActiveDirectory.Enable Disabled` if enabled only for the lab.
+**Rollback:** `racadm set iDRAC.ActiveDirectory.Enable Disabled` if enabled only for the lab.
 
 ### Lab 4.3 — TLS certificate (Topic: Certificates)
 
@@ -445,7 +445,7 @@ which also enables warning-free browser/API access.
 real man-in-the-middle looks identical — a properly signed cert removes the routine warning so a
 genuine one stands out.
 
-**Cleanup:** none (keep the trusted certificate).
+**Rollback:** none (keep the trusted certificate).
 
 ### Lab 4.4 — Security hardening and compliance (Topic: Security)
 
@@ -467,7 +467,7 @@ plane's attack surface, a compliance-relevant baseline.
 session can silently re-flash firmware or change boot order — lockdown and lockout are what protect
 the controller against that.
 
-**Cleanup:** `racadm set iDRAC.Lockdown.SystemLockdown Disabled` if you need to make further lab
+**Rollback:** `racadm set iDRAC.Lockdown.SystemLockdown Disabled` if you need to make further lab
 changes.
 
 ## Lab Verification

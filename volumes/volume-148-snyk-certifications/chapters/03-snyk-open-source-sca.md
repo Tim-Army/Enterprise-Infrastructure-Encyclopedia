@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Auditing only the direct dependencies in your manifest. The vulnerable `yaml-parser` is four levels deep and never named directly — only walking the full transitive tree surfaces it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Fix by minimal upgrade (including the transitive case)
 
@@ -121,7 +121,7 @@ EOF
 
 **Negative test:** Trying to patch the vulnerable transitive package directly. It works as a manual override you must maintain and can break the parent that pinned the old version — upgrading the direct dependency that pulls it in is the clean fix.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

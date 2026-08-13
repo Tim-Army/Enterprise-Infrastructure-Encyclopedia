@@ -85,7 +85,7 @@ curl -sSL -A "Mozilla/5.0" "https://certification-learning.hpe.com/tr/certificat
 **Negative test:** rely on a cached legacy cert list; the program was **rebranded and
 renumbered** — verify on certification-learning.hpe.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path
 
@@ -107,7 +107,7 @@ PY
 **Negative test:** target an Expert exam with no Associate/Professional base; climb the **tiers**
 in order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

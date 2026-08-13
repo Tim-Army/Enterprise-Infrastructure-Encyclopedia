@@ -323,7 +323,7 @@ prevention-first blocks what is not explicitly allowed.
 **Negative test:** an `any/any/allow` rule inverts Zero Trust to
 allow-by-default — the anti-pattern the domain warns against.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Network security (Domain 2: NGFW App-ID/Content-ID)
 
@@ -340,7 +340,7 @@ Content-ID inspection — the NGFW capability beyond port/protocol firewalls.
 **Negative test:** a legacy port-based rule permits any traffic on 443,
 including tunneled non-web apps; App-ID exposes and controls them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Secure access (Domain 3: SASE / Prisma Access / ZTNA)
 
@@ -359,7 +359,7 @@ policy applied — SASE brings security to the user, wherever they are.
 (VPN concentrator model) adds latency SASE's distributed edges remove — the
 architectural difference.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Cloud security (Domain 4: Prisma/Cortex Cloud, CNAPP)
 
@@ -378,7 +378,7 @@ clouds.
 **Negative test:** agent-based endpoint tools do not see cloud IAM
 misconfiguration; CNAPP's cloud-native visibility is what surfaces it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Endpoint security (Domain 5: Cortex XDR)
 
@@ -396,7 +396,7 @@ prevention and detection to the endpoint and correlates it with network data.
 **Negative test:** signature-only antivirus misses fileless/behavioral
 attacks; XDR's behavioral analytics is what catches them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Security operations (Domain 6: Cortex XSIAM/XSOAR)
 
@@ -414,7 +414,7 @@ telemetry into incidents and XSOAR playbooks automate the response.
 **Negative test:** manual, tool-by-tool triage does not scale to SOC alert
 volume; the automation (XSOAR) is what closes the gap.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.7 — Licensing and content-update validation (integrative)
 
@@ -509,7 +509,7 @@ failure case that demonstrates the download-before-install dependency.
    admin@pa-lab-fw01> show config running | match update-schedule
    ```
 
-10. **Cleanup:** If this is a shared lab instance, remove the lab-added
+10. **Rollback:** If this is a shared lab instance, remove the lab-added
     schedule to restore the organization's standard update policy, or leave
     it in place if this instance will be reused in [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md) and Chapter
     07:

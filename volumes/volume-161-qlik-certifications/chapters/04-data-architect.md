@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Loading tables that share several field names without checking associations. Qlik silently builds synthetic keys that bloat the model and confuse analysis; the Data Architect deliberately manages field names for clean single-key associations and uses QVDs for efficient loading.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Segmenting from the architecture diagram. The backup path and the legacy-billing dependency were never on it, and both fail silently after enforcement.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Labels outlive addresses
 
@@ -138,7 +138,7 @@ EOF
 
 **Negative test:** Widening the address rule to a `/16` when new nodes appear off-subnet. You restored connectivity by granting the whole range the database access that segmentation existed to remove.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Ransomware containment as the GCSA Advanced scenario
 
@@ -187,7 +187,7 @@ EOF
 
 **Negative test:** Treating segmentation as prevention. It does not stop `web1` from being compromised; it stops `web1`'s compromise from reaching the domain controller and the backups — which is the whole value.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

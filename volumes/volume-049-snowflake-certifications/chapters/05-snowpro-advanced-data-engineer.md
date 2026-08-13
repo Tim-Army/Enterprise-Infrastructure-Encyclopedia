@@ -79,7 +79,7 @@ ingestion domain.
 **Negative test:** schedule full reloads; **streams/Snowpipe** process only new
 data — ingest incrementally.
 
-**Cleanup:** `DROP STREAM IF EXISTS raw_stream;`
+**Rollback:** `DROP STREAM IF EXISTS raw_stream;`
 
 ### Lab 5.2 — Transformation: Snowpark and UDFs
 
@@ -98,7 +98,7 @@ transformation domain.
 **Negative test:** pull data to a client to transform; **Snowpark/SQL** push
 compute to Snowflake — keep it in-platform.
 
-**Cleanup:** `DROP FUNCTION IF EXISTS to_cents(NUMBER);`
+**Rollback:** `DROP FUNCTION IF EXISTS to_cents(NUMBER);`
 
 ### Lab 5.3 — Pipelines: task graphs
 
@@ -116,7 +116,7 @@ orchestration the exam tests.
 **Negative test:** forget to `RESUME` tasks; they are created **suspended** — resume
 them (root last for DAGs).
 
-**Cleanup:** `ALTER TASK t_load SUSPEND; DROP TASK IF EXISTS t_clean; DROP TASK IF EXISTS t_load;`
+**Rollback:** `ALTER TASK t_load SUSPEND; DROP TASK IF EXISTS t_clean; DROP TASK IF EXISTS t_load;`
 
 ### Lab 5.4 — Optimization
 
@@ -135,7 +135,7 @@ optimization technique.
 **Negative test:** recompute expensive aggregates every query; a **materialized
 view** maintains them incrementally — use it for hot aggregates.
 
-**Cleanup:** `DROP MATERIALIZED VIEW IF EXISTS mv_daily;`
+**Rollback:** `DROP MATERIALIZED VIEW IF EXISTS mv_daily;`
 
 ### Lab 5.5 — Security for data engineering
 
@@ -154,7 +154,7 @@ security domain of the Data Engineer exam.
 **Negative test:** run pipelines as ACCOUNTADMIN; use a **least-privilege ETL
 role**.
 
-**Cleanup:** `DROP ROLE IF EXISTS etl_role;`
+**Rollback:** `DROP ROLE IF EXISTS etl_role;`
 
 ## Lab Verification
 

@@ -76,7 +76,7 @@ automation.
 **Negative test:** onboard contractors with no expiry; accounts linger forever — automate an
 **expiry** with Workflows.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Gate an on-prem app with Access Gateway
 
@@ -100,7 +100,7 @@ PY
 **Negative test:** expose the legacy app directly without OAG; it has no modern auth — front it with
 **Access Gateway**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Run an access certification (OIG)
 
@@ -123,7 +123,7 @@ campaign.
 **Negative test:** never review access; users accumulate entitlements (privilege creep) — run
 **periodic certifications**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Enforce separation of duties
 
@@ -145,7 +145,7 @@ separation-of-duties enforcement.
 **Negative test:** ignore SoD; one user can create and pay a fake vendor (fraud) — enforce **SoD**
 policies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

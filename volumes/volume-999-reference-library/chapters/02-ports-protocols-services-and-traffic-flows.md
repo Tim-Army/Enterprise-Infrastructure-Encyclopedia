@@ -322,7 +322,7 @@ available; a Markdown editor.
    **Expected result:** the file contains both a scan table and formal
    flow statements suitable for a firewall change request.
 
-**Cleanup:** Close any temporary listener opened solely for the negative
+**Rollback:** Close any temporary listener opened solely for the negative
 test in step 6, and remove any packet-capture files containing
 environment-specific addressing before sharing the card outside your team.
 

@@ -47,7 +47,7 @@ The edge model cuts latency dramatically by inspecting near the user and going d
 
 **Negative test:** Deploying "cloud security" that still hairpins through one region — you keep the backhaul penalty; the edge must be distributed for SASE's latency win to be real.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Zero Trust: verify, don't assume
 
@@ -79,7 +79,7 @@ Zero Trust decides **per request** from identity, device posture, app sensitivit
 
 **Negative test:** Granting access by IP/network zone (the old "castle-and-moat") — a compromised device inside the perimeter has free rein; Zero Trust removes implicit network trust.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — SD-WAN, the networking half
 
@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Treating SASE as "just cloud security" (SSE only) — it also subsumes the WAN edge; the SD-WAN half is why SASE is a *networking-and-security* convergence.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Deployment approaches
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Enforcing blocking policy before establishing visibility — you break legitimate workflows and lose the org's trust; visibility-then-policy is the accreditation's sequencing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

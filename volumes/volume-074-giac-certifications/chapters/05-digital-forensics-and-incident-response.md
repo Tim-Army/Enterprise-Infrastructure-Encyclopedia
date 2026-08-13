@@ -77,7 +77,7 @@ PY
 **Negative test:** jump to eradication before **containment**; the adversary spreads while you clean
 one host — contain first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — GCFA: preserve evidence integrity
 
@@ -96,7 +96,7 @@ foundation.
 **Negative test:** edit the evidence in place then compute a hash; you've destroyed the original —
 **hash first**, analyze a copy.
 
-**Cleanup:** `rm -f evidence.bin evidence.sha256`.
+**Rollback:** `rm -f evidence.bin evidence.sha256`.
 
 ### Lab 5.3 — GREM: triage a sample for indicators
 
@@ -115,7 +115,7 @@ strings — safe GREM triage.
 **Negative test:** run the sample to "see what it does" on your workstation; malware triage is
 **static/isolated** — never execute on a live host.
 
-**Cleanup:** `rm -f sample.bin`.
+**Rollback:** `rm -f sample.bin`.
 
 ### Lab 5.4 — GNFA: reconstruct from network evidence
 
@@ -132,7 +132,7 @@ tshark -r /tmp/net.pcap -Y "icmp" -T fields -e ip.src -e ip.dst 2>/dev/null | he
 **Negative test:** rely on host logs alone after they've been wiped; **network evidence** survives
 independently — capture and analyze it.
 
-**Cleanup:** `rm -f /tmp/net.pcap`.
+**Rollback:** `rm -f /tmp/net.pcap`.
 
 ### Lab 5.5 — GCTI: structure threat intelligence
 
@@ -153,7 +153,7 @@ intelligence.
 **Negative test:** dump a raw IOC list with no context or action; defenders can't operationalize it
 — add **mapping and action**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -222,6 +222,8 @@ gcloud services list --available --format='value(name)' | wc -l
 catalogue a digital-transformation conversation draws on. The leader
 credential is about knowing this surface exists, not operating it.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.2 — Infrastructure and application modernization *(Cloud Digital Leader)*
 
 ```bash
@@ -233,6 +235,8 @@ gcloud run services list --format='value(name)' 2>/dev/null | head -3
 **Expected result:** VM types (lift-and-shift) and any Cloud Run services
 (modernized). Naming the spectrum from VM to container to serverless is
 the modernization talking point the exam tests.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.3 — Data and AI in the cloud *(Cloud Digital Leader)*
 
@@ -246,6 +250,8 @@ gcloud services list --available \
 `aiplatform.googleapis.com` listed — the data and AI pillars a leader is
 expected to place in the portfolio.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.4 — Trust, security, scaling, and operations *(Cloud Digital Leader)*
 
 ```bash
@@ -256,6 +262,8 @@ gcloud resource-manager org-policies list --project="$PROJECT_ID" \
 **Expected result:** governance constraints (or none on a bare project).
 The leader-level point is that trust and security are configurable
 controls, not properties you hope for.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.5 — Fundamentals of gen AI *(Generative AI Leader §1)*
 
@@ -268,6 +276,8 @@ gcloud ai models list --region=us-central1 --filter="displayName:gemini" \
 Section 1 is about recognizing foundation-model use cases and strengths —
 this is where they live.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.6 — Google Cloud's gen AI offerings *(Generative AI Leader §2)*
 
 ```bash
@@ -279,6 +289,8 @@ gcloud services list --available \
 **Expected result:** Vertex AI (`aiplatform`) and the agent/search surface
 (`discoveryengine`). These are the offerings the section names for
 building and for agents.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.7 — Techniques to improve gen AI output *(Generative AI Leader §3)*
 
@@ -294,6 +306,8 @@ Grounded prompt    : same prompt + a grounding source (your docs / Search)
 plausible-but-invented answers with sourced ones — the exam's core
 technique point, alongside prompt engineering.
 
+**Rollback:** None — read-only; this lab only inspects state or dry-runs commands (no resources are created), so there is nothing to revert.
+
 ### Lab 2.8 — Business strategies and responsible AI *(Generative AI Leader §4)*
 
 ```bash
@@ -305,6 +319,8 @@ gcloud services list --available --filter="name:modelarmor OR name:dlp" \
 Responsible AI (4.3) is examinable and real — knowing which controls
 exist is the business-strategy competence the section rewards.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.9 — Verify the fundamentals scaffolding *(both certifications)*
 
 ```bash
@@ -315,6 +331,8 @@ gcloud billing projects describe "$PROJECT_ID" --format='value(billingEnabled)'
 **Expected result:** an `ACTIVE` project with `billingEnabled: True`.
 Project, billing, and hierarchy are the shared vocabulary both foundational
 exams assume — confirm you can read them.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.10 — Negative test: recognizing a disabled service
 
@@ -334,6 +352,8 @@ gcloud projects delete "$PROJECT_ID" --quiet
 ```
 
 **Expected result:** `DELETE_REQUESTED`, or skip this to keep the sandbox.
+
+**Rollback:** None — read-only; this lab only inspects state or dry-runs commands (no resources are created), so there is nothing to revert.
 
 ## Lab Verification
 

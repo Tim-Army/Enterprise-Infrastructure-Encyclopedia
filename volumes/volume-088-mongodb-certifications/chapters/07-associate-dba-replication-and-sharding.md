@@ -81,7 +81,7 @@ rs.status().members.map(m => ({ name: m.name, state: m.stateStr }))
 **Negative test:** run a 2-member set; an election can tie and fail to elect a primary — use an **odd**
 number of voting members (or an arbiter).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Set write concern for durability
 
@@ -102,7 +102,7 @@ failover.
 **Negative test:** write critical data with `w:1`; if the primary fails before replicating, the write can
 be rolled back — use **`w:"majority"`** for durability.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh
@@ -128,7 +128,7 @@ db.orders.find({ status: "shipped" }).readPref("secondaryPreferred").count()
 **Negative test:** send read-your-own-write queries to a secondary; replication lag can return stale data
 — use `primary` for read-after-write.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Choose a shard key
 
@@ -154,7 +154,7 @@ low-cardinality or monotonic keys.
 **Negative test:** shard on a monotonically increasing timestamp; every new write lands on the same shard
 — use a **hashed** or high-cardinality compound key.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

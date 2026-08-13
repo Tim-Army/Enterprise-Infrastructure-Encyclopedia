@@ -260,7 +260,7 @@ also free; resources you later create are not.
    still listed, or AI-900 shown instead of AI-901. This is why step 2
    uses primary sources.
 
-6. **Cleanup:** keep the budget alert. Remove anything else created while
+6. **Rollback:** keep the budget alert. Remove anything else created while
    exploring, and confirm no compute is running.
 
 ## Lab Verification

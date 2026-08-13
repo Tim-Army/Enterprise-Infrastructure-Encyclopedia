@@ -30,7 +30,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502  && echo "hmi->plc REA
 
 **Negative test.** A closed port (`hmi->db:502`) fails because nothing listens, not because of policy — distinguish "no service" from "denied."
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.2 — Name the contracted flows
 
@@ -49,7 +49,7 @@ Everything else EPG-to-EPG — most importantly `EPG-Mgmt -> EPG-DB` (hmi -> db)
 
 **Negative test.** Writing the web-db permit against the db IP rather than the EPG loses ACI's application-centric benefit — a rule against the EPG covers any endpoint that joins EPG-DB, including new database servers.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.3 — Reproduce the lateral movement
 
@@ -63,7 +63,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.2.20 5432 && echo "PIVOT: hmi o
 
 **Expected result.** `PIVOT: hmi opened db:5432` — with no contract governing the fabric, the operator reaches the database. Chapter 04 denies this by making contracts the only permitted paths.
 
-**Cleanup.** None — Chapter 04 applies contracts.
+**Rollback.** None — Chapter 04 applies contracts.
 
 ## Summary and Completion Checklist
 

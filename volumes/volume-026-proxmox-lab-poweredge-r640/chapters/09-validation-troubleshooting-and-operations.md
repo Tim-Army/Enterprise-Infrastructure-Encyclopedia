@@ -215,7 +215,7 @@ and the datastore is not over-committed.
 capacity; ten VMs may over-commit RAM (ballooning/swap) or fill the thin pool — validate node and
 storage headroom, not just VM power state.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Backups with vzdump (Topic: Backups)
 
@@ -234,7 +234,7 @@ backups to the `river` directory storage (or a Proxmox Backup Server) make the l
 **Negative test:** run the lab with no backups; a bad change or disk failure loses VMs with no
 recovery — even a lab benefits from scheduled `vzdump`, and production requires it.
 
-**Cleanup:** remove the lab backup archive if space is tight.
+**Rollback:** remove the lab backup archive if space is tight.
 
 ### Lab 9.3 — Troubleshooting (Topic: Troubleshooting)
 
@@ -256,7 +256,7 @@ than guessing.
 the task log names the cause (e.g. a missing ISO volid, or the thin pool full) that a retry will not
 fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Capstone: verify the whole build (Topic: Synthesis)
 
@@ -284,7 +284,7 @@ end.
 array is degraded, or the node is unpatched; the stack is fragile — the capstone verifies *every*
 layer (hardware, platform, network, storage, fleet, backup), which is what "done" actually means.
 
-**Cleanup:** none — this is the finished lab; tear-down commands appear in the earlier chapters'
+**Rollback:** none — this is the finished lab; tear-down commands appear in the earlier chapters'
 cleanups.
 
 ## Lab Verification

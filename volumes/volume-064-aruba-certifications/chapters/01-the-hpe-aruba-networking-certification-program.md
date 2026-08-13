@@ -99,7 +99,7 @@ Switching, Network Security, Data Center, Mobility**) — the program map.
 **Negative test:** study a years-old "Aruba Certified" list; the program was **rebranded and
 renumbered** — confirm on certification-learning.hpe.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map codes to tracks and tiers
 
@@ -123,7 +123,7 @@ PY
 **Negative test:** register for a legacy code (e.g., an old HPE6-A4x); confirm the **current**
 code on the portal before booking Pearson VUE.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a track and tier path
 
@@ -144,7 +144,7 @@ PY
 **Negative test:** attempt an Expert exam first; start at the **Associate** foundation for the
 track.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

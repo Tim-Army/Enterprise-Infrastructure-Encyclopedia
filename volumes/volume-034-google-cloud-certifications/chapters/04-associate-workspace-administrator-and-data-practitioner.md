@@ -234,6 +234,8 @@ bq query --use_legacy_sql=false --dry_run \
 transformation expressed as SQL — normalizing and deriving columns before
 they land.
 
+**Rollback:** None — read-only; this lab only inspects state or dry-runs commands (no resources are created), so there is nothing to revert.
+
 ### Lab 4.2 — Extract and load into storage systems *(Data Practitioner 1.2)*
 
 ```bash
@@ -245,6 +247,8 @@ bq query --use_legacy_sql=false 'SELECT COUNT(*) FROM `'"${PROJECT_ID}"'.dp_lab.
 
 **Expected result:** `50`. ELT loads into BigQuery as the target system —
 the row count confirms the load, not the job's success flag.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 4.3 — Data analysis and presentation *(Data Practitioner 2.x)*
 
@@ -258,6 +262,8 @@ presentation layer consumes. For the ML sub-topic (2.3), a `CREATE MODEL`
 in BigQuery ML is the low-code path; confirm the current guide's product
 list before studying it, since this area moves.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 4.4 — Design and implement simple pipelines *(Data Practitioner 3.1)*
 
 ```bash
@@ -270,6 +276,8 @@ bq show --format=prettyjson "${PROJECT_ID}:dp_lab.v_top" | grep '"query"' | head
 **Expected result:** the view definition echoed back — the simplest
 durable pipeline step, a transformation consumers depend on.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.5 — Schedule, automate, and monitor *(Data Practitioner 3.2)*
 
 ```bash
@@ -278,6 +286,8 @@ bq ls -j --max_results=3 --format='table(jobId, state, statistics.query.totalByt
 
 **Expected result:** recent jobs with `state: DONE` and bytes processed —
 the monitoring surface for automated data tasks.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 4.6 — Configure access control and governance *(Data Practitioner 4.1)*
 
@@ -289,6 +299,8 @@ bq show --format=prettyjson "${PROJECT_ID}:dp_lab" | grep -A6 '"access"' | head 
 dataset-level IAM plus authorized views — sharing the view, not the base
 table.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 4.7 — Configure lifecycle management *(Data Practitioner 4.2)*
 
 ```bash
@@ -299,6 +311,8 @@ bq show --format=prettyjson "${PROJECT_ID}:dp_lab" | grep defaultTableExpiration
 **Expected result:** `defaultTableExpiration` set to `3600000` ms. A
 default expiration is lifecycle management as a data-governance control —
 tables age out automatically.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 4.8 — Workspace: managing the user life cycle *(Workspace 1.1)*
 
@@ -315,6 +329,8 @@ Or the Admin SDK Directory API:
 **Active**, and a `200` with the user resource from the API. Suspending
 (not deleting) is the reversible lifecycle action the exam distinguishes.
 
+**Rollback:** delete the Google Workspace objects you created here (organizational unit, group, retention rule, hold, or DLP rule) from the Admin console / Vault — these admin-plane objects are not removed by the project-level Cleanup lab; release any legal hold before deleting its data.
+
 ### Lab 4.9 — Workspace: organizational units *(Workspace 1.2)*
 
 ```text
@@ -325,6 +341,8 @@ Admin console → Directory → Organizational units → Create OU
 **Expected result:** `lab-ou` appears in the OU tree. Policies applied to
 an OU inherit to users in it — the same downward inheritance as Google
 Cloud's resource hierarchy, applied to people.
+
+**Rollback:** delete the Google Workspace objects you created here (organizational unit, group, retention rule, hold, or DLP rule) from the Admin console / Vault — these admin-plane objects are not removed by the project-level Cleanup lab; release any legal hold before deleting its data.
 
 ### Lab 4.10 — Workspace: groups, domains, and resources *(Workspace 1.3–1.5)*
 
@@ -338,6 +356,8 @@ Admin console → Directory → Groups → Create group "lab-team";
 domain shown **Verified**, and a bookable resource in Calendar. Groups are
 the unit access should be granted to — never individual users.
 
+**Rollback:** delete the Google Workspace objects you created here (organizational unit, group, retention rule, hold, or DLP rule) from the Admin console / Vault — these admin-plane objects are not removed by the project-level Cleanup lab; release any legal hold before deleting its data.
+
 ### Lab 4.11 — Workspace: core services *(Workspace 2.1–2.7)*
 
 ```text
@@ -349,6 +369,8 @@ Admin console → Apps → Google Workspace → Gmail (routing, compliance),
 **Expected result:** each service shows an **ON/OFF for everyone or by
 OU** toggle. Service state is set per OU — the mechanism that lets a
 policy differ by department.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 4.12 — Workspace: data governance and compliance *(Workspace 3.1–3.5)*
 
@@ -362,6 +384,8 @@ Vault (vault.google.com) → create a retention rule and a hold;
 shows a match count after a test document is added. DLP and Vault are the
 governance controls the exam weights.
 
+**Rollback:** delete the Google Workspace objects you created here (organizational unit, group, retention rule, hold, or DLP rule) from the Admin console / Vault — these admin-plane objects are not removed by the project-level Cleanup lab; release any legal hold before deleting its data.
+
 ### Lab 4.13 — Workspace: security policies and access *(Workspace 4.1–4.3)*
 
 ```text
@@ -374,6 +398,8 @@ Admin console → Security → Authentication → 2-step verification
 investigation tool returns login events. Enforcing 2SV by OU is the
 single highest-value Workspace security control.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 4.14 — Workspace: browsers and endpoints *(Workspace 5.1–5.2)*
 
 ```text
@@ -385,6 +411,8 @@ Admin console → Devices → Mobile & endpoints (set a mobile policy);
 show **applied to** an OU. Endpoint policy inherits down the OU tree, same
 as service state.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 4.15 — Workspace: monitoring and troubleshooting *(Workspace 6.1–6.4)*
 
 ```text
@@ -395,6 +423,8 @@ Admin console → Reporting → Reports and Audit logs (Login, Drive, Admin);
 **Expected result:** audit log entries for the actions taken in the labs
 above, and an email-log-search result for a test message. The audit logs
 are where "who did this?" is answered for the collaboration estate.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 4.16 — Negative test and cleanup
 
@@ -419,6 +449,8 @@ gcloud projects delete "$PROJECT_ID" --quiet
 **Expected result:** the dataset removed and the project
 `DELETE_REQUESTED`. (Workspace tenants are cleaned up in the Admin console
 by suspending the test user and deleting the lab OU/group.)
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

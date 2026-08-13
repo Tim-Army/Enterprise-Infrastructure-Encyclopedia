@@ -335,7 +335,7 @@ automation.
 **Negative test:** commit without a `.gitignore`; build artifacts, logs, and `.env` secrets get
 committed — the ignore file is what keeps generated files and credentials out of history.
 
-**Cleanup:** `rm -rf ~/proj`.
+**Rollback:** `rm -rf ~/proj`.
 
 ### Lab 2.2 — A branching model (Topic: Branching)
 
@@ -356,7 +356,7 @@ are developed and reviewed in isolation, which branch protection (Chapter 04) th
 **Negative test:** commit everything directly to `main`; unreviewed, half-finished work lands on the
 releasable branch — feature branches are what keep `main` clean and reviewable.
 
-**Cleanup:** `rm -rf ~/proj`.
+**Rollback:** `rm -rf ~/proj`.
 
 ### Lab 2.3 — Commit hygiene (Topic: Commit conventions)
 
@@ -376,7 +376,7 @@ issues, turning the log into documentation rather than noise.
 **Negative test:** write commits like "stuff" and "wip fix"; the history is useless for changelogs,
 bisecting, or understanding *why* a change was made — a convention makes each commit informative.
 
-**Cleanup:** `rm -rf ~/proj`.
+**Rollback:** `rm -rf ~/proj`.
 
 ### Lab 2.4 — Mono-repo versus poly-repo (Topic: Repository topology)
 
@@ -399,7 +399,7 @@ change together.
 every feature now spans multiple PRs across repos with no atomicity — the topology should match the
 change coupling.
 
-**Cleanup:** none (design decision).
+**Rollback:** none (design decision).
 
 ## Lab Verification
 

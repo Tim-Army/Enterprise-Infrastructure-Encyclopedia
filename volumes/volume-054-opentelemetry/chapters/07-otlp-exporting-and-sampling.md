@@ -72,7 +72,7 @@ export path.
 **Negative test:** point the gRPC exporter at the HTTP port (4318); use the **matching
 transport/port** (gRPC→4317).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Head sampling (ratio)
 
@@ -89,7 +89,7 @@ parent — head sampling.
 **Negative test:** use a bare ratio (not ParentBased); child services make **inconsistent**
 decisions — use ParentBased.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Tail sampling (Collector)
 
@@ -111,7 +111,7 @@ outcome-aware sampling.
 **Negative test:** head-sample at 10% only; you **lose 90% of errors** — add tail
 sampling for the ones that matter.
 
-**Cleanup:** remove the processor.
+**Rollback:** remove the processor.
 
 ### Lab 7.4 — Export to a backend
 
@@ -129,7 +129,7 @@ production export.
 **Negative test:** hard-code the API key in config; use **`${env:...}`** so secrets stay
 out of the file.
 
-**Cleanup:** remove the exporter.
+**Rollback:** remove the exporter.
 
 ## Lab Verification
 

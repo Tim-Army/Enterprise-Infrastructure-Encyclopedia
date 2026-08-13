@@ -80,7 +80,7 @@ cat my-rapid7-plan.md
 
 **Negative test:** Planning around a validity period or passing score quoted by a third-party site — Rapid7 does not publish those, so any figure you find elsewhere is unsourced.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam scopes
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Studying all eight technical chapters evenly for the InsightAppSec exam — its scope is essentially one chapter, and the rest earns nothing toward that credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

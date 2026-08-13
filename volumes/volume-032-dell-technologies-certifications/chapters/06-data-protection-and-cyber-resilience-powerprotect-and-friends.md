@@ -138,7 +138,7 @@ combines **backup/archive** (point-in-time copies with retention), **replication
 backup catalog/repository; an **isolated, immutable** copy (Cyber Recovery) is what
 survives — RPO/RTO planning must include the cyber threat.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Data Domain MTree and filesystem (PowerProtect Data Domain Deploy)
 
@@ -159,7 +159,7 @@ yielding large effective:used ratios and efficient replication.
 ratio collapses — client-side encryption before the DD defeats dedup (use DD-side
 encryption instead).
 
-**Cleanup:** `mtree delete /data/col1/lab-mtree`.
+**Rollback:** `mtree delete /data/col1/lab-mtree`.
 
 ### Lab 6.3 — DD Boost (PowerProtect Data Domain Operate)
 
@@ -179,7 +179,7 @@ backup bandwidth and time; storage units are the Boost-accessed containers.
 **Negative test:** send backups over generic CIFS/NFS instead of Boost; the full data
 crosses the network (no distributed dedup) — Boost is what reduces the transfer.
 
-**Cleanup:** `ddboost storage-unit delete LAB-SU`.
+**Rollback:** `ddboost storage-unit delete LAB-SU`.
 
 ### Lab 6.4 — Data Domain replication (PowerProtect Data Domain Operate)
 
@@ -199,7 +199,7 @@ traverse the WAN, making offsite DR copies bandwidth-efficient with a small RPO.
 sends only unique post-dedup segments, sizing on logical data over-provisions the link
 — size on the daily unique change rate.
 
-**Cleanup:** `replication break destination mtree://dddst/data/col1/lab-mtree`.
+**Rollback:** `replication break destination mtree://dddst/data/col1/lab-mtree`.
 
 ### Lab 6.5 — PowerProtect Data Manager protection policy (Data Manager Deploy)
 
@@ -219,7 +219,7 @@ replication, cloud tiering), and reports compliance centrally.
 unprotected until a policy with a schedule covers them — discovery plus an active
 policy is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.6 — PowerProtect appliances: DP/DPS series (PowerProtect DP Series Appliances)
 
@@ -238,7 +238,7 @@ while **DPS** (Data Protection Suite) is the software portfolio.
 its storage; the integrated appliance scales as a unit — that integration is its
 value versus build-your-own.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.7 — PowerProtect Cyber Recovery vault (Cyber Recovery Deploy)
 
@@ -257,7 +257,7 @@ replicate, then closes; copies are made **immutable (Retention Lock)** and analy
 **Negative test:** leave the air-gap link permanently open (always-on replication);
 malware can reach the vault — the scheduled, normally-closed air gap is the protection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.8 — Avamar backup (Avamar Deploy)
 
@@ -278,7 +278,7 @@ Data Domain.
 on the client spikes; for high-change DBs, DD Boost/PPDM (server-side) may fit better —
 match the dedup model to the workload.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.9 — NetWorker (NetWorker Deploy)
 
@@ -300,7 +300,7 @@ media pools, at large scale.
 **Negative test:** a client not in any protection group/policy is never backed up —
 NetWorker protects only what a policy/workflow includes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.10 — RecoverPoint continuous data protection (RecoverPoint Deploy)
 
@@ -321,7 +321,7 @@ with local and remote (sync/async) replication for granular, near-zero-RPO recov
 protection window shrinks and old points age out — the journal must fit the desired
 rewind window.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

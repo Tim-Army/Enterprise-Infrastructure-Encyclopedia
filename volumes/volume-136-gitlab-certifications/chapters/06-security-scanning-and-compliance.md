@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Running SAST only and declaring the application scanned — you have no coverage of runtime behavior, dependency CVEs, committed secrets, or the base image, which between them account for most real incidents.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Secret detection: rotate before you delete
 
@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Rewriting history to purge the secret without rotating — an expensive, disruptive operation (every collaborator must re-clone) that leaves the credential fully valid in every fork and local copy made beforehand.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Approval policy gates on scan results
 
@@ -153,7 +153,7 @@ EOF
 
 **Negative test:** Blocking on *all* severities including informational — merges stall on findings nobody intends to fix, teams demand exceptions, and the exception becomes the norm, which is how security gates get switched off entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -82,7 +82,7 @@ aws sts get-caller-identity --profile nonexistent
 The config profile (nonexistent) could not be found
 ```
 
-**Cleanup.** Nothing billable yet. Keep the budget for the whole lab.
+**Rollback.** Nothing billable yet. Keep the budget for the whole lab.
 
 ### Exercise 2.2 — Azure: CLI, subscription, and a budget
 
@@ -123,7 +123,7 @@ az group show -n does-not-exist
 Resource group 'does-not-exist' could not be found.
 ```
 
-**Cleanup.** Nothing billable yet.
+**Rollback.** Nothing billable yet.
 
 ### Exercise 2.3 — GCP: CLI, project, and a budget
 
@@ -172,7 +172,7 @@ Listed 0 items.
 
 (No error, because the API is enabled — it is simply empty. An unenabled API would error with `Compute Engine API has not been used`.)
 
-**Cleanup.** Nothing billable yet. The empty project and budget are free.
+**Rollback.** Nothing billable yet. The empty project and budget are free.
 
 ## Reusable identifiers
 

@@ -68,7 +68,7 @@ track.
 **Negative test:** assume the Collector shares the spec's 1.x version; components version
 **independently** — check each.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Check the specification release
 
@@ -83,7 +83,7 @@ curl -sS "https://api.github.com/repos/open-telemetry/opentelemetry-specificatio
 
 **Negative test:** treat the spec and Collector as one version; they differ — track both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Confirm signal stability
 
@@ -102,7 +102,7 @@ on today.
 **Negative test:** build a product hard-dependency on **profiles**; confirm the
 per-language **status** first — it is newer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Plan a semantic-convention migration
 
@@ -120,7 +120,7 @@ a rename.
 **Negative test:** rename attributes in one step; **downstream dashboards/alerts break** —
 migrate in phases.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

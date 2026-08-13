@@ -278,7 +278,7 @@ Benchmark or vendor guide (or a locally cached copy); a Markdown editor.
    the same control checked in step 2. **Expected result:** the control
    now passes, with before/after evidence retained.
 
-**Cleanup:** Remove the unauthorized account created for the simulated
+**Rollback:** Remove the unauthorized account created for the simulated
 incident, revert any hardening control changed only for lab purposes if
 it is not intended to persist, and confirm the lab system returns to its
 baseline state from [Chapter 04](04-configuration-templates-baselines-and-change-records.md).

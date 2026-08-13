@@ -38,7 +38,7 @@ The two permitted flows work; the lateral flow and the unsolicited reverse flow 
 
 **Negative test.** Add a stateless-style reverse permit (`db → web:5432 accept`) and watch D start passing — proof that stateful enforcement, not a reverse ACL, is what keeps the reverse direction closed. Remove it afterward.
 
-**Cleanup.** Remove any reverse permit added.
+**Rollback.** Remove any reverse permit added.
 
 ### Exercise 7.2 — Connection table and deny log agree
 
@@ -55,7 +55,7 @@ echo "== denied (log) =="; sudo dmesg | grep -o 'CX-DENY.*SRC=10.130.3.30.*DPT=5
 
 **Expected result.** The permitted `web → db` appears as a tracked connection and the denied `hmi → db` appears in the log — enforcement and telemetry agree.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Confirm no hairpin
 
@@ -69,7 +69,7 @@ echo "east-west is firewalled at the ToR/DPU — no hairpin to an external firew
 
 **Expected result.** A confirmation that stateful east-west policy is enforced in the switch itself, the architectural benefit of the DPU.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

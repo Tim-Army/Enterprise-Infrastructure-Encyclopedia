@@ -351,7 +351,7 @@ carries both node management and VM traffic on the untagged/native VLAN.
 **Negative test:** put the management IP directly on the physical NIC (`eno1`) instead of the bridge;
 VMs then have no virtual switch to attach to — the bridge is what lets VMs share the physical uplink.
 
-**Cleanup:** none (vmbr0 is required).
+**Rollback:** none (vmbr0 is required).
 
 ### Lab 5.2 — VLAN-aware bridge and trunk (Topic: VLAN trunk)
 
@@ -381,7 +381,7 @@ VLANs to VMs, set per-VM-NIC, instead of a separate bridge per VLAN.
 is an access port; the tag is ignored or dropped — the bridge must be VLAN-aware and the switch port
 a trunk carrying that VID.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Per-VLAN bridges or subinterfaces (Topic: Network segmentation)
 
@@ -403,7 +403,7 @@ subinterfaces/dedicated bridges for the node's own traffic (management, storage,
 broadcast storm or a noisy VM degrades management/storage — VLAN segmentation isolates these traffic
 classes.
 
-**Cleanup:** remove the lab subinterface if added only for the exercise.
+**Rollback:** remove the lab subinterface if added only for the exercise.
 
 ### Lab 5.4 — Verify networking (Topic: Verification)
 
@@ -424,7 +424,7 @@ actually reach its gateway, rather than discovering the trunk is misconfigured a
 you debug the VM when the fault is the switch trunk — verify each VLAN's reachability from the node
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

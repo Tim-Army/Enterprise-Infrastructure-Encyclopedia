@@ -73,7 +73,7 @@ Only the two flows are permitted (default-deny); return traffic is permitted by 
 | `psm>` | PSM / Fabric Composer action (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

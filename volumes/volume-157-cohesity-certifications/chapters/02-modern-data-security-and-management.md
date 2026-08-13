@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Relying on mutable backups reachable from the production network. Ransomware deletes those first; only immutable, ideally air-gapped copies guarantee a clean restore without paying.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

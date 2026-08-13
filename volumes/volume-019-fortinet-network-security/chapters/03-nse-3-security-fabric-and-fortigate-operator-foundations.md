@@ -317,7 +317,7 @@ session counts — the operator's first orientation on any FortiGate.
 **Negative test:** skip reading firmware/license state and troubleshoot blindly; an
 expired FortiGuard contract silently stops signature updates, which this check reveals.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Build and read the Security Fabric (Topic: Security Fabric fundamentals)
 
@@ -343,7 +343,7 @@ telemetry and a Security Rating.
 on the root; it never appears in the topology — Fabric membership is authorized, not
 automatic.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config system csf
@@ -372,7 +372,7 @@ window into who is talking to what, backed by memory or disk logs (or FortiAnaly
 **Negative test:** rely on FortiView with all logging disabled; the panes stay empty —
 FortiView renders logged data, so logging must be on for a policy or globally.
 
-**Cleanup:** none (leave logging enabled; it is expected in operation).
+**Rollback:** none (leave logging enabled; it is expected in operation).
 
 ### Lab 3.4 — Back up and restore configuration (Topic: Operator lifecycle tasks)
 
@@ -394,7 +394,7 @@ discipline.
 is nothing to roll back to when connectivity breaks — the backup is what makes the
 change reversible.
 
-**Cleanup:** none (keep the revision).
+**Rollback:** none (keep the revision).
 
 ## Lab Verification
 

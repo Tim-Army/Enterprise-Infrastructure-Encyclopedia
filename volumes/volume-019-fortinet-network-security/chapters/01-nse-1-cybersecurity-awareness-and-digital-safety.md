@@ -322,7 +322,7 @@ hovering links before clicking is the NSE 1 habit.
 **Negative test:** trust the display name alone; it is attacker-controlled — the
 `Return-Path` and `Authentication-Results` are what reveal the forgery.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Passwords and multi-factor authentication (Topic: Authentication hygiene)
 
@@ -341,7 +341,7 @@ access.
 **Negative test:** rely on password complexity rules alone; credential-stuffing
 from breaches defeats them — MFA is what stops a valid-but-stolen password.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Safe browsing and transport security (Topic: Protecting data in transit)
 
@@ -359,7 +359,7 @@ untrusted issuer is a warning to heed, not click through.
 **Negative test:** dismiss a browser certificate warning to reach a site; that is
 exactly the man-in-the-middle scenario the warning exists to stop.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Malware, ransomware, and safe data habits (Topic: Protecting the endpoint and data)
 
@@ -377,7 +377,7 @@ backups** are the NSE 1 defenses against malware and ransomware.
 **Negative test:** run an executable from an unverified source or email attachment;
 that is the primary malware infection vector awareness training targets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

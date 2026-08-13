@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Triaging detections by signal alone. Both hosts show "crypto-miner started," so a context-free SOC treats them equally and may burn the first hour on the sandbox while the payments host — on a path to customer PII — spreads.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Code-to-cloud-to-runtime: close the loop
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Ending the response at containment. Killing the process and isolating the host stops this instance, but the exposed, vulnerable path remains for the next attacker — only tracing to the source and fixing it closes the loop.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

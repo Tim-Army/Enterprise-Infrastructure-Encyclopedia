@@ -244,6 +244,8 @@ multi-service `AIServices` resource is the modern single endpoint for
 Vision, Language, Speech, and OpenAI — the surface both developer
 certifications build on.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 6.2 — Create a multi-service Azure AI resource *(AI-200 back-end)*
 
 ```bash
@@ -258,6 +260,8 @@ az cognitiveservices account show --name "$AI" \
 endpoint. A custom domain is required for token-based (Entra) auth — the
 recommended pattern over keys.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.3 — Authenticate to AI services without keys *(AI-200 security)*
 
 ```bash
@@ -268,6 +272,8 @@ echo "Prefer: managed identity + 'Cognitive Services User' role over these keys"
 **Expected result:** a key prefix, plus the guidance. AI-200 rewards
 identity-based access to model endpoints over distributed keys — the same
 credential-hygiene rule as the rest of Azure.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 6.4 — Microsoft Foundry: the app and agent platform *(AI-103)*
 
@@ -282,6 +288,8 @@ provider. AI-103 names **Microsoft Foundry** and **Python** explicitly —
 Foundry hubs/projects are where apps and agents are built, and the SDK is
 Python.
 
+**Rollback:** `az extension remove --name ml` — this lab only adds a local Azure CLI extension; removing it reverts the change (no cloud resources are created).
+
 ### Lab 6.5 — Deploy a model (the serving surface) *(AI-103 / AB-620)*
 
 ```bash
@@ -293,6 +301,8 @@ az cognitiveservices account deployment list --name "$AI" \
 **Expected result:** an empty list on a fresh resource. The examinable
 point: a **model** and a **deployment** are distinct — you deploy a model
 version to get a callable endpoint, and an agent calls that endpoint.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 6.6 — Agent building concepts *(AB-620)*
 
@@ -310,6 +320,8 @@ grounds its answer, and what it is NOT allowed to do.
 source, and an explicit prohibition. Agents *act*, so scoping the tool's
 identity to least privilege is the security core AB-620 tests.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 6.7 — Responsible AI and content safety *(all three, cross-topic)*
 
 ```bash
@@ -320,6 +332,8 @@ az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | grep -i "Content
 **Expected result:** `ContentSafety` (or the note). Content filtering,
 grounding, and evaluation are examinable and operationally real —
 responsible AI is a build requirement, not a checkbox.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 6.8 — Negative test: prove endpoint access needs a role/key
 
@@ -335,6 +349,8 @@ authentication header, even though the endpoint URL is public. That
 identity, not obscurity — the AI-200 security lesson. Add the key or a
 bearer token and the same call returns `200`.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 6.9 — Cleanup
 
 ```bash
@@ -345,6 +361,8 @@ az group exists --name rg-ai-lab
 **Expected result:** `false` shortly after — the AI resource and any
 model deployments removed together. Token-billed inference stops only when
 the deployment is gone, so confirm deletion.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

@@ -90,7 +90,7 @@ notify/subscribe in action.
 **Negative test:** put the exec before the file and hope it runs after; declare a **relationship**
 (`notify`) so ordering and refresh are explicit.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/app.conf /tmp/reloaded /tmp/rel.pp
@@ -124,7 +124,7 @@ valid
 **Negative test:** hardcode the banner text inside the class; **parameterize** it so Hiera can supply the
 value per node.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/cls.pp
@@ -155,7 +155,7 @@ config.
 
 **Negative test:** copy-paste the same resource block ten times; use a **defined type** with a title.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/def.pp
@@ -185,7 +185,7 @@ Notice: Scope(Class[main]): Web package for this OS: apache2
 
 **Negative test:** assume the Debian package name everywhere; branch on **`$facts['os']['family']`**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/cond.pp

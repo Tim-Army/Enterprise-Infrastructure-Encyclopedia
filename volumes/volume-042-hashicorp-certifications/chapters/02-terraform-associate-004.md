@@ -103,7 +103,7 @@ terraform fmt && cat main.tf | head -1
 **Negative test:** create the file by hand with `echo`; that is not
 reproducible or reviewable — declare it as code so it is.
 
-**Cleanup:** stay in `tf-lab` for the following labs.
+**Rollback:** stay in `tf-lab` for the following labs.
 
 ### Lab 2.2 — Objective 2: Terraform fundamentals
 
@@ -121,7 +121,7 @@ prepares the backend (Objective 2).
 **Negative test:** run `terraform plan` before `init`; it errors that the
 directory is not initialized — always `init` first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Objective 3: Core Terraform workflow
 
@@ -141,7 +141,7 @@ terraform destroy -auto-approve
 **Negative test:** skip `plan` and apply blind in real work; always review the
 plan so you know what will change.
 
-**Cleanup:** the destroy removed the resource; re-apply for the next labs:
+**Rollback:** the destroy removed the resource; re-apply for the next labs:
 `terraform apply -auto-approve`.
 
 ### Lab 2.4 — Objective 4: Terraform configuration
@@ -165,7 +165,7 @@ prints the file path — variables and outputs, the configuration language
 **Negative test:** hard-code every value; **variables** make configuration
 reusable across environments — parameterize.
 
-**Cleanup:** `rm -f main.tf.bak`
+**Rollback:** `rm -f main.tf.bak`
 
 ### Lab 2.5 — Objective 5: Terraform modules
 
@@ -188,7 +188,7 @@ module by `source` — module composition (Objective 5).
 **Negative test:** copy-paste the same resources across projects; a **module**
 packages and reuses them — factor shared config into modules.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — Objective 6: Terraform state management
 
@@ -206,7 +206,7 @@ terraform state show local_file.hello | head -5
 **Negative test:** hand-edit `terraform.tfstate` in a text editor; use
 `terraform state` subcommands — manual edits corrupt state.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.7 — Objective 7: Maintain infrastructure with Terraform
 
@@ -226,7 +226,7 @@ restores the declared content — day-two maintenance and drift reconciliation
 **Negative test:** fix drift by editing the file directly; Terraform will detect
 it again — change the **config** and apply so state and reality agree.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.8 — Objective 8: HCP Terraform
 
@@ -250,7 +250,7 @@ workspace, plus what HCP adds (remote state/runs, RBAC, policy) — Objective 8.
 **Negative test:** store state locally for a team; concurrent applies corrupt it
 — use **HCP Terraform** (or a locking remote backend) for collaboration.
 
-**Cleanup:** `cd .. && rm -rf tf-lab`
+**Rollback:** `cd .. && rm -rf tf-lab`
 
 ## Lab Verification
 

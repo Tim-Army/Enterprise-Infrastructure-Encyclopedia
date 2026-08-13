@@ -133,7 +133,7 @@ of PowerEdge management.
 down; iDRAC works with the host powered off (on standby power) — out-of-band is
 independent of the OS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — BIOS and UEFI configuration (PowerEdge Operate)
 
@@ -154,7 +154,7 @@ are scheduled, not immediate.
 stays pending — BIOS changes require the Lifecycle Controller job to apply on
 restart.
 
-**Cleanup:** `racadm ... jobqueue delete -i <jobid>` if not yet applied.
+**Rollback:** `racadm ... jobqueue delete -i <jobid>` if not yet applied.
 
 ### Lab 2.3 — Storage and PERC RAID (PowerEdge Operate)
 
@@ -174,7 +174,7 @@ by RAID level and disk keys, applied through a storage job.
 **Negative test:** create a RAID-5 VD with two disks; the controller rejects it —
 RAID levels have minimum-disk requirements the controller enforces.
 
-**Cleanup:** `racadm ... storage deletevd:<vd-fqdd>` then apply the job.
+**Rollback:** `racadm ... storage deletevd:<vd-fqdd>` then apply the job.
 
 ### Lab 2.4 — Firmware update via Lifecycle Controller (PowerEdge Operate)
 
@@ -194,7 +194,7 @@ fleet stays on a validated baseline.
 **Negative test:** apply a firmware image for the wrong model/component; the LC
 rejects it as incompatible — the catalog/component match is validated before flash.
 
-**Cleanup:** cancel the job if staged and not yet applied.
+**Rollback:** cancel the job if staged and not yet applied.
 
 ### Lab 2.5 — OpenManage Enterprise monitoring (PowerEdge Operate)
 
@@ -213,7 +213,7 @@ a REST API for automation.
 **Negative test:** a device discovered without iDRAC credentials shows limited data;
 OME needs the iDRAC credential to inventory and manage it fully.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Power and thermal management (PowerEdge Operate)
 
@@ -233,7 +233,7 @@ and tune thermal/fan profiles; iDRAC exposes it for capacity planning.
 throttles CPU to stay under the cap, hurting performance — the cap must exceed the
 workload's floor.
 
-**Cleanup:** `racadm ... set System.Power.Cap.Enable Disabled`.
+**Rollback:** `racadm ... set System.Power.Cap.Enable Disabled`.
 
 ### Lab 2.7 — PowerEdge MX modular (MX Modular Deploy)
 
@@ -253,7 +253,7 @@ multi-chassis fabric.
 sled has no external connectivity — the Scalable Fabric must be built before sled
 networking works.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.8 — PowerEdge XE install for AI (XE Install)
 
@@ -276,7 +276,7 @@ the AI software stack.
 throttle or the PSUs alarm — XE deployment must match rack power and cooling to the
 GPU load.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.9 — Server troubleshooting (PowerEdge Operate)
 
@@ -296,7 +296,7 @@ fault the OS cannot see.
 **Negative test:** chase the OS for a server that fails POST; the OS never loads —
 the SEL/LC logs (out-of-band) are where a pre-boot hardware fault appears.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

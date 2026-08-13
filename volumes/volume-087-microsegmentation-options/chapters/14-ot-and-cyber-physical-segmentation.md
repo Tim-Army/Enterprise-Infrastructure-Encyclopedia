@@ -141,7 +141,7 @@ for name, (tier, how) in options.items():
 **Negative test.** Buy a visibility platform to "do microsegmentation." You will end the project with an
 excellent inventory and no enforcement — the single most common OT procurement error.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 14.2 — Check the DHCP dependency before designing
 
@@ -161,7 +161,7 @@ for site, cfg in sites.items():
 plant-a. Two plants cannot adopt it — statically addressed and vendor-managed networks have no DHCP to
 proxy. Confirm per site.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 14.3 — Read a FedRAMP status correctly
 
@@ -183,7 +183,7 @@ for name, l in listings.items():
 **Negative test.** Treat a Marketplace listing as authorization. "In Process" appears on the same site
 and looks similar at a glance; the status field and ATO count are what matter.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 14.4 — Score the OT tier against the rubric
 
@@ -202,7 +202,7 @@ which is an accurate reflection of plant change control.
 **Negative test.** Drop the `effort` weight to zero and the tier looks unbeatable. Effort is precisely
 what determines whether an OT program finishes; do not weight it away.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

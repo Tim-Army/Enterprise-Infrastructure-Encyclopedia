@@ -81,7 +81,7 @@ PY
 **Negative test:** judge user experience from server latency alone; add **RUM** for what the browser
 actually experiences.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Define a machine-learning anomaly job
 
@@ -104,7 +104,7 @@ curl -s -k -u elastic:$PW -X PUT "https://localhost:9200/_ml/anomaly_detectors/h
 **Negative test:** set a fixed latency threshold on a service with daily peaks; it alarms every peak —
 use an **anomaly job** that learns the pattern.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_ml/anomaly_detectors/high_latency"
@@ -128,7 +128,7 @@ automatic reaction.
 **Negative test:** create a rule with no **connector**; it fires silently and nobody responds — attach a
 connector.
 
-**Cleanup:** disable the practice rule if not needed.
+**Rollback:** disable the practice rule if not needed.
 
 ### Lab 7.4 — Correlate an anomaly to an alert
 
@@ -153,7 +153,7 @@ PY
 **Negative test:** collect data but never alert or investigate; observability is only useful when it
 **drives reaction**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -60,7 +60,7 @@ terraform fmt && echo "HCL formatted OK"
 
 **Negative test:** Reference `aviatrix_spoke_gateway.spoke_app.gw_name` before defining that resource — `terraform validate` errors on the unknown reference; declarative dependencies must resolve, exactly as the exam expects.
 
-**Cleanup:** `rm -rf ~/acetf`.
+**Rollback:** `rm -rf ~/acetf`.
 
 ### Lab 8.2 — Idempotence and drift (ACE Automation)
 
@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Click-ops changes on the Controller behind Terraform's back — they become drift; the course's discipline is one source of truth (the code).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — CoPilot visibility and FlowIQ (ACE Operations)
 
@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Relying on each cloud's native flow logs separately — no unified view, no cross-cloud correlation; CoPilot's single pane is the operational differentiator.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Compliance and audit (ACE Operations)
 
@@ -127,7 +127,7 @@ Use to answer: "show me prod is isolated from dev" and "prove no workload egress
 
 **Negative test:** A secure design with no visibility/retention — you can't *prove* it during an audit; Operations exists to make the posture demonstrable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

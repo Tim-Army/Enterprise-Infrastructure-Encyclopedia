@@ -367,7 +367,7 @@ failure negative test.
 7. Restore the correct password (`--op=update -n node.session.auth.password
    -v LabSecret123`) and log back in to confirm recovery.
 
-**Cleanup**
+**Rollback**
 
 8. On `client01`, log out and delete the node record:
 

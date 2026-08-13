@@ -351,7 +351,7 @@ least-privilege access, and documented runbooks make operations repeatable, audi
 access is un-attributable and procedures live in one person's head — the operating model is what makes
 administration sustainable and auditable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Cross-platform inventory (Topic: Inventory)
 
@@ -375,7 +375,7 @@ Windows.
 **Negative test:** manage an estate with no inventory; you miss unpatched or unknown hosts — an
 authoritative inventory (ideally automated) is the prerequisite for every other discipline.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Standardization and baselines (Topic: Standardization)
 
@@ -395,7 +395,7 @@ patch, and troubleshoot; each snowflake host is a liability.
 **Negative test:** build each server by hand differently; troubleshooting and patching become
 per-host guesswork — a standard baseline makes the fleet uniform and manageable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Change and access discipline (Topic: Governance)
 
@@ -414,7 +414,7 @@ escalation) and changes are reviewed/recorded, so an audit can reconstruct who d
 **Negative test:** allow shared privileged logins with no logging; when something breaks you cannot
 tell who changed what — named accounts with logged escalation are what make actions attributable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

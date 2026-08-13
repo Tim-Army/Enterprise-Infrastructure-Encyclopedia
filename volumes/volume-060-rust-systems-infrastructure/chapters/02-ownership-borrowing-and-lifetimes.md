@@ -73,7 +73,7 @@ move semantics.
 **Negative test:** expect `a` to still be usable after `let b = a`; non-`Copy` types
 **move** — clone or borrow if you need both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Clone when you need a copy
 
@@ -92,7 +92,7 @@ fn main() {
 **Negative test:** clone large data on a hot path to dodge the borrow checker; **borrow**
 instead — cloning has a cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Shared borrows
 
@@ -112,7 +112,7 @@ fn main() {
 **Negative test:** pass `s` by value to a helper that only reads it; **borrow with `&`** so
 the caller keeps ownership.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Mutable borrow exclusivity
 
@@ -134,7 +134,7 @@ mutability.
 **Negative test:** hold a `&mut` and a `&` at once; the compiler **rejects** it — that rule
 prevents data races.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

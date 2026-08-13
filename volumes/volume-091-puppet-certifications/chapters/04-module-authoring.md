@@ -86,7 +86,7 @@ autoloader expects.
 **Negative test:** put the class in `demo/demo.pp`; the autoloader looks in **`manifests/init.pp`** — use
 the standard layout.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -rf demo
@@ -111,7 +111,7 @@ PY
 **Negative test:** `puppet module install` without a version and auto-update; **pin** the version and
 review changes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Structure roles and profiles
 
@@ -141,7 +141,7 @@ organization.
 **Negative test:** classify a node with five profiles directly and no role; use **one role** that
 composes them.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -f /tmp/rp.pp
@@ -168,7 +168,7 @@ WARNING: double quoted string containing no variables (double_quoted_strings)
 
 **Negative test:** ship unlinted, non-idiomatic code; run **puppet-lint** (and rspec-puppet) first.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -f /tmp/bad.pp

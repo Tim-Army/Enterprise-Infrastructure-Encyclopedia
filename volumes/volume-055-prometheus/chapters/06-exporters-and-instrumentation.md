@@ -69,7 +69,7 @@ exporter.
 **Negative test:** write a custom script to read `/proc`; **node_exporter** already
 exposes host metrics correctly — reuse it.
 
-**Cleanup:** `docker rm -f node`.
+**Rollback:** `docker rm -f node`.
 
 ### Lab 6.2 — Instrument an app (client library)
 
@@ -90,7 +90,7 @@ instrumentation.
 **Negative test:** log request counts to a file and parse them; **instrument directly**
 so Prometheus scrapes structured metrics.
 
-**Cleanup:** stop the script.
+**Rollback:** stop the script.
 
 ### Lab 6.3 — Push batch metrics via Pushgateway
 
@@ -109,7 +109,7 @@ curl -sS "http://localhost:9091/metrics" | grep batch_job_last_success_seconds
 **Negative test:** push metrics for a long-running web service; the gateway holds
 **stale** values with no liveness — instrument the service directly instead.
 
-**Cleanup:** `docker rm -f pgw`.
+**Rollback:** `docker rm -f pgw`.
 
 ### Lab 6.4 — Probe an endpoint (blackbox)
 
@@ -127,7 +127,7 @@ monitoring via blackbox.
 **Negative test:** infer external availability from internal metrics; a **blackbox probe**
 tests it from outside — use it for endpoint SLOs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

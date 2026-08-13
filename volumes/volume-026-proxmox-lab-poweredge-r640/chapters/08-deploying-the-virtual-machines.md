@@ -321,7 +321,7 @@ for scripting the fleet.
 **Negative test:** attach the disk to `local` (boot mirror) instead of `river`; the VM competes with
 the OS for the small boot device — VM disks belong on the `river` datastore.
 
-**Cleanup:** `qm stop 100; qm destroy 100`.
+**Rollback:** `qm stop 100; qm destroy 100`.
 
 ### Lab 8.2 — Build a cloud-init template (Topic: Templates)
 
@@ -344,7 +344,7 @@ clones of it come up fully configured with no interactive install.
 clone is an identical copy with the same identity — the cloud-init drive is what makes each clone
 uniquely configured.
 
-**Cleanup:** keep the template (Lab 8.3 clones it).
+**Rollback:** keep the template (Lab 8.3 clones it).
 
 ### Lab 8.3 — Clone the fleet (Topic: Fleet deployment)
 
@@ -367,7 +367,7 @@ minutes; `--full` makes independent copies (vs `--link` linked clones that share
 differ subtly — templated cloning gives identical, fast, scriptable deployment (the point of the
 ten-VM build).
 
-**Cleanup:** `for id in $(seq 101 110); do qm stop $id; qm destroy $id; done` when tearing down.
+**Rollback:** `for id in $(seq 101 110); do qm stop $id; qm destroy $id; done` when tearing down.
 
 ### Lab 8.4 — Containers as a lighter alternative (Topic: Containers)
 
@@ -391,7 +391,7 @@ unnecessary.
 shares the host kernel) — use a full VM (`qm`) for non-Linux or kernel-specific workloads, containers
 for lightweight Linux services.
 
-**Cleanup:** `pct stop 200; pct destroy 200`.
+**Rollback:** `pct stop 200; pct destroy 200`.
 
 ### Lab 8.5 — Import a vendor appliance image (Topic: Appliance import)
 
@@ -432,7 +432,7 @@ file instead of the full disk image; the VM comes up to *no bootable device* or 
 kernel panic — an imported appliance must sit on the bus it expects (virtio here) and
 use the full disk image, not the firmware-upgrade package.
 
-**Cleanup:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
+**Rollback:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
 imported disks).
 
 **Next:** first-boot console login, the evaluation-license state, and management

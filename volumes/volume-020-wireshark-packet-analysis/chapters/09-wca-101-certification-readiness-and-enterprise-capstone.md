@@ -248,7 +248,7 @@ features — confirming your practice is weighted the way the exam is, not sprea
 protocols (43%) while over-investing in the 5% interface domain — the weights are an
 instruction about where to spend time.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Capstone investigation: triage a real problem (Topic: Integrative analysis)
 
@@ -275,7 +275,7 @@ rewards.
 guess and miss the dominant problem the protocol-hierarchy and expert views would have named
 first — profile before you dive.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Analysis Exercise: a repeatable methodology (Topic: Synthesis)
 
@@ -308,7 +308,7 @@ shows server think-time and TCP RTT is a millisecond, that conclusion is wrong a
 would have caught it — the discipline of the method is what prevents the confident wrong
 answer.
 
-**Cleanup:** none (methodology artifact).
+**Rollback:** none (methodology artifact).
 
 ## Lab Verification
 

@@ -75,7 +75,7 @@ PY
 
 **Negative test:** plan CCSM as a single exam; it's earned via **ISAs** — accumulate accreditations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Understand VSX virtual gateways
 
@@ -93,7 +93,7 @@ policed.
 **Negative test:** expect one policy to cover all virtual systems; each **virtual system** has its
 own — manage them separately.
 
-**Cleanup:** none (read-only/conceptual).
+**Rollback:** none (read-only/conceptual).
 
 ### Lab 8.3 — Outline Maestro hyperscale
 
@@ -111,7 +111,7 @@ gateway.
 **Negative test:** confuse Maestro with **ClusterXL** (a few-member HA cluster); Maestro
 orchestrates **many** appliances as a Security Group — different scale.
 
-**Cleanup:** none (conceptual).
+**Rollback:** none (conceptual).
 
 ## Lab Verification
 

@@ -196,7 +196,7 @@ core.
 stays down; `show l2vpn xconnect detail` flags the mismatch — the AC/PW parameters
 must agree.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Describe the Layer 2 service architecture (SPVI Objective 1.3)
 
@@ -216,7 +216,7 @@ instances into a bridge domain (E-LAN) or xconnect (E-Line), with MAC learning
 equal to EVPN; VPLS floods unknown unicast and learns in the data plane, capping
 scale — EVPN's control-plane learning scales further.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Troubleshoot L2VPN services (SPVI Objective 2.1)
 
@@ -236,7 +236,7 @@ missing MACs point to a learning/flooding or split-horizon issue.
 no transport means no PW, so no L2 service; verify the underlay first (as in Lab
 6.4).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Describe EVPN concepts (SPVI Objective 2.2)
 
@@ -257,7 +257,7 @@ control plane with multihoming and MAC mobility.
 without inclusive-multicast routes BUM traffic has no path — Type-3 must be present
 for flooding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Implement Ethernet OAM (SPVI Objective 2.3)
 
@@ -278,7 +278,7 @@ end to end.
 each other; continuity check fails though the service forwards — the MD level/MA
 must match.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Implement EVPN (SPVI Objective 2.4)
 
@@ -299,7 +299,7 @@ multihoming.
 unreachable remotely; check the EVI's BGP export — control-plane advertisement is
 what makes EVPN scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — Describe carrier-neutral facilities (SPCNI Objective 2.1)
 
@@ -319,7 +319,7 @@ exchange traffic without a transit provider.
 traffic; a private interconnect (PNI) gives dedicated capacity and better control
 — the facility offers both, chosen by traffic volume.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.8 — Evaluate WAN infrastructure connectivity (SPCNI Objective 2.2)
 
@@ -340,7 +340,7 @@ on-ramp) against cost and SLA.
 single point of failure regardless of speed — redundancy, not just capacity, is
 the WAN requirement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.9 — Troubleshoot DCI solutions (SPCNI Objective 2.3)
 
@@ -360,7 +360,7 @@ data centers (EVPN over MPLS/SR or VXLAN); a fault traces to the EVPN control pl
 and a broadcast storm in one DC crosses the DCI to the other — DCI needs
 BUM/storm controls, unlike an intra-DC fabric.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

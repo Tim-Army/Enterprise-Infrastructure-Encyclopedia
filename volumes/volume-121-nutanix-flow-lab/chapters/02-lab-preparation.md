@@ -30,7 +30,7 @@ pc> (four VMs on one AHV subnet: web, db, hmi, plc)
 
 **Expected result (design).** Flow shows as enabled; the four VMs run on AHV with no security policy yet defined. Track 2 reproduces the enforcement point.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build the AHV model
 
@@ -70,7 +70,7 @@ sudo ip netns exec web ping -c1 10.150.0.99 | grep -o "0 received"
 0 received
 ```
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start the workload services
 
@@ -99,7 +99,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.150.0.20 502 || echo "db-502 CLOSED
 db-502 CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

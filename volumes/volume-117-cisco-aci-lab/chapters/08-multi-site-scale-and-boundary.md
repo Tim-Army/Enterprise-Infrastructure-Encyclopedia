@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: contracts enforced fabric-wide by the leaves, stretched across sites by the orchestrator, policy defined per application not per switch.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Integrations (design)
 
@@ -26,7 +26,7 @@
 
 **Expected result (on paper).** A design note: VMM integration for dynamic EPG membership, service graphs to insert inspection into a contract path.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -46,7 +46,7 @@ echo "ACI enforces on the fabric; off-fabric endpoints and L7 need complementary
 
 **Negative test.** Assume ACI secures every workload. It secures fabric-attached endpoints; a VM on a non-ACI host or a cloud workload needs a consistent policy applied by another control.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

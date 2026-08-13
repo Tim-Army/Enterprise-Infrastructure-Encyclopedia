@@ -472,7 +472,7 @@ two layered controls on the same data.
 **Negative test:** `aws s3api get-object` over `http://` (SecureTransport
 false) is denied, proving the TLS-only control is enforced.
 
-**Cleanup:** delete the bucket policy; leave Block Public Access on.
+**Rollback:** delete the bucket policy; leave Block Public Access on.
 
 ### Lab 5.2 — Determine high-performing and scalable storage (SAA-C03 3.1)
 
@@ -493,7 +493,7 @@ decoupled from size, unlike gp2.
 **Negative test:** request 250 MB/s at only 3000 IOPS; the throughput-to-IOPS
 ratio is rejected, a real performance constraint.
 
-**Cleanup:** `aws ec2 delete-volume --volume-id "$VOL"`.
+**Rollback:** `aws ec2 delete-volume --volume-id "$VOL"`.
 
 ### Lab 5.3 — Determine high-performing database solutions (SAA-C03 3.3)
 
@@ -514,7 +514,7 @@ as a full instance; delete it after.
 **Negative test:** send all reads to the primary under load; it saturates —
 the replica is what offloads them.
 
-**Cleanup:** `aws rds delete-db-instance --db-instance-identifier "$DB-ro" --skip-final-snapshot`.
+**Rollback:** `aws rds delete-db-instance --db-instance-identifier "$DB-ro" --skip-final-snapshot`.
 
 ### Lab 5.4 — Determine high-performing data ingestion and transformation (SAA-C03 3.5)
 
@@ -533,7 +533,7 @@ scalable ingestion front end for streaming transforms.
 **Negative test:** push beyond a shard's 1 MB/s limit; `put-record` returns
 `ProvisionedThroughputExceededException`, the signal to add shards.
 
-**Cleanup:** `aws kinesis delete-stream --stream-name ingest`.
+**Rollback:** `aws kinesis delete-stream --stream-name ingest`.
 
 ### Lab 5.5 — Design and implement controls for data at rest (SCS-C03 5.2)
 
@@ -554,7 +554,7 @@ are encrypted at rest under a key whose access you control.
 objects even with `s3:GetObject`, showing at-rest encryption adds an
 authorization layer.
 
-**Cleanup:** `aws s3api delete-bucket-encryption --bucket "$BUCKET"`.
+**Rollback:** `aws s3api delete-bucket-encryption --bucket "$BUCKET"`.
 
 ### Lab 5.6 — Encrypted, versioned, access-blocked S3 bucket (integrative)
 
@@ -662,7 +662,7 @@ and any accumulated storage.
    the control prevents accidental public exposure even when a policy
    document explicitly grants it.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws s3api delete-objects --bucket "$BUCKET" \

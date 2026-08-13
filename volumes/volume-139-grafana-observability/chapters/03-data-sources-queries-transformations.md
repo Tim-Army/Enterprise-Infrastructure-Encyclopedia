@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Exporting both datasets to a spreadsheet each month to do this by hand — the analysis goes stale immediately and nobody repeats it, whereas a transformed panel updates itself.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Variable chaining and multi-value interpolation
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Building unchained variables on a large estate — the `pod` dropdown lists thousands of entries across every environment, and viewers pick the wrong one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Transform in the query or in Grafana?
 
@@ -171,7 +171,7 @@ EOF
 
 **Negative test:** Pulling raw series into Grafana and using Reduce to aggregate — it works at small scale and fails exactly when the system gets big enough to need the dashboard.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

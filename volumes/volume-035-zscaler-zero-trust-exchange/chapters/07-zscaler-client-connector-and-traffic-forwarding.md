@@ -147,7 +147,7 @@ private domain is brokered rather than routed.
 egresses from your local ISP and the private app is unreachable — nothing is
 protected unless it is forwarded.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Choose the tunnel mode (Topic: Z-Tunnel 1.0 vs 2.0)
 
@@ -167,7 +167,7 @@ enforce, so full firewalling requires 2.0.
 **Negative test:** expect the cloud firewall to block a non-web port on Z-Tunnel
 1.0; that traffic was never forwarded — 1.0 carries web only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Forward a site with a location tunnel (Topic: Site forwarding)
 
@@ -186,7 +186,7 @@ fixed site without per-device agents, complementing ZCC for roaming users.
 run ZCC; it is unprotected — site tunnels exist precisely for what the agent
 cannot cover.
 
-**Cleanup:** tear down the lab tunnel/location.
+**Rollback:** tear down the lab tunnel/location.
 
 ## Lab Verification
 

@@ -44,7 +44,7 @@ EOF
 
 **Negative test:** Building a bespoke schedule per workload — that is the old backup-job world RSC replaces; it doesn't scale and drifts out of consistency. SLA Domains are the answer.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Assign workloads and read compliance
 
@@ -83,7 +83,7 @@ RSC continuously reports compliance: `db-prod` and `web-01` meet their SLA, `fil
 
 **Negative test:** A workload nobody assigned to an SLA (`legacy-app`) is silently unprotected — the compliance view surfaces it; without policy-driven protection, unprotected assets hide until a recovery is needed and isn't there.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — The RSC control-plane model
 
@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Assuming the backups live in the SaaS console — they don't; the console is control/metadata, the immutable data is on your clusters/cloud. Confusing the planes is a common RCSA misconception.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

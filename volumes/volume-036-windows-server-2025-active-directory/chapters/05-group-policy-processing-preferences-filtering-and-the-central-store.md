@@ -165,7 +165,7 @@ inheritance list — a GPO does nothing until linked to a site, domain, or OU.
 **Negative test:** create the GPO but do not link it; `gpresult` on a server
 never lists it — an unlinked GPO is inert.
 
-**Cleanup:** `Remove-GPLink -Name "Baseline-Servers" -Target "OU=Servers,DC=corp,DC=contoso,DC=lab"; Remove-GPO "Baseline-Servers"`.
+**Rollback:** `Remove-GPLink -Name "Baseline-Servers" -Target "OU=Servers,DC=corp,DC=contoso,DC=lab"; Remove-GPO "Baseline-Servers"`.
 
 ### Lab 5.2 — Security-filter a GPO to a group (Topic: Scope policy)
 
@@ -185,7 +185,7 @@ narrows a broadly linked GPO to a specific set of principals.
 group Read; the GPO stops applying because the computer account can no
 longer read it — grant the target group Read (GpoApply includes Read).
 
-**Cleanup:** restore Authenticated Users or remove the test GPO.
+**Rollback:** restore Authenticated Users or remove the test GPO.
 
 ### Lab 5.3 — Deploy the ADMX central store (Topic: Manage administrative templates)
 
@@ -206,7 +206,7 @@ retrieved from the central store" — every admin edits the same templates.
 the editor shows errors for missing ADML — ADMX (settings) need matching
 ADML (language) files.
 
-**Cleanup:** `Remove-Item $cs -Recurse -Force` (lab only).
+**Rollback:** `Remove-Item $cs -Recurse -Force` (lab only).
 
 ### Lab 5.4 — Diagnose resultant policy (Topic: Troubleshoot Group Policy)
 
@@ -225,7 +225,7 @@ reason — RSoP is the authoritative "why" for Group Policy.
 **Negative test:** run `gpresult /r` in a non-elevated prompt for computer
 scope; it refuses — computer-scope RSoP requires elevation.
 
-**Cleanup:** `Remove-Item C:\rsop.html`.
+**Rollback:** `Remove-Item C:\rsop.html`.
 
 ## Lab Verification
 

@@ -78,7 +78,7 @@ PY
 **Negative test:** assume the cloud provider secures your config; the **customer** owns it — assess
 posture.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Find a toxic combination
 
@@ -99,7 +99,7 @@ analysis.
 **Negative test:** rank each misconfig alone; the dangerous **combination** is missed — analyze attack
 paths.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Detect an endpoint threat (EDR)
 
@@ -120,7 +120,7 @@ PY
 **Negative test:** alert only on known malware hashes; **behavioral** chains (living-off-the-land) evade
 that — detect behavior.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Respond to an endpoint threat
 
@@ -141,7 +141,7 @@ response.
 **Negative test:** detect but take **no action**; the threat continues — define automatic/analyst
 response.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

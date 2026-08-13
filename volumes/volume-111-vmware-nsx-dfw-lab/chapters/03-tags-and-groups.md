@@ -46,7 +46,7 @@ cat /etc/nsx/tags
 
 **Expected result.** Four IP→tag rows — the Track 2 tag inventory.
 
-**Cleanup.** Keep the tags.
+**Rollback.** Keep the tags.
 
 ### Exercise 3.2 — Create dynamic groups
 
@@ -87,7 +87,7 @@ sudo nft list set inet nsx g_db
 
 **Expected result.** `g_db` contains 10.50.1.20 — the group resolved from the tag inventory.
 
-**Cleanup.** Keep the groups.
+**Rollback.** Keep the groups.
 
 ## Summary and Completion Checklist
 

@@ -403,7 +403,7 @@ silently entering your pipeline.
 release lands automatically on the next run — pinning + verification is what keeps the supply
 chain deterministic and trusted.
 
-**Cleanup:** `rm -f ~/gov/requirements.yml`.
+**Rollback:** `rm -f ~/gov/requirements.yml`.
 
 ### Lab 8.2 — Dependency and vulnerability scanning (Topic: Dependency security)
 
@@ -424,7 +424,7 @@ visible, and wiring the scan into CI (Chapter 05) blocks known-bad versions from
 **Negative test:** ship automation with unscanned, transitive dependencies; a known-vulnerable
 library rides along undetected — the SBOM + scan is what surfaces it before deployment.
 
-**Cleanup:** `rm -f ~/gov/sbom.json`.
+**Rollback:** `rm -f ~/gov/sbom.json`.
 
 ### Lab 8.3 — Governance and change control (Topic: Governance)
 
@@ -453,7 +453,7 @@ production unreviewed.
 unchecked change ships to production — branch protection + CODEOWNERS is what enforces the
 four-eyes principle mechanically.
 
-**Cleanup:** `rm -rf ~/gov/.github ~/gov/branch-protection.md`.
+**Rollback:** `rm -rf ~/gov/.github ~/gov/branch-protection.md`.
 
 ### Lab 8.4 — Drift detection and compliance as code (Topic: Compliance)
 
@@ -477,7 +477,7 @@ non-zero exit is compliance-as-code: the declared state is the policy, and drift
 manual "quick fix" silently diverges and no one knows until an incident — scheduled drift
 detection surfaces it immediately.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color; cd ~ && rm -rf ~/gov`.
+**Rollback:** `terraform destroy -auto-approve -no-color; cd ~ && rm -rf ~/gov`.
 
 ## Lab Verification
 

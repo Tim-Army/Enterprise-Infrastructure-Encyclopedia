@@ -172,7 +172,7 @@ network fault, stopped them.
 never fires — order defeats intent when a general allow precedes a specific
 block.
 
-**Cleanup:** remove or disable the lab rule.
+**Rollback:** remove or disable the lab rule.
 
 ### Lab 2.2 — Verify TLS inspection and its trust chain (Topic: SSL inspection)
 
@@ -192,7 +192,7 @@ only because the Zscaler certificate is in its trust store.
 inspected HTTPS site throws a certificate error — trust must be provisioned
 before inspection is enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Write and evaluate a PAC file (Topic: Traffic forwarding)
 
@@ -226,7 +226,7 @@ destinations go direct.
 backhauled through ZIA and may break or add latency — the `DIRECT` exception is
 what keeps internal traffic off the proxy.
 
-**Cleanup:** `rm -f forward.pac`.
+**Rollback:** `rm -f forward.pac`.
 
 ## Lab Verification
 

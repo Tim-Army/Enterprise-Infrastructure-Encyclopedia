@@ -23,7 +23,7 @@
 
 **Expected result (design).** An APIC managing EPGs and contracts. Track 2 makes the whitelist enforcement concrete.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build endpoints and the fabric host
 
@@ -59,7 +59,7 @@ All endpoints reach each other (routed) — the pre-contract state.
 
 **Negative test.** Without a fabric policy, the routed network permits everything — the opposite of ACI's whitelist default, which Chapter 05 imposes.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Record the EPG membership
 
@@ -80,7 +80,7 @@ cat /etc/aci/epgs
 
 **Expected result.** Four endpoints mapped to four EPGs — the groups contracts will apply between.
 
-**Cleanup.** Keep the membership.
+**Rollback.** Keep the membership.
 
 ## Summary and Completion Checklist
 

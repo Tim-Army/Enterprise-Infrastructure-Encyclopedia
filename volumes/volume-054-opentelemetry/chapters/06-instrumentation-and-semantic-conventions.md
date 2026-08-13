@@ -70,7 +70,7 @@ zero-code approach.
 **Negative test:** hand-instrument every library call; **zero-code** covers popular
 libraries automatically — start there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Add manual spans for business logic
 
@@ -89,7 +89,7 @@ spans — breadth plus business context.
 **Negative test:** rely only on auto-instrumentation; **manual spans** capture
 business operations the libraries can't see.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Use semantic-convention attributes
 
@@ -108,7 +108,7 @@ backend-agnostic telemetry.
 **Negative test:** invent `method`/`status`; backends expect **`http.request.method`**
 etc. — follow the conventions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Enable resource detection
 
@@ -126,7 +126,7 @@ service identity — self-describing signals.
 **Negative test:** hard-code environment attributes; **resource detectors** discover them
 per host — enable them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

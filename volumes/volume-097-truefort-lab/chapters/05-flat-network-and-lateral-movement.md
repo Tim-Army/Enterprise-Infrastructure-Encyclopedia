@@ -43,7 +43,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Nothing is blocked to find — the finding is that any host can reach any service, and any host can *present the app's service account* to the database.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows and the service-account boundary
 
@@ -63,7 +63,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Argue that "`svc_app` is a valid account, so its use is fine wherever it appears." That is exactly the assumption attackers exploit: a valid credential used from an invalid place. Binding the account to its legitimate host is the control TrueFort adds. Keep row 3 a "no".
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement and service-account misuse
 
@@ -94,7 +94,7 @@ sudo tail -5 /var/log/postgresql/postgresql-*-main.log | grep -i "connection aut
 
 **Negative test.** Re-run the app's own query from `tf-app01` (`~/checkdb.sh` → 3); `svc_app` connects from `10.10.20.11`, which is legitimate. The credential is identical in both cases — only the *source and process* differ, which is why identity-aware policy, not a password check, is what distinguishes them.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

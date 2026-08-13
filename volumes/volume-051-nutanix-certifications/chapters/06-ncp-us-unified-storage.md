@@ -82,7 +82,7 @@ deploy/upgrade section.
 **Negative test:** upgrade FSVMs manually; **LCM** coordinates the rolling upgrade —
 use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Configure and utilize (a share with a quota)
 
@@ -99,7 +99,7 @@ ncli file-server list-shares
 **Negative test:** create shares with no quota; **quotas** prevent one team from
 consuming the file server.
 
-**Cleanup:** delete the share if it was for the lab.
+**Rollback:** delete the share if it was for the lab.
 
 ### Lab 6.3 — Analyze and monitor (Data Lens)
 
@@ -116,7 +116,7 @@ analyze/monitor section.
 **Negative test:** track capacity in a spreadsheet; **Data Lens** trends and flags
 anomalies automatically.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Troubleshoot
 
@@ -134,7 +134,7 @@ section.
 **Negative test:** blame the network first; check **FSVM health + AD join + share
 permissions** systematically.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

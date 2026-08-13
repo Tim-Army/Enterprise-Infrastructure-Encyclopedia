@@ -85,7 +85,7 @@ internals/time-travel the Professional exam tests.
 **Negative test:** rely on manual backups for point-in-time reads; **Delta time
 travel** is built in — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Data processing: optimization
 
@@ -102,7 +102,7 @@ vacuumed — the optimization skills of the Professional exam.
 **Negative test:** never `OPTIMIZE`; many small files slow queries — compact and
 cluster regularly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Data modeling: SCD Type 2 (CDC)
 
@@ -122,7 +122,7 @@ current one — SCD Type 2 / CDC modeling.
 **Negative test:** overwrite the dimension in place; **SCD Type 2** preserves
 history — don't lose it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Security and governance: dynamic views
 
@@ -142,7 +142,7 @@ role-aware masking (Professional governance).
 **Negative test:** grant raw table access to all analysts; use a **dynamic view**
 to enforce column-level masking.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Monitoring and logging
 
@@ -160,7 +160,7 @@ monitoring/logging area of the Professional exam.
 **Negative test:** ship a pipeline with no quality checks; **expectations** catch
 bad data early — add them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — Testing and deployment (Asset Bundles / CI/CD)
 
@@ -181,7 +181,7 @@ CI/CD deployment approach the Professional exam covers.
 **Negative test:** click-deploy jobs to production; use **Asset Bundles + CI/CD**
 for versioned, repeatable deployment.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

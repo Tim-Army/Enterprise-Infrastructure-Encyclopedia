@@ -145,7 +145,7 @@ linearly and can run two-layer (separate) or HCI (collapsed) topologies.
 **Negative test:** map a volume to an SDC whose driver is not installed/registered;
 the host has no block device — the SDC must be a registered PowerFlex client.
 
-**Cleanup:** `scli --unmap_volume_from_sdc ...` then `scli --remove_volume
+**Rollback:** `scli --unmap_volume_from_sdc ...` then `scli --remove_volume
 --volume_name LAB-VOL`.
 
 ### Lab 5.2 — PowerFlex protection domains and fault sets (PowerFlex Implementation)
@@ -166,7 +166,7 @@ both copies in one fault set.
 **Negative test:** place all SDS in one fault set; a rack failure can take both mirror
 copies — fault sets must reflect real independent failure domains.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — VxRail deployment (VxRail Deploy)
 
@@ -186,7 +186,7 @@ integrated system.
 baseline; VxRail Manager blocks the expansion — the node must match the cluster's
 validated version.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — VxRail lifecycle management (VxRail Operate)
 
@@ -206,7 +206,7 @@ interop matrix guesswork of build-your-own.
 validated state and future LCM updates flag it — VxRail must be updated through its
 LCM.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.5 — VxBlock converged infrastructure (VxBlock Deploy)
 
@@ -225,7 +225,7 @@ lifecycle-managed as one system against a **Release Certification Matrix (RCM)**
 **Negative test:** update a component off the RCM; the system falls out of its
 certified/supported state — VxBlock changes follow the RCM.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — APEX Cloud Platform for Microsoft Azure (APEX Azure Implementation)
 
@@ -243,7 +243,7 @@ lifecycle for the hardware/software stack.
 **Negative test:** a cluster not registered/Arc-connected to Azure cannot be managed
 from the portal — Azure registration is required for the cloud-managed model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.7 — APEX Cloud Platform for Red Hat OpenShift (APEX OpenShift Implementation)
 
@@ -263,7 +263,7 @@ cloud-native workloads on-prem.
 generic hardware; the APEX automation and validated stack are what the platform adds
 — it is more than OpenShift-on-servers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.8 — Cloud Infrastructure and Services foundations (Cloud Foundations)
 
@@ -283,7 +283,7 @@ platforms deliver.
 **Negative test:** classify a managed SaaS as IaaS and plan to patch its OS; you
 cannot — the service model sets the boundary of control, a core foundations concept.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.9 — Integrated System for Microsoft Azure Stack Hub (Azure Stack Hub)
 
@@ -303,7 +303,7 @@ sovereign/edge/regulated Azure workloads.
 only the supported on-prem subset is available — the hybrid model is consistent but
 not identical to public Azure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.10 — Dell XC Plus hybrid cloud with Nutanix (Dell XC Plus / Nutanix Administration)
 
@@ -325,7 +325,7 @@ operations with Nutanix Prism.
 LCM (Life Cycle Manager); the cluster drifts from its validated state — XC Plus
 updates go through the integrated LCM, like VxRail's.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Writing `rate(sum(...))` because it reads more naturally left to right — it is syntactically valid, produces a plausible-looking graph most of the time, and lies whenever anything restarts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Aggregation with `by` and `without`
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Aggregating with `by (service)` on a dashboard meant to show errors — the 500s are summed into the total and the error signal disappears entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Cardinality arithmetic
 
@@ -174,7 +174,7 @@ EOF
 
 **Negative test:** Adding a label "temporarily, to debug an issue" — the series it creates persist for the full retention period, and the cost and query slowdown outlive the debugging session by weeks.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

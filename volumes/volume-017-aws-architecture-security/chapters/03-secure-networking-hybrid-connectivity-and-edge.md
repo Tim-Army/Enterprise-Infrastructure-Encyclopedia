@@ -543,7 +543,7 @@ a reference that follows instances as they scale, unlike a static CIDR.
 **Negative test:** an instance not in `$WEB_SG` connects to 8080; it is
 refused, proving the SG reference, not the subnet, is the boundary.
 
-**Cleanup:** revoke the ingress rule.
+**Rollback:** revoke the ingress rule.
 
 ### Lab 3.2 — Determine high-performing and scalable network architectures (SAA-C03 3.4)
 
@@ -562,7 +562,7 @@ launched into it get up to the highest per-flow bandwidth within one AZ.
 **Negative test:** span a cluster placement group across AZs; launches fail,
 showing the low-latency guarantee is AZ-local by design.
 
-**Cleanup:** `aws ec2 delete-placement-group --group-name perf-pg`.
+**Rollback:** `aws ec2 delete-placement-group --group-name perf-pg`.
 
 ### Lab 3.3 — Security controls for network edge services (SCS-C03 3.1)
 
@@ -583,7 +583,7 @@ requests/5-min — an L7 edge control against floods and scrapers.
 **Negative test:** without the web ACL, a request flood reaches the origin
 directly; the ACL is what absorbs it at the edge.
 
-**Cleanup:** `aws wafv2 delete-web-acl` (with the returned lock token).
+**Rollback:** `aws wafv2 delete-web-acl` (with the returned lock token).
 
 ### Lab 3.4 — Design and troubleshoot network security controls (SCS-C03 3.3)
 
@@ -607,7 +607,7 @@ stateless control that blocks even before a security group is evaluated.
 connection still fails, demonstrating NACLs are evaluated independently of
 (and can override) SG allows.
 
-**Cleanup:** `aws ec2 delete-network-acl-entry --network-acl-id "$NACL" --rule-number 100 --ingress`.
+**Rollback:** `aws ec2 delete-network-acl-entry --network-acl-id "$NACL" --rule-number 100 --ingress`.
 
 ### Lab 3.5 — Two-AZ VPC with referenced security groups (integrative)
 
@@ -701,7 +701,7 @@ Reachability Analyzer itself bills per analysis run at a small flat fee.
    component. This confirms the security group boundary is enforced, not
    merely assumed.
 
-5. **Cleanup** — terminate the instance and destroy the Terraform-managed
+5. **Rollback** — terminate the instance and destroy the Terraform-managed
    resources to stop NAT gateway and Elastic IP billing:
 
    ```bash

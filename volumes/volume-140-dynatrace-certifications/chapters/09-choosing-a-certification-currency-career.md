@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Choosing the Professional because it sounds more senior than a Specialist. If 65% of your week is one specialty, the Specialist is the more informative credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Build a preparation plan from skill lists
 
@@ -162,7 +162,7 @@ cat my-dynatrace-prep.md
 
 **Negative test:** Preparing entirely from documentation. Reading about OneAgent's auto-detection will not teach you the reconciliation habit from Chapter 02, which is the thing that actually prevents blind spots.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Summary and Completion Checklist
 

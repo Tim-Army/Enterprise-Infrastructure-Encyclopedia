@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Assuming you need a licensed CommCell to learn data protection — retention math, deduplication ratios, RPO/RTO arithmetic, and immutability semantics are all vendor-independent and can be reasoned about locally.
 
-**Cleanup:** `rm -rf ~/commvault-study` when done.
+**Rollback:** `rm -rf ~/commvault-study` when done.
 
 ### Lab 1.2 — Map the tiers to a study plan
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Studying only platform administration and skipping the resilience material — you cannot complete even the Practitioner tier, which requires both exams.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

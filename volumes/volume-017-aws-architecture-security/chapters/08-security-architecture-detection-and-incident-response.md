@@ -429,7 +429,7 @@ severity — one pane aggregating GuardDuty, Inspector, and Config alerts.
 **Negative test:** rely on per-service consoles instead; a cross-cutting
 issue is easy to miss without the aggregated view Security Hub provides.
 
-**Cleanup:** `aws securityhub disable-security-hub` if enabled only for the
+**Rollback:** `aws securityhub disable-security-hub` if enabled only for the
 lab.
 
 ### Lab 8.2 — Design and implement logging solutions (SCS-C03 1.2)
@@ -450,7 +450,7 @@ recorded to a tamper-evident, validated log.
 **Negative test:** a single-Region trail misses activity elsewhere; the
 multi-Region flag is what makes the audit complete.
 
-**Cleanup:** `aws cloudtrail delete-trail --name sec-trail`.
+**Rollback:** `aws cloudtrail delete-trail --name sec-trail`.
 
 ### Lab 8.3 — Troubleshoot security monitoring, logging, and alerting (SCS-C03 1.3)
 
@@ -470,7 +470,7 @@ integrity guarantee an auditor or incident responder depends on.
 reports the file as invalid/missing, catching tampering — the failure this
 control exists to detect.
 
-**Cleanup:** none (read-only validation).
+**Rollback:** none (read-only validation).
 
 ### Lab 8.4 — Design and test an incident response plan (SCS-C03 2.1)
 
@@ -489,7 +489,7 @@ plan is executable and testable, not a wiki page.
 **Negative test:** an ad-hoc manual response under pressure is slow and
 inconsistent; the codified runbook makes containment one command.
 
-**Cleanup:** `aws ssm delete-document --name IR-IsolateInstance`.
+**Rollback:** `aws ssm delete-document --name IR-IsolateInstance`.
 
 ### Lab 8.5 — Respond to security events (SCS-C03 2.2)
 
@@ -509,7 +509,7 @@ isolated for forensics while still running (memory preserved).
 forensic evidence; isolation preserves it, the reason to quarantine before
 terminate.
 
-**Cleanup:** restore the original security group after the exercise.
+**Rollback:** restore the original security group after the exercise.
 
 ### Lab 8.6 — Design and troubleshoot security controls for compute workloads (SCS-C03 3.2)
 
@@ -528,7 +528,7 @@ and container images — continuous compute-security assessment.
 **Negative test:** unmanaged instances with no agent are never scanned; a
 vulnerability there is invisible until exploited.
 
-**Cleanup:** `aws inspector2 disable --resource-types EC2 ECR` if enabled for
+**Rollback:** `aws inspector2 disable --resource-types EC2 ECR` if enabled for
 the lab only.
 
 ### Lab 8.7 — Design and implement controls for data in transit (SCS-C03 5.1)
@@ -547,7 +547,7 @@ protocols and weak ciphers are refused for data in transit.
 **Negative test:** set `ELBSecurityPolicy-TLS-1-0-2015-04`; a scanner flags
 TLS 1.0 as noncompliant, the exposure the modern policy closes.
 
-**Cleanup:** none (the modern policy is the desired end state).
+**Rollback:** none (the modern policy is the desired end state).
 
 ### Lab 8.8 — Protect confidential data, credentials, and secrets (SCS-C03 5.3)
 
@@ -569,7 +569,7 @@ long-lived static credential in code or config.
 **Negative test:** a credential hard-coded in an app never rotates and leaks
 permanently once exposed; managed rotation limits the exposure window.
 
-**Cleanup:** `aws secretsmanager delete-secret --secret-id prod/db-cred --force-delete-without-recovery`.
+**Rollback:** `aws secretsmanager delete-secret --secret-id prod/db-cred --force-delete-without-recovery`.
 
 ### Lab 8.9 — Evaluate the compliance of AWS resources (SCS-C03 6.3)
 
@@ -591,7 +591,7 @@ named baseline, not a point-in-time audit.
 **Negative test:** with the Config recorder off, the pack cannot evaluate
 (`INSUFFICIENT_DATA`) — the dependency from Lab 10.6.
 
-**Cleanup:** `aws configservice delete-conformance-pack --conformance-pack-name sec-baseline`.
+**Rollback:** `aws configservice delete-conformance-pack --conformance-pack-name sec-baseline`.
 
 ### Lab 8.10 — GuardDuty detection to automated response (integrative)
 
@@ -680,7 +680,7 @@ charges, since it otherwise continues running (and billing) indefinitely.
    sample findings, confirming the tightened pattern correctly filters
    out findings below the new threshold.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws events remove-targets --rule lab-guardduty-findings --ids "1"

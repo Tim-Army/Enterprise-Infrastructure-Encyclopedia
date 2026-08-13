@@ -73,7 +73,7 @@ vulnerabilities.
 **Negative test:** treat all severity-5 QIDs equally; **exploitability** differentiates them —
 consider it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Compute a TruRisk-style score
 
@@ -97,7 +97,7 @@ lower CVSS — risk-based scoring.
 **Negative test:** rank by **CVSS** only; you fix the theoretical 9.8 before the exploited 7.2 — use
 **TruRisk**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Prioritize the remediation queue
 
@@ -117,7 +117,7 @@ PY
 
 **Negative test:** work by host name; risk isn't reduced efficiently — order by **TruRisk**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Filter to actively-attacked vulnerabilities
 
@@ -139,7 +139,7 @@ intel prioritization.
 **Negative test:** ignore threat intel and work purely by severity; you may miss the one being
 exploited **now** — filter by active attack.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

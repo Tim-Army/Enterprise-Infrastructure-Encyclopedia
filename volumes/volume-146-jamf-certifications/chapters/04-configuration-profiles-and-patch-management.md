@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Using a policy to "enforce" a setting. It runs once at a trigger and does not maintain the setting — drift goes uncorrected until the policy happens to run again, where a profile would hold it continuously.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Patch compliance is a live risk number
 
@@ -148,7 +148,7 @@ EOF
 
 **Negative test:** Relying on users to update after a CVE disclosure. A quarter update in two weeks and a long tail never does — the exposure window stays open exactly where managed patching would have closed it in days.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — You enforce OS updates by deadlines, not silent force
 
@@ -194,7 +194,7 @@ EOF
 
 **Negative test:** Scheduling a major macOS upgrade as a silent forced push. Apple's framework requires user interaction on most devices; the "force" does not fire silently, and an admin who planned around it is caught short at the deadline.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

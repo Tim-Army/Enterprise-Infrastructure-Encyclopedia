@@ -51,7 +51,7 @@ systemctl is-enabled labsvc && sudo tail -1 /var/log/labsvc.log
 
 **Negative test:** Forget `daemon-reload` after writing the unit — systemd doesn't see it; the reload step is the most-lost point on this domain.
 
-**Cleanup:** `sudo systemctl disable --now labsvc; sudo rm /etc/systemd/system/labsvc.service /usr/local/bin/labsvc.sh /var/log/labsvc.log`.
+**Rollback:** `sudo systemctl disable --now labsvc; sudo rm /etc/systemd/system/labsvc.service /usr/local/bin/labsvc.sh /var/log/labsvc.log`.
 
 ### Lab 8.2 — Networking (25%)
 
@@ -70,7 +70,7 @@ kill %1
 
 **Negative test:** Verify a "listening" service with `ps` instead of `ss` — a hung process shows in `ps` while the port is dead; sockets, not processes, are the proof.
 
-**Cleanup:** `sudo ip addr del 192.0.2.99/24 dev lo 2>/dev/null; sudo ip route del 203.0.113.0/24 2>/dev/null`.
+**Rollback:** `sudo ip addr del 192.0.2.99/24 dev lo 2>/dev/null; sudo ip route del 203.0.113.0/24 2>/dev/null`.
 
 ### Lab 8.3 — Storage (20%)
 
@@ -89,7 +89,7 @@ echo "persist: /dev/lfcsvg/data /mnt/data ext4 defaults 0 2  >> /etc/fstab (then
 
 **Negative test:** Write the fstab line and *don't* run `mount -a` — a typo surfaces at reboot as emergency mode; the verification habit is the point.
 
-**Cleanup:** `sudo umount /mnt/data; sudo vgremove -f lfcsvg; sudo losetup -d $LOOP; rm /tmp/pv.img`.
+**Rollback:** `sudo umount /mnt/data; sudo vgremove -f lfcsvg; sudo losetup -d $LOOP; rm /tmp/pv.img`.
 
 ### Lab 8.4 — Essential commands (20%)
 
@@ -108,7 +108,7 @@ tar tzf archive.tgz
 
 **Negative test:** `find -exec ... \;` (per-file) vs `+` (batched) on thousands of files — same result, very different runtime; on a timed exam, that difference is points.
 
-**Cleanup:** `rm -rf /tmp/ec`.
+**Rollback:** `rm -rf /tmp/ec`.
 
 ### Lab 8.5 — Users and groups (10%)
 
@@ -127,7 +127,7 @@ id lfcsuser
 
 **Negative test:** Write the sudoers file without `visudo -cf` validation — a syntax error can lock sudo entirely; the validator is non-negotiable.
 
-**Cleanup:** `sudo userdel -r lfcsuser; sudo groupdel ops; sudo rm /etc/sudoers.d/lfcsuser`.
+**Rollback:** `sudo userdel -r lfcsuser; sudo groupdel ops; sudo rm /etc/sudoers.d/lfcsuser`.
 
 ## Summary and Completion Checklist
 

@@ -107,7 +107,7 @@ done
 **Negative test:** trust an old study guide's domain list; CDPSE and CRISC changed
 in 2025 — confirm against isaca.org.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a CPE-compliant renewal (Topic: Maintain the credential)
 
@@ -129,7 +129,7 @@ and 120 over three years), the CPE model ISACA uses.
 **Negative test:** back-load all CPE into year three; ISACA requires an **annual
 minimum** as well as the total — pace the credits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

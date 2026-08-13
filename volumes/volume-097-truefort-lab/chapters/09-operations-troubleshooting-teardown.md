@@ -35,7 +35,7 @@ Match the dropped record against the baseline; a legitimate behavior missing fro
 
 **Negative test.** "Fix" the identity block by removing the owner match. You have reopened the service account to every process on the host. Fix the *identity* of the caller instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -63,7 +63,7 @@ sudo nft -f /etc/nftables.conf          # re-enforce
 
 **Negative test.** Enforce a default-deny on `tf-db01` that omits the SSH management allow, then try to manage it over the enforced path only; you are locked out until the out-of-band adapter or the snapshot.
 
-**Cleanup.** Ensure `tf-db01` is enforced again with the SSH management rule intact.
+**Rollback.** Ensure `tf-db01` is enforced again with the SSH management rule intact.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -89,7 +89,7 @@ Then turn Core isolation back on and reboot.
 
 **Negative test.** Leaving a host connected to a real deployment means it keeps being managed after the lab. Remove it.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

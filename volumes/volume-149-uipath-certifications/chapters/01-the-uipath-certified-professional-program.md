@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Treating UiPath certification as one linear track from beginner to expert. It is role-based — a business analyst and a developer take different certifications, not different rungs of the same ladder.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Currency and the legacy migration
 
@@ -127,7 +127,7 @@ EOF
 
 **Negative test:** Assuming a retired UiRPA certification remains valid indefinitely. It expires 15 October 2026; staying in the program requires passing a current exam — the natural path being the Automation Developer Associate that replaced it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

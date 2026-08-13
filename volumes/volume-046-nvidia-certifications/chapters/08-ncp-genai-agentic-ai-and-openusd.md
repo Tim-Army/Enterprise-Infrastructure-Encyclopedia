@@ -100,7 +100,7 @@ production LLM engineering NCP-GENL certifies.
 **Negative test:** fine-tune on raw, unfiltered data; **data curation** drives
 quality — curate first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — GENL: production RAG and optimization
 
@@ -119,7 +119,7 @@ PY
 **Negative test:** serve an unoptimized model at scale; **TensorRT-LLM/NIM**
 cut latency and cost — optimize for production.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### NCP-AAI — Agentic AI (Professional)
 
@@ -144,7 +144,7 @@ tool-calling foundation of NCP-AAI.
 **Negative test:** expose a broad `run_shell` tool to an agent; grant **narrow,
 least-privilege** tools only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — AAI: planning and orchestration
 
@@ -166,7 +166,7 @@ NCP-AAI tests.
 **Negative test:** let an agent loop without a **termination/budget** condition; it
 can run away — bound steps and cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — AAI: multi-agent and safety
 
@@ -186,7 +186,7 @@ safety NCP-AAI emphasizes.
 **Negative test:** deploy autonomous agents that take irreversible actions without
 approval; gate **high-impact** actions behind humans.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### NCP-OUSD — OpenUSD Development (Professional)
 
@@ -207,7 +207,7 @@ foundation of NCP-OUSD.
 **Negative test:** treat a `.usd` file as a flat mesh export; USD is a
 **composable** scene graph — model with prims and layers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — OUSD: composition and digital twins
 
@@ -226,7 +226,7 @@ development NCP-OUSD certifies.
 **Negative test:** edit a referenced asset in place for one scene; use **variants/
 overrides** so the base asset stays reusable — compose non-destructively.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

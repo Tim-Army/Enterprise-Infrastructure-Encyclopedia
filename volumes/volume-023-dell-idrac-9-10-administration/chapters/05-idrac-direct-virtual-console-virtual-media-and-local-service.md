@@ -404,7 +404,7 @@ at the rack, essential for OS install, BIOS entry, and out-of-band troubleshooti
 **Negative test:** try to fix a server stuck at a BIOS prompt over SSH-to-OS; there is no OS yet —
 virtual console is the only way to interact with pre-boot/hung states remotely.
 
-**Cleanup:** none (leave virtual console enabled).
+**Rollback:** none (leave virtual console enabled).
 
 ### Lab 5.2 — Virtual media (Topic: Remote media)
 
@@ -425,7 +425,7 @@ run diagnostics on a server anywhere without physically inserting media.
 send someone to the rack with a USB stick — virtual media is what makes remote provisioning
 possible.
 
-**Cleanup:** `racadm remoteimage -d` (detach) and restore the normal boot order.
+**Rollback:** `racadm remoteimage -d` (detach) and restore the normal boot order.
 
 ### Lab 5.3 — iDRAC Direct and connection view (Topic: Local access)
 
@@ -445,7 +445,7 @@ out-of-band network is unreachable, complementing the network paths.
 **Negative test:** assume the only way to reach a network-isolated iDRAC is the LAN; iDRAC Direct
 (front USB) reaches it locally — knowing this path avoids a dead-end when the network is down.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — iDRAC Service Module (Topic: OS integration)
 
@@ -465,7 +465,7 @@ auto-recovery, and single-command RACADM from the OS, deepening integration beyo
 **Negative test:** expect OS hostname/IP and in-band watchdog features in the iDRAC with no iSM
 installed; that data comes from the module — iSM is what bridges OS-level detail to the controller.
 
-**Cleanup:** leave iSM installed (it is beneficial in operation).
+**Rollback:** leave iSM installed (it is beneficial in operation).
 
 ## Lab Verification
 

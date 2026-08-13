@@ -42,7 +42,7 @@ EOF
 
 **Negative test:** One all-powerful admin account used by everyone — its theft hands the attacker the ability to delete every backup; RBAC + separation of duties + immutable retention is the defense in depth that prevents it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — MFA and access hardening
 
@@ -65,7 +65,7 @@ EOF
 
 **Negative test:** Password-only access to the backup console — credential theft (phishing) then grants platform control; MFA on privileged/off-network access is a baseline the security best practices require.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Identity resilience: recover a clean directory
 
@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Restoring only the application/file data after a breach while leaving compromised AD untouched — the attacker's backdoor accounts persist and re-compromise the restored systems; identity recovery is the missing half of a complete cyber recovery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

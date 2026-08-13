@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Working misconfigurations in compliance-ID order. Root-without-MFA is a serious audit finding but not on today's attack path, while the public bucket and open SSH form a live exposure — risk context, not control numbering, sets the order.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — In-context vulnerability prioritization
 
@@ -121,7 +121,7 @@ EOF
 
 **Negative test:** Patching by CVSS score alone. All four workloads show 9.8, so a CVSS-ordered queue treats a dormant, isolated image as equal to a live internet-facing breach path — context is the difference between a real fix and busywork.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

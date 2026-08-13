@@ -79,7 +79,7 @@ svm_app  running nfs,cifs,fcp,iscsi,nvme,s3
 **Negative test:** provision application volumes directly in the cluster admin SVM; that breaks tenant
 isolation — create a data SVM instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> vserver delete -vserver svm_app
@@ -105,7 +105,7 @@ svm_app  vol_finance  100GB  none            /finance
 **Negative test:** set `-space-guarantee volume` on every volume in a nearly full aggregate; you exhaust
 capacity — thin-provision and monitor instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> volume unmount -vserver svm_app -volume vol_finance
@@ -133,7 +133,7 @@ svm_app  vol_finance  Enabled  true        true               true
 **Negative test:** disable efficiency on an all-flash volume to "save CPU"; on AFF it is nearly free and
 you lose large savings — leave it on.
 
-**Cleanup:** none (removed with the volume in Lab 3.2).
+**Rollback:** none (removed with the volume in Lab 3.2).
 
 ### Lab 3.4 — Set a qtree quota
 
@@ -157,7 +157,7 @@ svm_app  vol_finance reports tree      0B      20GB
 **Negative test:** add a quota rule but skip `quota on`/resize; the limit never applies — enable and
 resize quotas after any rule change.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> quota off -vserver svm_app -volume vol_finance

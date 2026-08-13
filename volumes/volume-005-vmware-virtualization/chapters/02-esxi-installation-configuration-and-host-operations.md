@@ -482,7 +482,7 @@ certificates, and log correlation); a host is not production-ready until these a
 **Negative test:** add a host to vCenter with unsynchronized time; certificate and task-timing issues
 follow — NTP on every host is a prerequisite, not an afterthought.
 
-**Cleanup:** none (keep NTP enabled).
+**Rollback:** none (keep NTP enabled).
 
 ### Lab 2.2 — Host management interface and services (Topic: Host operations)
 
@@ -501,7 +501,7 @@ these are the host-level controls beneath everything vCenter orchestrates.
 **Negative test:** leave SSH enabled permanently on production hosts; it widens the attack surface —
 enable it for maintenance and disable it after (vSphere flags persistent SSH as a security warning).
 
-**Cleanup:** `vim-cmd hostsvc/disable_ssh` if enabled only for the lab.
+**Rollback:** `vim-cmd hostsvc/disable_ssh` if enabled only for the lab.
 
 ### Lab 2.3 — Host lifecycle: maintenance mode (Topic: Host lifecycle)
 
@@ -522,7 +522,7 @@ first, so host work causes no VM downtime in a cluster with DRS and shared stora
 **Negative test:** patch or reboot a host without entering maintenance mode; its running VMs are
 interrupted — maintenance mode (with evacuation) is what makes host servicing non-disruptive.
 
-**Cleanup:** ensure the host is returned to Connected state.
+**Rollback:** ensure the host is returned to Connected state.
 
 ## Lab Verification
 

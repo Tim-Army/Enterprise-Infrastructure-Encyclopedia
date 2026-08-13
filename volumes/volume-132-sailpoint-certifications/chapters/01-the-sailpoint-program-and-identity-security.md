@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Assuming you must have a licensed tenant to study IGA — the governance model (identities, entitlements, roles, policies, campaigns) is vendor-independent; you can build and reason about all of it locally.
 
-**Cleanup:** `rm -rf ~/sailpoint-study` when finished with the volume.
+**Rollback:** `rm -rf ~/sailpoint-study` when finished with the volume.
 
 ### Lab 1.2 — Map the program to a plan
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Booking the Engineer exam with no exposure to rules and transforms — that material (Chapter 07) is what distinguishes it from the Administrator exam; the recommended year of hands-on experience is a real signal, not a formality.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

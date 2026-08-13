@@ -94,7 +94,7 @@ host adapter on VMnet3, this `Get-NetIPAddress` would return
 Gatekeeper entirely. The choke point is the whole game; verify it before
 trusting any OT policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Deploy the Gatekeeper policy (agentless OT segmentation)
 
@@ -281,7 +281,7 @@ plant needs is worse than none, because it stops production. This is why
 the Gatekeeper policy, like every other, should run in Observe first.
 Fix the port and reload.
 
-**Cleanup.** To return `ct-gw` to the permissive baseline, restore
+**Rollback.** To return `ct-gw` to the permissive baseline, restore
 snapshot `C1-base-router` or reload the Part C ruleset.
 
 ### Lab 8.3 — Compare Gatekeeper coverage to agent coverage **Design Exercise**
@@ -362,6 +362,8 @@ Xshield thesis, argued from your own lab evidence.
 across the whole estate. Whichever you pick, you strand an asset class:
 agent-only strands the PLC; Gatekeeper-only cripples the servers. The
 estate’s heterogeneity is exactly why single-mode tools lose here.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Using oversized types, indexing every column, and never partitioning a huge time-series table. Rows are bloated, writes are slow from too many indexes, and every date query scans the whole table; type discipline, targeted indexes, and PPI partitioning are what make the design perform.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

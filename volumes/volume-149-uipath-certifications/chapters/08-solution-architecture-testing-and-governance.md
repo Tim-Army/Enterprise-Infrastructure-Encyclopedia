@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Granting robots broad admin access "so they don't hit permission errors." An over-privileged headless robot's blast radius on a bug or compromise is everything it can touch — least privilege caps it to one process's scope.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Why automations need regression testing
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Deploying an automation change without regression testing because "it's just a small change." The app it drives may have shifted a selector; unattended, it processes a weekend of records wrong before Monday — testing before deploy is what prevents the silent-failure cleanup.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

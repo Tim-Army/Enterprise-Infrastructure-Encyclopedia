@@ -107,7 +107,7 @@ EOF
 
 **Negative test:** Reviewing roles one at a time for security. Bob's and Carol's conflicts are invisible to per-role review; they exist only in the combination.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Mitigating controls versus removing access
 
@@ -146,7 +146,7 @@ EOF
 
 **Negative test:** Accepting an SoD conflict with no mitigating control because "it's a small team and we trust them." That is the exact scenario the control exists to prevent, and the auditor scores it a finding regardless of trust.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Security is everyone's certification
 
@@ -182,7 +182,7 @@ EOF
 
 **Negative test:** A functional consultant treating authorizations as someone else's problem. The roles they design carry the SoD conflicts; abdicating the security dimension builds the conflicts in by default.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

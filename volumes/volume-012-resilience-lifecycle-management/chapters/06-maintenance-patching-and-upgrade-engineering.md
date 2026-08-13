@@ -337,7 +337,7 @@ When a staged rollout fails partway through (some units patched, some not), resi
 
 **Negative Test:** Modify the rolling-patch script's `MIN_QUORUM` calculation to intentionally drop below true majority (for example, hardcode `MIN_QUORUM=1`) and rerun step 2. Confirm the script now proceeds even when it should not, demonstrating why the quorum-check formula itself must be verified, not merely present — a quorum guard with an incorrect threshold provides false confidence rather than real protection. Restore the correct formula afterward.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch6

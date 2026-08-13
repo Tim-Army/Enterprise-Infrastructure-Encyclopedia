@@ -88,7 +88,7 @@ curl -sS "http://localhost:9090/-/ready" ; echo
 **Negative test:** query before the server is ready; `/-/ready` returns **503** until
 startup completes — wait for ready.
 
-**Cleanup:** `docker rm -f prom`.
+**Rollback:** `docker rm -f prom`.
 
 ### Lab 1.2 — Confirm the self-scrape target
 
@@ -104,7 +104,7 @@ curl -sS "http://localhost:9090/api/v1/targets" \
 **Negative test:** assume a target is scraped because it's configured; **check
 `/targets`** — a down target has health `down` with an error.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Query the API
 
@@ -121,7 +121,7 @@ path.
 **Negative test:** query a metric name that doesn't exist; the result is **empty** —
 confirm the metric is exposed/scraped.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

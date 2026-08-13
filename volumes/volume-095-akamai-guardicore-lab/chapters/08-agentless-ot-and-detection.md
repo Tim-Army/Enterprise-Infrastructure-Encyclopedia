@@ -32,7 +32,7 @@ sudo nft add rule inet guardicore segmentation ip daddr 10.10.30.50 \
 
 **Negative test.** From `gc-app01`, `nc -vz 10.10.30.50 502` is blocked and logged; add a temporary permit and it succeeds, proving the deny (not the network) stops it. Remove the permit.
 
-**Cleanup.** Keep the enforcement.
+**Rollback.** Keep the enforcement.
 
 ### Lab 8.2 — Enforce the path on the router
 
@@ -56,7 +56,7 @@ sudo nft add rule inet guardicore forward ip daddr 10.10.30.0/24 \
 
 **Negative test.** From `gc-app01`, `nc -vz 10.10.30.50 502` is blocked at the router even if `gc-app01`'s own deny were removed. The choke point makes the control complete.
 
-**Cleanup.** Keep the forward chain.
+**Rollback.** Keep the forward chain.
 
 ### Lab 8.3 — Detection and deception on the OT segment (Design Exercise + native tripwire)
 
@@ -76,7 +76,7 @@ From `gc-app01`, attempt the PLC: `nc -vz 10.10.30.50 502`. A `GC-FWD-BLOCK ot:`
 
 **Negative test.** Widen the forward allow to `10.10.20.0/24 → PLC:502` "for convenience"; the tripwire goes silent for the whole Data Center segment, and an attacker on any DC host reaches the PLC unseen. Narrow allows are what make the detection meaningful.
 
-**Cleanup.** Stop the log tail.
+**Rollback.** Stop the log tail.
 
 ### Lab 8.4 — Validate the containment end to end
 
@@ -107,7 +107,7 @@ Both legitimate flows work; every lateral-movement path from Chapter 05 is denie
 
 **Negative test.** Revert `gc-db01` to alert-only and re-run the HMI→db probe; it reaches again. Detection alone protects nothing; enforcement does. Re-enforce.
 
-**Cleanup.** Leave the enforced estate for Chapter 09.
+**Rollback.** Leave the enforced estate for Chapter 09.
 
 ## Summary and Completion Checklist
 

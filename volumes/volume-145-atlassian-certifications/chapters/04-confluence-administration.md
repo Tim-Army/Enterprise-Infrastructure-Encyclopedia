@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Adding a group to a page's restrictions to grant them access in a restricted space. The intersection with the space permission ignores the addition; access is unchanged and the ticket reopens.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Space design: too few, too many, or right
 
@@ -137,7 +137,7 @@ EOF
 
 **Negative test:** One space per project for an org with heavy cross-project knowledge. The deploy runbook that ten teams need has no natural home and gets duplicated (and then the copies diverge).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Knowledge rot and the tended tree
 
@@ -185,7 +185,7 @@ EOF
 
 **Negative test:** Treating Confluence as write-once storage. Within two years roughly 40% of the content is stale, indistinguishable from current, and actively misleading readers.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

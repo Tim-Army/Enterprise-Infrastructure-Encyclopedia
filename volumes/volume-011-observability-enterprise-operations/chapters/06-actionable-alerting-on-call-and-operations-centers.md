@@ -478,7 +478,7 @@ carrying a severity, service label, and a runbook link — good alerts fire on s
 users while a real user-facing failure at low CPU raises no alert — alert on symptoms, diagnose with
 causes.
 
-**Cleanup:** remove the lab rule.
+**Rollback:** remove the lab rule.
 
 ### Lab 6.2 — Alertmanager routing, grouping, and inhibition (Topic: Alert routing)
 
@@ -514,7 +514,7 @@ notifications to the right owners.
 a single outage generates hundreds of notifications and the real signal is buried — grouping and
 inhibition are what keep alerts actionable during an incident.
 
-**Cleanup:** revert to the lab default config.
+**Rollback:** revert to the lab default config.
 
 ### Lab 6.3 — Actionable alerts (Topic: Alert quality)
 
@@ -536,7 +536,7 @@ prevents alert fatigue; a page that no one can act on is training responders to 
 **Negative test:** keep alerting on everything "just in case"; responders normalize ignoring alerts
 and miss the real one — pruning to actionable, symptom-based alerts is what keeps paging trustworthy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — On-call and escalation design (Topic: On-call)
 
@@ -558,7 +558,7 @@ page volume; fair rotation) or responders burn out and reliability suffers.
 night; burnout and missed pages follow — a bounded, fairly-rotated, escalation-backed on-call is
 what makes it sustainable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: Airgap network-of-one for east-west isolation on the VLAN, Zscaler ZTE for identity-based north-south access, together covering both directions without a flat path anywhere.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Scale across VLANs and sites (design)
 
@@ -26,7 +26,7 @@
 
 **Expected result (on paper).** A design note: one enforcement point per segment, central policy and kill switch, no re-addressing — segmentation added without disruption.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -46,7 +46,7 @@ echo "Network-of-one stops the reach; it does not inspect the payload or the hos
 
 **Negative test.** Assume network-of-one secures everything. It removes the lateral *path*; a permitted flow carrying a malicious payload, or a compromised host acting within its allowed flow, still needs inspection and endpoint control. Reach-isolation is one layer.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Studying for a Trend Micro exam by memorizing facts, or ignoring the platform. The exams are scenario-based (practical deploy-and-manage judgment), and the products feed Vision One; hands-on practice and platform understanding are what pay off.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Trend Micro in the defensive-security career
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Treating Trend Micro as just antivirus. It is a broad security platform (Vision One) spanning endpoint, server, cloud, email, and network with XDR and attack-surface risk management; the skills cover protection, detection-and-response, and proactive risk reduction across the whole estate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

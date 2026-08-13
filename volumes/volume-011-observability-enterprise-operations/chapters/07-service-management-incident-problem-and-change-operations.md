@@ -473,7 +473,7 @@ comms to inform, and mitigation before root cause, so the outage is shortened an
 and no comms; effort is duplicated, stakeholders are uninformed, and mitigation is slow — defined
 roles and comms are what make response effective.
 
-**Cleanup:** none (retain the timeline for Lab 7.2).
+**Rollback:** none (retain the timeline for Lab 7.2).
 
 ### Lab 7.2 — Problem management and blameless postmortem (Topic: Root cause)
 
@@ -496,7 +496,7 @@ recurrence," and blamelessness is what makes people share the honest facts neede
 people hide facts to avoid blame and the systemic cause (why was that command easy to run wrongly?)
 goes unfixed — blameless analysis is what surfaces the real, fixable cause.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Change management and progressive delivery (Topic: Change)
 
@@ -519,7 +519,7 @@ safely, using the observability signals as the gate.
 hits every user before anyone notices — progressive, observability-gated rollout is what bounds the
 blast radius of a bad change.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Design Exercise: the operating model (Topic: Operations design)
 
@@ -541,7 +541,7 @@ reinforce each other, turning tooling into reliable operations.
 noise and slow incidents persist because tools do not decide who owns what or how to respond — the
 operating model, not the tooling, is what produces reliability.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

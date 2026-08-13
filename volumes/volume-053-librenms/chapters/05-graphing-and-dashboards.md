@@ -66,7 +66,7 @@ surface.
 **Negative test:** expect graphs before the first poll; graphs need **RRD data** — poll
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Fetch a port graph as PNG
 
@@ -84,7 +84,7 @@ graph.
 **Negative test:** eyeball raw counters; use **rates** (`_rate`) — counters wrap and are
 not directly meaningful.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Create a dashboard
 
@@ -101,7 +101,7 @@ curl -sS -H "X-Auth-Token: $TOKEN" -H "Content-Type: application/json" \
 **Negative test:** pile everything on the default dashboard; build a **focused** one
 per role.
 
-**Cleanup:** delete the dashboard.
+**Rollback:** delete the dashboard.
 
 ### Lab 5.4 — Add a widget
 
@@ -119,7 +119,7 @@ view.
 **Negative test:** screenshot graphs into a doc; a **live widget** stays current — use
 the dashboard.
 
-**Cleanup:** remove the widget.
+**Rollback:** remove the widget.
 
 ## Lab Verification
 

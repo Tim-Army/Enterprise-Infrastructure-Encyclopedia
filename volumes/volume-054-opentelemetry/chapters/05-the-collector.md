@@ -75,7 +75,7 @@ docker run --rm -v "$PWD/col.yaml:/c.yaml" \
 **Negative test:** reference a receiver you didn't define in a pipeline; `validate`
 **errors** — fix references before deploy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Add an attributes processor (redaction)
 
@@ -94,7 +94,7 @@ redaction.
 **Negative test:** redact in every app; do it **once in the Collector** so all apps are
 covered.
 
-**Cleanup:** remove the processor.
+**Rollback:** remove the processor.
 
 ### Lab 5.3 — Add an exporter
 
@@ -112,7 +112,7 @@ export path.
 **Negative test:** export straight from apps to the backend; the **Collector exporter**
 decouples apps from backends — route through it.
 
-**Cleanup:** remove the exporter.
+**Rollback:** remove the exporter.
 
 ### Lab 5.4 — Use the spanmetrics connector
 
@@ -132,7 +132,7 @@ connector bridging pipelines.
 **Negative test:** instrument separate metrics for request rate/latency you already
 trace; **spanmetrics** derives them from spans — reuse.
 
-**Cleanup:** remove the connector.
+**Rollback:** remove the connector.
 
 ## Lab Verification
 

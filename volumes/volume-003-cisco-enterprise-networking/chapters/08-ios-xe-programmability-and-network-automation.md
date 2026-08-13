@@ -416,7 +416,7 @@ and scripts as code, with rollback.
 **Negative test:** editing configs on the device with no git history leaves
 no rollback point; commit before change.
 
-**Cleanup:** `rm -rf netauto`.
+**Rollback:** `rm -rf netauto`.
 
 ### Lab 8.2 — Compare REST and RPC API styles (ENAUTO 1.2, ENCOR 6.5)
 
@@ -432,7 +432,7 @@ gRPC) instead call an operation — the two API paradigms.
 **Negative test:** expecting a NETCONF `<edit-config>` RPC on a REST URL; the
 styles are not interchangeable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Describe API consumption patterns (ENAUTO 1.3)
 
@@ -448,7 +448,7 @@ off on 429, cache tokens) for consuming large APIs.
 **Negative test:** requesting all devices unpaginated can time out or hit
 rate limits; paginate.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Interpret a Python script (ENAUTO 1.4, ENCOR 6.1)
 
@@ -468,7 +468,7 @@ to structured device data.
 **Negative test:** indexing a dict with an integer key that does not exist
 raises `KeyError`; know the data type before indexing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — Use a Python virtual environment (ENAUTO 1.5)
 
@@ -486,7 +486,7 @@ conflict-free automation dependencies.
 **Negative test:** installing globally can break other tools' dependencies;
 the venv isolates them.
 
-**Cleanup:** `deactivate && rm -rf venv`.
+**Rollback:** `deactivate && rm -rf venv`.
 
 ### Lab 8.6 — Describe network configuration tools (ENAUTO 1.6, ENCOR 6.7)
 
@@ -502,7 +502,7 @@ Puppet/Chef (agent-based, pull) — the orchestration models the exam compares.
 **Negative test:** expecting Ansible to run without SSH/API reachability to
 the device; agentless still needs a transport.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — Identify JSON from a YANG model (ENAUTO 2.1, ENCOR 6.2)
 
@@ -518,7 +518,7 @@ structured, model-validated data.
 **Negative test:** hand-editing JSON that violates the YANG model is rejected
 on write; the model is the schema.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.8 — Identify XML from a YANG model (ENAUTO 2.2)
 
@@ -534,7 +534,7 @@ the same YANG model.
 **Negative test:** mixing JSON and XML content types in one request errors;
 the Accept header selects one encoding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.9 — Interpret a YANG module tree (ENAUTO 2.3, ENCOR 6.3)
 
@@ -550,7 +550,7 @@ NETCONF/RESTCONF payload must follow.
 **Negative test:** a config path not present in the tree is invalid; the tree
 defines the addressable data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.10 — Compare data models (ENAUTO 2.4)
 
@@ -566,7 +566,7 @@ IETF) — native exposes everything, OpenConfig standardizes across vendors.
 **Negative test:** an OpenConfig path unsupported on the platform returns
 empty/error; check model support per device.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.11 — Compare NETCONF and RESTCONF (ENAUTO 2.5, ENCOR 4.6)
 
@@ -584,7 +584,7 @@ one YANG backend.
 **Negative test:** expecting RESTCONF's per-resource edits to be transactional
 like NETCONF's candidate/commit; RESTCONF commits per request.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.12 — Manage a device with Netmiko (ENAUTO 3.1)
 
@@ -604,7 +604,7 @@ automation for devices without an API.
 **Negative test:** Netmiko against a device with a non-standard prompt hangs;
 set the correct `device_type`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.13 — Configure with ncclient/NETCONF (ENAUTO 3.2)
 
@@ -625,7 +625,7 @@ NETCONF.
 **Negative test:** malformed XML that violates the model returns an
 `rpc-error`; NETCONF validates before applying.
 
-**Cleanup:** delete `Loopback9` via NETCONF.
+**Rollback:** delete `Loopback9` via NETCONF.
 
 ### Lab 8.14 — Configure via RESTCONF with requests (ENAUTO 3.3)
 
@@ -646,7 +646,7 @@ PY
 **Negative test:** a PUT to a URL whose key does not match the body errors;
 the resource key and payload must agree.
 
-**Cleanup:** RESTCONF DELETE on the interface.
+**Rollback:** RESTCONF DELETE on the interface.
 
 ### Lab 8.15 — Configure with Ansible (ENAUTO 3.4)
 
@@ -669,7 +669,7 @@ re-run reports `ok` (no change).
 **Negative test:** a playbook without idempotent modules (raw CLI every run)
 re-applies unnecessarily; use the declarative modules.
 
-**Cleanup:** remove the config and `rm pb.yml`.
+**Rollback:** remove the config and `rm pb.yml`.
 
 ### Lab 8.16 — Configure model-driven telemetry (ENAUTO 3.5)
 
@@ -691,7 +691,7 @@ collector — push-based telemetry replacing SNMP polling.
 **Negative test:** an XPath that matches no data streams nothing; verify the
 path against the YANG tree.
 
-**Cleanup:** `no telemetry ietf subscription 101`.
+**Rollback:** `no telemetry ietf subscription 101`.
 
 ### Lab 8.17 — Compare telemetry models (ENAUTO 3.6)
 
@@ -708,7 +708,7 @@ publication/subscription models.
 **Negative test:** a dial-out subscription to an unreachable receiver keeps
 retrying and streams nothing; the receiver must be up.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.18 — Use telemetry data in troubleshooting (ENAUTO 3.7)
 
@@ -725,7 +725,7 @@ coarsely.
 **Negative test:** SNMP polled every 5 minutes misses a 10-second microburst
 telemetry catches; the resolution is the point.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.19 — Describe Day 0 provisioning (ENAUTO 3.8)
 
@@ -742,7 +742,7 @@ uses to fetch its config from a PnP/DHCP server — zero-touch onboarding.
 **Negative test:** a device with an existing startup-config skips ZTP; Day 0
 provisioning applies only to unconfigured devices.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.20 — Compare traditional and software-defined networks (ENAUTO 4.1, CCNA 6.2)
 
@@ -758,7 +758,7 @@ controller-based model versus box-by-box CLI.
 **Negative test:** expecting central intent to reach a device Catalyst Center
 does not manage; SDN control needs the device in inventory.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.21 — Describe Catalyst Center features (ENAUTO 4.2, CCNA 6.3)
 
@@ -774,7 +774,7 @@ curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/site" | jq -r '.respons
 **Negative test:** expecting assurance data for a site with no assigned
 devices; features act on managed inventory.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.22 — Implement Catalyst Center webhooks (ENAUTO 4.3)
 
@@ -790,7 +790,7 @@ external system — event-driven automation.
 **Negative test:** a webhook to an unreachable URL fails delivery silently;
 verify the destination.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.23 — Implement Catalyst Center API requests I (ENAUTO 4.4)
 
@@ -806,7 +806,7 @@ network operations at controller scope.
 **Negative test:** an expired auth token returns `401`; refresh the token
 before the call.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.24 — Implement Catalyst Center API requests II (ENAUTO 4.5)
 
@@ -821,7 +821,7 @@ curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/compliance" | jq -r '.r
 **Negative test:** a non-compliant device flagged by API but not remediated
 stays out of policy; API read must pair with a remediation action.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.25 — Troubleshoot Catalyst Center with the Intent API (ENAUTO 4.6)
 
@@ -837,7 +837,7 @@ task object is where an automation failure's reason lives.
 **Negative test:** assuming an API `202 Accepted` means success; it means
 accepted — poll the task for the real outcome.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.26 — Describe vManage API features (ENAUTO 5.1)
 
@@ -853,7 +853,7 @@ controller's programmable surface (config, monitoring, admin).
 **Negative test:** calling the API without a valid session cookie returns
 `403`; authenticate first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.27 — Script vManage API requests (ENAUTO 5.2)
 
@@ -874,7 +874,7 @@ in Python.
 **Negative test:** a request missing the CSRF token on a POST is rejected;
 GET works, mutating calls need the token.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.28 — Construct vManage Administration API requests (ENAUTO 5.3)
 
@@ -890,7 +890,7 @@ programmatic management-plane administration.
 **Negative test:** an operator-role token cannot read admin endpoints;
 RBAC scopes the API too.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.29 — Script vManage configuration API requests (ENAUTO 5.4)
 
@@ -906,7 +906,7 @@ config-template lifecycle.
 **Negative test:** pushing a template to a device with mismatched variables
 fails attach; variables must resolve.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.30 — Construct vManage Monitoring API requests (ENAUTO 5.5)
 
@@ -922,7 +922,7 @@ a dashboard or NOC tool consumes.
 **Negative test:** a monitoring query for a device not in the fabric returns
 empty; the device must be onboarded.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.31 — Troubleshoot SD-WAN with vManage APIs (ENAUTO 5.6)
 
@@ -938,7 +938,7 @@ SD-WAN troubleshooting across many sites at once.
 **Negative test:** reading one device's UI page does not scale to a 500-site
 fabric; the API loops it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.32 — Describe Meraki features (ENAUTO 6.1)
 
@@ -954,7 +954,7 @@ dashboard model.
 **Negative test:** an API key without org access returns `404`/empty; the key
 is scoped per admin.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.33 — Create a network with the Meraki API (ENAUTO 6.2)
 
@@ -971,7 +971,7 @@ curl -sk -X POST -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" -H 'Content-Type: appl
 **Negative test:** a POST exceeding the API rate limit returns `429`; back off
 and retry.
 
-**Cleanup:** DELETE the lab network.
+**Rollback:** DELETE the lab network.
 
 ### Lab 8.34 — Configure a network with the Meraki API (ENAUTO 6.3)
 
@@ -989,7 +989,7 @@ as an API call.
 **Negative test:** a PSK below 8 chars is rejected by the API; the model
 validates centrally.
 
-**Cleanup:** disable the lab SSID.
+**Rollback:** disable the lab SSID.
 
 ### Lab 8.35 — Implement a Meraki alert webhook (ENAUTO 6.4)
 
@@ -1007,7 +1007,7 @@ curl -sk -X POST -H "X-Cisco-Meraki-API-Key: $MERAKI_KEY" -H 'Content-Type: appl
 **Negative test:** a webhook URL that does not return 2xx is disabled after
 repeated failures; the receiver must acknowledge.
 
-**Cleanup:** DELETE the webhook HTTP server.
+**Rollback:** DELETE the webhook HTTP server.
 
 ### Lab 8.36 — Explain AI/ML in network operations (CCNA 6.4)
 
@@ -1024,7 +1024,7 @@ network operations.
 **Negative test:** treating an AI recommendation as an automatic action; it
 informs, and a human/automation gate should approve changes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.37 — Construct an EEM applet (ENCOR 6.6)
 
@@ -1044,7 +1044,7 @@ on-box, agentless automation triggered by a syslog event.
 **Negative test:** an EEM applet with a too-broad event pattern fires
 constantly and can loop; scope the trigger.
 
-**Cleanup:** `no event manager applet SAVE-ON-CONFIG`.
+**Rollback:** `no event manager applet SAVE-ON-CONFIG`.
 
 ### Lab 8.38 — NETCONF/RESTCONF query, telemetry, and EEM automation (integrative)
 
@@ -1130,7 +1130,7 @@ the same device.
    confirming RESTCONF enforces the same AAA credentials as CLI/SSH
    access rather than allowing an unauthenticated read.
 
-**Cleanup**
+**Rollback**
 
 - Remove the lab telemetry subscription and lab-created VLAN if the
   device is shared:

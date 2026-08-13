@@ -70,7 +70,7 @@ balancing and failover.
 
 **Negative test:** run production with **HA disabled**; a host failure drops its VMs — enable HA.
 
-**Cleanup:** leave enabled (production) or revert in a lab.
+**Rollback:** leave enabled (production) or revert in a lab.
 
 ### Lab 7.2 — Live-migrate a large VM (vMotion)
 
@@ -87,7 +87,7 @@ this for large VMs.
 
 **Negative test:** power off a large VM to move it; **vMotion** migrates it live — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Set EVC
 
@@ -103,7 +103,7 @@ flexibility.
 
 **Negative test:** add a newer-CPU host with **no EVC**; vMotion may fail — set a common baseline.
 
-**Cleanup:** revert EVC in a lab if needed.
+**Rollback:** revert EVC in a lab if needed.
 
 ### Lab 7.4 — Resource pools and shares
 
@@ -120,7 +120,7 @@ contention.
 
 **Negative test:** over-reserve everywhere; that fragments capacity — use **shares** for priority.
 
-**Cleanup:** `Get-VM app01 | Move-VM -Destination (Get-Cluster Cluster1); Remove-ResourcePool prod8 -Confirm:$false`.
+**Rollback:** `Get-VM app01 | Move-VM -Destination (Get-Cluster Cluster1); Remove-ResourcePool prod8 -Confirm:$false`.
 
 ### Lab 7.5 — Verify HA readiness
 
@@ -137,7 +137,7 @@ recover.
 **Negative test:** run at full utilization with no reserved capacity; failover has nowhere to
 restart VMs — size admission control.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

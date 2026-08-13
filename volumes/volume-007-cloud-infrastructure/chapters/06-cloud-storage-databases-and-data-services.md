@@ -510,7 +510,7 @@ cloud account or credentials are required.
    independently catches a misconfigured lifecycle policy regardless of
    the backup interval value.
 
-**Cleanup**
+**Rollback**
 
 7. Remove the lab directory:
 

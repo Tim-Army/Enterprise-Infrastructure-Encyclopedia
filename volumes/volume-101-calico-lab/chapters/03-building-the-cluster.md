@@ -37,7 +37,7 @@ kubectl get nodes
 
 **Negative test.** Create the cluster *without* `disableDefaultCNI: true` and kind installs `kindnet`, which does not enforce Calico policy. You would be testing the wrong dataplane. Delete and recreate with the config above.
 
-**Cleanup.** None yet.
+**Rollback.** None yet.
 
 ### Lab 3.2 — Install Calico
 
@@ -65,7 +65,7 @@ calicoctl get nodes -o wide
 
 **Negative test.** Deploy a workload before `calico-node` is Ready and its pod stays `ContainerCreating` with a CNI error — no dataplane, no networking. Wait for the rollout.
 
-**Cleanup.** Keep the cluster; Chapter 04 deploys the workloads.
+**Rollback.** Keep the cluster; Chapter 04 deploys the workloads.
 
 ## Summary and Completion Checklist
 

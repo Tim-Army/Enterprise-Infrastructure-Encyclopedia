@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Trusting root-cause attribution in an estate you have not reconciled. The answer will look authoritative either way.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Rule-based tags versus manual tags
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Bootstrapping a management zone with manual tags "just to get started." The zone will be wrong within a quarter, and nothing will announce it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Filtering is not access control
 
@@ -209,7 +209,7 @@ EOF
 
 **Negative test:** Demonstrating "restricted access" by showing a filtered dashboard. The demonstration proves nothing about what the account can reach.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

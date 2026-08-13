@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Relying only on production CSPM to catch misconfigurations. It works, but at 20× the cost of the pull-request catch and after the exposure already existed — shift-left prevents the shipment rather than cleaning up after it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Code-to-cloud: trace the finding to its source
 
@@ -109,7 +109,7 @@ EOF
 
 **Negative test:** Fixing the three public buckets directly in the cloud. They are correct until the next `terraform apply`, when the unchanged module recreates them public — only fixing the source line stops the recurrence.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

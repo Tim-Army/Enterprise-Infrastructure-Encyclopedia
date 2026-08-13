@@ -78,7 +78,7 @@ thinking.
 **Negative test:** build heavy custom code for a 10% edge case; upgrades become painful — **stay on the
 platform**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan platform governance
 
@@ -99,7 +99,7 @@ scale.
 **Negative test:** let every team build freely with no standards; the platform becomes unmaintainable
 — govern with a **CoE**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -120,7 +120,7 @@ PY
 **Negative test:** skip the **delta exam** after a named release; your certification goes stale —
 take it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

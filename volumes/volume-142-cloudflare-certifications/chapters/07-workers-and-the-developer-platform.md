@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Quoting the isolate numbers for a workload that then calls a single-region database four times. The compute moved; the latency stayed with the data.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — KV's eventual consistency, observed
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Implementing a distributed rate-limit counter in KV. Two edges increment concurrently, one update wins, and the limit quietly under-counts — the failure leaves no error, only a limit that does not limit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — When edge compute helps, and when it backfires
 
@@ -171,7 +171,7 @@ EOF
 
 **Negative test:** Moving an API to Workers for the latency win without moving or caching its data. The benchmark from one region away improves; users across the ocean from the database get the geography bill fourfold.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

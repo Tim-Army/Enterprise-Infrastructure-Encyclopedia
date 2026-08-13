@@ -228,7 +228,7 @@ what the overlay rides on.
 the neighbor drops to `DOWN` and the route reconverges via ECMP — confirming
 the second path, not a black hole.
 
-**Cleanup:** `no shutdown` the link; confirm the adjacency returns to `FULL`.
+**Rollback:** `no shutdown` the link; confirm the adjacency returns to `FULL`.
 
 ### Lab 2.2 — Apply switching protocols such as RSTP+, LACP, and vPC (Objective 1.2)
 
@@ -248,7 +248,7 @@ the vPC pair as a single logical bridge.
 brief` reports a **Type-2 consistency** warning and suspends the VLAN on the
 secondary — the protection working as designed.
 
-**Cleanup:** restore the MTU; confirm `show vpc consistency-parameters vlans`
+**Rollback:** restore the MTU; confirm `show vpc consistency-parameters vlans`
 is clean.
 
 ### Lab 2.3 — Apply overlay protocols such as VXLAN EVPN (Objective 1.3)
@@ -269,7 +269,7 @@ learning, not flood-and-learn.
 `show nve peers` loses the peer because Type-3 routes carry their VTEP
 information in extended communities.
 
-**Cleanup:** restore `send-community extended`; confirm NVE peers return.
+**Rollback:** restore `send-community extended`; confirm NVE peers return.
 
 ### Lab 2.4 — Apply ACI concepts (Objective 1.4)
 
@@ -288,7 +288,7 @@ NX-OS models it as per-device CLI.
 returns an empty `imdata` array — the object model is closed, unlike free-form
 CLI.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Analyze packet flow: unicast, multicast, broadcast (Objective 1.5)
 
@@ -309,7 +309,7 @@ distinct paths.
 the local leaf; the flow black-holes — proving first-hop routing depends on
 the distributed gateway.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Describe cloud service and deployment models per NIST 800-145 (Objective 1.6)
 
@@ -330,7 +330,7 @@ pooling, elasticity, measured service).
 pure private cloud; the SaaS call times out — the classification changes with
 connectivity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.7 — Describe software updates and their impacts (Objective 1.7)
 
@@ -347,7 +347,7 @@ analysis you run before any maintenance window.
 **Negative test:** attempt ISSU with a single supervisor or an incompatible
 EPLD; the impact check flags it as **disruptive**, not hitless.
 
-**Cleanup:** none (impact check does not modify the system).
+**Rollback:** none (impact check does not modify the system).
 
 ### Lab 2.8 — Implement network configuration management (Objective 1.8)
 
@@ -368,7 +368,7 @@ configuration management without external tooling.
 enabled while that feature is in use; NX-OS reports dependency errors rather
 than silently breaking — verify with `show rollback log`.
 
-**Cleanup:** `clear checkpoint database` to remove the test checkpoint.
+**Rollback:** `clear checkpoint database` to remove the test checkpoint.
 
 ### Lab 2.9 — Implement infrastructure monitoring with NetFlow, SPAN, and Nexus Dashboard (Objective 1.9)
 
@@ -390,7 +390,7 @@ plumbing Nexus Dashboard Insights consumes.
 **Negative test:** point the SPAN destination at a port that is also a vPC
 member; NX-OS rejects it — SPAN destinations must be dedicated.
 
-**Cleanup:** `no monitor session 1`.
+**Rollback:** `no monitor session 1`.
 
 ### Lab 2.10 — Explain network assurance such as streaming telemetry (Objective 1.10)
 
@@ -418,7 +418,7 @@ versus SNMP polling.
 subscription shows a connection failure in `show telemetry transport` —
 telemetry is only as good as the receiver.
 
-**Cleanup:** `no feature telemetry`.
+**Rollback:** `no feature telemetry`.
 
 ### Lab 2.11 — Describe the capabilities and features of Nexus Dashboard (Objective 1.11)
 
@@ -435,7 +435,7 @@ and Fabric Controller (NDFC provisioning) over the fabrics it manages.
 **Negative test:** query before onboarding any fabric; the `items` array is
 empty — Nexus Dashboard assures only what it manages.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

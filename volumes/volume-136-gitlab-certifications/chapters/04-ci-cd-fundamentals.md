@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Adding jobs to a stage assuming they are "free" because they run in parallel — they are free only while they finish faster than the current slowest job; the moment one overtakes it, it becomes the stage duration.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Artifacts versus cache
 
@@ -127,7 +127,7 @@ EOF
 
 **Negative test:** Caching build outputs to "speed up deploys" — it works until the first cache miss, at which point the deploy job fails with a missing file and the pipeline looks flaky rather than misconfigured.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Variable precedence and protected values
 
@@ -170,7 +170,7 @@ EOF
 
 **Negative test:** Storing production credentials as ordinary unprotected variables because "only our team can push" — every fork, branch, and merge-request pipeline can then read them, which is a much larger audience than intended.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

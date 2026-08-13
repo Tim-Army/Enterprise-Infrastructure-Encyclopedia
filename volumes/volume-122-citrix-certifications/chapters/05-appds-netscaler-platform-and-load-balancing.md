@@ -37,7 +37,7 @@ show ns ip
 
 **Negative test:** `add lb vserver` with a VIP that overlaps the NSIP subnet incorrectly and the config is accepted but traffic hairpins — the model, not the syntax, is what protects you.
 
-**Cleanup:** None (read-only).
+**Rollback:** None (read-only).
 
 ### Lab 5.2 — Platforms and modes (networking + platforms)
 
@@ -53,7 +53,7 @@ show ns feature
 
 **Negative test:** `add lb vserver` with the LB feature disabled — the CLI warns the feature is not enabled; a favorite lab-sim gotcha.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — High availability pair (HA module)
 
@@ -69,7 +69,7 @@ show ha node
 
 **Negative test:** Configure on the secondary (it refuses or warns) — changes belong on the primary; propagation is one-way.
 
-**Cleanup:** Fail back if desired.
+**Rollback:** Fail back if desired.
 
 ### Lab 5.4 — Load balancing end to end (LB module)
 
@@ -88,7 +88,7 @@ show lb vserver lb_web
 
 **Negative test:** Stop one back-end; its default `tcp-default` monitor marks the service **DOWN** and traffic shifts to the survivor — monitors, not hope, decide membership.
 
-**Cleanup:** `rm lb vserver lb_web; rm service web1; rm service web2`.
+**Rollback:** `rm lb vserver lb_web; rm service web1; rm service web2`.
 
 ### Lab 5.5 — Monitors and persistence (LB module)
 
@@ -104,7 +104,7 @@ show service web1
 
 **Negative test:** Point the monitor at a path returning 404; the service goes DOWN though TCP/80 is open — application-level health beats port-level.
 
-**Cleanup:** Unbind the monitor.
+**Rollback:** Unbind the monitor.
 
 ### Lab 5.6 — SSL offload (SSL module)
 
@@ -122,7 +122,7 @@ show ssl vserver lb_web_ssl
 
 **Negative test:** Skip the certkey bind; the vserver stays DOWN — an SSL vserver without a certificate can never come up.
 
-**Cleanup:** `rm lb vserver lb_web_ssl; rm ssl certKey lab_cert`.
+**Rollback:** `rm lb vserver lb_web_ssl; rm ssl certKey lab_cert`.
 
 ## Summary and Completion Checklist
 

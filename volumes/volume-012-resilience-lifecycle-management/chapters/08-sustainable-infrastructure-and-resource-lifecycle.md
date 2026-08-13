@@ -326,7 +326,7 @@ Right-sizing and PUE conclusions are only as good as the underlying utilization 
 
 **Negative Test:** Remove the `role` field entirely from `db-standby-01` in `fleet.yaml` (simulating an untagged standby instance) and rerun the scan. Confirm `db-standby-01` now incorrectly appears as a right-sizing candidate — demonstrating exactly the failure mode described in this chapter's Validation section: automation that cannot distinguish deliberate redundancy from waste will recommend reducing HA capacity if the underlying data is not properly tagged. Restore the `role: ha-standby` field afterward and confirm the candidate list returns to its expected state.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch8

@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Fixing this by deleting the allow entirely and breaking a legitimate internal tool that needed it. The answer is narrowing, not oscillating between too-broad and absent.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Log, measure, then block
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Enabling the full managed ruleset in block mode at go-live because "it's vendor-maintained." The rules are well-maintained; their fit to *your* traffic is what log mode measures, and nobody can measure it for you.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Rate limit keys and windows
 
@@ -176,7 +176,7 @@ EOF
 
 **Negative test:** One global rate limit "to keep things simple." It is simultaneously too loose for `/login` and too tight for `/api/products`, which is the predictable result of one number describing four behaviors.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Scanning only an artifact's top-level declared dependencies. The critical vulnerability is in a transitive component inside a base image layer, invisible to a shallow scan — deep recursive scanning is required to find it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Impact analysis turns a CVE panic into a query
 
@@ -128,7 +128,7 @@ EOF
 
 **Negative test:** Answering "are we affected by this CVE?" by manual audit across teams and repos. It takes days and misses artifacts; impact analysis on the centralized hub answers instantly and completely, cross-referenced with what is deployed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

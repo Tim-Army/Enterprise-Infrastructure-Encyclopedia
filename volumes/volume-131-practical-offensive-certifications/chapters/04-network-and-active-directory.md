@@ -48,7 +48,7 @@ EOF
 
 **Negative test:** Patching only the last hop (avoid DA sessions on that one server) while leaving the weak service account — the attacker just finds another server; cutting the earliest/cheapest edge is more effective than chasing the final one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Kerberoasting, understood to detect it
 
@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** A SOC that doesn't understand kerberoasting won't alert on the TGS burst — the technique hides in normal Kerberos traffic unless you know its shape; offensive understanding is what makes the detection possible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Tiered admin: designing the path out
 
@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Domain admins logging into ordinary workstations "for convenience" — one compromised workstation then yields domain admin; tiering exists precisely to prevent that, and the attack-path knowledge is why.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -54,7 +54,7 @@ The direct path to the PLC is gone; only the broker's address may reach it.
 
 **Negative test.** `hmi -> plc:502` directly now also fails — good: *no one* reaches the PLC directly anymore, not even the legitimate operator. Access must go through the broker (next step).
 
-**Cleanup.** Keep the isolation.
+**Rollback.** Keep the isolation.
 
 ### Exercise 5.2 — Broker by identity
 
@@ -96,7 +96,7 @@ DENY: bad identity
 
 The legacy PLC — which has no authentication of its own — is now protected by the broker's identity check.
 
-**Cleanup.** Keep the broker; Chapter 06 hardens and generalizes it.
+**Rollback.** Keep the broker; Chapter 06 hardens and generalizes it.
 
 ## Summary and Completion Checklist
 

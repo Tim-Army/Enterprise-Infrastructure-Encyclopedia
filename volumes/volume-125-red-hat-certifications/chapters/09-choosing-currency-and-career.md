@@ -65,7 +65,7 @@ cat my-redhat-plan.md
 
 **Negative test:** A plan with electives from mixed tracks — invalid for RHCA post-2026; catch it at planning time.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Verify exam currency before booking
 
@@ -86,7 +86,7 @@ echo "one check saves studying a retired or wrong-version exam"
 
 **Negative test:** Studying EX200 on RHEL 8 because a book said so — version drift; the exam page is the authority.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

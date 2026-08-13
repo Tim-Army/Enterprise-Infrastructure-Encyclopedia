@@ -44,7 +44,7 @@ cat /etc/cts/ip-sgt
 
 **Expected result.** Four IP→SGT rows — the local binding table SXP would otherwise distribute.
 
-**Cleanup.** Keep the bindings.
+**Rollback.** Keep the bindings.
 
 ### Exercise 4.2 — Distribute bindings with SXP
 
@@ -88,7 +88,7 @@ sudo nft list map inet cts sgtmap
 
 **Expected result.** The `sgtmap` lists each IP with its SGT as a packet mark — the enforcer can now resolve any address to a tag, exactly as `show cts role-based sgt-map` does.
 
-**Cleanup.** Keep the map; Chapter 06 uses it to enforce.
+**Rollback.** Keep the map; Chapter 06 uses it to enforce.
 
 ### Exercise 4.3 — Confirm tags end to end
 
@@ -122,7 +122,7 @@ sudo nft get element inet cts sgtmap '{ 10.10.1.99 }' 2>&1 | grep -o "No such fi
 
 An unbound address has no tag — it is `Unknown (0)`, the group the default rule will handle.
 
-**Cleanup.** Bindings persist. Teardown is Chapter 09.
+**Rollback.** Bindings persist. Teardown is Chapter 09.
 
 ## Summary and Completion Checklist
 

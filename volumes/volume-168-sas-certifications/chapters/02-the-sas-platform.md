@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Trying to do all analysis inside DATA steps with hand-coded loops. It is slow, error-prone, and reinvents statistics; PROC steps are optimized, validated procedures — DATA step to prepare, PROC to analyze is the idiomatic, testable division.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -88,7 +88,7 @@ feeding aggregate stats.
 **Negative test:** compute severity outside Splunk after export; do it **in SPL**
 with `eval` so it scales and stays live.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Advanced lookups (KV Store)
 
@@ -105,7 +105,7 @@ enrichment (KV Store lookups do this at scale).
 **Negative test:** hard-code owner mappings in a giant `case()`; a **lookup** is
 maintainable and updatable — externalize the mapping.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Acceleration and `tstats`
 
@@ -122,7 +122,7 @@ the acceleration technique central to Advanced Power User.
 panel; **`tstats`/acceleration** is orders of magnitude faster — use it for
 reporting.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Search efficiency and tuning
 
@@ -138,7 +138,7 @@ before transforms — the tuning principle (filter early, transform late).
 **Negative test:** `index=_internal | search log_level=ERROR` (filter after
 retrieval); push filters into the base search for speed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Multivalue fields
 
@@ -155,7 +155,7 @@ a weighted Advanced Power User topic.
 **Negative test:** treat a multivalue field as a single string; use `mvexpand`/
 `mvindex`/`mvcount` to handle multiple values correctly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.6 — Subsearches (with caveats)
 
@@ -172,7 +172,7 @@ subsearch) — subsearch filtering, respecting its result limits.
 **Negative test:** return 100k rows from a subsearch; subsearches have **result
 and time limits** — keep them small and fast.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.7 — Self-describing data with `spath`
 
@@ -188,7 +188,7 @@ index=_internal | head 100 | spath | fields data.* | stats count
 **Negative test:** regex-extract deeply nested JSON by hand; `spath` parses
 structured data natively — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.8 — Dashboards: tokens and drilldowns
 
@@ -210,7 +210,7 @@ token — form-driven, interactive dashboards (a heavily weighted cluster).
 **Negative test:** build one static dashboard per level; **tokens** let one
 form serve them all — parameterize.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

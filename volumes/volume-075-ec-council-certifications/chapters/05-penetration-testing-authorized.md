@@ -80,7 +80,7 @@ PY
 **Negative test:** an out-of-scope or excluded target must return **STOP** — respect scope and
 exclusions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — CPENT: structured enumeration on an owned host
 
@@ -97,7 +97,7 @@ echo "CPENT: structured recon -> analysis -> validation -> report (all authorize
 **Negative test:** run high-impact scans against production in the window without care; **minimize
 impact** — DoS is out of scope here.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — WAHS: scope a web assessment
 
@@ -118,7 +118,7 @@ PY
 **Negative test:** run web exploit tooling with no scope or method; professional assessment is
 **structured and authorized** — plan first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Report findings for remediation
 
@@ -140,7 +140,7 @@ PY
 **Negative test:** hand over tool logs unsorted; defenders can't prioritize — deliver a **ranked,
 actionable report**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

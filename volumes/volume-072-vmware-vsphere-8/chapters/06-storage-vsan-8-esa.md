@@ -71,7 +71,7 @@ Get-Datastore | Select Name, Type, @{N='CapacityGB';E={[math]::Round($_.Capacity
 **Negative test:** provision without checking **free space**; a full datastore stuns VMs — monitor
 it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Compare ESA and OSA
 
@@ -91,7 +91,7 @@ PY
 **Negative test:** deploy ESA on SATA SSDs; **ESA needs all-NVMe ESA-ready** hardware — use OSA
 there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Apply a storage policy (RAID-5 on ESA)
 
@@ -109,7 +109,7 @@ protection.
 **Negative test:** avoid RAID-5/6 to "keep performance"; on **ESA** it performs like mirroring —
 use it for efficiency.
 
-**Cleanup:** reset to the default policy.
+**Rollback:** reset to the default policy.
 
 ### Lab 6.4 — Round Robin multipathing
 
@@ -125,7 +125,7 @@ esxcli storage nmp device set --device <naa.id> --psp VMW_PSP_RR
 
 **Negative test:** leave a single fixed path; use **Round Robin** for redundancy/throughput.
 
-**Cleanup:** revert PSP in a lab.
+**Rollback:** revert PSP in a lab.
 
 ### Lab 6.5 — Storage vMotion
 
@@ -139,7 +139,7 @@ Move-VM -VM app01 -Datastore (Get-Datastore | Sort FreeSpaceGB -Descending)[0]
 
 **Negative test:** power off to move storage; **Storage vMotion** does it live — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

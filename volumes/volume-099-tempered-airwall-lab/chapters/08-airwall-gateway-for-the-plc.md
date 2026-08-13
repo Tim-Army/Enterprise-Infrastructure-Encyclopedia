@@ -40,7 +40,7 @@ Test-NetConnection -ComputerName 10.10.30.50 -Port 502   # HMI -> PLC via gatewa
 
 **Negative test.** From `aw-app01` (on the overlay but not authorized to the PLC), `nc -vz 10.10.30.50 502` — denied at the gateway (the `AIRWALL-DENY plc:` rule). Only the HMI identity is carried to the PLC.
 
-**Cleanup.** Keep the gateway rules.
+**Rollback.** Keep the gateway rules.
 
 ### Lab 8.2 — Confirm the PLC is dark except through the gateway
 
@@ -59,7 +59,7 @@ From `aw-app01`: `nc -vz 10.10.30.50 502` → blocked. And recall the Windows ho
 
 **Negative test.** Broaden the gateway allow to `ip daddr 10.10.30.50 tcp dport 502 accept` (dropping the `saddr 10.99.0.21` match). Now any overlay member reaches the PLC — you widened the overlay around the controller. Restore the identity match.
 
-**Cleanup.** Ensure the identity-matched gateway rule is restored.
+**Rollback.** Ensure the identity-matched gateway rule is restored.
 
 ### Lab 8.3 — Validate the containment end to end
 
@@ -90,7 +90,7 @@ Both legitimate flows work over the encrypted overlay; every lateral-movement pa
 
 **Negative test.** Stop WireGuard on `aw-db01` (`sudo systemctl stop wg-quick@wg0`) and re-run the app query over the overlay; it fails — no overlay, no connectivity, because there is no underlay path left either (the db is cloaked). The overlay is now the *only* way in, which is the point. Restart it.
 
-**Cleanup.** Leave the enforced overlay for Chapter 09.
+**Rollback.** Leave the enforced overlay for Chapter 09.
 
 ## Summary and Completion Checklist
 

@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Relying only on scanning after packages are pulled in. A malicious or typosquatted package is already inside before detection; Curation blocks it at the gate so it never enters the organization.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -178,7 +178,7 @@ the minimal footprint.
 nothing and warns the feature name is not valid — feature names are exact,
 and a typo silently installs nothing rather than erroring loudly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — First-boot configuration from PowerShell (Topic: Configure a new server)
 
@@ -200,7 +200,7 @@ offers has a cmdlet, so first-boot configuration is fully scriptable.
 another interface; the command fails with a duplicate-address error —
 Windows refuses overlapping static bindings.
 
-**Cleanup:** `Remove-NetIPAddress -IPAddress 10.10.0.20 -Confirm:$false` if reverting.
+**Rollback:** `Remove-NetIPAddress -IPAddress 10.10.0.20 -Confirm:$false` if reverting.
 
 ### Lab 1.3 — Install and remove a role idempotently (Topic: Manage roles and features)
 
@@ -221,7 +221,7 @@ idempotent, which is what makes it safe in automation.
 Core after removing the payload; it fails with a source error — supply
 `-Source wim:<path>` from a mounted image to fix.
 
-**Cleanup:** `Uninstall-WindowsFeature -Name Web-Server -IncludeManagementTools -Restart:$false`.
+**Rollback:** `Uninstall-WindowsFeature -Name Web-Server -IncludeManagementTools -Restart:$false`.
 
 ### Lab 1.4 — Add a server to Windows Admin Center's connection list (Topic: Manage servers remotely)
 
@@ -242,7 +242,7 @@ the target needs WinRM reachable (TCP 5985/5986).
 but the connection fails on open with a WinRM/DNS error — name resolution
 and WinRM reachability, not the WAC entry, determine success.
 
-**Cleanup:** `Remove-Connection -Name "FS01.corp.contoso.lab"`.
+**Rollback:** `Remove-Connection -Name "FS01.corp.contoso.lab"`.
 
 ## Lab Verification
 

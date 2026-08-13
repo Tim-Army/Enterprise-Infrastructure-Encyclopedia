@@ -43,7 +43,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** There is nothing blocked to find yet — and that is the finding. A flat network has no negative result, which is precisely why it is dangerous.
 
-**Cleanup.** Keep `~/reach.sh`; it is your regression test for the rest of the lab.
+**Rollback.** Keep `~/reach.sh`; it is your regression test for the rest of the lab.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -65,7 +65,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Try to justify flow 3 ("maybe the HMI reports to the database"). It does not — the HMI's only job is polling the PLC. Every "convenient" allow you cannot tie to a real dependency is how estates stay flat. Keep flow 3 a "no".
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -92,7 +92,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own legitimate query from `il-app01` (`~/checkdb.sh` → 3). It also works. The network cannot tell the difference between the app and the attacker, because on a flat network there is no policy to tell them apart. Segmentation is what supplies that difference.
 
-**Cleanup.** Clear the credential from the Windows session: `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** Clear the credential from the Windows session: `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

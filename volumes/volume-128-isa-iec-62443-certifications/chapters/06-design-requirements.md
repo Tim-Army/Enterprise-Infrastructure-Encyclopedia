@@ -56,7 +56,7 @@ EOF
 
 **Negative test:** A design with requirements that don't trace to an SL-T (gold-plating) or SL-Ts with no requirement (gaps) — 62443 design is a closed loop from risk to requirement; untraceable requirements and unmet SL-Ts both fail review.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Zone/conduit architecture
 
@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** A "convenience" conduit from Enterprise straight to Control (for a vendor's remote support) — it bypasses the DMZ and every intermediate zone's protection; such flows must be brokered through the DMZ (jump host, one-time access), never a direct conduit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Enforce the design with default-deny conduits
 
@@ -123,7 +123,7 @@ sudo ip netns exec l2sup bash -c 'nc -z -w2 10.1.0.10 80 || echo "L2->L1:80 deni
 
 **Negative test:** Implementing the zones but leaving the conduit default-accept — the diagram says "segmented" but the traffic says "flat"; the design is only real when the enforcement matches it.
 
-**Cleanup:** `for ns in l2sup l1ctl gw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del cbr`.
+**Rollback:** `for ns in l2sup l1ctl gw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del cbr`.
 
 ## Summary and Completion Checklist
 

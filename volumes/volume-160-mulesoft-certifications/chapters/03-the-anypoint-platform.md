@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Treating Anypoint as just an IDE for writing code. It is a unified platform spanning design, reuse (Exchange), build (Studio), deploy (CloudHub), and manage (API Manager); certification competence is understanding how those stages connect across the application network.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

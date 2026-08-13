@@ -37,7 +37,7 @@ esxi> esxcli network vswitch dvs vmware list | grep -i nsx     # NSX modules pre
 
 **Negative test.** A host not prepared as a transport node has no DFW — rules would exist in the manager but nothing enforces them. Preparation is what puts the firewall at the vNIC.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ### Exercise 2.2 — Track 2: build the distributed model on one subnet
 
@@ -78,7 +78,7 @@ sudo ip netns exec web ping -c1 10.50.1.99 | grep -o "0 received"
 0 received
 ```
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start the workload services
 
@@ -107,7 +107,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

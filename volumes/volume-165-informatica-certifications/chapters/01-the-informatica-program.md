@@ -95,7 +95,7 @@ EOF
 
 **Expected result:** A two-tier map — Certified Professional (role-based product knowledge, for builders/admins) versus Certified Practitioner (implementation-focused, two-year validity, for project delivery) — plus the shared Professional mechanics: 70% to pass, 90 minutes, a matching course prerequisite, and release-dated versioning. The lesson is that Professional is the mainstream "know the product" credential and Practitioner is the "deliver the project" credential, and every exam is course-backed and tracks a platform release.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Assemble the module-to-certification map
 
@@ -127,7 +127,7 @@ EOF
 
 **Expected result:** A module-to-certification table — CDI (Developer Professional), CAI (Developer Professional), Cloud Data Quality (Professional), MDM (Developer/Administrator/SaaS), CDGC (Professional), and PowerCenter (Dev + Admin, with CDI-PC for modernization) — each pointing at the chapter that develops it. The lesson is that Informatica certifications are organized by platform module, and you certify on the module you use at the level that matches your role.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

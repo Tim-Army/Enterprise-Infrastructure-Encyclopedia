@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Setting one global threshold because the score is global. The score is global; the *consequences* are per-endpoint, and the policy encodes consequences.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Schema validation at the edge
 
@@ -150,7 +150,7 @@ EOF
 
 **Negative test:** Enabling strict validation against a schema last updated two releases ago. The mobile app's new optional field gets rejected edge-wide, and the API team learns about schema drift from an outage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Shadow API discovery
 
@@ -194,7 +194,7 @@ EOF
 
 **Negative test:** Blocking all three shadow endpoints on discovery day. The 1,800 daily requests on `/api/v1/orders` belong to a paying integration that never migrated; discovery tells you what exists, not what is safe to break.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

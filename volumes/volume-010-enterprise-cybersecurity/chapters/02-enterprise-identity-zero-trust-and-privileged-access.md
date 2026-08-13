@@ -378,7 +378,7 @@ the code changes each window, so a captured code is useless moments later.
 grants full access — MFA means a stolen password is not enough, which is why it blocks the vast
 majority of account takeovers.
 
-**Cleanup:** none (discard the lab secret).
+**Rollback:** none (discard the lab secret).
 
 ### Lab 2.2 — Password and credential security (Topic: Credential security)
 
@@ -407,7 +407,7 @@ per second.
 cracked in hours — the deliberate slowness of a KDF plus a unique salt is what makes offline
 cracking infeasible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Least privilege and RBAC (Topic: Authorization)
 
@@ -429,7 +429,7 @@ account cannot reach secrets outside its role.
 root — over-provisioning turns a minor compromise into a full one, which least privilege
 prevents.
 
-**Cleanup:** `sudo userdel -r analyst 2>/dev/null; sudo groupdel logreaders 2>/dev/null; true`.
+**Rollback:** `sudo userdel -r analyst 2>/dev/null; sudo groupdel logreaders 2>/dev/null; true`.
 
 ### Lab 2.4 — Zero Trust and privileged access (Topic: Privileged access)
 
@@ -458,7 +458,7 @@ session recording.
 **Negative test:** grant standing VPN access that trusts anything on the network; a compromised
 device roams freely — Zero Trust's per-request, posture-aware checks are what contain that.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

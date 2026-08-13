@@ -39,7 +39,7 @@ oc expose deployment web --port=8080 2>/dev/null || kubectl -n lab expose deploy
 
 **Negative test:** `oc new-app` with an image the cluster can't pull (no pull secret) — pods stick in `ImagePullBackOff`; reading pod status is the primary EX280 debugging skill.
 
-**Cleanup:** `oc delete project lab` / `kubectl delete namespace lab`.
+**Rollback:** `oc delete project lab` / `kubectl delete namespace lab`.
 
 ### Lab 6.2 — Scaling, health, and updates
 
@@ -57,7 +57,7 @@ kubectl -n lab get deployment api -o wide
 
 **Negative test:** Set an image tag that doesn't exist — the rollout stalls and `rollout status` times out; new pods `ImagePullBackOff` while old ones keep serving (rolling-update safety), which the exam expects you to recognize and roll back.
 
-**Cleanup:** Namespace removed above.
+**Rollback:** Namespace removed above.
 
 ### Lab 6.3 — Storage: persistent volumes
 
@@ -77,7 +77,7 @@ kubectl -n lab get pvc data
 
 **Negative test:** A PVC with no matching StorageClass or PV stays `Pending` forever — "storage attached but pod won't start" traces to an unbound claim, the exam's storage-debugging path.
 
-**Cleanup:** `kubectl -n lab delete pvc data`.
+**Rollback:** `kubectl -n lab delete pvc data`.
 
 ### Lab 6.4 — RBAC and security context
 
@@ -94,7 +94,7 @@ echo "OpenShift adds Security Context Constraints (SCC): restricted-v2 by defaul
 
 **Negative test:** Deploy an image that insists on running as UID 0 under the default SCC — OpenShift refuses it; the SCC model (unlike vanilla Kubernetes) is a defining EX280 topic.
 
-**Cleanup:** Namespace removed.
+**Rollback:** Namespace removed.
 
 ### Lab 6.5 — The Specialist path and RHCA in OpenShift
 
@@ -111,7 +111,7 @@ RHCA (OpenShift) = EX280/L2 + EX380/L3-adjacent + THREE OpenShift Specialists, e
 
 **Negative test:** Chasing the retired EX318 (RHV virtualization) — gone; EX316 on OpenShift Virtualization is the current path.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

@@ -218,6 +218,8 @@ az account list-locations --query "[?metadata.regionType=='Physical'].{region:na
 geographies, and availability zones are the resilience primitives cloud
 concepts covers; naming a region pair for a workload is the skill.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.2 — Describe Azure architecture and services *(AZ-900, 35–40%)*
 
 ```bash
@@ -227,6 +229,8 @@ az provider list --query "[?registrationState=='Registered'].namespace" -o tsv |
 **Expected result:** registered resource providers (Compute, Network,
 Storage, …) — the service surface. AZ-900 is knowing these exist and what
 each does, not operating them.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.3 — Describe Azure management and governance *(AZ-900, 30–35%)*
 
@@ -238,6 +242,8 @@ az consumption budget list --query "[].name" -o tsv 2>/dev/null || echo "no budg
 **Expected result:** resource groups, and any budgets. Cost management,
 resource groups, RBAC, and Policy are the governance tools AZ-900 names.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.4 — AI workloads and considerations *(AI-901, 15–20%)*
 
 ```bash
@@ -248,6 +254,8 @@ az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | head -12
 Language, Speech, OpenAI, …). Recognizing which AI workload maps to which
 service is the section-1 skill; responsible-AI considerations pair with it.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.5 — Machine learning fundamentals on Azure *(AI-901, 15–20%)*
 
 ```bash
@@ -257,6 +265,8 @@ az provider show --namespace Microsoft.MachineLearningServices --query "registra
 **Expected result:** `Registered` or the note. Azure Machine Learning is
 the platform; the fundamentals point is distinguishing regression /
 classification / clustering, not building a model.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 2.6 — Computer vision workloads *(AI-901, 15–20%)*
 
@@ -269,6 +279,8 @@ az cognitiveservices account list-skus --kind ComputerVision --location eastus \
 classification, object detection, OCR, and face are the vision capabilities
 the section lists.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.7 — Natural language and generative AI workloads *(AI-901, 20–25%)*
 
 ```bash
@@ -278,6 +290,8 @@ az cognitiveservices account list-kinds -o tsv | tr '\t' '\n' | grep -iE "openai
 **Expected result:** `OpenAI` and `Language` among the kinds. Generative AI
 on Azure (the highest-weighted AI-901 section) is delivered through Azure
 OpenAI; know its use cases and the responsible-AI guardrails.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.8 — Core data concepts *(DP-900, 25–30%)*
 
@@ -290,6 +304,8 @@ echo "Data roles: administrator | engineer | analyst; workloads: transactional (
 Structured / semi-structured / unstructured and OLTP vs OLAP are the
 core-concepts vocabulary DP-900 tests.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.9 — Relational data on Azure *(DP-900, 20–25%)*
 
 ```bash
@@ -299,6 +315,8 @@ az sql db list-editions --location eastus --query "[].name" -o tsv | sort -u | h
 **Expected result:** service tiers (Basic, Standard, GeneralPurpose,
 Hyperscale, …). Azure SQL Database, Managed Instance, and SQL on a VM are
 the relational options; the tier is the sizing decision.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 2.10 — Non-relational data on Azure *(DP-900, 15–20%)*
 
@@ -310,6 +328,8 @@ az cosmosdb list-capabilities -o tsv 2>/dev/null | head -5 || echo "Cosmos DB AP
 key-value, graph) and Table/Blob storage are the non-relational options —
 choose by access pattern.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 2.11 — Analytics workload on Azure *(DP-900, 25–30%)*
 
 ```bash
@@ -319,6 +339,8 @@ az provider show --namespace Microsoft.Synapse --query "registrationState" -o ts
 **Expected result:** `Registered` or the note. Azure Synapse, Data
 Factory, and Microsoft Fabric are the analytics surface; the modern data
 warehouse pattern (ingest → store → prep → serve) is the examinable shape.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 2.12 — Negative test: recognize a disabled capability
 
@@ -330,6 +352,8 @@ az cognitiveservices account list --resource-group rg-does-not-exist 2>&1 | head
 empty list. Telling "not enabled / not present" from "nothing there" is
 the foundational reading skill all three exams reward. Nothing to clean up;
 no resources were created.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Lab Verification
 

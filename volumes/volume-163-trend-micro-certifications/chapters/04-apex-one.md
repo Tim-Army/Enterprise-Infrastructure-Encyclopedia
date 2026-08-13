@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Relying on one detection technique, or leaving newly-disclosed vulnerabilities exposed until the patch cycle completes. Single techniques miss novel or fileless threats, and the patch window leaves systems exploitable; layered detection plus virtual patching close both gaps.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

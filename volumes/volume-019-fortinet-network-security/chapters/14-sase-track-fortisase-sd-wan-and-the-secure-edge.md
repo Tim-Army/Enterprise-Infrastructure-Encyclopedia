@@ -145,7 +145,7 @@ to the cloud edge so remote users get the same protection as on-net users.
 direct to internet uninspected — enrollment into the SASE tenant is what steers and
 protects it.
 
-**Cleanup:** remove the test endpoint from the tenant.
+**Rollback:** remove the test endpoint from the tenant.
 
 ### Lab 14.2 — Secure private access over SD-WAN (Topic: FortiSASE SPA)
 
@@ -167,7 +167,7 @@ private-app access with per-app control instead of flat network access.
 the hub; the private app is unreachable — the SPA tunnel is the transport for private
 access.
 
-**Cleanup:** remove the published app and the lab SPA connection.
+**Rollback:** remove the published app and the lab SPA connection.
 
 ### Lab 14.3 — ZTNA through FortiSASE (Topic: SASE + Zero Trust)
 
@@ -188,7 +188,7 @@ trusted" with continuous, posture-aware authorization.
 device keeps its access — ZTNA's per-session posture check is what withdraws access when
 posture fails.
 
-**Cleanup:** revert the posture tag / ZTNA rule if lab-only.
+**Rollback:** revert the posture tag / ZTNA rule if lab-only.
 
 ### Lab 14.4 — Data loss prevention with FortiDLP (Topic: FortiDLP)
 
@@ -209,7 +209,7 @@ to protecting the organization's own data as it moves.
 not inspect payload content for sensitive patterns — DLP content matching is what catches
 the data itself.
 
-**Cleanup:** disable the lab DLP profile.
+**Rollback:** disable the lab DLP profile.
 
 ## Lab Verification
 

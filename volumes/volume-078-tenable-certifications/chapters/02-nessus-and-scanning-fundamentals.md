@@ -75,7 +75,7 @@ PY
 **Negative test:** treat every Info plugin as a vulnerability; **Info** is context, not risk — focus
 on real severities.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Build a scan policy
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** point a scan at an address you're not authorized to assess; that's prohibited —
 scope to **authorized** assets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Compare credentialed vs uncredentialed
 
@@ -117,7 +117,7 @@ the value of authentication.
 **Negative test:** rely on uncredentialed scans for patch management; they can't see installed
 patches — use **credentialed** scans.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Interpret and triage results
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** work findings alphabetically; you fix info-level items before critical exploitable
 ones — **triage by risk**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

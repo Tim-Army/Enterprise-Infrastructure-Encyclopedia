@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Protecting servers with a single antivirus and ignoring configuration posture. You miss integrity changes, exploit attempts before patching, and cloud misconfigurations; Deep Security's multiple modules plus CSPM protect the workload comprehensively and reduce attack surface across every environment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

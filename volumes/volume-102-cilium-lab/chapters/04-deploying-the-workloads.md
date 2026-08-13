@@ -21,7 +21,7 @@ kubectl create namespace ot
 
 **Negative test.** Deploy into `default` by forgetting `-n`; namespace-scoped policy will not select those pods. Keep workloads in `dc`/`ot`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy the services: db, api, and plc
 
@@ -99,7 +99,7 @@ EOF
 
 **Negative test.** `kubectl logs -n dc deploy/db` if postgres crash-loops — usually a missing `POSTGRES_PASSWORD`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Deploy the clients: web and hmi
 
@@ -124,7 +124,7 @@ kubectl get pods -A -o wide | grep -E "web|hmi|db|api|plc"
 
 **Negative test.** Use `busybox` for the clients and the `curl`-based L7 tests in Chapter 08 fail for lack of `curl`. `netshoot` has it; keep it.
 
-**Cleanup.** Keep the workloads.
+**Rollback.** Keep the workloads.
 
 ## Summary and Completion Checklist
 

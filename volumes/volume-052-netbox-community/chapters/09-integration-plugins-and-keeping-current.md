@@ -75,7 +75,7 @@ group) — dynamic, drift-free inventory.
 **Negative test:** maintain a static `hosts` file; it **drifts** from NetBox — generate
 it dynamically.
 
-**Cleanup:** `rm netbox_inv.yml`.
+**Rollback:** `rm netbox_inv.yml`.
 
 ### Lab 9.2 — Terraform-managed object
 
@@ -96,7 +96,7 @@ terraform init -no-color >/dev/null && terraform apply -auto-approve -no-color |
 **Negative test:** click-create critical objects; **Terraform** gives review, history,
 and drift detection.
 
-**Cleanup:** `terraform destroy -auto-approve`.
+**Rollback:** `terraform destroy -auto-approve`.
 
 ### Lab 9.3 — Install a plugin
 
@@ -113,7 +113,7 @@ NetBox extended with new views/models.
 **Negative test:** install a plugin built for an older NetBox; **version-match** it or
 NetBox fails to start.
 
-**Cleanup:** remove it from `PLUGINS` and uninstall.
+**Rollback:** remove it from `PLUGINS` and uninstall.
 
 ### Lab 9.4 — Check the current release
 
@@ -129,7 +129,7 @@ curl -sS "https://api.github.com/repos/netbox-community/netbox/releases/latest" 
 **Negative test:** run an unsupported old release; track **releases** and stay on a
 supported series.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

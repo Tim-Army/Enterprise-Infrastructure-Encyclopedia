@@ -126,7 +126,7 @@ unconditionally superior — they fail in different places.
 **Negative test.** Argue a DPU makes host hardening unnecessary. The last row disproves it: unpatched
 DPU firmware is an enforcement point you no longer control, and it is not visible to host tooling.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 11.2 — Size CX 10000 stateful inspection capacity
 
@@ -146,7 +146,7 @@ print("WITHIN CAPACITY" if demand_tbps <= L4_STATEFUL_TBPS else "EXCEEDS - add s
 capacity; enforcement, not switching, is the bottleneck. Size on the stateful figure, never the
 switching figure.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 11.3 — Model the Nutanix Flow DR scoping constraint
 
@@ -170,7 +170,7 @@ between Prism Central instances.
 recovered workloads run unsegmented. Rebuild or synchronize policy at the second Prism Central
 explicitly.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 11.4 — Score DPU and platform-native against the rubric
 
@@ -193,7 +193,7 @@ effort.
 **Negative test.** Set `coverage` weight to 0.50 and both fall behind a host agent, which reaches
 workloads neither model can. Coverage breadth is where platform-native options lose.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

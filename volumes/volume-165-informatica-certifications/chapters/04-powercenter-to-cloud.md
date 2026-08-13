@@ -97,7 +97,7 @@ EOF
 
 **Negative test:** A big-bang cutover — switching everything from PowerCenter to CDI in one weekend. High risk, no fallback, and no way to validate incrementally; wave-based migration with side-by-side running lets each wave be verified before the next.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

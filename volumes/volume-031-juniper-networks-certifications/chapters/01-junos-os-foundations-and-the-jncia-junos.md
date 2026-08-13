@@ -157,7 +157,7 @@ applies to forward.
 `show route` returns no match and traffic is dropped — longest-match needs a
 covering route (or a default).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Junos OS Fundamentals (Objective: Junos OS Fundamentals)
 
@@ -178,7 +178,7 @@ transit traffic stays in the PFE, exception/host traffic punts to the RE.
 (`rpd`) — conflating the planes misplaces where a CPU spike or a protocol fault
 originates.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — User Interfaces (Objective: User Interfaces)
 
@@ -202,7 +202,7 @@ LAB-R1`), `commit check` validates it, and `rollback 0` discards it — Junos ed
 `show configuration` (operational) shows the change absent — uncommitted candidate
 edits do not take effect.
 
-**Cleanup:** `rollback 0` (already done) leaves the candidate clean.
+**Rollback:** `rollback 0` (already done) leaves the candidate clean.
 
 ### Lab 1.4 — Configuration Basics (Objective: Configuration Basics)
 
@@ -227,7 +227,7 @@ interface addressing, and system services (NTP, syslog), optionally reused via
 subnet; Junos rejects the commit with a conflict — commit-time validation catches
 overlaps.
 
-**Cleanup:** `configure; delete system login user neteng; commit`.
+**Rollback:** `configure; delete system login user neteng; commit`.
 
 ### Lab 1.5 — Operational Monitoring and Maintenance (Objective: Operational Monitoring and Maintenance)
 
@@ -250,7 +250,7 @@ recovery).
 response while `show interfaces` shows the link `down` — the interface state
 explains the reachability failure.
 
-**Cleanup:** none (read-only; press `q` to exit monitor).
+**Rollback:** none (read-only; press `q` to exit monitor).
 
 ### Lab 1.6 — Routing Fundamentals (Objective: Routing Fundamentals)
 
@@ -273,7 +273,7 @@ table** (RIB, all candidate routes with preferences) and installs the best into 
 **Negative test:** add a static route whose next-hop is unreachable; it stays
 `hidden` in the RIB and never enters the FIB — the next-hop must resolve.
 
-**Cleanup:** `configure; delete routing-options static route 192.0.2.0/24; commit`.
+**Rollback:** `configure; delete routing-options static route 192.0.2.0/24; commit`.
 
 ### Lab 1.7 — Routing Policy and Firewall Filters (Objective: Routing Policy and Firewall Filters)
 
@@ -300,7 +300,7 @@ the end.
 default policy (e.g., accept for BGP) — the default action applies when no term
 matches, so an incomplete policy can leak routes.
 
-**Cleanup:** `configure; delete policy-options policy-statement REJECT-RFC1918;
+**Rollback:** `configure; delete policy-options policy-statement REJECT-RFC1918;
 delete firewall family inet filter PROTECT; commit`.
 
 ## Lab Verification

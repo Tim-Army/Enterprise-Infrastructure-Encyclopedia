@@ -207,7 +207,7 @@ customer routes. The neighbor counts locate the role.
 `show vrf all` lists customer VRFs it is a PE — the presence of customer state,
 not the IGP, defines the role.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Describe Cisco network software architecture (SPCOR Objective 1.2)
 
@@ -228,7 +228,7 @@ software delivered as packages (RPMs/SMUs) and configuration applied by
 take effect — IOS XR's candidate/commit model requires an explicit commit, a key
 difference from IOS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Describe service provider virtualization (SPCOR Objective 1.3)
 
@@ -248,7 +248,7 @@ software (XRv/XRd, NFV VNFs), so a "router" may be a VM or container in an NFVI.
 its data plane is software (or vendor NIC offload) with different scale limits —
 the platform type sets the performance envelope.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.4 — Describe IaaS constraints (SPCNI Objective 1.1)
 
@@ -267,7 +267,7 @@ VXLAN/EVPN or QinQ to segment beyond that for multi-tenant IaaS.
 **Negative test:** plan an IaaS tenant model on plain VLANs beyond 4094 segments;
 it cannot scale — the VLAN ceiling is the constraint that drives VXLAN/EVPN.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.5 — Determine the cloud service model (SPCNI Objective 1.2)
 
@@ -286,7 +286,7 @@ virsh list --all 2>/dev/null | head            # IaaS/VMs
 **Negative test:** manage OS patching on a SaaS offering; you cannot — the model
 dictates the boundary of control, and misjudging it breaks the operational plan.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.6 — Describe container orchestration and virtual machines (SPCNI Objective 1.3)
 
@@ -306,7 +306,7 @@ scaling; SP CNFs increasingly run as containers under Kubernetes.
 containers share the host kernel — the isolation model differs and affects
 security posture.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.7 — Implement virtualization functions (SPCNI Objective 1.4)
 
@@ -326,7 +326,7 @@ rate forwarding.
 line rate; without SR-IOV/DPDK the throughput is far lower — the data-path choice
 sets performance.
 
-**Cleanup:** `virsh shutdown vnf-router`.
+**Rollback:** `virsh shutdown vnf-router`.
 
 ### Lab 1.8 — Deploy NFV using automation and orchestration (SPCNI Objective 1.5)
 
@@ -347,7 +347,7 @@ replacing manual VM builds.
 VIM; the orchestrator fails the deployment at the resource-allocation step —
 descriptors must match VIM capacity.
 
-**Cleanup:** terminate the test network service.
+**Rollback:** terminate the test network service.
 
 ## Lab Verification
 

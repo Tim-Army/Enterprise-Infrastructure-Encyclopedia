@@ -77,7 +77,7 @@ enterprise auth.
 **Negative test:** use PSK for enterprise to "keep it simple"; **802.1X/EAP** gives per-user
 security — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Analyze the 4-way handshake
 
@@ -93,7 +93,7 @@ tshark -r wlan-auth.pcapng -Y "eapol" -T fields -e wlan.sa -e eapol.type -c 8 2>
 **Negative test:** assume encryption "just happens"; the **4-way handshake** establishes keys —
 analyze it to troubleshoot auth.
 
-**Cleanup:** none (read-only analysis of your own lab capture).
+**Rollback:** none (read-only analysis of your own lab capture).
 
 ### Lab 5.3 — WPA3 SAE and PMF
 
@@ -113,7 +113,7 @@ PY
 **Negative test:** rely on WPA2-PSK and disabled PMF; enable **WPA3-SAE + PMF** to close offline-
 attack and deauth gaps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Detect a deauth attack (defensive)
 
@@ -130,7 +130,7 @@ tshark -r wlan.pcapng -Y "wlan.fc.type_subtype==0x0c" -c 20 2>/dev/null | wc -l 
 **Negative test:** ignore deauth frames as normal; a **flood** is an attack signature — a **WIPS**
 and **PMF** address it.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ### Lab 5.5 — WIPS and segmentation
 
@@ -147,7 +147,7 @@ segmentation.
 
 **Negative test:** rely on encryption alone; add **WIPS + segmentation** for defense in depth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

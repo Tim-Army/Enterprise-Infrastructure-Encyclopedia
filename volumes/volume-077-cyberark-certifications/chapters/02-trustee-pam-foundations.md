@@ -75,7 +75,7 @@ PY
 **Negative test:** treat CyberArk as just a password vault; **CPM/PSM/PTA** add rotation, isolation,
 and detection — it's a full PAM system.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Reason about credential rotation
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** keep a static service-account password for years; a leak stays valid indefinitely —
 **rotate** on policy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Reason about session isolation
 
@@ -120,7 +120,7 @@ session isolation.
 **Negative test:** let admins RDP directly with a vaulted password copied to the clipboard; it can be
 stolen — connect **through PSM**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Apply least privilege
 
@@ -141,7 +141,7 @@ privilege.
 **Negative test:** grant domain admin for a service restart; that's massive over-privilege — grant
 the **minimum** (or just-in-time).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

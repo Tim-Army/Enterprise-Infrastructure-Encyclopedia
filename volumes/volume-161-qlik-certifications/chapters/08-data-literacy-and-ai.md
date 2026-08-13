@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Accepting a striking statistic (like +200%) at face value, or assuming Qlik is only visualization. Data literacy means questioning misleading numbers, and Qlik spans integration (Qlik Talend), prediction (AutoML), and generative AI (Qlik Answers) — not just charts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

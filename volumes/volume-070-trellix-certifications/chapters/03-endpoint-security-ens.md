@@ -73,7 +73,7 @@ protection tuned for the workload.
 **Negative test:** exclude an entire drive to stop a performance complaint; that creates a **blind
 spot** — scope the exclusion to the specific path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Access protection rule
 
@@ -91,7 +91,7 @@ defense beyond signatures.
 **Negative test:** rely on signatures alone; **access protection/exploit prevention** stop
 behaviors signatures miss — enable them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Endpoint firewall
 
@@ -109,7 +109,7 @@ network protection.
 **Negative test:** allow all inbound on endpoints; **default-deny** with explicit allows — least
 privilege.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Adaptive Threat Protection (ATP)
 
@@ -127,7 +127,7 @@ never-before-seen files.
 **Negative test:** trust any file with no known-bad signature; **ATP reputation** flags unknown
 risk — enable it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

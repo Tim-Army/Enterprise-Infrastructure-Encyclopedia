@@ -76,7 +76,7 @@ PY
 **Negative test:** work alerts oldest-first regardless of severity; the ransomware alert waits —
 prioritize by **risk**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — ECIH: walk the incident-response lifecycle
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** eradicate before **containment**; the threat spreads while you clean one host —
 contain first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — CTIA: structure threat intelligence
 
@@ -116,7 +116,7 @@ intelligence.
 **Negative test:** disseminate a bare IOC list; without **TTP and action** it's just data — structure
 it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Close the loop into a detection
 
@@ -138,7 +138,7 @@ improvement loop.
 **Negative test:** close the incident without a **new detection**; the same attack recurs — always
 feed back a control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

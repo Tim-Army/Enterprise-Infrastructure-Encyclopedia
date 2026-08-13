@@ -88,7 +88,7 @@ cargo run
 **Negative test:** compile a `.rs` file by hand with `rustc` for a multi-file project;
 **Cargo** manages builds/deps — use it beyond single files.
 
-**Cleanup:** `cd .. && rm -rf infra-tool`.
+**Rollback:** `cd .. && rm -rf infra-tool`.
 
 ### Lab 1.2 — Add a dependency
 
@@ -106,7 +106,7 @@ dependency.
 **Negative test:** vendor a crate's source by copy-paste; **`cargo add`** + crates.io
 handles versions/updates — declare it.
 
-**Cleanup:** `cd .. && rm -rf dep-demo`.
+**Rollback:** `cd .. && rm -rf dep-demo`.
 
 ### Lab 1.3 — Verify the toolchain
 
@@ -122,7 +122,7 @@ cargo --version
 **Negative test:** assume language features exist regardless of version; **check
 `--version`** — features stabilize per release/edition.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

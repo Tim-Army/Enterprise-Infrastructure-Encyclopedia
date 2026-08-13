@@ -408,7 +408,7 @@ report runtime and boot state separately — `systemctl` manages units, and the 
 **Negative test:** `systemctl start` a service but never `enable` it, then reboot; it is not
 running — `start` affects only the current boot, persistence needs `enable`.
 
-**Cleanup:** leave `systemd-timesyncd` enabled (time sync is expected).
+**Rollback:** leave `systemd-timesyncd` enabled (time sync is expected).
 
 ### Lab 3.2 — Boot targets and recovery (Topic: System recovery)
 
@@ -433,7 +433,7 @@ booting to a single-user root shell via GRUB is the standard password-recovery p
 cannot — physical/console access plus the GRUB edit is what enables recovery, which is why boot
 security (GRUB password, disk encryption) matters.
 
-**Cleanup:** `sudo systemctl set-default graphical.target` only if that was the original default
+**Rollback:** `sudo systemctl set-default graphical.target` only if that was the original default
 (servers default to multi-user).
 
 ### Lab 3.3 — Process management (Topic: Managing processes)
@@ -455,7 +455,7 @@ adjusts priority, and `kill` terminates it — listing (`ps`/`top`/`pgrep`), pri
 **Negative test:** `kill -9` a database instead of a graceful `kill`; you risk data loss —
 SIGTERM allows cleanup, SIGKILL (`-9`) does not, so reserve `-9` for when graceful stop fails.
 
-**Cleanup:** `pkill sleep 2>/dev/null || true`.
+**Rollback:** `pkill sleep 2>/dev/null || true`.
 
 ### Lab 3.4 — Logging with journald (Topic: Monitoring and troubleshooting)
 
@@ -475,7 +475,7 @@ creating `/var/log/journal` makes the journal persist across reboots — reading
 **Negative test:** review last week's logs on a volatile (in-memory) journal after a reboot; they
 are gone — persistence must be enabled before you need the history.
 
-**Cleanup:** none (persistent journal is a good default).
+**Rollback:** none (persistent journal is a good default).
 
 ### Lab 3.5 — Scheduled tasks: cron and timers (Topic: Scheduled work)
 
@@ -495,7 +495,7 @@ systemctl list-timers --no-pager | head
 **Negative test:** add a cron entry but leave the `cron` service disabled; nothing runs — the
 scheduler must be active for jobs to fire.
 
-**Cleanup:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued jobs.
+**Rollback:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued jobs.
 
 ## Lab Verification
 

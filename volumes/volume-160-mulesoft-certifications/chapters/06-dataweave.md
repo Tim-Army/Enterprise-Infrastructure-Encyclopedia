@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Writing manual parsing and serialization code per format to transform data. That is verbose and error-prone; DataWeave declares the output format and expresses map/filter/field-mapping in one concise functional script, which is why it is central to the platform and the exams.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

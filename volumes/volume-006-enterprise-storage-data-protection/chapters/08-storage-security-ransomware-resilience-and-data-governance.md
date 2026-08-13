@@ -426,7 +426,7 @@ comparing that behavior against a mutable copy of the same data.
    rm -f ~/immutability-lab/locked-backup.tar
    ```
 
-**Cleanup**
+**Rollback**
 
 7. Remove the lab directory if any files remain:
 

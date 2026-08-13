@@ -35,7 +35,7 @@ for ns in web db hmi plc; do echo "== $ns =="; sudo ip netns exec $ns nft list c
 
 **Expected result.** Each namespace shows its own distributed ruleset.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -56,7 +56,7 @@ for ns in web db hmi plc; do echo "== $ns =="; sudo ip netns exec $ns nft list c
 
 **Negative test.** Reinstalling NSX rarely fixes a policy problem — DFW faults are almost always missing tags/empty groups, the default rule still Allow, or a host not prepared. Check membership and the default rule first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -87,7 +87,7 @@ echo "teardown complete"
 
 **Negative test.** Deleting namespaces but leaving `/etc/nsx` and the `nsx` group table leaves stale membership data; remove them too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

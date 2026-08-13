@@ -35,7 +35,7 @@ hmi->db DENIED (isolation)
 
 **Negative test.** The isolation drop counters advance while the default-deny counter does not — the lateral flow now dies at the isolation policy, one precedence level earlier than in Chapter 05.
 
-**Cleanup.** None — isolation stays.
+**Rollback.** None — isolation stays.
 
 ### Exercise 6.2 — Quarantine the compromised VM
 
@@ -69,7 +69,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.150.0.20 5432 && echo "web->db stil
 web->db still OPEN
 ```
 
-**Cleanup.** Next exercise releases the quarantine.
+**Rollback.** Next exercise releases the quarantine.
 
 ### Exercise 6.3 — Release, and the forensic variant
 
@@ -98,7 +98,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.150.0.20 5432 || echo "hmi->db stil
 hmi->db still DENIED
 ```
 
-**Cleanup.** Quarantine set is empty again; the machinery stays armed for Chapter 09's operations drills.
+**Rollback.** Quarantine set is empty again; the machinery stays armed for Chapter 09's operations drills.
 
 ## Summary and Completion Checklist
 

@@ -67,7 +67,7 @@ rolling-update path.
 **Negative test:** patch files by hand; the **updater** runs dependency + DB migrations
 too — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Validate after change
 
@@ -82,7 +82,7 @@ docker compose exec librenms php validate.php | tail -20
 **Negative test:** assume the update worked; **validate** — it catches migration/permission
 issues.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Back up DB and RRD
 
@@ -99,7 +99,7 @@ ls -lh librenms-db.sql librenms-rrd.tgz | awk '{print $5,$9}'
 **Negative test:** back up only the database; without **RRD** you lose all historical
 graphs — back up both.
 
-**Cleanup:** store or remove the backups per policy.
+**Rollback:** store or remove the backups per policy.
 
 ### Lab 9.4 — Check the current release
 
@@ -115,7 +115,7 @@ curl -sS "https://api.github.com/repos/librenms/librenms/releases/latest" \
 **Negative test:** run a months-old release; the **rolling** model expects incremental
 updates — stay current.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

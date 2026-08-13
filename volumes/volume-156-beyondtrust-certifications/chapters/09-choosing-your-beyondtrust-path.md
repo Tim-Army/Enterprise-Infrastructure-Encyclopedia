@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Trying to certify on all eight products regardless of role. The credential validates hands-on administration of a specific product; certify on what you operate, anchored on Password Safe, rather than collecting badges for products you never touch.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position BeyondTrust/PAM in the identity-security career
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Treating PAM as separate from the rest of identity security. Vaulting and least privilege only fully protect when paired with strong authentication (Ping/Okta), governance (SailPoint), and cloud-permission control (Entitle/CIEM); PAM is one pillar of an integrated identity program.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

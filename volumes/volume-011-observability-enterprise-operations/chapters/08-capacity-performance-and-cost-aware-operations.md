@@ -491,7 +491,7 @@ bottleneck.
 pod at its memory limit causes user-facing latency while the average looks healthy — saturation and
 per-entity limits reveal what averages hide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Performance analysis with USE (Topic: Performance)
 
@@ -514,7 +514,7 @@ turn, so a performance problem is localized to the actual bottleneck rather than
 CPU does nothing and cost rises — USE finds the *actual* constrained resource before you spend on the
 wrong one.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Forecasting and capacity planning (Topic: Capacity planning)
 
@@ -533,7 +533,7 @@ hardware, scale out, clean up), converting reactive firefighting into planned pr
 **Negative test:** wait for a disk-full or OOM alert to add capacity; you are now in an incident with
 no lead time — forecasting on the trend gives the lead time to provision calmly ahead of the wall.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Cost-aware operations (Topic: Cost / FinOps)
 
@@ -555,7 +555,7 @@ efficiency and where waste is.
 efficiency from growth — cost *per unit of work* is what separates "we grew" from "we got wasteful,"
 and directs optimization.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

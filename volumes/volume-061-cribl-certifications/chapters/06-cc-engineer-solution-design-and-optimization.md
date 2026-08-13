@@ -69,7 +69,7 @@ architecture.
 **Negative test:** point every source straight at the SIEM; **route reduced data to premium
 tools and full data to Lake** — control cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Reduction vs fidelity
 
@@ -86,7 +86,7 @@ optimization decision.
 
 **Negative test:** apply one reduction level to everything; **tune per data value**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Tiering and storage
 
@@ -103,7 +103,7 @@ optimization.
 
 **Negative test:** keep everything hot forever; **tier** to cut cost while retaining data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Replay from Lake
 
@@ -120,7 +120,7 @@ optimization.
 **Negative test:** keep all data in the SIEM "just in case"; **replay from Lake** gives
 access on demand at a fraction of the cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

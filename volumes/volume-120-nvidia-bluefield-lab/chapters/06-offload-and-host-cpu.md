@@ -29,7 +29,7 @@ echo "== DPU (dpu-web) ruleset =="; sudo ip netns exec dpu-web nft list ruleset 
 
 **Negative test.** If the rules were in the workload namespace (a host-agent model, Chapter 05), the host would pay for every packet's filtering; here it pays nothing because the DPU domain does it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 6.2 — Line-rate offload (design)
 
@@ -39,7 +39,7 @@ echo "== DPU (dpu-web) ruleset =="; sudo ip netns exec dpu-web nft list ruleset 
 
 **Expected result (on paper).** A design note: policy and datapath on the DPU, host CPU untouched, line-rate east-west with per-workload segmentation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

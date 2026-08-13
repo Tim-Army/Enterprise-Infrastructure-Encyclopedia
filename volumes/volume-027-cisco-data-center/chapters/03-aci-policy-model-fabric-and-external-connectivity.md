@@ -201,7 +201,7 @@ rendered into leaf/spine hardware.
 returns nothing — roles are a closed set; there is no "border" node role in
 ACI (border leaves are ordinary leaves with an L3Out).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Describe the ACI Object Model (Objective 1.2)
 
@@ -219,7 +219,7 @@ its EPGs, e.g. `uni/tn-PROD/ap-APP/epg-WEB` — every ACI object has a unique
 **Negative test:** query a class name with a typo (an extra letter); the APIC
 returns an error, not an empty set — the class must exist in the model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Utilize faults, events, audit log, and health score (Objective 1.3)
 
@@ -238,7 +238,7 @@ external NMS required.
 fault appears and the affected object's health score drops — faults are
 event-driven, not polled.
 
-**Cleanup:** re-enable the interface; confirm the fault clears and health
+**Rollback:** re-enable the interface; confirm the fault clears and health
 recovers.
 
 ### Lab 3.4 — Describe ACI fabric discovery (Objective 1.4)
@@ -258,7 +258,7 @@ through LLDP neighbors and infra-VLAN DHCP.
 or missing from `fabricNode` until you accept it — discovery proposes,
 the admin registers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Implement ACI policies (Objective 1.5)
 
@@ -277,7 +277,7 @@ profile is queryable under `uni/tn-LAB/ap-APP` — policy created declaratively.
 **Negative test:** POST the same tenant with an illegal name (spaces); the
 APIC rejects it with a naming-policy error — the model enforces object naming.
 
-**Cleanup:** `icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB.json' -d
+**Rollback:** `icurl -k -X POST 'https://localhost/api/mo/uni/tn-LAB.json' -d
 '{"fvTenant":{"attributes":{"name":"LAB","status":"deleted"}}}'`.
 
 ### Lab 3.6 — Implement ACI logical constructs (Objective 1.6)
@@ -303,7 +303,7 @@ the endpoint/bridge-domain/context hierarchy that replaces VLAN/SVI/VRF.
 fault (`resolvable`) appears until the BD exists — ACI relationships are
 validated.
 
-**Cleanup:** delete tenant `LAB` as in Lab 3.5.
+**Rollback:** delete tenant `LAB` as in Lab 3.5.
 
 ### Lab 3.7 — Describe endpoint learning (Objective 2.1)
 
@@ -320,7 +320,7 @@ moquery -c fvRsCEpToPathEp | grep tDn | head
 **Negative test:** move a host to another leaf and re-query; the path updates
 and the stale entry ages out — endpoint moves are learned, not flooded.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.8 — Implement bridge domain settings (Objective 2.2)
 
@@ -341,7 +341,7 @@ flooding unknown unicast.
 floods the BD instead of using the proxy — the setting directly changes
 forwarding.
 
-**Cleanup:** restore defaults or delete tenant `LAB`.
+**Rollback:** restore defaults or delete tenant `LAB`.
 
 ### Lab 3.9 — Implement Layer 2 connectivity (Objective 3.1)
 
@@ -360,7 +360,7 @@ into EPG `WEB` — the point where a physical port joins the policy fabric.
 **Negative test:** bind the same encap to a second EPG on the same port
 without a valid VLAN pool; the APIC raises an encap-overlap fault.
 
-**Cleanup:** delete the `fvRsPathAtt`, or delete tenant `LAB`.
+**Rollback:** delete the `fvRsPathAtt`, or delete tenant `LAB`.
 
 ### Lab 3.10 — Implement Layer 3 Out (Objective 3.2)
 
@@ -381,7 +381,7 @@ blueprint).
 traffic is not classified into the external EPG until `import-security` (or
 the appropriate scope) is set.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.11 — Implement virtual networking integration (Objective 4.1)
 
@@ -399,7 +399,7 @@ distributed port group in vCenter for each EPG associated with the domain.
 on the old port group; the endpoint never appears in `fvCEp` — attachment
 requires the vNIC on the ACI-created port group.
 
-**Cleanup:** remove the test EPG-to-VMM association.
+**Rollback:** remove the test EPG-to-VMM association.
 
 ### Lab 3.12 — Describe resolution and deployment immediacy in VMM (Objective 4.2)
 
@@ -417,7 +417,7 @@ leaf; deployment immediacy decides when it is programmed into hardware.
 VLAN is not programmed on the leaf; `show vlan extended` on the leaf omits it
 until a VM attaches — immediacy is why.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.13 — Implement a service graph (Objective 4.3)
 
@@ -436,7 +436,7 @@ policy, not by cabling.
 down; the graph instance shows `configSt: failed` with a fault — insertion
 depends on a healthy service device.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.14 — Implement out-of-band and in-band management (Objective 5.1)
 
@@ -454,7 +454,7 @@ the in-band EPG if configured — the two management planes ACI separates.
 node over OOB stops while the fabric data plane is unaffected — the planes are
 independent.
 
-**Cleanup:** restore the OOB contract.
+**Rollback:** restore the OOB contract.
 
 ### Lab 3.15 — Utilize traditional and AI-assisted monitoring tools (Objective 5.2)
 
@@ -472,7 +472,7 @@ AI-assisted layer that flags fabric anomalies traditional faults miss.
 returns no data — AI assistance requires the fabric be onboarded and
 streaming.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.16 — Implement configuration backup (Objective 5.3)
 
@@ -492,7 +492,7 @@ point-in-time backup you can roll back to or export off-box.
 `moquery -c configJob` shows the job `failed` — verify the remote location
 before relying on off-box backups.
 
-**Cleanup:** delete the snapshot via its `configSnapshot` object.
+**Rollback:** delete the snapshot via its `configSnapshot` object.
 
 ### Lab 3.17 — Implement AAA and RBAC (Objective 5.4)
 
@@ -513,7 +513,7 @@ domain.
 **Negative test:** log in as `neteng` and query a tenant outside `LAB-DOM`;
 the APIC returns no objects — the domain boundary is enforced.
 
-**Cleanup:** delete the `aaaUser`.
+**Rollback:** delete the `aaaUser`.
 
 ### Lab 3.18 — Configure an upgrade (Objective 5.5)
 
@@ -532,7 +532,7 @@ a rolling upgrade.
 **Negative test:** put every leaf in one maintenance group; a simultaneous
 upgrade risks a forwarding outage — the negative shows why groups exist.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.19 — Describe Multi-Pod (Objective 6.1)
 
@@ -550,7 +550,7 @@ availability zone.
 **Negative test:** a single-pod fabric returns exactly one `fabricPod`; the
 Multi-Pod constructs are absent — the topology dictates the objects.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.20 — Describe Multi-Site (Objective 6.2)
 
@@ -567,7 +567,7 @@ by NDO, unlike Multi-Pod's single cluster.
 **Negative test:** query before adding a site; the `sites` array is empty —
 NDO orchestrates only registered sites.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.21 — Describe Remote Leaf (Objective 6.3)
 
@@ -586,7 +586,7 @@ spine.
 falls out of the fabric; `fabricNode` shows it inactive — remote leaves depend
 on the WAN underlay.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

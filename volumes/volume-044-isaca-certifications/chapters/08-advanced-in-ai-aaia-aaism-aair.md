@@ -105,7 +105,7 @@ governance-and-risk domain that leads AAIA.
 **Negative test:** govern AI with generic IT policy only; AI needs **specific**
 controls (bias, explainability, inventory).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — AAIA: AI Operations (heaviest)
 
@@ -127,7 +127,7 @@ rollback, retraining governance) — AAIA's heaviest domain.
 **Negative test:** audit only pre-deployment; AI risk is **ongoing** (drift,
 data changes) — audit operations too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — AAIA: AI Auditing Tools & Techniques
 
@@ -149,7 +149,7 @@ the mechanics domain of AAIA.
 **Negative test:** audit an AI system with no model cards or data lineage; require
 **provenance evidence** to audit it credibly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### AAISM — Advanced in AI Security Management
 
@@ -172,7 +172,7 @@ PY
 **Negative test:** secure AI ad hoc; a **managed program** (inventory + policy +
 gates) is what AAISM certifies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — AAISM: AI Risk Management (31%)
 
@@ -193,7 +193,7 @@ AAISM Domain 2.
 **Negative test:** apply only generic infosec risk; AI adds **model/data/prompt**
 risks — assess them explicitly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — AAISM: AI Technologies and Controls (38%)
 
@@ -215,7 +215,7 @@ and tools — AAISM's heaviest domain.
 **Negative test:** give an AI agent broad tool permissions; the model's tools are
 its attack surface — apply **least privilege**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### AAIR — Advanced in AI Risk
 
@@ -236,7 +236,7 @@ Domain 1.
 **Negative test:** manage AI risk in a silo; integrate it into **ERM** so it is
 governed like other enterprise risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.8 — AAIR: AI Risk Program Management
 
@@ -256,7 +256,7 @@ assessments, control testing, KRIs) — AAIR Domain 2.
 **Negative test:** assess AI risk once at launch; a **program** runs recurring
 reviews — AI systems change.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.9 — AAIR: AI Life Cycle Risk Management
 
@@ -279,7 +279,7 @@ risk management of AAIR Domain 3.
 **Negative test:** manage only deployment risk; model risk spans **training to
 decommission** — govern the whole lifecycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

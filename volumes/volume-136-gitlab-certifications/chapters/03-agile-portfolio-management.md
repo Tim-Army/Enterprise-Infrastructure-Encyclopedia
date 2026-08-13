@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Building a workflow board on plain labels and relying on people to remove the old one — they forget under pressure, and within a fortnight the board is a lie.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Dependencies and the critical path
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Planning by summing estimates and dividing by team size — it ignores blocking entirely and produces a date the dependency chain makes impossible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Velocity as a range, not a target
 
@@ -152,7 +152,7 @@ EOF
 
 **Negative test:** Forecasting from a single sprint's velocity — the sample is one, the variance is invisible, and the resulting date is presented with a confidence the data cannot support.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

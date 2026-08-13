@@ -47,7 +47,7 @@ EOF
 
 **Negative test:** Applying an IT patch-Tuesday auto-update policy to the control network — an untested patch can halt production or a safety function; OT patching is deliberate, tested, and windowed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Passive OT monitoring
 
@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Deploying an inline IPS that blocks "anomalies" on the control network — a false positive drops legitimate control traffic and can trip the process; OT detection is passive-first, with response coordinated through operations.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Verify SL hasn't decayed after a change
 
@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Approving the vendor conduit without re-verifying SL — the plant now has an unmonitored path into control that no risk assessment sanctioned; the maintenance discipline exists to prevent exactly this drift.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

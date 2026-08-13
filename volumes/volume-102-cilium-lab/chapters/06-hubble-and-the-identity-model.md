@@ -33,7 +33,7 @@ hubble observe --to-pod dc/api --protocol http           # L7 detail on the API
 
 **Negative test.** Try to get this identity-and-verdict view from `tcpdump`; you get packets and IPs, not workload identities or verdicts. Hubble's value is that it speaks in the same identity terms your policy will.
 
-**Cleanup.** Stop the background `hubble observe` with `kill %1` when done.
+**Rollback.** Stop the background `hubble observe` with `kill %1` when done.
 
 ### Lab 6.2 — The Hubble service map
 
@@ -56,7 +56,7 @@ hubble observe --namespace dc --namespace ot -o compact | sort -u | head -20
 
 **Negative test.** Design policy without looking at the map and you will miss a real dependency (breaking the app) or overlook an unwanted flow (leaving a hole). Observe first.
 
-**Cleanup.** Stop the UI port-forward when done.
+**Rollback.** Stop the UI port-forward when done.
 
 ### Lab 6.3 — Identity-based enforcement
 
@@ -72,7 +72,7 @@ kubectl -n kube-system exec ds/cilium -- cilium identity list | grep -E "app=web
 
 **Negative test.** Note there is no identity keyed on IP. A policy engine that enforced on IP would need constant updates as pods churn; identity-based enforcement does not.
 
-**Cleanup.** Keep the cluster for Chapter 07.
+**Rollback.** Keep the cluster for Chapter 07.
 
 ## Summary and Completion Checklist
 

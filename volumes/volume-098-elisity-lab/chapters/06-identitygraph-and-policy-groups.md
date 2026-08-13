@@ -33,7 +33,7 @@ This is the core of the lab. Each exercise carries both tracks. Elisity's method
 
 **Negative test.** Plan to classify assets by subnet ("everything on 10.10.40.0/24 is a database"). Subnet is not identity; the day a database moves or a non-database lands on that subnet, the policy is wrong. Classify by identity.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Build the IdentityGraph
 
@@ -82,7 +82,7 @@ sudo /usr/local/bin/build-identitygraph.sh
 
 **Negative test.** Add a second app server to the inventory and re-run the builder; it joins `grp_appserver` automatically. Now change `el-win01`'s role to `AppServer` in the CSV and rebuild — the HMI becomes an app server in the graph, and (in Chapter 07) inherits app-server access to the database. The graph is only as correct as its sources; a wrong classification is a wrong policy. Restore it to `HMI`.
 
-**Cleanup.** Keep the IdentityGraph; Chapter 07 enforces policy against it.
+**Rollback.** Keep the IdentityGraph; Chapter 07 enforces policy against it.
 
 ### Lab 6.3 — Author identity-based policy (validate before enforcing)
 
@@ -111,7 +111,7 @@ Reproduce the HMI→db attempt from `el-win01` and confirm an `ELISITY-WOULD-DEN
 
 **Negative test.** Write the allow as `ip saddr 10.10.20.11` instead of `@grp_appserver`. It works until the app is re-addressed, then breaks — the exact fragility identity groups remove. Use the group.
 
-**Cleanup.** Keep the policy; Chapter 07 enforces it.
+**Rollback.** Keep the policy; Chapter 07 enforces it.
 
 ## Summary and Completion Checklist
 

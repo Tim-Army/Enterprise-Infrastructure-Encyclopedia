@@ -81,7 +81,7 @@ cluster1 cluster1-01_mgmt 192.168.0.11  up
 **Negative test:** join a node running a different ONTAP version to the cluster; the join fails on
 version mismatch — bring nodes to a matching release first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Configure and trigger AutoSupport
 
@@ -103,7 +103,7 @@ cluster1-01 http        sent-successful
 **Negative test:** leave AutoSupport disabled; NetApp cannot open proactive cases and support is slower
 — enable it over HTTPS.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> system node autosupport modify -node * -mail-hosts -
@@ -128,7 +128,7 @@ pg_limit         4980    39.84MB/s    1.20ms
 **Negative test:** run a batch job with no QoS ceiling on a shared cluster; it consumes all IOPS and
 critical apps slow down — apply a max-throughput ceiling.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> volume modify -vserver svm_app -volume vol_finance -qos-policy-group none
@@ -157,7 +157,7 @@ SANtricity.
 **Negative test:** expect ONTAP clustershell commands to manage an E-Series array; use **SANtricity**
 System Manager/CLI instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

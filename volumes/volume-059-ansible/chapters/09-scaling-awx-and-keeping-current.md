@@ -70,7 +70,7 @@ ansible-config dump --only-changed | grep -i forks
 **Negative test:** run a 500-host play at the default **forks=5**; raise forks to parallelize
 appropriately.
 
-**Cleanup:** `rm -f ansible.cfg`.
+**Rollback:** `rm -f ansible.cfg`.
 
 ### Lab 9.2 — Choose a strategy (describe)
 
@@ -88,7 +88,7 @@ appropriately.
 **Negative test:** use `linear` for long independent per-host jobs; **`free`** avoids the
 slowest-host bottleneck.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Execution environments (describe)
 
@@ -105,7 +105,7 @@ slowest-host bottleneck.
 **Negative test:** rely on each machine's local collections; **execution environments** pin
 them for identical runs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Check the version
 
@@ -121,7 +121,7 @@ python -c "print('track ansible-core releases + the community ansible package')"
 **Negative test:** run an end-of-life ansible-core; track **releases** and stay supported
 for fixes/modules.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

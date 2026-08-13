@@ -73,7 +73,7 @@ of a capture.
 **Negative test:** judge traffic from packet counts alone; the **protocol hierarchy** and
 conversations reveal what's actually happening — analyze, don't guess.
 
-**Cleanup:** `rm -f /tmp/lab.pcap`.
+**Rollback:** `rm -f /tmp/lab.pcap`.
 
 ### Lab 3.2 — GCDA: build a detection rule
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** set the threshold to 1 failure; every fat-fingered password alerts — **tune** the
 threshold.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — GDAT: map a detection to MITRE ATT&CK
 
@@ -119,7 +119,7 @@ GDAT method.
 **Negative test:** claim "we have EDR, so we're covered"; the **ATT&CK map** shows specific gaps —
 measure coverage per technique.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — GMON: continuous monitoring health
 
@@ -139,7 +139,7 @@ PY
 **Negative test:** build detections on a source that isn't sending data; they silently never fire —
 verify **telemetry flow** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — GDSA: reason about defensible architecture
 
@@ -161,7 +161,7 @@ segmented design (GDSA).
 **Negative test:** flatten the network (internet can reach data); one breach reaches the crown jewels
 — **segment** into zones.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

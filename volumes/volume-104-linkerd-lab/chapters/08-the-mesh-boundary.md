@@ -32,7 +32,7 @@ kubectl exec -n dc deploy/web -c web -- nc -z -w2 plc.ot 502 && echo "web STILL 
 
 **Negative test.** Assume meshing the namespace protected the PLC. It did not — the PLC was explicitly excluded from injection and could not run a proxy anyway.
 
-**Cleanup.** Server deleted above.
+**Rollback.** Server deleted above.
 
 ### Lab 8.2 — Default-deny inbound for a namespace
 
@@ -59,7 +59,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Set the annotation to `all-unauthenticated` and the namespace allows everything again. The default-inbound-policy is the switch between allow-first and deny-first for the whole namespace.
 
-**Cleanup.** Keep the deny policy, or revert to `all-authenticated` if probes misbehave in your cluster.
+**Rollback.** Keep the deny policy, or revert to `all-authenticated` if probes misbehave in your cluster.
 
 ### Lab 8.3 — Pair the mesh with a CNI NetworkPolicy (Design Exercise)
 
@@ -87,7 +87,7 @@ The CNI enforces this on the PLC's traffic directly, regardless of the mesh. Mes
 
 **Negative test.** Argue the mesh alone suffices. It cannot protect anything that cannot join it — which in real estates includes OT and legacy systems.
 
-**Cleanup.** No NetworkPolicy applied (kind's default CNI may not enforce it); the exercise is the deliverable.
+**Rollback.** No NetworkPolicy applied (kind's default CNI may not enforce it); the exercise is the deliverable.
 
 ## Summary and Completion Checklist
 

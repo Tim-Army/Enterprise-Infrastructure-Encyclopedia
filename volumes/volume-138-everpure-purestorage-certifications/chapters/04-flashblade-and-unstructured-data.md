@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Choosing object storage for a workload that rewrites small portions of large files — every change becomes a full-object rewrite, and both cost and latency multiply.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Scale-out versus scale-up performance
 
@@ -104,7 +104,7 @@ EOF
 
 **Negative test:** Planning a petabyte analytics dataset on a scale-up array sized by capacity alone — the capacity fits and the throughput does not, and that only becomes apparent when the workload arrives.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Size for AI training throughput
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Sizing AI storage by capacity alone — the dataset fits, the GPUs starve, and the symptom presents as "the training job is slow" rather than as a storage problem.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

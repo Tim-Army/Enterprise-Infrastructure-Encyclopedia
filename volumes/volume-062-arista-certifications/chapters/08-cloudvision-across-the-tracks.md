@@ -70,7 +70,7 @@ provisioning.
 **Negative test:** assign a unique configlet per device; **Studios** generate from a model —
 scale with them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Read streaming telemetry
 
@@ -89,7 +89,7 @@ real-time fleet state.
 **Negative test:** poll each switch by SNMP for state; **streaming telemetry** is real-time
 and scalable — use CloudVision.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Change Control
 
@@ -106,7 +106,7 @@ and scalable — use CloudVision.
 **Negative test:** push config directly with no snapshot/approval; **Change Control** adds
 review and rollback — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Network-wide search and MSS
 
@@ -123,7 +123,7 @@ review and rollback — use it.
 **Negative test:** log into each switch to find a host; **network-wide search** answers it
 from one place.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

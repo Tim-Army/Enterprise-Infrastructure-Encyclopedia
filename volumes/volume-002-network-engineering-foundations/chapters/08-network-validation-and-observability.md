@@ -360,7 +360,7 @@ traceroute and ping to localize the degrading hop over many samples.
 **Negative test:** judge a path from a single ping; transient loss or a specific bad hop is missed —
 `mtr` over many samples reveals sustained per-hop loss that one ping cannot.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Packet capture and analysis (Topic: Packet capture)
 
@@ -379,7 +379,7 @@ Volume XX) shows exactly what is on the wire, filtered to the flow of interest.
 **Negative test:** capture with no filter on a busy link; the file is enormous and the relevant
 packets are buried — a capture filter (`host`, `port`, flags) is what makes the capture usable.
 
-**Cleanup:** `rm -f /tmp/cap.pcap`.
+**Rollback:** `rm -f /tmp/cap.pcap`.
 
 ### Lab 8.3 — Performance measurement (Topic: Throughput)
 
@@ -400,7 +400,7 @@ a link/path delivers its rated capacity or is constrained.
 link, congestion, or a duplex mismatch) may deliver much less — `iperf3` measures what the path
 actually delivers.
 
-**Cleanup:** stop the `iperf3 -s` server.
+**Rollback:** stop the `iperf3 -s` server.
 
 ### Lab 8.4 — Flow and device monitoring (Topic: Observability)
 
@@ -420,7 +420,7 @@ utilization and who is talking to whom over time.
 **Negative test:** monitor only up/down link state; a link that is up but dropping/erroring frames (or
 saturated) degrades traffic while showing "up" — the error/discard and utilization counters reveal it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

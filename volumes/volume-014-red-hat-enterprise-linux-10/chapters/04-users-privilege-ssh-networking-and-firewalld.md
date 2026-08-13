@@ -430,7 +430,7 @@ id alice ; sudo chage -l alice | head
 skips home creation; the user has no home directory and login misbehaves — verify the home
 directory exists, do not assume it.
 
-**Cleanup:** `sudo userdel -r alice; sudo groupdel engineers`.
+**Rollback:** `sudo userdel -r alice; sudo groupdel engineers`.
 
 ### Lab 4.2 — Privilege escalation with sudo (Topic: Manage security)
 
@@ -450,7 +450,7 @@ syntax — RHCSA expects configuring `sudo` via drop-in files in `/etc/sudoers.d
 `sudo` breaks for everyone — always use `visudo` (or `visudo -cf` on drop-ins), which refuses
 to save an invalid file.
 
-**Cleanup:** `sudo rm -f /etc/sudoers.d/engineers`.
+**Rollback:** `sudo rm -f /etc/sudoers.d/engineers`.
 
 ### Lab 4.3 — SSH key-based authentication (Topic: Manage security)
 
@@ -470,7 +470,7 @@ standard for SSH, more secure than passwords and the basis for automation.
 writable); `sshd` refuses the key and falls back to a password — SSH enforces strict
 permissions on key files by design.
 
-**Cleanup:** remove the lab key from `~/.ssh/authorized_keys` and delete
+**Rollback:** remove the lab key from `~/.ssh/authorized_keys` and delete
 `~/.ssh/id_ed25519*` if created only for the lab.
 
 ### Lab 4.4 — Networking with nmcli (Topic: Manage basic networking)
@@ -493,7 +493,7 @@ configuration; `nmcli connection modify` persists across reboots (unlike `ip add
 **Negative test:** set an address with `ip addr add` and reboot; it is gone — `ip` changes
 are runtime-only, while `nmcli`/NetworkManager writes persistent connection profiles.
 
-**Cleanup:** restore the original connection settings (`ipv4.method auto` or your lab values).
+**Rollback:** restore the original connection settings (`ipv4.method auto` or your lab values).
 
 ### Lab 4.5 — Firewall management with firewalld (Topic: Manage security)
 
@@ -514,7 +514,7 @@ persist a reload — `firewalld` is zone-based, and RHCSA expects adding service
 **Negative test:** add a rule without `--permanent`, then `--reload`; the rule vanishes — the
 runtime and permanent configurations are separate, and persistence requires `--permanent`.
 
-**Cleanup:** `sudo firewall-cmd --permanent --remove-service=http --remove-port=8080/tcp &&
+**Rollback:** `sudo firewall-cmd --permanent --remove-service=http --remove-port=8080/tcp &&
 sudo firewall-cmd --reload`.
 
 ## Lab Verification

@@ -76,7 +76,7 @@ tuning — network protection fit to the environment.
 **Negative test:** enable every signature at max with no tuning; **false positives** flood the SOC —
 tune to the environment.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Sensor placement
 
@@ -96,7 +96,7 @@ where visibility does.
 **Negative test:** tap-only at the perimeter where you need to **block**; place inline for
 enforcement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — ATD sandbox verdict
 
@@ -118,7 +118,7 @@ PY
 **Negative test:** trust a file because it's **statically** clean; **dynamic sandboxing** catches
 behavior static analysis misses — detonate it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Intelligence sharing
 
@@ -135,7 +135,7 @@ defense.
 
 **Negative test:** keep a network detection siloed; **share it** so endpoints block the same threat.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Applying one global CPU threshold across a mixed estate — you will tune it upward to silence the batch servers, and in doing so guarantee it never fires for the web tier.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Dependency suppression and de-duplication
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Emitting every alert and relying on the responder to correlate — during a real incident that correlation happens under time pressure, at 3 a.m., which is exactly when people make mistakes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Measure alert fatigue
 
@@ -155,7 +155,7 @@ EOF
 
 **Negative test:** Reducing alert volume by disabling alert rules wholesale — the volume drops and so does the acted-on count, which is a coverage loss disguised as a tuning win. Always check both numbers together.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

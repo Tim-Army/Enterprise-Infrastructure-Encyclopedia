@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Deriving email from a single source with no fallback — identities missing that attribute get a null email, and every downstream notification and provisioning action for them fails.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Decide: transform or rule?
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Writing a rule for a static department-to-cost-centre map — you have converted a two-line configuration change into a code deployment with a review cycle.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Event-triggered workflows
 
@@ -151,7 +151,7 @@ EOF
 
 **Negative test:** Treating every grant identically — either you alert on everything and the security team tunes it out, or you alert on nothing and privileged access is invisible until the annual review.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

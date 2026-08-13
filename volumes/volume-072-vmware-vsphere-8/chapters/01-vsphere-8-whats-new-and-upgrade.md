@@ -98,7 +98,7 @@ esxcli hardware platform get
 **Negative test:** assume a host is vSphere 8 from the UI theme; **`esxcli system version get`** is
 authoritative — check it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the 7 → 8 differences
 
@@ -120,7 +120,7 @@ PY
 **Negative test:** treat 8 as a minor patch of 7; the **DPU/ESA/lifecycle** changes are
 significant — plan for them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan the upgrade order
 
@@ -141,7 +141,7 @@ and validation.
 **Negative test:** upgrade ESXi hosts before vCenter; **vCenter must be upgraded first** — follow
 the order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

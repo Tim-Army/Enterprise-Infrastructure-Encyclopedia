@@ -373,7 +373,7 @@ model.
 the validated version set and cross-component compatibility — the catalog is Dell's tested baseline
 of versions.
 
-**Cleanup:** delete the lab catalog if created only for the exercise.
+**Rollback:** delete the lab catalog if created only for the exercise.
 
 ### Lab 5.2 — Create a firmware baseline (Topic: Baselines)
 
@@ -392,7 +392,7 @@ into an enforceable target scoped to the right servers.
 **Negative test:** create a catalog but no baseline; nothing is evaluated and no compliance is
 reported — the baseline is what applies the catalog to actual devices.
 
-**Cleanup:** delete the lab baseline.
+**Rollback:** delete the lab baseline.
 
 ### Lab 5.3 — Compliance check (Topic: Compliance)
 
@@ -413,7 +413,7 @@ touching anything yet.
 is already current and miss what is actually behind — the compliance check is the authoritative
 list of what needs updating.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Orchestrated update job (Topic: Updates)
 
@@ -434,7 +434,7 @@ runs.
 a bad firmware batch takes the whole group down together — stage to a canary and a window first,
 then widen.
 
-**Cleanup:** none (leave devices at the compliant firmware).
+**Rollback:** none (leave devices at the compliant firmware).
 
 ## Lab Verification
 

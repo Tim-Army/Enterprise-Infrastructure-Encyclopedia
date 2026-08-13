@@ -101,7 +101,7 @@ PY
 **Negative test:** rely on an old cert list; Infoblox revises the program (Universal DDI
 is newer) — confirm on education.infoblox.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Authenticate to the WAPI
 
@@ -118,7 +118,7 @@ curl -sS -k -u admin:infoblox "https://<grid-master>/wapi/v2.13/grid" \
 **Negative test:** call the WAPI without credentials; NIOS returns **401** — authenticate
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Confirm the CLI/console path
 
@@ -136,7 +136,7 @@ Infoblox.
 **Negative test:** assume one UI covers both; **NIOS** and **Universal DDI** have
 distinct management planes — use the right one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

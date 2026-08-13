@@ -73,7 +73,7 @@ tshark -r wlan.pcapng -T fields -e wlan_radio.signal_dbm -e wlan_radio.data_rate
 **Negative test:** analyze 802.11 with no **radiotap** metadata; RSSI/rate/channel are essential —
 capture with radiotap.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ### Lab 6.2 — Follow the association exchange
 
@@ -90,7 +90,7 @@ lifecycle.
 **Negative test:** debug a "won't connect" issue by looking only at data frames; the failure is in
 the **auth/assoc** exchange — analyze it.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ### Lab 6.3 — Quantify retries
 
@@ -108,7 +108,7 @@ contention.
 **Negative test:** blame the AP for "slow Wi-Fi" without measuring retries; a high **retry rate**
 localizes the RF problem — measure it.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ### Lab 6.4 — Protocol vs spectrum
 
@@ -129,7 +129,7 @@ for the problem.
 **Negative test:** use protocol analysis for a **microwave-oven interference** problem; that needs
 **spectrum analysis** — match the tool.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

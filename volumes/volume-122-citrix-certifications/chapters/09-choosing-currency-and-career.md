@@ -59,7 +59,7 @@ cat my-citrix-plan.md
 
 **Negative test:** A plan without lab hours: the AppDS performance items will find you.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Currency watch
 
@@ -74,7 +74,7 @@ diff citrix-certs-*.txt 2>/dev/null || echo "first snapshot taken"
 
 **Negative test:** Relying on a training vendor's mirror for the same check — stale mirrors are how people register for retired exams.
 
-**Cleanup:** Keep the snapshots.
+**Rollback:** Keep the snapshots.
 
 ## Summary and Completion Checklist
 

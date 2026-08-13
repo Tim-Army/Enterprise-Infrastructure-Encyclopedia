@@ -536,7 +536,7 @@ credentials are required.
    not false-positive against a change made correctly through code and
    apply, only against out-of-band divergence from code.
 
-**Cleanup**
+**Rollback**
 
 9. Destroy and remove the working directory:
 

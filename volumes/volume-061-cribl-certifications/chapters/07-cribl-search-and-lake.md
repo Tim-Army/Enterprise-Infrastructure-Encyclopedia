@@ -67,7 +67,7 @@ dataset="cribl_lake:app_logs"
 **Negative test:** copy the dataset into a SIEM to run this; **Search** queries it where it
 lives — save the ingest.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Understand Lake datasets
 
@@ -84,7 +84,7 @@ lives — save the ingest.
 **Negative test:** store full data in the SIEM's premium storage; **Lake** holds it cheaply
 — write there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Stream writes to Lake
 
@@ -100,7 +100,7 @@ path.
 **Negative test:** drop full data because it's "too much"; **write it to Lake** cheaply and
 reduce only what goes to premium tools.
 
-**Cleanup:** remove the destination.
+**Rollback:** remove the destination.
 
 ### Lab 7.4 — Search plus replay
 
@@ -118,7 +118,7 @@ everything hot.
 **Negative test:** keep all data hot in the SIEM for rare investigations; **search + replay**
 delivers it on demand cheaply.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -262,7 +262,7 @@ workloads span both consistently rather than as disconnected islands.
 workloads cannot resolve or authenticate across the boundary — hybrid must extend the existing fabric
 and services, not fork them.
 
-**Cleanup:** tear down lab-only cloud connectivity to stop charges.
+**Rollback:** tear down lab-only cloud connectivity to stop charges.
 
 ### Lab 5.2 — Kubernetes platform (Topic: Container platform)
 
@@ -283,7 +283,7 @@ integrates with the environment's networking, identity, and observability rather
 becomes an unmanaged island — integrated platform services share the environment's identity, network,
 and observability.
 
-**Cleanup:** `kubectl delete deployment app; kubectl delete svc app`.
+**Rollback:** `kubectl delete deployment app; kubectl delete svc app`.
 
 ### Lab 5.3 — Platform services and self-service (Topic: Platform services)
 
@@ -304,7 +304,7 @@ setup.
 **Negative test:** hand teams raw cloud/cluster access with no golden path; each wires services
 differently and inconsistently — the golden path encodes the integration as the default.
 
-**Cleanup:** remove lab-only scaffolded resources.
+**Rollback:** remove lab-only scaffolded resources.
 
 ### Lab 5.4 — Cross-environment application (Topic: Integration)
 
@@ -324,7 +324,7 @@ workload uses on-prem and cloud together as one system, the goal the whole volum
 were never established; it fails at the boundary — the integration (Chapters 02–05) is the
 prerequisite for a spanning application.
 
-**Cleanup:** remove lab-only app components.
+**Rollback:** remove lab-only app components.
 
 ## Lab Verification
 

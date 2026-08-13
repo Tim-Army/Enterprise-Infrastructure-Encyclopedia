@@ -296,7 +296,7 @@ functional roles ISE splits management, monitoring, and policy service into.
 **Negative test:** a single-node lab running all personas cannot scale to
 production PSN load; personas distribute across nodes for HA/scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Describe ISE deployment options (Objective 1.2)
 
@@ -312,7 +312,7 @@ admin + N PSNs) for HA and scale.
 **Negative test:** a two-node deployment with both PANs primary is invalid;
 one primary + one secondary admin is the supported model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Describe hardware and VM performance specs (Objective 1.3)
 
@@ -329,7 +329,7 @@ large) caps concurrent sessions/endpoints per node.
 **Negative test:** an undersized VM hits its session ceiling and drops
 authentications under load; size to the endpoint count.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Describe zero-touch provisioning (Objective 1.4)
 
@@ -345,7 +345,7 @@ provisioning — hands-off scale-out of PSNs.
 **Negative test:** a node with a mismatched certificate/time cannot join the
 deployment; ZTP still requires PKI/NTP alignment.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — Configure native AD and LDAP (Objective 2.1)
 
@@ -361,7 +361,7 @@ authenticates users against — enterprise identity, not local accounts.
 **Negative test:** an AD join with clock skew beyond Kerberos tolerance fails;
 ISE and the DC must be time-synced.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.6 — Describe identity store options (Objective 2.2)
 
@@ -377,7 +377,7 @@ the ordered stores ISE checks for a credential.
 **Negative test:** a sequence that stops on first store miss can block a
 valid user in a later store; order and "continue" behavior matter.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.7 — Configure wireless 802.1X (Objective 2.3)
 
@@ -395,7 +395,7 @@ ISE, with an authorization result (VLAN/dACL) returned.
 **Negative test:** an EAP method mismatch (client PEAP, policy EAP-TLS) fails
 auth; the allowed protocols must include the client's method.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.8 — Configure wired 802.1X and IBNS 2.0 (Objective 2.4)
 
@@ -412,7 +412,7 @@ SW# show access-session interface gig1/0/5 policy
 **Negative test:** legacy IBNS 1.0 `authentication` commands cannot express
 concurrent/priority auth; IBNS 2.0 `policy-map type control subscriber` can.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.9 — Implement MAB (Objective 2.5)
 
@@ -428,7 +428,7 @@ endpoint store — a policy-driven path for supplicant-less devices.
 **Negative test:** MAB with no matching endpoint/identity in ISE is rejected
 or lands in a limited VLAN; MAB is only as strong as the MAC allowlist.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.10 — Configure Cisco TrustSec (Objective 2.6)
 
@@ -444,7 +444,7 @@ micro-segmentation carried in the fabric.
 **Negative test:** an SGACL matrix with no default-deny leaks traffic between
 groups; the matrix must be explicit.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.11 — Configure authentication and authorization policies (Objective 2.7)
 
@@ -461,7 +461,7 @@ authorization (VLAN/dACL/SGT) rules — the decision logic per access request.
 **Negative test:** an authorization rule above a more specific one shadows it
 (first-match); order the rules specific-to-general.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.12 — Configure web authentication (Objective 3.1)
 
@@ -477,7 +477,7 @@ by a redirect ACL — browser-based auth for devices without a supplicant.
 **Negative test:** a redirect ACL that permits the portal but not DNS leaves
 the client unable to resolve the portal URL; permit DNS in the redirect ACL.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.13 — Configure guest access services (Objective 3.2)
 
@@ -493,7 +493,7 @@ the guest-onboarding model.
 **Negative test:** hotspot access with no AUP acceptance grants network access
 with no accountability; require the acceptable-use policy.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.14 — Configure sponsor and guest portals (Objective 3.3)
 
@@ -509,7 +509,7 @@ accounts; guests self-register or use them.
 **Negative test:** a sponsor group with no portal mapping cannot create
 accounts; the portal-to-group binding is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.15 — Implement profiler services (Objective 4.1)
 
@@ -525,7 +525,7 @@ IP-Phone) — profiling drives differentiated authorization.
 **Negative test:** an not-yet-profiled endpoint falls to a generic policy; more
 probes/CoA refine the profile.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.16 — Implement probes (Objective 4.2)
 
@@ -541,7 +541,7 @@ the data sources that classify a device.
 **Negative test:** relying on one probe (MAC OUI) misclassifies spoofed
 devices; multiple probes raise confidence.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.17 — Implement Change of Authorization (Objective 4.3)
 
@@ -558,7 +558,7 @@ the live session without the user reconnecting — dynamic policy change.
 **Negative test:** a NAD not configured for CoA (dynamic-author) ignores the
 request; the switch must accept CoA on UDP 1700.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.18 — Configure endpoint identity management (Objective 4.4)
 
@@ -574,7 +574,7 @@ authorization conditions — managing devices as identities.
 **Negative test:** a statically grouped endpoint overrides its profile;
 static assignment wins, which can mis-authorize a re-purposed device.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.19 — Describe Cisco BYOD functionality (Objective 5.1)
 
@@ -590,7 +590,7 @@ provisions a certificate and moves the device to secured access.
 **Negative test:** BYOD without a supplicant-provisioning wizard leaves users
 manually configuring 802.1X; the flow automates it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.20 — Configure BYOD onboarding with the internal CA (Objective 5.2)
 
@@ -607,7 +607,7 @@ certificates — device identity via PKI, no shared PSK.
 **Negative test:** the internal CA disabled forces an external CA or blocks
 cert-based BYOD; the CA service must be enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.21 — Configure certificates for BYOD (Objective 5.3)
 
@@ -623,7 +623,7 @@ onboarded devices — the identity the device authenticates with thereafter.
 **Negative test:** a template with too-long a validity outlives device
 ownership; scope validity to the device lifecycle.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.22 — Configure block list / allow list (Objective 5.4)
 
@@ -639,7 +639,7 @@ it is denied network access by policy.
 **Negative test:** block-listing by IP (which changes) instead of MAC/identity
 fails to follow the device; blocklist by endpoint identity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.23 — Describe posture services and client provisioning (Objective 6.1)
 
@@ -656,7 +656,7 @@ Unknown) that authorization keys on — health-gated access.
 **Negative test:** granting full access before posture completes (no
 "pending" state handling) lets a non-compliant device on; gate on Compliant.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.24 — Configure posture conditions and provisioning (Objective 6.2)
 
@@ -673,7 +673,7 @@ level) with a remediation action — the compliance bar and how to meet it.
 **Negative test:** a requirement with no remediation leaves non-compliant
 users stuck; provide a remediation path.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.25 — Configure the compliance module (Objective 6.3)
 
@@ -691,7 +691,7 @@ it evaluates the posture conditions on the endpoint.
 **Negative test:** an outdated compliance module cannot evaluate newer OS/AV
 checks; keep it current.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.26 — Configure posture agents and modes (Objective 6.4)
 
@@ -708,7 +708,7 @@ temporal (dissolvable) agent, or agentless posture over an API.
 **Negative test:** agentless posture on an unmanaged device it cannot reach
 returns Unknown; match the mode to device manageability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.27 — Describe supplicant and authenticator (Objective 6.5)
 
@@ -724,7 +724,7 @@ authentication server (ISE) roles and the EAP method — the 802.1X triangle.
 **Negative test:** a device with no supplicant cannot do 802.1X and needs MAB;
 the role must exist for the method.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.28 — Compare AAA protocols (Objective 7.1)
 
@@ -740,7 +740,7 @@ TACACS+ (device admin) — the two AAA protocols and their jobs.
 **Negative test:** using RADIUS for per-command device-admin authorization is
 weak; TACACS+ separates and authorizes commands.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.29 — Configure TACACS+ device administration (Objective 7.2)
 
@@ -757,7 +757,7 @@ ISE's device-admin service — granular CLI control.
 **Negative test:** a command set that permits `configure terminal` but no
 sub-commands blocks all config; scope command sets to the role's needs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.30 — Build an ISE policy set and diagnose an authorization failure (integrative)
 
@@ -801,7 +801,7 @@ log to confirm auth succeeded while the wrong authz rule matched — the
   from the live log to the authorization ordering rather than the
   credential.
 
-**Cleanup**
+**Rollback**
 
 7. Restore the correct policy ordering, and end the dCloud or evaluation
    session.

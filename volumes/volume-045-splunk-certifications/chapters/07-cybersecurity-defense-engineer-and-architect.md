@@ -94,7 +94,7 @@ detection (schedule it in ES to generate notables/risk).
 **Negative test:** ship an untuned detection that fires constantly; **tune**
 thresholds and suppression for fidelity before enabling.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Engineer: incorporate threat intelligence
 
@@ -111,7 +111,7 @@ threat-intel enrichment the Engineer builds into detections.
 **Negative test:** hand-maintain IOC lists in searches; use **threat-intel
 frameworks/lookups** that update automatically.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Engineer: automation and orchestration (SOAR)
 
@@ -131,7 +131,7 @@ human-approval step — the automation/orchestration the Engineer develops.
 **Negative test:** auto-remediate every alert without approval; gate **high-impact**
 actions behind human review to avoid harmful automation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Architect: data onboarding and normalization
 
@@ -151,7 +151,7 @@ makes new data usable by ES detections.
 **Negative test:** onboard data without CIM mapping; ES detections rely on **CIM**
 — normalize on onboarding.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — Architect: scalable ES / data-model design
 
@@ -168,7 +168,7 @@ architecture (accelerated CIM models) the Architect designs.
 **Negative test:** run detections against raw data at scale; **accelerated data
 models** are what make ES perform — design for them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — Architect: detection governance
 
@@ -186,7 +186,7 @@ the governance an Architect establishes.
 **Negative test:** deploy detections and never review them; govern the **lifecycle**
 (measure, tune, retire) so coverage stays effective.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

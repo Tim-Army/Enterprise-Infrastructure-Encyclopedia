@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Tuning until Apdex is green by raising T. The metric improves; the 7% keep suffering; the dashboard now actively hides them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Triage: summary → transaction → trace
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Sorting transactions by p95 alone in step 2 — `browse/list` would never surface, and in a different incident the high-volume moderately-slow transaction is exactly the one that matters.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Databases: total time, not slowest query
 
@@ -174,7 +174,7 @@ EOF
 
 **Negative test:** Spending the sprint on the analytics join because 8200 ms looks worst. It runs forty times an hour; the win is a rounding error.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

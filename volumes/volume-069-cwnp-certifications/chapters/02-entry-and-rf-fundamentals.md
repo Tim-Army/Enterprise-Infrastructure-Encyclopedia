@@ -74,7 +74,7 @@ PY
 **Negative test:** add 20 dBm + 20 dBm and expect 40 dBm of power; **dB adds as ratios** — 20+20
 dBm is not double, it's ×100 each; sum powers in mW.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Free-space path loss
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** assume 6 GHz reaches as far as 2.4 GHz at equal power; **higher frequency = more
 path loss** — plan for it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Link budget
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** deploy a link with **0 dB margin**; real environments need **fade margin** —
 design headroom.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — EIRP
 
@@ -135,7 +135,7 @@ PY
 **Negative test:** add a high-gain antenna pushing EIRP over the **regulatory cap**; reduce Tx or
 gain — stay legal.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

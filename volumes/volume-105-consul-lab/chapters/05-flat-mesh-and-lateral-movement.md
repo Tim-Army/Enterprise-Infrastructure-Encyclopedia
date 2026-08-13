@@ -24,7 +24,7 @@ kubectl exec deploy/hmi -c hmi -- nc -z -w2 db 5432 && echo "hmi -> db:5432 REAC
 
 **Negative test.** Assume Connect's mTLS blocks the operator. It does not — mTLS authenticates identity; **intentions** decide who may talk. Encryption is not authorization.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Identify the legitimate flows as intentions
 
@@ -43,7 +43,7 @@ kubectl exec deploy/hmi -c hmi -- nc -z -w2 db 5432 && echo "hmi -> db:5432 REAC
 
 **Negative test.** Express intention 3 by pod IP. Consul intentions are between service *identities*, which is what makes them portable across platforms and stable across restarts. Use service names.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -59,7 +59,7 @@ kubectl exec deploy/hmi -c hmi -- nc -z -w2 db 5432 && echo "hmi reached the dat
 
 **Negative test.** Re-run the legitimate `web → db`; it works too. Until intentions exist, Consul does not distinguish the app from the operator; the encryption is identical for both.
 
-**Cleanup.** None — Chapter 06 confirms mTLS, Chapter 07 writes the intentions.
+**Rollback.** None — Chapter 06 confirms mTLS, Chapter 07 writes the intentions.
 
 ## Summary and Completion Checklist
 

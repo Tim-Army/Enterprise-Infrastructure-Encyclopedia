@@ -31,7 +31,7 @@ rpm -qf $(command -v tree)
 
 **Negative test:** `dnf install` with `gpgcheck=1` and no imported key — the transaction fails on signature; the exam tests knowing when to import a key vs disable the check.
 
-**Cleanup:** `sudo dnf remove -y tree; sudo rm /etc/yum.repos.d/lab.repo`.
+**Rollback:** `sudo dnf remove -y tree; sudo rm /etc/yum.repos.d/lab.repo`.
 
 ### Lab 3.2 — Services with systemd
 
@@ -47,7 +47,7 @@ sudo systemctl mask rsync 2>/dev/null; systemctl is-enabled rsync 2>/dev/null ||
 
 **Negative test:** Try to `start` a masked service — refused until unmasked; masking is stronger than disabling, a distinction the exam probes.
 
-**Cleanup:** `sudo systemctl unmask rsync`.
+**Rollback:** `sudo systemctl unmask rsync`.
 
 ### Lab 3.3 — Networking with nmcli
 
@@ -65,7 +65,7 @@ nmcli -f ipv4.addresses con show "$CON" 2>/dev/null | head -1
 
 **Negative test:** Configure with `ip addr add` instead of `nmcli` — it works until reboot, then vanishes; RHCSA scores persistence, so transient commands fail the task.
 
-**Cleanup:** Restore DHCP on the test connection as needed.
+**Rollback:** Restore DHCP on the test connection as needed.
 
 ### Lab 3.4 — SELinux
 
@@ -85,7 +85,7 @@ ls -Zd /web/content
 
 **Negative test:** Point `DocumentRoot` at `/web/content` without relabeling — httpd is denied (`ausearch -m AVC` shows it) and the page 403s though permissions look fine; SELinux, not DAC, is the gate.
 
-**Cleanup:** `sudo systemctl disable --now httpd; sudo dnf remove -y httpd; sudo semanage fcontext -d "/web/content(/.*)?"; sudo rm -rf /web/content`.
+**Rollback:** `sudo systemctl disable --now httpd; sudo dnf remove -y httpd; sudo semanage fcontext -d "/web/content(/.*)?"; sudo rm -rf /web/content`.
 
 ### Lab 3.5 — firewalld
 
@@ -101,7 +101,7 @@ sudo firewall-cmd --list-services | tr ' ' '\n' | grep http
 
 **Negative test:** Add the service **without** `--permanent` — it works now but vanishes on reload/reboot; the exam scores the permanent rule.
 
-**Cleanup:** `sudo firewall-cmd --permanent --remove-service=http && sudo firewall-cmd --reload`.
+**Rollback:** `sudo firewall-cmd --permanent --remove-service=http && sudo firewall-cmd --reload`.
 
 ### Lab 3.6 — Containers with Podman (rootless)
 
@@ -118,7 +118,7 @@ podman generate systemd --name web --files --new >/dev/null 2>&1 && ls container
 
 **Negative test:** Expect a rootless container to bind port 80 — it can't (privileged port); mapping to 8080 is why the exam uses high ports, a rootless-container fact.
 
-**Cleanup:** `podman rm -f web; rm -f container-web.service`.
+**Rollback:** `podman rm -f web; rm -f container-web.service`.
 
 ## Summary and Completion Checklist
 

@@ -161,7 +161,7 @@ attached to a security policy.
 **Negative test:** attach an IDP policy without downloading the signature database;
 `show security idp status` shows no policy loaded — the attack database is required.
 
-**Cleanup:** `configure; delete security idp; delete security policies from-zone
+**Rollback:** `configure; delete security idp; delete security policies from-zone
 trust to-zone untrust policy P1 then permit application-services; commit`.
 
 ### Lab 4.2 — IPsec VPN (Objective: IPsec VPN)
@@ -189,7 +189,7 @@ extends this to remote clients.
 leave IKE in negotiation; `show security ike security-associations` shows no SA —
 proposals must match.
 
-**Cleanup:** `configure; delete security ike; delete security ipsec; commit`.
+**Rollback:** `configure; delete security ike; delete security ipsec; commit`.
 
 ### Lab 4.3 — Juniper ATP Cloud (Objective: Juniper Advanced Threat Prevention Cloud)
 
@@ -210,7 +210,7 @@ and adaptive threat profiling.
 (no realm) does nothing; `show services advanced-anti-malware status` shows not
 connected — enrollment to the cloud realm is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — High Availability Clustering (Objective: HA Clustering)
 
@@ -231,7 +231,7 @@ RTO state (sessions) synchronized over the fabric link so failover is stateful.
 primary), risking a session-table conflict — the control and fabric links are
 essential to the cluster.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Identity-Aware Security Policies (Objective: Identity-Aware Security Policies)
 
@@ -251,7 +251,7 @@ rather than just IP.
 learned falls through to the non-identity policy — the mapping must exist for
 identity matching.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.6 — SSL Proxy (Objective: SSL Proxy)
 
@@ -272,7 +272,7 @@ protected server.
 every HTTPS site — the proxy CA must be distributed to clients for forward proxy to
 work cleanly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.7 — Security Director (Objective: Security Director)
 
@@ -291,7 +291,7 @@ reports on them, so many firewalls share one policy source of truth.
 **Negative test:** an SRX with no NETCONF/outbound-SSH to Space cannot be managed by
 Security Director; policy pushes fail — the management channel is the prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

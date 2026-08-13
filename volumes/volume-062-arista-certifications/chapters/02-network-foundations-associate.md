@@ -66,7 +66,7 @@ switch# show version | include Software image
 **Negative test:** edit `startup-config` directly expecting it to be live; changes apply to
 **running-config** — configure there, then save.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Create a VLAN and access port
 
@@ -87,7 +87,7 @@ switch# show vlan 100
 **Negative test:** put a multi-VLAN uplink on an access port; use a **trunk**
 (`switchport mode trunk`) for multiple VLANs.
 
-**Cleanup:** `configure; no vlan 100`.
+**Rollback:** `configure; no vlan 100`.
 
 ### Lab 2.3 — Configure a trunk
 
@@ -106,7 +106,7 @@ transport.
 **Negative test:** allow **all** VLANs on every trunk; **prune** to needed VLANs to limit
 broadcast/scope.
 
-**Cleanup:** `default interface Ethernet2`.
+**Rollback:** `default interface Ethernet2`.
 
 ### Lab 2.4 — IP routing with OSPF
 
@@ -127,7 +127,7 @@ dynamic routing.
 **Negative test:** static-route a large dynamic topology; **OSPF/BGP** adapts to changes —
 use dynamic routing at scale.
 
-**Cleanup:** `no router ospf 1`.
+**Rollback:** `no router ospf 1`.
 
 ### Lab 2.5 — Save the configuration
 
@@ -142,7 +142,7 @@ switch# show startup-config | include vlan 100
 
 **Negative test:** reload without saving; changes are **lost** — copy to startup-config.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -194,7 +194,7 @@ Alpine, not a glibc distribution.
 **Negative test:** assume `/bin/sh` is bash and write a bash-only script; it fails
 on `ash`. Install bash explicitly (`apk add bash`) when a script needs it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Inspect the package and service managers
 
@@ -215,7 +215,7 @@ a few lines because it is small.
 **Negative test:** run `systemctl status`; it fails (`command not found`) — Alpine
 is OpenRC, so use `rc-status`/`rc-service` instead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Prove the musl compatibility boundary
 
@@ -236,7 +236,7 @@ clean system — you add it only when a glibc-only binary requires it.
 reports "not found" (the missing glibc loader). This is the compatibility boundary,
 not a broken file.
 
-**Cleanup:** `apk del file` if you want to return to the original package set.
+**Rollback:** `apk del file` if you want to return to the original package set.
 
 ## Lab Verification
 

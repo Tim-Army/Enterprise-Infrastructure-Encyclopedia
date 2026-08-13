@@ -367,7 +367,7 @@ former active — sessions stay up throughout.
 because no member is carrying traffic during the reboot — the point of the
 staged sequence.
 
-**Cleanup:** none (the upgrade is the desired end state).
+**Rollback:** none (the upgrade is the desired end state).
 
 ### Lab 7.2 — Capture and inspect traffic (Domain 4: Troubleshooting)
 
@@ -387,7 +387,7 @@ stage — the ground truth for a connectivity fault.
 **Negative test:** enable capture without setting a filter; it captures all
 traffic and can overwhelm the file/dataplane — always filter first.
 
-**Cleanup:** `debug dataplane packet-diag set capture off` and `set filter off`; delete the pcap.
+**Rollback:** `debug dataplane packet-diag set capture off` and `set filter off`; delete the pcap.
 
 ### Lab 7.3 — Retrieve system info via the XML API (Domain 3: Automation)
 
@@ -404,7 +404,7 @@ API — the interface automation and monitoring tools build on.
 **Negative test:** call the API with a stale/invalid key; it returns
 `<response status="error" code="403">` — the key is the auth boundary.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 7.4 — Create configuration via the REST API (Domain 3: Automation)
 
@@ -424,7 +424,7 @@ REST API drives config as code (Ansible/Terraform build on it).
 config but not enforced until a `commit` via
 `?type=commit` — REST changes still require a commit.
 
-**Cleanup:** DELETE the `api-host` object, then commit.
+**Rollback:** DELETE the `api-host` object, then commit.
 
 ### Lab 7.5 — Configure log forwarding (Domain 3: Management)
 
@@ -444,7 +444,7 @@ syslog server — centralized logging for the SOC.
 **Negative test:** a rule with `log-start`/`log-end` unset produces no logs
 to forward; the log-forwarding profile only forwards what the rule logs.
 
-**Cleanup:** remove the log-setting from the rule and delete the profiles, then `commit`.
+**Rollback:** remove the log-setting from the rule and delete the profiles, then `commit`.
 
 ### Lab 7.6 — Troubleshoot with the session table (Domain 4: Troubleshooting)
 
@@ -463,7 +463,7 @@ drop counters — the session table plus drop counters name where traffic dies.
 `show counter global` shows a `flow_action_close` from a threat profile
 redirects the fix from policy to the security profile.
 
-**Cleanup:** none (read-only diagnostics).
+**Rollback:** none (read-only diagnostics).
 
 ### Lab 7.7 — Manage the candidate configuration (Domain 3: Management)
 
@@ -486,7 +486,7 @@ of an uncommitted change.
 severe exposure; the config-audit/diff step exists to catch exactly this
 before commit.
 
-**Cleanup:** `revert config` (already discards `Test-Rule`).
+**Rollback:** `revert config` (already discards `Test-Rule`).
 
 ### Lab 7.8 — HA upgrade, packet capture, and API automation (integrative)
 
@@ -590,7 +590,7 @@ test using an invalid API key.
    API enforces key validation rather than falling back to an unauthenticated
    default.
 
-9. **Cleanup:** Remove the lab address object created via the API and clear
+9. **Rollback:** Remove the lab address object created via the API and clear
    the packet-diag filter/capture state:
 
    ```text

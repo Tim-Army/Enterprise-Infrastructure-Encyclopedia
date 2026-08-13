@@ -197,7 +197,7 @@ to `/tftpboot`.
 filesystem as root — exactly what you do not want from an unauthenticated daemon.
 Kill it and rerun with `-s -u nobody`.
 
-**Cleanup:** stop the daemon (`pkill in.tftpd`) if you are not continuing.
+**Rollback:** stop the daemon (`pkill in.tftpd`) if you are not continuing.
 
 ### Lab 5.2 — Persist the daemon and verify a client fetch
 
@@ -221,7 +221,7 @@ reboot — the `local.d` hook relaunches the daemon automatically.
 fails, because `-s` chroots the server and paths are relative to `/tftpboot` —
 request `test.txt`.
 
-**Cleanup:** remove `test.txt`; keep the server for Lab 5.3.
+**Rollback:** remove `test.txt`; keep the server for Lab 5.3.
 
 ### Lab 5.3 — Serve firmware to a network device
 
@@ -250,7 +250,7 @@ should.
 firewall; the device times out with no transfer — TFTP has no way to authenticate or
 retry around a filtered path, so reachability on UDP/69 is mandatory.
 
-**Cleanup:** remove the firmware from `/tftpboot` and stop the daemon after the
+**Rollback:** remove the firmware from `/tftpboot` and stop the daemon after the
 maintenance window (`pkill in.tftpd`), or leave it up tightly firewalled.
 
 ## Lab Verification

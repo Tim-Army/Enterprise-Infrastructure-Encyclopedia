@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: one inline device per cell managed by EdgeOne, StellarProtect on each OT host managed by StellarOne, virtual patches and allowlists distributed centrally.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Pairing with passive monitors (design)
 
@@ -26,7 +26,7 @@
 
 **Expected result (on paper).** A layered design: monitor (Claroty/Nozomi) + inline enforce (TXOne EdgeIPS) + endpoint lockdown (StellarProtect) + identity brokering (Xage) for remote access.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -47,7 +47,7 @@ echo "Inline protects the paths it is on; lockdown protects the hosts it runs on
 
 **Negative test.** Assume one EdgeIPS secures the whole plant. It secures the cells it is inline for; a bypass path or an unprotected host is a gap. Coverage is a placement problem, not a product toggle.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Over-provisioning thin volumes and never monitoring the pool. The pool fills as data is written, and all volumes on it fail at once; thin provisioning requires active capacity monitoring with thresholds and alerts to be safe.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

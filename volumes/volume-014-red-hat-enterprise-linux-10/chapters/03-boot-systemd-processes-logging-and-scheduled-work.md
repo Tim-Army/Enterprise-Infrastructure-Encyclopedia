@@ -508,7 +508,7 @@ units, and RHCSA distinguishes *running now* (`start`/`is-active`) from *starts 
 **Negative test:** `systemctl start` a service but never `enable` it, then reboot; it is not
 running — `start` affects only the current boot, so persistence requires `enable`.
 
-**Cleanup:** leave `chronyd` enabled (time sync is expected in operation).
+**Rollback:** leave `chronyd` enabled (time sync is expected in operation).
 
 ### Lab 3.2 — Boot targets and root-password recovery (Topic: Deploy/maintain systems)
 
@@ -537,7 +537,7 @@ root shell to reset the password; `touch /.autorelabel` ensures SELinux relabels
 denies access to the relabeled shadow file and login still fails — the relabel step is
 mandatory, not optional.
 
-**Cleanup:** `sudo systemctl set-default graphical.target` if that was the original default.
+**Rollback:** `sudo systemctl set-default graphical.target` if that was the original default.
 
 ### Lab 3.3 — Process management (Topic: Operate running systems)
 
@@ -559,7 +559,7 @@ prioritizing (`nice`/`renice`), and signaling (`kill`/`pkill`) processes.
 graceful `kill`; you risk data loss — SIGTERM (default) allows cleanup, SIGKILL (`-9`) does
 not, so reach for `-9` only when a graceful stop fails.
 
-**Cleanup:** `pkill sleep 2>/dev/null || true`.
+**Rollback:** `pkill sleep 2>/dev/null || true`.
 
 ### Lab 3.4 — Logging with journald (Topic: Operate running systems)
 
@@ -581,7 +581,7 @@ RHCSA expects reading logs with `journalctl` filters and configuring persistence
 journal after a reboot; they are gone — persistence (`/var/log/journal`) must be enabled
 *before* you need the history.
 
-**Cleanup:** none (persistent journal is a good default).
+**Rollback:** none (persistent journal is a good default).
 
 ### Lab 3.5 — Scheduled tasks: cron, at, and timers (Topic: Scheduled work)
 
@@ -602,7 +602,7 @@ scheduling mechanisms.
 **Negative test:** add a cron entry but leave `crond` disabled; nothing runs — the scheduler
 service must be active for jobs to fire.
 
-**Cleanup:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued `at` jobs.
+**Rollback:** `sudo rm -f /etc/cron.d/labtest`; `atrm` any queued `at` jobs.
 
 ## Lab Verification
 

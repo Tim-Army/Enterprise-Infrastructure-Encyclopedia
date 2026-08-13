@@ -64,7 +64,7 @@ cat my-practical-cert-plan.md
 
 **Negative test:** A skills plan with no authorization discipline — the skills are only professionally usable within legal, authorized bounds; the plan is incomplete without it.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — The authorization self-check
 
@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Rationalizing an unauthorized test ("just looking," "for research") — the authorization self-check returns NO, and so does the law; there is no exception.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

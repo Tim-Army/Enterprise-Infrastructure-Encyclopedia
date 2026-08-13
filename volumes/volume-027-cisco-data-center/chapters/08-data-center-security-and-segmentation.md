@@ -212,7 +212,7 @@ that protect the control plane and segment the data plane on a leaf.
 drops and logs it — the default-deny is what makes the ACL a control, not a
 comment.
 
-**Cleanup:** remove `HOST-IN` from the interface and delete the ACL.
+**Rollback:** remove `HOST-IN` from the interface and delete the ACL.
 
 ### Lab 8.2 — Apply compute security (Objective 5.2)
 
@@ -237,7 +237,7 @@ hardening that protects service-profile and firmware operations.
 credentials now traverse in clear text — the negative shows why only SSH/HTTPS
 belong on the management plane. Disable it again immediately.
 
-**Cleanup:** confirm Telnet remains disabled; revert any test change.
+**Rollback:** confirm Telnet remains disabled; revert any test change.
 
 ### Lab 8.3 — Apply storage security (Objective 5.3)
 
@@ -258,7 +258,7 @@ host — the layered SAN access model (zoning + port security + authentication).
 see each other's targets — the multi-initiator zone is the classic storage
 security anti-pattern this objective tests.
 
-**Cleanup:** restore single-initiator zoning; remove any test port-security
+**Rollback:** restore single-initiator zoning; remove any test port-security
 entries.
 
 ## Lab Verification

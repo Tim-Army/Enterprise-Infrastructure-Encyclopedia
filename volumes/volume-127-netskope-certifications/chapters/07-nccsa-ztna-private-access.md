@@ -45,7 +45,7 @@ sudo ip netns exec broker nc -z -w2 10.70.0.2 8443 && echo "broker reaches app v
 
 **Negative test:** Exposing the app with an inbound port (a classic VPN/DMZ approach) — it becomes internet-scannable and attackable; ZTNA's outbound-only publisher eliminates that exposure.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 7.2 — Per-app, identity-gated access
 
@@ -75,7 +75,7 @@ Access is a set of **(user, app) grants** — Bob reaching the wiki does not let
 
 **Negative test:** Granting "network access to the private subnet" instead of per-app — you recreate VPN lateral movement; ZTNA's per-app grants are what prevent it.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 7.3 — Posture and context in the decision
 
@@ -104,7 +104,7 @@ ZTNA folds **device posture** into the per-request decision — a valid user on 
 
 **Negative test:** Authenticating the user but ignoring device posture — a compromised but "authorized" laptop reaches sensitive apps; posture is part of the ZTNA decision, not optional.
 
-**Cleanup:** `for ns in appnet broker; do sudo ip netns del $ns 2>/dev/null; done`.
+**Rollback:** `for ns in appnet broker; do sudo ip netns del $ns 2>/dev/null; done`.
 
 ### Lab 7.4 — ZTNA in the SASE whole
 
@@ -123,7 +123,7 @@ Same identity, posture, and data policy across all four — the SASE convergence
 
 **Negative test:** Running ZTNA, SWG, CASB, and DLP as separate products with separate policies — inconsistent enforcement and four consoles; the platform's value is one engine across all four.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

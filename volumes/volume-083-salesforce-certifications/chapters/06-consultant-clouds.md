@@ -73,7 +73,7 @@ PY
 **Negative test:** track deals in a spreadsheet outside Salesforce; **Sales Cloud** provides pipeline
 and forecasting — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Route cases (Service Cloud)
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** dump all cases in one queue; agents can't prioritize — route with **omni-channel/
 assignment rules**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Design an Experience Cloud site
 
@@ -117,7 +117,7 @@ engagement.
 **Negative test:** expose internal objects broadly on a public site; scope with **sharing sets** and
 authentication — least privilege.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Gather requirements
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** build a custom solution before understanding the **requirements**; it may not fit —
 gather requirements first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

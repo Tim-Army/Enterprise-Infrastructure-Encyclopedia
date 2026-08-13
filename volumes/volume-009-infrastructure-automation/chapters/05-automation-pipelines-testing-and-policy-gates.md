@@ -419,7 +419,7 @@ the pipeline before they merge, so `main` stays deployable.
 **Negative test:** rely on developers to run checks locally by hand; someone forgets and broken
 code merges — the pipeline enforces the checks mechanically on every change.
 
-**Cleanup:** `rm -rf ~/pipe`.
+**Rollback:** `rm -rf ~/pipe`.
 
 ### Lab 5.2 — Test infrastructure code (Topic: Testing)
 
@@ -447,7 +447,7 @@ catches errors before they reach real infrastructure.
 **Negative test:** `terraform apply` straight from an editor with no fmt/validate/lint; a typo or
 anti-pattern hits real resources — the static gates are cheap and catch it first.
 
-**Cleanup:** `rm -rf ~/test`.
+**Rollback:** `rm -rf ~/test`.
 
 ### Lab 5.3 — Policy gates (Topic: Policy as code)
 
@@ -475,7 +475,7 @@ pipeline** on a violation, so guardrails are enforced automatically, not by revi
 **Negative test:** rely on human review to catch a public bucket in a 500-line plan; it slips
 through — a policy gate checks every plan mechanically and never tires.
 
-**Cleanup:** `rm -rf ~/policy`.
+**Rollback:** `rm -rf ~/policy`.
 
 ### Lab 5.4 — Pre-commit hooks (Topic: Shift-left quality)
 
@@ -503,7 +503,7 @@ machine before CI, which is the fastest and cheapest place to fix them.
 **Negative test:** depend solely on CI for checks; developers push broken commits and wait for a
 red pipeline — pre-commit catches the same issues seconds earlier, before the push.
 
-**Cleanup:** `rm -rf ~/pipe`.
+**Rollback:** `rm -rf ~/pipe`.
 
 ## Lab Verification
 

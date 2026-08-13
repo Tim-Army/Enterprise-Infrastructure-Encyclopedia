@@ -89,7 +89,7 @@ experimentation rigor the Professional exam expects (comparable, reproducible).
 **Negative test:** eyeball notebook outputs to pick a model; **search tracked
 runs** for objective, reproducible selection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Lifecycle: registry aliases (champion/challenger)
 
@@ -108,7 +108,7 @@ lifecycle-management pattern the exam tests.
 **Negative test:** hard-code a version number in serving; use an **alias** so you
 can promote without changing consumers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Deployment: batch scoring
 
@@ -126,7 +126,7 @@ deployment mode.
 **Negative test:** stand up a real-time endpoint for a nightly bulk job; **batch
 scoring** is cheaper for bulk — match the mode to the workload.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Deployment: real-time Model Serving
 
@@ -144,7 +144,7 @@ the low-latency deployment mode of the Professional exam.
 **Negative test:** serve real-time predictions from a nightly batch table; use a
 **Model Serving** endpoint for low-latency online inference.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Monitoring: inference tables and drift
 
@@ -162,7 +162,7 @@ the monitoring area of the Professional exam.
 **Negative test:** deploy and never monitor; models **drift** as data changes —
 monitor and alert.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — Automated retraining
 
@@ -179,7 +179,7 @@ lifecycle the Professional exam certifies.
 **Negative test:** retrain on a fixed schedule regardless of drift; **event-driven**
 retraining (on degradation) is more efficient and timely.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

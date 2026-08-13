@@ -180,7 +180,7 @@ require.
 the policy evaluates; devices are briefly blocked — the grace period and
 report-only staging avoid surprise lockouts.
 
-**Cleanup:** remove the compliance policy.
+**Rollback:** remove the compliance policy.
 
 ### Lab 6.2 — Confirm noncompliant devices (Topic: Monitor compliance)
 
@@ -197,7 +197,7 @@ Conditional Access would block from sensitive apps.
 **Negative test:** expect an unenrolled device to appear as noncompliant; it
 does not appear at all — only managed devices report compliance.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Create a Windows update ring (Topic: Update management)
 
@@ -218,7 +218,7 @@ three-day deadline — waves catch a bad update before broad rollout.
 deferrals; the settings conflict and the device reports an error — a device
 should be in one ring.
 
-**Cleanup:** remove the update-ring configuration.
+**Rollback:** remove the update-ring configuration.
 
 ### Lab 6.4 — Inspect per-setting configuration status (Topic: Troubleshoot configuration)
 
@@ -238,7 +238,7 @@ place to diagnose configuration.
 values; the per-setting status shows `Conflict` — resolve by removing the
 duplicate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

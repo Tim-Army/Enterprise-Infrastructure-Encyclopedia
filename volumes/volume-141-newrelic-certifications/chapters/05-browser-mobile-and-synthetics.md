@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Investigating "the site is slow" complaints by tuning the backend because that is where the dashboards are. You can halve 180 ms and the user saves 90 ms of a 4,590 ms wait.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Read vitals at the 75th percentile
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Reporting the mean LCP to stakeholders. It is the one number in the list guaranteed to be dragged toward the fast majority and away from the users who complain.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Uptime pings versus journey scripts
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Scripting every flow in the product. Twenty stale scripts produce daily false alarms, the channel gets muted, and the checkout failure arrives into the muted channel.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

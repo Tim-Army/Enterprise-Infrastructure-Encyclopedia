@@ -74,7 +74,7 @@ architecture.
 **Negative test:** put the Vault in the general server VLAN with everything else; it's exposed —
 **isolate** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Design high availability and DR
 
@@ -94,7 +94,7 @@ PY
 **Negative test:** deploy one Vault and never test DR; an outage takes down all privileged access —
 build and **test** HA/DR.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Check Vault hardening
 
@@ -114,7 +114,7 @@ PY
 **Negative test:** domain-join the Vault or run extra services on it; that widens attack surface —
 keep it **minimal and standalone**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Validate the deployment end to end
 
@@ -134,7 +134,7 @@ PY
 **Negative test:** cut over without validating PSM/DR; a broken path surfaces in production — **validate
 end to end** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

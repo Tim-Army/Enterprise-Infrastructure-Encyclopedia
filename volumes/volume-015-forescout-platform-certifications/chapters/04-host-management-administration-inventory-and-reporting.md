@@ -309,7 +309,7 @@ different policy and reporting to different populations (finance, guests, IoT, s
 **Negative test:** scope enforcement to "all hosts" instead of a group; the action hits
 populations it was never meant for — groups are what keep policy blast-radius controlled.
 
-**Cleanup:** delete the lab group.
+**Rollback:** delete the lab group.
 
 ### Lab 4.2 — Console RBAC and user management (Topic: Administration — console users)
 
@@ -330,7 +330,7 @@ appropriate slice of a shared deployment.
 enforcement policy or export the full asset inventory — role scoping is what prevents
 that.
 
-**Cleanup:** delete the lab user/role.
+**Rollback:** delete the lab user/role.
 
 ### Lab 4.3 — Platform administration: backup and updates (Topic: Administration — maintenance)
 
@@ -351,7 +351,7 @@ updates are the core administration discipline for a Forescout deployment.
 window; if it misbehaves there is nothing to restore and enforcement may disrupt users —
 the backup is what makes the change reversible.
 
-**Cleanup:** none (keep the backup; remove it later if lab-only).
+**Rollback:** none (keep the backup; remove it later if lab-only).
 
 ### Lab 4.4 — Dashboards and reports (Topic: Reporting and Dashboard)
 
@@ -370,7 +370,7 @@ deployment demonstrates value and compliance, not just enforces it.
 **Negative test:** present raw Asset Inventory exports as the security report; stakeholders
 cannot read thousands of rows — a scoped, aggregated report is what communicates outcome.
 
-**Cleanup:** delete the lab report/dashboard widget.
+**Rollback:** delete the lab report/dashboard widget.
 
 ## Lab Verification
 

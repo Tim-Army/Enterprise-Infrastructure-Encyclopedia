@@ -47,7 +47,7 @@ EOF
 
 **Negative test:** Attempt an illegal transition (`Submitted → Paid`) — it is refused; process definitions constrain paths, the property that makes workflow auditable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Content and capture (FileNet Deployment / Datacap Developer)
 
@@ -64,7 +64,7 @@ datacap> the capture front end: scan -> OCR/recognize -> validate -> export INTO
 
 **Negative test:** Expecting FileNet to OCR scanned paper — that is capture's job (Datacap); the repository governs what capture delivers.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 7.3 — CP4BA platform composition (CP4BA Solution Architect)
 
@@ -79,7 +79,7 @@ cp4ba (v24.0.0)> OpenShift-packaged: workflow (BAW) + content (FileNet) + decisi
 
 **Negative test:** Treating CP4BA as one product — the architect exam tests choosing and composing its capabilities per requirement.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 7.4 — Resource optimization (Turbonomic Administrator)
 
@@ -94,7 +94,7 @@ turbonomic (ARM v8.x)> continuously matches workload demand to resource supply, 
 
 **Negative test:** Confusing Turbonomic (acts on resources) with pure monitoring (reports only) — the action generation is the product's point.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 7.5 — Observability signals (Instana Administrator)
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Metrics with no trace correlation — you see *that* latency rose but not *where*; correlation across signals is observability's value, and the exam tests it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — AIOps correlation (Cloud Pak for AIOps Administrator)
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Routing every raw alert to on-call — the noise AIOps exists to eliminate; correlation before notification is the design.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -78,7 +78,7 @@ precise definition.
 **Negative test:** classify on a loose "any long number" rule; it floods on phone/order numbers —
 use a **precise** definition (and Luhn in production).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Author a data-protection rule
 
@@ -98,7 +98,7 @@ targeted data protection.
 **Negative test:** block **all** file copies to USB; that halts legitimate work — match the
 **classification**, not the whole channel.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Handle an incident and tune
 
@@ -118,7 +118,7 @@ enforcement intact — precise tuning.
 **Negative test:** disable the whole rule to stop the false positive; scope the **exception** —
 don't remove protection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — User justification workflow
 
@@ -136,7 +136,7 @@ trail** — protection without paralysis.
 **Negative test:** hard-block with no justification path; legitimate work stalls — provide a
 **justification** workflow.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Leaving service accounts unmanaged because rotating them might break something. That fear is exactly why they become stale standing risks; ALM's dependency mapping makes rotation and decommissioning safe, closing the surface instead of freezing it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

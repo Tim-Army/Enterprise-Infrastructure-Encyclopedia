@@ -464,7 +464,7 @@ WAN, a LAN, name resolution, and a gateway.
 (`no route to destination`) — routing, not just an interface IP, is what reaches
 off-subnet.
 
-**Cleanup:** restore lab addressing, or `execute factoryreset` on a throwaway VM.
+**Rollback:** restore lab addressing, or `execute factoryreset` on a throwaway VM.
 
 ### Lab 4.2 — Licensing and FortiGuard registration (Topic: Licensing and FortiGuard)
 
@@ -487,7 +487,7 @@ antivirus, IPS, web-filter, and application-control signatures.
 DBs stop updating and new threats pass — the license state (this lab) governs
 protection currency.
 
-**Cleanup:** none (read-only / update).
+**Rollback:** none (read-only / update).
 
 ### Lab 4.3 — Harden administrative access (Topic: Administrative access and hardening)
 
@@ -671,7 +671,7 @@ an IdP plus a SAML trust — which is exactly why email OTP is the right factor 
 Delegating admin login to FortiAuthenticator over SAML and signing in with a passkey is the
 natural production capstone once that infrastructure exists.
 
-**Cleanup:** widen `trusthost1` back to your admin range if you locked yourself to a
+**Rollback:** widen `trusthost1` back to your admin range if you locked yourself to a
 lab subnet.
 
 **Lessons learned — a live FortiGate-VM evaluation deployment.** The gotchas scattered
@@ -727,7 +727,7 @@ firmware changes follow the vendor upgrade path and are always preceded by a bac
 **Negative test:** jump several major versions in one step; the FortiGate rejects it or
 corrupts the config — skipping the documented upgrade path is unsupported.
 
-**Cleanup:** none (no actual upgrade performed).
+**Rollback:** none (no actual upgrade performed).
 
 ### Lab 4.5 — Operation mode and global settings (Topic: NAT vs transparent, system settings)
 
@@ -751,7 +751,7 @@ applied, which timestamps every log correctly.
 **Negative test:** troubleshoot logs across sites with the timezone left at default;
 event correlation is off by hours — accurate time is a prerequisite for forensics.
 
-**Cleanup:** restore your lab hostname if changed.
+**Rollback:** restore your lab hostname if changed.
 
 ### Lab 4.6 — Admin profiles and role-based access (Topic: Administrative roles)
 
@@ -784,7 +784,7 @@ access their role needs.
 **Negative test:** give every operator the `super_admin` profile; any one of them can
 disable security or exfiltrate config — role separation is what this profile enforces.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config system admin
@@ -897,7 +897,7 @@ start or comes up in a limited conserve-mode state — the full disk image and t
 vendor-minimum resources (≥ 1 vCPU and ≥ 2 GB RAM for FortiOS 7.6) are what a
 healthy first boot needs.
 
-**Cleanup:** snapshot the freshly-deployed VM as your lab baseline, or
+**Rollback:** snapshot the freshly-deployed VM as your lab baseline, or
 `execute factoryreset` to hand a known-clean appliance to Lab 4.1.
 
 ### Lab 4.8 — Upgrading firmware over TFTP from the CLI (Topic: Firmware lifecycle)
@@ -1001,7 +1001,7 @@ firmware-upgrade entitlement is present. Note also that an 8.0.0 FortiGate-VM's 
 unusable under evaluation (the licensing Gotcha above); plan to manage the upgraded appliance
 over CLI/API, or stay on 7.6.7 where GUI access is required.
 
-**Cleanup:** snapshot the upgraded VM as a new baseline, or `execute restore image tftp` the
+**Rollback:** snapshot the upgraded VM as a new baseline, or `execute restore image tftp` the
 7.6.7 image back to return the appliance to a GUI-capable state for later labs.
 
 ## Lab Verification

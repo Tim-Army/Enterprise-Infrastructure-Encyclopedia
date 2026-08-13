@@ -69,7 +69,7 @@ A:router# show router ldp bindings active
 **Negative test:** enable LDP but leave **MPLS off** on the interface; transport needs MPLS enabled
 — enable it.
 
-**Cleanup:** `configure router ldp shutdown`.
+**Rollback:** `configure router ldp shutdown`.
 
 ### Lab 5.2 — Signal an RSVP-TE LSP
 
@@ -87,7 +87,7 @@ A:router# show router mpls lsp
 **Negative test:** create an LSP with **RSVP disabled**; RSVP-TE must be enabled to signal — turn
 it on.
 
-**Cleanup:** shut and delete the LSP.
+**Rollback:** shut and delete the LSP.
 
 ### Lab 5.3 — Enable Segment Routing
 
@@ -105,7 +105,7 @@ transport via the IGP.
 **Negative test:** expect SR transport with **no SID range/enablement**; SR must be enabled under
 the IGP — configure it.
 
-**Cleanup:** `configure router isis segment-routing shutdown`.
+**Rollback:** `configure router isis segment-routing shutdown`.
 
 ### Lab 5.4 — Verify tunnel table
 
@@ -120,7 +120,7 @@ binding.
 
 **Negative test:** bind a service before a tunnel exists; check the **tunnel-table** first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -34,7 +34,7 @@ sudo ip netns exec db nft get element inet vnic g_web '{ 10.50.1.11 }'
 
 **Negative test.** Assume onboarding a server requires editing the firewall. It does not — that is the entire value of tag-driven groups: scale without touching rules.
 
-**Cleanup.** Remove the test element and tag line.
+**Rollback.** Remove the test element and tag line.
 
 ### Exercise 8.2 — Scale and context (design)
 
@@ -44,7 +44,7 @@ sudo ip netns exec db nft get element inet vnic g_web '{ 10.50.1.11 }'
 
 **Expected result (on paper).** A design note: tags for what, Identity Firewall for who, context profiles for L7 — all enforced distributed at every vNIC and following the VM across hosts.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -65,7 +65,7 @@ echo "10.50.1.200 (physical, no DFW)  -> must be covered by a gateway or host ag
 
 **Negative test.** Assume DFW covers every workload in the data center. It covers NSX-attached VMs; a physical database with no vNIC is not enforced by DFW and needs a complementary control.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

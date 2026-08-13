@@ -345,7 +345,7 @@ port-level block, and a service crash.
    decision tree reaches the same diagnosis a second time. **Expected
    result:** the tree is repeatable, not a one-time coincidence.
 
-**Cleanup:** Remove any temporary firewall rules or induced failure
+**Rollback:** Remove any temporary firewall rules or induced failure
 conditions, confirm the lab service is restored to its normal running
 state, and delete lab-only incident records if they reference
 non-representative test data.

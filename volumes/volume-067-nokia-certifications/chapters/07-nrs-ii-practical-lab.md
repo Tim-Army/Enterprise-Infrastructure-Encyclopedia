@@ -73,7 +73,7 @@ delivery.
 **Negative test:** configure the VPRN before the IGP/transport/BGP are up; build **bottom-up** and
 verify each layer.
 
-**Cleanup:** none (keep for Lab 7.2).
+**Rollback:** none (keep for Lab 7.2).
 
 ### Lab 7.2 — Troubleshoot a down service (top-down)
 
@@ -93,7 +93,7 @@ LDP is down) — a targeted fix.
 **Negative test:** randomly reconfigure the service; diagnose **top-down** to find the actual
 broken layer first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Verify and manage time
 
@@ -111,7 +111,7 @@ echo "verify every layer; reserve time to check the full end-to-end path"
 **Negative test:** spend all time configuring and none verifying; **reserve verification time** —
 an unverified network may be silently broken.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

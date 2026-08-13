@@ -71,7 +71,7 @@ cat my-sailpoint-plan.md
 
 **Negative test:** Buying the Engineer exam first with no ISC exposure — the Architecture and Rules/Transforms domains (Chapter 07) assume real build experience; the recommended year of hands-on time is a genuine signal.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam domains
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Studying the domains you enjoy — access modeling is pleasant, virtual appliances and troubleshooting are not, and the exams weight them regardless of preference.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

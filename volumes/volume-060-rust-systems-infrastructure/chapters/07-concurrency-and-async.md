@@ -70,7 +70,7 @@ fn main() {
 **Negative test:** capture a non-`Send` value in a thread closure; the compiler **rejects**
 it — that prevents races.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Channels
 
@@ -92,7 +92,7 @@ fn main() {
 **Negative test:** share a `Vec` across threads without synchronization; **channels** (or
 `Arc<Mutex>`) are required — the compiler enforces it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Shared state with Arc<Mutex>
 
@@ -116,7 +116,7 @@ fn main() {
 **Negative test:** increment a plain `i32` from many threads; it **won't compile** without
 `Arc<Mutex>` — no data races.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Async with tokio
 
@@ -137,7 +137,7 @@ async fn main() {
 **Negative test:** block the async runtime with a synchronous `std::thread::sleep`; use
 **`tokio::time::sleep().await`** so the runtime stays cooperative.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

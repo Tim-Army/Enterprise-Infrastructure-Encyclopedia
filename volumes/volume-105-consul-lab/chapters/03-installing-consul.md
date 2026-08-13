@@ -23,7 +23,7 @@ kubectl get nodes
 
 **Negative test.** Disabling the default CNI here leaves the node `NotReady`; Consul needs a working pod network. Leave the default CNI.
 
-**Cleanup.** None yet.
+**Rollback.** None yet.
 
 ### Lab 3.2 — Install Consul with Connect
 
@@ -63,7 +63,7 @@ kubectl -n consul get pods | grep -E "consul-server|connect-injector"
 
 **Negative test.** On a 4 GB host that is already busy, the Consul server can stay `Pending` for lack of memory; give the host 6 GB or free some. Check `kubectl -n consul describe pod consul-server-0`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Reach the Consul UI and CLI
 
@@ -82,7 +82,7 @@ kubectl -n consul get secret consul-bootstrap-acl-token -o jsonpath='{.data.toke
 
 **Negative test.** Skip the token and the UI shows nothing (ACLs deny anonymous read by default). Log in with the bootstrap token.
 
-**Cleanup.** Keep Consul running; Chapter 04 deploys the workloads.
+**Rollback.** Keep Consul running; Chapter 04 deploys the workloads.
 
 ## Summary and Completion Checklist
 

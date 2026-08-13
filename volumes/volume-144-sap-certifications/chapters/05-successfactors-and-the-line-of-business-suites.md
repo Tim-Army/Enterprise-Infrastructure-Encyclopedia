@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Treating SuccessFactors modules as independent. Employee Central errors surface as S/4HANA cost-center problems and Concur approval failures weeks later, far from their source.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — The partner-provisioning constraint, made concrete
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** An independent consultant pursuing SF certification expecting to freelance implementations with full provisioning. The certification is real; the provisioning access is not available without a partner-org affiliation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Choosing an SF module lane
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Collecting every SuccessFactors module certification. Roles are staffed by EC-plus-specialty depth, not breadth across all modules, and the effort is better spent going deep in two.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

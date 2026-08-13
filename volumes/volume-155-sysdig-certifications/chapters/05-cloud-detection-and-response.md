@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Detecting dropped attacker tools by matching known-malware signatures. Novel or renamed tools evade signatures; drift detection catches them because they are not in the image — no signature required.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

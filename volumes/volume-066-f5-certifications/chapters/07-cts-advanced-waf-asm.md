@@ -73,7 +73,7 @@ without blocking yet.
 **Negative test:** attach a new policy directly in **blocking** mode; it may block legitimate
 traffic — start **transparent** and learn.
 
-**Cleanup:** detach and delete the policy.
+**Rollback:** detach and delete the policy.
 
 ### Lab 7.2 — Enable attack signatures (negative security)
 
@@ -90,7 +90,7 @@ exploits.
 
 **Negative test:** rely only on signatures; add a **positive** model too — defense in depth.
 
-**Cleanup:** none (policy-level).
+**Rollback:** none (policy-level).
 
 ### Lab 7.3 — Tune a false positive
 
@@ -108,7 +108,7 @@ elsewhere.
 **Negative test:** disable the signature **globally** to stop the alert; scope the exception —
 keep coverage on other endpoints.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Add bot defense
 
@@ -126,7 +126,7 @@ beyond signatures.
 **Negative test:** treat all automated traffic as either fully allowed or fully blocked; **bot
 defense** classifies it — enable it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — Review WAF events
 
@@ -144,7 +144,7 @@ tunes protection.
 **Negative test:** enable blocking and never review events; the **event log** drives tuning —
 review it continuously.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -39,7 +39,7 @@ atk DROPPED (untrusted)
 
 **Negative test.** Even a *clean* (non-exploit) request from the attacker is now dropped — the trust list denies the source regardless of payload, a second independent layer from the virtual patch.
 
-**Cleanup.** Keep the trust list.
+**Rollback.** Keep the trust list.
 
 ### Exercise 5.2 — Command filtering: deny dangerous operations
 
@@ -70,7 +70,7 @@ The read passes; the dangerous command is blocked inline even though the source 
 
 **Negative test.** Blocking by source alone (trust list) would let a trusted-but-compromised operator send `STOP`; command filtering is what stops the dangerous operation itself. Both layers are needed.
 
-**Cleanup.** Keep the command filter.
+**Rollback.** Keep the command filter.
 
 ## Summary and Completion Checklist
 

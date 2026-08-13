@@ -78,7 +78,7 @@ PY
 **Negative test:** treat Veeam ONE as optional and fly blind on SLAs and capacity; use it to prove
 protection and forecast growth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Configure a backup-failure alarm
 
@@ -98,7 +98,7 @@ Result: any failed job raises an Error alarm and emails the team
 **Negative test:** rely on someone opening the console to notice failures; configure **alarms + email**
 so failures push to you.
 
-**Cleanup:** disable the test alarm if not needed.
+**Rollback:** disable the test alarm if not needed.
 
 ### Lab 6.3 — Run a protection report
 
@@ -119,7 +119,7 @@ PY
 
 **Negative test:** assume every VM is covered; the report reveals `test-vm03` is not — add it to a job.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Read a capacity-planning forecast
 
@@ -139,7 +139,7 @@ PY
 **Negative test:** wait for a "repository full" error mid-backup; use the **capacity-planning** forecast
 to expand ahead of time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

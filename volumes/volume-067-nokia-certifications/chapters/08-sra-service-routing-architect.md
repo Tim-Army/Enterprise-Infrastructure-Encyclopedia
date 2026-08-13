@@ -76,7 +76,7 @@ readiness — a scalable IGP.
 **Negative test:** put 400 routers in one flat area; **structure and summarize** — flat doesn't
 scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — BGP architecture
 
@@ -98,7 +98,7 @@ design.
 **Negative test:** design IBGP as a full mesh at scale; use **route reflectors** — the mesh
 explodes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Transport and service architecture
 
@@ -119,7 +119,7 @@ modern, resilient architecture.
 **Negative test:** default to RSVP full-mesh LSPs for everything; **SR** removes state — prefer it
 for scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Failure analysis
 
@@ -141,7 +141,7 @@ design.
 **Negative test:** present a design with no **failure analysis**; the SRA expects one — analyze
 every failure mode.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

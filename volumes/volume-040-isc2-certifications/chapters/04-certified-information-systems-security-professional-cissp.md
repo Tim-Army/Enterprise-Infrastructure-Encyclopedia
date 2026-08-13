@@ -118,7 +118,7 @@ figure that justifies control spend, core to Domain 1.
 **Negative test:** buy a $50,000/yr control for a $20,000/yr risk without a
 qualitative rationale; you are over-spending relative to ALE.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — CISSP D2: Asset Security (10%)
 
@@ -141,7 +141,7 @@ handling — classification driving protection, the essence of Asset Security.
 **Negative test:** protect everything at the highest level; that wastes budget
 and desensitizes users — controls follow classification.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — CISSP D3: Security Architecture and Engineering (13%)
 
@@ -162,7 +162,7 @@ verifies, giving integrity and **non-repudiation**, a Domain 3 building block.
 **Negative test:** sign with the public key; only the *private* key signs — the
 public key verifies. The roles are not interchangeable.
 
-**Cleanup:** `rm -f priv.pem pub.pem c.txt c.sig`
+**Rollback:** `rm -f priv.pem pub.pem c.txt c.sig`
 
 ### Lab 4.4 — CISSP D4: Communication and Network Security (13%)
 
@@ -179,7 +179,7 @@ cipher suite — validating secure-channel design in Domain 4.
 **Negative test:** force `-ssl3` or `-tls1`; a hardened server refuses obsolete
 protocols — that refusal is the control working.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — CISSP D5: Identity and Access Management (13%)
 
@@ -201,7 +201,7 @@ PY
 **Negative test:** grant permissions to users directly instead of via roles; it
 does not scale and breaks least privilege — assign to roles.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — CISSP D6: Security Assessment and Testing (12%)
 
@@ -222,7 +222,7 @@ PY
 **Negative test:** remediate in the order findings were discovered; fix by
 **severity and exposure**, not discovery order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.7 — CISSP D7: Security Operations (13%)
 
@@ -240,7 +240,7 @@ echo "Threshold example: >10 failures/5 min from one IP -> alert + block"
 **Negative test:** alert on every single failure; alert fatigue hides real
 attacks — tune thresholds and correlate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.8 — CISSP D8: Software Development Security (10%)
 
@@ -266,7 +266,7 @@ lesson.
 **Negative test:** build the query with string concatenation (`"... name='"+evil+"'"`);
 that executes the injected `DROP` — never concatenate untrusted input into SQL.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

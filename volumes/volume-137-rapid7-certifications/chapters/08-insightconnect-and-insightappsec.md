@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Automating containment because the product supports it — a noisy detection wired to a disruptive action produces self-inflicted outages, and the team's response is to disable the automation entirely, losing the good cases too.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Scope a DAST scan safely
 
@@ -138,7 +138,7 @@ EOF
 
 **Negative test:** Pointing a scanner at production with no exclusions and a privileged account — it will submit every form it finds, which means creating, modifying, and deleting real data.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Authenticated scanning coverage
 
@@ -170,7 +170,7 @@ EOF
 
 **Negative test:** Accepting a clean DAST report without checking authenticated coverage — the low finding count reflects the scanner never getting past the login page.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

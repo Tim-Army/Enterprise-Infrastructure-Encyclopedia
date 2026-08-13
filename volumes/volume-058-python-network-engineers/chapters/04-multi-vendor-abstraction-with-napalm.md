@@ -71,7 +71,7 @@ dev.close()
 **Negative test:** parse `show version` text per vendor; **getters** return the same shape
 everywhere — use them.
 
-**Cleanup:** `dev.close()` (done above).
+**Rollback:** `dev.close()` (done above).
 
 ### Lab 4.2 — Merge configuration
 
@@ -90,7 +90,7 @@ dev.close()
 **Negative test:** commit without `compare_config`; **review the diff** first to catch
 mistakes.
 
-**Cleanup:** merge `no interface Loopback101` and commit.
+**Rollback:** merge `no interface Loopback101` and commit.
 
 ### Lab 4.3 — Replace (declarative) and diff
 
@@ -111,7 +111,7 @@ replace-preview.
 **Negative test:** `replace` and commit blindly; it can **remove** anything not in the
 file — review the diff.
 
-**Cleanup:** `discard_config()` (done above).
+**Rollback:** `discard_config()` (done above).
 
 ### Lab 4.4 — Rollback
 
@@ -128,7 +128,7 @@ dev.close()
 **Negative test:** make risky changes with no rollback path; NAPALM's **rollback** undoes
 the last commit — keep it available.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

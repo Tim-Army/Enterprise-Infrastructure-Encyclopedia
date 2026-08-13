@@ -83,7 +83,7 @@ Debian
 **Negative test:** study against Puppet 5/6 syntax and modules; the exam is **Puppet 8** — use a current
 version.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Apply a first idempotent resource
 
@@ -112,7 +112,7 @@ Applied catalog in 0.01 seconds        # no change -> idempotent
 **Negative test:** write a shell script that appends the line every run; it is not **idempotent** —
 Puppet converges to the declared state.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/hello.txt /tmp/first.pp
@@ -136,7 +136,7 @@ PY
 **Negative test:** prepare only the Puppet **language**; the exam also tests administration, orchestration,
 and troubleshooting — study all eight.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

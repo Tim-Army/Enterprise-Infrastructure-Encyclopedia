@@ -80,7 +80,7 @@ resource works across OSes.
 **Negative test:** manage packages with `exec { 'apt-get install rsync': }`; it breaks on RHEL — use the
 **`package`** type.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Confirm idempotence and drift correction
 
@@ -110,7 +110,7 @@ correction via idempotence.
 **Negative test:** rely on a one-time provisioning script; drift is never corrected — Puppet re-applies
 desired state.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/motd /tmp/svc.pp
@@ -135,7 +135,7 @@ networking.ip => 10.0.0.15
 **Negative test:** hardcode the OS/IP in a manifest; use **facts** (`$facts['os']['family']`) so the code
 is portable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Inspect a compiled catalog
 
@@ -159,7 +159,7 @@ exit=2      # 2 = changes would be made (noop)
 **Negative test:** apply untested code straight to production; use **`--noop`** to preview the catalog's
 changes first.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /tmp/cat.pp

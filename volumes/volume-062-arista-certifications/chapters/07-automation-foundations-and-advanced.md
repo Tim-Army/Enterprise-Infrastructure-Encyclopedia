@@ -68,7 +68,7 @@ print(node.execute(["show version"])["result"][0]["version"])
 **Negative test:** screen-scrape CLI over SSH for structured data; **eAPI/pyeapi** returns
 JSON — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Configure with Ansible arista.eos
 
@@ -91,7 +91,7 @@ config.
 **Negative test:** push CLI lines with a raw command module; **`eos_vlans`** is idempotent
 and structured — prefer resource modules.
 
-**Cleanup:** set `state: deleted` for the VLAN.
+**Rollback:** set `state: deleted` for the VLAN.
 
 ### Lab 7.3 — Jinja template + Git
 
@@ -110,7 +110,7 @@ code.
 **Negative test:** hand-edit each switch's config; **template from data in Git** for
 consistency and review.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Build a fabric with AVD
 
@@ -127,7 +127,7 @@ concise data model — network-as-code at fabric scale.
 **Negative test:** hand-build every leaf/spine config; **AVD** generates consistent,
 validated configs from one model — use it.
 
-**Cleanup:** tear down the lab fabric.
+**Rollback:** tear down the lab fabric.
 
 ### Lab 7.5 — Deploy via CloudVision
 
@@ -145,7 +145,7 @@ fleet deployment.
 **Negative test:** push directly to switches with no review/rollback; **CloudVision Change
 Control** adds governance — use it in production.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

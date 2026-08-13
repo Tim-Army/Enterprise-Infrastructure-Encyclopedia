@@ -83,7 +83,7 @@ study.
 
 **Negative test:** study a 6.5 blueprint; **7.5** is current for NCA/NCP-MCI — verify.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.2 — Plan a path
 
@@ -105,7 +105,7 @@ PY
 **Negative test:** attempt NCM/NCX first; build up from **NCA → NCP** — the higher
 tiers assume the lower skills.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -83,7 +83,7 @@ cmdlets as 7).
 
 **Negative test:** compile it by clicking; **PowerCLI** reports it in one command — script it.
 
-**Cleanup:** `Disconnect-VIServer -Confirm:$false`.
+**Rollback:** `Disconnect-VIServer -Confirm:$false`.
 
 ### Lab 9.2 — Script with govc
 
@@ -101,7 +101,7 @@ govc host.info -json 2>/dev/null | python3 -c "import sys,json;d=json.load(sys.s
 **Negative test:** assume PowerShell-only; **govc** scripts the API from any shell — use it where
 needed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Verify version and update status
 
@@ -121,7 +121,7 @@ currency.
 **Negative test:** run an old 8.0 GA build for years with no updates; apply **Update releases** for
 CPU/DPU/ESA improvements and fixes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

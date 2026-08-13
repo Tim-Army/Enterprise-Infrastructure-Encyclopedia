@@ -96,7 +96,7 @@ python -c "import netmiko, napalm, jinja2; print('net stack ready')"
 **Negative test:** `pip install` into system Python; isolate with a **venv** so device
 libs don't collide with the OS.
 
-**Cleanup:** `deactivate`.
+**Rollback:** `deactivate`.
 
 ### Lab 1.2 — Choose a connection method
 
@@ -117,7 +117,7 @@ for k,v in methods.items(): print(f"{k:24}: {v}")
 **Negative test:** SSH-scrape a device that offers **NETCONF**; use the structured
 interface for reliability.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Verify a lab device is reachable (optional)
 
@@ -133,7 +133,7 @@ nc -z -w3 <device-ip> 22 && echo "ssh reachable" || echo "unreachable"
 **Negative test:** run playbooks against unreachable devices; **check connectivity** first
 to fail fast.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

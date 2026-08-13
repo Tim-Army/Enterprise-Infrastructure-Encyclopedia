@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Choosing PEP because "performance sounds more technical." The exam will be answered from the prep course instead of from experience, which is the difference the experience bands describe.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — The preparation checklist
 
@@ -139,7 +139,7 @@ EOF
 
 **Negative test:** Substituting a third-party question bank for the sign-in-gated Exam Guide. The guide is free and authoritative; the bank is neither.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -151,7 +151,7 @@ the page is the authoritative source for every fact.
 **Negative test:** search a third-party site for the "MS-102 domains"; the
 weights differ from Learn — trust the Learn page, not dumps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Enumerate the catalog with the API (Topic: Verify currency)
 
@@ -172,7 +172,7 @@ JavaScript-built and hard to scrape.
 **Negative test:** try to read the browse page HTML with `curl | grep` for
 titles; you get the SPA shell, not the list — use the Catalog API.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a role-based path (Topic: Build a study plan)
 
@@ -193,7 +193,7 @@ labs — the intended learning order even where prerequisites are not enforced.
 cross-domain architecture exam is far harder without the Associate foundation
 — sequence deliberately.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

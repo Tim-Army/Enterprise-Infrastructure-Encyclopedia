@@ -112,7 +112,7 @@ the CIA triad on one file.
 **Negative test:** `cat data.enc` expecting the plaintext; it is ciphertext —
 confidentiality is enforced.
 
-**Cleanup:** `rm -f data.txt data.enc`
+**Rollback:** `rm -f data.txt data.enc`
 
 ### Lab 2.2 — CC: BC, DR & Incident Response Concepts (10%)
 
@@ -134,7 +134,7 @@ response lifecycle — the vocabulary CC tests.
 **Negative test:** conflate RPO (data loss) with RTO (downtime); they measure
 different things.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — CC: Access Controls Concepts (22%)
 
@@ -153,7 +153,7 @@ least privilege and discretionary access control (DAC) via permission bits.
 **Negative test:** `chmod 777 vault.txt` "to make it work"; world-writable
 secrets violate least privilege — never do this.
 
-**Cleanup:** `rm -f vault.txt`
+**Rollback:** `rm -f vault.txt`
 
 ### Lab 2.4 — CC: Network Security (24%)
 
@@ -170,7 +170,7 @@ the exposed network surface a defender inventories and a firewall then reduces.
 **Negative test:** assume "no output means secure"; it may mean `ss` needs
 privileges — re-run with `sudo` before concluding.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — CC: Security Operations (18%)
 
@@ -189,7 +189,7 @@ detected` — file-integrity monitoring, a core security-operations control.
 **Negative test:** skip the baseline hash; without it you cannot detect the
 change — monitoring needs a known-good reference.
 
-**Cleanup:** `rm -f app.conf app.conf.sha256`
+**Rollback:** `rm -f app.conf app.conf.sha256`
 
 ## Lab Verification
 

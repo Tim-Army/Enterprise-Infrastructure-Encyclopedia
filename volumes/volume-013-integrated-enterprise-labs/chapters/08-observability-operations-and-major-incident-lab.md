@@ -263,7 +263,7 @@ that follow.
 **Negative test:** monitor each component with its own separate tooling; you cannot see the environment
 as a whole or correlate across it — unified telemetry is what makes the integrated system observable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — SLOs and actionable alerting (Topic: SLOs)
 
@@ -283,7 +283,7 @@ alerting pages only on real user impact, so operations focus on what matters.
 **Negative test:** alert on every metric threshold across the environment; responders drown in noise
 and miss the real incident — SLO-burn/symptom alerting is what keeps paging actionable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Major-incident exercise (Topic: Incident operations)
 
@@ -306,7 +306,7 @@ point of the observability and IR chapters.
 teams debug their own component in isolation, unaware it is a shared-dependency failure — the
 integration (telemetry + process) is what shortens the outage.
 
-**Cleanup:** revert the injected failure; retain the timeline for the postmortem.
+**Rollback:** revert the injected failure; retain the timeline for the postmortem.
 
 ### Lab 8.4 — Continual improvement (Topic: Improvement)
 
@@ -328,7 +328,7 @@ fixes.
 **Negative test:** close incidents with no action items or with items that are never implemented; the
 same failure recurs — tracked, implemented improvements are what make the environment better over time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -281,7 +281,7 @@ rejected option and why.
 **Negative test:** assume full-mesh peering scales; at 6 VPCs it needs 15
 connections and 15 route-table edits — the failure a hub design avoids.
 
-**Cleanup:** none (read-only assessment).
+**Rollback:** none (read-only assessment).
 
 ### Lab 12.2 — Prescribe security controls
 
@@ -300,7 +300,7 @@ control (Security Hub standard) for the identified gap.
 **Negative test:** rely on detective controls alone; a misconfiguration is
 found *after* it happens — the case for a preventive SCP.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.3 — Design reliable and resilient architectures
 
@@ -319,7 +319,7 @@ AZ holds a majority, redistribute so the loss of one AZ removes at most
 **Negative test:** a "resilient" tier with all instances in one AZ fails
 completely on a single-AZ event.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.4 — Design a multi-account AWS environment
 
@@ -338,7 +338,7 @@ SCPs it inherits.
 **Negative test:** a flat single-account design cannot apply
 environment-specific SCPs, the isolation multi-account provides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.5 — Determine cost optimization and visibility strategies
 
@@ -357,7 +357,7 @@ storage) and the expected saving.
 **Negative test:** optimize a trivial line while the top service dominates
 spend — effort spent where it cannot matter.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.6 — Design a deployment strategy to meet business requirements
 
@@ -375,7 +375,7 @@ record the RTO impact of each.
 **Negative test:** an all-at-once deploy of a bad build takes 100% of
 traffic down before any alarm fires.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.7 — Design a solution to ensure business continuity
 
@@ -392,7 +392,7 @@ meets the stated RTO/RPO, and the cost of each.
 **Negative test:** a backup plan that omits a critical data store leaves an
 un-recoverable gap in the continuity design.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.8 — Determine security controls based on requirements
 
@@ -411,7 +411,7 @@ versus SSE-S3 — and why the requirement forces the stronger control.
 **Negative test:** SSE-S3 cannot satisfy a requirement for per-team key
 access separation; only a CMK key policy can.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.9 — Design a strategy to meet reliability requirements
 
@@ -430,7 +430,7 @@ request as part of the reliability design.
 **Negative test:** a design that assumes unlimited capacity fails at the
 quota ceiling during the exact surge it was meant to survive.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.10 — Design a solution to meet performance objectives
 
@@ -448,7 +448,7 @@ latency/throughput objective, and the evidence behind it.
 **Negative test:** guessing an instance type without the recommendation
 either overspends or under-serves the objective.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.11 — Determine a cost optimization strategy for solution goals
 
@@ -466,7 +466,7 @@ record the break-even and the on-demand fallback for spiky load.
 **Negative test:** over-committing a Savings Plan to peak usage wastes the
 commitment during troughs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.12 — Determine a strategy to improve operational excellence
 
@@ -485,7 +485,7 @@ patch) via a maintenance window rather than manual remediation.
 **Negative test:** tracking ops health by ticket volume alone hides
 systemic drift that compliance summaries make measurable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.13 — Determine a strategy to improve security
 
@@ -504,7 +504,7 @@ it cannot recur.
 **Negative test:** closing findings by hand without a preventive control
 lets the same misconfiguration return next week.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.14 — Determine a strategy to improve performance
 
@@ -525,7 +525,7 @@ replica — chosen from the tail latency, not the average.
 
 **Negative test:** optimizing on the mean hides a p99 that violates the SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.15 — Determine a strategy to improve reliability
 
@@ -543,7 +543,7 @@ failure (single-AZ RDS, no ASG) in priority order.
 **Negative test:** `SubscriptionRequiredException` on Basic Support shows
 this reliability signal needs a paid plan — itself a design input.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.16 — Identify opportunities for cost optimizations
 
@@ -563,7 +563,7 @@ record the total addressable saving.
 **Negative test:** cost cuts driven by intuition miss idle capacity the data
 names precisely.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.17 — Select existing workloads and processes for migration
 
@@ -582,7 +582,7 @@ record:** select low-dependency, high-value workloads first (the migration
 **Negative test:** migrating a highly-connected workload first drags its
 entire dependency web along unplanned.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.18 — Determine the optimal migration approach
 
@@ -602,7 +602,7 @@ justify the choice.
 **Negative test:** refactoring everything up front stalls a migration that
 a rehost-then-optimize approach would have completed on time.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.19 — Determine a new architecture for existing workloads
 
@@ -623,7 +623,7 @@ traffic shape — bursty favors serverless, steady favors containers.
 **Negative test:** re-hosting a monolith unchanged carries its scaling
 limits into the cloud.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.20 — Determine opportunities for modernization and enhancements
 
@@ -642,7 +642,7 @@ failover, autoscaling storage); record the operational burden removed.
 **Negative test:** keeping a self-managed database forgoes the managed
 resilience the exam expects you to recommend.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 **DevOps Engineer – Professional (DOP-C02) — Labs 12.21–12.39**
 
@@ -661,7 +661,7 @@ automated path from commit to build.
 **Negative test:** a stage referencing a nonexistent CodeBuild project fails
 at execution, surfacing the broken link.
 
-**Cleanup:** `aws codepipeline delete-pipeline --name dop-pipe`.
+**Rollback:** `aws codepipeline delete-pipeline --name dop-pipe`.
 
 ### Lab 12.22 — Integrate automated testing into CI/CD pipelines
 
@@ -680,7 +680,7 @@ non-zero test result fails the build and stops promotion.
 **Negative test:** with `|| true` restored, failing tests are masked and bad
 code promotes — the anti-pattern.
 
-**Cleanup:** none (project reused; delete in Lab 11.9 cleanup).
+**Rollback:** none (project reused; delete in Lab 11.9 cleanup).
 
 ### Lab 12.23 — Build and manage artifacts
 
@@ -698,7 +698,7 @@ for build outputs and dependencies.
 **Negative test:** resolving a package version that was never published
 returns `404`, proving artifacts must be published before consumption.
 
-**Cleanup:** delete the repository and domain.
+**Rollback:** delete the repository and domain.
 
 ### Lab 12.24 — Implement deployment strategies for instances, containers, serverless
 
@@ -717,7 +717,7 @@ alongside old, then traffic shifts, enabling instant rollback.
 **Negative test:** an in-place deploy has no parallel environment, so
 rollback means redeploying the previous version under an outage.
 
-**Cleanup:** `aws deploy delete-deployment-group --application-name dva-cd --deployment-group-name dop-bg`.
+**Rollback:** `aws deploy delete-deployment-group --application-name dva-cd --deployment-group-name dop-bg`.
 
 ### Lab 12.25 — Define reusable IaC components
 
@@ -736,7 +736,7 @@ aws cloudformation validate-template --template-body file:///tmp/vpc.yaml \
 **Negative test:** copy-pasting the same VPC block across stacks drifts over
 time; a module keeps one definition authoritative.
 
-**Cleanup:** none (read-only / validate only).
+**Rollback:** none (read-only / validate only).
 
 ### Lab 12.26 — Deploy automation to create and secure accounts at scale
 
@@ -756,7 +756,7 @@ accounts in the target OUs — account baselines at scale.
 **Negative test:** a self-managed StackSet requires manual role setup per
 account; forgetting one leaves an ungoverned account.
 
-**Cleanup:** `aws cloudformation delete-stack-set --stack-set-name dop-guardrail`.
+**Rollback:** `aws cloudformation delete-stack-set --stack-set-name dop-guardrail`.
 
 ### Lab 12.27 — Design automated solutions for complex, large-scale tasks
 
@@ -774,7 +774,7 @@ concurrency (40) — large-scale work without hand-rolled queue plumbing.
 **Negative test:** unbounded concurrency (`MaxConcurrency:0`) can overwhelm a
 downstream service; the bound is the back-pressure control.
 
-**Cleanup:** delete the state machine.
+**Rollback:** delete the state machine.
 
 ### Lab 12.28 — Implement highly available solutions
 
@@ -791,7 +791,7 @@ automatically on primary failure.
 **Negative test:** a single-AZ instance failing takes an outage until a
 manual restore; Multi-AZ removes that manual step.
 
-**Cleanup:** revert with `--no-multi-az` if this was a test instance.
+**Rollback:** revert with `--no-multi-az` if this was a test instance.
 
 ### Lab 12.29 — Implement scalable solutions
 
@@ -810,7 +810,7 @@ demand automatically.
 **Negative test:** a step policy with a too-wide cooldown reacts too slowly
 to a spike; target-tracking self-tunes.
 
-**Cleanup:** `aws autoscaling delete-policy --auto-scaling-group-name soa-asg --policy-name cpu-target`.
+**Rollback:** `aws autoscaling delete-policy --auto-scaling-group-name soa-asg --policy-name cpu-target`.
 
 ### Lab 12.30 — Implement automated recovery to meet RTO and RPO
 
@@ -828,7 +828,7 @@ RPO, increase frequency or add continuous backup.
 **Negative test:** a daily backup cannot meet a 1-hour RPO — the mismatch
 this check catches before an incident.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.31 — Configure collection, aggregation, and storage of logs and metrics
 
@@ -849,7 +849,7 @@ sink — aggregation across accounts/services.
 **Negative test:** logs left in per-service groups cannot be correlated in
 one query; centralization is what enables cross-service analysis.
 
-**Cleanup:** `aws logs delete-subscription-filter --log-group-name /aws/lambda/dva-fn --filter-name central`.
+**Rollback:** `aws logs delete-subscription-filter --log-group-name /aws/lambda/dva-fn --filter-name central`.
 
 ### Lab 12.32 — Audit, monitor, and analyze logs and metrics to detect issues
 
@@ -870,7 +870,7 @@ responses and feeds an alarm.
 **Negative test:** a plain-text pattern misses structured JSON fields; the
 JSON selector is what makes the detection reliable.
 
-**Cleanup:** delete the metric filter.
+**Rollback:** delete the metric filter.
 
 ### Lab 12.33 — Automate monitoring and event management of complex environments
 
@@ -888,7 +888,7 @@ are routed to automation (SNS, Lambda, ticketing) without polling.
 **Negative test:** an event pattern with a typo in `source` matches nothing,
 so findings are silently missed — validate patterns against sample events.
 
-**Cleanup:** `aws events delete-rule --name dop-guardduty`.
+**Rollback:** `aws events delete-rule --name dop-guardduty`.
 
 ### Lab 12.34 — Manage event sources to process, notify, and act on events
 
@@ -907,7 +907,7 @@ fan out to subscribers and downstream actions.
 **Negative test:** a target whose resource policy denies EventBridge silently
 drops deliveries; the topic policy must allow `events.amazonaws.com`.
 
-**Cleanup:** remove the target and delete the topic.
+**Rollback:** remove the target and delete the topic.
 
 ### Lab 12.35 — Implement configuration changes in response to events
 
@@ -925,7 +925,7 @@ noncompliant bucket is fixed without human action.
 **Negative test:** remediation with a role lacking the target permission
 fails on execution; the config change never applies.
 
-**Cleanup:** `aws configservice delete-remediation-configuration --config-rule-name s3-ssl-only`.
+**Rollback:** `aws configservice delete-remediation-configuration --config-rule-name s3-ssl-only`.
 
 ### Lab 12.36 — Troubleshoot system and application failures
 
@@ -945,7 +945,7 @@ timeline to locate where the failure originated.
 **Negative test:** querying a single log group hides a fault that lives at
 the boundary between services.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 12.37 — Implement identity and access management at scale
 
@@ -965,7 +965,7 @@ delegation at scale.
 **Negative test:** a delegated role without a boundary can grant itself
 `iam:*` and escalate; the boundary is what prevents it.
 
-**Cleanup:** delete the policy.
+**Rollback:** delete the policy.
 
 ### Lab 12.38 — Apply automation for security controls and data protection
 
@@ -983,7 +983,7 @@ the pattern an SCP would replicate across every account.
 **Negative test:** relying on developers to tick "encrypt" per volume leaves
 gaps; the default closes them automatically.
 
-**Cleanup:** leave enabled (secure default).
+**Rollback:** leave enabled (secure default).
 
 ### Lab 12.39 — Implement security monitoring and auditing solutions
 
@@ -1001,7 +1001,7 @@ account and Region.
 **Negative test:** a single-Region trail misses activity in other Regions —
 a blind spot an org, multi-Region trail eliminates.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 **Generative AI Developer – Professional (AIP-C01) — Labs 12.40–12.59**
 
@@ -1022,7 +1022,7 @@ rejected alternative.
 **Negative test:** choosing a model by name without checking modality/Region
 availability produces a design that cannot deploy.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.41 — Select and configure FMs
 
@@ -1041,7 +1041,7 @@ whether provisioned throughput is needed for the workload's rate.
 **Negative test:** on-demand throughput throttles under high concurrency;
 the exam expects provisioned throughput for guaranteed rates.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.42 — Implement data validation and processing pipelines for FM consumption
 
@@ -1059,7 +1059,7 @@ pipeline validates (encoding, size limits) before embedding.
 **Negative test:** feeding an oversized document that is not chunked exceeds the
 embedding model's token limit and the ingestion fails.
 
-**Cleanup:** delete the `rag/docs/` objects.
+**Rollback:** delete the `rag/docs/` objects.
 
 ### Lab 12.43 — Design and implement vector store solutions
 
@@ -1079,7 +1079,7 @@ promptly.
 encryption/network security policy leaves it unreachable — the policies are
 prerequisites, not options.
 
-**Cleanup:** `aws opensearchserverless delete-collection --id <id>`.
+**Rollback:** `aws opensearchserverless delete-collection --id <id>`.
 
 ### Lab 12.44 — Design retrieval mechanisms for FM augmentation
 
@@ -1097,7 +1097,7 @@ managed retrieval layer that grounds model answers in your data.
 **Negative test:** answering from the model alone (no retrieval) hallucinates
 on private facts; retrieval augmentation is the fix.
 
-**Cleanup:** none (read-only); delete any KB created for the lab.
+**Rollback:** none (read-only); delete any KB created for the lab.
 
 ### Lab 12.45 — Implement prompt engineering strategies and governance
 
@@ -1115,7 +1115,7 @@ templates rather than prompts scattered in code.
 **Negative test:** inline prompts edited ad hoc drift and cannot be audited;
 a managed template is versioned and governed.
 
-**Cleanup:** none (read-only); delete any prompt created.
+**Rollback:** none (read-only); delete any prompt created.
 
 ### Lab 12.46 — Implement agentic AI solutions and tool integrations
 
@@ -1132,7 +1132,7 @@ action groups) to complete multi-step tasks.
 **Negative test:** an agent with no action group can only chat; without tools
 it cannot take action in your systems.
 
-**Cleanup:** none (read-only); delete any agent created.
+**Rollback:** none (read-only); delete any agent created.
 
 ### Lab 12.47 — Implement model deployment strategies
 
@@ -1152,7 +1152,7 @@ throughput bills hourly; do not create one casually.
 **Negative test:** a production endpoint on on-demand throttles under load,
 violating the latency SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.48 — Design and implement enterprise integration architectures
 
@@ -1171,7 +1171,7 @@ throttling, and logging are applied before requests reach the model.
 **Negative test:** exposing Bedrock credentials directly to client apps
 removes the governance layer the API provides.
 
-**Cleanup:** `aws apigatewayv2 delete-api --api-id "$API"`.
+**Rollback:** `aws apigatewayv2 delete-api --api-id "$API"`.
 
 ### Lab 12.49 — Implement FM API integrations
 
@@ -1191,7 +1191,7 @@ across providers, simplifying integration. **Cost:** a few tokens.
 **Negative test:** a per-provider bespoke payload breaks when the model is
 swapped; Converse abstracts that difference.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 12.50 — Implement application integration patterns and development tools
 
@@ -1210,7 +1210,7 @@ bursty GenAI workloads and enables retries.
 **Negative test:** synchronous invocation under a burst hits rate limits and
 drops requests; the queue absorbs the spike.
 
-**Cleanup:** `aws sqs delete-queue --queue-url "$QUEUE_URL"`.
+**Rollback:** `aws sqs delete-queue --queue-url "$QUEUE_URL"`.
 
 ### Lab 12.51 — Implement input and output safety controls
 
@@ -1228,7 +1228,7 @@ blocks unsafe content and denied topics.
 **Negative test:** send a denied-topic prompt through a call with no
 guardrail; it is answered, the risk guardrails remove.
 
-**Cleanup:** none (read-only); reuse the guardrail from Lab 10.30.
+**Rollback:** none (read-only); reuse the guardrail from Lab 10.30.
 
 ### Lab 12.52 — Implement data security and privacy controls
 
@@ -1247,7 +1247,7 @@ data is masked before it reaches or leaves the model.
 **Negative test:** without a sensitive-information policy, PII in prompts is
 sent to and logged by the model, a privacy violation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.53 — Implement AI governance and compliance mechanisms
 
@@ -1265,7 +1265,7 @@ invocation — the record auditors and AI regulations require.
 **Negative test:** logging disabled means no evidence of what the model was
 asked or answered — a compliance gap.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.54 — Implement responsible AI principles
 
@@ -1285,7 +1285,7 @@ codified responsible-AI limit, not a documentation promise.
 **Negative test:** ask for medical advice through the guardrail; it is
 blocked with your message, proving the principle is enforced.
 
-**Cleanup:** `aws bedrock delete-guardrail --guardrail-identifier <id>`.
+**Rollback:** `aws bedrock delete-guardrail --guardrail-identifier <id>`.
 
 ### Lab 12.55 — Implement cost optimization and resource efficiency strategies
 
@@ -1305,7 +1305,7 @@ and reserve a large model for complex tasks; record the projected saving.
 **Negative test:** using the largest model for every call overspends on
 prompts a small model answers just as well.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.56 — Optimize application performance
 
@@ -1324,7 +1324,7 @@ latency.
 **Negative test:** a non-streaming call makes the user wait for the entire
 response; streaming is the perceived-performance win.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.57 — Implement monitoring systems for GenAI applications
 
@@ -1346,7 +1346,7 @@ app.
 **Negative test:** monitoring only the app tier misses Bedrock-side
 throttling that degrades responses.
 
-**Cleanup:** `aws cloudwatch delete-alarms --alarm-names aip-invocation-errors`.
+**Rollback:** `aws cloudwatch delete-alarms --alarm-names aip-invocation-errors`.
 
 ### Lab 12.58 — Implement evaluation systems for GenAI
 
@@ -1365,7 +1365,7 @@ accuracy, toxicity, and robustness across a dataset.
 **Negative test:** judging a model by a handful of manual prompts gives an
 unrepresentative verdict; systematic evaluation is the fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.59 — Troubleshoot GenAI applications
 
@@ -1383,7 +1383,7 @@ access denied, validation) — the specific fault, not a generic "it broke."
 **Negative test:** troubleshooting without invocation logging leaves only
 the client-side symptom; the logged `errorCode` names the real cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.60 — Professional-tier pacing and trade-off drill (integrative)
 
@@ -1439,7 +1439,7 @@ CodeDeploy and compute in the sandbox; step 6 cleans up.
    **Expected result:** a plan whose first action is aimed at your actual
    constraint.
 
-6. **Cleanup:** stop and delete the lab deployment and any compute it
+6. **Rollback:** stop and delete the lab deployment and any compute it
    created, revert SCP or organizational changes, and confirm the budget
    alarm shows no unexpected spend.
 

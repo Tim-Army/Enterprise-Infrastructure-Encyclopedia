@@ -83,7 +83,7 @@ PY
 **Negative test:** rely on a single query rule for everything; combine **threshold, indicator-match, EQL,
 and ML** rules for coverage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Model a threshold detection rule
 
@@ -106,7 +106,7 @@ curl -s -k -u elastic:$PW -X GET "https://localhost:9200/logs-*/_search" -H 'Con
 **Negative test:** alert on a single failed login (noise); a **threshold** (e.g., 10 in 15m) distinguishes
 a brute-force attempt from a typo.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Run a threat hunt
 
@@ -128,7 +128,7 @@ curl -s -k -u elastic:$PW -X POST "https://localhost:9200/_query?format=txt" -H 
 **Negative test:** wait only for prebuilt alerts; proactive **hunting** with EQL/ES|QL finds what no rule
 fired on yet.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Model a Timeline investigation
 
@@ -154,7 +154,7 @@ egress — the basis for response.
 **Negative test:** treat each alert in isolation; a **Timeline** connects them into one incident you can
 scope and contain.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

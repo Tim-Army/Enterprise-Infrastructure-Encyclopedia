@@ -706,7 +706,7 @@ place), which underpins host maintenance (Chapter 02) and DRS load balancing.
 storage; it fails or requires Storage vMotion — the vMotion network and shared (or migrated) storage
 are prerequisites.
 
-**Cleanup:** none (leave the VM where balanced).
+**Rollback:** none (leave the VM where balanced).
 
 ### Lab 7.2 — vSphere HA (Topic: High availability)
 
@@ -725,7 +725,7 @@ reserves the N+1 capacity (Chapter 01) so the restart always has somewhere to go
 **Negative test:** enable HA but disable admission control and run the cluster full; a host failure has
 no capacity to restart its VMs — admission control is what guarantees the failover capacity HA needs.
 
-**Cleanup:** none (leave HA enabled).
+**Rollback:** none (leave HA enabled).
 
 ### Lab 7.3 — DRS (Topic: Load balancing)
 
@@ -744,7 +744,7 @@ optimally, so the cluster self-tunes and you manage capacity at the cluster, not
 **Negative test:** run a cluster with no DRS; hosts become unevenly loaded, some contended while others
 idle — DRS continuously rebalances, which manual placement cannot at scale.
 
-**Cleanup:** none (leave DRS enabled).
+**Rollback:** none (leave DRS enabled).
 
 ## Lab Verification
 

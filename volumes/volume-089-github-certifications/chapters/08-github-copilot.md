@@ -83,7 +83,7 @@ controls.
 **Negative test:** use Individual plan for a regulated org needing content exclusions and policy; choose
 **Business/Enterprise**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Apply prompt engineering
 
@@ -107,7 +107,7 @@ context yields better Copilot output.
 **Negative test:** prompt with `# do stuff` and accept whatever appears; write a **descriptive** comment
 and signature.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Use Copilot to draft a test (then review)
 
@@ -138,7 +138,7 @@ behavior.
 **Negative test:** ship Copilot-generated tests without running or reading them; **review and run** them
 — AI output is a draft.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Configure content exclusions and reason about privacy
 
@@ -167,7 +167,7 @@ customer-data/pii.csv   : EXCLUDED from Copilot context
 **Negative test:** let Copilot use secret and customer-data files as context; configure **content
 exclusions** for them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -82,7 +82,7 @@ PY
 **Negative test:** run production on the free **M0** shared tier; move to a **dedicated** tier for
 backups, scaling, and SLAs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Configure network access and a database user
 
@@ -106,7 +106,7 @@ access.
 **Negative test:** add `0.0.0.0/0` to the access list "to make it work"; that exposes the database to the
 internet — allow only specific IPs or private endpoints.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 atlas accessLists delete 203.0.113.10/32 --force
@@ -133,7 +133,7 @@ PY
 **Negative test:** rely on a single manual snapshot; enable **automated backup with PITR** and test
 restores.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Reason about Atlas Search
 
@@ -155,7 +155,7 @@ PY
 **Negative test:** stand up a separate search cluster and sync data for basic full-text search; use
 **Atlas Search** integrated with the data instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

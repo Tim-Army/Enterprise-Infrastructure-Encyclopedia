@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Chasing the Platform Architect exam without building experience. The architect certs assume you can build on Anypoint (Developer-level skill and API-led/DataWeave fluency); build the developer foundation first, then move to architecture.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position MuleSoft in the integration career
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Treating integration as a niche or one-off skill. Connecting systems is a permanent, growing enterprise need; MuleSoft's API-led connectivity, DataWeave, and platform skills build a reusable application network — a durable career from developer to architect.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

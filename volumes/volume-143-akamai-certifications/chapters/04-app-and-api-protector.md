@@ -68,7 +68,7 @@ EOF
 
 **Negative test:** Treating "adaptive" as "unattended." Six months of unreviewed adaptations is a security posture nobody chose, assembled from whatever the traffic did.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Which WAF blocked it?
 
@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Concluding "the WAF is fine" after checking one layer. Three of the five cases require the second or third lookup to attribute correctly.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Origin lockdown, Akamai edition
 
@@ -142,7 +142,7 @@ EOF
 
 **Negative test:** Pasting the range list once at go-live. It is correct until Akamai's next range change, and the failure mode (some users, some edges, sometimes) is miserable to diagnose from symptoms.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

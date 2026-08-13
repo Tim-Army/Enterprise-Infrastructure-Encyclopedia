@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Creating recording rules for every query — rules cost storage and evaluation too, so a rule used by one panel on a cheap query is pure overhead.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — The `for` duration and alert states
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Setting `for=0` to "catch everything" — you catch every transient too, and the resulting noise is exactly how teams learn to ignore alerts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Error budgets and burn-rate alerting
 
@@ -188,7 +188,7 @@ EOF
 
 **Negative test:** Alerting on the fast window alone — the brief spike then pages at burn rate 50 for a condition lasting one minute, and enough of those teach the on-call to mute the alert.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

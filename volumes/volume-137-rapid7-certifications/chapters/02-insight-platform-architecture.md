@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Reporting "98% of assets scanned" without stating the denominator — assets that were off the network are usually not in the denominator at all, so the percentage measures the wrong thing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Scan engine placement and reachability
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Trusting a clean scan report for a remote site — "no vulnerabilities found" and "no assets reachable" produce the same reassuring green, and only one of them is good news.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Size a collector against event rate
 
@@ -149,7 +149,7 @@ EOF
 
 **Negative test:** Sizing ingestion on a monthly average — a normal business-hours peak is several times the average, and an incident is several times that again.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

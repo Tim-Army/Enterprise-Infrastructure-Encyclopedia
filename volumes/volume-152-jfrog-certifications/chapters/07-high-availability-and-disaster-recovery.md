@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Running the binary hub as a single node because it "usually works." An outage halts every build and deployment organization-wide; an HA cluster removes the single point of failure so node failures and maintenance cause no downtime.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

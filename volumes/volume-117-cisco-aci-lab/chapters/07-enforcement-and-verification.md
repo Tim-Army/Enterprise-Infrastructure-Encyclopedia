@@ -38,7 +38,7 @@ Only the two contracted inter-EPG flows pass; the uncontracted lateral flow and 
 
 **Negative test.** Quarantine `web` (add to the uSeg set) and watch even its contracted `web → db` break — the uSeg override beats the contract. Release it afterward.
 
-**Cleanup.** Ensure `web` is not quarantined.
+**Rollback.** Ensure `web` is not quarantined.
 
 ### Exercise 7.2 — Contract hits and denied flows
 
@@ -57,7 +57,7 @@ echo "== quarantine + intra-EPG denies =="; sudo dmesg | grep -cE 'USEG-QUARANTI
 
 **Expected result.** An `ACI-DENY` entry for the uncontracted `hmi → db`, plus counts for any uSeg/intra-EPG denies — the whitelist's drops are visible and attributable.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — The decision follows the EPG, not the address
 
@@ -72,7 +72,7 @@ echo "new EPG-Web member 10.110.1.11 now has the web-db contract — no contract
 
 **Expected result.** A new endpoint joining EPG-Web gains the `web-db` contract by membership — proof the policy is by EPG, not by listing IPs. (On a real fabric, joining the EPG is enough; no rule is added by hand.)
 
-**Cleanup.** Remove the demo rule if you added it.
+**Rollback.** Remove the demo rule if you added it.
 
 ## Summary and Completion Checklist
 

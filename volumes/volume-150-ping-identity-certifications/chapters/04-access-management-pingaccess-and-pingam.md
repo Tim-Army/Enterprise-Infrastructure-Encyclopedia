@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Letting each application implement its own access checks. They drift inconsistent, are hard to audit, and a policy change means editing every app — centralizing at PingAccess/PingAM enforces one policy uniformly out front.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

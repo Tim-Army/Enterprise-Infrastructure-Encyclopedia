@@ -57,7 +57,7 @@ cat /etc/cpg/objects
 
 **Expected result.** Four named objects; the `cpg` table exists for the rulebase.
 
-**Cleanup.** Keep the objects.
+**Rollback.** Keep the objects.
 
 ### Exercise 3.2 — Install a Cleanup-only policy
 
@@ -96,7 +96,7 @@ sudo nft list chain inet cpg forward
 
 **Expected result.** A default-drop forward chain with a logged cleanup rule — the Track 2 default-deny policy.
 
-**Cleanup.** Keep the policy; Chapter 04 briefly opens it, Chapter 05 tightens it.
+**Rollback.** Keep the policy; Chapter 04 briefly opens it, Chapter 05 tightens it.
 
 ## Summary and Completion Checklist
 

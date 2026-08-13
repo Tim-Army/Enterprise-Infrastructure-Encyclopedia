@@ -38,7 +38,7 @@ sudo nft list chain inet xdome forward
 
 **Negative test.** Installing the policy without a default drop would leave the network flat regardless of the allow rules — enforcement is allow-list + default-deny, not just the allows. The default drop is the segmentation.
 
-**Cleanup.** Keep the enforced policy.
+**Rollback.** Keep the enforced policy.
 
 ### Exercise 6.2 — Verify baseline flows pass and the lateral flow is denied
 
@@ -64,7 +64,7 @@ The two sanctioned flows pass; the lateral flow — which the curated baseline e
 
 **Negative test.** Had you enforced the *raw* baseline from Chapter 04, `hmi->db` would be OPEN — the curation step is what makes the enforced policy safe.
 
-**Cleanup.** Keep the enforcement for Chapter 07.
+**Rollback.** Keep the enforcement for Chapter 07.
 
 ## Summary and Completion Checklist
 

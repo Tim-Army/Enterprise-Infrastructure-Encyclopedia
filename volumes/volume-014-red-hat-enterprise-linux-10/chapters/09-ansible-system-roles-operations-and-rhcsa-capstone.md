@@ -438,7 +438,7 @@ inventory names hosts/groups and ad-hoc `-m module -a args` runs one task withou
 **Negative test:** run a privileged task without `--become` (or `become: true`); it fails with
 permission denied — privilege escalation must be requested explicitly.
 
-**Cleanup:** `ansible -i inventory.ini web -m dnf -a "name=tree state=absent" --become`.
+**Rollback:** `ansible -i inventory.ini web -m dnf -a "name=tree state=absent" --become`.
 
 ### Lab 9.2 — A playbook with tasks, handlers, and variables (Topic: Playbooks)
 
@@ -486,7 +486,7 @@ run).
 `copy` module; it reports `changed` every run and is not idempotent — prefer modules over raw
 commands so state, not actions, drives the result.
 
-**Cleanup:** an uninstall playbook, or `ansible -i inventory.ini web -m dnf -a "name=httpd
+**Rollback:** an uninstall playbook, or `ansible -i inventory.ini web -m dnf -a "name=httpd
 state=absent" --become`.
 
 ### Lab 9.3 — RHEL System Roles (Topic: System roles)
@@ -519,7 +519,7 @@ without writing the tasks by hand.
 **Negative test:** hand-write chrony config across many hosts with slightly different playbooks;
 they drift — a supported System Role gives one consistent, maintained implementation.
 
-**Cleanup:** none (time sync is a good state to leave).
+**Rollback:** none (time sync is a good state to leave).
 
 ### Lab 9.4 — RHCSA capstone: an integrative timed build (Topic: Synthesis)
 
@@ -550,7 +550,7 @@ system ends correct and complete, done at a brisk pace, not on any individual co
 entry that "worked" interactively renders the system unbootable — the exam (and this capstone)
 rewards verifying the persistent end state, because that is what is graded.
 
-**Cleanup:** reverse the build — remove the port/context, unmount and remove the LV/VG/PV,
+**Rollback:** reverse the build — remove the port/context, unmount and remove the LV/VG/PV,
 delete the `fstab` line and the `ops` user — or rebuild the throwaway VM.
 
 ## Lab Verification

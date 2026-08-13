@@ -752,7 +752,7 @@ customization for unique identity), the standard way to deploy at scale.
 **Negative test:** build each VM from an ISO install individually; they drift and deployment is slow —
 a template cloned with customization gives identical, rapid deployment.
 
-**Cleanup:** `Get-VM web0* | Remove-VM -DeletePermanently -Confirm:$false; Remove-Template web-tmpl -DeletePermanently`.
+**Rollback:** `Get-VM web0* | Remove-VM -DeletePermanently -Confirm:$false; Remove-Template web-tmpl -DeletePermanently`.
 
 ### Lab 5.2 — Resource management (Topic: Resources)
 
@@ -773,7 +773,7 @@ protect critical VMs and prioritize them when the host is busy, without over-pro
 reduce consolidation and can block power-on when unsatisfiable — use shares for prioritization and
 reservations sparingly for truly critical floors.
 
-**Cleanup:** `Get-VM web01 | Set-VMResourceConfiguration -MemReservationGB 0 -CpuSharesLevel Normal`.
+**Rollback:** `Get-VM web01 | Set-VMResourceConfiguration -MemReservationGB 0 -CpuSharesLevel Normal`.
 
 ### Lab 5.3 — Snapshots (Topic: VM state)
 
@@ -794,7 +794,7 @@ on the base disk) and must be removed promptly, as long-lived snapshots grow and
 space, and degrade I/O, and a base-disk failure loses everything — snapshots are temporary, backups
 (Chapter 07/data protection) are separate.
 
-**Cleanup:** `Get-VM web01 | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
+**Rollback:** `Get-VM web01 | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
 
 ## Lab Verification
 

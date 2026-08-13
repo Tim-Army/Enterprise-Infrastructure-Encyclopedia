@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Collecting Professional certifications across every role at once. The program is role-based — depth in your role plus the agentic differentiator beats a scattershot of unrelated Professional certs.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position UiPath in the automation / AI career
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Treating UiPath as a standalone low-code tool skill. It orchestrates enterprise systems, governs a robot/agent workforce (a security surface), and rests on process-discovery evidence — isolating it undersells both the platform and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

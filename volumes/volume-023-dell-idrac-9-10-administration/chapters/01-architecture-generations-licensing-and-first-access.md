@@ -426,7 +426,7 @@ advanced features (virtual console, lifecycle automation) used later.
 controller is trivially accessible — change the default password at first access (a first, and
 exam-relevant, hardening step).
 
-**Cleanup:** none (keep the changed password).
+**Rollback:** none (keep the changed password).
 
 ### Lab 1.2 — Identify the iDRAC generation (Topic: Generations)
 
@@ -445,7 +445,7 @@ you which capabilities and syntax apply.
 **Negative test:** apply an iDRAC9-only RACADM object path on iDRAC10 (or vice versa); some objects
 were renamed/added across generations — confirm the generation before scripting against it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Web GUI and SSH access (Topic: Management interfaces)
 
@@ -465,7 +465,7 @@ or by script; knowing where each function lives in the GUI is exam-relevant.
 **Negative test:** rely on the GUI alone for a fleet task; it does not scale — the CLI/API paths
 (RACADM, Redfish) are what make iDRAC automatable across many servers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — First Redfish query (Topic: Redfish API)
 
@@ -484,7 +484,7 @@ the same tooling works across vendors; it is the modern automation surface along
 **Negative test:** call a Redfish resource with no/invalid credentials; it returns 401 — Redfish is
 authenticated per request (basic auth or a session token, Chapter 09), not open.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

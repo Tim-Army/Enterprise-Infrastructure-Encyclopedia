@@ -83,7 +83,7 @@ starting set (the ATT&CK Frameworks domain).
 **Negative test:** hunt with no framework anchor; **ATT&CK** gives the hunt a
 testable technique — anchor on it.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 4.2 — Detection Analysis
 
@@ -101,7 +101,7 @@ Analysis domain (where hunts and detections overlap).
 **Negative test:** treat hunts and detections as separate; **correlate** — a hunt hit
 that matches a detection confirms the lead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Search and Investigation Tools
 
@@ -118,7 +118,7 @@ and Investigation Tools domain (pivoting across event types).
 **Negative test:** stop at the process; **pivot** to network/file events to see the
 full behavior.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Event Search (CQL aggregation)
 
@@ -137,7 +137,7 @@ Search domain (CQL aggregation for outliers).
 **Negative test:** scroll raw events; **aggregation** turns millions of rows into a
 ranked shortlist.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Reports and References
 
@@ -155,7 +155,7 @@ ranked shortlist.
 **Negative test:** guess a field's meaning; the **event dictionary/reference** is
 authoritative — consult it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.6 — Hunting Analytics (stacking)
 
@@ -174,7 +174,7 @@ Analytics domain (frequency/stack analysis).
 **Negative test:** look for "known bad" only; **stacking** surfaces the rare-and-
 unknown that signatures miss.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.7 — Hunting Methodology (operationalize)
 
@@ -192,7 +192,7 @@ detection** — the Hunting Methodology domain (closing the loop).
 **Negative test:** run the hunt once and move on; **operationalize** it so the
 coverage persists.
 
-**Cleanup:** remove the scheduled search if it was only for the lab.
+**Rollback:** remove the scheduled search if it was only for the lab.
 
 ## Lab Verification
 

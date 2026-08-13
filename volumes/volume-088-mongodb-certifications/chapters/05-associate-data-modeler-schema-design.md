@@ -81,7 +81,7 @@ db.users.findOne({ _id: "amy" }, { name: 1, "addresses.city": 1 })
 **Negative test:** put a user's two addresses in a separate `addresses` collection requiring a join on
 every profile view; **embed** bounded read-together data.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 5.2 — Reference unbounded data
 
@@ -106,7 +106,7 @@ bloating the user document.
 **Negative test:** embed every order in the user document; an active user's document grows toward the
 **16 MB** limit — **reference** unbounded one-to-many data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Apply the subset pattern
 
@@ -132,7 +132,7 @@ live elsewhere — the subset pattern.
 **Negative test:** embed all 3,120 reviews in the product; the document bloats and the page read slows —
 embed a **subset**, reference the rest.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 5.4 — Apply the computed pattern
 
@@ -157,7 +157,7 @@ it directly, no aggregation per view.
 **Negative test:** run a `$group` aggregation over all 3,120 reviews on every product-page view; store
 the **computed** average and update it on write instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh

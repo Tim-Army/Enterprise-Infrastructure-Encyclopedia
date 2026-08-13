@@ -384,7 +384,7 @@ early; the same resource metrics (USE) apply on Linux and Windows.
 **Negative test:** check health only when users complain; a slow leak or filling disk is caught late —
 continuous monitoring with alerting surfaces it before the outage.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Structured troubleshooting (Topic: Troubleshooting)
 
@@ -405,7 +405,7 @@ cause instead of guessing, the same discipline whether on Linux (`systemctl`/`jo
 **Negative test:** restart the service repeatedly hoping it sticks; the logs name the cause (a full
 disk, a bad config, a down dependency) that a restart will not fix — read the evidence first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Log and event analysis (Topic: Log analysis)
 
@@ -430,7 +430,7 @@ across the fleet.
 **Negative test:** investigate an incident from one service's log alone; the root cause may be in a
 dependency or the OS — correlating across logs in the time window reveals the sequence.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Design Exercise: a cross-platform operations model (Topic: Synthesis)
 
@@ -454,7 +454,7 @@ monitoring — so a small team runs a large mixed estate consistently rather tha
 and processes; the team doubles its effort and consistency suffers — a unified operating model with
 cross-platform automation is what scales administration.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

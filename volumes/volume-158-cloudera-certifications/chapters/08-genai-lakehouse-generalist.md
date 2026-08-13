@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Deploying an enterprise LLM without RAG grounding, or using a proprietary lake format. Ungrounded models hallucinate, and proprietary formats lock you in; RAG on governed CDP data keeps AI accurate, and open Iceberg keeps the lakehouse multi-engine and portable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

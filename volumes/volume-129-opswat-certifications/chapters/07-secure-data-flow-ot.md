@@ -57,7 +57,7 @@ The kiosk enforces the boundary: clean files pass, active content is disarmed, m
 
 **Negative test:** Letting an engineer plug the USB directly into an OT workstation "just this once" — that is precisely how Stuxnet-class incidents began; the kiosk exists so no removable media ever touches OT unscanned.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — The vault: scanned storage with controlled release
 
@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** A shared drive both IT and OT can write to freely — it becomes an unscanned bridge across the boundary; the vault's scan-on-ingest and approval-gated release are what a shared drive lacks.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — The full boundary crossing
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Any single gate skipped (no CDR, or no approval on release) reopens a vector; the pipeline is defense-in-depth, and its value is the *combination*, not any one stage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -38,7 +38,7 @@ One compromised device found and connected to the database and the PLC — on a 
 
 **Negative test.** No firewall was bypassed and no credential was needed — the flat VLAN *is* the vulnerability. A control that only guards the perimeter does nothing against this east-west spread.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.2 — Record the one sanctioned flow
 
@@ -56,7 +56,7 @@ Everything else east-west — including all of the worm's connections — is ill
 
 **Negative test.** If isolation were done by broad subnet rules it might also break `web → db`; the network-of-one model isolates *by default* and re-permits the single flow explicitly, so nothing legitimate is guessed at.
 
-**Cleanup.** None — Chapter 04 isolates every device.
+**Rollback.** None — Chapter 04 isolates every device.
 
 ## Summary and Completion Checklist
 

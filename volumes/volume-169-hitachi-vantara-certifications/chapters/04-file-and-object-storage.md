@@ -104,7 +104,7 @@ EOF
 
 **Negative test:** Storing 7-year compliance archives on a file share, or transactional databases in object storage. The archive lacks immutability/retention and scales poorly; the database suffers object latency; object for archive (with WORM) and block for databases matches each workload to the right storage type.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

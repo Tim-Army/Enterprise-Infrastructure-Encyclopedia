@@ -372,7 +372,7 @@ subscription that governs which security updates the machine receives.
 standard pockets and misses ESM-only fixes — the Pro attachment (this lab) is what entitles the
 extended security content.
 
-**Cleanup:** `sudo pro detach` if the machine was attached only for the lab.
+**Rollback:** `sudo pro detach` if the machine was attached only for the lab.
 
 ### Lab 1.2 — APT repositories and sources (Topic: Software sources)
 
@@ -393,7 +393,7 @@ components, defined in `sources.list`/`.sources` files, and `add-apt-repository`
 **Negative test:** `apt install` a `universe` package with only `main` enabled; it is not found —
 the component providing a package must be enabled and the index updated first.
 
-**Cleanup:** `sudo add-apt-repository -r -y universe` only if it was disabled originally (it is
+**Rollback:** `sudo add-apt-repository -r -y universe` only if it was disabled originally (it is
 usually on by default).
 
 ### Lab 1.3 — Autoinstall / cloud-init deployment (Topic: Automated deployment)
@@ -427,7 +427,7 @@ ISO/netboot), so identical servers deploy reproducibly with no interactive promp
 do not scale — autoinstall makes deployment declarative and repeatable, which the exam's
 deployment domain targets.
 
-**Cleanup:** `rm -rf ~/ai`.
+**Rollback:** `rm -rf ~/ai`.
 
 ### Lab 1.4 — Fleet management with Landscape (Topic: Fleet operations)
 
@@ -450,7 +450,7 @@ fleet-wide operations.
 a fleet control plane (Landscape) applies updates and policy consistently across all of them at
 once.
 
-**Cleanup:** `sudo landscape-config --disable` if registered only for the lab.
+**Rollback:** `sudo landscape-config --disable` if registered only for the lab.
 
 ## Lab Verification
 

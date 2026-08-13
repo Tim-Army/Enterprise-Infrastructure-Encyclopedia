@@ -378,7 +378,7 @@ PE1# show mpls ldp neighbor
 **Negative test:** an interface without `mpls ip` has no label bindings and
 falls back to IP forwarding — MPLS must be enabled per link.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Describe MPLS Layer 3 VPN (ENARSI 2.2)
 
@@ -395,7 +395,7 @@ with route targets — customer isolation across a shared MPLS core.
 **Negative test:** mismatched import/export route targets; the remote PE's
 routes never appear in the VRF — RTs control the VPN topology.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Configure and verify DMVPN single hub (ENARSI 2.3, ENCOR 2.2)
 
@@ -416,7 +416,7 @@ lists dynamic spoke mappings.
 **Negative test:** omit `ip nhrp redirect`/`shortcut`; spoke-to-spoke stays
 hairpinned through the hub (Phase 1 behavior) — Phase 3 needs the redirect.
 
-**Cleanup:** `no interface tunnel0` on the hub and spokes.
+**Rollback:** `no interface tunnel0` on the hub and spokes.
 
 ### Lab 4.4 — Describe Cisco SD-WAN architecture and components (ENSDWI 1.1)
 
@@ -432,7 +432,7 @@ curl -sk -b "$VT" "$VMANAGE/dataservice/system/device/controllers" | jq -r '.dat
 **Negative test:** treating vManage as the control plane; vSmart (not
 vManage) distributes OMP routes and policy — the planes are distinct.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Describe SD-WAN Edge platforms and capabilities (ENSDWI 1.2)
 
@@ -448,7 +448,7 @@ software versions — the data-plane hardware the fabric runs on.
 **Negative test:** expecting a controller-mode-only feature on an
 autonomous-mode router; the device mode determines its SD-WAN capabilities.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.6 — Describe SD-WAN Cloud OnRamp (ENSDWI 1.3)
 
@@ -464,7 +464,7 @@ the feature that steers cloud/SaaS traffic on best-quality paths.
 **Negative test:** without Cloud OnRamp, SaaS traffic follows the default
 route regardless of path quality; OnRamp is what adds per-app path choice.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.7 — Describe controller cloud deployment (ENSDWI 2.1)
 
@@ -480,7 +480,7 @@ cloud-hosted controllers reachable and trusted.
 **Negative test:** a controller with an uninstalled/expired certificate
 cannot form control connections; the whole overlay depends on the PKI.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.8 — Describe controller on-premises deployment (ENSDWI 2.2)
 
@@ -497,7 +497,7 @@ an edge fully onboarded whether controllers are cloud or on-prem.
 vBond mapping never completes control connections — orchestration must
 resolve the public reachability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.9 — Configure certificates and device lists (ENSDWI 2.3)
 
@@ -513,7 +513,7 @@ allowlist that lets a device join the overlay.
 **Negative test:** an edge left in `staging`/`invalid` cannot form data-plane
 tunnels; the device list is the admission control.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.10 — Troubleshoot control plane connectivity (ENSDWI 2.4)
 
@@ -530,7 +530,7 @@ failure reason (e.g. `DCONFAIL`, `VB_TMO`, certificate error).
 **Negative test:** blaming the data plane when `connection-history` shows a
 control-plane certificate/DTLS failure — control comes first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.11 — Describe WAN Edge deployment (ENSDWI 3.1)
 
@@ -546,7 +546,7 @@ via ZTP/PnP and managed by vManage.
 **Negative test:** an out-of-sync edge (local CLI changes) drifts from the
 template; vManage flags it and can revert — controller-managed config wins.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.12 — Configure the SD-WAN data plane (ENSDWI 3.2)
 
@@ -563,7 +563,7 @@ data-plane overlay carrying site-to-site traffic.
 **Negative test:** a firewall blocking the negotiated IPsec/UDP ports drops
 the data plane while control stays up — check both planes separately.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.13 — Configure OMP (ENSDWI 3.3)
 
@@ -580,7 +580,7 @@ advertised via vSmart — the SD-WAN control-plane routing.
 **Negative test:** an OMP route with no matching TLOC is unusable; the prefix
 and its transport locator must both be present.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.14 — Configure TLOCs (ENSDWI 3.4)
 
@@ -596,7 +596,7 @@ public-internet) — the TLOC attributes policy steers on.
 **Negative test:** two transports sharing a color break restrict/preference
 logic; colors must be assigned deliberately per transport.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.15 — Configure feature templates (ENSDWI 3.6, 3.7)
 
@@ -614,7 +614,7 @@ config as reusable, versioned objects.
 it; scope changes with a device-specific template to avoid a fleet-wide
 change.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.16 — Configure control policies (ENSDWI 4.1)
 
@@ -630,7 +630,7 @@ curl -sk -b "$VT" "$VMANAGE/dataservice/template/policy/vsmart" | jq -r '.data[]
 **Negative test:** a control policy not applied to a vSmart list has no
 effect; it must be activated and referenced by site list.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.17 — Configure data policies (ENSDWI 4.2)
 
@@ -646,7 +646,7 @@ apply at the edge to matched flows — distinct from control policy.
 **Negative test:** a data policy applied in the wrong direction (from-service
 vs from-tunnel) matches nothing; direction is part of the match.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.18 — Configure end-to-end segmentation (ENSDWI 4.3)
 
@@ -663,7 +663,7 @@ segmentation without per-hop VRF config in the underlay.
 **Negative test:** two segments sharing a VPN ID leak between tenants; the
 VPN ID is the isolation boundary across the overlay.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.19 — Configure application-aware routing (ENSDWI 4.4)
 
@@ -680,7 +680,7 @@ measured stats — traffic is steered to the tunnel meeting the app's SLA.
 **Negative test:** an SLA class no tunnel can meet leaves traffic on the
 backup/last-resort path; the SLA must be achievable on some transport.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.20 — Configure direct Internet access (ENSDWI 4.5)
 
@@ -697,7 +697,7 @@ instead of backhauled — DIA offloads the hub.
 **Negative test:** DIA without a local security policy exposes the branch;
 DIA must pair with edge security (Lab 4.22).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.21 — Configure service insertion (ENSDWI 5.1)
 
@@ -713,7 +713,7 @@ policy can chain traffic through them — service insertion across the fabric.
 **Negative test:** a service advertised from a down node drops chained
 traffic; service tracking must remove it on failure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.22 — Describe SD-WAN security features (ENSDWI 5.2)
 
@@ -729,7 +729,7 @@ on-box security for DIA and east-west traffic.
 **Negative test:** relying on the hub firewall for DIA traffic that never
 reaches the hub; DIA needs edge security.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.23 — Describe cloud security integration (ENSDWI 5.3)
 
@@ -746,7 +746,7 @@ traffic.
 **Negative test:** DIA without a SIG or on-box security sends branch traffic
 to the internet uninspected; integrate one of them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.24 — Configure QoS on WAN Edge (ENSDWI 5.4)
 
@@ -763,7 +763,7 @@ interface — QoS applied at the SD-WAN edge.
 **Negative test:** a QoS map with no shaper on a sub-line-rate circuit lets
 bulk traffic starve voice; shape to the circuit rate first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.25 — Describe Application Quality of Experience (ENSDWI 5.5)
 
@@ -779,7 +779,7 @@ edge — improving perceived application performance over the WAN.
 **Negative test:** enabling AppQoE without the required resource profile
 fails to activate; the platform must have the capacity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.26 — Describe authentication, monitoring, and reporting (ENSDWI 6.1)
 
@@ -795,7 +795,7 @@ operator) — RBAC on the management plane.
 **Negative test:** an operator-role user cannot push templates; role scope
 limits management actions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.27 — Configure authentication, monitoring, and reporting (ENSDWI 6.2)
 
@@ -811,7 +811,7 @@ vManage logins — centralized admin auth for the controller.
 **Negative test:** external AAA with no local fallback locks admins out when
 the server is unreachable; keep a local netadmin.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.28 — Describe REST API monitoring (ENSDWI 6.3)
 
@@ -827,7 +827,7 @@ automation and monitoring dashboards consume.
 **Negative test:** polling the API without a valid session token returns
 `403`; the token/cookie is the auth boundary.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.29 — Describe software image management (ENSDWI 6.4)
 
@@ -843,7 +843,7 @@ fleet-wide — centralized, staged software management.
 **Negative test:** upgrading all edges at once risks a fleet outage on a bad
 image; stage to a canary site first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.30 — DMVPN Phase 3 overlay with tracked failover (integrative)
 
@@ -922,7 +922,7 @@ dual-path failover on the hub's internet edge.
    HUB-01# show ip route 0.0.0.0
    ```
 
-**Cleanup**
+**Rollback**
 
 - Remove the crypto, tunnel, NHRP, and routing configuration from all
   three routers if the lab devices are shared.

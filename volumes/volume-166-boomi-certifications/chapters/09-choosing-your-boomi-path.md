@@ -89,7 +89,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — a developer starts with Associate then Professional Integration Developer; an API developer takes Professional API Design then API Management; an architect takes Integration Architect then Runtime Architect. The lesson is to start with Integration Developer, climb to Professional in your track, and broaden across services and into architecture.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: an order across the platform
 
@@ -128,7 +128,7 @@ EOF
 
 **Expected result:** A capstone tracing a partner order through B2B/EDI (receive an X12 850), Integration (map/validate/write), Data Hub (match to a golden customer), Flow (manager approval over the threshold), and API Management (a governed status API) — all on one platform over the Atom runtime. The lesson synthesizes the volume: Boomi connects applications, data, people, and partners on one low-code iPaaS, and each certification track prepares you to build one part of that end-to-end flow.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

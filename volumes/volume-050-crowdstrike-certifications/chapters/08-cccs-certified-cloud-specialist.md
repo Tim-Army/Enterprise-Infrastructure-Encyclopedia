@@ -85,7 +85,7 @@ and Services domain (what Cloud Security manages).
 **Negative test:** assume full coverage; **enumerate accounts** — unregistered
 accounts are invisible.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Cloud Account Registration
 
@@ -103,7 +103,7 @@ print("registration status:", r["status_code"])
 **Negative test:** monitor a cloud from outside; **register** it so Falcon has
 API/role access to assess it.
 
-**Cleanup:** `c.delete_aws_account(ids=["123456789012"])` if it was for the lab.
+**Rollback:** `c.delete_aws_account(ids=["123456789012"])` if it was for the lab.
 
 ### Lab 8.3 — Cloud Security Policies and Rules
 
@@ -120,7 +120,7 @@ Policies and Rules domain.
 **Negative test:** accept defaults blindly; **tune policies** to your compliance
 framework (CIS, PCI, etc.).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Pre-Runtime Protection
 
@@ -138,7 +138,7 @@ Protection domain (shift-left).
 **Negative test:** scan only in production; **pre-runtime** catches issues before they
 ship — scan in CI.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — Runtime Protection
 
@@ -157,7 +157,7 @@ Runtime Protection domain.
 **Negative test:** rely on CSPM posture alone; **runtime** protection detects active
 threats in workloads — deploy the agent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.6 — Findings and Detection Analysis
 
@@ -174,7 +174,7 @@ Findings and Detection Analysis domain.
 **Negative test:** chase every finding equally; **prioritize by severity/exposure**
 (public + privileged first).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.7 — Remediating and Reporting Issues
 
@@ -192,7 +192,7 @@ Remediating and Reporting Issues domain.
 **Negative test:** close findings without a fix; **remediate + report** with owner and
 evidence to actually reduce risk.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

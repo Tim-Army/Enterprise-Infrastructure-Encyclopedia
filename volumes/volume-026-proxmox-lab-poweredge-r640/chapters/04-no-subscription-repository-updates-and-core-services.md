@@ -286,7 +286,7 @@ repository to receive package updates; the enterprise repo returns 401 without a
 with a 401 and the node never updates — the no-subscription repo is what a free/lab node updates
 from.
 
-**Cleanup:** none (keep the repo configured).
+**Rollback:** none (keep the repo configured).
 
 ### Lab 4.2 — Update and upgrade (Topic: Updates)
 
@@ -305,7 +305,7 @@ just `upgrade`) is used because PVE upgrades sometimes need to install/remove de
 some packages are held back and the node ends in a partial state — `full-upgrade` handles the
 dependency changes Proxmox releases require.
 
-**Cleanup:** reboot if a new kernel was installed (`reboot`) during a maintenance window.
+**Rollback:** reboot if a new kernel was installed (`reboot`) during a maintenance window.
 
 ### Lab 4.3 — Core services (Topic: Services)
 
@@ -325,7 +325,7 @@ it is down, configuration cannot be read or written.
 that path is the pmxcfs FUSE mount, not a normal directory — the service must be running for config
 to work.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Remove the subscription nag (Topic: UI configuration)
 
@@ -345,7 +345,7 @@ and it reappears after upgrades that replace the JS file.
 **Negative test:** treat the subscription popup as a functional block; it is not — the node updates
 and runs VMs fine on the no-subscription repo, so the popup is informational only.
 
-**Cleanup:** none (the patch is reverted by the next `proxmox-widget-toolkit` upgrade anyway).
+**Rollback:** none (the patch is reverted by the next `proxmox-widget-toolkit` upgrade anyway).
 
 ## Lab Verification
 

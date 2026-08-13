@@ -321,7 +321,7 @@ around the layer above, and `tcpdump` lets you see every layer of a real packet.
 in the L2 frame (wrong VLAN), L3 packet (bad route), or L4 segment (blocked port) — reading the
 encapsulated layers is what localizes it.
 
-**Cleanup:** `kill %1 2>/dev/null` (stop the background tcpdump).
+**Rollback:** `kill %1 2>/dev/null` (stop the background tcpdump).
 
 ### Lab 1.2 — OSI and TCP/IP layer mapping (Topic: Network models)
 
@@ -341,7 +341,7 @@ in the stack something happens, and each tool inspects a specific layer.
 **Negative test:** conflate "the network is down" across layers; a working link (L1/L2) with no route
 (L3), or a route with a blocked port (L4), are different problems — naming the layer directs the fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — PDUs and MTU (Topic: Protocol data units)
 
@@ -360,7 +360,7 @@ the L3 packet, and `ping -M do` (don't-fragment) probes the path MTU.
 **Negative test:** assume large payloads always work; a smaller path MTU (VPN/tunnel overhead) with DF
 set causes silent drops (PMTU black hole) — the DF ping reveals the real path MTU.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Ports and sockets (Topic: Transport addressing)
 
@@ -378,7 +378,7 @@ the port number is how the transport layer demultiplexes traffic to the right se
 **Negative test:** expect two services to share one TCP listening port on the same address; only one
 can bind it — the IP:port pair uniquely identifies a listening socket.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

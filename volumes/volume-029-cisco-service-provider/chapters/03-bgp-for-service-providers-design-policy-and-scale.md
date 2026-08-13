@@ -203,7 +203,7 @@ output names the deciding step.
 **Negative test:** expect the shortest AS-path to win when a higher local-pref is
 set upstream; local-pref outranks AS-path — the order of the algorithm decides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Implement BGP for IPv4 and IPv6, IBGP and EBGP (SPCOR Objective 2.4)
 
@@ -222,7 +222,7 @@ next-hop-self or IGP-carried next-hops and consistent address-family activation.
 **Negative test:** an IBGP session up but no routes learned usually means the RR
 lacks `route-reflector-client` on the neighbor — the reflector must mark clients.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Implement routing policy language and route maps (SPCOR Objective 2.5)
 
@@ -242,7 +242,7 @@ with a composable language.
 commit fails — RPL requires its referenced sets to exist, catching errors at
 commit.
 
-**Cleanup:** remove the test policy from the neighbor.
+**Rollback:** remove the test policy from the neighbor.
 
 ### Lab 3.4 — Troubleshoot routing protocols (SPCOR Objective 2.6)
 
@@ -261,7 +261,7 @@ a session flapping traces to the last-reset reason (hold timer, notification).
 **Negative test:** blame policy for a route that is simply not selected because
 its BGP next-hop is unreachable in the IGP — fix the next-hop reachability first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Describe BGP scalability and performance (SPRI Objective 1.4)
 
@@ -281,7 +281,7 @@ policy = one update built for many peers), and features like **BGP PIC**/
 **Negative test:** give each peer a unique outbound policy and update groups
 fragment, raising CPU on updates — shared policy keeps peers in one update group.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.6 — Troubleshoot BGP (SPRI Objective 1.5)
 
@@ -301,7 +301,7 @@ aggregation suppression; the advertised/received views localize the direction.
 by IBGP rules a route learned from a client is reflected, but the topology and
 client marking matter — check the RR client relationships.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.7 — Compare routing policy language and route maps (SPRI Objective 3.1)
 
@@ -322,7 +322,7 @@ testable but a different mental model.
 RPL; RPL's default is `drop` if no `pass` is hit — the end-of-policy behavior
 differs and must be explicit.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.8 — Describe conditional matching (SPRI Objective 3.2)
 
@@ -341,7 +341,7 @@ control.
 `longer`/`orlonger` was intended silently matches nothing — the match modifier
 changes the result set.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.9 — Troubleshoot route manipulation for IGPs (SPRI Objective 3.3)
 
@@ -361,7 +361,7 @@ it.
 **Negative test:** redistribute between two IGPs without tag-based loop prevention;
 routes loop back and cause instability — tags/route-policy must break the loop.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.10 — Troubleshoot route manipulation for BGP (SPRI Objective 3.4)
 
@@ -380,7 +380,7 @@ an ordering issue, or a missing `pass`; the route detail vs the policy reveals i
 it to influence the peer; local-pref is non-transitive (IBGP only) — it does not
 cross the EBGP boundary.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

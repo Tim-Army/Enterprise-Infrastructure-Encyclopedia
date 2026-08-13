@@ -508,7 +508,7 @@ repeatedly on a laptop or CI runner.
    This demonstrates policy enforcement at the module boundary, before any
    resource (simulated or real) is touched.
 
-**Cleanup**
+**Rollback**
 
 9. Destroy the local state and remove the working directory:
 

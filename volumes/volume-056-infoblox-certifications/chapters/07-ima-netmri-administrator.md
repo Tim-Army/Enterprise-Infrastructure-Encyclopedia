@@ -67,7 +67,7 @@ curl -sS -k -u admin:admin "https://<netmri>/api/3.5/devices/index?limit=5" \
 **Negative test:** maintain a device spreadsheet; **discovery** reconciles the live
 estate — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Configuration and change management
 
@@ -84,7 +84,7 @@ management topic.
 **Negative test:** rely on manual config saves; NetMRI **versions and diffs** every
 change — let it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Compliance and policy
 
@@ -100,7 +100,7 @@ curl -sS -k -u admin:admin "https://<netmri>/api/3.5/policy_compliances/index?li
 **Negative test:** audit configs by eye; **policy checks** flag violations automatically —
 define and run them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Automation
 
@@ -118,7 +118,7 @@ automation topic.
 **Negative test:** fix each device by hand; **automation** applies the change fleet-wide
 consistently — script it.
 
-**Cleanup:** disable the job if it was for the lab.
+**Rollback:** disable the job if it was for the lab.
 
 ## Lab Verification
 

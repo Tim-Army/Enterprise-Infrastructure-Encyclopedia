@@ -139,7 +139,7 @@ data concepts DP-900 covers.
 **Negative test:** force unstructured media into relational rows; use object
 storage and metadata instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — DP-900: Identify considerations for relational data on Azure (20–25%)
 
@@ -155,7 +155,7 @@ relational PaaS options (SQL Database, Managed Instance).
 **Negative test:** run a lift-and-shift app needing SQL Agent on single SQL
 Database; use Managed Instance for instance-level features.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — DP-900: Describe considerations for working with non-relational data on Azure (15–20%)
 
@@ -171,7 +171,7 @@ option and its APIs (NoSQL, MongoDB, Cassandra, Gremlin, Table).
 **Negative test:** model highly relational data in Cosmos DB with cross-partition
 joins; denormalize for the access pattern instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — DP-900: Describe an analytics workload (25–30%)
 
@@ -188,7 +188,7 @@ DP-900 describes.
 **Negative test:** query the raw lake for every dashboard; serve from a modeled
 semantic layer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — DP-700: Implement and manage an analytics solution (30–35%)
 
@@ -205,7 +205,7 @@ solution DP-700 implements.
 **Negative test:** assign no capacity to a workspace; Fabric items need a
 capacity to run.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — DP-700: Ingest and transform data (30–35%)
 
@@ -223,7 +223,7 @@ and transform.
 **Negative test:** write CSV instead of Delta for the curated layer; Delta gives
 ACID and time travel.
 
-**Cleanup:** drop the table.
+**Rollback:** drop the table.
 
 ### Lab 6.7 — DP-700: Monitor and optimize an analytics solution (30–35%)
 
@@ -240,7 +240,7 @@ tuning a Fabric solution.
 **Negative test:** never run OPTIMIZE/VACUUM on a growing Delta table; small
 files degrade query performance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.8 — DP-600: Maintain a data analytics solution (25–30%)
 
@@ -257,7 +257,7 @@ analytics solution.
 **Negative test:** edit prod artifacts directly; promote through the deployment
 pipeline.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.9 — DP-600: Prepare data (45–50%)
 
@@ -276,7 +276,7 @@ DP-600.
 **Negative test:** analyze `sales_raw` directly; nulls/wrong types corrupt
 measures.
 
-**Cleanup:** `DROP TABLE dbo.sales_clean;`.
+**Rollback:** `DROP TABLE dbo.sales_clean;`.
 
 ### Lab 6.10 — DP-600: Implement and manage semantic models (25–30%)
 
@@ -293,7 +293,7 @@ serving layer DP-600 manages.
 **Negative test:** build a snowflake with many-to-many everywhere; a star schema
 performs and models better.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.11 — DP-300: Plan and implement data platform resources (15–20%)
 
@@ -310,7 +310,7 @@ platform resources.
 **Negative test:** open the SQL firewall to 0.0.0.0/0; restrict to known IPs or
 use Private Link.
 
-**Cleanup:** `az sql db delete -g rg-lab -s <server> -n labdb -y`.
+**Rollback:** `az sql db delete -g rg-lab -s <server> -n labdb -y`.
 
 ### Lab 6.12 — DP-300: Implement a secure environment (20–25%)
 
@@ -327,7 +327,7 @@ environment.
 **Negative test:** rely on SQL logins alone; prefer Entra authentication and
 disable local admins where possible.
 
-**Cleanup:** revert as needed.
+**Rollback:** revert as needed.
 
 ### Lab 6.13 — DP-300: Monitor, configure, and optimize database resources (20–25%)
 
@@ -344,7 +344,7 @@ DP-300 optimizes.
 **Negative test:** scale up compute to fix a missing index; tune the query/index
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.14 — DP-300: Configure and manage automation of tasks (15–20%)
 
@@ -361,7 +361,7 @@ SQL.
 **Negative test:** script manual nightly maintenance on single SQL Database
 (no Agent); use Elastic Jobs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.15 — DP-300: Plan and configure a high availability and disaster recovery (HA/DR) environment (20–25%)
 
@@ -376,7 +376,7 @@ az sql failover-group create -n labfg -g rg-lab -s <primary-server> --partner-se
 **Negative test:** rely on local redundancy for regional outages; geo-replication
 protects against region failure.
 
-**Cleanup:** `az sql failover-group delete -n labfg -g rg-lab -s <primary-server>`.
+**Rollback:** `az sql failover-group delete -n labfg -g rg-lab -s <primary-server>`.
 
 ### Lab 6.16 — DP-420: Design and implement data models (35–40%)
 
@@ -392,7 +392,7 @@ that drives Cosmos DB scale.
 **Negative test:** pick a low-cardinality partition key (e.g., country); it
 creates hot partitions.
 
-**Cleanup:** `az cosmosdb sql container delete -a <acct> -g rg-lab -d appdb -n orders -y`.
+**Rollback:** `az cosmosdb sql container delete -a <acct> -g rg-lab -d appdb -n orders -y`.
 
 ### Lab 6.17 — DP-420: Design and implement data distribution (5–10%)
 
@@ -407,7 +407,7 @@ az cosmosdb update -n <acct> -g rg-lab --locations regionName=eastus failoverPri
 **Negative test:** enable multi-region writes and ignore conflict resolution;
 define a conflict-resolution policy.
 
-**Cleanup:** revert to a single region.
+**Rollback:** revert to a single region.
 
 ### Lab 6.18 — DP-420: Integrate an Azure Cosmos DB solution (5–10%)
 
@@ -423,7 +423,7 @@ to compute/analytics.
 
 **Negative test:** poll the container for changes; use the change feed instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.19 — DP-420: Optimize an Azure Cosmos DB solution (15–20%)
 
@@ -439,7 +439,7 @@ Optimize: point reads (id + partition key) are cheapest (~1 RU)
 **Negative test:** cross-partition fan-out queries at scale; design for
 single-partition access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.20 — DP-420: Maintain an Azure Cosmos DB solution (25–30%)
 
@@ -454,7 +454,7 @@ az cosmosdb sql container update -a <acct> -g rg-lab -d appdb -n orders --ttl 25
 **Negative test:** rely on default periodic backup for point-in-time needs;
 enable continuous backup for PITR.
 
-**Cleanup:** remove the TTL.
+**Rollback:** remove the TTL.
 
 ### Lab 6.21 — DP-100: Design and prepare a machine learning solution (20–25%)
 
@@ -471,7 +471,7 @@ DP-100 designs.
 **Negative test:** train on a tiny local VM for a large job; provision scalable
 compute clusters.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.22 — DP-100: Explore data, and run experiments (20–25%)
 
@@ -489,7 +489,7 @@ precedes modeling.
 **Negative test:** train before exploring; unseen skew/missingness wrecks the
 model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.23 — DP-100: Train and deploy models (25–30%)
 
@@ -506,7 +506,7 @@ deploy.
 **Negative test:** deploy a model with no signature/environment pinned;
 reproducibility requires a versioned environment.
 
-**Cleanup:** `az ml online-endpoint delete -n lab-ep -w <workspace> -g rg-lab -y`.
+**Rollback:** `az ml online-endpoint delete -n lab-ep -w <workspace> -g rg-lab -y`.
 
 ### Lab 6.24 — DP-100: Optimize language models for AI applications (25–30%)
 
@@ -523,7 +523,7 @@ newest DP-100 domain.
 **Negative test:** fine-tune first for knowledge freshness; use RAG for changing
 facts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.25 — DP-750: Set up and configure an Azure Databricks environment (15–20%)
 
@@ -539,7 +539,7 @@ up (clusters, pools, policies).
 **Negative test:** use the Standard SKU expecting Unity Catalog/RBAC; those need
 Premium.
 
-**Cleanup:** `az databricks workspace delete -n lab-adb -g rg-lab -y`.
+**Rollback:** `az databricks workspace delete -n lab-adb -g rg-lab -y`.
 
 ### Lab 6.26 — DP-750: Secure and govern Unity Catalog objects (15–20%)
 
@@ -555,7 +555,7 @@ GRANT SELECT ON TABLE main.sales.orders TO `data-analysts`;
 **Negative test:** manage access per-workspace instead of via Unity Catalog;
 governance is centralized in UC.
 
-**Cleanup:** `REVOKE SELECT ON TABLE main.sales.orders FROM \`data-analysts\`;`.
+**Rollback:** `REVOKE SELECT ON TABLE main.sales.orders FROM \`data-analysts\`;`.
 
 ### Lab 6.27 — DP-750: Prepare and process data (30–35%)
 
@@ -572,7 +572,7 @@ agg.write.mode("overwrite").saveAsTable("main.sales.by_region")
 **Negative test:** collect a huge DataFrame to the driver; aggregate in Spark and
 write back.
 
-**Cleanup:** drop the table.
+**Rollback:** drop the table.
 
 ### Lab 6.28 — DP-750: Deploy and maintain data pipelines and workloads (30–35%)
 
@@ -589,7 +589,7 @@ pipelines.
 **Negative test:** chain notebooks by hand; use Workflows for dependencies and
 retries.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.29 — DP-800: Design and develop database solutions (35–40%)
 
@@ -609,7 +609,7 @@ solution.
 **Negative test:** omit constraints to "speed development"; constraints protect
 integrity.
 
-**Cleanup:** `DROP TABLE dbo.Orders;`.
+**Rollback:** `DROP TABLE dbo.Orders;`.
 
 ### Lab 6.30 — DP-800: Secure, optimize, and deploy database solutions (35–40%)
 
@@ -626,7 +626,7 @@ pair with least-privilege grants for security.
 **Negative test:** index every column; write amplification hurts inserts —
 index to the workload.
 
-**Cleanup:** `DROP INDEX ix_orders_customer ON dbo.Orders;`.
+**Rollback:** `DROP INDEX ix_orders_customer ON dbo.Orders;`.
 
 ### Lab 6.31 — DP-800: Implement AI capabilities in database solutions (25–30%)
 
@@ -644,7 +644,7 @@ AI-in-database domain (embeddings/RAG in SQL).
 **Negative test:** store embeddings as JSON strings and compute distance in the
 app; use native vector types/indexes.
 
-**Cleanup:** `ALTER TABLE dbo.Docs DROP COLUMN Embedding;`.
+**Rollback:** `ALTER TABLE dbo.Docs DROP COLUMN Embedding;`.
 
 ## Lab Verification
 

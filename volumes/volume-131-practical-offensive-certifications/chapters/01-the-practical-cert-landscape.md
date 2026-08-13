@@ -63,7 +63,7 @@ EOF
 
 **Negative test:** Practicing any technique against a system you don't own or have written authorization for — illegal, regardless of intent; the sanctioned lab/exam range is the only place to build these skills.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Stand up the study lab
 
@@ -79,7 +79,7 @@ echo "for hands-on offensive practice, use ONLY the providers' sanctioned exam r
 
 **Negative test:** Treating this volume's models as attack tools — they are defensive/educational models; the authorization boundary from Lab 1.1 always applies.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

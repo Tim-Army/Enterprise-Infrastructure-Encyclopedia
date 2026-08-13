@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Using a second internet link only as a cold standby. It sits idle while the primary is congested, and failover drops sessions; active-active application-aware routing uses both links continuously and fails over sub-second without interrupting the session.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

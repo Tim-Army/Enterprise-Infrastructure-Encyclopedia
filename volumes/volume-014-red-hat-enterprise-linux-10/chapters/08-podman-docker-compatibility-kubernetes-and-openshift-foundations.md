@@ -433,7 +433,7 @@ on RHEL; rootless operation is a key security advantage over a root daemon.
 (ports <1024 need privilege) — rootless containers map to high ports unless the sysctl/
 capability is granted.
 
-**Cleanup:** `podman rm -f web`.
+**Rollback:** `podman rm -f web`.
 
 ### Lab 8.2 — Persistent storage with volumes (Topic: Container storage)
 
@@ -455,7 +455,7 @@ lifetime from container lifetime, the basis for stateful containers.
 container gets permission denied on the volume — `:Z`/`:z` relabels the content so the
 container may access it.
 
-**Cleanup:** `rm -rf ~/cdata`.
+**Rollback:** `rm -rf ~/cdata`.
 
 ### Lab 8.3 — Containers as systemd services (Topic: Container services)
 
@@ -484,7 +484,7 @@ Quadlet is the modern RHEL way to run containers under systemd, replacing
 **Negative test:** expect a plain `podman run` container to restart after a reboot; it does
 not — only a systemd-managed (Quadlet) unit gives you boot-time start and restart policy.
 
-**Cleanup:** `systemctl --user stop web.service; rm ~/.config/containers/systemd/web.container;
+**Rollback:** `systemctl --user stop web.service; rm ~/.config/containers/systemd/web.container;
 systemctl --user daemon-reload`.
 
 ### Lab 8.4 — Kubernetes/OpenShift foundations (Topic: Orchestration)
@@ -506,7 +506,7 @@ scaling, self-healing), the platform layer above single-host Podman.
 multi-node HA app; it has no scheduling, scaling, or self-healing — that is precisely what
 Kubernetes/OpenShift add.
 
-**Cleanup:** `kubectl delete pod web`.
+**Rollback:** `kubectl delete pod web`.
 
 ## Lab Verification
 

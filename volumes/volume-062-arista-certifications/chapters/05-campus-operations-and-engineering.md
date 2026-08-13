@@ -69,7 +69,7 @@ switch# show poe interface Ethernet5
 **Negative test:** connect an AP/phone to a port with PoE disabled; it **won't power on** —
 enable PoE.
 
-**Cleanup:** `default interface Ethernet5`.
+**Rollback:** `default interface Ethernet5`.
 
 ### Lab 5.2 — 802.1X authentication
 
@@ -86,7 +86,7 @@ switch# show dot1x interface Ethernet5
 
 **Negative test:** leave access ports open; **802.1X** authenticates endpoints — enforce it.
 
-**Cleanup:** `default interface Ethernet5`.
+**Rollback:** `default interface Ethernet5`.
 
 ### Lab 5.3 — Campus fabric and segmentation
 
@@ -103,7 +103,7 @@ switch# show dot1x interface Ethernet5
 **Negative test:** rely on VLAN ACLs alone for security; **MSS** inserts stateful policy —
 use it for macro-segmentation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — CloudVision provisioning
 
@@ -121,7 +121,7 @@ fleet management.
 **Negative test:** configure each campus switch by hand; **CloudVision** provisions and
 monitors them centrally.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

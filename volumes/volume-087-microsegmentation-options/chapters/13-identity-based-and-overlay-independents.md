@@ -144,7 +144,7 @@ with no host firewall to program.
 **Negative test.** Assume "agentless" means "covers everything." It does not — agentless describes what
 is *installed*, not where enforcement *happens*. Ask where the rule lands.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 13.2 — Model overlay invisibility versus filtering
 
@@ -165,7 +165,7 @@ leaves it unaddressable — a scanner sees nothing to attack.
 **Negative test.** Treat the two as equivalent in a risk assessment. They differ in attack surface:
 blocked-but-visible still exposes the stack to whatever reaches the port.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 13.3 — Check vendor viability before shortlisting
 
@@ -188,7 +188,7 @@ for name, c in candidates.items():
 **Negative test.** Build the shortlist from a two-year-old analyst grid without checking status. Two of
 four entries cannot be bought or supported, and you discover it during procurement.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 13.4 — Score the independents against the rubric
 
@@ -209,7 +209,7 @@ and reach, Airwall on air-gap and enforcement strength.
 **Negative test.** Pick on total score alone. A tie hides the fact that one is disqualified outright in
 a disconnected site; read the component scores against your constraints.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

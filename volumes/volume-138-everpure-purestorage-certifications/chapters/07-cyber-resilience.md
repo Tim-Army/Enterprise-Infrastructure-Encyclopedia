@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Relying on role-based access control alone to protect snapshots — RBAC governs who *should* delete them, and a compromised administrator account is, by definition, someone who should.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Retention against dwell time
 
@@ -121,7 +121,7 @@ EOF
 
 **Negative test:** Setting immutable retention to match operational snapshot retention — you have made the operational copies tamper-proof and still cannot reach back past the intrusion.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Rehearse the clean recovery
 
@@ -158,7 +158,7 @@ EOF
 
 **Negative test:** Verifying immutability configuration and declaring the recovery capability proven — configuration is necessary and says nothing about whether your people can execute under pressure.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

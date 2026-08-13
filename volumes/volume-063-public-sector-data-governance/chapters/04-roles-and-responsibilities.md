@@ -79,7 +79,7 @@ the decision structure.
 **Negative test:** run governance with no standing body; ad-hoc decisions have no authority —
 charter a council.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Role catalog
 
@@ -102,7 +102,7 @@ PY
 **Negative test:** make IT the "owner" of business data; **owners are accountable business
 leaders**, custodians run the systems — separate them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Build a RACI matrix
 
@@ -127,7 +127,7 @@ decision rights.
 **Negative test:** list two Accountable parties for a decision; governance stalls — enforce
 one A per row.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Stakeholder engagement plan
 
@@ -151,7 +151,7 @@ stakeholders — adoption, not just issuance.
 **Negative test:** publish a policy with no engagement; governance imposed without buy-in is
 ignored — plan the rollout.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

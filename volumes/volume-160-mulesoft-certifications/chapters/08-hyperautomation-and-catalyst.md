@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Assuming every process step can be automated with an API. Legacy systems lack APIs (needing RPA) and documents are unstructured (needing IDP); hyperautomation combines the tools, and the C4E scales delivery beyond a central bottleneck.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -29,7 +29,7 @@ systeminfo | Select-String "Hyper-V", "Virtualization"
 
 **Negative test.** Leave VT-x disabled in firmware and try to power on a 64-bit guest later; Workstation refuses with *"This host supports Intel VT-x, but Intel VT-x is disabled."* The fix is always firmware, not Workstation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install VMware Workstation Pro
 
@@ -51,7 +51,7 @@ Get-Service -Name "VMware*" |
 
 **Negative test.** If the Virtual Network Editor menu item is missing or greyed out, the install did not complete elevated; repair the installation from **Apps → VMware Workstation → Modify** and reboot.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Resolve the Hyper-V / VBS conflict
 
@@ -81,7 +81,7 @@ Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All -NoRes
 
 **Negative test.** Skip this lab on a machine with VBS on and build the estate anyway. It works, but nested guests run visibly slower and the Windows Server install in Chapter 04 can take twice as long. That is the ULM tax; you now know its cause.
 
-**Cleanup.** If this is a shared or corporate machine and you disabled VBS, re-enable Memory Integrity when you finish the lab (`bcdedit /set hypervisorlaunchtype auto` and turn Core isolation back on).
+**Rollback.** If this is a shared or corporate machine and you disabled VBS, re-enable Memory Integrity when you finish the lab (`bcdedit /set hypervisorlaunchtype auto` and turn Core isolation back on).
 
 ### Lab 2.4 — Create the lab directory structure
 
@@ -102,7 +102,7 @@ Get-ChildItem $root
 
 **Negative test.** Put the VMs on a nearly full system drive; Workstation refuses to power on when free space drops below the guest's provisioned size. Keep 250 GB free.
 
-**Cleanup.** None — this is your working tree for the rest of the lab.
+**Rollback.** None — this is your working tree for the rest of the lab.
 
 ## Summary and Completion Checklist
 

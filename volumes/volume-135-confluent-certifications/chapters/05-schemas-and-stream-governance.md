@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Embedding the full schema in every record — correctness is fine and the bandwidth cost is enormous, which is exactly the waste the registry exists to remove.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Compatibility checking
 
@@ -139,7 +139,7 @@ EOF
 
 **Negative test:** Setting compatibility to NONE to ship a breaking change quickly — the registry stops protecting you, and consumers fail at deserialization in production, usually at replay time rather than immediately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Choose a compatibility mode and upgrade order
 
@@ -173,7 +173,7 @@ EOF
 
 **Negative test:** Using plain BACKWARD with two-year retention and then replaying from the beginning — consumers hit schema versions from eighteen months ago that were never checked against the current one, and deserialization fails mid-replay.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

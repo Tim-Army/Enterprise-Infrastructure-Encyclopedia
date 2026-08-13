@@ -67,7 +67,7 @@ Control-flow walkthroughs. **Shared prerequisites** — ansible-core; a localhos
 **Negative test:** run a task unconditionally on all hosts; a **`when`** limits it to where
 it applies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Loop
 
@@ -86,7 +86,7 @@ it applies.
 **Negative test:** write three near-identical tasks; a **loop** stays correct as the list
 grows.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Block with rescue
 
@@ -110,7 +110,7 @@ try/except/finally control.
 **Negative test:** let a failed task abort the play with no recovery; a **rescue** handles
 it and continues.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Tags
 
@@ -135,7 +135,7 @@ ansible-playbook flow.yml --tags config
 **Negative test:** run the whole playbook when you only need one part; **tags** run just
 the relevant subset.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

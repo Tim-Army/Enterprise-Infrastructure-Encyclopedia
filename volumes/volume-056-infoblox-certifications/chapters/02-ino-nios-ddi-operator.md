@@ -66,7 +66,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/member?_return_fields=h
 **Negative test:** assume a single appliance; a **Grid** has a Master and members —
 enumerate them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — DNS: create an A record
 
@@ -83,7 +83,7 @@ curl -sS -k -u admin:infoblox -X POST "https://<grid>/wapi/v2.13/record:a" \
 **Negative test:** create the A record but skip the **PTR**; reverse lookups fail —
 create the matching PTR.
 
-**Cleanup:** `DELETE` the record by its `_ref`.
+**Rollback:** `DELETE` the record by its `_ref`.
 
 ### Lab 2.3 — DHCP: create a range
 
@@ -100,7 +100,7 @@ curl -sS -k -u admin:infoblox -X POST "https://<grid>/wapi/v2.13/range" \
 **Negative test:** overlap the range with fixed addresses; NIOS flags the conflict —
 keep ranges and reservations distinct.
 
-**Cleanup:** `DELETE` the range by its `_ref`.
+**Rollback:** `DELETE` the range by its `_ref`.
 
 ### Lab 2.4 — IPAM: allocate the next IP
 
@@ -118,7 +118,7 @@ IPAM-driven allocation.
 **Negative test:** pick an IP by hand from a spreadsheet; **next-available** guarantees no
 conflict — let IPAM allocate.
 
-**Cleanup:** `DELETE` the host record by its `_ref`.
+**Rollback:** `DELETE` the host record by its `_ref`.
 
 ### Lab 2.5 — Day-to-day object management
 
@@ -135,7 +135,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/record:a?name=web1.lab.
 **Negative test:** edit records only in the UI at scale; the **WAPI** enables consistent,
 scriptable changes — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

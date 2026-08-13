@@ -73,7 +73,7 @@ PY
 **Negative test:** point prod directly at live vendor channels; an untested patch could break it —
 **stage** via content lifecycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Write a Salt state
 
@@ -100,7 +100,7 @@ idempotent configuration.
 **Negative test:** SSH into each server to edit sshd_config by hand; it drifts and doesn't scale —
 enforce a **Salt state**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Organize systems into groups
 
@@ -121,7 +121,7 @@ PY
 **Negative test:** run a patch action against **all systems** when only web servers need it; scope by
 **group**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Report patch compliance
 
@@ -141,7 +141,7 @@ PY
 **Negative test:** assume the fleet is patched without a **compliance report**; drift hides — report
 it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

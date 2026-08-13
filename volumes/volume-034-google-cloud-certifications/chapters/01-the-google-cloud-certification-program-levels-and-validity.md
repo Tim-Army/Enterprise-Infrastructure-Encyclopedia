@@ -277,7 +277,7 @@ free; resources created later are not.
    Generative AI Leader, Data Practitioner, or Security Operations
    Engineer, or Workspace Administrator shown at the wrong level.
 
-6. **Cleanup:** keep the budget alert. Delete the project if you created
+6. **Rollback:** keep the budget alert. Delete the project if you created
    one solely for this step:
 
    ```bash

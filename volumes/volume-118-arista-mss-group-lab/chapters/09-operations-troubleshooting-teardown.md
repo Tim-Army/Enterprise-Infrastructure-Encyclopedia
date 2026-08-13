@@ -26,7 +26,7 @@ sudo dmesg | grep -c 'MSS-DENY'                                 # group denies
 
 **Expected result.** Groups populated, group policy with default-drop, firewall listening, denies recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -47,7 +47,7 @@ sudo dmesg | grep -c 'MSS-DENY'                                 # group denies
 
 **Negative test.** The subtle failure is a **stale group**: an endpoint that moved but kept its old group gets the wrong policy. Verify group resolution before suspecting the policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -68,7 +68,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the `mssnat` table behind keeps redirecting web→db on the host; remove it too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

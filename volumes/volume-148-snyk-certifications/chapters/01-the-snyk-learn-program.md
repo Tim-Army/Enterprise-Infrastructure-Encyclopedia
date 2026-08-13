@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Describing Snyk Learn as a proctored certification like AWS's or Wiz's. It is not — it awards certificates of completion for finishing learning paths; conflating the two misrepresents the program.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map the platform to the application supply chain
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Equating "application security" with scanning only your own source code. Open-source dependencies are often the majority of an app and a prime attack surface; covering only first-party code leaves the largest layer unscanned.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

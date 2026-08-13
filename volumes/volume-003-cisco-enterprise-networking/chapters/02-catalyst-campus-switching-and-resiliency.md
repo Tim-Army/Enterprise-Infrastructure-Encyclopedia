@@ -366,7 +366,7 @@ member.
 goes to an inactive VLAN and the host loses connectivity — create the VLAN
 first.
 
-**Cleanup:** `no vlan 20` and reset the interface.
+**Rollback:** `no vlan 20` and reset the interface.
 
 ### Lab 2.2 — Configure and verify interswitch connectivity (CCNA 2.2)
 
@@ -384,7 +384,7 @@ SW1# show interfaces trunk
 **Negative test:** mismatch the native VLAN across the trunk; CDP logs a
 native-VLAN-mismatch and untagged traffic lands in the wrong VLAN.
 
-**Cleanup:** `no switchport mode trunk` on the interface.
+**Rollback:** `no switchport mode trunk` on the interface.
 
 ### Lab 2.3 — Configure and verify Layer 2 discovery protocols (CCNA 2.3)
 
@@ -403,7 +403,7 @@ LLDP-speaking (multi-vendor) neighbors, with port and platform detail.
 `show cdp neighbors`, and a device relying on CDP for VoIP VLAN assignment
 loses it.
 
-**Cleanup:** `no lldp run`.
+**Rollback:** `no lldp run`.
 
 ### Lab 2.4 — Configure and verify EtherChannel (CCNA 2.4)
 
@@ -424,7 +424,7 @@ bundled `(P)`.
 fails to form (LACP vs no-negotiation mismatch) and ports may err-disable
 from a loop.
 
-**Cleanup:** `no interface port-channel 1` and remove channel-group from
+**Rollback:** `no interface port-channel 1` and remove channel-group from
 members.
 
 ### Lab 2.5 — Interpret Rapid PVST+ Spanning Tree (CCNA 2.5, ENCOR 3.1)
@@ -444,7 +444,7 @@ per-port roles (Root/Designated/Alternate) and states (Forwarding/Blocking).
 the lower MAC wins and the intended root is not elected — priority ties break
 on MAC.
 
-**Cleanup:** `no spanning-tree vlan 20 root primary`.
+**Rollback:** `no spanning-tree vlan 20 root primary`.
 
 ### Lab 2.6 — Configure device management access (CCNA 2.8)
 
@@ -465,7 +465,7 @@ is refused.
 **Negative test:** leave `transport input telnet`; credentials cross the
 network in cleartext — the exposure SSH-only closes.
 
-**Cleanup:** restore prior VTY config; keep SSH (secure default).
+**Rollback:** restore prior VTY config; keep SSH (secure default).
 
 ### Lab 2.7 — Configure Layer 2 STP protection (ENCOR 3.1)
 
@@ -485,7 +485,7 @@ SW1# show spanning-tree interface gig1/0/5 detail
 err-disables the port — preventing the L2 loop an unexpected switch would
 create.
 
-**Cleanup:** remove PortFast and BPDU Guard from the interface.
+**Rollback:** remove PortFast and BPDU Guard from the interface.
 
 ### Lab 2.8 — Distribution pair with HSRP and loop-free EtherChannel uplink (integrative)
 
@@ -562,7 +562,7 @@ protection.
    ACCESS-01(config-if)# no shutdown
    ```
 
-**Cleanup**
+**Rollback**
 
 - Remove the test cabling used for the negative test.
 - If the lab environment is shared, restore interfaces to their prior

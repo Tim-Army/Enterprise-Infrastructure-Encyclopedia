@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Applying advanced security only at headquarters where the appliances live. Remote workers and branches get inconsistent protection; cloud-delivered SASE/SSE applies the full stack uniformly to every entity from the PoPs.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

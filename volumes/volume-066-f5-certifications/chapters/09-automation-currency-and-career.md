@@ -85,7 +85,7 @@ config as code, idempotent.
 **Negative test:** click the same objects together in the GUI for every deployment; **AS3** makes
 it repeatable — declare it.
 
-**Cleanup:** POST an empty declaration for the tenant (in a lab).
+**Rollback:** POST an empty declaration for the tenant (in a lab).
 
 ### Lab 9.2 — Drive iControl REST
 
@@ -102,7 +102,7 @@ administration.
 
 **Negative test:** parse GUI/CLI text for automation; **iControl REST** returns JSON — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Verify the current program
 
@@ -118,7 +118,7 @@ curl -sSL -A "Mozilla/5.0" "https://education.f5.com/learning-path/view/9" \
 **Negative test:** rely on a pre-2025 101/201 list; the Administrator path is now **five exams** —
 verify on education.f5.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

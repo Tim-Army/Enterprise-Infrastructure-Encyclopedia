@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Hand-coding each nightly load as a bespoke script. It works once but has no shared connections, no visual lineage, no reusable transformations, and no orchestration; CDI's mapping/task/taskflow model makes the flow declarative, parameterized, schedulable, and maintainable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

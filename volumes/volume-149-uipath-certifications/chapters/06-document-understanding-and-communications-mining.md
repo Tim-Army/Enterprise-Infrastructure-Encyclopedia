@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Auto-processing every extraction regardless of confidence (threshold 0.50). All three low-confidence extractions are wrong, so a low threshold processes garbage confidently — the confidence score and a tuned threshold are what make IDP safe.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

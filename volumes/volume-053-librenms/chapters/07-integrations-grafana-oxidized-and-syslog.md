@@ -67,7 +67,7 @@ visualization beyond built-in graphs.
 **Negative test:** rebuild every graph in both tools; **Grafana** reads the same data —
 avoid duplication.
 
-**Cleanup:** remove the panel if it was for the lab.
+**Rollback:** remove the panel if it was for the lab.
 
 ### Lab 7.2 — Oxidized config backup
 
@@ -85,7 +85,7 @@ plus config history.
 **Negative test:** rely on manual config saves; **Oxidized** versions them automatically
 — enable it.
 
-**Cleanup:** disable Oxidized if it was for the lab.
+**Rollback:** disable Oxidized if it was for the lab.
 
 ### Lab 7.3 — Ingest syslog
 
@@ -103,7 +103,7 @@ event correlation with metrics.
 **Negative test:** troubleshoot from metrics alone; **syslog** adds the device's own
 event narrative — ingest it.
 
-**Cleanup:** remove the logging host line if it was for the lab.
+**Rollback:** remove the logging host line if it was for the lab.
 
 ### Lab 7.4 — Seed inventory from NetBox
 
@@ -121,7 +121,7 @@ driving monitoring.
 **Negative test:** maintain two device lists by hand; let the **source of truth** feed
 LibreNMS to keep them aligned.
 
-**Cleanup:** remove any devices added for the lab.
+**Rollback:** remove any devices added for the lab.
 
 ## Lab Verification
 

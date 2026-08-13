@@ -71,7 +71,7 @@ adjacency.
 **Negative test:** put the two ends in **different areas**; the adjacency won't form across mixed
 areas on a normal link — match the area.
 
-**Cleanup:** `configure router ospf shutdown`.
+**Rollback:** `configure router ospf shutdown`.
 
 ### Lab 3.2 — Verify the OSPF LSDB and routes
 
@@ -86,7 +86,7 @@ A:router# show router route-table protocol ospf
 
 **Negative test:** trust reachability without checking the **LSDB**; verify it is synchronized.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Configure IS-IS
 
@@ -104,7 +104,7 @@ A:router# show router isis adjacency
 **Negative test:** mismatch the **level** (L1 vs L2) across the link; align the level for the
 adjacency.
 
-**Cleanup:** `configure router isis shutdown`.
+**Rollback:** `configure router isis shutdown`.
 
 ### Lab 3.4 — Verify the IS-IS database
 
@@ -119,7 +119,7 @@ A:router# show router route-table protocol isis
 
 **Negative test:** assume convergence without the **database**; check the LSDB is complete.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

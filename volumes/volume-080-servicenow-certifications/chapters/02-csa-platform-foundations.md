@@ -75,7 +75,7 @@ data model.
 **Negative test:** build a standalone incident table duplicating task fields; **extend task** instead
 — use inheritance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Model the role-based access
 
@@ -98,7 +98,7 @@ PY
 **Negative test:** grant `itil` directly to each user; onboarding/offboarding breaks — assign via
 **groups**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Configure a list view
 
@@ -118,7 +118,7 @@ PY
 **Negative test:** show every field in the default list; it's unreadable — **configure** columns and
 filters.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Trace a CMDB relationship
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** treat the CMDB as a flat asset list; **relationships** power impact analysis — model
 them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -361,7 +361,7 @@ current automatically; a proxy is the only extra step in a filtered network.
 catalog fails to download — connected updates need reachability to `downloads.dell.com` (or the
 Chapter 07 offline path).
 
-**Cleanup:** none (keep the online catalog if desired).
+**Rollback:** none (keep the online catalog if desired).
 
 ### Lab 6.2 — Scheduled catalog refresh (Topic: Update currency)
 
@@ -385,7 +385,7 @@ automatically, so you learn what needs updating without checking manually.
 **Negative test:** load a catalog once and never refresh it; months later your "baseline" is stale
 and misses critical firmware fixes — a scheduled refresh keeps the reference current.
 
-**Cleanup:** remove the lab schedule if created only for the exercise.
+**Rollback:** remove the lab schedule if created only for the exercise.
 
 ### Lab 6.3 — SupportAssist-connected updates (Topic: Connected support)
 
@@ -406,7 +406,7 @@ management.
 proactive case and you react only after the outage — the connected integration is what enables
 proactive support.
 
-**Cleanup:** deregister SupportAssist if enabled only for the lab.
+**Rollback:** deregister SupportAssist if enabled only for the lab.
 
 ### Lab 6.4 — Staged rollout workflow (Topic: Update workflow)
 
@@ -426,7 +426,7 @@ change into a validated, progressive one.
 undiscovered regression takes the fleet down together — ringed rollout with validation gates is
 what prevents that.
 
-**Cleanup:** none (leave devices at validated firmware).
+**Rollback:** none (leave devices at validated firmware).
 
 ## Lab Verification
 

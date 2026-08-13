@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Deploying a model and assuming it stays accurate. Data drift degrades it silently; MLOps monitoring and drift detection with retraining are what keep a production model reliable, and running on the platform keeps governance and data current.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

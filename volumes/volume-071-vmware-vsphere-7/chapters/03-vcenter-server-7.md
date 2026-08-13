@@ -73,7 +73,7 @@ foundation.
 **Negative test:** add hosts with no cluster; a **cluster** enables vMotion/DRS/HA — create it
 first.
 
-**Cleanup:** `Remove-Cluster Cluster1 -Confirm:$false; Remove-Datacenter DC1 -Confirm:$false`.
+**Rollback:** `Remove-Cluster Cluster1 -Confirm:$false; Remove-Datacenter DC1 -Confirm:$false`.
 
 ### Lab 3.2 — Add a host
 
@@ -89,7 +89,7 @@ Get-VMHost | Select Name, ConnectionState, Version
 **Negative test:** manage the host only via its Host Client; **add it to vCenter** for
 clustering/features.
 
-**Cleanup:** `Remove-VMHost esxi01.lab.local -Confirm:$false`.
+**Rollback:** `Remove-VMHost esxi01.lab.local -Confirm:$false`.
 
 ### Lab 3.3 — Assign a least-privilege role
 
@@ -107,7 +107,7 @@ privilege access.
 **Negative test:** grant **Administrator** at the vCenter root to operators; assign a **scoped,
 least-privilege** role instead.
 
-**Cleanup:** `Get-VIPermission -Entity (Get-Cluster Cluster1) | Where {$_.Principal -match 'vm-operators'} | Remove-VIPermission -Confirm:$false`.
+**Rollback:** `Get-VIPermission -Entity (Get-Cluster Cluster1) | Where {$_.Principal -match 'vm-operators'} | Remove-VIPermission -Confirm:$false`.
 
 ### Lab 3.4 — Query vCenter via the REST API
 
@@ -124,7 +124,7 @@ curl -sk -H "vmware-api-session-id: $TOKEN" "https://<vcenter>/api/vcenter/host"
 
 **Negative test:** script against the GUI; the **REST API** returns JSON — use it (or PowerCLI/govc).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

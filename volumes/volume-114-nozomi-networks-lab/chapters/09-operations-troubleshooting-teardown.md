@@ -25,7 +25,7 @@ grep -cE "DENY|ANOMALY" /tmp/mbproxy.log                          # events recor
 
 **Expected result.** Policy present, PLC isolated to the proxy, proxy listening, events recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -46,7 +46,7 @@ grep -cE "DENY|ANOMALY" /tmp/mbproxy.log                          # events recor
 
 **Negative test.** The subtle failure is an **incomplete baseline**: a legitimate but rare write function (a scheduled setpoint change) denied because it was never learned. Learn a representative window, and make deliberate exceptions rather than widening the policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -67,7 +67,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the proxy running keeps the PLC path open on the host; kill it and remove the scripts.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

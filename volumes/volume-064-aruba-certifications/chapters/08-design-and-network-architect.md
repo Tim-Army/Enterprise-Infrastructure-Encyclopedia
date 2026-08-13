@@ -75,7 +75,7 @@ PY
 **Negative test:** pick a two-tier collapsed core for 400 east-west-heavy servers; that does not
 scale — choose **leaf-spine**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Redundancy plan
 
@@ -96,7 +96,7 @@ uplinks) — a resilient design.
 
 **Negative test:** single-home the core gateway; distribute with **VSX/anycast** — no SPOF.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Segmentation design
 
@@ -117,7 +117,7 @@ segmentation by design.
 **Negative test:** flat network with perimeter-only security; design **role-based** segmentation
 enforced in the fabric.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

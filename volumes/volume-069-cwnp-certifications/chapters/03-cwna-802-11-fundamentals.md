@@ -75,7 +75,7 @@ PY
 
 **Negative test:** assign channels 1, 3, 6 to adjacent APs; 1 and 3 **overlap** — use only 1/6/11.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Decode 802.11 frame types
 
@@ -92,7 +92,7 @@ types.
 **Negative test:** treat all 802.11 traffic as data; **management/control** frames run the network
 — filter and study them.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ### Lab 3.3 — Compare Wi-Fi generations
 
@@ -111,7 +111,7 @@ PY
 **Negative test:** attribute MLO to Wi-Fi 6; **MLO is Wi-Fi 7 (802.11be)** — match features to the
 generation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Read a beacon
 
@@ -127,7 +127,7 @@ tshark -r wlan.pcapng -Y "wlan.fc.type_subtype==0x08" -T fields -e wlan.ssid -e 
 **Negative test:** assume clients "just find" the network; **beacons/probes** (management frames)
 advertise it — inspect them.
 
-**Cleanup:** none (read-only analysis).
+**Rollback:** none (read-only analysis).
 
 ## Lab Verification
 

@@ -71,7 +71,7 @@ model.
 **Negative test:** create a VM with no cluster; VMs require a **cluster** — model it
 first.
 
-**Cleanup:** `vm.delete(); cl.delete(); ct.delete()`.
+**Rollback:** `vm.delete(); cl.delete(); ct.delete()`.
 
 ### Lab 5.2 — Add a VM interface with an IP
 
@@ -90,7 +90,7 @@ joined.
 **Negative test:** track the VM's IP in a note; **assign it in IPAM** so it counts
 against the prefix and is discoverable.
 
-**Cleanup:** `ip.delete(); vmi.delete()`.
+**Rollback:** `ip.delete(); vmi.delete()`.
 
 ### Lab 5.3 — Model a circuit
 
@@ -109,7 +109,7 @@ model.
 **Negative test:** track circuits in email; model them in NetBox so **terminations** and
 capacity are authoritative.
 
-**Cleanup:** `ckt.delete(); ctype.delete(); prov.delete()`.
+**Rollback:** `ckt.delete(); ctype.delete(); prov.delete()`.
 
 ### Lab 5.4 — Attribute objects to a tenant
 
@@ -127,7 +127,7 @@ print("site", site.name, "tenant:", nb.dcim.sites.get(site.id).tenant.name)
 **Negative test:** leave objects tenant-less in a multi-tenant NetBox; **assign
 tenants** so ownership/filtering works.
 
-**Cleanup:** `site.tenant=None; site.save(); tenant.delete(); tg.delete()`.
+**Rollback:** `site.tenant=None; site.save(); tenant.delete(); tg.delete()`.
 
 ## Lab Verification
 

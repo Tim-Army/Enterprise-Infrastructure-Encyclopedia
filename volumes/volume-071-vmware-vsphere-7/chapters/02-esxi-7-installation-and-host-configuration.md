@@ -70,7 +70,7 @@ on the network.
 **Negative test:** assume management connectivity without checking **vmk0**; verify the VMkernel
 adapter and IP.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Configure NTP
 
@@ -87,7 +87,7 @@ and logs.
 **Negative test:** run a host with **no NTP**; time drift breaks certificate validation and vCenter
 operations — enable NTP.
 
-**Cleanup:** `esxcli system ntp set --enabled=false` (in a lab).
+**Rollback:** `esxcli system ntp set --enabled=false` (in a lab).
 
 ### Lab 2.3 — Manage a service (SSH)
 
@@ -106,7 +106,7 @@ services.
 **Negative test:** leave **SSH permanently enabled**; enable it only when needed — reduce the attack
 surface.
 
-**Cleanup:** ensure SSH is disabled after the lab.
+**Rollback:** ensure SSH is disabled after the lab.
 
 ### Lab 2.4 — Inspect host hardware and storage
 
@@ -124,7 +124,7 @@ resource inventory.
 **Negative test:** provision VMs without checking **storage/scratch**; verify datastores and free
 space first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Set the host to maintenance mode
 
@@ -142,7 +142,7 @@ patching/changes (VMs evacuate via DRS/vMotion in a cluster).
 **Negative test:** patch or reboot a host with running VMs and no maintenance mode; **enter
 maintenance mode** first so VMs migrate off.
 
-**Cleanup:** ensure the host is out of maintenance mode.
+**Rollback:** ensure the host is out of maintenance mode.
 
 ## Lab Verification
 

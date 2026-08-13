@@ -94,7 +94,7 @@ certifications validate.
 **Negative test:** authenticate a token with `admin:org`/broad scopes for routine work; request only the
 scopes you need (`repo`, `workflow`).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the certification ladder
 
@@ -120,7 +120,7 @@ PY
 **Negative test:** plan to sit **Administration** to learn Git basics; **Foundations** grounds Git and
 collaboration — start there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Confirm the tooling and a practice repo
 
@@ -145,7 +145,7 @@ environment.
 **Negative test:** practice only in the web UI; the exams and real work assume **`git`/`gh`** fluency —
 use the CLI too.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 gh repo delete octocat/cert-practice --yes

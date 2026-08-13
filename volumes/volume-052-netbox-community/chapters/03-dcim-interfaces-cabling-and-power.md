@@ -69,7 +69,7 @@ cable.
 **Negative test:** duplicate `eth1` on the same device; interface names are unique per
 device — NetBox rejects it.
 
-**Cleanup:** `i1.delete(); i2.delete()`.
+**Rollback:** `i1.delete(); i2.delete()`.
 
 ### Lab 3.2 — Cable two interfaces
 
@@ -88,7 +88,7 @@ print("cable id:", cable.id, "status:", cable.status.value)
 **Negative test:** cable `i1` to a third interface while it's already terminated; a
 termination holds **one** cable — remove the first.
 
-**Cleanup:** `cable.delete()`.
+**Rollback:** `cable.delete()`.
 
 ### Lab 3.3 — Trace the connection
 
@@ -105,7 +105,7 @@ across the cable.
 **Negative test:** trust a spreadsheet of connections; **trace in NetBox** — it walks
 patch panels the spreadsheet won't.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Model power
 
@@ -125,7 +125,7 @@ for capacity/redundancy.
 **Negative test:** ignore power modeling; without **feeds/ports** you cannot track draw
 or A/B redundancy — model it.
 
-**Cleanup:** `pp.delete(); feed.delete(); panel.delete()`.
+**Rollback:** `pp.delete(); feed.delete(); panel.delete()`.
 
 ## Lab Verification
 

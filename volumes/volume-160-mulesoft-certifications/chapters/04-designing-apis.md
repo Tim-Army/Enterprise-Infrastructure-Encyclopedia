@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Building the integration first and letting the interface emerge, with no catalog. Consumers wait for code, the interface is accidental, and APIs are forgotten rather than reused; API-first specs plus Exchange discovery deliver a stable contract and genuine reuse.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

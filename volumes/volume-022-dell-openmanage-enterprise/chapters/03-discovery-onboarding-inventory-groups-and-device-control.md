@@ -414,7 +414,7 @@ decision.
 and cannot drive firmware/config — the protocol must match the device class to unlock full
 management.
 
-**Cleanup:** delete the lab discovery job / remove the discovered device if lab-only.
+**Rollback:** delete the lab discovery job / remove the discovered device if lab-only.
 
 ### Lab 3.2 — Credential profiles and the discovery job (Topic: Onboarding)
 
@@ -433,7 +433,7 @@ discovery jobs reuse one managed secret rather than embedding credentials each t
 **Negative test:** embed device credentials ad-hoc in each discovery with no profile; rotating a
 password means editing every job — a reusable credential profile is updated once.
 
-**Cleanup:** none (read-only) / remove the lab credential profile if created only for the lab.
+**Rollback:** none (read-only) / remove the lab credential profile if created only for the lab.
 
 ### Lab 3.3 — Static and dynamic groups (Topic: Grouping)
 
@@ -453,7 +453,7 @@ manual edits.
 **Negative test:** target firmware baselines at individually-selected devices instead of a group;
 new servers are silently left out of compliance — a dynamic group includes them automatically.
 
-**Cleanup:** delete the lab groups.
+**Rollback:** delete the lab groups.
 
 ### Lab 3.4 — Inventory and device control (Topic: Device control)
 
@@ -472,7 +472,7 @@ issues control actions (power, LED, refresh) fleet-wide through the devices' con
 **Negative test:** rely on stale inventory to plan an update; a since-replaced component is
 mis-targeted — refresh inventory before acting so decisions reflect the current hardware.
 
-**Cleanup:** none (read-only inventory; power actions on lab devices only).
+**Rollback:** none (read-only inventory; power actions on lab devices only).
 
 ## Lab Verification
 

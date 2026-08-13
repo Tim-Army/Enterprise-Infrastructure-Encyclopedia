@@ -29,7 +29,7 @@ sudo nft list chain inet elisity forward | grep -E "grp_plc|502"
 
 **Negative test.** Try to add a host agent to `el-ot01` to "manage it like a server". It cannot take one — and it does not need to, because Elisity never depended on an agent. The agentless device is protected by classification and network enforcement, not by software on the device.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Tighten and confirm the OT boundary
 
@@ -54,7 +54,7 @@ nc -vz 10.10.30.50 502   # expect blocked - wrong source identity
 
 **Negative test.** Broaden the OT allow to `ip daddr @grp_plc tcp dport 502 accept` (dropping the `grp_hmi` source match). Now *any* identity may reach the PLC on 502 — an app server, a compromised host. Identity on both ends of the rule is what makes it least-privilege. Restore the source match.
 
-**Cleanup.** Ensure the source-matched rule is restored.
+**Rollback.** Ensure the source-matched rule is restored.
 
 ### Lab 8.3 — Validate the containment end to end
 
@@ -84,7 +84,7 @@ Both legitimate identity-to-identity flows work; every other approach to the pro
 
 **Negative test.** Flip the forward chain back to `policy accept` with no deny rules (Chapter 05 state) and re-run the HMI→db probe; it reaches again. The enforcement point enforces only what you compile onto it. Re-enforce.
 
-**Cleanup.** Leave the enforced estate for Chapter 09.
+**Rollback.** Leave the enforced estate for Chapter 09.
 
 ## Summary and Completion Checklist
 

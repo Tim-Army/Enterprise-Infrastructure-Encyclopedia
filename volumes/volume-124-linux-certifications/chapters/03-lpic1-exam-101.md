@@ -29,7 +29,7 @@ dmesg 2>/dev/null | head -3 || journalctl -k | head -3
 
 **Negative test:** `systemctl set-default rescue.target` on a lab VM and reboot — the system lands in rescue mode; restore with `set-default multi-user.target`. Targets are the boot destination, not decoration.
 
-**Cleanup:** Restore the default target.
+**Rollback:** Restore the default target.
 
 ### Lab 3.2 — Package management, both families (Topic 102)
 
@@ -47,7 +47,7 @@ sudo apt-get remove -y tree
 
 **Negative test:** `dpkg -L` on an uninstalled package — the error distinguishes "not installed" from "no such package," a real exam nuance.
 
-**Cleanup:** Done in the walkthrough.
+**Rollback:** Done in the walkthrough.
 
 ### Lab 3.3 — GNU and Unix commands (Topic 103, heaviest)
 
@@ -67,7 +67,7 @@ find . -name "*.txt" -newer words.txt -o -name "out*" | head -2
 
 **Negative test:** `sort words.txt | uniq -c` *without* the pre-sort (`uniq` on unsorted input) — `beta` counts twice separately; `uniq` only collapses adjacent lines, the classic trap.
 
-**Cleanup:** `rm words.txt out.txt`.
+**Rollback:** `rm words.txt out.txt`.
 
 ### Lab 3.4 — Devices, filesystems, FHS (Topic 104)
 
@@ -86,7 +86,7 @@ ls -d /etc /var /usr /home /tmp
 
 **Negative test:** `fsck` a **mounted** filesystem — the tool warns hard; checking mounted filesystems corrupts, which is why the exam asks.
 
-**Cleanup:** `rm disk.img; sudo rmdir /mnt/lab`.
+**Rollback:** `rm disk.img; sudo rmdir /mnt/lab`.
 
 ## Summary and Completion Checklist
 

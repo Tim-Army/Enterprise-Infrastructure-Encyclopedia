@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Beginning an upgrade with one controller already in a degraded state — the failover has nowhere to go, and a "non-disruptive" procedure becomes an outage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Own versus subscribe
 
@@ -127,7 +127,7 @@ EOF
 
 **Negative test:** Choosing a consumption model purely to move spend from capital to operating budget — the accounting treatment changes and the underlying economics do not, so a confident, stable workload usually pays more.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Controller sizing and failover headroom
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Sizing to 80% utilization across both controllers because "we have two" — the first upgrade or controller fault leaves 160% of one controller's capacity demanded from it, and the array degrades badly.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

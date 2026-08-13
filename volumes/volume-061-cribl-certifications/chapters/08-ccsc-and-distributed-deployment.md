@@ -67,7 +67,7 @@ curl -sS -H "Authorization: Bearer $CRIBL_TOKEN" "$CRIBL/api/v1/master/groups" \
 **Negative test:** run one big group for all workloads; **separate groups** by function/
 environment for isolation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Commit configuration
 
@@ -85,7 +85,7 @@ curl -sS -H "Authorization: Bearer $CRIBL_TOKEN" -H "Content-Type: application/j
 **Negative test:** deploy without committing; **commit first** so changes are versioned and
 reversible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Deploy to a group
 
@@ -103,7 +103,7 @@ goes live.
 **Negative test:** edit a worker's config directly on the box; changes are **overwritten**
 by the next deploy — manage via the Leader.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Size the deployment
 
@@ -121,7 +121,7 @@ readiness (the CCSC focus).
 **Negative test:** deploy without capacity planning; **size to throughput** or workers
 saturate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

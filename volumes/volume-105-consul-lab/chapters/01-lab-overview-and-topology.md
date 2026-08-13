@@ -83,7 +83,7 @@ Budget an evening.
 | `kubectl` / `consul` / `helm` | Run against the kind cluster from the host |
 | **Enterprise note** | A capability that needs Consul Enterprise, described but not built |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

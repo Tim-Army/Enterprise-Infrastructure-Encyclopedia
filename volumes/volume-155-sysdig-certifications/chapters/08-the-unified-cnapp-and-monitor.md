@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Assembling cloud-native security from separate scanning, posture, entitlement, and runtime tools. Each sees a slice and misses the connections; one platform on shared runtime data lets the capabilities inform each other, and the same data also serves observability.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

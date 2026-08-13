@@ -166,7 +166,7 @@ scriptable equivalent of the admin center.
 `Organization.Read.All`; it fails with insufficient privileges — Graph
 enforces per-scope consent.
 
-**Cleanup:** `Disconnect-MgGraph`.
+**Rollback:** `Disconnect-MgGraph`.
 
 ### Lab 1.2 — Inspect subscriptions and service plans (Topic: Manage licensing)
 
@@ -185,7 +185,7 @@ can use it.
 **Negative test:** query `SkuPartNumber -eq 'NOT_A_SKU'`; it returns nothing —
 SKU part numbers are exact.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Create a group and assign a license through it (Topic: Group-based licensing)
 
@@ -205,7 +205,7 @@ group inherits it — group-based licensing makes entitlement auditable.
 show a licensing error until seats are freed — assignment needs available
 units.
 
-**Cleanup:** `Remove-MgGroup -GroupId $g.Id`.
+**Rollback:** `Remove-MgGroup -GroupId $g.Id`.
 
 ### Lab 1.4 — Assign a workload admin role (Topic: Role-based access control)
 
@@ -227,7 +227,7 @@ not Global Admin, for endpoint work.
 `Get-MgDirectoryRole` returns nothing for it — activate from the role
 template first.
 
-**Cleanup:** `Remove-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -DirectoryObjectId <userId>`.
+**Rollback:** `Remove-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -DirectoryObjectId <userId>`.
 
 ## Lab Verification
 

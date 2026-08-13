@@ -68,7 +68,7 @@ EOF
 
 **Negative test:** Reporting average response time to management — the graph looks healthy while the support queue fills with complaints, and the disagreement between the data and reality erodes trust in the monitoring.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — SLA reporting that survives scrutiny
 
@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Reporting availability without defining downtime, the measurement interval, or maintenance exclusions — the number is unfalsifiable, and the first person who disagrees with it has no way to reconcile.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Capacity forecasting with lead time
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Triggering capacity work at a fixed utilization threshold like 80% — a slow-growing resource crosses 80% and sits there harmlessly for two years, while a fast-growing one goes from 60% to full inside a procurement cycle.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

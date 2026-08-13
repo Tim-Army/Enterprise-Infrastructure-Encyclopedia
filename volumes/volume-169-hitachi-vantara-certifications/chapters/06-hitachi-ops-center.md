@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Provisioning every volume by hand and reacting to capacity problems only when a pool fills. Volumes drift from standard, provisioning is slow, and outages surprise you; Automator's templates/self-service and Analyzer's forecasting are what make storage operations consistent and proactive at scale.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

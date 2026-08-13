@@ -94,7 +94,7 @@ by least-privilege permissions) — two legs of the CIA triad CyberCore teaches.
 **Negative test:** `chmod 777 f.txt`; world access breaks confidentiality — least
 privilege protects it.
 
-**Cleanup:** `rm -f f.txt`
+**Rollback:** `rm -f f.txt`
 
 ### Lab 2.2 — CyberCore: threats and the attacker mindset
 
@@ -114,7 +114,7 @@ literacy CyberCore builds before any offensive work.
 **Negative test:** study attacks without the defensive mapping; OffSec teaches
 offense to strengthen defense — always know the control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — CyberCore: networking and services fundamentals
 
@@ -131,7 +131,7 @@ service-and-port literacy every later course builds on.
 **Negative test:** assume a closed-looking port is safe; services can bind to
 specific interfaces — enumerate thoroughly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — KLCP: Kali package management (Debian apt)
 
@@ -148,7 +148,7 @@ management, a core KLCP skill.
 **Negative test:** install tools from random scripts instead of `apt`; use the
 package manager so updates and dependencies are tracked.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — KLCP: the Kali tool ecosystem
 
@@ -166,7 +166,7 @@ sqlmap, john, hashcat, Metasploit) — the Kali ecosystem KLCP covers.
 **Negative test:** assume every tool is preinstalled; some are `apt install`-only
 — know how to add them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — KLCP: service and privilege control
 
@@ -183,7 +183,7 @@ and privilege awareness, KLCP administration skills.
 **Negative test:** run everything as root by habit; use `sudo` for specific
 privileged actions and understand what each requires.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.7 — KLCP: customization and updates
 
@@ -200,7 +200,7 @@ hygiene step — keeping Kali current and snapshotted, a KLCP practice.
 **Negative test:** work from a months-old Kali image; outdated tools miss recent
 techniques and fixes — update first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

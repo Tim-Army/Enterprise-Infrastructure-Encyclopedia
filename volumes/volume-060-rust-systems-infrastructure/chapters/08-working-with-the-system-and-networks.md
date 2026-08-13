@@ -69,7 +69,7 @@ fn main() {
 **Negative test:** build a shell string from input and run it; pass **argument lists** to
 `Command` — avoid injection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Read a file and env
 
@@ -89,7 +89,7 @@ fn main() {
 **Negative test:** hard-code config in the binary; read it from **files/env** so it's
 changeable without recompiling.
 
-**Cleanup:** `rm -f /tmp/rust_cfg.txt`.
+**Rollback:** `rm -f /tmp/rust_cfg.txt`.
 
 ### Lab 8.3 — Deserialize JSON with serde
 
@@ -110,7 +110,7 @@ fn main() {
 **Negative test:** dig through an untyped `serde_json::Value` by string keys; a **typed
 struct** validates the shape at deserialize time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — HTTP with reqwest (pattern)
 
@@ -131,7 +131,7 @@ println!("reqwest: async GET -> .json() into serde types (typed API access)");
 **Negative test:** hand-roll HTTP over TCP sockets; **reqwest** handles TLS/redirects/JSON —
 use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -196,7 +196,7 @@ stateless and reproducible.
 **Negative test:** attempt to change a MAC on the server directly; UCS blocks
 it — identity comes from the service profile, not the hardware.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Implement UCS blade chassis (Objective 2.2)
 
@@ -217,7 +217,7 @@ through the IOMs.
 policy (if set to 2/4/8-link) marks the chassis under-provisioned — link
 count must meet the policy.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Explain UCS-X in Intersight Managed Mode (Objective 2.3)
 
@@ -237,7 +237,7 @@ moves policy from on-prem UCS Manager to the Intersight SaaS control plane.
 reads `UCSM`, and Intersight server-profile operations are unavailable — the
 mode gates which control plane owns the domain.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Describe firmware updates and their impacts (Objective 2.4)
 
@@ -259,7 +259,7 @@ its impact is a maintenance-window event.
 maintenance policy set to `user-ack`; UCS would reboot immediately — the
 negative shows why a maintenance policy gates disruptive firmware.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Implement compute configuration management: backup and restore (Objective 2.5)
 
@@ -281,7 +281,7 @@ is an importable XML for cloning a domain.
 **Negative test:** attempt a full-state *import* onto a running FI; UCS
 refuses — full-state restore requires an FI in a clean/erased state.
 
-**Cleanup:** `delete backup ...` for the test job.
+**Rollback:** `delete backup ...` for the test job.
 
 ### Lab 4.6 — Implement infrastructure monitoring with SPAN and Intersight (Objective 2.6)
 
@@ -304,7 +304,7 @@ destination uplink — UCS's SPAN equivalent — plus, from Intersight,
 **Negative test:** target a SPAN destination that is a live server uplink; UCS
 rejects it — the destination must be a dedicated monitoring port.
 
-**Cleanup:** `delete eth-mon-session SPAN1 ; commit-buffer`.
+**Rollback:** `delete eth-mon-session SPAN1 ; commit-buffer`.
 
 ## Lab Verification
 

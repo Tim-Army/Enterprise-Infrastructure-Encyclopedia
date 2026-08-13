@@ -257,6 +257,8 @@ az identity show --name id-retire --query "{name:name, clientId:clientId, princi
 Managed identities remove stored secrets — the AZ-500 identity default,
 and the answer to "how does this app authenticate without a key?"
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.2 — Conditional access and RBAC posture
 
 ```bash
@@ -269,6 +271,8 @@ granted. Least privilege starts from zero, and conditional access gates
 the human side.
 
 ### AZ-500 Domain 2 — Secure networking (20–25%)
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.3 — NSGs, Azure Firewall, and private access
 
@@ -286,6 +290,8 @@ exposure.
 
 ### AZ-500 Domain 3 — Secure compute, storage, and databases (20–25%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.4 — Key Vault for secrets, keys, and certificates
 
 ```bash
@@ -299,6 +305,8 @@ az keyvault show --name "$KV" --query "{name:name, rbac:properties.enableRbacAut
 **Expected result:** the vault with `rbac: True` and `softDelete: True`.
 RBAC-authorized Key Vault with soft delete is the secure baseline; secrets
 never live in code.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 5.5 — Storage encryption and secure access
 
@@ -315,6 +323,8 @@ the securable knobs are TLS floor, public-access denial, and HTTPS-only.
 
 ### AZ-500 Domain 4 — Secure using Defender for Cloud and Sentinel (30–35%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.6 — Microsoft Defender for Cloud posture
 
 ```bash
@@ -328,6 +338,8 @@ az security secure-score-controls list --query "value[0].displayName" -o tsv 2>/
 Cloud provides secure score and workload protection; this domain is the
 highest weighted for a reason — it is the operational security surface.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.7 — Microsoft Sentinel (SIEM)
 
 ```bash
@@ -340,6 +352,8 @@ Log Analytics workspace; detection rules and playbooks (SOAR) sit on top —
 the detection-and-response half of the domain.
 
 ### AZ-204 Domain 1 — Develop Azure compute solutions (25–30%)
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 5.8 — Deploy a Function App
 
@@ -355,6 +369,8 @@ az functionapp list --query "[].{name:name, state:state}" -o table
 consumption-billed) and App Service / container apps are the AZ-204 compute
 options.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.9 — App configuration and deployment slots
 
 ```bash
@@ -368,6 +384,8 @@ configuration and safe-release mechanisms developers own.
 
 ### AZ-204 Domain 2 — Develop for Azure storage (15–20%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.10 — Blob storage operations
 
 ```bash
@@ -380,6 +398,8 @@ az storage container list --account-name "$STF" --account-key "$KEY" --query "[]
 (SDKs, connection via managed identity) is the storage-development skill.
 
 ### AZ-204 Domain 3 — Implement Azure security (15–20%)
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 5.11 — Authenticate with managed identity, read from Key Vault
 
@@ -396,6 +416,8 @@ code.
 
 ### AZ-204 Domain 4 — Connect to and consume services (20–25%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.12 — Service Bus / Event Grid messaging
 
 ```bash
@@ -408,6 +430,8 @@ Grid (events), and Event Hubs (streams) are the integration surface —
 choose by message pattern.
 
 ### AZ-204 Domain 5 — Monitor and troubleshoot (5–10%)
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 5.13 — Application Insights instrumentation
 
@@ -422,6 +446,8 @@ az monitor app-insights component show --app ai-retire \
 note). Instrumentation is a development-time decision — observability
 designed in, not bolted on.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 5.14 — Negative test: prove Key Vault RBAC denies without a role
 
 ```bash
@@ -435,6 +461,8 @@ error — even as subscription Owner, because RBAC-authorized Key Vault
 requires a *data-plane* role, not just management rights. That management
 vs. data-plane split is the security lesson.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 5.15 — Cleanup
 
 ```bash
@@ -444,6 +472,8 @@ az group exists --name rg-retire-lab
 
 **Expected result:** `false` shortly after — the identity, Key Vault,
 storage, Function App, workspace, and Insights removed together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

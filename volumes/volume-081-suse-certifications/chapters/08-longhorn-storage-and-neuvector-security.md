@@ -78,7 +78,7 @@ Kubernetes persistence.
 **Negative test:** store database data on an **emptyDir**; it's lost when the pod moves — use a
 **Longhorn PVC**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Plan replication and backups
 
@@ -98,7 +98,7 @@ PY
 **Negative test:** rely on replicas alone; a whole-cluster loss takes all replicas — add **offsite
 backups**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Apply NeuVector network segmentation
 
@@ -119,7 +119,7 @@ unexpected connections — defensive runtime protection.
 **Negative test:** leave NeuVector in **discover** mode indefinitely; it never enforces — promote the
 learned policy to **protect** mode.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Scan an image (shift-left)
 
@@ -140,7 +140,7 @@ security.
 **Negative test:** scan only running containers; the vulnerable image already deployed — scan and gate
 at **admission**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

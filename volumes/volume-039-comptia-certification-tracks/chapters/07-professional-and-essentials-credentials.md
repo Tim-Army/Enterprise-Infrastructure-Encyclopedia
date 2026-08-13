@@ -154,7 +154,7 @@ technical certification) — a business course versus an engineering certificati
 **Negative test:** plan to sit the **Cloud Essentials+ (CLO-002)** exam; it
 retired 25 September 2025 — the current offering is the Cloud Essentials course.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Place the credentials by audience (Topic: Selection)
 
@@ -173,7 +173,7 @@ for project/cloud-business roles, microcredentials for AI literacy.
 **Negative test:** put an AI Essentials microcredential where a role demands a
 full data or security certification; it proves literacy, not engineering depth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Project+: Project management concepts (33%)
 
@@ -193,7 +193,7 @@ schedule and dependency management, the largest Project+ domain.
 **Negative test:** start `build` before `design` finishes; ignoring dependencies
 breaks the schedule.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Project+: Project life cycle phases (30%)
 
@@ -209,7 +209,7 @@ Project+ tests (charter → plan → execute → monitor → close).
 **Negative test:** skip Closing (lessons learned, contract closure); an unclosed
 project leaks resources and knowledge.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — Project+: Tools and documentation (19%)
 
@@ -228,7 +228,7 @@ documentation artifact.
 **Negative test:** report status with no burndown or issue log; Project+ expects
 tool-backed documentation, not verbal updates.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — Project+: Basics of IT and governance (18%)
 
@@ -245,7 +245,7 @@ change control and governance basics.
 **Negative test:** push straight to production without change-board approval;
 governance requires a documented, approved change.
 
-**Cleanup:** `rm -f /tmp/change.csv`.
+**Rollback:** `rm -f /tmp/change.csv`.
 
 ## Lab Verification
 

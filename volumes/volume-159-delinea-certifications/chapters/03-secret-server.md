@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Storing privileged passwords without policy, rotation, or session recording. Static shared secrets persist and are reusable, and privileged sessions are unaccountable; Secret Server's policies, rotation, and recording are what make the vault secure and auditable at scale.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

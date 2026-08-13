@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Securing only the endpoint and cloud while treating email and network as out of scope. Attacks start in email and traverse the network, so those layers are where you catch them earliest and where XDR gains the most context; email and network security are essential protective layers and XDR sensors.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

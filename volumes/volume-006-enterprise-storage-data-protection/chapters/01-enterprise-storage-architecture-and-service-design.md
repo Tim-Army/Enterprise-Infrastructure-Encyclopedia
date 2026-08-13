@@ -476,7 +476,7 @@ machine disk is sufficient.
    under-perform its provisioned storage tier regardless of the array's
    capability.
 
-**Cleanup**
+**Rollback**
 
 7. Remove the loopback device and backing file:
 

@@ -106,7 +106,7 @@ aws ec2 describe-security-groups --group-ids sg-app \
 **Negative test:** open `5432` to `0.0.0.0/0` for convenience; that exposes the database — scope the
 rule to the **source security group**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 aws ec2 revoke-security-group-ingress --group-id sg-app --protocol tcp --port 5432 --source-group sg-web
@@ -139,7 +139,7 @@ it).
 **Negative test:** apply this on a cluster whose CNI does not enforce NetworkPolicy; nothing changes —
 use Calico/Cilium (or another enforcing CNI).
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 kubectl delete networkpolicy default-deny-ingress -n shop
@@ -176,7 +176,7 @@ allowlisting.
 
 **Negative test:** select peers by pod **IP**; pods are ephemeral and IPs churn — select by **label**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 kubectl delete networkpolicy allow-web-to-app -n shop
@@ -204,7 +204,7 @@ cluster-wide policy/encryption (Calico).
 **Negative test:** expect L7 (HTTP path) filtering from plain NetworkPolicy; it is L3/L4 — use **Cilium**
 for L7.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

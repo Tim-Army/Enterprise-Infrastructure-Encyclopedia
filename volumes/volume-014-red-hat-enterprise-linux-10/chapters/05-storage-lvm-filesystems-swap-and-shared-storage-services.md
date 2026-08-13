@@ -450,7 +450,7 @@ setting the partition type appropriately.
 may not see it until refreshed — confirm with `lsblk` that the partition is visible before
 building on it.
 
-**Cleanup:** carried through Lab 5.2's cleanup (the partition becomes a PV).
+**Rollback:** carried through Lab 5.2's cleanup (the partition becomes a PV).
 
 ### Lab 5.2 — Logical Volume Management (Topic: Configure local storage)
 
@@ -472,7 +472,7 @@ filesystem on it).
 **Negative test:** `lvextend` past the free space in the VG; it fails with insufficient free
 extents — an LV cannot exceed its VG's capacity, so you extend the VG (add a PV) first.
 
-**Cleanup:** carried through Lab 5.3's cleanup.
+**Rollback:** carried through Lab 5.3's cleanup.
 
 ### Lab 5.3 — Filesystems and persistent mounts (Topic: Create file systems)
 
@@ -498,7 +498,7 @@ persistent mounts by UUID and online filesystem growth (`xfs_growfs` for XFS,
 mode — always run `mount -a` after editing `fstab` to catch errors *before* rebooting, which
 is the habit that prevents an unbootable system.
 
-**Cleanup:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
+**Rollback:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
 sudo vgremove -y datavg; sudo pvremove /dev/vdb1; sudo wipefs -a /dev/vdb`.
 
 ### Lab 5.4 — Swap space (Topic: Configure local storage)
@@ -520,7 +520,7 @@ and enabling it at boot.
 **Negative test:** `swapon` a device you never ran `mkswap` on; it fails with "invalid
 argument" — swap must be formatted with `mkswap` before it can be enabled.
 
-**Cleanup:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
+**Rollback:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
 `sudo lvremove -y /dev/datavg/swaplv`.
 
 ### Lab 5.5 — Network storage: NFS client (Topic: Configure file systems)
@@ -542,7 +542,7 @@ systems, and `_netdev` is what prevents a boot hang when the network is not yet 
 **Negative test:** add an NFS entry to `fstab` without `_netdev`; boot can hang or the mount
 fails before networking is ready — network mounts need `_netdev` to order correctly at boot.
 
-**Cleanup:** `sudo umount /mnt/shared`; remove the `fstab` line.
+**Rollback:** `sudo umount /mnt/shared`; remove the `fstab` line.
 
 ## Lab Verification
 

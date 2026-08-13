@@ -72,7 +72,7 @@ PY
 **Negative test:** run heavyweight full Kubernetes on an edge device; **K3s** is built for that — use
 it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Deploy a workload with kubectl
 
@@ -90,7 +90,7 @@ operation.
 **Negative test:** deploy into the **default** namespace with no isolation; use a **namespace** per
 app/team.
 
-**Cleanup:** `kubectl delete namespace demo`.
+**Rollback:** `kubectl delete namespace demo`.
 
 ### Lab 7.3 — Package with Helm
 
@@ -107,7 +107,7 @@ echo "Helm: package + version + release Kubernetes apps as charts (repeatable in
 **Negative test:** apply dozens of raw YAML files by hand for one app; **Helm** packages them — use a
 chart.
 
-**Cleanup:** `helm uninstall my-web -n demo` (if installed).
+**Rollback:** `helm uninstall my-web -n demo` (if installed).
 
 ### Lab 7.4 — Apply Rancher RBAC
 
@@ -127,7 +127,7 @@ PY
 **Negative test:** give every developer **cluster-admin**; one mistake affects everything — scope with
 **RBAC**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

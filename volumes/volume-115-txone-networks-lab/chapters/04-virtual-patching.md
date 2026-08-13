@@ -32,7 +32,7 @@ The inspector loads signatures per connection, so the patch is live immediately 
 
 **Negative test.** A signature that is too broad (e.g., matching `READ`) would block legitimate traffic — virtual patches must be specific to the exploit. Keep it to `EXPLOIT`.
 
-**Cleanup.** Keep the signature.
+**Rollback.** Keep the signature.
 
 ### Exercise 4.2 — The exploit is blocked; the PLC is untouched
 
@@ -68,7 +68,7 @@ grep -c PLC-COMPROMISED /tmp/vulnplc.log
 
 The compromise count does not increase — the attack is stopped before the device sees it.
 
-**Cleanup.** Keep the virtual patch for the following chapters.
+**Rollback.** Keep the virtual patch for the following chapters.
 
 ## Summary and Completion Checklist
 

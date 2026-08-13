@@ -251,6 +251,8 @@ az network vnet subnet list --vnet-name vnet-hub \
 `GatewaySubnet` name is mandatory and reserved — a VPN/ExpressRoute gateway
 will not deploy without it.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.2 — Configure virtual network peering *(topic 1)*
 
 ```bash
@@ -268,6 +270,8 @@ az network vnet peering show --name hub-to-spoke --vnet-name vnet-hub \
 sides and is **not transitive** — two spokes peered to a hub cannot reach
 each other without a gateway or route.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.3 — Configure public IPs and user-defined routes *(topic 1)*
 
 ```bash
@@ -284,6 +288,8 @@ firewall in the hub.
 
 ### Domain 2 — Design, implement, and manage connectivity services (20–25%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.4 — Create a Cloud Router equivalent (VPN gateway prerequisites)
 
 ```bash
@@ -293,6 +299,8 @@ az network public-ip show --name pip-vpngw --query "{name:name, sku:sku.name, ip
 
 **Expected result:** a Standard static public IP. HA VPN gateways require
 a Standard public IP; this is the prerequisite the gateway consumes.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 4.5 — Site-to-Site VPN gateway *(topic 2)*
 
@@ -309,6 +317,8 @@ examinable default. ExpressRoute is the private-circuit alternative.
 
 ### Domain 3 — Design and implement private access to Azure services (10–15%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.6 — Service endpoints vs private endpoints *(topic 3)*
 
 ```bash
@@ -324,6 +334,8 @@ az network vnet subnet show --vnet-name vnet-spoke --name snet-app \
 subnet identity to the service (traffic still hits a public endpoint); a
 **Private Endpoint** places a private IP in the subnet and removes the
 public path — the stronger control, exercised next.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 4.7 — Private endpoint for a PaaS service *(topic 3)*
 
@@ -342,6 +354,8 @@ from the internet — the answer to "must not be publicly reachable."
 
 ### Domain 4 — Design and implement network security (15–20%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.8 — Network security groups and application security groups *(topic 4)*
 
 ```bash
@@ -357,6 +371,8 @@ az network nsg rule list --nsg-name nsg-app \
 stateful, priority-ordered, with an implied allow-VNet / deny-Internet
 baseline; explicit rules make intent auditable.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.9 — Azure Firewall and Bastion (secure access) *(topic 4)*
 
 ```bash
@@ -371,6 +387,8 @@ name). Azure Firewall centralizes egress control in the hub; Bastion
 
 ### Domain 5 — Design and implement application delivery services (15–20%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.10 — Load balancer and its tiers *(topic 5)*
 
 ```bash
@@ -383,6 +401,8 @@ echo "Delivery: Load Balancer (L4 regional) | App Gateway (L7+WAF regional) | Fr
 **Expected result:** `lb-az700 Standard`, plus the selection table. Choose
 by layer (transport vs application) and scope (regional vs global) — the
 recurring AZ-700 decision.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 4.11 — Azure DNS and name resolution *(topic 5)*
 
@@ -398,6 +418,8 @@ az network private-dns zone show --name privatelink.blob.core.windows.net \
 `privatelink` zone is what makes the Lab 4.7 private endpoint resolvable by
 name — private endpoints and private DNS are examined together.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.12 — Troubleshoot connectivity *(topic 1/5)*
 
 ```bash
@@ -409,6 +431,8 @@ az network watcher list --query "[].{name:name, location:location}" -o table | h
 Troubleshoot and IP Flow Verify identify whether an NSG rule, a route, or
 the destination dropped a flow — the three causes a failed ping cannot
 distinguish.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 4.13 — Negative test: prove peering is not transitive
 
@@ -428,6 +452,8 @@ spoke2, even though both peer the hub. Peering is not transitive; reaching
 spoke2 from spoke1 needs a gateway/route or direct peering. That is the
 fact all Azure topology design turns on.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 4.14 — Cleanup
 
 ```bash
@@ -437,6 +463,8 @@ az group exists --name rg-az700-lab
 
 **Expected result:** `false` shortly after — VNets, gateway, endpoints,
 NSGs, DNS zone, and load balancer removed together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

@@ -75,7 +75,7 @@ defense-in-depth.
 **Negative test:** allow internet→internal directly for convenience; that erases segmentation —
 force traffic through the **DMZ** and controls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — CND: default-deny firewall policy
 
@@ -95,7 +95,7 @@ approach.
 
 **Negative test:** end with default-allow; unlisted traffic passes — **default deny**, and log it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — CND: monitor network traffic
 
@@ -112,7 +112,7 @@ echo "CND: continuous traffic monitoring reveals anomalies (unexpected protocols
 **Negative test:** rely only on device logs; **traffic monitoring** catches what endpoints miss —
 watch the wire too.
 
-**Cleanup:** `rm -f /tmp/cnd.pcap`.
+**Rollback:** `rm -f /tmp/cnd.pcap`.
 
 ### Lab 4.4 — ICS/SCADA: OT-safe defense
 
@@ -135,7 +135,7 @@ security.
 **Negative test:** run an active vulnerability scan against a PLC; it can crash the process — use
 **passive** monitoring in OT.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

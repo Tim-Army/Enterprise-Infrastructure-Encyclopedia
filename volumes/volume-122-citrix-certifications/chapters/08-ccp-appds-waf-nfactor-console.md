@@ -31,7 +31,7 @@ show appfw profile prof_web | head -20
 
 **Negative test:** Jump straight to BLOCK on a real app with no learning: legitimate requests trip Start URL closure — the module's core lesson is the learn-then-block sequence.
 
-**Cleanup:** Keep for 8.2.
+**Rollback:** Keep for 8.2.
 
 ### Lab 8.2 — Protections in action (module 3)
 
@@ -46,7 +46,7 @@ curl -s "http://10.150.9.100/search?q=1%27%20OR%20%271%27=%271" -o /dev/null -w 
 
 **Negative test:** Send the same probe with the check back in LEARN — it passes and is logged as a candidate relaxation instead; action, not detection, is what changed.
 
-**Cleanup:** Return the check to LEARN LOG in the lab.
+**Rollback:** Return the check to LEARN LOG in the lab.
 
 ### Lab 8.3 — Bot and API protection (modules 4–5)
 
@@ -65,7 +65,7 @@ add responder policy pol_rate "SYS.CHECK_LIMIT(\"rate_login\")" RESET
 
 **Negative test:** Loop 20 rapid requests at the protected vserver: the first ~10 succeed, the rest are reset — `show ns limitIdentifier rate_login` shows the counter doing it.
 
-**Cleanup:** Remove the bot/rate lab objects.
+**Rollback:** Remove the bot/rate lab objects.
 
 ### Lab 8.4 — nFactor authentication (modules 6–7)
 
@@ -87,7 +87,7 @@ bind authentication vserver auth_vs -policy pol_ls -priority 100 -gotoPriorityEx
 
 **Negative test:** Omit the `nextFactor`: authentication completes after LDAP alone — the chain is only as long as its links.
 
-**Cleanup:** Keep the auth vserver for the lab; remove when done.
+**Rollback:** Keep the auth vserver for the lab; remove when done.
 
 ### Lab 8.5 — AAA customization (module 8)
 
@@ -103,7 +103,7 @@ add authentication loginSchema ls_eula -authenticationSchema "/nsconfig/loginsch
 
 **Negative test:** Base a theme on a nonexistent one — the add fails; themes derive, they don't start blank.
 
-**Cleanup:** Remove the lab theme.
+**Rollback:** Remove the lab theme.
 
 ### Lab 8.6 — NetScaler Console onboarding (modules 9–10)
 
@@ -120,7 +120,7 @@ console> Infrastructure > SSL Dashboard       # expiring certificates, weak ciph
 
 **Negative test:** Add an instance with a wrong admin profile: discovery fails cleanly and the instance shows unreachable — credentials are per-profile, not global.
 
-**Cleanup:** Remove the lab instance from Console.
+**Rollback:** Remove the lab instance from Console.
 
 ### Lab 8.7 — Stylebooks and config management (module 11)
 
@@ -136,7 +136,7 @@ console> Infrastructure > Configuration Audit > run audit against the template
 
 **Negative test:** Hand-edit the deployed vserver on the instance; the next audit reports the drift — the module's point is that the template, not the box, is the source of truth.
 
-**Cleanup:** Delete the Stylebook deployment (Console removes the objects it created).
+**Rollback:** Delete the Stylebook deployment (Console removes the objects it created).
 
 ### Lab 8.8 — Tuning profiles (module 12)
 
@@ -155,7 +155,7 @@ set ssl vserver lb_web_ssl -sslProfile ssl_strict
 
 **Negative test:** Disable TLS 1.2 as well and old clients fail the handshake — `show ssl vserver` plus `nstrace` prove it was the profile.
 
-**Cleanup:** Remove the lab profiles.
+**Rollback:** Remove the lab profiles.
 
 ## Summary and Completion Checklist
 

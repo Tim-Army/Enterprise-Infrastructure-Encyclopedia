@@ -30,7 +30,7 @@ sudo nft list chain inet airgap forward
 
 **Negative test.** Note there is no `victim → db` or `hmi → db` rule — with default-deny, absent a rule they are simply blocked; you never write a deny for them. Zero trust is the *absence* of a permit, not the presence of a deny.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Exercise 5.2 — Sanctioned works, lateral stays blocked
 
@@ -56,7 +56,7 @@ The one sanctioned flow works; the worm's path to the database and every other e
 
 **Negative test.** Compare with the flat VLAN of Chapter 03, where `victim → db` and `victim → plc` both reached — the network-of-one has closed every lateral path while keeping the app alive.
 
-**Cleanup.** Keep the policy for the kill-switch chapter.
+**Rollback.** Keep the policy for the kill-switch chapter.
 
 ## Summary and Completion Checklist
 

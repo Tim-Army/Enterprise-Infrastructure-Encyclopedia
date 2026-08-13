@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Treating VantageCloud Lake and Enterprise as identical, or assuming Teradata is on-premises only. Lake's compute/storage separation and elasticity differ fundamentally from Enterprise, and Vantage runs across clouds and hybrid; knowing the editions and deployment options is core platform knowledge.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

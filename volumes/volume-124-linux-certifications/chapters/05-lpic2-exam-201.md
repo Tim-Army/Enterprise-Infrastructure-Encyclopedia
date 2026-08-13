@@ -29,7 +29,7 @@ uptime
 
 **Negative test:** Reading high "used" memory in `free` as exhaustion while cache holds most of it — available, not used, is the number; the exam tests exactly this misread.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Linux kernel (Topic 201)
 
@@ -48,7 +48,7 @@ sudo modprobe -r dummy 2>/dev/null
 
 **Negative test:** `modprobe` a nonexistent module — the error distinguishes missing module from bad parameters; both appear in exam scenarios.
 
-**Cleanup:** Done in the walkthrough.
+**Rollback:** Done in the walkthrough.
 
 ### Lab 5.3 — System startup (Topic 202)
 
@@ -65,7 +65,7 @@ grep -m1 GRUB_CMDLINE_LINUX /etc/default/grub 2>/dev/null || true
 
 **Negative test:** Edit `/etc/default/grub` without running `update-grub`/`grub2-mkconfig` — the change never takes effect; the two-step is the exam's favorite startup gotcha.
 
-**Cleanup:** None (read-only).
+**Rollback:** None (read-only).
 
 ### Lab 5.4 — Filesystem and devices (Topic 203)
 
@@ -82,7 +82,7 @@ sudo mount -o loop fs.img /mnt 2>/dev/null && mount | grep fs.img; sudo umount /
 
 **Negative test:** An fstab entry with a wrong UUID boots into emergency mode — why label/UUID hygiene is a boot-reliability issue, not cosmetics.
 
-**Cleanup:** `rm fs.img`.
+**Rollback:** `rm fs.img`.
 
 ### Lab 5.5 — Advanced storage (Topic 204)
 
@@ -101,7 +101,7 @@ sudo vgremove -f labvg; sudo losetup -d $L1 $L2
 
 **Negative test:** `lvcreate` larger than the VG — "insufficient free space"; capacity flows PV→VG→LV, and the error proves the hierarchy.
 
-**Cleanup:** `rm pv1.img pv2.img`.
+**Rollback:** `rm pv1.img pv2.img`.
 
 ### Lab 5.6 — Networking configuration (Topic 205)
 
@@ -119,7 +119,7 @@ sleep 1; sudo ip link del lab0
 
 **Negative test:** Add the route before the interface has an address — "network unreachable"; ordering (link up, address, then route) is the operational sequence the exam tests.
 
-**Cleanup:** Done in the walkthrough.
+**Rollback:** Done in the walkthrough.
 
 ### Lab 5.7 — System maintenance (Topic 206)
 
@@ -136,7 +136,7 @@ echo "notify: wall/shutdown messages; /etc/issue, motd"
 
 **Negative test:** Restore with `tar xzf` into the wrong directory — files land relative to CWD; tar's relative-path behavior is a classic restore surprise.
 
-**Cleanup:** `rm tiny.c tiny backup.tgz`.
+**Rollback:** `rm tiny.c tiny backup.tgz`.
 
 ## Summary and Completion Checklist
 

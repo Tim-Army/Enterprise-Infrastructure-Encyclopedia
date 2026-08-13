@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Optimizing the slowest *service* by total time — that is your own API at 800 ms, of which it spent only 35 ms doing work; you would tune the wrong thing entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Head versus tail sampling
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Choosing head sampling for simplicity and discovering during an outage that no trace of the failing requests was kept — the data was discarded before anyone knew it mattered.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Metric → trace → log
 
@@ -183,7 +183,7 @@ EOF
 
 **Negative test:** Trying to debug the spike from metrics alone — you can see p99 rose at 10:10 and nothing about which dependency caused it, so the next step is guesswork.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

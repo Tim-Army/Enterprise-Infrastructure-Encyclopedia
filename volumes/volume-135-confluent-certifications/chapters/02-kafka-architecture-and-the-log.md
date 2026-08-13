@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Producing without a key when order matters — records round-robin across partitions, and `deleted` can be processed before `created` for the same customer, corrupting downstream state.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — ISR, min.insync.replicas, and the durability trade
 
@@ -109,7 +109,7 @@ EOF
 
 **Negative test:** Setting `min.insync.replicas` equal to the replication factor — you lose all fault tolerance for writes, because a single broker restart takes the partition offline for producers.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Choose partition count and understand the cost of change
 
@@ -139,7 +139,7 @@ EOF
 
 **Negative test:** Over-provisioning to thousands of partitions "for headroom" — you pay in file handles, replication traffic, memory, and much slower leader election during broker failures, for parallelism no consumer group will ever use.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

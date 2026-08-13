@@ -289,7 +289,7 @@ nonzero transport-node count — the prepared fabric.
 **Negative test:** create a segment referencing an unprepared host; it has
 no realized state on that host, proving preparation is a prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.2 — Configure segments (Objective 4.2)
 
@@ -309,7 +309,7 @@ segment ready for workloads.
 overlay-only gateway config; realization fails, showing segment type must
 match the transport zone.
 
-**Cleanup:** `curl -sk -X DELETE -H "$H" "$NSX/policy/api/v1/infra/segments/web-seg"`.
+**Rollback:** `curl -sk -X DELETE -H "$H" "$NSX/policy/api/v1/infra/segments/web-seg"`.
 
 ### Lab 12.3 — Deploy and configure NSX Edge nodes (Objective 4.3)
 
@@ -328,7 +328,7 @@ factor (MEDIUM/LARGE) — the nodes that host Tier-0/Tier-1 services.
 **Negative test:** place a Tier-0 SR on an empty Edge cluster; the gateway
 has no realized services — Edge nodes must exist first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.4 — Configure the Tier-1 gateway (Objective 4.4)
 
@@ -351,7 +351,7 @@ attached — north-south routing for the segment's subnet begins here.
 route never reaches the physical fabric, proving the Tier-1→Tier-0 link is
 required.
 
-**Cleanup:** delete the Tier-1 after detaching the segment.
+**Rollback:** delete the Tier-1 after detaching the segment.
 
 ### Lab 12.5 — Create and configure a Tier-0 gateway with OSPF (Objective 4.5)
 
@@ -371,7 +371,7 @@ exchanging routes with the physical router.
 peer; the adjacency stalls in `EXSTART`/`INIT`, the classic area-mismatch
 symptom.
 
-**Cleanup:** disable OSPF on the Tier-0.
+**Rollback:** disable OSPF on the Tier-0.
 
 ### Lab 12.6 — Configure the Tier-0 gateway with BGP (Objective 4.6)
 
@@ -391,7 +391,7 @@ AS 65001 and can exchange prefixes.
 **Negative test:** set the wrong `remote_as_num`; the session flaps in
 `CONNECT`/`ACTIVE` — the AS mismatch BGP refuses to establish over.
 
-**Cleanup:** delete the BGP neighbor.
+**Rollback:** delete the BGP neighbor.
 
 ### Lab 12.7 — Configure VRF Lite (Objective 4.7)
 
@@ -410,7 +410,7 @@ separate routing table over shared Edge infrastructure.
 **Negative test:** advertise overlapping tenant prefixes without VRF
 separation; routes collide — the isolation VRF Lite provides.
 
-**Cleanup:** delete the VRF Tier-0.
+**Rollback:** delete the VRF Tier-0.
 
 ### Lab 12.8 — Configure Network Address Translation (Objective 4.8)
 
@@ -430,7 +430,7 @@ curl -sk -H "$H" "$NSX/policy/api/v1/infra/tier-1s/t1-web/nat/USER/nat-rules/sna
 advertised to the Tier-0; asymmetric routing breaks return traffic — why
 NAT and route advertisement must be coordinated.
 
-**Cleanup:** delete the NAT rule.
+**Rollback:** delete the NAT rule.
 
 ### Lab 12.9 — Deploy Virtual Private Networks (Objective 4.9)
 
@@ -449,7 +449,7 @@ connectivity to a remote site over the Tier-0.
 **Negative test:** a session with mismatched pre-shared keys stays down; the
 tunnel status never reaches `UP`, the PSK-mismatch symptom.
 
-**Cleanup:** disable/delete the lab VPN session.
+**Rollback:** disable/delete the lab VPN session.
 
 ### Lab 12.10 — Manage users and roles (Objective 4.10)
 
@@ -468,7 +468,7 @@ administration.
 **Negative test:** a `network_engineer` principal attempts to edit
 enforcement points/system settings; denied — the role lacks that scope.
 
-**Cleanup:** delete the role binding.
+**Rollback:** delete the role binding.
 
 ### Lab 12.11 — Perform operations tasks (Objective 4.11)
 
@@ -487,7 +487,7 @@ backup `success: true` — the operational hygiene the exam expects.
 **Negative test:** a backup target with bad SFTP credentials reports
 `success: false`; an unverified backup is not a backup.
 
-**Cleanup:** delete the syslog exporter.
+**Rollback:** delete the syslog exporter.
 
 ### Lab 12.12 — Monitor a VMware NSX implementation (Objective 4.12)
 
@@ -505,7 +505,7 @@ monitoring signal for control-plane, edge, and DFW health.
 edge-tunnel alarm is open; the overlay is degraded though pings still pass —
 why alarms, not spot checks, drive monitoring.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.13 — Use NSX Intelligence (Objective 4.13)
 
@@ -524,7 +524,7 @@ observes real flows and proposes DFW rules from them.
 or leaving gaps that Intelligence's flow-based recommendation would have
 caught.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.14 — Use log files to troubleshoot (Objective 5.1)
 
@@ -542,7 +542,7 @@ the authoritative record of why an intended config did not take effect.
 error log is usually a downstream (transport-node) issue, not a policy
 error — absence of policy errors redirects the search.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.15 — Identify tools available for troubleshooting (Objective 5.2)
 
@@ -563,7 +563,7 @@ exact component — the definitive path diagnostic.
 **Negative test:** guess the fault from pings alone; Traceflow instead names
 the DFW rule or routing hop that dropped the packet.
 
-**Cleanup:** none (diagnostic; observations expire).
+**Rollback:** none (diagnostic; observations expire).
 
 ### Lab 12.16 — Troubleshoot common NSX issues (Objective 5.3)
 
@@ -583,7 +583,7 @@ bug DFW troubleshooting hunts.
 **Negative test:** add an explicit allow *below* a broad deny; its zero hit
 count proves it is unreachable — rule order, not rule content, is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.17 — Comprehensive NSX build-and-troubleshoot (integrative)
 
@@ -655,7 +655,7 @@ as a realistic self-assessment for exam readiness.
    or 11 and repeat that specific step in isolation until it can be
    completed unaided within its target time.
 
-8. **Cleanup:** remove all objects created during the exercise (DFW
+8. **Rollback:** remove all objects created during the exercise (DFW
    policy, segments, Tier-1 and Tier-0 gateways, Edge cluster and Edge
    node, transport node preparation, transport zone/uplink profile/TEP
    pool) to return the lab to its clean starting state for future

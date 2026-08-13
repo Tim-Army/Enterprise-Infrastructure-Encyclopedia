@@ -177,7 +177,7 @@ will run.
 **Negative test:** leave `crond` disabled; the periodic script never runs and the
 host silently ages — enable `crond`.
 
-**Cleanup:** keep the schedule, or remove the script and disable `crond`.
+**Rollback:** keep the schedule, or remove the script and disable `crond`.
 
 ### Lab 7.2 — Grow the root filesystem
 
@@ -199,7 +199,7 @@ enough to hold the firmware images the Chapter 05 server serves.
 **Negative test:** run `resize2fs /dev/sda1` on a whole-disk (no-partition) layout;
 it errors because there is no such device — target `/dev/sda`.
 
-**Cleanup:** none (the larger filesystem is wanted).
+**Rollback:** none (the larger filesystem is wanted).
 
 ### Lab 7.3 — Harden with `doas` and restricted SSH
 
@@ -220,7 +220,7 @@ is disabled — least-privilege administration.
 **Negative test:** try to `doas` as a user not in `wheel`; it is denied — the policy
 is scoped to the `wheel` group.
 
-**Cleanup:** keep the hardened configuration.
+**Rollback:** keep the hardened configuration.
 
 ## Lab Verification
 

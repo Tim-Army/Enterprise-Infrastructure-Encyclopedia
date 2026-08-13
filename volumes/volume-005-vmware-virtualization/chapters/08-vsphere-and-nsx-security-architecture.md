@@ -715,7 +715,7 @@ attack surface.
 **Negative test:** leave hosts with SSH always on, no lockdown, and default settings; the management
 plane is broadly exposed — the hardening baseline closes those well-known exposures.
 
-**Cleanup:** none (keep hardening).
+**Rollback:** none (keep hardening).
 
 ### Lab 8.2 — Micro-segmentation with NSX (Topic: Segmentation)
 
@@ -737,7 +737,7 @@ perimeter firewall cannot.
 freely east-west between VMs — the distributed firewall is what enforces segmentation between
 workloads on the same network.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Security architecture and integration (Topic: Security architecture)
 
@@ -760,7 +760,7 @@ as the rest of the estate.
 host hardening or east-west segmentation is exploitable — layered controls across platform, network,
 and workload are what make it defensible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

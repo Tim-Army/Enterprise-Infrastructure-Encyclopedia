@@ -307,7 +307,7 @@ application artifact ready to run on Fargate.
 `ClientException` for a Fargate task, showing CPU/memory are required for
 serverless compute.
 
-**Cleanup:** `aws ecs deregister-task-definition --task-definition dva-app:1`.
+**Rollback:** `aws ecs deregister-task-definition --task-definition dva-app:1`.
 
 ### Lab 11.2 — Develop code for AWS Lambda
 
@@ -327,7 +327,7 @@ function ran and echoed its event.
 **Negative test:** invoke with a malformed payload (`--payload 'not-json'`);
 the call returns an `InvalidRequestContentException`.
 
-**Cleanup:** `aws lambda delete-function --function-name dva-fn`.
+**Rollback:** `aws lambda delete-function --function-name dva-fn`.
 
 ### Lab 11.3 — Use data stores in application development
 
@@ -347,7 +347,7 @@ aws dynamodb get-item --table-name dva-items --key '{"id":{"S":"a1"}}' --query '
 **Negative test:** `get-item` with a key that omits the partition key fails
 `ValidationException`, showing the key schema is mandatory.
 
-**Cleanup:** `aws dynamodb delete-table --table-name dva-items`.
+**Rollback:** `aws dynamodb delete-table --table-name dva-items`.
 
 ### Lab 11.4 — Implement authentication and/or authorization
 
@@ -367,7 +367,7 @@ an application authenticates against.
 **Negative test:** create a user with a password below the pool's policy
 length; `InvalidPasswordException` proves the policy is enforced at signup.
 
-**Cleanup:** `aws cognito-idp delete-user-pool --user-pool-id "$POOL"`.
+**Rollback:** `aws cognito-idp delete-user-pool --user-pool-id "$POOL"`.
 
 ### Lab 11.5 — Implement encryption by using AWS services
 
@@ -388,7 +388,7 @@ trip under a customer-managed key.
 `aws kms disable-key --key-id "$KID"`; it fails `DisabledException`,
 proving the key controls access to the data.
 
-**Cleanup:** `aws kms schedule-key-deletion --key-id "$KID" --pending-window-in-days 7`.
+**Rollback:** `aws kms schedule-key-deletion --key-id "$KID" --pending-window-in-days 7`.
 
 ### Lab 11.6 — Manage sensitive data in application code
 
@@ -407,7 +407,7 @@ it by name, never embedding the value.
 gets `AccessDeniedException`, showing the secret is access-controlled, not
 merely hidden.
 
-**Cleanup:** `aws secretsmanager delete-secret --secret-id dva/db --force-delete-without-recovery`.
+**Rollback:** `aws secretsmanager delete-secret --secret-id dva/db --force-delete-without-recovery`.
 
 ### Lab 11.7 — Prepare application artifacts to be deployed to AWS
 
@@ -427,7 +427,7 @@ traceable artifact ready for a deploy stage.
 bucket versioning the original is lost, the case for enabling versioning on
 an artifact bucket.
 
-**Cleanup:** `aws s3api delete-object --bucket "$BUCKET" --key artifacts/dva-fn-1.0.0.zip`.
+**Rollback:** `aws s3api delete-object --bucket "$BUCKET" --key artifacts/dva-fn-1.0.0.zip`.
 
 ### Lab 11.8 — Test applications in development environments
 
@@ -446,7 +446,7 @@ echoed event — a tested version, isolated from production callers.
 **Negative test:** invoke `dva-fn:prod` before that alias exists;
 `ResourceNotFoundException` shows aliases are the promotion gate.
 
-**Cleanup:** `aws lambda delete-alias --function-name dva-fn --name dev`.
+**Rollback:** `aws lambda delete-alias --function-name dva-fn --name dev`.
 
 ### Lab 11.9 — Automate deployment testing
 
@@ -466,7 +466,7 @@ command — automated testing as a pipeline stage.
 **Negative test:** start a build with a buildspec whose test command exits
 non-zero (remove `|| true`); the build reports `FAILED`, gating the deploy.
 
-**Cleanup:** `aws codebuild delete-project --name dva-test`.
+**Rollback:** `aws codebuild delete-project --name dva-test`.
 
 ### Lab 11.10 — Deploy code by using AWS CI/CD services
 
@@ -489,7 +489,7 @@ aws deploy create-deployment-group --application-name dva-cd \
 `InvalidDeploymentConfigNameException`, showing the shift strategy must be
 valid.
 
-**Cleanup:** `aws deploy delete-application --application-name dva-cd`.
+**Rollback:** `aws deploy delete-application --application-name dva-cd`.
 
 ### Lab 11.11 — Assist in a root cause analysis
 
@@ -511,7 +511,7 @@ sleep 3; aws logs get-query-results --query-id "$QID" --query 'status'
 `ResourceNotFoundException` shows the function must have logged at least
 once first.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 11.12 — Instrument code for observability
 
@@ -531,7 +531,7 @@ turning latency and downstream calls into a service map.
 `PassThrough` and no upstream trace header; no traces appear, showing active
 tracing is what produces them.
 
-**Cleanup:** reset with `--tracing-config Mode=PassThrough`.
+**Rollback:** reset with `--tracing-config Mode=PassThrough`.
 
 ### Lab 11.13 — Optimize applications by using AWS services and features
 
@@ -552,7 +552,7 @@ concurrency bills while allocated; delete promptly.
 published version; it fails, showing the optimization requires an immutable
 version.
 
-**Cleanup:** `aws lambda delete-provisioned-concurrency-config --function-name dva-fn --qualifier 1`.
+**Rollback:** `aws lambda delete-provisioned-concurrency-config --function-name dva-fn --qualifier 1`.
 
 **CloudOps Engineer – Associate (SOA-C03) — Labs 11.14–11.26**
 
@@ -576,7 +576,7 @@ metric reports — a log-derived operational signal.
 **Negative test:** a metric filter whose pattern never matches keeps the
 metric at zero and the alarm silent, the untested-alarm trap.
 
-**Cleanup:** delete the alarm and the metric filter.
+**Rollback:** delete the alarm and the metric filter.
 
 ### Lab 11.15 — Identify and remediate issues by using metrics
 
@@ -596,7 +596,7 @@ aws ssm describe-automation-executions \
 **Negative test:** run the document against a stopped instance; it fails and
 records why, showing remediation must match resource state.
 
-**Cleanup:** none (the automation completes and self-terminates).
+**Rollback:** none (the automation completes and self-terminates).
 
 ### Lab 11.16 — Implement performance optimization for compute, storage, database
 
@@ -616,7 +616,7 @@ type `gp3` — a live storage optimization.
 **Negative test:** request 20000 IOPS on a small gp3 volume; it fails the
 size-to-IOPS ratio check, a real performance constraint.
 
-**Cleanup:** none (the volume remains in use; gp3 is the desired end state).
+**Rollback:** none (the volume remains in use; gp3 is the desired end state).
 
 ### Lab 11.17 — Implement scalability and elasticity
 
@@ -636,7 +636,7 @@ failed instances and scales on policy.
 **Negative test:** set `--desired-capacity 10` above `--max-size 6`; the
 request is rejected, showing max-size is a hard ceiling.
 
-**Cleanup:** `aws autoscaling delete-auto-scaling-group --auto-scaling-group-name soa-asg --force-delete`.
+**Rollback:** `aws autoscaling delete-auto-scaling-group --auto-scaling-group-name soa-asg --force-delete`.
 
 ### Lab 11.18 — Implement highly available and resilient environments
 
@@ -659,7 +659,7 @@ health check are terminated and replaced, closing the resilience loop.
 keeps the instance "running" is never replaced — the failure ELB checks
 catch.
 
-**Cleanup:** detach the target group.
+**Rollback:** detach the target group.
 
 ### Lab 11.19 — Implement backup and restore strategies
 
@@ -676,7 +676,7 @@ retention — centralized, policy-driven backups.
 **Negative test:** a plan with `DeleteAfterDays` less than
 `MoveToColdStorageAfterDays` is rejected, enforcing a sane lifecycle.
 
-**Cleanup:** `aws backup delete-backup-plan --backup-plan-id <id>`.
+**Rollback:** `aws backup delete-backup-plan --backup-plan-id <id>`.
 
 ### Lab 11.20 — Provision and maintain cloud resources
 
@@ -695,7 +695,7 @@ at scale.
 **Negative test:** target a tag no instance carries; the command has zero
 targets and does nothing, showing tag hygiene gates operations.
 
-**Cleanup:** none (scan is read-only; no patches installed).
+**Rollback:** none (scan is read-only; no patches installed).
 
 ### Lab 11.21 — Automate the management of existing resources
 
@@ -715,7 +715,7 @@ container for patching and tasks.
 **Negative test:** set `--duration 1 --cutoff 2` (cutoff exceeds duration);
 the request is rejected, enforcing a coherent schedule.
 
-**Cleanup:** `aws ssm delete-maintenance-window --window-id "$WIN"`.
+**Rollback:** `aws ssm delete-maintenance-window --window-id "$WIN"`.
 
 ### Lab 11.22 — Implement and manage security and compliance tools and policies
 
@@ -734,7 +734,7 @@ aws configservice describe-compliance-by-config-rule --config-rule-names s3-ssl-
 **Negative test:** add the rule with Config's recorder off; it never
 evaluates (`INSUFFICIENT_DATA`), the dependency from Lab 10.6.
 
-**Cleanup:** `aws configservice delete-config-rule --config-rule-name s3-ssl-only`.
+**Rollback:** `aws configservice delete-config-rule --config-rule-name s3-ssl-only`.
 
 ### Lab 11.23 — Implement strategies to protect data and infrastructure
 
@@ -751,7 +751,7 @@ at rest without relying on per-request flags.
 **Negative test:** launch a volume before enabling the default and inspect
 `Encrypted`; it is `false`, the gap default-encryption closes.
 
-**Cleanup:** leave enabled (secure default), or
+**Rollback:** leave enabled (secure default), or
 `aws ec2 disable-ebs-encryption-by-default` to restore prior state.
 
 ### Lab 11.24 — Implement and optimize networking features and connectivity
@@ -772,7 +772,7 @@ private connectivity to the API, cheaper and more secure than NAT egress.
 **Negative test:** call SSM from the private subnet with the endpoint
 deleted and no NAT; the request times out, proving the endpoint carried it.
 
-**Cleanup:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <id>`.
+**Rollback:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <id>`.
 
 ### Lab 11.25 — Configure domains, DNS services, and content delivery
 
@@ -791,7 +791,7 @@ checks its target, the standard front-door DNS pattern.
 **Negative test:** UPSERT an alias whose `HostedZoneId` does not match the
 target service; the change is rejected, showing alias targets are typed.
 
-**Cleanup:** repeat the call with `"Action":"DELETE"`.
+**Rollback:** repeat the call with `"Action":"DELETE"`.
 
 ### Lab 11.26 — Troubleshoot network connectivity issues
 
@@ -813,7 +813,7 @@ blocking security group or route — a definitive troubleshooting verdict.
 **Negative test:** open the required rule and re-run; `Found: true`,
 confirming the analyzer, not guesswork, located the fault.
 
-**Cleanup:** delete the analysis and path.
+**Rollback:** delete the analysis and path.
 
 **Data Engineer – Associate (DEA-C01) — Labs 11.27–11.43**
 
@@ -836,7 +836,7 @@ that batches records to the lake. **Cost:** Firehose bills per GB ingested.
 **Negative test:** `put-record` with a role lacking `s3:PutObject`; delivery
 fails and the error surfaces in the stream's error logs, not at the API.
 
-**Cleanup:** `aws firehose delete-delivery-stream --delivery-stream-name dea-ingest`.
+**Rollback:** `aws firehose delete-delivery-stream --delivery-stream-name dea-ingest`.
 
 ### Lab 11.28 — Transform and process data
 
@@ -855,7 +855,7 @@ lab only registers it.
 **Negative test:** start the job with a missing script location; the run
 fails immediately with a script-not-found error.
 
-**Cleanup:** `aws glue delete-job --job-name dea-etl`.
+**Rollback:** `aws glue delete-job --job-name dea-etl`.
 
 ### Lab 11.29 — Orchestrate data pipelines
 
@@ -874,7 +874,7 @@ ordering, retries, and error paths.
 **Negative test:** submit a definition whose `Next` points at an undefined
 state; creation fails validation, catching a broken DAG before runtime.
 
-**Cleanup:** `aws stepfunctions delete-state-machine --state-machine-arn <arn>`.
+**Rollback:** `aws stepfunctions delete-state-machine --state-machine-arn <arn>`.
 
 ### Lab 11.30 — Apply programming concepts
 
@@ -896,7 +896,7 @@ with the same rigor (versioning, rollback) as application code.
 **Negative test:** overwrite with versioning disabled; only one version
 exists and the prior logic is unrecoverable.
 
-**Cleanup:** delete the object versions and the script.
+**Rollback:** delete the object versions and the script.
 
 ### Lab 11.31 — Choose a data store
 
@@ -917,7 +917,7 @@ spiky, key-based access rather than defaulting to a relational engine.
 reads every item, the anti-pattern that signals the wrong store or missing
 index.
 
-**Cleanup:** `aws dynamodb delete-table --table-name dea-events`.
+**Rollback:** `aws dynamodb delete-table --table-name dea-events`.
 
 ### Lab 11.32 — Understand data cataloging systems
 
@@ -938,7 +938,7 @@ inferred and registered so query engines can find the data.
 **Negative test:** run Athena against uncatalogued S3 data; queries fail
 without a table definition, showing the catalog is the schema source.
 
-**Cleanup:** delete the crawler and database.
+**Rollback:** delete the crawler and database.
 
 ### Lab 11.33 — Manage the lifecycle of data
 
@@ -957,7 +957,7 @@ expires at a year, controlling storage cost automatically.
 **Negative test:** a rule transitioning to `STANDARD_IA` before 30 days is
 rejected, enforcing the class's minimum-age rule.
 
-**Cleanup:** `aws s3api delete-bucket-lifecycle --bucket "$BUCKET"`.
+**Rollback:** `aws s3api delete-bucket-lifecycle --bucket "$BUCKET"`.
 
 ### Lab 11.34 — Design data models and schema evolution
 
@@ -977,7 +977,7 @@ must not break existing readers.
 **Negative test:** register a new version that removes the `id` field; the
 registry rejects it as incompatible, preventing a breaking change.
 
-**Cleanup:** delete the schema and registry.
+**Rollback:** delete the schema and registry.
 
 ### Lab 11.35 — Automate data processing by using AWS services
 
@@ -998,7 +998,7 @@ hands-off pipeline execution.
 the target invocation fails; the error lands in the schedule's dead-letter
 queue, not silently.
 
-**Cleanup:** `aws scheduler delete-schedule --name dea-nightly`.
+**Rollback:** `aws scheduler delete-schedule --name dea-nightly`.
 
 ### Lab 11.36 — Analyze data by using AWS services
 
@@ -1019,7 +1019,7 @@ the lake without moving data. **Cost:** Athena bills per TB scanned.
 **Negative test:** query a column not in the catalogued schema; the state is
 `FAILED` with a column-not-found error.
 
-**Cleanup:** delete the Athena result objects under `athena/`.
+**Rollback:** delete the Athena result objects under `athena/`.
 
 ### Lab 11.37 — Maintain and monitor data pipelines
 
@@ -1038,7 +1038,7 @@ data to spot a job that "succeeds" but is slowing or over-provisioned.
 `ExecutionTime` climbs each run; the trend reveals a degrading pipeline a
 binary status hides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.38 — Ensure data quality
 
@@ -1057,7 +1057,7 @@ quality enforced as code, not assumed.
 ruleset returns `FAIL` with the failing rule named, blocking bad data
 downstream.
 
-**Cleanup:** `aws glue delete-data-quality-ruleset --name dea-dq`.
+**Rollback:** `aws glue delete-data-quality-ruleset --name dea-dq`.
 
 ### Lab 11.39 — Apply authentication mechanisms
 
@@ -1077,7 +1077,7 @@ not long-lived keys.
 **Negative test:** a trust policy naming the wrong service principal blocks
 the assume-role, so the job cannot authenticate at all.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.40 — Apply authorization mechanisms
 
@@ -1101,7 +1101,7 @@ authorization the coarse S3 bucket policy cannot express.
 `AccessDenied` from Lake Formation, proving authorization is enforced at the
 catalog.
 
-**Cleanup:** `aws lakeformation revoke-permissions` with the same arguments.
+**Rollback:** `aws lakeformation revoke-permissions` with the same arguments.
 
 ### Lab 11.41 — Ensure data encryption and masking
 
@@ -1122,7 +1122,7 @@ managed key, and `BucketKeyEnabled` cuts KMS request cost.
 objects even with `s3:GetObject`, showing encryption adds an authorization
 layer.
 
-**Cleanup:** `aws s3api delete-bucket-encryption --bucket "$BUCKET"`.
+**Rollback:** `aws s3api delete-bucket-encryption --bucket "$BUCKET"`.
 
 ### Lab 11.42 — Prepare logs for audit
 
@@ -1141,7 +1141,7 @@ now recorded for audit.
 **Negative test:** with management events only, object-level reads are
 invisible in CloudTrail — the gap data-event logging closes.
 
-**Cleanup:** reset event selectors to management-only.
+**Rollback:** reset event selectors to management-only.
 
 ### Lab 11.43 — Understand data privacy and governance
 
@@ -1166,7 +1166,7 @@ the path.
 the principal's effective access changes automatically, showing tag-based
 governance is dynamic.
 
-**Cleanup:** remove the LF-Tag and delete it.
+**Rollback:** remove the LF-Tag and delete it.
 
 **Machine Learning Engineer – Associate (MLA-C01) — Labs 11.44–11.55**
 
@@ -1187,7 +1187,7 @@ channel layout training jobs read from.
 **Negative test:** point a training job at an empty prefix; it fails with a
 no-training-data error, showing the channel must resolve to objects.
 
-**Cleanup:** delete the `ml/` prefix objects.
+**Rollback:** delete the `ml/` prefix objects.
 
 ### Lab 11.45 — Transform data and perform feature engineering
 
@@ -1209,7 +1209,7 @@ bills instance-time; use `ml.t3.medium` and clean up.
 **Negative test:** reference a container image URI in the wrong Region; the
 job fails to pull the image, showing image and job must share a Region.
 
-**Cleanup:** the job self-terminates; delete any output under `ml/`.
+**Rollback:** the job self-terminates; delete any output under `ml/`.
 
 ### Lab 11.46 — Ensure data integrity and prepare data for modeling
 
@@ -1230,7 +1230,7 @@ truth for features, eliminating train/serve skew.
 **Negative test:** ingest a record missing the `id` identifier; it is
 rejected, enforcing record integrity.
 
-**Cleanup:** `aws sagemaker delete-feature-group --feature-group-name mla-features`.
+**Rollback:** `aws sagemaker delete-feature-group --feature-group-name mla-features`.
 
 ### Lab 11.47 — Choose a modeling approach
 
@@ -1249,7 +1249,7 @@ gradient-boosting approach chosen for tabular data over a hand-built model.
 `retrieve` raises a `ValueError`, showing approach selection is constrained
 to supported images.
 
-**Cleanup:** none (read-only lookup).
+**Rollback:** none (read-only lookup).
 
 ### Lab 11.48 — Train and refine models
 
@@ -1273,7 +1273,7 @@ model artifact lands under `ml/model/`. **Cost:** bills instance-time;
 **Negative test:** omit the `train` channel the algorithm requires; the job
 fails validation before consuming compute.
 
-**Cleanup:** delete the model artifact; the job record is retained.
+**Rollback:** delete the model artifact; the job record is retained.
 
 ### Lab 11.49 — Analyze model performance
 
@@ -1294,7 +1294,7 @@ governed record of a model and its evaluation, not a loose artifact.
 threshold; a gated pipeline should block it — the reason metrics live with
 the package.
 
-**Cleanup:** `aws sagemaker delete-model-package --model-package-name <arn>`.
+**Rollback:** `aws sagemaker delete-model-package --model-package-name <arn>`.
 
 ### Lab 11.50 — Select deployment infrastructure
 
@@ -1314,7 +1314,7 @@ variant — the deployment shape chosen from latency/throughput needs.
 **Negative test:** reference a model name that does not exist; config
 creation fails, showing the model must be registered first.
 
-**Cleanup:** delete the endpoint config and model.
+**Rollback:** delete the endpoint config and model.
 
 ### Lab 11.51 — Create and script infrastructure
 
@@ -1337,7 +1337,7 @@ code, versioned and repeatable across environments.
 **Negative test:** introduce a YAML indentation error; `validate-template`
 returns a template-format error before any deploy.
 
-**Cleanup:** `rm -f /tmp/ep.yaml`.
+**Rollback:** `rm -f /tmp/ep.yaml`.
 
 ### Lab 11.52 — Use automated orchestration tools for CI/CD pipelines
 
@@ -1356,7 +1356,7 @@ rather than manual steps.
 **Negative test:** submit a definition missing the required `Version`; the
 API rejects it, enforcing a valid pipeline schema.
 
-**Cleanup:** `aws sagemaker delete-pipeline --pipeline-name mla-pipe`.
+**Rollback:** `aws sagemaker delete-pipeline --pipeline-name mla-pipe`.
 
 ### Lab 11.53 — Monitor model inference
 
@@ -1376,7 +1376,7 @@ to S3 — the raw material Model Monitor uses to detect data/quality drift.
 **Negative test:** monitor an endpoint with capture disabled; Model Monitor
 has nothing to analyze, so drift goes undetected.
 
-**Cleanup:** `aws sagemaker delete-endpoint-config --endpoint-config-name mla-ec-mon`.
+**Rollback:** `aws sagemaker delete-endpoint-config --endpoint-config-name mla-ec-mon`.
 
 ### Lab 11.54 — Monitor and optimize infrastructure and costs
 
@@ -1399,7 +1399,7 @@ low load and out to hold latency at peak.
 **Negative test:** a fixed single-instance endpoint drops requests under a
 load spike, the cost/latency trade-off autoscaling resolves.
 
-**Cleanup:** `aws application-autoscaling deregister-scalable-target` with
+**Rollback:** `aws application-autoscaling deregister-scalable-target` with
 the same target.
 
 ### Lab 11.55 — Secure AWS resources
@@ -1427,7 +1427,7 @@ bills instance-time; capped by the stopping condition.
 dependency failure proves isolation is real and forces vendored
 dependencies.
 
-**Cleanup:** the job self-terminates; delete `ml/model/` output.
+**Rollback:** the job self-terminates; delete `ml/model/` output.
 
 ### Lab 11.56 — Associate-tier readiness drill (integrative)
 
@@ -1481,7 +1481,7 @@ is the main cost risk.
 
    **Expected result:** a version decision recorded with its reason.
 
-6. **Cleanup:** revert every deliberately introduced fault, delete Athena
+6. **Rollback:** revert every deliberately introduced fault, delete Athena
    query results and any Glue/EMR artifacts, and confirm no compute is
    running. Verify the budget alarm shows no unexpected spend.
 

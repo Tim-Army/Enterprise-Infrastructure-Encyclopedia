@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Scripting backups per workload and measuring success by backup completion. Per-job sprawl is fragile and unauditable, and a backup that completes but cannot be recovered quickly at scale fails the only test that matters — recovery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

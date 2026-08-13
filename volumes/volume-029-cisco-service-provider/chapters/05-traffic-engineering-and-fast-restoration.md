@@ -199,7 +199,7 @@ the neighbor to help, and BFD gives sub-second failure detection.
 the session resets on switchover — NSR (no neighbor help) is more robust for that
 case.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Describe traffic engineering (SPCOR Objective 3.2 — TE)
 
@@ -220,7 +220,7 @@ SP approach.
 mechanism (color/BSID/autoroute); the policy exists but no traffic uses it — the
 steering must be configured.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Implement fast convergence (SPRI Objective 1.7)
 
@@ -240,7 +240,7 @@ waiting for IGP reconvergence.
 **Negative test:** rely on IGP timers alone for convergence; failover takes
 hundreds of ms to seconds — BFD + a pre-computed backup is what achieves the SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Implement Segment Routing traffic engineering (SPRI Objective 4.3)
 
@@ -260,7 +260,7 @@ without RSVP.
 advertises (e.g., latency with no delay measurement) cannot compute a path — the
 metric must be available in the topology.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.5 — Implement technologies for high availability (SPCNI Objective 3.1)
 
@@ -279,7 +279,7 @@ redundancy (ECMP/TI-LFA), so no single failure drops the service.
 **Negative test:** a "redundant" bundle whose members share one line card/fate
 fails together — redundancy must span independent failure domains.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — Implement multi-homing (SPCNI Objective 3.2)
 
@@ -297,7 +297,7 @@ for BUM and can load-balance (all-active) using ESI and aliasing.
 **Negative test:** two PEs multi-homing a segment with mismatched ESIs act as
 single-homed and can loop BUM traffic — the ESI must match on both PEs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.7 — Implement EVLAG (SPCNI Objective 3.3)
 
@@ -316,7 +316,7 @@ active-active forwarding without spanning tree, synchronized over ICCP.
 **Negative test:** an EVLAG with ICCP down splits into two independent LAGs and can
 loop or blackhole — the inter-chassis control link is essential.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.8 — Implement a virtual private cloud (SPCNI Objective 3.4)
 
@@ -335,7 +335,7 @@ private cloud gives a tenant an isolated L2/L3 domain over shared infrastructure
 **Negative test:** two VPCs sharing a route-target leak routes between tenants —
 the RT import/export must isolate each VPC.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.9 — Implement ECMP from NFVI to physical (SPCNI Objective 3.5)
 
@@ -354,7 +354,7 @@ and adds path redundancy between the virtual functions and the network.
 **Negative test:** BGP learns two equal paths but `maximum-paths` is 1, so only one
 installs; no load-sharing — multipath must be explicitly enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.10 — Recommend design models for high availability (SPCNI Objective 3.6)
 
@@ -374,7 +374,7 @@ health checks) so a failure at any tier reroutes automatically.
 **Negative test:** rely on DNS failover alone with long TTLs; clients cache the
 dead record for minutes — anycast/BGP withdrawal gives faster failover than DNS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

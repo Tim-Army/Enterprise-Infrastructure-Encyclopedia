@@ -90,7 +90,7 @@ hardware/topology awareness NCP-AII requires.
 **Negative test:** ignore topology and pin unrelated GPUs across NUMA/PCIe for one
 job; place co-working GPUs on **NVLink** for bandwidth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Provisioning with Base Command Manager
 
@@ -109,7 +109,7 @@ provisioning area of NCP-AII.
 **Negative test:** hand-configure each node; drift causes hard-to-debug failures —
 **provision from images** with BCM.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Kubernetes GPU Operator
 
@@ -131,7 +131,7 @@ Kubernetes GPU enablement NCP-AII tests.
 **Negative test:** request `nvidia.com/gpu` with no GPU Operator/device plugin;
 Kubernetes cannot schedule it — install the Operator first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Slurm for batch training
 
@@ -154,7 +154,7 @@ scheduling path NCP-AII covers.
 **Negative test:** run large multi-node training interactively; use **Slurm**
 (`sbatch`, `gres=gpu`) for reproducible, scheduled batch jobs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Validation: DCGM diagnostics and NCCL
 
@@ -171,7 +171,7 @@ pre-go-live validation NCP-AII requires.
 **Negative test:** hand a cluster to users without **DCGM/NCCL** validation;
 silent GPU/fabric faults ruin training — validate first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — Driver, firmware, and compatibility
 
@@ -188,7 +188,7 @@ version discipline NCP-AII enforces.
 **Negative test:** upgrade CUDA without checking the **driver** minimum; mismatched
 versions break workloads — follow the compatibility matrix.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

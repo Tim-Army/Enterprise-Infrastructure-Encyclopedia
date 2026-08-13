@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** An SuC boundary that excludes the IT/OT conduit "because it's IT's job" — the boundary must include the interfaces you depend on; orphaning the conduit hides the highest-risk path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — The IACS risk matrix
 
@@ -82,7 +82,7 @@ The USB→PLC-logic scenario scores HIGH despite moderate likelihood, because it
 
 **Negative test:** A consequence axis that only counts data breach — the PLC-logic-change scenario would score LOW (no data lost), hiding the real danger; the IACS consequence axis must include safety/operational impact.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Partition and prioritize
 
@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Skipping the high-level pass and jumping to a detailed assessment of everything at once — you drown in scope and may spend effort on a LOW-risk zone before the HIGH one; prioritization is the point of the high-level stage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

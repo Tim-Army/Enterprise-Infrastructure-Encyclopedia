@@ -360,7 +360,7 @@ datastore, all as one operation.
 Continuously Validated State — the VxRail add-node workflow images the node to match the cluster,
 which manual joining does not.
 
-**Cleanup:** none (leave the node in the cluster, or remove via the VxRail remove-host workflow).
+**Rollback:** none (leave the node in the cluster, or remove via the VxRail remove-host workflow).
 
 ### Lab 5.2 — Capacity planning and vSAN slack space (Topic: Capacity planning)
 
@@ -381,7 +381,7 @@ capacity planning must reserve it (N+1) rather than filling the datastore.
 rebuild the lost components and the cluster cannot re-protect data — reserving slack (N+1 capacity)
 is what keeps the cluster resilient.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Disk-group expansion (Topic: Scale-up)
 
@@ -402,7 +402,7 @@ compute or just space.
 you pay for cores/RAM/licensing you do not need — scale-up (drives) fits a capacity-only need more
 economically.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Validate after expansion (Topic: Post-expansion validation)
 
@@ -422,7 +422,7 @@ contributing and the cluster re-protected/rebalanced correctly.
 shows it not contributing (a network/disk issue), capacity did not actually grow — the post-change
 health check is the proof.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

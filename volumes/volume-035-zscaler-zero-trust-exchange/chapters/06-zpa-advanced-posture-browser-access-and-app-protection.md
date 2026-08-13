@@ -159,7 +159,7 @@ not identity alone.
 user on a non-compliant or compromised device reaches the sensitive app —
 posture is what closes that gap.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Browser Access for unmanaged devices (Topic: Clientless access)
 
@@ -179,7 +179,7 @@ it needs its own TLS certificate for the external hostname.
 Access as-published; they need the agent or Privileged Remote Access — clientless
 Browser Access is for web apps.
 
-**Cleanup:** unpublish the lab Browser Access app.
+**Rollback:** unpublish the lab Browser Access app.
 
 ### Lab 6.3 — Privileged Remote Access for a vendor (Topic: Third-party access)
 
@@ -199,7 +199,7 @@ an agent, or reachability beyond the listed hosts.
 segment; they gain far more reach than intended — PRA's named-system scoping is
 the control.
 
-**Cleanup:** revoke the lab PRA console/policy.
+**Rollback:** revoke the lab PRA console/policy.
 
 ## Lab Verification
 

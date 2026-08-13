@@ -317,7 +317,7 @@ Divergent data between cluster nodes after a network event, or duplicate leader 
 
 **Negative Test:** Rerun the verification script with an artificially tight RTO budget of 0 seconds (`bash verify-failover.sh demo-target 0`). Confirm the script now reports `FAIL`, proving the RTO enforcement branch is reachable and correctly triggers, not just the success path.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -f /tmp/lb-target-state && rm -rf ~/labs/resilience-ch3

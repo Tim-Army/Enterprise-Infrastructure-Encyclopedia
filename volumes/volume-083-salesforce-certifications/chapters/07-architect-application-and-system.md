@@ -77,7 +77,7 @@ data design.
 **Negative test:** run non-selective SOQL against 50M records in a trigger; it times out — use
 **selective, indexed** queries.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Avoid ownership skew
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** assign millions of records to one owner; sharing recalculation degrades — **distribute
 ownership**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Choose an integration pattern
 
@@ -118,7 +118,7 @@ design.
 **Negative test:** make a **synchronous** callout for a nightly bulk sync; it blocks and hits limits —
 use a **batch** pattern.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Plan the deployment lifecycle
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** make changes directly in **production**; there's no test/rollback — deploy through
 **sandboxes + CI/CD**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

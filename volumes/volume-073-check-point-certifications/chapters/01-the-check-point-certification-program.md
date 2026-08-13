@@ -96,7 +96,7 @@ clish -c "show asset all"
 **Negative test:** assume the version from the login banner; **`show version all`** is authoritative
 — check it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map credentials to exams
 
@@ -115,7 +115,7 @@ PY
 **Negative test:** register for the **R81.20** CCSA (retiring 30 Jun 2026); take the **R82**
 (156-215.82) — confirm on checkpoint.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -133,7 +133,7 @@ PY
 
 **Negative test:** target CCSM directly; it requires **CCSE + ISAs** — climb the ladder.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -380,7 +380,7 @@ must be trusted by clients or browsers warn.
 antivirus engine to catch malware inside a TLS download; it cannot see the payload —
 only deep inspection exposes encrypted content.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config firewall ssl-ssh-profile
@@ -418,7 +418,7 @@ and threat categories against the live FortiGuard rating service.
 certificate inspection over HTTPS; full-URL and content checks degrade — deep
 inspection (Lab 7.1) is what lets web filtering see the full URL and page.
 
-**Cleanup:** delete the `block-malicious` profile.
+**Rollback:** delete the `block-malicious` profile.
 
 ### Lab 7.3 — DNS filtering (Topic: DNS filter)
 
@@ -449,7 +449,7 @@ earlier than web filtering and catches non-HTTP protocols.
 **Negative test:** rely on web filtering alone for a non-web C2 channel; it evades an
 HTTP-only control — DNS filtering covers name resolution across all protocols.
 
-**Cleanup:** delete the `dns-guard` profile.
+**Rollback:** delete the `dns-guard` profile.
 
 ### Lab 7.4 — Application control (Topic: Application control)
 
@@ -479,7 +479,7 @@ signature/behavior, not port number.
 dynamic ports and TLS to evade it — signature-based application control is what
 identifies them.
 
-**Cleanup:** delete the `appctrl-lab` list.
+**Rollback:** delete the `appctrl-lab` list.
 
 ### Lab 7.5 — Antivirus (Topic: Antivirus)
 
@@ -507,7 +507,7 @@ SMTP/etc. against FortiGuard signatures (and optionally FortiSandbox).
 **Negative test:** download EICAR over HTTPS with only certificate inspection; AV never
 sees the payload and it passes — AV inside TLS requires deep inspection (Lab 7.1).
 
-**Cleanup:** delete the `av-lab` profile.
+**Rollback:** delete the `av-lab` profile.
 
 ### Lab 7.6 — Intrusion prevention (Topic: IPS)
 
@@ -537,7 +537,7 @@ attempts against known vulnerabilities in real time.
 **Negative test:** set the sensor action to `monitor` (log only) and expect exploits to
 be stopped; they are recorded but pass — the `block` action is what enforces IPS.
 
-**Cleanup:** delete the `ips-lab` sensor.
+**Rollback:** delete the `ips-lab` sensor.
 
 ### Lab 7.7 — Assemble and attach a profile group (Topic: Security profiles on a policy)
 
@@ -568,7 +568,7 @@ application control, and IPS to matching traffic — the UTM profile set is appl
 **Negative test:** enable `utm-status` but attach no profiles; nothing is inspected —
 the profiles, not the flag alone, perform the content inspection.
 
-**Cleanup:** set `utm-status disable` on the policy and remove the profile references,
+**Rollback:** set `utm-status disable` on the policy and remove the profile references,
 or delete the test policy.
 
 ## Lab Verification

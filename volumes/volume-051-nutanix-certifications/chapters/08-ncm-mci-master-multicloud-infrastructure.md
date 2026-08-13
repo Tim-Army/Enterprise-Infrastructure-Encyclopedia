@@ -80,7 +80,7 @@ planning section.
 
 **Negative test:** plan by gut feel; base decisions on **utilization + runway** data.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Storage
 
@@ -95,7 +95,7 @@ ncli container ls | grep -Ei 'Name|Compression|Dedup|Erasure'
 **Negative test:** enable every efficiency everywhere; match **compression/dedup/EC-X**
 to the workload.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Data protection
 
@@ -112,7 +112,7 @@ protection section.
 **Negative test:** rely on local snapshots only; **replicate** to a remote site for
 site-loss protection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Security
 
@@ -129,7 +129,7 @@ security section.
 **Negative test:** leave password SSH enabled; **cluster lockdown** enforces key-based
 access — enable it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.5 — Workload management
 
@@ -146,7 +146,7 @@ section.
 **Negative test:** pin everything to one host; use affinity **sparingly** to avoid
 imbalance.
 
-**Cleanup:** `acli vm.affinity_unset lab-vm`.
+**Rollback:** `acli vm.affinity_unset lab-vm`.
 
 ### Lab 8.6 — Networking
 
@@ -163,7 +163,7 @@ networking section.
 **Negative test:** stretch one flat L2 everywhere; **VPC overlays** isolate and scale
 tenant networks.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

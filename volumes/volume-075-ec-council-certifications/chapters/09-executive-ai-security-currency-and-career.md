@@ -83,7 +83,7 @@ PY
 **Negative test:** fund the newest tool instead of the top **risk score**; exposure remains —
 prioritize by risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — CAIPM/CRAGE: govern an AI initiative
 
@@ -105,7 +105,7 @@ governance.
 **Negative test:** deploy the AI feature with governance gaps open; bias or prompt-injection risk
 ships — **close the gaps** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -127,7 +127,7 @@ track stack.
 **Negative test:** study an outdated CEH version; confirm the **current version (v13)** on
 eccouncil.org — programs advance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

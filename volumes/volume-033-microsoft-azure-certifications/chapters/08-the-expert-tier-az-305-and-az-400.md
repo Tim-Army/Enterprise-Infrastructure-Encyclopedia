@@ -296,6 +296,8 @@ az monitor log-analytics workspace show --workspace-name law-az305 \
 which log-routing target (Log Analytics vs. Event Hub vs. Storage) a
 stated requirement — query, stream, or archive — selects.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.2 — Recommend authentication and identity management *(topic 1.2)*
 
 ```bash
@@ -307,6 +309,8 @@ identity for Azure-to-Azure, workload identity federation for external,
 service principal only where neither fits — with the constraint that
 selected each.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 8.3 — Recommend a secrets, keys, and certificates solution *(topic 1.2)*
 
 ```bash
@@ -317,6 +321,8 @@ az keyvault list --query "[].{name:name, rbac:properties.enableRbacAuthorization
 **Expected result:** a vault with `rbac: True`. RBAC-authorized Key Vault
 (over access policies) is the current recommendation — note it as the
 design default.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 8.4 — Recommend a management-group and governance structure *(topic 1.3)*
 
@@ -333,6 +339,8 @@ and Policy structure together — sketch the one your scenario needs.
 
 ### Domain 2 — Design data storage solutions (20–25%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 8.5 — Recommend a relational data solution and tier *(topic 2.1)*
 
 ```bash
@@ -344,6 +352,8 @@ az sql db list-editions --location eastus \
 Purpose. Record: Azure SQL DB vs. Managed Instance vs. SQL on a VM, and the
 tier, against a stated performance and compatibility requirement.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 8.6 — Recommend a solution for database scalability and protection *(topic 2.1)*
 
 ```bash
@@ -354,6 +364,8 @@ az sql db list-editions --location eastus \
 **Expected result:** `Hyperscale`. Note when Hyperscale (rapid scale, large
 DB) beats General Purpose, and pair the choice with a data-protection
 recommendation (geo-replication vs. failover group) for the stated RPO.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 8.7 — Recommend semi-structured and unstructured storage *(topic 2.2)*
 
@@ -369,6 +381,8 @@ az storage account show --name "$SA" \
 hierarchical namespace (ADLS Gen2) for analytics. State the requirement
 that selected each.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.8 — Recommend data integration and analysis *(topic 2.3)*
 
 ```bash
@@ -382,6 +396,8 @@ decision — record which the scenario's data shape and skills favor.
 
 ### Domain 3 — Design business continuity (15–20%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.9 — Recommend backup and disaster recovery *(topic 3.1)*
 
 ```bash
@@ -392,6 +408,8 @@ az backup vault show --name rsv-az305 --query "properties.provisioningState" -o 
 **Expected result:** `Succeeded`. Then write the DR design from an
 RTO/RPO pair: Azure Backup for restore, Site Recovery for replication,
 zone-redundant vs. geo-redundant for the tier of loss survived.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 8.10 — Recommend a high-availability solution for compute *(topic 3.2)*
 
@@ -406,6 +424,8 @@ groups / always-on).
 
 ### Domain 4 — Design infrastructure solutions (30–35%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 8.11 — Recommend a compute solution *(topic 4.1)*
 
 ```bash
@@ -415,6 +435,8 @@ az vm list-sizes --location eastus --query "[?numberOfCores>=\`4\`].name" -o tsv
 **Expected result:** a VM-size shortlist. Record the compute decision
 across VM / container (AKS, Container Apps) / serverless (Functions) /
 batch, and the requirement that eliminated each rejected option.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 8.12 — Recommend a messaging and event architecture *(topic 4.2)*
 
@@ -427,6 +449,8 @@ az provider show --namespace Microsoft.EventGrid --query "registrationState" -o 
 Bus for commands/queues, Event Grid for reactive events, Event Hubs for
 high-throughput streams — pick by the message pattern, not preference.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 8.13 — Recommend API, caching, and config management *(topic 4.2)*
 
 ```bash
@@ -437,6 +461,8 @@ az provider show --namespace Microsoft.Cache --query "registrationState" -o tsv
 **Expected result:** registration states. API Management fronts APIs; Azure
 Cache for Redis is the caching recommendation; App Configuration + Key
 Vault hold config and secrets. Record which the scenario needs.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 8.14 — Recommend an automated deployment solution *(topic 4.2 / AZ-400)*
 
@@ -456,6 +482,8 @@ az deployment group what-if --resource-group rg-az305-lab --template-file /tmp/a
 pipeline is the automated-deployment recommendation; `what-if` before apply
 is the AZ-400 habit this shares.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.15 — Recommend a migration solution *(topic 4.3)*
 
 ```bash
@@ -467,6 +495,8 @@ az provider show --namespace Microsoft.Migrate --query "registrationState" -o ts
 migration approach — rehost (Azure Migrate/ASR), replatform, or refactor —
 and the database path (DMS online vs. offline) for the stated cutover
 window.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 8.16 — Recommend a connectivity solution *(topic 4.4)*
 
@@ -480,6 +510,8 @@ az network vnet show --name vnet-az305 --query "{name:name, space:addressSpace.a
 (cost, quick) vs. ExpressRoute (predictable latency, private) — and note
 peering is not transitive, so a hub is needed to interconnect spokes.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.17 — Recommend a network-security and load-balancing solution *(topic 4.4)*
 
 ```bash
@@ -490,6 +522,8 @@ echo "LB tiers: Basic (regional L4) | Standard (zonal L4) | App Gateway (L7+WAF)
 **Expected result:** any firewalls, plus the load-balancer decision table.
 Choose by layer and scope; Azure Firewall or NVA in the hub is the
 egress-control recommendation.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 8.18 — Negative test: prove a design guardrail enforces
 
@@ -507,6 +541,8 @@ the policy — proving a design's compliance guardrail (public-network
 denial) enforces regardless of the creator's rights. A design that names
 the control but never tests it is unverified.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 8.19 — Cleanup
 
 ```bash
@@ -516,6 +552,8 @@ az group exists --name rg-az305-lab
 
 **Expected result:** `false` shortly after — the workspace, vault,
 storage, VNet, and policy removed together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

@@ -469,7 +469,7 @@ are required.
    automated guardrails against over-committing reserved capacity before
    any real financial commitment is made.
 
-**Cleanup**
+**Rollback**
 
 6. Remove the lab directory:
 

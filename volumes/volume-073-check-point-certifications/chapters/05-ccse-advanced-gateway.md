@@ -71,7 +71,7 @@ cluster.
 **Negative test:** build a cluster with **no dedicated sync** interface; failover loses connections
 — provide a sync network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Test failover
 
@@ -89,7 +89,7 @@ failover.
 
 **Negative test:** fail over with sync broken; established connections drop — sync must be healthy.
 
-**Cleanup:** `clusterXL_admin up` to restore both members.
+**Rollback:** `clusterXL_admin up` to restore both members.
 
 ### Lab 5.3 — Build a site-to-site VPN
 
@@ -107,7 +107,7 @@ a working site-to-site VPN.
 **Negative test:** mismatch the **encryption domains**; interesting traffic isn't encrypted/routed —
 align the domains on both sides.
 
-**Cleanup:** disable the lab community.
+**Rollback:** disable the lab community.
 
 ### Lab 5.4 — Check SecureXL and CoreXL
 
@@ -125,7 +125,7 @@ inspection.
 **Negative test:** disable SecureXL under heavy load; throughput drops — keep acceleration on unless
 troubleshooting requires otherwise.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.5 — Plan a management-first upgrade
 
@@ -142,7 +142,7 @@ echo "Order: backup -> upgrade Management (CPUSE/migrate) -> upgrade gateways ->
 **Negative test:** upgrade a gateway to a newer release than its management; unsupported — management
 leads.
 
-**Cleanup:** none (planning).
+**Rollback:** none (planning).
 
 ## Lab Verification
 

@@ -65,7 +65,7 @@ secret.
 **Negative test:** commit the password in plaintext vars; **encrypt it** so the repo holds
 no secrets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Encrypt a file
 
@@ -82,7 +82,7 @@ file.
 
 **Negative test:** store `secrets.yml` in plaintext in Git; **encrypt** it first.
 
-**Cleanup:** `rm -f secrets.yml`.
+**Rollback:** `rm -f secrets.yml`.
 
 ### Lab 7.3 — View/edit encrypted content
 
@@ -97,7 +97,7 @@ ansible-vault view secrets.yml --vault-password-file <(echo "vaultpw") 2>/dev/nu
 **Negative test:** `ansible-vault decrypt` to read then forget to re-encrypt; use **`view`/
 `edit`** so it never sits decrypted on disk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Use vault in a playbook
 
@@ -115,7 +115,7 @@ password file — secrets stay encrypted at rest.
 **Negative test:** pass the password on the command line (`--ask-vault-pass` typed in a
 script); use a **password file / CI secret** kept out of the repo.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

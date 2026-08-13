@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Publishing all apps to one open stream with no security rules or scheduled reloads. Everyone sees everything and data goes stale; streams/spaces plus security rules scope access and reload tasks keep it current — the governance the System Administrator provides.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

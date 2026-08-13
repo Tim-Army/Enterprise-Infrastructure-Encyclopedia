@@ -100,7 +100,7 @@ none of which it legitimately needs except the database.
 A flat network has no negative test, which is precisely why it is
 dangerous.
 
-**Cleanup.** Keep `~/reach.sh`; you will rerun it throughout Part E to
+**Rollback.** Keep `~/reach.sh`; you will rerun it throughout Part E to
 measure progress.
 
 ### Lab 5.2 — Establish the legitimate application flow
@@ -158,7 +158,7 @@ denied.
 over-tightened. Knowing the allow-list in advance is what lets you tell
 a real break from correct enforcement.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Simulate lateral movement (the attack)
 
@@ -244,7 +244,7 @@ lab turns every `REACHABLE` above — except the two legitimate flows from
 D2 — into `blocked`, and you will rerun exactly these commands to prove
 it.
 
-**Cleanup.** None. Leave the estate flat; Part E segments it.
+**Rollback.** None. Leave the estate flat; Part E segments it.
 
 ## Summary and Completion Checklist
 

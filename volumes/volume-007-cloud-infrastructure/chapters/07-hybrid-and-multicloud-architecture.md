@@ -550,7 +550,7 @@ credentials are required.
    rejects an unimplemented target explicitly rather than silently doing
    nothing.
 
-**Cleanup**
+**Rollback**
 
 9. Destroy and remove the working directory:
 

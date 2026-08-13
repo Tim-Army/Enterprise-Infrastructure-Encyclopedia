@@ -244,7 +244,7 @@ addressing and topology design CloudNetX tests.
 **Negative test:** overlap two sites' CIDRs; overlapping subnets break hybrid
 routing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — CloudNetX: Network security (28%)
 
@@ -260,7 +260,7 @@ zero-trust network access.
 **Negative test:** allow a /8 to the app tier; broad allows defeat
 microsegmentation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — CloudNetX: Network troubleshooting (25%)
 
@@ -277,7 +277,7 @@ fault domain across a hybrid path.
 **Negative test:** blame the WAN for latency without checking local interface
 errors/queues first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — CloudNetX: Network operations, monitoring, and performance (16%)
 
@@ -296,7 +296,7 @@ operations and observability.
 **Negative test:** alert on the first failed probe; transient blips need the
 `alert_after` threshold.
 
-**Cleanup:** `rm -f /tmp/mon.json`.
+**Rollback:** `rm -f /tmp/mon.json`.
 
 ### Lab 6.5 — SecAI+: Basic AI concepts related to cybersecurity (17%)
 
@@ -316,7 +316,7 @@ recognizing an AI-driven threat.
 **Negative test:** rely on a keyword filter alone; adversarial phrasing evades
 it — defense in depth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — SecAI+: Securing AI systems (40%)
 
@@ -332,7 +332,7 @@ control — safeguarding data, models, and infrastructure.
 **Negative test:** serve a model without integrity checking; a poisoned or
 swapped model goes undetected.
 
-**Cleanup:** `rm -f /tmp/model.bin /tmp/model.sha`.
+**Rollback:** `rm -f /tmp/model.bin /tmp/model.sha`.
 
 ### Lab 6.7 — SecAI+: AI-assisted security (24%)
 
@@ -352,7 +352,7 @@ threat identification.
 **Negative test:** fix the threshold at a raw value; anomalies are relative to
 the baseline distribution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.8 — SecAI+: AI governance, risk, and compliance (19%)
 
@@ -369,7 +369,7 @@ responsible-AI governance.
 **Negative test:** deploy generative AI on personal data with no DPIA; GDPR
 requires it.
 
-**Cleanup:** `rm -f /tmp/aigrc.csv`.
+**Rollback:** `rm -f /tmp/aigrc.csv`.
 
 ### Lab 6.9 — SecOT+: OT Systems and Safety Foundations (14%)
 
@@ -386,7 +386,7 @@ and a lockout/tagout note — OT systems and safety.
 **Negative test:** assume OT protocols authenticate by default; Modbus/DNP3
 historically do not.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.10 — SecOT+: OT Risk Management (17%)
 
@@ -403,7 +403,7 @@ OT risk management (safety, not just data).
 **Negative test:** score OT risk on confidentiality first; in OT, availability
 and safety usually dominate.
 
-**Cleanup:** `rm -f /tmp/otrisk.csv`.
+**Rollback:** `rm -f /tmp/otrisk.csv`.
 
 ### Lab 6.11 — SecOT+: OT Threat Intelligence (14%)
 
@@ -420,7 +420,7 @@ awk -F, 'NR>1{print "watch",$1,$2}' /tmp/ioc.csv
 **Negative test:** block every feed IP blindly; validate and scope IoCs to avoid
 disrupting OT operations.
 
-**Cleanup:** `rm -f /tmp/ioc.csv`.
+**Rollback:** `rm -f /tmp/ioc.csv`.
 
 ### Lab 6.12 — SecOT+: OT Cybersecurity Architecture, Design, and Engineering (18%)
 
@@ -436,7 +436,7 @@ python3 -c "z={'enterprise':'10.0.0.0/8','IDMZ':'172.16.9.0/24','control':'192.1
 **Negative test:** allow enterprise IT direct access to the control zone;
 skipping the IDMZ enables IT→OT pivots.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.13 — SecOT+: OT Security Operations (22%)
 
@@ -453,7 +453,7 @@ foundation for monitoring and vulnerability management.
 **Negative test:** run an aggressive IT vulnerability scan against a PLC; active
 scans can crash fragile OT devices — prefer passive discovery.
 
-**Cleanup:** `rm -f /tmp/otassets.csv`.
+**Rollback:** `rm -f /tmp/otassets.csv`.
 
 ### Lab 6.14 — SecOT+: OT Incident Management (15%)
 
@@ -470,7 +470,7 @@ note — OT incident management.
 **Negative test:** isolate a compromised controller without a safety review; in
 OT, containment must not create a physical hazard.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

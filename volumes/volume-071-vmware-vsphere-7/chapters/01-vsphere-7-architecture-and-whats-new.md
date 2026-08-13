@@ -97,7 +97,7 @@ the version under test.
 **Negative test:** assume a host is vSphere 7 from the login banner alone; **`esxcli system version
 get`** is authoritative — check it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the management model
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** manage each host standalone; **vCenter** provides clustering/features — manage
 centrally.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Check the support lifecycle
 
@@ -137,7 +137,7 @@ forward path.
 **Negative test:** deploy new vSphere 7 as a long-term platform; it is **past general support** —
 target vSphere 8 for new builds.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -132,7 +132,7 @@ identity concept (cloud vs hybrid).
 **Negative test:** assume cloud identity removes shared responsibility; the
 customer still owns identity governance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — SC-900: Describe the capabilities of Microsoft Entra (25–30%)
 
@@ -149,7 +149,7 @@ Entra's access-management capabilities.
 **Negative test:** assume every role is always active; some are eligible via PIM
 until activated.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — SC-900: Describe the capabilities of Microsoft security solutions (35–40%)
 
@@ -166,7 +166,7 @@ security-solution posture.
 **Negative test:** equate Secure Score with Sentinel coverage; they are
 different tools (posture vs SIEM).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — SC-900: Describe the capabilities of Microsoft compliance solutions (20–25%)
 
@@ -183,7 +183,7 @@ capabilities.
 **Negative test:** assume Purview auto-classifies with no labels; you configure
 sensitivity/retention labels first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — SC-300: Implement and manage user identities (20–25%)
 
@@ -200,7 +200,7 @@ New-MgUser -DisplayName "SC Lab" -AccountEnabled -MailNickname sclab -UserPrinci
 **Negative test:** reuse an existing UPN; Entra rejects duplicate
 userPrincipalNames.
 
-**Cleanup:** `Remove-MgUser -UserId "sclab@$d"`.
+**Rollback:** `Remove-MgUser -UserId "sclab@$d"`.
 
 ### Lab 3.6 — SC-300: Implement authentication and access management (20–25%)
 
@@ -217,7 +217,7 @@ authentication and access management.
 **Negative test:** enforce a block-all CA policy with no emergency-access
 account; you can lock everyone out.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.7 — SC-300: Plan and implement workload identities (20–25%)
 
@@ -234,7 +234,7 @@ governs.
 **Negative test:** leave a workload identity with a never-expiring secret;
 rotate credentials and prefer managed identities.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.8 — SC-300: Plan and automate identity governance (20–25%)
 
@@ -251,7 +251,7 @@ SC-300 automates.
 **Negative test:** grant standing access instead of time-bound; governance
 favors access reviews and expiry.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.9 — SC-200: Manage a security operations environment (40–45%)
 
@@ -268,7 +268,7 @@ environment SC-200 operates.
 **Negative test:** suppress all informational alerts; some feed correlation into
 incidents.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.10 — SC-200: Respond to security incidents (35–40%)
 
@@ -285,7 +285,7 @@ Update-MgSecurityIncident -IncidentId $i.Id -Status "inProgress"
 **Negative test:** close an incident with no classification; SC-200 requires
 triage/classification for metrics.
 
-**Cleanup:** set the incident status back as appropriate.
+**Rollback:** set the incident status back as appropriate.
 
 ### Lab 3.11 — SC-200: Perform threat hunting (20–25%)
 
@@ -304,7 +304,7 @@ threat hunting with KQL.
 **Negative test:** hunt with no time window; unbounded queries are slow and
 noisy — scope by timestamp.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.12 — SC-401: Implement information protection (30–35%)
 
@@ -321,7 +321,7 @@ classification.
 **Negative test:** create a label but never publish a label policy; unpublished
 labels never reach users.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.13 — SC-401: Implement data loss prevention and retention (30–35%)
 
@@ -337,7 +337,7 @@ controls.
 **Negative test:** deploy a DLP policy in enforce mode with no simulation;
 start in test mode to avoid false blocks.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.14 — SC-401: Manage risks, alerts, and activities (30–35%)
 
@@ -353,7 +353,7 @@ surface SC-401 manages.
 **Negative test:** ignore low-severity DLP alerts wholesale; patterns of low
 alerts can indicate exfiltration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.15 — SC-100: Design solutions that align with security best practices and priorities (20–25%)
 
@@ -370,7 +370,7 @@ designs improvements against (Zero Trust/MCRA).
 **Negative test:** design controls without measuring the baseline; you cannot
 prioritize unmeasured gaps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.16 — SC-100: Design security operations, identity, and compliance capabilities (25–30%)
 
@@ -386,7 +386,7 @@ an architect extends toward least privilege.
 **Negative test:** design SecOps with no log-retention plan; detection needs
 sufficient retention.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.17 — SC-100: Design security solutions for infrastructure (25–30%)
 
@@ -402,7 +402,7 @@ infrastructure protection an architect designs.
 **Negative test:** assume free-tier Defender protects servers; server protection
 needs the paid plan.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.18 — SC-100: Design security solutions for applications and data (20–25%)
 
@@ -419,7 +419,7 @@ foundation an architect builds app/data protection on.
 **Negative test:** design DLP without classification; DLP is far weaker on
 unlabeled data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.19 — SC-500: Manage identity, access, and governance (20–25%)
 
@@ -435,7 +435,7 @@ manages.
 **Negative test:** grant Owner broadly for convenience; least privilege
 (Contributor/custom roles) is required.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.20 — SC-500: Secure storage, databases, and networking (25–30%)
 
@@ -451,7 +451,7 @@ security posture.
 **Negative test:** leave `allowBlobPublicAccess=true` on sensitive data; disable
 public blob access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.21 — SC-500: Secure compute (20–25%)
 
@@ -467,7 +467,7 @@ VMs/containers.
 **Negative test:** expose SSH/RDP to the internet on a VM; use just-in-time
 access and a bastion instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.22 — SC-500: Manage and monitor security posture (20–25%)
 
@@ -483,7 +483,7 @@ monitors and improves.
 **Negative test:** chase 100% by exempting findings; exemptions hide risk rather
 than remediate it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

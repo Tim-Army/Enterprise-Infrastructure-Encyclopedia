@@ -47,7 +47,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.4.10 502  && echo "hmi->plc REAC
 
 **Negative test.** A flow to a closed port (`hmi->db:502`) fails because nothing listens, not because of policy. Distinguish "no service" from "denied."
 
-**Cleanup.** Leave the any-any accept until Chapter 05 replaces it.
+**Rollback.** Leave the any-any accept until Chapter 05 replaces it.
 
 ### Exercise 4.2 — Name the legitimate flows
 
@@ -66,7 +66,7 @@ Everything else east-west — most importantly `hmi -> db` — is illegitimate.
 
 **Negative test.** Write the web→db rule against the db IP rather than the `db` object and note it breaks if db re-addresses; the named object (and, in Chapter 06, the tag) survives change.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Reproduce the lateral movement
 
@@ -82,7 +82,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.40.2.10 5432 && echo "PIVOT: hmi op
 
 **Negative test.** Re-run `web->db`; it also succeeds. Until the rulebase distinguishes the sources, the gateway treats app and operator identically.
 
-**Cleanup.** None — Chapter 05 authors the segmentation rulebase.
+**Rollback.** None — Chapter 05 authors the segmentation rulebase.
 
 ## Summary and Completion Checklist
 

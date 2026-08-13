@@ -79,7 +79,7 @@ the engine's makeup.
 **Negative test:** assume the CLI *is* the engine; the **`dockerd`** daemon (via containerd/runc) does
 the work — the CLI is a client.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Configure a daemon option
 
@@ -107,7 +107,7 @@ reproducible configuration.
 **Negative test:** pass one-off flags to `dockerd` by editing the unit file ad hoc; use **`daemon.json`**
 for reproducible config.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 sudo rm -f /etc/docker/daemon.json && sudo systemctl reload docker
@@ -133,7 +133,7 @@ remote   ssh://ops@build01.example.com
 **Negative test:** juggle `DOCKER_HOST` environment variables per shell; use **contexts** to switch
 engines cleanly.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker context rm remote
@@ -162,7 +162,7 @@ working.
 **Negative test:** set `--log-driver none` then expect `docker logs`; that driver **discards** logs — use
 `local`/`json-file` if you need `docker logs`.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f loggy

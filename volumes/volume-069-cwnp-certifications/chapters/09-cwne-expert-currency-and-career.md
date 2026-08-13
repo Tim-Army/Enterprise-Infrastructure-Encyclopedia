@@ -86,7 +86,7 @@ endorsements) — a concrete plan.
 **Negative test:** apply for CWNE with only CWNA/CWSP; it needs **all five certs + review** —
 complete them first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a CWNP + vendor path
 
@@ -107,7 +107,7 @@ breadth plus depth.
 **Negative test:** rely on vendor certs alone with no RF theory; **CWNA/CWNP** gives the
 vendor-neutral foundation — combine them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

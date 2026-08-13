@@ -200,7 +200,7 @@ reboot — no manual fix-up needed.
 `local.d`) and reboot a cloud image; it is empty again — a live-file edit does not
 persist.
 
-**Cleanup:** keep the configuration (later chapters rely on it).
+**Rollback:** keep the configuration (later chapters rely on it).
 
 ### Lab 4.2 — Manage a service with OpenRC
 
@@ -220,7 +220,7 @@ it starts on every boot.
 **Negative test:** `rc-service sshd start` but skip `rc-update add`, then reboot;
 `sshd` is not running — starting is not enabling.
 
-**Cleanup:** leave `sshd` enabled, or `rc-update del sshd && rc-service sshd stop`.
+**Rollback:** leave `sshd` enabled, or `rc-update del sshd && rc-service sshd stop`.
 
 ### Lab 4.3 — A boot-time `local.d` hook
 
@@ -247,7 +247,7 @@ launch.
 **Negative test:** forget `chmod +x`; the script is ignored at boot — `local.d`
 runs only executable `*.start` files.
 
-**Cleanup:** `rm /etc/local.d/hello.start /var/log/local-hook.log`.
+**Rollback:** `rm /etc/local.d/hello.start /var/log/local-hook.log`.
 
 ## Lab Verification
 

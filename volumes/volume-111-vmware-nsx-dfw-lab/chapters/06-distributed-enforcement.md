@@ -53,7 +53,7 @@ sudo ip netns exec db nft flush ruleset
 sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo "hmi->db OPEN (rule removed)"'
 ```
 
-**Cleanup.** Restore db's ruleset.
+**Rollback.** Restore db's ruleset.
 
 ### Exercise 6.2 — Confirm the legitimate same-subnet flow still works
 
@@ -77,7 +77,7 @@ The legitimate same-subnet flows pass while the lateral one is denied — per-wo
 
 **Negative test.** Try `web → plc:502` (not a permitted pair) — dropped at plc's vNIC, because plc only accepts 502 from Operators. Every workload independently enforces who may reach it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

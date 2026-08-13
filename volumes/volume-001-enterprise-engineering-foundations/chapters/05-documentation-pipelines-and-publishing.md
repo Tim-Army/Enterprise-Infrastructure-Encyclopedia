@@ -380,6 +380,8 @@ mkdir -p ~/docs && cd ~/docs
 cat > guide.md <<'EOF'
 # Deployment Guide
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ## Prerequisites
 
 - A configured workstation
@@ -401,7 +403,7 @@ spelling, reviewed in PRs, so docs stay current and consistent with the code.
 it drifts from the code, is un-reviewable in PRs, and cannot be linted — Markdown-in-Git keeps docs
 alongside and in sync with the code.
 
-**Cleanup:** `rm -rf ~/docs`.
+**Rollback:** `rm -rf ~/docs`.
 
 ### Lab 5.2 — Multi-format build with Pandoc (Topic: Publishing pipeline)
 
@@ -421,7 +423,7 @@ print, and EPUB for readers, which is how this encyclopedia produces all its for
 **Negative test:** maintain separate hand-written HTML and PDF versions of the same doc; they diverge
 and double the work — a single Markdown source rendered by Pandoc keeps every format consistent.
 
-**Cleanup:** `rm -rf ~/docs`.
+**Rollback:** `rm -rf ~/docs`.
 
 ### Lab 5.3 — Static publishing (Topic: Publishing)
 
@@ -441,7 +443,7 @@ why documentation portals are typically static builds published from CI.
 **Negative test:** run a dynamic CMS/backend just to serve read-only documentation; it adds attack
 surface and operational cost for no benefit — static rendered docs need no backend to serve.
 
-**Cleanup:** `rm -rf ~/site`.
+**Rollback:** `rm -rf ~/site`.
 
 ### Lab 5.4 — The docs-as-code CI gate (Topic: Quality gate)
 
@@ -469,7 +471,7 @@ diligence.
 **Negative test:** publish docs with no CI gate; broken links, lint violations, and typos accumulate
 and the site build eventually fails silently — the CI gate catches each violation at the PR.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

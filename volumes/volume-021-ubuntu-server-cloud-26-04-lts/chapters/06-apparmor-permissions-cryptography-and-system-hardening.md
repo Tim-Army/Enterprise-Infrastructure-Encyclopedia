@@ -353,7 +353,7 @@ special bits (setuid, setgid, sticky) are core filesystem-security skills.
 their own primary group, breaking shared access — the setgid bit is what enforces the shared
 group.
 
-**Cleanup:** `sudo rm -rf /srv/team; sudo groupdel team`.
+**Rollback:** `sudo rm -rf /srv/team; sudo groupdel team`.
 
 ### Lab 6.2 — Access Control Lists (Topic: Securing access)
 
@@ -374,7 +374,7 @@ ownership, for cases the three standard classes cannot express.
 **Negative test:** give one extra user access using only `chmod`; you must change the group or open
 it to `other`, over-granting — ACLs exist precisely to avoid that.
 
-**Cleanup:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo deluser
+**Rollback:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo deluser
 --remove-home contractor`.
 
 ### Lab 6.3 — AppArmor profiles (Topic: Mandatory access control)
@@ -397,7 +397,7 @@ logs (for tuning).
 label-based, so contexts/`restorecon` do not apply — profiles live in `/etc/apparmor.d/` and are
 keyed on executable paths.
 
-**Cleanup:** restore the profile's original mode (`sudo aa-enforce` if it started enforcing).
+**Rollback:** restore the profile's original mode (`sudo aa-enforce` if it started enforcing).
 
 ### Lab 6.4 — Troubleshoot an AppArmor denial and harden (Topic: Hardening)
 
@@ -421,7 +421,7 @@ benchmark-driven hardening.
 **Negative test:** "fix" a denial by `aa-disable`-ing the profile; the program runs unconfined and
 you have removed a security control — resolve denials in the profile and keep AppArmor enforcing.
 
-**Cleanup:** re-enable any profile disabled during troubleshooting.
+**Rollback:** re-enable any profile disabled during troubleshooting.
 
 ## Lab Verification
 

@@ -29,7 +29,7 @@ kubectl -n consul exec statefulset/consul-server -- consul catalog services
 
 **Negative test.** Look for the un-meshed `plc` in the sidecar-proxy list; it is not there — it has no proxy and no Connect identity.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — See the SPIFFE identities
 
@@ -47,7 +47,7 @@ echo "spiffe://<datacenter-domain>/ns/default/dc/dc1/svc/web"
 
 **Negative test.** Note the identity is the service, not the pod IP. It is stable across pod restarts and portable across platforms.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Confirm encryption
 
@@ -65,7 +65,7 @@ kubectl get pod -l app=web -o jsonpath='{.items[0].spec.containers[*].name}{"\n"
 
 **Negative test.** There is no per-connection switch to disable Connect mTLS for meshed services; encryption is intrinsic to the mesh, as with Linkerd.
 
-**Cleanup.** Keep the mesh for Chapter 07.
+**Rollback.** Keep the mesh for Chapter 07.
 
 ## Summary and Completion Checklist
 

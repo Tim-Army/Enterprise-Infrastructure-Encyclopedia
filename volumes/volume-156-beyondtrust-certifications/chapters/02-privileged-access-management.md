@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Relying on a strong perimeter and password complexity alone. Once an attacker is inside, standing privileged credentials are the vehicle; only vaulting, rotation, least privilege, and JIT remove that vehicle.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Least privilege and just-in-time
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Granting standing admin because "the engineer needs it sometimes." Sometimes is not always; JIT grants it for the task and revokes it after, removing the idle exposure that standing privilege leaves open.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

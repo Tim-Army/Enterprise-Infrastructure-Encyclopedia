@@ -76,7 +76,7 @@ program design.
 **Negative test:** onboard 5000 local admins before 12 domain admins; you protect the low-risk first —
 **risk-rank** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Define PAM program metrics
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** report "we deployed CyberArk" with no coverage metrics; leadership can't see risk
 reduction — **measure** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -119,7 +119,7 @@ renewal.
 **Negative test:** assume the exams never change after the Palo Alto acquisition; **verify** current
 names/delivery on cyberark.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

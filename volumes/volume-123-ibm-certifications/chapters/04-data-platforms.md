@@ -39,7 +39,7 @@ docker exec -it db2lab su - db2inst1 -c "db2 connect to LABDB"
 
 **Negative test:** Connect before initialization finishes (skip the sleep) — connection refused; Db2 needs its startup time, a real operational detail.
 
-**Cleanup:** `docker rm -f db2lab` at the chapter's end.
+**Rollback:** `docker rm -f db2lab` at the chapter's end.
 
 ### Lab 4.2 — Tables, tablespaces, and the catalog (DBA core)
 
@@ -56,7 +56,7 @@ docker exec -it db2lab su - db2inst1 -c "db2 connect to LABDB && \
 
 **Negative test:** Query `card` before `RUNSTATS` — it reads `-1` (no statistics); optimizer questions on the exam hinge on knowing statistics must be collected.
 
-**Cleanup:** Table dropped with the container.
+**Rollback:** Table dropped with the container.
 
 ### Lab 4.3 — Backup and recovery (DBA core)
 
@@ -72,7 +72,7 @@ docker exec -it db2lab su - db2inst1 -c "db2 connect to LABDB && \
 
 **Negative test:** Attempt an online backup in **circular logging** mode — Db2 refuses; online backup and rollforward require **archive logging**, a distinction the exams reliably probe.
 
-**Cleanup:** Backups removed with the container.
+**Rollback:** Backups removed with the container.
 
 ### Lab 4.4 — Db2 for z/OS differences (z/OS DBA)
 
@@ -88,7 +88,7 @@ db2 z/OS> access: through subsystems; workload managed by z/OS WLM
 
 **Negative test:** Assuming `db2 BACKUP DATABASE` (a LUW CLP command) on z/OS — there it is a utility job; conflating the two platforms is the trap.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 4.5 — Informix positioning (Informix DBA)
 
@@ -103,7 +103,7 @@ informix> separate engine (OLTP + time-series/IoT strength); dbaccess CLI, onsta
 
 **Negative test:** Bringing Db2 `db2` CLP commands to an Informix exam — wrong engine; the storage and admin models don't transfer.
 
-**Cleanup:** `docker rm -f db2lab` to finish the chapter.
+**Rollback:** `docker rm -f db2lab` to finish the chapter.
 
 ## Summary and Completion Checklist
 

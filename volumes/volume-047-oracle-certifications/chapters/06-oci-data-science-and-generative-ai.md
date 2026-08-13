@@ -94,7 +94,7 @@ Data Science environment the exam covers.
 **Negative test:** hard-code API keys in a notebook; use **resource principals** so
 the notebook authenticates without stored keys.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Data Science: model catalog and deployment
 
@@ -112,7 +112,7 @@ the model-management lifecycle of the Data Science credential.
 **Negative test:** copy model files to an instance and serve by hand; the **model
 catalog + deployment** provides versioning, scaling, and monitoring — use them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Data Science: jobs, pipelines, and MLOps
 
@@ -129,7 +129,7 @@ Data Science credential.
 **Negative test:** train interactively in a notebook for production; use **Jobs/
 Pipelines** for repeatable, automated MLOps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Generative AI: prompting and the OCI GenAI service
 
@@ -146,7 +146,7 @@ the prompting foundation of 1Z0-1127.
 **Negative test:** send an open prompt with no constraints; ground and constrain to
 reduce hallucination.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Generative AI: model customization (fine-tuning / T-Few)
 
@@ -163,7 +163,7 @@ parameter-efficient fine-tuning) — a core 1Z0-1127 topic.
 **Negative test:** full fine-tune for a small tweak; **T-Few** is cheaper — match
 the method to the need.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — Generative AI: RAG with 23ai AI Vector Search
 
@@ -184,7 +184,7 @@ chunks — the RAG + vector-search topic of 1Z0-1127 (and a 23ai feature).
 **Negative test:** bolt on a separate vector DB when **23ai AI Vector Search** is
 native; keep embeddings with the data where it fits.
 
-**Cleanup:** `DROP TABLE docs;`
+**Rollback:** `DROP TABLE docs;`
 
 ### Lab 6.7 — Generative AI: OCI GenAI Agents
 
@@ -201,7 +201,7 @@ the agents topic of 1Z0-1127.
 **Negative test:** give an agent broad, unapproved tool access; use **least
 privilege** and approval gates for high-impact actions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

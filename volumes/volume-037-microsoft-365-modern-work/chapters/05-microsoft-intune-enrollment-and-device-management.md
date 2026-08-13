@@ -168,7 +168,7 @@ Entra-joined Windows devices for those users enroll automatically.
 **Negative test:** leave the MDM user scope as `None`; Entra-joined Windows
 devices join but never enroll in Intune — automatic enrollment needs the scope.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Read the managed-device inventory (Topic: Device inventory)
 
@@ -186,7 +186,7 @@ Get-MgDeviceManagementManagedDevice -Top 20 |
 **Negative test:** filter for a device name that is not enrolled; nothing
 returns — inventory only contains enrolled/managed devices.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Inspect enrollment restrictions (Topic: Restrict enrollment)
 
@@ -206,7 +206,7 @@ devices per user.
 enrolls a personal phone into full MDM — set a platform restriction to block
 personal ownership where required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Retire a device (Topic: Device lifecycle)
 
@@ -224,7 +224,7 @@ removed while personal data remains, the correct action for BYOD offboarding.
 **Negative test:** wipe a personal BYOD device instead of retiring; the user's
 personal data is factory-reset — use retire, not wipe, for personal devices.
 
-**Cleanup:** none (the device is removed from management).
+**Rollback:** none (the device is removed from management).
 
 ## Lab Verification
 

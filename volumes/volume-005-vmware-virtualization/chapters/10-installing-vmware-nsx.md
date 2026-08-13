@@ -493,7 +493,7 @@ nodes); a healthy manager cluster (3 nodes in production) is the prerequisite fo
 **Negative test:** build NSX on a single manager node for production; there is no control-plane
 redundancy — a 3-node manager cluster is required for a resilient control plane.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.2 — Transport nodes and zones (Topic: Data plane preparation)
 
@@ -520,7 +520,7 @@ cluster.
 **Negative test:** create logical segments before preparing transport nodes; there is no data plane to
 realize them — hosts must be transport nodes in the right transport zone first.
 
-**Cleanup:** remove lab-only transport-node prep if reworking.
+**Rollback:** remove lab-only transport-node prep if reworking.
 
 ### Lab 10.3 — Edge nodes and validation (Topic: Edge and validation)
 
@@ -540,7 +540,7 @@ the physical world; with manager, transport nodes, and edges in place, NSX is re
 services have nowhere to run — edge nodes are required for gateway services, while the distributed
 firewall runs on every transport node.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

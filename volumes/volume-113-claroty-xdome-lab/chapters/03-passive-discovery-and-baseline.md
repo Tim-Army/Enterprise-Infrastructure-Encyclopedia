@@ -35,7 +35,7 @@ sudo tcpdump -nr /tmp/span.pcap 2>/dev/null | grep -oE '10\.70\.[0-9]+\.[0-9]+' 
 
 **Negative test.** An active port scan of the PLC could crash a fragile controller — the reason OT discovery must be passive. This lab never scans the devices; it only listens.
 
-**Cleanup.** Keep the capture.
+**Rollback.** Keep the capture.
 
 ### Exercise 3.2 — Build the communication baseline
 
@@ -62,7 +62,7 @@ The baseline is the two flows that actually occurred — the raw material for a 
 
 **Negative test.** If the monitoring window is too short or misses a periodic flow (a nightly poll, a backup), that legitimate flow will be absent from the baseline and later denied. Baseline length and coverage matter — segment from a representative window, not a one-minute sample.
 
-**Cleanup.** Keep `/tmp/baseline.txt`.
+**Rollback.** Keep `/tmp/baseline.txt`.
 
 ## Summary and Completion Checklist
 

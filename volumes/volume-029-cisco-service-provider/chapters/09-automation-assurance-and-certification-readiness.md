@@ -205,7 +205,7 @@ config and state instead of screen-scraping.
 **Negative test:** script against the CLI text output and a version bump changes the
 format, breaking the parser — the YANG-modeled APIs return stable structured data.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Interpret an external script using a REST API (SPCOR Objective 5.2)
 
@@ -225,7 +225,7 @@ to the YANG structure.
 **Negative test:** a path that does not match the model returns `404`; the RESTCONF
 URL must follow the YANG hierarchy exactly.
 
-**Cleanup:** none (read-only GET).
+**Rollback:** none (read-only GET).
 
 ### Lab 9.3 — Describe the role of Network Services Orchestrator (SPCOR Objective 5.3)
 
@@ -246,7 +246,7 @@ automation control point.
 **Negative test:** edit a device out-of-band; NSO's `check-sync` reports it
 out-of-sync — NSO is the intended source of truth and detects divergence.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Describe a data modeling language such as YANG (SPCOR Objective 5.4)
 
@@ -264,7 +264,7 @@ to a YANG model.
 **Negative test:** send data with a value violating a YANG type/range; the device
 rejects it — YANG's type system validates input the CLI would also reject.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.5 — Describe configuration management tools (SPCOR Objective 5.5)
 
@@ -284,7 +284,7 @@ fits declarative infrastructure with drift detection.
 **Negative test:** re-run an idempotent Ansible play; `changed=0` — a raw script
 would re-apply blindly, the difference config-management tools provide.
 
-**Cleanup:** none (check/plan make no changes).
+**Rollback:** none (check/plan make no changes).
 
 ### Lab 9.6 — Describe Secure ZTP (SPCOR Objective 5.6)
 
@@ -304,7 +304,7 @@ automated and authenticated.
 load attacker config; Secure ZTP's voucher chain prevents that — plain ZTP trusts
 the network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.7 — Configure gRPC/gNMI dial-in/out with TLS/mTLS (SPCOR Objective 5.7)
 
@@ -327,7 +327,7 @@ authenticates for secure automation.
 **Negative test:** connect without the client cert to an mTLS-required server; the
 handshake fails — mTLS rejects unauthenticated clients, unlike one-way TLS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.8 — Configure and verify NetFlow/IPFIX (SPCOR Objective 5.8)
 
@@ -346,7 +346,7 @@ collector for traffic analysis, capacity planning, and DDoS detection.
 built but not sent; `show flow exporter` reveals the transport failure — flow data
 is only useful if it reaches the collector.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.9 — Configure and verify NETCONF and RESTCONF (SPCOR Objective 5.9)
 
@@ -366,7 +366,7 @@ and datastores, RESTCONF is a simpler HTTP CRUD over the same models.
 **Negative test:** call NETCONF without `netconf-yang agent ssh` enabled; the port
 830 connection is refused — the agent must be enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.10 — Configure and verify SNMP v2c/v3 (SPCOR Objective 5.10)
 
@@ -388,7 +388,7 @@ security, where **v2c** is community-string only (cleartext).
 **Negative test:** poll with SNMP v2c across the internet; the community string is
 cleartext and readable — v3 authPriv is required off the management network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.11 — Describe network assurance (SPCNI Objective 5.1)
 
@@ -408,7 +408,7 @@ loss) and flags deviations proactively.
 breach between polls is missed — streaming telemetry catches it, which is why
 assurance uses push.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.12 — Describe cloud infrastructure and performance monitoring (SPCNI Objective 5.2)
 
@@ -427,7 +427,7 @@ with service performance so capacity and faults are visible.
 the VNF looks under-loaded while the host is saturated — both layers must be
 monitored.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.13 — Diagnose NFVI errors and events (SPCNI Objective 5.3)
 
@@ -446,7 +446,7 @@ config.
 **Negative test:** debug routing for a service outage caused by a VNF the hypervisor
 OOM-killed — read the NFVI events before the network state.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.14 — Describe VNF optimization (SPCNI Objective 5.4)
 
@@ -466,7 +466,7 @@ a software VNF approaches line rate.
 throughput and latency suffer — the optimizations are what make NFV viable at SP
 scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.15 — Git version-control operations (SPAUTO Objective 1.1)
 
@@ -486,7 +486,7 @@ changes.
 **Negative test:** `git push` with no remote fails — a remote must be configured
 first.
 
-**Cleanup:** `rm -rf sp-auto`.
+**Rollback:** `rm -rf sp-auto`.
 
 ### Lab 9.16 — Describe API styles: REST and RPC (SPAUTO Objective 1.2)
 
@@ -506,7 +506,7 @@ same YANG models but with different interaction styles.
 **Negative test:** POST a NETCONF RPC body to the RESTCONF endpoint; it rejects it
 — the styles are distinct.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.17 — Describe sync vs async API patterns (SPAUTO Objective 1.3)
 
@@ -526,7 +526,7 @@ device.
 **Negative test:** assume an async commit-queue job finished on submit; devices
 update as the queue drains — you must track the queue item to completion.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.18 — Interpret Python scripts (SPAUTO Objective 1.4)
 
@@ -548,7 +548,7 @@ and a list, the constructs SPAUTO expects you to interpret in automation code.
 **Negative test:** reference an undefined attribute; Python raises `AttributeError`
 — reading the traceback is part of the skill.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.19 — Describe Python virtual environments (SPAUTO Objective 1.5)
 
@@ -566,7 +566,7 @@ codebases.
 **Negative test:** install SDKs system-wide and two projects needing different
 versions clash — the venv is the isolation.
 
-**Cleanup:** `rm -rf xrenv`.
+**Rollback:** `rm -rf xrenv`.
 
 ### Lab 9.20 — Benefits of Ansible and Terraform (SPAUTO Objective 1.6)
 
@@ -583,7 +583,7 @@ Terraform adds state tracking and drift detection.
 **Negative test:** a shell script re-applies everything each run (no idempotence) —
 the declarative tools' convergence is the advantage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.21 — Describe YANG data models: OpenConfig, IETF, native (SPAUTO Objective 2.1)
 
@@ -603,7 +603,7 @@ chooses based on the feature and the fleet.
 platform-specific features exist only in native models — the model choice trades
 neutrality for coverage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.22 — Describe HTTP authentication mechanisms (SPAUTO Objective 2.2)
 
@@ -623,7 +623,7 @@ Crosswork) commonly use token/OAuth.
 **Negative test:** use basic auth without TLS; credentials are exposed — basic must
 run over HTTPS, and token/OAuth reduce credential exposure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.23 — Compare data types: JSON, XML, YAML, gRPC, protobuf (SPAUTO Objective 2.3)
 
@@ -646,7 +646,7 @@ compact binary encoding for high-volume telemetry where text would be too large.
 **Negative test:** stream high-rate telemetry as JSON text; the overhead is large —
 GPB/protobuf is used for volume, which is why gNMI defaults to it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.24 — Interpret a JSON instance from a YANG model (SPAUTO Objective 2.4)
 
@@ -663,7 +663,7 @@ identify list entries, so you can read or construct valid instances.
 **Negative test:** a JSON body missing a required list key is rejected on write —
 the YANG model's keys are mandatory.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.25 — Interpret an XML instance from a YANG model (SPAUTO Objective 2.5)
 
@@ -682,7 +682,7 @@ containers/leaves and namespaces to modules.
 **Negative test:** omit the module namespace on a write; NETCONF cannot resolve the
 element — the namespace binds the XML to its model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.26 — Interpret a YANG module tree from pyang (SPAUTO Objective 2.6)
 
@@ -699,7 +699,7 @@ structure and build valid NETCONF/RESTCONF payloads or XPaths.
 **Negative test:** guess a path without the tree and hit a non-existent node; the
 device errors — the pyang tree prevents that by showing the real structure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.27 — Configuration/operation management with RESTCONF (SPAUTO Objective 2.7)
 
@@ -719,7 +719,7 @@ XML, a simple CRUD automation interface.
 **Negative test:** PATCH a leaf that violates a YANG constraint; RESTCONF returns a
 `400` with the error path — the model validates writes.
 
-**Cleanup:** DELETE the test static route.
+**Rollback:** DELETE the test static route.
 
 ### Lab 9.28 — Configuration/operation management with NETCONF (SPAUTO Objective 2.8)
 
@@ -742,7 +742,7 @@ transactional candidate→running semantics on platforms that support candidate.
 **Negative test:** edit-config with malformed XML returns an `rpc-error` the script
 must handle — NETCONF gives structured errors, not silent failure.
 
-**Cleanup:** discard candidate / remove test config.
+**Rollback:** discard candidate / remove test config.
 
 ### Lab 9.29 — Compare NETCONF datastores (SPAUTO Objective 2.9)
 
@@ -763,7 +763,7 @@ changes.
 running with `:writable-running`; the edit applies directly — capabilities dictate
 the datastore model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.30 — Deploy and validate with ncclient (SPAUTO Objective 3.1)
 
@@ -785,7 +785,7 @@ get to confirm the intended operational state, closing the loop.
 **Negative test:** deploy without a validation `get`; a commit can succeed while the
 feature stays down (e.g., dependency missing) — always validate operational state.
 
-**Cleanup:** remove the test config.
+**Rollback:** remove the test config.
 
 ### Lab 9.31 — Python NETCONF with YDK and YANG Suite (SPAUTO Objective 3.2)
 
@@ -807,7 +807,7 @@ models into typed Python classes so you build config as objects (not raw XML), a
 **Negative test:** a YDK bundle version mismatched to the device's model fails to
 render valid config — the YDK model bundle must match the platform.
 
-**Cleanup:** remove the test config.
+**Rollback:** remove the test config.
 
 ### Lab 9.32 — Deploy and validate with NetMiko (SPAUTO Objective 3.3)
 
@@ -831,7 +831,7 @@ parsing `show` output.
 **Negative test:** send config with NetMiko to XR and forget `commit()`; the change
 is not applied — XR's two-stage commit still applies to CLI automation.
 
-**Cleanup:** remove the test config.
+**Rollback:** remove the test config.
 
 ### Lab 9.33 — Deploy and validate with an Ansible playbook (SPAUTO Objective 3.4)
 
@@ -856,7 +856,7 @@ re-running.
 **Negative test:** run with `state: deleted` — the config is removed; declarative
 state covers add and remove symmetrically.
 
-**Cleanup:** re-run with `state: deleted`.
+**Rollback:** re-run with `state: deleted`.
 
 ### Lab 9.34 — Compare gNMI with NETCONF and gRPC (SPAUTO Objective 3.5)
 
@@ -874,7 +874,7 @@ telemetry and simple config; NETCONF at transactional multi-datastore config.
 **Negative test:** expect NETCONF's candidate/commit semantics from gNMI Set; gNMI's
 model is simpler (replace/update/delete) — choose per the operation's needs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.35 — Python RESTCONF with YANG Suite (SPAUTO Objective 3.6)
 
@@ -896,7 +896,7 @@ path/payload from the model before coding it.
 **Negative test:** a wrong Accept header (plain `application/json`) may be rejected;
 RESTCONF expects `application/yang-data+json` — the media type matters.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.36 — Construct XPath notation (SPAUTO Objective 3.7)
 
@@ -915,7 +915,7 @@ is how telemetry subscriptions and NETCONF filters select exactly the data wante
 **Negative test:** an XPath predicate on a non-key leaf may not select as expected;
 list selection uses the key — the predicate must match the model's key.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.37 — Diagnose model-driven telemetry with gRPC on XR (SPAUTO Objective 3.8)
 
@@ -936,7 +936,7 @@ the collector's receipt.
 transport failing in `show telemetry ... destination` — the stream is only as good as
 the collector link.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.38 — Describe ETSI NFV (SPAUTO Objective 4.1)
 
@@ -955,7 +955,7 @@ infrastructure), driven by VNFD/NSD descriptors.
 (service orchestration); they are separate MANO functions — mixing them breaks the
 architecture model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.39 — Describe NSO architecture (SPAUTO Objective 4.2)
 
@@ -974,7 +974,7 @@ per-platform), the **device manager** (sync/deploy), and the **service manager**
 **Negative test:** manage a device with no matching NED; NSO cannot render config to
 it — the NED for that platform/version is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.40 — Describe Cisco Crosswork Network Controller (SPAUTO Objective 4.3)
 
@@ -993,7 +993,7 @@ telemetry.
 inputs; it needs the topology and path-computation feed — the components work
 together.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.41 — Configure a device using the NSO RESTCONF API in Python (SPAUTO Objective 4.4)
 
@@ -1015,7 +1015,7 @@ devices programmatically, and NSO renders the per-device config.
 **Negative test:** POST a service instance whose service model/package is not loaded;
 NSO rejects it — the service package must be present.
 
-**Cleanup:** delete the test service instance.
+**Rollback:** delete the test service instance.
 
 ### Lab 9.42 — Describe Cisco ESC management and automation (SPAUTO Objective 4.5)
 
@@ -1033,7 +1033,7 @@ MANO.
 **Negative test:** expect ESC to orchestrate a multi-VNF network service end to end;
 that is the NFVO's job (NSO/OSM) — ESC manages VNF lifecycle, one layer down.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.43 — Implement SR-PCE / topology transfer (SPAUTO Objective 4.6)
 
@@ -1053,7 +1053,7 @@ control for centralized optimization.
 **Negative test:** an SR-PCE with no BGP-LS/IGP topology feed cannot compute paths;
 `show pce ipv4 topology` is empty — the topology feed is the prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.44 — Describe Cisco WAE (SPAUTO Objective 4.7)
 
@@ -1070,7 +1070,7 @@ curl -sk -u admin:PW "https://$WAE:8443/wae/api/networks" 2>/dev/null | head || 
 **Negative test:** use WAE's plan without an accurate traffic matrix; optimizations
 are wrong — WAE needs a current demand matrix (from telemetry/NetFlow) to be useful.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.45 — Construct a service template using NSO (SPAUTO Objective 4.8)
 
@@ -1089,7 +1089,7 @@ config across many devices.
 **Negative test:** a template referencing a device model path that a NED does not
 support fails to render on that device — the template must match each device's model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.46 — Deploy a service package using NSO (SPAUTO Objective 4.9)
 
@@ -1108,7 +1108,7 @@ the package.
 **Negative test:** reload a package with a compile error; `oper-status` shows it down
 with the error — the package must compile before its services are usable.
 
-**Cleanup:** remove the test service instance.
+**Rollback:** remove the test service instance.
 
 ## Lab Verification
 

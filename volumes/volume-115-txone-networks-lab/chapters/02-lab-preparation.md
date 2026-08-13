@@ -23,7 +23,7 @@
 
 **Expected result (design).** A transparent inline shield and a locked-down endpoint. Track 2 builds working versions of both.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build the estate and a vulnerable PLC
 
@@ -85,7 +85,7 @@ VALUE=50
 
 **Negative test.** The PLC has no authentication and a real vulnerability — it cannot be fixed. The next exercise shows the exploit landing.
 
-**Cleanup.** Leave the PLC running.
+**Rollback.** Leave the PLC running.
 
 ### Exercise 2.3 — Land the exploit (pre-protection)
 
@@ -107,7 +107,7 @@ The exploit lands directly on the vulnerable device — the exact scenario a tra
 
 **Negative test.** You cannot fix the PLC (no patch exists); the only options are to shield it inline or isolate it. Chapter 04 shields it.
 
-**Cleanup.** Leave the PLC running.
+**Rollback.** Leave the PLC running.
 
 ## Summary and Completion Checklist
 

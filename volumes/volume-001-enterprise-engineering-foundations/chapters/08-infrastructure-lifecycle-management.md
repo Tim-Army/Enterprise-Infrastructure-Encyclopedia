@@ -453,7 +453,7 @@ the lifecycle Volume IX covers in depth).
 **Negative test:** provision servers by hand from a runbook; each differs subtly and none is
 reproducible from source — IaC makes provisioning deterministic and version-controlled.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color`.
+**Rollback:** `terraform destroy -auto-approve -no-color`.
 
 ### Lab 8.2 — Configuration and drift (Topic: Configuration management)
 
@@ -474,7 +474,7 @@ incidents.
 fix" silently diverges and is lost on the next apply or causes an outage — periodic drift detection
 surfaces it.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color`.
+**Rollback:** `terraform destroy -auto-approve -no-color`.
 
 ### Lab 8.3 — Operation and change (Topic: Operate phase)
 
@@ -498,7 +498,7 @@ application code.
 un-reviewed, and reverted by the next apply (drift) — operating through the pipeline keeps state and
 reality in sync.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color; rm -rf ~/lc`.
+**Rollback:** `terraform destroy -auto-approve -no-color; rm -rf ~/lc`.
 
 ### Lab 8.4 — Decommissioning and capstone (Topic: Retire phase + synthesis)
 
@@ -522,7 +522,7 @@ managed as code end to end.
 permissions, monitoring, storage); orphaned resources cost money and create security/attack surface —
 decommissioning-as-code retires everything the provisioning created.
 
-**Cleanup:** `rm -rf ~/lc` (done above).
+**Rollback:** `rm -rf ~/lc` (done above).
 
 ## Lab Verification
 

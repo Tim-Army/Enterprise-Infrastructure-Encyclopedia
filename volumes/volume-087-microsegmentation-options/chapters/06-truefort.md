@@ -98,7 +98,7 @@ flagged as needing an agent.
 **Negative test:** assume every host is covered; `srv-d` has no EDR and no TrueFort agent — it needs one
 to be enforced.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Model an application/identity behavior policy
 
@@ -130,7 +130,7 @@ blocked — behavior-aware segmentation.
 **Negative test:** allow the payments service account to spawn any process to any host on tcp/443;
 IP/port rules miss the malicious child process — enforce on **behavior**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Model service-account protection
 
@@ -153,7 +153,7 @@ blocked — service-account containment.
 **Negative test:** let a service account authenticate anywhere it has credentials; confine it to its
 **intended** flows so stolen service creds cannot roam.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Score TrueFort against the rubric
 
@@ -176,7 +176,7 @@ comparative strengths.
 **Negative test:** score its **coverage** as if it segmented OT/network gear; weight it on
 **application/identity** enforcement where it leads.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

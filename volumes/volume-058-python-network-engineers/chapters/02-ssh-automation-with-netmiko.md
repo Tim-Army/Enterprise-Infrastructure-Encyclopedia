@@ -68,7 +68,7 @@ with ConnectHandler(**dev) as conn:
 **Negative test:** set `device_type` to the wrong platform; **prompt/paging handling**
 breaks — match the platform.
 
-**Cleanup:** the `with` block closes the connection.
+**Rollback:** the `with` block closes the connection.
 
 ### Lab 2.2 — Push configuration
 
@@ -86,7 +86,7 @@ with ConnectHandler(**dev) as conn:
 **Negative test:** apply config but skip **`save_config`**; changes are **lost on reload**
 — save them.
 
-**Cleanup:** remove the loopback (`no interface Lo100`).
+**Rollback:** remove the loopback (`no interface Lo100`).
 
 ### Lab 2.3 — Handle enable/secret
 
@@ -104,7 +104,7 @@ with ConnectHandler(**dev2) as conn:
 **Negative test:** run config while in user EXEC without `enable()`; commands are
 **rejected** — enter privileged mode.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Loop over many devices
 
@@ -125,7 +125,7 @@ for d in inventory:
 **Negative test:** let one unreachable device raise and abort the loop; **catch
 per-device** so the rest continue.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

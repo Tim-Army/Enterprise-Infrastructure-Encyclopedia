@@ -110,7 +110,7 @@ EOF
 
 **Negative test:** Omitting the Try/Catch shape. The non-numeric amount throws and aborts the entire process, losing the two valid records; error handling with Try/Catch is what makes a production integration resilient to bad documents.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -77,7 +77,7 @@ PY
 **Negative test:** rely on hiding a field in the UI for security; **ACLs** enforce it server-side —
 use them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Transform imported data
 
@@ -102,7 +102,7 @@ PY
 **Negative test:** import without a **coalesce** field; every run creates duplicates — coalesce on a
 key.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Plan an Update Set promotion
 
@@ -123,7 +123,7 @@ management.
 **Negative test:** make the change directly in **production**; it's unversioned and risky — use an
 **Update Set** from dev.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Design a Service Catalog item
 
@@ -144,7 +144,7 @@ delivery.
 **Negative test:** let users email IT for laptops; a **catalog item** standardizes approval and
 fulfillment — build one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

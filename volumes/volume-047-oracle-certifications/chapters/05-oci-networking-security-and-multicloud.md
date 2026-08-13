@@ -93,7 +93,7 @@ networking of the Networking Professional.
 **Negative test:** peer every VCN to every other (full mesh); it explodes in
 complexity — use a **DRG hub**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Networking: load balancing and DNS
 
@@ -112,7 +112,7 @@ Professional topic.
 **Negative test:** use an L7 load balancer for extreme-throughput L4 traffic; the
 **Network Load Balancer** is built for L4 performance — pick the right one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Networking: hybrid connectivity
 
@@ -131,7 +131,7 @@ Professional topic.
 **Negative test:** run latency-sensitive production over VPN; use **FastConnect**
 for SLA-grade connectivity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Security: Cloud Guard and Security Zones
 
@@ -150,7 +150,7 @@ PY
 **Negative test:** rely on periodic manual audits; **Cloud Guard** continuously
 detects and can auto-remediate — enable it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Security: Vault, KMS, and encryption
 
@@ -169,7 +169,7 @@ of the Security Professional.
 **Negative test:** store secrets in instance metadata/config files; use **Vault**
 secrets and customer-managed keys.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — Security: WAF and Data Safe
 
@@ -188,7 +188,7 @@ security area of the Security Professional.
 **Negative test:** protect only the network layer; add **WAF** for L7 and **Data
 Safe** for the database — defense in depth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.7 — Multicloud: OCI–Azure interconnect and Database@
 
@@ -208,7 +208,7 @@ of the Multicloud Architect credential.
 **Negative test:** run Oracle DB in one cloud and the app in another over the public
 internet; use the **interconnect / Database@** for low latency.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

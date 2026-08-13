@@ -438,7 +438,7 @@ later volumes.
 network limits; you cannot size or troubleshoot it — the resource layers are the ground truth every
 higher abstraction sits on.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Virtualization and containers (Topic: Abstraction layers)
 
@@ -459,7 +459,7 @@ kernel with namespace isolation (lightweight, dense); the choice trades isolatio
 (or a full VM where a lightweight process would do); the isolation/efficiency trade-off is mismatched
 — match the abstraction to the isolation and density needs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Cloud service models (Topic: Service models)
 
@@ -483,7 +483,7 @@ for securing and operating.
 infrastructure, you secure the OS and up (shared responsibility) — misreading the boundary leaves gaps
 unowned.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — On-prem versus cloud trade-offs (Topic: Sourcing decision)
 
@@ -506,7 +506,7 @@ data-heavy, or compliance-bound workloads may favor on-prem or hybrid.
 trade-off analysis; a steady heavy workload can cost more in cloud, and a spiky one is starved
 on-prem — the workload's characteristics drive the placement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

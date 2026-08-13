@@ -35,7 +35,7 @@ cat /etc/nozomi/baseline
 
 **Negative test.** Too few samples give a too-narrow range and false anomalies later; a real baseline spans representative operation. This lab uses a small illustrative window.
 
-**Cleanup.** Keep the baseline.
+**Rollback.** Keep the baseline.
 
 ### Exercise 4.2 — Reproduce the dangerous write
 
@@ -59,7 +59,7 @@ The control value is now 250 — far outside the safe range and potentially dama
 
 **Negative test.** An L4 firewall permitting "hmi → plc:502" cannot prevent this — the malicious write is indistinguishable from a legitimate read at Layer 4. Only protocol/function awareness (Chapter 05) and process baselining (Chapter 06) catch it.
 
-**Cleanup.** The register is now 250; Chapter 05 blocks writes, Chapter 06 flags the out-of-range value.
+**Rollback.** The register is now 250; Chapter 05 blocks writes, Chapter 06 flags the out-of-range value.
 
 ### Exercise 4.3 — Decide the policy
 
@@ -78,7 +78,7 @@ process    : register 0 value outside 20-80  RAISE ANOMALY (do not silently pass
 
 **Negative test.** Writing this as "allow 502, deny everything else" loses the read/write distinction and the value check — the whole point is finer than a port.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

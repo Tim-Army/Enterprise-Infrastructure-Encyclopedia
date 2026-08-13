@@ -78,7 +78,7 @@ connectivity.
 **Negative test:** put multiple VLANs on an access port; use `vlan trunk` for an uplink — an
 access port carries **one** untagged VLAN.
 
-**Cleanup:** `configure terminal; no vlan 100`.
+**Rollback:** `configure terminal; no vlan 100`.
 
 ### Lab 2.2 — Verify Aruba Central onboarding
 
@@ -97,7 +97,7 @@ campus.
 **Negative test:** SSH into each switch to check status; **Central** shows the whole fleet from
 one API — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Apply a user role (dynamic segmentation)
 
@@ -117,7 +117,7 @@ connects.
 **Negative test:** hard-code the VLAN per port; **roles** move with the user — assign by role,
 not port.
 
-**Cleanup:** `configure terminal; no port-access role employee`.
+**Rollback:** `configure terminal; no port-access role employee`.
 
 ### Lab 2.4 — Read campus health from the API
 
@@ -135,7 +135,7 @@ curl -sS -H "Authorization: Bearer $CENTRAL_TOKEN" \
 **Negative test:** gauge campus health by walking the wiring closet; **Central's API** answers
 it centrally — query it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Zero-touch provisioning concept
 
@@ -151,7 +151,7 @@ it centrally — query it.
 **Negative test:** stage every switch by hand at a bench; **ZTP via Central** scales campus
 rollout — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

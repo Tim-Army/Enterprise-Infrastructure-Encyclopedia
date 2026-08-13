@@ -234,7 +234,7 @@ storage keeps it available to every VM without re-downloading.
 **Negative test:** point a VM at an ISO that is not in an `iso`-content storage; Proxmox will not
 offer it as a CD/DVD source — install media must live in an `iso`-capable storage.
 
-**Cleanup:** remove unused ISOs to reclaim space.
+**Rollback:** remove unused ISOs to reclaim space.
 
 ### Lab 7.2 — Verify ISO integrity (Topic: Integrity)
 
@@ -254,7 +254,7 @@ ten VMs from it; a corrupt ISO causes install failures that look like hardware f
 **Negative test:** install from an ISO whose hash you never checked; a truncated or tampered image
 fails partway or installs compromised software — verifying integrity first rules that out.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — List and manage the library (Topic: Library management)
 
@@ -272,7 +272,7 @@ the volid (`riverfiles:iso/ubuntu-24.04...iso`) is how VMs reference the media.
 **Negative test:** reference an ISO by a guessed path instead of its Proxmox volid; the VM config is
 invalid — Proxmox addresses media by `storage:content/name` volid, which `pvesm list` gives you.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Cloud images for templates (Topic: Cloud images)
 
@@ -293,7 +293,7 @@ and consistent.
 **Negative test:** install all ten VMs from the full ISO one by one; it is slow and inconsistent — a
 cloud-init template cloned ten times is the efficient, repeatable approach.
 
-**Cleanup:** none (the image is used in Chapter 08).
+**Rollback:** none (the image is used in Chapter 08).
 
 ## Lab Verification
 

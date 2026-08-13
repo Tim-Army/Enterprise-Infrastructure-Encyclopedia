@@ -461,6 +461,8 @@ config firewall policy
 end
 ```
 
+**Rollback:** remove the policy created here — `config firewall policy` then `delete 1` and `end` — returning the policy table to its prior order.
+
 ### Lab 6.2 — Firewall objects: addresses, services, schedules (Topic: Firewall objects)
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
@@ -494,7 +496,7 @@ referenced.
 **Negative test:** hard-code IPs and ports directly into dozens of policies; a subnet
 change means editing each one — objects exist precisely to avoid that.
 
-**Cleanup:** delete the three objects after use.
+**Rollback:** delete the three objects after use.
 
 ### Lab 6.3 — Firewall authentication (Topic: Authentication)
 
@@ -539,7 +541,7 @@ policy ties access to who the user is, not just their IP.
 traffic falls through to the next policy or the implicit deny — the `groups` binding
 gates the match on successful auth.
 
-**Cleanup:** delete policy 5, the group, and the user.
+**Rollback:** delete policy 5, the group, and the user.
 
 #### Building the GUI client that completes the captive-portal challenge
 
@@ -812,7 +814,7 @@ virtual interface — a route-based IPsec tunnel connects two sites.
 **Negative test:** mismatch the pre-shared key or proposal between peers; phase-1 fails
 and the tunnel stays down — both ends must agree on authentication and encryption.
 
-**Cleanup:** delete the static route, phase-2, and phase-1.
+**Rollback:** delete the static route, phase-2, and phase-1.
 
 #### Standing up the tunnel between two FortiGates — the gotchas that bite
 
@@ -924,6 +926,8 @@ web access only. If you need a routed tunnel for roaming users, reach for
 IPsec dial-up or ZTNA — do not build lab or production designs around SSL VPN
 tunnel mode.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 6.6 — ZTNA access proxy (Topic: Zero Trust Network Access)
 
 **Eval FortiGate — licensed-only.** The ZTNA access proxy needs **strong encryption** for the FortiGate↔EMS TLS (the eval is DES-only) and **FortiClient EMS** for client certificates and device tags — see the lab-environment note below. On the eval, read and design.
@@ -979,7 +983,7 @@ VPN trust with per-session, posture-aware authorization.
 reintroduces the flat-trust model ZTNA exists to eliminate — access is per-session and
 re-evaluated.
 
-**Cleanup:** delete the access-proxy and the VIP.
+**Rollback:** delete the access-proxy and the VIP.
 
 ## Lab Verification
 

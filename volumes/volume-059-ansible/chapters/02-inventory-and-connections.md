@@ -74,7 +74,7 @@ structured inventory.
 
 **Negative test:** list hosts with no groups; **group** them so plays can target subsets.
 
-**Cleanup:** `rm inventory.ini`.
+**Rollback:** `rm inventory.ini`.
 
 ### Lab 2.2 — Assign group variables
 
@@ -91,7 +91,7 @@ ansible -i inventory.ini web -m debug -a "var=http_port"
 **Negative test:** repeat the variable on every host; **group_vars** sets it once for the
 group.
 
-**Cleanup:** `rm -rf group_vars`.
+**Rollback:** `rm -rf group_vars`.
 
 ### Lab 2.3 — Host variables
 
@@ -109,7 +109,7 @@ precedence.
 **Negative test:** edit the group value to change one host; **host_vars** overrides just
 that host.
 
-**Cleanup:** `rm -rf host_vars group_vars`.
+**Rollback:** `rm -rf host_vars group_vars`.
 
 ### Lab 2.4 — Dynamic inventory (describe)
 
@@ -129,7 +129,7 @@ inventory.
 **Negative test:** maintain a static list in a dynamic cloud/SoT environment; it
 **drifts** — generate it dynamically.
 
-**Cleanup:** `rm -f netbox_inv.yml`.
+**Rollback:** `rm -f netbox_inv.yml`.
 
 ## Lab Verification
 

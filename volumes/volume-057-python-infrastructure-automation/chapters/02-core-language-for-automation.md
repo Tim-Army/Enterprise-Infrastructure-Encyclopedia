@@ -66,7 +66,7 @@ print(by_name["web2"])   # 10.0.0.2
 **Negative test:** scan the list linearly for each lookup; a **dict** is O(1) — index
 once.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Filter with a comprehension
 
@@ -82,7 +82,7 @@ print(len(prod))   # 2
 **Negative test:** build the result with an explicit loop + append; a **comprehension**
 is clearer for simple filters.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — A typed function
 
@@ -99,7 +99,7 @@ print(ip_for("web1", by_name))   # 10.0.0.1
 **Negative test:** index with `table[name]` for a missing key; use `.get()` (returns
 `None`) or handle **KeyError** — don't crash on absence.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Robust error handling
 
@@ -120,7 +120,7 @@ print(parse_port("nope"))   # 443
 **Negative test:** wrap the body in bare `except:`; it **hides** real errors (e.g.,
 KeyboardInterrupt) — catch the specific exception.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

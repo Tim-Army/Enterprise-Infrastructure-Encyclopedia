@@ -72,7 +72,7 @@ PY
 
 **Negative test:** scan production with no scope/exclusions; you risk impact — **scope** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Scan a container image (shift left)
 
@@ -93,7 +93,7 @@ container security.
 **Negative test:** scan only running containers; the vulnerable **base image** already shipped — scan
 images in **CI/CD**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Configure File Integrity Monitoring
 
@@ -114,7 +114,7 @@ PY
 **Negative test:** monitor only for known malware signatures; **FIM** catches unexpected changes to
 trusted files — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Prioritize internet-facing app findings
 
@@ -135,7 +135,7 @@ remediation.
 **Negative test:** treat internet and internal findings equally; the **internet-facing** one is more
 exposed — prioritize it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

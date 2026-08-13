@@ -43,7 +43,7 @@ EOF
 
 **Negative test:** Running recon against an organization you have no authorization to assess — that's the offensive use, and it's out of bounds; the authorized, defensive application is assessing your *own* exposure (or a client's, under signed scope).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The information a job posting leaks
 
@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Assuming recon only matters to attackers — every detail you publish is enumerated; the defensive lesson is to control what leaks, informed by knowing what recon collects.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Leaked-credential monitoring
 
@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Ignoring breach-dump exposure — attackers won't; credential stuffing from old dumps is a top initial-access vector, and defensive OSINT monitoring is the counter.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

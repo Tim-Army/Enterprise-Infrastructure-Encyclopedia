@@ -99,7 +99,7 @@ detection rule — the log-analysis detection OSDA builds.
 **Negative test:** alert on every single failure; tune thresholds so real attacks
 stand out from noise.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — OSDA: map detections to the kill chain
 
@@ -120,7 +120,7 @@ teaches (detect early and across the chain).
 **Negative test:** detect only at exfiltration; earlier detection limits damage —
 cover the whole chain.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### OSIR — Incident Response
 
@@ -143,7 +143,7 @@ certifies.
 **Negative test:** wipe and rebuild before **identification/containment**; you
 destroy evidence and may miss persistence — follow the lifecycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — OSIR: preserve evidence and build a timeline
 
@@ -161,7 +161,7 @@ forensic-preservation and timeline habit OSIR requires.
 **Negative test:** edit logs while investigating; hashing proves integrity —
 preserve, don't alter, evidence.
 
-**Cleanup:** `rm -f evidence_logins.txt evidence_logins.sha256`
+**Rollback:** `rm -f evidence_logins.txt evidence_logins.sha256`
 
 ### OSTH — Threat Hunting
 
@@ -185,7 +185,7 @@ method that distinguishes hunting from routine review.
 **Negative test:** browse logs with no hypothesis; a hunt needs a **testable
 question** to be productive.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — OSTH: hunt on IOCs and TTPs (ATT&CK-aligned)
 
@@ -207,7 +207,7 @@ detections.
 **Negative test:** hunt only for known file hashes (IOCs); **TTP/behavior**
 hunting catches variants that change hashes — hunt behaviors too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

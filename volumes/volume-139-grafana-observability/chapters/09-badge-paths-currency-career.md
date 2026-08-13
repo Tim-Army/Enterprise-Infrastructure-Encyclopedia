@@ -102,7 +102,7 @@ cat my-grafana-plan.md
 
 **Negative test:** Treating the 101 path as reading material to skim — ten of its nineteen items are hands-on labs, and the assessment is aligned to the work, not to the prose.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the curriculum
 
@@ -146,7 +146,7 @@ EOF
 
 **Negative test:** Starting 101 with two weak modules — the labs and assessment cover the full curriculum, so the weak areas simply arrive later with a deadline attached.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

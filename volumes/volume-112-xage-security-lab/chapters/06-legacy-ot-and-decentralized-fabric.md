@@ -42,7 +42,7 @@ sudo ip netns exec hmi bash -c 'printf "op-hmi TOKEN-HMI-7f3a\n" | nc -w2 10.60.
 DENY: no grant
 ```
 
-**Cleanup.** Keep both brokers.
+**Rollback.** Keep both brokers.
 
 ### Exercise 6.2 — Decentralized policy: no single point of compromise (design + model)
 
@@ -66,7 +66,7 @@ sudo sed -i 's#/etc/xage/policy.node#/etc/xage/policy#g' /usr/local/bin/xbroker
 
 **Negative test.** If the broker had to call a central server for every decision, that server would be both a bottleneck and a single point of failure — the centralized model this architecture deliberately avoids.
 
-**Cleanup.** Restore the single policy file (done above).
+**Rollback.** Restore the single policy file (done above).
 
 ## Summary and Completion Checklist
 

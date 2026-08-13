@@ -76,7 +76,7 @@ WAS.
 **Negative test:** point WAS at production with no exclusions or throttling; it may trigger destructive
 actions or an outage — **scope** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Interpret a WAS finding
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** hand developers raw scanner output with no fix guidance; it's not actionable —
 include the **remediation**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Check cloud posture (CSPM)
 
@@ -122,7 +122,7 @@ PY
 **Negative test:** assume the cloud provider secures your config; the **customer** owns it — assess
 posture.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Find a toxic combination
 
@@ -143,7 +143,7 @@ priority — attack-path analysis.
 **Negative test:** rank each misconfig alone by severity; the dangerous **combination** is missed —
 analyze attack paths.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Investigating by IP address alone across a multi-day window — you will attribute one machine's behavior to another user's device and reach a confident wrong conclusion.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Parsing breaks silently
 
@@ -121,7 +121,7 @@ EOF
 
 **Negative test:** Monitoring only ingest volume — a parsing break shows no volume change at all, so the coverage loss is invisible until an incident review asks why nothing alerted.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — UBA baselines and their limits
 
@@ -158,7 +158,7 @@ EOF
 
 **Negative test:** Auto-disabling accounts on UBA anomalies — the first employee to travel gets locked out mid-trip, and after two such incidents the detection is switched off entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -65,7 +65,7 @@ Stream-admin walkthroughs (part 1). **Shared prerequisites** — a Cribl Stream 
 **Negative test:** expect events with no matching Source type for the sender; match the
 **Source** to the sender's protocol (HTTP/syslog/TCP/S3/…).
 
-**Cleanup:** delete the source if it was for the lab.
+**Rollback:** delete the source if it was for the lab.
 
 ### Lab 3.2 — Create a route with a filter
 
@@ -82,7 +82,7 @@ routing decision.
 **Negative test:** put a catch-all `filter: true` route first; it **shadows** everything
 below — order specific routes first.
 
-**Cleanup:** delete the route.
+**Rollback:** delete the route.
 
 ### Lab 3.3 — Build a pipeline
 
@@ -100,7 +100,7 @@ transformation.
 **Negative test:** transform events inside a Route; **Pipelines** hold the Functions —
 Routes only direct.
 
-**Cleanup:** delete the pipeline.
+**Rollback:** delete the pipeline.
 
 ### Lab 3.4 — Preview on sample data
 
@@ -117,7 +117,7 @@ Routes only direct.
 **Negative test:** deploy a pipeline untested; **preview** on samples catches mistakes
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Add a destination
 
@@ -132,7 +132,7 @@ first.
 **Negative test:** process without a Destination; data has nowhere to go — configure the
 output.
 
-**Cleanup:** delete the destination.
+**Rollback:** delete the destination.
 
 ## Lab Verification
 

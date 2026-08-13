@@ -100,7 +100,7 @@ PY
 **Negative test:** rely on a stale cert list; Cribl revises the program — confirm on
 cribl.io/university.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Authenticate to the Cribl API
 
@@ -117,7 +117,7 @@ labs).
 
 **Negative test:** call the API with no token; Cribl returns **401** — authenticate first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Identify the product each cert covers
 
@@ -136,7 +136,7 @@ PY
 **Negative test:** assume one Admin cert covers both Stream and Edge; they are **separate**
 — pick per product.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

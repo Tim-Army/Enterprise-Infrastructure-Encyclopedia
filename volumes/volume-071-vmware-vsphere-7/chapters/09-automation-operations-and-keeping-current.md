@@ -86,7 +86,7 @@ operations.
 **Negative test:** compile the inventory by clicking through the UI; **PowerCLI** reports it in one
 command — script it.
 
-**Cleanup:** `Disconnect-VIServer -Confirm:$false`.
+**Rollback:** `Disconnect-VIServer -Confirm:$false`.
 
 ### Lab 9.2 — Script with govc
 
@@ -104,7 +104,7 @@ govc vm.info -json '*' 2>/dev/null | python3 -c "import sys,json;print('VMs via 
 **Negative test:** assume PowerShell is the only option; **govc** scripts the API from any shell —
 use it where PowerShell isn't available.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Verify version and plan the upgrade
 
@@ -125,7 +125,7 @@ lifecycle operations.
 **Negative test:** upgrade hosts before vCenter; **vCenter must be upgraded first** — follow the
 supported order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

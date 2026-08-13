@@ -364,7 +364,7 @@ policy state, so a tested backup/restore is the appliance's disaster-recovery gu
 fleet and rebuilding every group, baseline, and policy by hand — the backup preserves all that
 state.
 
-**Cleanup:** remove the lab restore appliance if created only for the test.
+**Rollback:** remove the lab restore appliance if created only for the test.
 
 ### Lab 9.2 — Appliance upgrade (Topic: Lifecycle)
 
@@ -385,7 +385,7 @@ package, backup-first — appliance upgrades follow the supported path (backup �
 plugin is incompatible, there is no clean rollback — the pre-upgrade backup is what makes the
 change reversible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Structured troubleshooting (Topic: Troubleshooting)
 
@@ -409,7 +409,7 @@ specific error lives.
 you repeat the same failure — the execution detail names the cause (e.g. "invalid credentials"),
 which guessing does not.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Capstone Design Exercise: OME fleet management (Topic: Synthesis)
 
@@ -444,7 +444,7 @@ no templates, groups, backups, or DRM pipeline; it does not scale, drifts immedi
 air-gapped DC falls behind — OME's catalog/baseline/template/group model is what makes the fleet
 operable.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

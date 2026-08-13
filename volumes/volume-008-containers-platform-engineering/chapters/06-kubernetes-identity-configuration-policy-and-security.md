@@ -504,7 +504,7 @@ resources actually needed.
 cluster-wide — over-broad bindings are the most common RBAC mistake, and `auth can-i` is how
 you audit for them.
 
-**Cleanup:** `kubectl delete rolebinding viewer-read; kubectl delete role pod-reader; kubectl
+**Rollback:** `kubectl delete rolebinding viewer-read; kubectl delete role pod-reader; kubectl
 delete sa viewer -n lab`.
 
 ### Lab 6.2 — Service-account identity and tokens (Topic: Workload identity)
@@ -527,7 +527,7 @@ leaked token expires.
 compromised pod inherits those rights — give each workload its own least-privilege service
 account instead.
 
-**Cleanup:** `kubectl delete pod app; kubectl delete sa app -n lab`.
+**Rollback:** `kubectl delete pod app; kubectl delete sa app -n lab`.
 
 ### Lab 6.3 — Pod security context and admission (Topic: Pod security)
 
@@ -561,7 +561,7 @@ is where the hardening is declared.
 namespace; admission **rejects** it — the enforce label blocks non-compliant pods at creation,
 not after the fact.
 
-**Cleanup:** `kubectl delete pod hardened -n lab; kubectl label ns lab
+**Rollback:** `kubectl delete pod hardened -n lab; kubectl label ns lab
 pod-security.kubernetes.io/enforce-`.
 
 ### Lab 6.4 — Policy as code (Topic: Admission policy)
@@ -595,7 +595,7 @@ namespace, beyond what built-in RBAC/PSA cover.
 ships a root pod — an admission policy enforces it mechanically at the API server, so the rule
 cannot be bypassed.
 
-**Cleanup:** `kubectl delete clusterpolicy require-run-as-non-root`.
+**Rollback:** `kubectl delete clusterpolicy require-run-as-non-root`.
 
 ## Lab Verification
 

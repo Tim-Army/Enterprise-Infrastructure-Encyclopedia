@@ -63,7 +63,7 @@ sudo nft list tables | grep fgt
 
 **Expected result.** Two independent tables; the default-drop IT chain blocks any IT↔OT flow until an explicit crossing is added.
 
-**Cleanup.** Keep the VDOMs.
+**Rollback.** Keep the VDOMs.
 
 ### Exercise 7.2 — Add a controlled inter-VDOM link
 
@@ -107,7 +107,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502 && echo "hmi->plc OPEN 
 
 **Expected result.** `hmi->plc OPEN (via inter-vdom)` — the single scoped crossing works; nothing else crosses.
 
-**Cleanup.** Keep the VDOMs and link.
+**Rollback.** Keep the VDOMs and link.
 
 ## Summary and Completion Checklist
 

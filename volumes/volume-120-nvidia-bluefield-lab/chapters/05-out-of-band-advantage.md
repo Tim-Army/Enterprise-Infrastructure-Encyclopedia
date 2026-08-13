@@ -43,7 +43,7 @@ sudo ip netns exec web bash -c 'ip netns list 2>/dev/null | grep dpu || echo "we
 
 `web` cannot even enumerate the DPU namespace, let alone edit its policy — the isolation is the point.
 
-**Cleanup.** None (web's stray table is harmless; it has no effect).
+**Rollback.** None (web's stray table is harmless; it has no effect).
 
 ### Exercise 5.2 — Contrast with a host-agent model
 
@@ -69,7 +69,7 @@ echo "attacker deleted the host agent's policy"
 sudo ip netns exec web nft flush ruleset 2>/dev/null; echo "cleaned web's namespace"
 ```
 
-**Cleanup.** Cleaned above; the DPU policy is untouched.
+**Rollback.** Cleaned above; the DPU policy is untouched.
 
 ## Summary and Completion Checklist
 

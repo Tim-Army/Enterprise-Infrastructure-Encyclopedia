@@ -493,7 +493,7 @@ notify) is consistent and fast, with humans approving high-impact actions.
 confidence threshold or approval gate; a false positive causes an outage — high-impact automated
 actions need confidence gating and human approval.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Hypothesis-driven threat hunting (Topic: Threat hunting)
 
@@ -517,7 +517,7 @@ detection.
 thresholds is never found — hunting assumes compromise and actively looks, closing the gap that
 alert-only monitoring leaves.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Control assurance / purple teaming (Topic: Assurance)
 
@@ -542,7 +542,7 @@ test is evidence, a gap is a work item.
 break (log source moved, rule disabled) — only emulating the technique and confirming the alert
 proves current coverage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Design Exercise: an enterprise security program (Topic: Synthesis)
 
@@ -576,7 +576,7 @@ coverage of the whole lifecycle and risk-based prioritization, not on any single
 have spend without a program, and the first real incident finds the gaps — the lifecycle coverage
 and prioritization are the program's actual value.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

@@ -339,7 +339,7 @@ Console is the operator UI that connects to the EM (or a standalone appliance).
 that is EM-managed; it directs you to the EM — in a managed deployment the EM is the
 single management plane, not each appliance.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Inspect capability-module licensing (Topic: Licensing)
 
@@ -358,7 +358,7 @@ each module unlocks the features the later chapters use.
 entitlement; enforcement requires eyeControl — the license, not just the config, gates
 capability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Enable a discovery mechanism (Topic: Discovery)
 
@@ -380,7 +380,7 @@ probes, DHCP fingerprinting, and switch/SNMP polling.
 cannot route to; those segments stay invisible — discovery coverage depends on the
 appliance seeing (or reaching) each segment, which is a deployment-planning decision.
 
-**Cleanup:** disable the lab discovery source if it was added only for this exercise.
+**Rollback:** disable the lab discovery source if it was added only for this exercise.
 
 ### Lab 1.4 — Verify the Enterprise Manager–appliance channel (Topic: Deployment topology)
 
@@ -400,7 +400,7 @@ distributed deployment and share host state across appliances.
 it never joins the deployment and its discovered hosts are not centrally visible — the
 management channel must be open end to end.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

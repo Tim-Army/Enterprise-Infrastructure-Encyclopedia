@@ -71,7 +71,7 @@ sha256sum -c custody.txt                        # original still matches -> inte
 **Negative test:** open and edit `image.dd` directly; the hash changes and the evidence is
 contaminated — analyze the **copy**.
 
-**Cleanup:** `rm -f image.dd image.copy.dd custody.txt`.
+**Rollback:** `rm -f image.dd image.copy.dd custody.txt`.
 
 ### Lab 6.2 — Extract indicators from an artifact
 
@@ -88,7 +88,7 @@ echo "CHFI: static extraction of indicators (host, URL, account) for correlation
 **Negative test:** execute an unknown artifact to "see what it does"; analysis is **static/isolated**
 — never run evidence on a live host.
 
-**Cleanup:** `rm -f artifact.txt`.
+**Rollback:** `rm -f artifact.txt`.
 
 ### Lab 6.3 — Build an evidence timeline
 
@@ -109,7 +109,7 @@ PY
 **Negative test:** present artifacts with no timeline; investigators can't see causality — **order**
 them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Verify report reproducibility
 
@@ -126,7 +126,7 @@ echo "CHFI: hashes + documented steps let another examiner reproduce and verify 
 **Negative test:** report conclusions with no hashes or steps; they can't be **verified** — document
 and hash.
 
-**Cleanup:** `rm -f report.txt`.
+**Rollback:** `rm -f report.txt`.
 
 ## Lab Verification
 

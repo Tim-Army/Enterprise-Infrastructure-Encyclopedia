@@ -72,7 +72,7 @@ cat my-commvault-plan.md
 
 **Negative test:** Buying a third-party "Commvault certification" course without checking it against Readiverse — much of the third-party market still teaches the pre-June-2026 scheme.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the three pillars
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Studying the pillar you already know — platform administration is comfortable and already at 4s; the exam you would fail is the other one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

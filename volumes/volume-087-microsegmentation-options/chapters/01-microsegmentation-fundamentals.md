@@ -84,7 +84,7 @@ policy.
 **Negative test:** write allow rules from an architecture diagram instead of observed flows; the diagram
 misses shadow paths — map **actual** traffic.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Model an allowlist (default-deny) policy
 
@@ -111,7 +111,7 @@ least privilege.
 **Negative test:** use a default-allow model with a few deny rules; anything you forgot stays open —
 default-**deny** is the containment model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Reason about granularity
 
@@ -136,7 +136,7 @@ PY
 **Negative test:** apply process/identity-level policy to every low-value host on day one; the modeling
 cost stalls the project — start L4 broadly, go finer on crown jewels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

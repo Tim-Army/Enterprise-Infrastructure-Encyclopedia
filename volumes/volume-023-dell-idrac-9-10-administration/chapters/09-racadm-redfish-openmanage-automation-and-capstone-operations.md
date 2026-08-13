@@ -393,7 +393,7 @@ across a fleet.
 **Negative test:** configure each server's BIOS/RAID/iDRAC by hand; they drift and take hours each —
 an SCP captures a golden configuration once and applies it consistently.
 
-**Cleanup:** remove the lab SCP file if created only for the exercise.
+**Rollback:** remove the lab SCP file if created only for the exercise.
 
 ### Lab 9.2 — Redfish automation (Topic: Redfish API)
 
@@ -416,7 +416,7 @@ tokens (not repeated basic auth) are the efficient authentication for a sequence
 **Negative test:** open a new basic-auth connection for every one of hundreds of calls; it is slow
 and stresses the controller — a session token authenticates once for the whole workflow.
 
-**Cleanup:** `curl -sk -H "X-Auth-Token: $TOKEN" -X DELETE https://<idrac-ip>/redfish/v1/SessionService/Sessions/<id>`.
+**Rollback:** `curl -sk -H "X-Auth-Token: $TOKEN" -X DELETE https://<idrac-ip>/redfish/v1/SessionService/Sessions/<id>`.
 
 ### Lab 9.3 — OpenManage / Ansible integration (Topic: Fleet automation)
 
@@ -439,7 +439,7 @@ rest of the infrastructure (and OpenManage Enterprise, Volume XXII, for GUI-driv
 handling; it is brittle and unauditable — a supported module gives idempotent, reviewable fleet
 automation.
 
-**Cleanup:** revert any lab-only changes the playbook made.
+**Rollback:** revert any lab-only changes the playbook made.
 
 ### Lab 9.4 — Capstone Design Exercise: iDRAC across a server estate (Topic: Synthesis)
 
@@ -473,7 +473,7 @@ toward.
 firmware, and no SCPs, automation, or fleet console; it does not scale, drifts, and is insecure —
 the automation (RACADM/Redfish/OME) and the security baseline are what make the estate operable.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

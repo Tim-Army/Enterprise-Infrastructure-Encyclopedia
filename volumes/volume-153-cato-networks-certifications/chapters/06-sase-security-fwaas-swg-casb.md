@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Governing only the cloud apps IT already knows about. Employees adopt unsanctioned apps freely, leaking data into unvetted services; CASB's discovery from the full traffic surfaces the shadow IT that a known-apps-only view misses entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

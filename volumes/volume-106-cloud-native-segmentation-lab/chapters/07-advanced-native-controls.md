@@ -49,7 +49,7 @@ An error occurred (IncorrectState) ... prefix list has changed; current version 
 
 Optimistic-concurrency guard — you must pass the current version, which prevents blind overwrites.
 
-**Cleanup.**
+**Rollback.**
 
 ```bash
 aws ec2 delete-managed-prefix-list --prefix-list-id $PL
@@ -81,7 +81,7 @@ gcloud compute firewall-policies associations create \
 
 **Negative test.** A project-level `allow tcp:3389 from 0.0.0.0/0` no longer works — the hierarchical deny wins because it is evaluated first in the policy chain.
 
-**Cleanup.**
+**Rollback.**
 
 ```bash
 gcloud compute firewall-policies associations delete --name=org-baseline --organization=ORG_ID
@@ -116,7 +116,7 @@ az network nsg rule create -g microseg-lab-rg --nsg-name dbNSG -n bad-rdp \
 ... RequestDisallowedByPolicy ... deny-open-mgmt
 ```
 
-**Cleanup.**
+**Rollback.**
 
 ```bash
 az policy assignment delete --name deny-open-mgmt --scope "/subscriptions/$SUB"

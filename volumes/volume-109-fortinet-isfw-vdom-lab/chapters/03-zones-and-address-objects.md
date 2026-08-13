@@ -62,7 +62,7 @@ cat /etc/fgt/zones
 
 **Expected result.** Four subnet→zone rows.
 
-**Cleanup.** Keep the zones.
+**Rollback.** Keep the zones.
 
 ### Exercise 3.2 — Address objects and a custom service
 
@@ -124,7 +124,7 @@ cat /etc/fgt/addresses
 
 **Expected result.** Four named addresses; the `fgt` table exists for the policy chain.
 
-**Cleanup.** Keep the objects.
+**Rollback.** Keep the objects.
 
 ## Summary and Completion Checklist
 

@@ -71,7 +71,7 @@ the network with accurate time.
 
 **Negative test:** run without NTP; time drift breaks certificates/vCenter — enable NTP (same as 7).
 
-**Cleanup:** `esxcli system ntp set --enabled=false` in a lab.
+**Rollback:** `esxcli system ntp set --enabled=false` in a lab.
 
 ### Lab 2.2 — Inspect host hardware for DPU
 
@@ -88,7 +88,7 @@ esxcli network nic list
 **Negative test:** enable DSE on a host with **no DPU**; DSE requires **supported DPU hardware** —
 verify first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Explain the offload model
 
@@ -106,7 +106,7 @@ host CPU.
 **Negative test:** expect DSE to speed up a host with no network/security offload need; it pays off
 where **infra services** consume CPU — target those cases.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Maintenance mode
 
@@ -124,7 +124,7 @@ patching/DPU updates (VMs evacuate via DRS).
 **Negative test:** patch a host with running VMs and no maintenance mode; **enter maintenance mode**
 first.
 
-**Cleanup:** ensure the host is out of maintenance mode.
+**Rollback:** ensure the host is out of maintenance mode.
 
 ### Lab 2.5 — Review host services and hardening
 
@@ -140,7 +140,7 @@ discipline as 7).
 
 **Negative test:** leave SSH permanently enabled; control it and use lockdown mode (Chapter 8).
 
-**Cleanup:** ensure SSH is disabled after the lab.
+**Rollback:** ensure SSH is disabled after the lab.
 
 ## Lab Verification
 

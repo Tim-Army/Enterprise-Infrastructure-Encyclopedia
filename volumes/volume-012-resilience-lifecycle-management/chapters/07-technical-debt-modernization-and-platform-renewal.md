@@ -316,7 +316,7 @@ A stalled strangler migration is rarely a technology problem — it is usually a
 
 **Negative Test:** Set `legacy-billing-service-eol`'s `eol_date` to a date in the past (for example, `"2025-01-01"`) and rerun. Confirm its score increases further (urgency reaches the maximum tier), correctly modeling that a system already past its EOL date is not merely urgent but running with materially higher unmanaged risk than one still inside its remediation window.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch7

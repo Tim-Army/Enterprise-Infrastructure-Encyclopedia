@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Managing endpoint, firewall, and MDR through separate consoles. You get separate logins, inconsistent policy, fragmented alerts, and gaps where products don't share intelligence; Sophos Central unifies management and enables coordinated response.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

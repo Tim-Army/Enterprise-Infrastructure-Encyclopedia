@@ -305,7 +305,7 @@ If a dependency is discovered after decommissioning has begun but before sanitiz
 
 **Negative Test:** Attempt to simulate a naive decommission process that skips the dependency check entirely — write a one-line script that "decommissions" `auth-service-v1` unconditionally (simply prints `"decommissioned"` with no check), run it against the original (pre-edit) `dependencies.yaml` where `legacy-batch-job` is still active, and confirm it proceeds with no warning. Contrast this explicitly with the gated script's `BLOCKED` result on the same input, and record in a short `FINDINGS.md` file why the gate is a required control rather than an optional nicety — this is the concrete mechanism that prevents the premature-decommissioning outage scenario described earlier in this chapter.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch9

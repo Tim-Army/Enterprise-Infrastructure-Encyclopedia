@@ -93,7 +93,7 @@ principals) — a Developer topic.
 **Negative test:** run an always-on VM for an occasional task; **Functions** scale
 to zero — use serverless for event-driven work.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Developer: API Gateway
 
@@ -112,7 +112,7 @@ Developer topic.
 **Negative test:** expose a Function directly to the internet unauthenticated; front
 it with **API Gateway** for auth and throttling.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Developer: OKE (Kubernetes) and Container Registry
 
@@ -131,7 +131,7 @@ the Developer exam (pairs with Volume XLI).
 **Negative test:** run containers on bare VMs and hand-manage them; **OKE**
 provides managed orchestration — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Developer: Events, Streaming, Notifications
 
@@ -152,7 +152,7 @@ event-driven area of the Developer exam.
 **Negative test:** use Streaming to send an admin email; **Notifications** is the
 pub/sub-to-endpoint service — match the tool.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Operations: Monitoring, Logging, Alarms
 
@@ -172,7 +172,7 @@ credential's core.
 **Negative test:** operate with no alarms; define **alarms on SLOs** routed to
 Notifications — don't watch dashboards manually.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — DevOps: Resource Manager (Terraform IaC)
 
@@ -193,7 +193,7 @@ the IaC area of the DevOps credential (pairs with Volume XLII HashiCorp).
 **Negative test:** click-create production infrastructure; use **Resource Manager
 (Terraform)** for repeatable, reviewable IaC.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.7 — DevOps: build and deploy pipelines
 
@@ -212,7 +212,7 @@ automation area.
 **Negative test:** deploy manually to production; automate with a **deploy
 pipeline** (approvals + rollback) for safety and repeatability.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

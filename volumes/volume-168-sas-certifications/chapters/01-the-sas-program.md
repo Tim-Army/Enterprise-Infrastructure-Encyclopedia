@@ -90,7 +90,7 @@ EOF
 
 **Expected result:** A level map (Specialist single-exam, Professional multi-exam, Data Scientist composite) and the credential categories (programming, analytics/statistics, AI/ML, data curation, visual/BI, administration). The lesson is that SAS certifications scale from one skill to a track to the whole discipline, organized by what you do with SAS, and you certify in the category matching your role.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Record the exam mechanics
 
@@ -118,7 +118,7 @@ EOF
 
 **Expected result:** A record of the exam mechanics — Pearson VUE delivery, ~60–70 questions with some performance-based, passing scores in the high-60s to low-70s (Programming Specialist 71%), ~$180, five-year validity, A00-xxx codes. The lesson is that SAS certification is hands-on and rigorous — performance-based exams test doing the work in the software — delivered through Pearson VUE at about $180 with five-year validity.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

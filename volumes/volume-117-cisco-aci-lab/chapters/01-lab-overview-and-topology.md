@@ -73,7 +73,7 @@ Only the two contracted flows are permitted; every other EPG pair (including `EP
 | `apic>` | APIC GUI/REST action (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

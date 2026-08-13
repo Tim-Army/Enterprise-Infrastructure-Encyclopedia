@@ -65,7 +65,7 @@ visibility.
 **Negative test:** assume a "down" link is a config issue; check **optics/DOM** — it may be
 a physical/transceiver fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Verify MLAG
 
@@ -81,7 +81,7 @@ switch# show mlag interfaces detail
 **Negative test:** ignore an **Inconsistent** MLAG state; mismatched peer config causes
 forwarding problems — reconcile it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Monitor with telemetry
 
@@ -99,7 +99,7 @@ curl -sS -k -u admin:admin https://<leaf>/command-api \
 **Negative test:** screen-scrape CLI for metrics; **eAPI/CloudVision telemetry** gives
 structured, streamed data — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Troubleshoot a forwarding issue
 
@@ -117,7 +117,7 @@ troubleshooting methodology.
 **Negative test:** reboot the switch hoping it fixes it; **trace L3→L2→forwarding** to find
 the root cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

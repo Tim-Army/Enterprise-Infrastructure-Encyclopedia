@@ -123,7 +123,7 @@ EOF
 
 **Negative test:** Deduplicating by exact name match only. "Robert Smith", "Bob Smith", and "R. Smith" stay three separate customers, inflating the count and splitting the relationship; combining a deterministic key with probabilistic matching, plus survivorship, is what collapses them into one golden record.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

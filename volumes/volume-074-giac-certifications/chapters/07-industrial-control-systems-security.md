@@ -76,7 +76,7 @@ segmentation (GICSP).
 **Negative test:** allow enterprise IT (Level 4) to reach a PLC (Level 1) directly; that bridges IT
 threats into OT — enforce the **DMZ** boundary.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — GRID: plan safety-first ICS incident response
 
@@ -96,7 +96,7 @@ approach.
 **Negative test:** yank an infected HMI offline mid-process like an IT box; that could cause an
 unsafe state — **coordinate** and prioritize safety.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — GCIP: map a control to a standard
 
@@ -118,7 +118,7 @@ view.
 **Negative test:** claim compliance without mapping controls to specific requirements; auditors need
 the **traceability** — map each control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

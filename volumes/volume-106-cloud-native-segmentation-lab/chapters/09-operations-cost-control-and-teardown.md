@@ -37,7 +37,7 @@ microseg-lab   5
 
 **Expected result.** A small figure (typically under a dollar for a few hours). If it is higher, something is still running — the teardown below fixes it.
 
-**Cleanup.** This exercise *is* pre-cleanup.
+**Rollback.** This exercise *is* pre-cleanup.
 
 ### Exercise 9.2 — AWS teardown
 
@@ -85,7 +85,7 @@ The VPC is gone.
 aws ec2 describe-network-interfaces --filters Name=vpc-id,Values=$VPC --query 'NetworkInterfaces[].NetworkInterfaceId'
 ```
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ### Exercise 9.3 — Azure teardown
 
@@ -114,7 +114,7 @@ az resource list --query "[?resourceGroup=='microseg-lab-rg']" -o tsv
 # empty
 ```
 
-**Cleanup.** This is the cleanup. Keep the budget assignment or delete it in the portal.
+**Rollback.** This is the cleanup. Keep the budget assignment or delete it in the portal.
 
 ### Exercise 9.4 — GCP teardown
 
@@ -156,7 +156,7 @@ ERROR: ... The network resource 'microseg' is already being used by 'firewall/..
 
 Delete dependents first (as above), then the network.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

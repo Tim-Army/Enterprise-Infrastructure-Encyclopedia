@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Treating a Qualification as the expert certification. Qlik explicitly states a Qualification is *not* the expert-level certification; the Qualifications are fundamental, and the QSBA/QSDA/QSSA Certifications are the expert credentials.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Platform-neutral, role-based certifications
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Assuming a Qlik cert is tied to one deployment. The certifications are platform-neutral, covering both client-managed Qlik Sense and Qlik Cloud; the credential validates role skill regardless of where Qlik runs.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

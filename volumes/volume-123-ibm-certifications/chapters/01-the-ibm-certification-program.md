@@ -59,7 +59,7 @@ browser> ibm.com/training/search  > Learning type: Certification
 
 **Negative test:** Search a third-party mirror for "IBM certification list" — counts and versions rarely match the live catalog; version-pinned certifications (QRadar V7.5, Db2 13, Maximo v9.1) churn constantly.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Verify one certification end to end
 
@@ -75,7 +75,7 @@ browser> pearsonvue.com/ibm > View exams > find the exam code > delivery options
 
 **Negative test:** A certification page whose exam no longer appears at Pearson VUE is mid-retirement — the "Retiring soon" flag usually says so first.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

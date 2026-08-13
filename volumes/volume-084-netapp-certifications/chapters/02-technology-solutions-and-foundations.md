@@ -77,7 +77,7 @@ cluster1-02    cluster1-01    true     Connected to cluster1-02
 **Negative test:** find `Takeover Possible false`; HA is degraded and an upgrade or reboot would be
 disruptive — resolve interconnect or version mismatches first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — List feature licenses
 
@@ -100,7 +100,7 @@ valid       SnapMirror       cluster     -
 **Negative test:** try to create a SnapMirror relationship with the license absent; ONTAP refuses —
 install the NetApp License File first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Create an aggregate
 
@@ -121,7 +121,7 @@ aggr1_data 3.60TB  raid_dp   online
 **Negative test:** request more disks than are spare (`-diskcount 99`); the job fails for lack of
 disks — add shelves or lower the count.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> storage aggregate delete -aggregate aggr1_data
@@ -152,7 +152,7 @@ failures.
 **Negative test:** plan a single-parity layout for a large SSD aggregate; a second failure during
 rebuild loses data — use **RAID-DP** (or **RAID-TEC** for very large SSD groups).
 
-**Cleanup:** none (the aggregate was removed in Lab 2.3 cleanup).
+**Rollback:** none (the aggregate was removed in Lab 2.3 cleanup).
 
 ## Lab Verification
 

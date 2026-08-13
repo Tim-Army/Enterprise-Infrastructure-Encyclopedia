@@ -40,7 +40,7 @@ Either way the enforcement lands on the **native host firewall**. In this lab yo
 
 **Negative test.** Assume the PLC can be baselined like the others. It runs no agent and emits no host telemetry; TrueFort sees it only as the far end of flows observed elsewhere. That is why Chapter 08 protects it from a neighbor.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Bring the estate under observation
 
@@ -82,7 +82,7 @@ sudo ss -tnp state established '( sport = :5432 )'   # process + peer for each d
 
 **Negative test.** Rely on network telemetry alone (no process attribution). You will see "10.10.20.11 → 10.10.20.12:5432" but not *which process* opened it, and you will be unable to distinguish the app from a webshell on the same host. Process context is the signal that makes identity-aware policy possible.
 
-**Cleanup.** Leave observation in place.
+**Rollback.** Leave observation in place.
 
 ### Lab 6.3 — Build the application behavior baseline
 
@@ -107,7 +107,7 @@ sudo ss -tnp state established '( sport = :5432 )'
 
 **Negative test.** Baseline while the Lab 5.3 misuse is running and the baseline learns `svc_app` from `10.10.20.21` as "normal". Behavioral baselines faithfully record whatever happens, so the window must observe clean behavior — and be reviewed.
 
-**Cleanup.** Keep the baseline.
+**Rollback.** Keep the baseline.
 
 ### Lab 6.4 — Ring-fence the application
 
@@ -130,7 +130,7 @@ Reproduce the misuse from `tf-win01` and confirm a `TF-WOULD-DENY db:` line appe
 
 **Negative test.** Add `10.10.20.21` to the allowed sources "temporarily"; the misuse stops being flagged. Over-broad allows hide the very behavior you are hunting. Remove it.
 
-**Cleanup.** Keep the ring-fence; Chapter 07 enforces it and adds the identity binding.
+**Rollback.** Keep the ring-fence; Chapter 07 enforces it and adds the identity binding.
 
 ## Summary and Completion Checklist
 

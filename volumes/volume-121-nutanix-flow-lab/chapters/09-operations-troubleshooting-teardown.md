@@ -35,7 +35,7 @@ FIXED by categorization
 
 **Negative test.** The reverse mistake — categorizing a VM into the wrong tier — grants it that tier's permits. Category assignment *is* policy assignment; review it with the same rigor as a firewall change.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Back up and restore the policy
 
@@ -63,7 +63,7 @@ One file restored the entire posture — categories, all three policy layers, an
 
 **Negative test.** Run the restore twice — `nft -f` of a full table fails on the second pass (`Table already exists`); idempotent restore tooling must delete-then-load, which is exactly what this drill did.
 
-**Cleanup.** Policy is live again.
+**Rollback.** Policy is live again.
 
 ### Exercise 9.3 — Teardown
 
@@ -82,7 +82,7 @@ rm -f /tmp/flow-policy-export.nft
 
 **Negative test.** `sudo nft list table bridge flow` reports the table does not exist.
 
-**Cleanup.** Complete — on Track 1, delete the security policies and categories in Prism Central and power off the lab VMs.
+**Rollback.** Complete — on Track 1, delete the security policies and categories in Prism Central and power off the lab VMs.
 
 ## Summary and Completion Checklist
 

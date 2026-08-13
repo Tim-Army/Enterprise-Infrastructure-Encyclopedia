@@ -71,7 +71,7 @@ cargo run -- web1 --count 5
 **Negative test:** index `std::env::args()` by position; **clap** gives help, validation,
 and types — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Subcommands
 
@@ -96,7 +96,7 @@ fn main() {
 **Negative test:** cram every mode into flags on one command; **subcommands** organize a
 multi-verb tool.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Structured logging
 
@@ -117,7 +117,7 @@ leveled logging.
 **Negative test:** `println!` everything; **tracing** filters by level and adds structure —
 use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Release build
 
@@ -134,7 +134,7 @@ artifact.
 **Negative test:** ship the **debug** build; `--release` is optimized and smaller — build
 release for distribution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

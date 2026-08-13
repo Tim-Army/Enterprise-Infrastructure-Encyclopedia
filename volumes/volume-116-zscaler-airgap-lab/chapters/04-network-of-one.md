@@ -41,7 +41,7 @@ sudo ip netns exec victim ip route
 
 **Negative test.** No VLAN was split and no device's IP changed (`victim` is still `10.100.1.50`) — proof the isolation is agentless and non-disruptive, exactly Airgap's selling point.
 
-**Cleanup.** Keep the isolation.
+**Rollback.** Keep the isolation.
 
 ### Exercise 4.2 — The flat VLAN is gone
 
@@ -69,7 +69,7 @@ Every device is an island; the flat VLAN's lateral surface is gone.
 
 **Negative test.** Even the *legitimate* `web → db` is now blocked — good: the network-of-one denies **everything** by default, and Chapter 05 re-permits only the one sanctioned flow. Isolation first, exceptions second.
 
-**Cleanup.** Keep the isolation and default-deny.
+**Rollback.** Keep the isolation and default-deny.
 
 ## Summary and Completion Checklist
 

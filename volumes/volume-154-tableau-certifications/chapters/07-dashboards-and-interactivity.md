@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Building a separate static dashboard for every region. Actions let one dashboard filter dynamically to any selection the viewer clicks — the viewer explores rather than the analyst pre-building every view.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

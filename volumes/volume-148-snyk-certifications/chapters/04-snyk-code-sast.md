@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Flagging every call to a dangerous sink like `db.execute`. Snippets B and C use it safely (sanitized, constant data); flagging them is the false-positive noise that trains developers to ignore the tool.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — False-positive rate governs real-world value
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Choosing SAST by detection count. The noisy tool finds 95 of 100 but with 900 false positives at ~10% precision it gets ignored — a tool that finds fewer at high precision reduces more real risk because developers trust and act on it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

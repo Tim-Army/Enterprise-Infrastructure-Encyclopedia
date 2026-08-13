@@ -74,7 +74,7 @@ preparation.
 **Negative test:** cram MCQs only; the **practical** requires real product skill — practice
 hands-on.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Drill a practical skill
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** read about scanning without ever building one; the **practical** is hands-on —
 rehearse real tasks.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** let a cert lapse past **two years**; it's no longer current — recertify ahead of
 expiry.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

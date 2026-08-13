@@ -80,7 +80,7 @@ DNS.
 **Negative test:** put both on the **default bridge** and resolve by name; it fails — use a
 **user-defined** network for DNS.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f db && docker network rm appnet
@@ -106,7 +106,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8082/
 **Negative test:** publish to `0.0.0.0:8082` for an internal service; bind to **`127.0.0.1`** (or leave
 unpublished) to avoid exposing it.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f web
@@ -134,7 +134,7 @@ PY
 **Negative test:** use **host** networking everywhere for convenience; you lose isolation and port
 mapping — prefer **bridge**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Reason about overlay for multi-host
 
@@ -153,7 +153,7 @@ PY
 
 **Negative test:** expect a bridge network to span hosts; use an **overlay** network for multi-host.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

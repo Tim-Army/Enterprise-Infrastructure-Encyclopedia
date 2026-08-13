@@ -64,7 +64,7 @@ EOF
 
 **Expected result.** Each workload now enforces at its own interface — the distributed model. The db namespace accepts 5432 only from web; plc accepts 502 only from hmi.
 
-**Cleanup.** Keep the rules.
+**Rollback.** Keep the rules.
 
 ### Exercise 5.2 — Set the default to Drop
 
@@ -101,7 +101,7 @@ EOF
 
 **Expected result.** Every workload defaults to drop-inbound; only the explicit accepts (db:5432 from web, plc:502 from hmi) let traffic in — zero-trust, distributed.
 
-**Cleanup.** Keep the rulesets; Chapter 06 proves the same-subnet win, Chapter 07 verifies.
+**Rollback.** Keep the rulesets; Chapter 06 proves the same-subnet win, Chapter 07 verifies.
 
 ## Summary and Completion Checklist
 

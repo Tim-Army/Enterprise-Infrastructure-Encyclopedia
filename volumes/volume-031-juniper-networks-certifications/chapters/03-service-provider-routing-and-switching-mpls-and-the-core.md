@@ -152,7 +152,7 @@ any protocol; RIB groups share routes across tables (e.g., into `inet.3` for MPL
 **Negative test:** reference a RIB group that imports into a nonexistent table; the
 commit fails — the target tables must exist.
 
-**Cleanup:** `configure; delete routing-options rib-groups RG; delete
+**Rollback:** `configure; delete routing-options rib-groups RG; delete
 routing-options static route 198.51.100.0/24; commit`.
 
 ### Lab 3.2 — OSPF (Objective: OSPF)
@@ -175,7 +175,7 @@ and links; point-to-point interface type avoids DR/BDR overhead on core links.
 **Negative test:** leave a core link as the default broadcast type; a needless
 DR/BDR election adds LSAs and delay — `interface-type p2p` is the SP best practice.
 
-**Cleanup:** `configure; delete protocols ospf; commit`.
+**Rollback:** `configure; delete protocols ospf; commit`.
 
 ### Lab 3.3 — IS-IS (Objective: IS-IS)
 
@@ -199,7 +199,7 @@ advertised for MPLS/BGP next-hop resolution.
 **Negative test:** run narrow (6-bit) metrics where TE needs wide metrics; large
 metrics wrap — wide-metrics (`level 2 wide-metrics-only`) is required for SP TE.
 
-**Cleanup:** `configure; delete protocols isis; delete interfaces lo0 unit 0 family
+**Rollback:** `configure; delete protocols isis; delete interfaces lo0 unit 0 family
 iso; commit`.
 
 ### Lab 3.4 — BGP (Objective: BGP)
@@ -224,7 +224,7 @@ route reflectors to avoid a full IBGP mesh; the reflector marks clients with a
 routes (standard IBGP no-readvertise rule) — the cluster/client config enables
 reflection.
 
-**Cleanup:** `configure; delete protocols bgp; commit`.
+**Rollback:** `configure; delete protocols bgp; commit`.
 
 ### Lab 3.5 — Layer 2 Bridging and VLANs (Objective: Layer 2 Bridging or VLANs)
 
@@ -248,7 +248,7 @@ the customer (C-)tag (802.1ad Q-in-Q), with virtual switches and IRB for routing
 an outer tag; Q-in-Q requires flexible/stacked VLAN tagging — the encapsulation must
 support two tags.
 
-**Cleanup:** `configure; delete interfaces ge-0/0/1; commit`.
+**Rollback:** `configure; delete interfaces ge-0/0/1; commit`.
 
 ### Lab 3.6 — Spanning-Tree Protocols (Objective: Spanning-Tree Protocols)
 
@@ -272,7 +272,7 @@ and BPDU/loop/root protection secure the topology.
 in different regions and fall back to a single CST instance — the region identity
 must match for MSTI to span switches.
 
-**Cleanup:** `configure; delete protocols mstp; commit`.
+**Rollback:** `configure; delete protocols mstp; commit`.
 
 ### Lab 3.7 — MPLS (Objective: MPLS)
 
@@ -298,7 +298,7 @@ path as a label stack without per-LSP core state.
 **Negative test:** enable `protocols mpls` on an interface but omit RSVP/LDP; no LSP
 signals — a signaling protocol (or SR) is required to distribute labels.
 
-**Cleanup:** `configure; delete protocols mpls; delete protocols rsvp; delete
+**Rollback:** `configure; delete protocols mpls; delete protocols rsvp; delete
 protocols ldp; commit`.
 
 ### Lab 3.8 — IPv6 (Objective: IPv6)
@@ -322,7 +322,7 @@ Junos keeps IPv6 in `inet6.0`.
 only directly-connected IPv6 works — dynamic IPv6 routing must be enabled
 separately.
 
-**Cleanup:** `configure; delete protocols ospf3; delete interfaces ge-0/0/0 unit 0
+**Rollback:** `configure; delete protocols ospf3; delete interfaces ge-0/0/0 unit 0
 family inet6; commit`.
 
 ### Lab 3.9 — Tunnels (Objective: Tunnels)
@@ -346,7 +346,7 @@ the tunnel endpoints routable in the underlay.
 present fails to come up — MX tunnels require tunnel services (a PIC or
 `tunnel-services` bandwidth).
 
-**Cleanup:** `configure; delete interfaces gr-0/0/10; commit`.
+**Rollback:** `configure; delete interfaces gr-0/0/10; commit`.
 
 ### Lab 3.10 — High Availability (Objective: High Availability)
 
@@ -371,7 +371,7 @@ sessions across an RE switchover, graceful restart where NSR is unavailable).
 **Negative test:** enable NSR without `graceful-switchover`; NSR requires GRES —
 the commit or operation flags the missing dependency.
 
-**Cleanup:** `configure; delete interfaces ae0; delete routing-options
+**Rollback:** `configure; delete interfaces ae0; delete routing-options
 nonstop-routing; delete chassis redundancy; delete protocols bgp group IBGP
 bfd-liveness-detection; commit`.
 

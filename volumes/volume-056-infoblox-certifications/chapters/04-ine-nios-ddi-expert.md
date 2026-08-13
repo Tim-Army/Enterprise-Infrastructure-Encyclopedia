@@ -67,7 +67,7 @@ Grid HA topic.
 **Negative test:** run a single Grid Master with no candidate; a **GMC** is required for
 Master failover — designate one.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Upgrades
 
@@ -83,7 +83,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/upgradestatus?_return_f
 **Negative test:** upgrade all members at once with no rollback plan; use the **staged
 Grid upgrade** (with distribution/test/rollback) — never big-bang.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Root-cause analysis
 
@@ -100,7 +100,7 @@ cause analysis** — the RCA topic.
 **Negative test:** restart services hoping it fixes the issue; **find the root cause**
 from logs/events first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — DNS/DHCP troubleshooting methodology
 
@@ -118,7 +118,7 @@ dig @<grid-dns-member> web1.lab.example A     # DNS layer check
 **Negative test:** change many settings at once; **isolate one layer at a time** so you
 know what fixed it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -84,7 +84,7 @@ configure section.
 **Negative test:** manage the DB VM by hand; **register with NDB** so it manages
 lifecycle/patching/backup.
 
-**Cleanup:** deregister the DB server if it was for the lab.
+**Rollback:** deregister the DB server if it was for the lab.
 
 ### Lab 5.2 — Monitor alerts and storage usage
 
@@ -101,7 +101,7 @@ monitoring section.
 **Negative test:** watch only the guest OS; NDB **alerts/storage** track the DBaaS
 layer — monitor both.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Operate and maintain (Time Machine clone)
 
@@ -120,7 +120,7 @@ maintain section.
 **Negative test:** copy the full database for dev; a **Time Machine clone** is instant
 and space-efficient — use it.
 
-**Cleanup:** delete the clone when done.
+**Rollback:** delete the clone when done.
 
 ### Lab 5.4 — Administer an NDB environment
 
@@ -136,7 +136,7 @@ multi-cluster).
 
 **Negative test:** share one admin login; assign **scoped NDB roles** per team.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Automating whatever is requested with no discovery or ROI. Effort goes into a low-volume, unstandardized process (contract review) that a bot handles poorly and that never pays back; discovery scoring and ROI measurement are what direct effort to the automations that deliver.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

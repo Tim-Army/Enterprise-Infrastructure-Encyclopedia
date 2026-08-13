@@ -111,7 +111,7 @@ model — the observability concepts PCA Domain 1 tests.
 **Negative test:** assume Prometheus pushes; it **pulls** (scrapes) targets —
 push is the exception (Pushgateway) for short-lived jobs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — PCA: Prometheus Fundamentals (20%)
 
@@ -133,7 +133,7 @@ exposition format and dimensional data model of PCA Domain 2.
 **Negative test:** treat two series with different labels as the same series; the
 **label set** is part of the identity — they are distinct time series.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — PCA: PromQL (28%)
 
@@ -157,7 +157,7 @@ expression — the PromQL fluency that is PCA's heaviest domain.
 **Negative test:** `sum(http_requests_total)` a raw counter; counters only
 increase — you must `rate()` over a range first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — PCA: Instrumentation and Exporters (16%)
 
@@ -179,7 +179,7 @@ conventional name, plus the role of exporters — PCA Domain 4.
 **Negative test:** use a Gauge for a total count; use a **Counter** so `rate()`
 works and resets are handled correctly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — PCA: Alerting & Dashboarding (18%)
 
@@ -204,7 +204,7 @@ role — the alerting-and-dashboarding domain of PCA.
 **Negative test:** alert without a `for:` duration; a momentary spike pages
 someone — require the condition to hold before firing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### OTCA — OpenTelemetry Certified Associate
 
@@ -227,7 +227,7 @@ the vendor-neutral fundamentals OTCA Domain 1 tests.
 **Negative test:** invent custom attribute names; **semantic conventions** make
 telemetry portable across backends — follow them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.7 — OTCA: The OpenTelemetry API and SDK (46%)
 
@@ -247,7 +247,7 @@ heaviest domain (nearly half the exam).
 **Negative test:** assume instrumenting with the API alone emits data; without an
 **SDK** configured, the API is a no-op — you must wire the SDK.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.8 — OTCA: The OpenTelemetry Collector (26%)
 
@@ -272,7 +272,7 @@ Prometheus exporter — the Collector architecture of OTCA Domain 3.
 **Negative test:** export directly from every app to every backend; the
 **Collector** centralizes processing and routing — use it as the hub.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.9 — OTCA: Maintaining and Debugging Observability Pipelines (10%)
 
@@ -295,7 +295,7 @@ Collector self-metrics, exporter retries) — OTCA Domain 4.
 **context (traceparent) isn't propagated** or the exporter is dropping — debug
 the pipeline end to end.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

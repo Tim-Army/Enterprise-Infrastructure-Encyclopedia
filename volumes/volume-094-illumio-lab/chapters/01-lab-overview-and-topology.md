@@ -49,7 +49,7 @@ Exercises that genuinely cannot be reproduced without the product — the Illumi
 | **Design Exercise** | No tenant required and none simulated; written analysis with model answer |
 | **Track 1** / **Track 2** | Real Illumio path / native-equivalent path |
 
-Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**. Do not skip the negative tests. In segmentation work, proving that a thing is *blocked* is the entire product; proving that a thing is allowed only proves you have a network.
+Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**. Do not skip the negative tests. In segmentation work, proving that a thing is *blocked* is the entire product; proving that a thing is allowed only proves you have a network.
 
 ### Time and effort
 

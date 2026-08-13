@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Choosing charts by visual impressiveness rather than the question. A pie chart for ranking, or a bar chart for a time trend, obscures the answer — the right chart follows from what the viewer needs to understand.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

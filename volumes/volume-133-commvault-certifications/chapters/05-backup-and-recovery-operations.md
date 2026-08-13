@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Reporting "backups are green" for the tier-1 database — every job succeeds, and the organization still loses up to 24 hours of transactions, because the schedule was never capable of the stated RPO.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Backup types and restore chains
 
@@ -115,7 +115,7 @@ EOF
 
 **Negative test:** Long incremental chains with no synthetic fulls — restore time grows with every day since the last full, and a single corrupt link in the chain can break the restore entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Verify recoverability, not just job success
 
@@ -149,7 +149,7 @@ EOF
 
 **Negative test:** Equating a green dashboard with recoverability — job success proves bytes were written, not that they can be read back, assembled, or used to run the application.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

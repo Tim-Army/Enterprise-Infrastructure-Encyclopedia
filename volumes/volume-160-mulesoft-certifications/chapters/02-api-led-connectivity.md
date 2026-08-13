@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Building a new custom integration for every consumer-system pair. That is the point-to-point tangle that scales as n×m and breaks on every change; API-led connectivity's reusable System/Process/Experience layers isolate change and let projects compose existing APIs.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

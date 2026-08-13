@@ -176,7 +176,7 @@ Administrator — they must activate with justification and MFA to use it.
 **Negative test:** assign the role actively instead; the user holds standing
 privilege 24/7 — the opposite of least privilege.
 
-**Cleanup:** remove the eligibility schedule request.
+**Rollback:** remove the eligibility schedule request.
 
 ### Lab 4.2 — Schedule a guest access review (Topic: Access reviews)
 
@@ -201,7 +201,7 @@ reviewers do not approve — stale guest access lapses automatically.
 and no reviewer communication; legitimate members lose access — communicate
 and pilot before auto-apply.
 
-**Cleanup:** remove the review definition.
+**Rollback:** remove the review definition.
 
 ### Lab 4.3 — Confirm the hybrid sign-in method (Topic: Hybrid identity)
 
@@ -219,7 +219,7 @@ recent on-premises sync time — synced objects are mastered on-premises.
 **Negative test:** try to change a synced user's display name in the cloud; it
 is blocked or overwritten at next sync — edit mastered attributes on-premises.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Detect a soft-match conflict (Topic: Troubleshoot hybrid)
 
@@ -238,7 +238,7 @@ requires unique matching attributes.
 **Negative test:** create a cloud user with the same UPN as a pending synced
 object; the sync conflicts — resolve by removing the duplicate before sync.
 
-**Cleanup:** remove any test duplicate.
+**Rollback:** remove any test duplicate.
 
 ## Lab Verification
 

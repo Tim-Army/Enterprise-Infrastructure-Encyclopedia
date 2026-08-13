@@ -71,7 +71,7 @@ The snapshot can be written once and then **cannot be overwritten, modified, or 
 
 **Negative test:** A traditional backup on a writable CIFS share — ransomware mounts it and encrypts every backup file; the immutable, no-open-protocol store is exactly what removes that attack path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — The logical air-gap
 
@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** A backup server joined to the same domain with an open SMB share — one compromised domain admin reaches and destroys it; the logical air-gap (no direct data access, separate auth) is what breaks that chain.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — The 3-2-1-1-0 rule (immutability's context)
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Classic 3-2-1 without the immutable copy — ransomware that reaches any writable copy compromises the whole set; the immutable "1" is what guarantees a survivable recovery point.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

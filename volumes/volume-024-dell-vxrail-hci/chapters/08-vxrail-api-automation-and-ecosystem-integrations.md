@@ -459,7 +459,7 @@ automatable.
 **Negative test:** call the API over plain HTTP or with wrong credentials; it is refused (TLS
 required, 401 on bad auth) — the API is authenticated and encrypted, gated by vCenter SSO.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — API-driven inventory and operations (Topic: API operations)
 
@@ -480,7 +480,7 @@ lifecycle tasks can be scripted, not just clicked.
 it — the API enforces the same prerequisites as the GUI (node discovered, compatible), so
 automation cannot skip them.
 
-**Cleanup:** none (read-only in this lab).
+**Rollback:** none (read-only in this lab).
 
 ### Lab 8.3 — Automation with supported tooling (Topic: Automation)
 
@@ -501,7 +501,7 @@ in version-controlled automation, consistent with the IaC approach used elsewher
 not scale and drifts — API-driven automation applies operations and reporting uniformly across the
 fleet.
 
-**Cleanup:** revert any lab-only changes.
+**Rollback:** revert any lab-only changes.
 
 ### Lab 8.4 — Ecosystem integrations (Topic: Integrations)
 
@@ -524,7 +524,7 @@ operations.
 health analytics and proactive support — the ecosystem integrations are what turn a single cluster
 into a managed part of the fleet.
 
-**Cleanup:** none (leave beneficial integrations enabled).
+**Rollback:** none (leave beneficial integrations enabled).
 
 ## Lab Verification
 

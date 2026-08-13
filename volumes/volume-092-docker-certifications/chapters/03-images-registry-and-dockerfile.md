@@ -85,7 +85,7 @@ Hello from a container
 **Negative test:** run `apk add` inside a running container each time instead of in the image; **bake** it
 into the Dockerfile so the image is reproducible.
 
-**Cleanup:** (removed at the end of Lab 3.4).
+**Rollback:** (removed at the end of Lab 3.4).
 
 ### Lab 3.2 — Observe layer caching
 
@@ -107,7 +107,7 @@ builds.
 **Negative test:** put `COPY . .` before `RUN apk add`; any source change **busts** the install cache —
 copy manifests/install first.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.3 — Tag and reason about pushing
 
@@ -129,7 +129,7 @@ myapp:1.0
 **Negative test:** rely on the `latest` tag for releases; **version** tags (`1.0`) make deployments
 reproducible.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.4 — Shrink with a multi-stage build
 
@@ -159,7 +159,7 @@ toolchain.
 **Negative test:** ship the `golang:1.22` build image to production; use a **multi-stage** build to copy
 only the artifact.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd .. && rm -rf app && docker rmi -f myapp:1.0 myapp:slim registry.example.com/team/myapp:1.0 2>/dev/null

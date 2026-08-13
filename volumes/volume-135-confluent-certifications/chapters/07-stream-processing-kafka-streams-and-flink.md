@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Keeping aggregation state only in application memory with no changelog — an instance restart loses every running total, and there is no way to reconstruct them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Event time versus processing time
 
@@ -123,7 +123,7 @@ EOF
 
 **Negative test:** Using processing time because it is simpler — the results look plausible and are quietly wrong whenever the network, a mobile client, or a replay introduces delay, which is always.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Windowed aggregation with a grace period
 
@@ -163,7 +163,7 @@ EOF
 
 **Negative test:** Setting grace to zero for lower memory use — every straggler is dropped, so windowed totals silently under-count whenever anything is delayed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Requiring the same authentication for every login. Forcing MFA always annoys users into workarounds; never stepping up lets an impossible-travel takeover through — adaptive, risk-scored auth applies friction only where the signals warrant it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Why MFA and passwordless beat passwords
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Relying on password complexity rules alone. A complex password, once phished or breached, is still a valid credential; only a second factor (MFA) or removing the password (passwordless) stops the stolen-credential attack.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

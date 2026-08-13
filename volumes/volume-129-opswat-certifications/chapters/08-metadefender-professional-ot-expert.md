@@ -53,7 +53,7 @@ EOF
 
 **Negative test:** Deploying Kiosk without Core's engines configured — the kiosk has nothing to scan *with*; the product certs test the whole platform wiring, not one box in isolation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — ICAP: inline web protection
 
@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** A web proxy with no content inspection — it enforces URL categories but passes the file contents unchecked; ICAP integration is what adds CDR/multiscan to the download path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — The OT Security Expert designation
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Expert-level OT security that knows the products but not the standard (62443) or the OT operational constraints — the tools protect the boundary, but the design and lifecycle come from the standard; the Expert must speak both.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -312,7 +312,7 @@ the "policy mistakes" the exam asks you to identify.
 hosts get swept into the restrictive branch — mis-ordered sub-rules are the classic policy
 mistake the Layered Policy Flow Diagram exists to prevent.
 
-**Cleanup:** disable/delete the lab policy and any tags/groups it created.
+**Rollback:** disable/delete the lab policy and any tags/groups it created.
 
 ### Lab 5.2 — eyeExtend orchestration with a SIEM (Topic: Integrations)
 
@@ -336,7 +336,7 @@ properties or extends control.
 you get logging without orchestration — the value is the closed loop (context in →
 enforcement out), not one-way export.
 
-**Cleanup:** disable the integration action and, if lab-only, the eyeExtend module config.
+**Rollback:** disable the integration action and, if lab-only, the eyeExtend module config.
 
 ### Lab 5.3 — eyeSegment segmentation modeling (Topic: Segmentation)
 
@@ -356,7 +356,7 @@ traffic before enforcing it, so you tighten policy without breaking legitimate f
 traffic; you block flows a business process depends on — model against real traffic first,
 enforce second.
 
-**Cleanup:** remove the lab zones/matrix if created only for the exercise.
+**Rollback:** remove the lab zones/matrix if created only for the exercise.
 
 ### Lab 5.4 — Complex guest registration (Topic: Guest registration)
 
@@ -377,7 +377,7 @@ FSCE competency.
 reach internal resources — registration without a scoped traffic-control mechanism is not
 guest *isolation*.
 
-**Cleanup:** disable the guest policy and return the lab endpoint to its normal segment.
+**Rollback:** disable the guest policy and return the lab endpoint to its normal segment.
 
 ### Lab 5.5 — Advanced Threat Protection (Topic: Threat protection)
 
@@ -404,7 +404,7 @@ into active network defense, with tuning to avoid blocking legitimate traffic.
 Wizard; an authorized vulnerability scanner trips the port-scan detection and is contained —
 untuned threat protection blocks legitimate security tooling, which is why the wizard exists.
 
-**Cleanup:** release the block on the lab host (Blocking Log), disable Enterprise Lockdown,
+**Rollback:** release the block on the lab host (Blocking Log), disable Enterprise Lockdown,
 and revert lab-only ActiveResponse/tuning changes.
 
 ## Lab Verification

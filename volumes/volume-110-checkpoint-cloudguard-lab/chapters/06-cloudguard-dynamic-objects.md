@@ -57,7 +57,7 @@ sudo nft add rule inet cpg forward ip saddr 10.40.0.0/16 ip daddr 10.40.0.0/16 d
 
 **Expected result.** The permit rule now matches the `role_web`/`role_db` sets — policy by tag, not by literal IP.
 
-**Cleanup.** Keep the tag objects.
+**Rollback.** Keep the tag objects.
 
 ### Exercise 6.2 — Prove policy follows a re-tagged workload
 
@@ -84,7 +84,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.40.2.10 5432 && echo "web->db OPEN"
 
 **Negative test.** Assume editing the rule is required to onboard a new server. It is not — that is the whole point of tag-based objects: onboarding is a tagging action, not a firewall change. Restore membership when done.
 
-**Cleanup.** Restore `role_web` to contain 10.40.1.10 for later chapters.
+**Rollback.** Restore `role_web` to contain 10.40.1.10 for later chapters.
 
 ## Summary and Completion Checklist
 

@@ -67,7 +67,7 @@ print("out:", r.stdout.strip(), "rc:", r.returncode)
 **Negative test:** `subprocess.run(f"echo {user_input}", shell=True)`; that risks
 **injection** — use an argument list.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Check exit codes
 
@@ -86,7 +86,7 @@ except subprocess.CalledProcessError as e:
 **Negative test:** ignore `returncode`; a failed step **passes silently** — use
 `check=True`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Read environment variables
 
@@ -103,7 +103,7 @@ print("token set:", token != "<unset>")
 **Negative test:** hard-code a token in the script; read it from the **environment** so
 secrets stay out of code.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — File operations
 
@@ -120,7 +120,7 @@ print(Path("state.txt").read_text().strip())   # ok
 **Negative test:** `open()` without a context manager and forget to close; **`write_text`/
 `read_text`** (or `with`) close reliably — use them.
 
-**Cleanup:** `Path("state.txt").unlink()`.
+**Rollback:** `Path("state.txt").unlink()`.
 
 ## Lab Verification
 

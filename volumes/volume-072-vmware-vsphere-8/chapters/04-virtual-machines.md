@@ -74,7 +74,7 @@ Get-VM app01 | Select Name, NumCpu, MemoryGB, HardwareVersion
 **Negative test:** set **vmx-21** on a host that only supports v20; match the hardware version to
 the **host capability** — check first.
 
-**Cleanup:** `Remove-VM app01 -DeletePermanently -Confirm:$false`.
+**Rollback:** `Remove-VM app01 -DeletePermanently -Confirm:$false`.
 
 ### Lab 4.2 — Device groups concept
 
@@ -91,7 +91,7 @@ the **host capability** — check first.
 **Negative test:** assign interdependent devices separately; a **device group** keeps them coherent
 for placement/migration — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — vGPU assignment concept
 
@@ -108,7 +108,7 @@ for placement/migration — use it.
 **Negative test:** run AI/ML on CPU-only VMs; assign **vGPU** for acceleration where the workload
 needs it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Deploy from the Content Library
 
@@ -125,7 +125,7 @@ provisioning (same as 7).
 
 **Negative test:** copy templates per host manually; the **Content Library** centralizes them.
 
-**Cleanup:** `Remove-ContentLibrary Lib8 -Confirm:$false`.
+**Rollback:** `Remove-ContentLibrary Lib8 -Confirm:$false`.
 
 ### Lab 4.5 — Manage a snapshot
 
@@ -144,7 +144,7 @@ bloat.
 **Negative test:** keep the snapshot as a backup; snapshots **grow and slow** the VM — delete them
 and back up properly.
 
-**Cleanup:** ensure no snapshots remain.
+**Rollback:** ensure no snapshots remain.
 
 ## Lab Verification
 

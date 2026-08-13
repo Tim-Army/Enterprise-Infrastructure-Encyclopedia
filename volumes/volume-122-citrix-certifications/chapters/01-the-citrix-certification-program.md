@@ -70,7 +70,7 @@ curl -s https://www.citrix.com/training-and-certifications/ | tr -s ' \n' ' ' | 
 
 **Negative test:** Search a third-party training site for "Citrix certification list" — many still show CCE-V, 1Y0-204, or CCA-N. Stale mirrors are the norm mid-overhaul; only citrix.com, netscaler.com, and Webassessor are authoritative.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Locate the exam prep guides
 
@@ -91,7 +91,7 @@ done
 
 **Negative test:** Fetch without the browser user-agent or use an old `1Y0-204` guide URL — you get an HTML soft-404 a few hundred bytes long, not a PDF. Check the magic bytes, not just the HTTP status.
 
-**Cleanup:** Keep the PDFs for the track chapters.
+**Rollback:** Keep the PDFs for the track chapters.
 
 ## Summary and Completion Checklist
 

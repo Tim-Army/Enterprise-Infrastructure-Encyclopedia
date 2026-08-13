@@ -123,7 +123,7 @@ print("id rule  ->", "ALLOW" if (request["spiffe_id"] == id_rule["allow_id"]
 `request["path"] = "/refund"` and re-run: the IP rule still allows it, the identity rule denies it. The
 address was never a credential.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 12.2 — Measure mesh coverage against the estate
 
@@ -144,7 +144,7 @@ print(f"requires another mechanism: {total - covered} assets")
 **Negative test.** Claim the mesh is the segmentation strategy. Nearly half the estate, including every
 OT device, is entirely unprotected by it. A mesh is a layer, never the plan.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 12.3 — Stage a permissive-to-strict mTLS rollout
 
@@ -165,7 +165,7 @@ for s, injected in services.items():
 **Negative test.** Enable strict mode estate-wide without checking injection coverage — exactly the
 outage above. Permissive mode exists to find the `legacy-batch` cases first.
 
-**Cleanup.** Return to permissive until every workload is enrolled.
+**Rollback.** Return to permissive until every workload is enrolled.
 
 ### Lab 12.4 — Score the mesh tier against the rubric
 
@@ -184,7 +184,7 @@ coverage.
 **Negative test.** Re-weight `granularity` to 0.60 and the mesh wins outright — which is correct for a
 container-only estate and wrong for a mixed one. Score the estate you have.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -45,7 +45,7 @@ EOF
 
 **Negative test:** Lower the threshold to 1 and every failed login becomes an "offense" — alert fatigue; tuning thresholds is the analyst's craft the exam tests.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Log source and normalization (QRadar Administrator)
 
@@ -60,7 +60,7 @@ grep "Failed password" /var/log/auth.log 2>/dev/null | tail -1 || echo "event pr
 
 **Negative test:** A log source with the wrong DSM leaves events unparsed ("stored" but not categorized) — rules never fire on them; the classic admin troubleshooting scenario.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Database activity monitoring (Guardium)
 
@@ -76,7 +76,7 @@ GRANT SELECT ON payroll.* TO 'contractor'; -- privilege change
 
 **Negative test:** Relying on the database's own audit log — a privileged insider can alter it; Guardium's out-of-band capture is the control that survives that.
 
-**Cleanup:** None (illustrative SQL).
+**Rollback:** None (illustrative SQL).
 
 ### Lab 3.4 — Access management concepts (Verify Access)
 
@@ -92,7 +92,7 @@ verify access> WebSEAL reverse proxy in front of the app:
 
 **Negative test:** Placing policy enforcement in the app instead of at the proxy — every app re-implements auth, inconsistently; the centralized-enforcement argument is the point.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 3.5 — Cloud Pak for Security + OpenShift (combo)
 
@@ -107,7 +107,7 @@ combo> Red Hat half: OpenShift Administration — the platform the Cloud Pak run
 
 **Negative test:** Studying only the IBM half — the Red Hat OpenShift exam is a separate sitting with its own objectives; both are required.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

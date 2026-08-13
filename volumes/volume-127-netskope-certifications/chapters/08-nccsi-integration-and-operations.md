@@ -42,7 +42,7 @@ SAML SSO brings **identity and group attributes** from the IdP (Okta, Entra ID, 
 
 **Negative test:** Policy by IP/subnet instead of SAML identity — you can't distinguish alice from bob on the same network; identity integration is what makes user-aware policy possible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — REST API automation
 
@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Managing everything by hand in the console at enterprise scale — no repeatability, no SIEM correlation; the API is what makes Netskope an integrated part of the SOC, which the exam tests.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — IaaS security and SSPM (cloud posture)
 
@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Inline DLP/threat protection alone misses a publicly-exposed storage bucket (a configuration problem, not a traffic problem); posture management (CSPM/SSPM) is the control for that class of risk.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Advanced analytics and Risk Insights
 
@@ -121,7 +121,7 @@ Advanced Analytics and **Risk Insights** turn raw events into risk scores and UE
 
 **Negative test:** Looking at raw events without aggregation — the mass-download-plus-anomaly pattern is invisible one event at a time; analytics is what surfaces the risk, and the exam expects you to use it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

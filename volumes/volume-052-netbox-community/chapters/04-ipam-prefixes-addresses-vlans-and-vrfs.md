@@ -71,7 +71,7 @@ within it — the IP hierarchy.
 **Negative test:** create a prefix outside any aggregate for tracked space; model the
 **aggregate** so utilization rolls up.
 
-**Cleanup:** `pfx.delete(); agg.delete(); rir.delete()`.
+**Rollback:** `pfx.delete(); agg.delete(); rir.delete()`.
 
 ### Lab 4.2 — Allocate the next available prefix
 
@@ -87,7 +87,7 @@ print("allocated child prefix:", child["prefix"])   # e.g. 10.1.0.0/24
 **Negative test:** pick a /24 by hand and hope it's free; the **available-prefixes**
 endpoint guarantees no overlap.
 
-**Cleanup:** delete the allocated child prefix.
+**Rollback:** delete the allocated child prefix.
 
 ### Lab 4.3 — Model a VLAN
 
@@ -104,7 +104,7 @@ print("vlan:", vlan.vid, vlan.name)
 **Negative test:** reuse VID 100 in the same group; VIDs are unique per group — NetBox
 rejects it.
 
-**Cleanup:** `vlan.delete(); grp.delete()`.
+**Rollback:** `vlan.delete(); grp.delete()`.
 
 ### Lab 4.4 — Separate overlapping space with a VRF
 
@@ -122,7 +122,7 @@ allowed by the VRF boundary.
 **Negative test:** put overlapping prefixes in the **global** table; without a **VRF**
 NetBox flags the duplicate — scope with a VRF.
 
-**Cleanup:** `overlap.delete(); vrf.delete()`.
+**Rollback:** `overlap.delete(); vrf.delete()`.
 
 ## Lab Verification
 

@@ -81,7 +81,7 @@ enriched documents.
 **Negative test:** index raw log strings and parse at search time; enrich once at **ingest** for
 efficient, structured queries.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_ingest/pipeline/weblog"
@@ -107,7 +107,7 @@ curl -s -k -u elastic:$PW -X GET "https://localhost:9200/orders/_search" -H 'Con
 **Negative test:** put the `range` in `must`; it needlessly influences relevance scoring — use `filter`
 for exact/range conditions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Run a bucket aggregation
 
@@ -130,7 +130,7 @@ curl -s -k -u elastic:$PW -X GET "https://localhost:9200/orders/_search" -H 'Con
 **Negative test:** request `size: 10000` hits when you only need aggregates; set `size: 0` so the query
 returns aggregations without documents.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Run an ES|QL query
 
@@ -154,7 +154,7 @@ query language.
 **Negative test:** ignore ES|QL and expect only Query DSL on the 9.3 exam; **ES|QL** is now a tested
 topic — learn it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

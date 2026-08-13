@@ -80,7 +80,7 @@ EOF
 
 **Expected result:** A tier map — Essentials (free, foundational), Advanced (60Q/2h/80%, renewal $50), and AI Automation Engineer (AI/agentic) — plus the non-exam Masterclasses. The lesson is that the program runs from a free foundational credential to advanced development to AI-driven automation, mirroring the platform's evolution, with free University training throughout.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — RPA versus Agentic Process Automation
 
@@ -113,7 +113,7 @@ EOF
 
 **Expected result:** A router sending a structured CSV-to-ERP copy to classic RPA, a PDF-extraction task to Document Automation, and a free-text triage to an AI agent. The lesson is the RPA→APA shift: classic RPA handles structured rules-based work deterministically, while Agentic Process Automation adds AI for unstructured input and judgment — the competency the AI Automation Engineer certification validates.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

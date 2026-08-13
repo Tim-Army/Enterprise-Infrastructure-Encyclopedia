@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Reading the tiers as beginner/intermediate/advanced difficulty. They are audience tiers — an ACP is not "harder ACA," it is a different role (administering versus using).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Certify for the deployment you actually run
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Pursuing the Data Center certification because it "sounds more serious." If your organization runs Cloud, you have certified in an admin surface you will never operate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

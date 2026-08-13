@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Extracting all the data to a separate tool for every analysis, and copying data between systems for every cross-system query. It is slow, moves huge volumes, and does not scale; in-database analytics (ClearScape) and cross-system query (QueryGrid) keep computation at the data.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

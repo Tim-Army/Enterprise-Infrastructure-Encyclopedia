@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Treating access as a one-time perimeter gate with no threat intelligence. Static access ignores a device becoming compromised mid-session, and without shared intelligence each org faces new threats alone; global intelligence plus risk-based continuous access adapt protection to the live threat landscape and security posture.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

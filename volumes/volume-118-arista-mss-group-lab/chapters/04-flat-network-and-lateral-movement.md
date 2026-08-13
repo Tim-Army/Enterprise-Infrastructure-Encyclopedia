@@ -28,7 +28,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.4.40 502  && echo "hmi->plc REA
 
 **Negative test.** A closed port fails for lack of a service, not for policy — distinguish "no service" from "denied."
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.2 — Name the group flows
 
@@ -47,7 +47,7 @@ Everything else group-to-group — most importantly `SG-Mgmt -> SG-DB` (hmi -> d
 
 **Negative test.** Writing the SG-Web→SG-DB rule against the db IP loses the group benefit; a rule against SG-DB covers any database that joins the group.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Reproduce the lateral movement
 
@@ -61,7 +61,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.120.2.20 5432 && echo "PIVOT: hmi o
 
 **Expected result.** `PIVOT: hmi opened db:5432` — with no group policy, the operator reaches the database. Chapter 05 denies this by default.
 
-**Cleanup.** None — Chapter 05 applies group policy.
+**Rollback.** None — Chapter 05 applies group policy.
 
 ## Summary and Completion Checklist
 

@@ -109,7 +109,7 @@ EOF
 
 **Negative test:** Ranking causes by earliest timestamp. Under clock skew or coarse sampling the ordering inverts, and the "earliest" anomaly may simply be the one whose metric was scraped first.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Baselines describe what is, not what should be
 
@@ -151,7 +151,7 @@ EOF
 
 **Negative test:** Treating "no open problems" as "everything is meeting its commitments." It means nothing changed recently.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Alerting profiles
 
@@ -196,7 +196,7 @@ EOF
 
 **Negative test:** Routing every problem to the on-call channel because "Dynatrace already reduces noise." It reduced it; it did not decide your priorities.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

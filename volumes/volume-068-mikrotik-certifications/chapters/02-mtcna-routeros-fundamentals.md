@@ -76,7 +76,7 @@ get addresses.
 **Negative test:** enable the DHCP server with **no address pool/network**; it can't lease — define
 the pool and network.
 
-**Cleanup:** `/ip dhcp-server remove [find name=lan]; /ip address remove [find interface=ether2]`.
+**Rollback:** `/ip dhcp-server remove [find name=lan]; /ip address remove [find interface=ether2]`.
 
 ### Lab 2.2 — Masquerade for internet access
 
@@ -93,7 +93,7 @@ source NAT.
 **Negative test:** expect LAN internet with **no NAT**; private addresses aren't routable — add
 masquerade.
 
-**Cleanup:** `/ip firewall nat remove [find action=masquerade]`.
+**Rollback:** `/ip firewall nat remove [find action=masquerade]`.
 
 ### Lab 2.3 — Basic router firewall
 
@@ -112,7 +112,7 @@ masquerade.
 **Negative test:** leave the input chain default-accept from the WAN; the router is **exposed** —
 add input filtering.
 
-**Cleanup:** remove the added filter rules.
+**Rollback:** remove the added filter rules.
 
 ### Lab 2.4 — Back up and export
 
@@ -129,7 +129,7 @@ add input filtering.
 **Negative test:** change config with no backup; a bad change is hard to undo — **back up/export**
 first.
 
-**Cleanup:** none (keep the backups).
+**Rollback:** none (keep the backups).
 
 ### Lab 2.5 — Bridge ports
 
@@ -147,7 +147,7 @@ first.
 **Negative test:** expect two separate ports to switch traffic with no bridge; **bridge** them for
 L2 connectivity.
 
-**Cleanup:** `/interface bridge remove bridge-lan`.
+**Rollback:** `/interface bridge remove bridge-lan`.
 
 ## Lab Verification
 

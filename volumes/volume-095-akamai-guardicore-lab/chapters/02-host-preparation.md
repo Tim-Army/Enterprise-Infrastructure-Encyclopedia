@@ -28,7 +28,7 @@ systeminfo | Select-String "Hyper-V", "Virtualization"
 
 **Negative test.** Leave VT-x disabled and try to power on a 64-bit guest; Workstation refuses with "Intel VT-x is disabled." The fix is firmware, not Workstation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install VMware Workstation Pro
 
@@ -49,7 +49,7 @@ Get-Service -Name "VMware*" | Where-Object { $_.Status -eq "Running" } |
 
 **Negative test.** A greyed-out Virtual Network Editor means the install was not elevated; repair via **Apps → VMware Workstation → Modify** and reboot.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Resolve the Hyper-V / VBS conflict
 
@@ -79,7 +79,7 @@ Reboot.
 
 **Negative test.** Build the estate with VBS on and nested guests run visibly slower — the ULM tax.
 
-**Cleanup.** Re-enable Memory Integrity when finished if this is a shared machine.
+**Rollback.** Re-enable Memory Integrity when finished if this is a shared machine.
 
 ### Lab 2.4 — Create the lab directory structure
 
@@ -100,7 +100,7 @@ Get-ChildItem $root
 
 **Negative test.** Building on a nearly full system drive makes Workstation refuse to power on; keep 250 GB free.
 
-**Cleanup.** None — this is your working tree.
+**Rollback.** None — this is your working tree.
 
 ## Summary and Completion Checklist
 

@@ -25,7 +25,7 @@ kubectl -n ot create serviceaccount sa-hmi
 
 **Negative test.** Forget the annotation and pods get no proxy — outside the mesh, so mTLS and policy do not apply. Confirm: `kubectl get ns dc -o jsonpath='{.metadata.annotations}'`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy the meshed services and clients
 
@@ -104,7 +104,7 @@ EOF
 
 **Negative test.** If a pod is `1/1`, the namespace annotation was missing or the pod predated it; `kubectl rollout restart` after annotating.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Deploy the un-meshed PLC
 
@@ -143,7 +143,7 @@ kubectl get pods -n ot
 
 **Negative test.** Remove the `linkerd.io/inject: disabled` annotation and the PLC gets a proxy — but a real PLC could not run one. The annotation models that.
 
-**Cleanup.** Keep the workloads.
+**Rollback.** Keep the workloads.
 
 ## Summary and Completion Checklist
 

@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Deploying obviously-named decoys — an attacker who recognizes `honeypot-01` avoids it and you have detection theater.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Tune an alert nobody trusts
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Tuning until the alert is quiet and declaring success — silence is indistinguishable from blindness unless you measure recall against known incidents.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Threat intelligence without the noise
 
@@ -173,7 +173,7 @@ EOF
 
 **Negative test:** Ingesting every available feed at full volume — you generate matches against recycled infrastructure and spend investigation time on innocent third parties.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

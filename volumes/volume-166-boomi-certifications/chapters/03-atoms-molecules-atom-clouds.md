@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Forcing every integration onto a single Atom in one region. On-prem data behind a firewall is unreachable, production has no HA, and EU data-residency rules are violated; matching the runtime form and placement to each requirement is what the runtime model is for.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -80,7 +80,7 @@ Successful on 1 target
 **Negative test:** SSH to each host by hand to run the same command; use **Bolt** with an inventory to
 run once across many.
 
-**Cleanup:** none (read-only command).
+**Rollback:** none (read-only command).
 
 ### Lab 8.2 — Run a task
 
@@ -102,7 +102,7 @@ Successful on 1 target
 
 **Negative test:** paste a one-off restart script each time; package it as a **task** with parameters.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Reason about a plan
 
@@ -126,7 +126,7 @@ coordinated operation.
 
 **Negative test:** run the four steps by hand across a fleet; a **plan** makes it repeatable and safe.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Reason about the PE Orchestrator
 
@@ -146,7 +146,7 @@ enforcement.
 **Negative test:** wait 30 minutes for the next scheduled run during an incident; use the **Orchestrator**
 to run now.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

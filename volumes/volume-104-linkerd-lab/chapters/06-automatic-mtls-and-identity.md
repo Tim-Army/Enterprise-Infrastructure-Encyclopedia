@@ -27,7 +27,7 @@ linkerd viz edges deployment -n dc
 
 **Negative test.** Look for an edge to or from the un-meshed `plc`; it is not mTLS-secured, because the PLC has no proxy and no identity. Only meshed-to-meshed traffic is automatically mTLS.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — See the ServiceAccount identities
 
@@ -47,7 +47,7 @@ kubectl get pod -n dc -l app=web -o jsonpath='{.items[0].spec.serviceAccountName
 
 **Negative test.** Note the identity is the ServiceAccount, not the pod. Two pods of the same Deployment share the identity, and a rescheduled pod keeps it. Identity is stable; IPs are not.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Watch a live request
 
@@ -65,7 +65,7 @@ sleep 2; kill %1 2>/dev/null
 
 **Negative test.** There is nothing to disable to "turn off" mTLS in the mesh short of removing the proxy; Linkerd's opinion is that mesh traffic is always encrypted. That opinion is the product.
 
-**Cleanup.** Keep the mesh for Chapter 07.
+**Rollback.** Keep the mesh for Chapter 07.
 
 ## Summary and Completion Checklist
 

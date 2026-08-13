@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Buying the HTTP-layer detections by enabling TLS inspection with no exception governance. Six months later the "temporary" bypass list has forty entries and nobody can say which of them still deserve to be blind spots.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Tunnel versus open inbound ports
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Migrating www to Tunnel and leaving the "temporary" port-forward on legacy-erp. The attacker's scanner does not read your migration roadmap; the remaining public IP is the whole attack surface now.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Posture-gated access, end to end
 
@@ -160,7 +160,7 @@ EOF
 
 **Negative test:** Exempting executives' unenrolled personal devices from posture checks on the finance app. The highest-value targets now reach the highest-value app on the least-known devices — an inversion an attacker could not have designed better.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

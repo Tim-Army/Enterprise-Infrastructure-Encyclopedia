@@ -145,7 +145,7 @@ Top-10 attacks, bots, and API abuse that a network firewall does not inspect at 
 SQLi is logged but delivered to the app — the policy action must be `block`/`deny` to
 enforce.
 
-**Cleanup:** remove the lab server policy.
+**Rollback:** remove the lab server policy.
 
 ### Lab 13.2 — FortiMail antispam and antimalware (Topic: FortiMail)
 
@@ -165,7 +165,7 @@ outbound DLP) that is the top initial-access route for attackers.
 **Negative test:** MX-route mail straight to the server, bypassing FortiMail; none of the
 filtering applies — FortiMail must sit in the mail flow (MX/relay) to inspect.
 
-**Cleanup:** remove the lab protected-domain and policy.
+**Rollback:** remove the lab protected-domain and policy.
 
 ### Lab 13.3 — FortiADC application delivery (Topic: FortiADC)
 
@@ -186,7 +186,7 @@ availability, SSL offload, and L7 optimization alongside security.
 keeps sending it traffic and users get errors — the health check is what makes load
 balancing resilient.
 
-**Cleanup:** remove the lab virtual server and pool.
+**Rollback:** remove the lab virtual server and pool.
 
 ### Lab 13.4 — FortiGate-VM in public cloud (Topic: Cloud FortiGate — AWS/Azure/GCP)
 
@@ -212,7 +212,7 @@ cloud changes automatically.
 churn and policies break — SDN-connector dynamic objects are what keep policy correct as
 the cloud changes.
 
-**Cleanup:** delete the `aws-sdn` connector if lab-only.
+**Rollback:** delete the `aws-sdn` connector if lab-only.
 
 ### Lab 13.5 — Cloud posture and DDoS: FortiCNAPP and FortiDDoS (Topic: FortiCNAPP / FortiDDoS)
 
@@ -234,7 +234,7 @@ volumetric defense, not just the firewall.
 it either misses attacks or blocks legitimate bursts — behavioral baselining is what makes
 mitigation accurate.
 
-**Cleanup:** none (read-only review).
+**Rollback:** none (read-only review).
 
 ## Lab Verification
 

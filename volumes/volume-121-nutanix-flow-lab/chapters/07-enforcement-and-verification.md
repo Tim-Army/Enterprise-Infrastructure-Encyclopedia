@@ -36,7 +36,7 @@ sudo ip netns exec plc bash -c 'nc -z -w2 10.150.0.20 5432 || echo "plc->db  DEN
 
 **Negative test.** Unsolicited traffic *toward* a secured tier from within its own environment — `sudo ip netns exec db bash -c 'nc -z -w2 10.150.0.10 22 || echo "db->web DENIED"'` — dies at the default deny: no permit, no path.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.2 — The category-driven property
 
@@ -69,7 +69,7 @@ Not one rule changed. Membership decided everything — the property that lets o
 
 **Negative test.** Remove the category (`sudo nft delete element bridge flow apptier_web '{ 10.150.0.11 }'`) and the permit vanishes as instantly as it arrived. Re-add it for the teardown drills.
 
-**Cleanup.** `web2` persists until Chapter 09.
+**Rollback.** `web2` persists until Chapter 09.
 
 ### Exercise 7.3 — Telemetry consistency
 
@@ -87,7 +87,7 @@ sudo nft list chain bridge flow vswitch | grep counter
 
 **Negative test.** `sudo nft reset counters table bridge flow >/dev/null`, run only the sanctioned pair, re-list: only the two permit counters advance. Quiet policy, quiet counters.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

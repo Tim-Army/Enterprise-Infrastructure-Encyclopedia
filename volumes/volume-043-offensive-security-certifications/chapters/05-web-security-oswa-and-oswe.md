@@ -102,7 +102,7 @@ and information in headers.
 **Negative test:** test inputs before mapping the app; enumerate the full surface
 first — untested endpoints hide flaws.
 
-**Cleanup:** `pkill -f 'http.server 8081' 2>/dev/null || true`
+**Rollback:** `pkill -f 'http.server 8081' 2>/dev/null || true`
 
 ### Lab 5.2 — OSWA: SQL injection (demonstrate and fix)
 
@@ -128,7 +128,7 @@ bypass) while the parameterized query returns nothing — the flaw and its fix.
 **Negative test:** "sanitize" by escaping quotes manually; parameterization is the
 correct, complete fix — do not hand-roll escaping.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — OSWA: cross-site scripting (demonstrate and fix)
 
@@ -150,7 +150,7 @@ encoding and a Content-Security-Policy.
 **Negative test:** filter the word "script"; blacklist filtering is bypassable —
 **encode on output** instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — OSWA: authentication and session testing
 
@@ -172,7 +172,7 @@ auth-testing area, oriented to fixes. **Defense:** each listed control.
 **Negative test:** trust client-side checks; **authorization must be enforced
 server-side** for every request.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### OSWE — White-box Web Expert
 
@@ -196,7 +196,7 @@ grep — the code-reading method OSWE teaches. **Defense:** parameterize the sin
 **Negative test:** review only for style; **data-flow from source to sink** is
 what reveals real vulnerabilities.
 
-**Cleanup:** `rm -f app.py`
+**Rollback:** `rm -f app.py`
 
 ### Lab 5.6 — OSWE: authentication bypass (logic review)
 
@@ -219,7 +219,7 @@ strict, server-side authorization.
 **Negative test:** trust a client-supplied `is_admin`; derive roles from a
 **server-side session**, never the request.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.7 — OSWE: insecure deserialization and chaining (concept)
 
@@ -240,7 +240,7 @@ untrusted data; validate against a schema.
 **Negative test:** deserialize untrusted input with a native (pickle-style)
 loader; use a **safe format** and validate — native deserialization is dangerous.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

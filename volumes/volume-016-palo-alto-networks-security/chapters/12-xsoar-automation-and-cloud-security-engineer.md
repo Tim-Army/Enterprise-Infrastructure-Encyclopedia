@@ -160,7 +160,7 @@ with its task count — automation orchestrating the response.
 **Negative test:** an incident with no playbook assigned sits untouched;
 the playbook binding is what triggers automation.
 
-**Cleanup:** delete the lab incident.
+**Rollback:** delete the lab incident.
 
 ### Lab 12.2 — Configure an integration instance (XSOAR)
 
@@ -178,7 +178,7 @@ intel) — the connectors a playbook uses to enrich and act.
 **Negative test:** a playbook that calls a disabled integration errors at the
 task; the instance must be enabled and healthy first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.3 — Read a playbook task result / war room (XSOAR)
 
@@ -196,7 +196,7 @@ the war room — the auditable record of what the automation did.
 **Negative test:** an auto-containment action taken with no war-room entry is
 untraceable; every automated action should log to the war room for audit.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.4 — Automate cloud remediation (Cloud Security Engineer)
 
@@ -215,7 +215,7 @@ curl -sk -H "Authorization: $CORTEX_TOKEN" \
 legitimate resource; remediation automation needs scoping and approval for
 destructive fixes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.5 — Enforce a policy-as-code guardrail (Cloud Security Engineer)
 
@@ -232,7 +232,7 @@ curl -sk -H "Authorization: $CORTEX_TOKEN" "$CC/code-security/v1/policies?enable
 **Negative test:** a policy in `monitor` mode logs but does not block; a
 guardrail must be in `block` mode to actually prevent the merge.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 12.6 — Enrich, contain, and remediate playbook (integrative)
 
@@ -243,6 +243,8 @@ against a replayed incident and a false-positive control. Cloud
 Security Engineer: onboard one cloud account in an eval Prisma/Cortex
 Cloud tenant (or runbook), verify inventory completeness, tune one
 posture policy, and route a finding into the SOC queue.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Lab Verification
 

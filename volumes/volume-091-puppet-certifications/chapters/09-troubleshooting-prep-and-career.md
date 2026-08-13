@@ -82,7 +82,7 @@ exit=1
 **Negative test:** `puppet apply` the broken manifest in production; **validate** first to catch syntax
 errors.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -f /tmp/broken.pp
@@ -110,7 +110,7 @@ PY
 
 **Negative test:** assume every failed run is a code bug; check **certs/server/PuppetDB** too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan exam prep and career
 
@@ -136,7 +136,7 @@ platform/SRE roles.
 **Negative test:** cram only the language and skip administration/orchestration; the exam spans **eight**
 domains.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

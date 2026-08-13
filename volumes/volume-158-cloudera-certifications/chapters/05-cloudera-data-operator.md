@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Point-to-point integrations where each source connects directly to each consumer. That is brittle and does not scale; NiFi plus Kafka topics decouple producers from consumers, so streams are reliable, replayable, and independently consumable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

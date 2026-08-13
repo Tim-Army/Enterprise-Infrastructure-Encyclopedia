@@ -39,7 +39,7 @@ Match the dropped 5-tuple against the intended rule; the mismatch is the bug (wr
 
 **Negative test.** "Fix" a blocked flow by reverting to alert-only and declaring success — you removed the protection, not the bug. Re-enforce and fix the rule.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -71,7 +71,7 @@ sudo nft -f /etc/nftables.conf  # re-enforce
 
 **Negative test.** Enforce a default-deny on `gc-db01` that omits the SSH management allow, then try to manage it over the enforced path only; you are locked out until the out-of-band adapter or the snapshot. This is why both exist.
 
-**Cleanup.** Ensure `gc-db01` is enforced again with the SSH management rule intact.
+**Rollback.** Ensure `gc-db01` is enforced again with the SSH management rule intact.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -97,7 +97,7 @@ Then turn Core isolation back on and reboot.
 
 **Negative test.** Deleting the VMs but leaving VMnet3 configured is harmless but can surprise a later lab that reuses it. Clean it up.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

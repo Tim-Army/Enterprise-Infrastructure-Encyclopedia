@@ -73,7 +73,7 @@ operation.
 **Negative test:** run the app on a single pod with no Service; it's unreachable and fragile — use a
 **Deployment + Service**.
 
-**Cleanup:** `kubectl delete namespace shop`.
+**Rollback:** `kubectl delete namespace shop`.
 
 ### Lab 7.2 — Autoscale with HPA
 
@@ -91,7 +91,7 @@ PY
 
 **Negative test:** fix replicas at peak count always; you waste resources off-peak — use **HPA**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Build a serverless function
 
@@ -111,7 +111,7 @@ PY
 **Negative test:** keep an ECS instance running 24/7 to occasionally resize images; that's wasteful —
 use **Function Compute**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Design a microservices pattern
 
@@ -132,7 +132,7 @@ architecture.
 **Negative test:** build a single monolith and call it microservices; decompose into **independent,
 messaged** services.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

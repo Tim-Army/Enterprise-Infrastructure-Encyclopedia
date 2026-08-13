@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Assuming a cloud password change updates the Mac's local login. Without Jamf Connect it does not — the local password is separate, drifts stale, and can lock the user out of their FileVault-encrypted disk.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Identity lifecycle: does disabling the cloud account lock the Mac?
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Relying on cloud-account disablement to lock a Mac with local-only login. It does not — the local account is independent, and the device keeps logging in until someone manually removes it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

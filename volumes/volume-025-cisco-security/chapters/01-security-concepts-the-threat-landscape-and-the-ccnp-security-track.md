@@ -271,7 +271,7 @@ cloud threats (ransomware, phishing, supply chain) the exam catalogs.
 **Negative test:** treating cloud as inherently safe ignores misconfiguration
 and identity attacks unique to it; each environment has its own threats.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Describe vulnerabilities and exploits (Objective 1.2)
 
@@ -288,7 +288,7 @@ parameterization defeats them — the exploit classes the exam names.
 **Negative test:** blocklisting specific strings misses encoded variants;
 parameterized queries (not string filtering) actually fix injection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Describe AI/LLM vulnerabilities (Objective 1.3)
 
@@ -305,7 +305,7 @@ LLM-specific risks — mitigated by guardrails, isolation, and output filtering.
 **Negative test:** treating an LLM as a trusted parser lets injected
 instructions execute; the model's input is untrusted data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Describe controls against phishing (Objective 1.4)
 
@@ -322,7 +322,7 @@ layered anti-phishing controls (implemented on the ESA in Chapter 04).
 **Negative test:** user training alone cannot stop every phish; technical
 controls (DMARC, MFA, ETD) must back it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.5 — Describe cryptography components (Objective 1.5)
 
@@ -341,7 +341,7 @@ the crypto primitives the exam tests.
 **Negative test:** using a hash (SHA-256) as if it were encryption; hashing is
 one-way (integrity), not reversible (confidentiality).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.6 — Describe VPN deployment types (Objective 1.6)
 
@@ -358,7 +358,7 @@ echo "remote access: AnyConnect IKEv2/SSL, clientless (ch07)"
 **Negative test:** a site-to-site tunnel cannot serve roaming users; remote
 access is for individual endpoints.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.7 — Describe threat-intelligence sharing (Objective 1.7)
 
@@ -374,7 +374,7 @@ echo '{"type":"indicator","pattern":"[ipv4-addr:value = \"198.51.100.5\"]","vali
 **Negative test:** emailing indicators as text cannot be automatically
 consumed; STIX/TAXII makes sharing actionable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.8 — Describe zero-trust architecture (Objective 1.8)
 
@@ -391,7 +391,7 @@ pillars — the architecture Chapter 08 implements.
 **Negative test:** a perimeter firewall alone is not zero trust; ZTA verifies
 every request regardless of network location.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.9 — Describe defense in depth (Objective 1.9)
 
@@ -408,7 +408,7 @@ depth.
 **Negative test:** relying on a single strong control (the firewall) is a
 single point of failure; layers provide redundancy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.10 — Interpret scripts calling security APIs (Objective 1.10)
 
@@ -427,7 +427,7 @@ automation (Chapter 09).
 **Negative test:** hard-coding credentials in a script leaks them; use a
 vault/environment and short-lived tokens.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.11 — Build the study infrastructure (integrative)
 
@@ -476,7 +476,7 @@ scaffolding; the product-specific labs begin in Chapter 02.
 - A completed attack-to-control map you can recite.
 - A confirmed dCloud catalog for the labs ahead.
 
-**Cleanup**
+**Rollback**
 
 7. This lab produces notes and an account, not infrastructure; retain
    both. The map and timeline are inputs to every subsequent chapter.

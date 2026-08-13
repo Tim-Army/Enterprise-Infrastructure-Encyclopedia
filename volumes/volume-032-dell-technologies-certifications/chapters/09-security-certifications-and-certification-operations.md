@@ -136,7 +136,7 @@ audit; defense-in-depth layers them across the stack.
 compromised credential bypasses the perimeter — identity is the modern control plane,
 not just the network edge.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — NIST Cybersecurity Framework v2.0 (Dell NIST CSF v2.0)
 
@@ -158,7 +158,7 @@ Detect, IR→Respond, backup/CR→Recover) gives a governance-driven security po
 cyber recovery); a successful attack has no clean recovery path — CSF requires all
 functions, including Recover.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Zero Trust Design (Zero Trust Design) — Design Exercise
 
@@ -191,6 +191,8 @@ derives from network location, regulated data has a data-centric control and an
 immutable recovery copy, and each decision names its rejected alternative — the design
 standard the Zero Trust Design exam applies.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 9.4 — AI security controls (AI Security)
 
 **Objective:** Verify the security controls around an AI platform on Dell.
@@ -210,7 +212,7 @@ from Lab 8.4), and log/monitor.
 network policy; anyone can query or exfiltrate the model — the AI endpoint needs the
 same zero-trust controls as any sensitive service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.5 — Client systems support and troubleshooting (Client Systems Support and Troubleshooting)
 
@@ -232,7 +234,7 @@ systematic isolation (POST codes, battery/thermal, display) to a failed FRU.
 **Negative test:** chase the OS for a client that fails ePSA hardware diagnostics; the
 fault is hardware — the on-board diagnostics isolate it independent of the OS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.6 — Client systems deployment (Client Systems Deployment and Implementation)
 
@@ -255,7 +257,7 @@ device is business-ready with minimal touch.
 touchpad, TPM) misbehave — the model-specific driver pack is part of a correct
 deployment.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.7 — Certification operations (Proven Professional program)
 
@@ -276,7 +278,7 @@ objectives and weights, which this volume defers to.
 `-01` code suffixes signal versions); the objectives may have changed — always confirm
 the current exam code and its description.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -87,7 +87,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — a storage admin starts with the HQT VSP 360 credential then an HCE storage Specialist; a Pentaho developer takes Data Integration then Business Analytics. The lesson is to start with a Qualification (HQT) credential in your track, deepen with a Certification (HCE), and choose storage versus data (Pentaho) by discipline.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: data infrastructure end to end
 
@@ -120,7 +120,7 @@ EOF
 
 **Expected result:** A capstone provisioning VSP storage, protecting it with snapshots and replication, managing it via Ops Center automation/analytics, archiving to object storage with cloud tiering, and processing the data with Pentaho. The lesson synthesizes the volume: Hitachi Vantara spans the whole data-infrastructure lifecycle — hold (storage), protect (replication), manage (Ops Center), archive (object/cloud), and analyze (Pentaho) — which the storage and data certification tracks prepare you to run.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -165,7 +165,7 @@ repair corruption.
 **Negative test:** try to create a mirror with only one physical disk; it
 fails — mirror needs at least two disks.
 
-**Cleanup:** `Remove-VirtualDisk "Data" -Confirm:$false; Remove-StoragePool "Pool1" -Confirm:$false`.
+**Rollback:** `Remove-VirtualDisk "Data" -Confirm:$false; Remove-StoragePool "Pool1" -Confirm:$false`.
 
 ### Lab 7.2 — Enable deduplication (Topic: Data Deduplication)
 
@@ -185,7 +185,7 @@ chunking for the workload.
 **Negative test:** enable dedup on the system volume `C:`; it is blocked —
 dedup is not supported on the boot/system volume.
 
-**Cleanup:** `Disable-DedupVolume -Volume "E:"`.
+**Rollback:** `Disable-DedupVolume -Volume "E:"`.
 
 ### Lab 7.3 — Share a folder with AGDLP NTFS permissions (Topic: SMB file shares)
 
@@ -205,7 +205,7 @@ NTFS permissions governs access.
 **Negative test:** set the **share** permission to Read for a user who has
 NTFS Modify; effective access is Read — the more restrictive layer wins.
 
-**Cleanup:** `Remove-SmbShare HR -Force; Remove-Item E:\Shares\HR -Recurse -Force`.
+**Rollback:** `Remove-SmbShare HR -Force; Remove-Item E:\Shares\HR -Recurse -Force`.
 
 ### Lab 7.4 — Build a DFS namespace (Topic: DFS Namespaces)
 
@@ -226,7 +226,7 @@ back end can move without remapping drives.
 **Negative test:** point a folder target at a share that does not exist;
 clients get a path-not-found on access — targets must reference real shares.
 
-**Cleanup:** `Remove-DfsnFolder "\\corp.contoso.lab\files\hr" -Force; Remove-DfsnRoot "\\corp.contoso.lab\files" -Force`.
+**Rollback:** `Remove-DfsnFolder "\\corp.contoso.lab\files\hr" -Force; Remove-DfsnRoot "\\corp.contoso.lab\files" -Force`.
 
 ## Lab Verification
 

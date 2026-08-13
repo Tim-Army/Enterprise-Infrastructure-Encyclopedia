@@ -378,7 +378,7 @@ technology.
 own init; that is LXD's model, not Docker's — choose LXD for machine-like containers, Docker/OCI
 for single-app images.
 
-**Cleanup:** `lxc delete -f c1`.
+**Rollback:** `lxc delete -f c1`.
 
 ### Lab 8.2 — Docker Engine (Topic: Application containers)
 
@@ -400,7 +400,7 @@ ecosystem; on Ubuntu it installs as the `docker.io` package or the upstream Dock
 socket is denied — Docker daemon access is root-equivalent, so socket membership is a privilege to
 grant carefully.
 
-**Cleanup:** `sudo docker rm -f web`.
+**Rollback:** `sudo docker rm -f web`.
 
 ### Lab 8.3 — Canonical Kubernetes (Topic: Orchestration)
 
@@ -421,7 +421,7 @@ production-capable, batteries-included Kubernetes installed from a single snap.
 **Negative test:** expect `kubectl` to work before `k8s bootstrap` completes; the API server is
 not up and commands fail — the cluster must finish bootstrapping (`status --wait-ready`) first.
 
-**Cleanup:** `sudo k8s kubectl delete deployment web`; `sudo snap remove k8s` if lab-only.
+**Rollback:** `sudo k8s kubectl delete deployment web`; `sudo snap remove k8s` if lab-only.
 
 ### Lab 8.4 — OpenShift-compatible images (Topic: Interoperability)
 
@@ -449,7 +449,7 @@ arbitrary-UID/non-root is what makes an image portable to OpenShift, not just pe
 `restricted` SCC refuses it — images must tolerate a random non-root UID in group 0 to
 interoperate.
 
-**Cleanup:** `sudo docker rmi localhost/os-compat:1.0; rm -rf ~/oci`.
+**Rollback:** `sudo docker rmi localhost/os-compat:1.0; rm -rf ~/oci`.
 
 ## Lab Verification
 

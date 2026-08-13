@@ -101,7 +101,7 @@ planning that opens every CISA engagement (Domain 1).
 **Negative test:** audit everything equally; a **risk-based** plan focuses effort
 where it matters — rank by risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — CISA D2: Governance and Management of IT (18%)
 
@@ -122,7 +122,7 @@ governance-audit linkage of Domain 2.
 **Negative test:** audit IT in isolation from business governance; CISA assesses
 IT **governance** — tie controls to enterprise objectives.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — CISA D3: IS Acquisition, Development and Implementation (12%)
 
@@ -144,7 +144,7 @@ development review of Domain 3.
 **Negative test:** review only production; controls must be built and evidenced
 **across** the SDLC — audit each phase.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — CISA D4: IS Operations and Business Resilience (26%)
 
@@ -165,7 +165,7 @@ resilience assessment that is CISA's largest domain (tied).
 **Negative test:** accept a DR plan on paper without testing; audit the **tested**
 recovery capability against the requirement — evidence, not intent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — CISA D5: Protection of Information Assets (26%)
 
@@ -188,7 +188,7 @@ domain.
 **Negative test:** confirm access "looks fine" without a least-privilege baseline;
 test against the **required** entitlements, not appearances.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

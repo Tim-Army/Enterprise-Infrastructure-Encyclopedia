@@ -74,7 +74,7 @@ PY
 **Negative test:** build a 2-node cluster with **no fencing**; a network partition risks split-brain
 (both active) — configure **STONITH**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Outline an AutoYaST profile
 
@@ -93,7 +93,7 @@ PY
 
 **Negative test:** install 50 servers by hand; they drift — use one **AutoYaST** profile.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Use transactional-update
 
@@ -110,7 +110,7 @@ updates.
 **Negative test:** patch a read-only SLE Micro host with plain `zypper`; use **transactional-update**
 for the atomic/rollback workflow.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Plan a failover test
 
@@ -129,7 +129,7 @@ PY
 
 **Negative test:** assume HA works without testing; failover may be misconfigured — **test** it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

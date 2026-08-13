@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Modifying a core pricing routine because it is faster than building on BTP. It is faster today and breaks at the next quarterly update, which on cloud editions arrives whether you are ready or not.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — ABAP Cloud's restriction is the feature
 
@@ -127,7 +127,7 @@ EOF
 
 **Negative test:** Treating ABAP Cloud's restrictions as bureaucratic obstacles to route around. Each restriction blocks a specific upgrade-fragility; routing around it reintroduces exactly the technical debt clean core exists to prevent.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Integration is where the estate's risk lives
 
@@ -167,7 +167,7 @@ EOF
 
 **Negative test:** Staffing an SAP landscape with module consultants and no integration owner. The systems each work; the employee-master sync fails silently at month-end, and nobody owns the space between the boxes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

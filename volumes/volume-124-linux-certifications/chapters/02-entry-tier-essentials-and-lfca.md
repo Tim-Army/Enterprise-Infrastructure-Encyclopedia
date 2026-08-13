@@ -38,7 +38,7 @@ ls -l notes.txt | awk '{print $1}'
 
 **Negative test:** `chmod 999 notes.txt` — invalid mode; octal digits stop at 7 because each is three bits (rwx). The error teaches the encoding.
 
-**Cleanup:** Keep `~/lab` for the chapter.
+**Rollback:** Keep `~/lab` for the chapter.
 
 ### Lab 2.2 — Security Essentials literacy (020)
 
@@ -55,7 +55,7 @@ gpg --decrypt --batch --passphrase lab123 s.txt.gpg 2>/dev/null
 
 **Negative test:** Decrypt with the wrong passphrase — `decryption failed`; keys, not obscurity, hold the secret.
 
-**Cleanup:** `rm s.txt s.txt.gpg`.
+**Rollback:** `rm s.txt s.txt.gpg`.
 
 ### Lab 2.3 — Web Development Essentials stack (030)
 
@@ -70,7 +70,7 @@ python3 -c "import sqlite3; c=sqlite3.connect(':memory:'); c.execute('CREATE TAB
 
 **Negative test:** `SELECT y FROM t` — `no such column`; SQL errors name the schema, the debugging habit 030 expects.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Open Source Essentials licensing (050)
 
@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Treating "open source" as "no obligations" — the GPL scenario shows why that fails legal review.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — LFCA breadth check
 
@@ -107,7 +107,7 @@ echo "cloud/devops: images, containers, CI - see Volumes VIII, XLI, XCII"
 
 **Negative test:** Any line you cannot explain is your study pointer — the lab as diagnostic.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

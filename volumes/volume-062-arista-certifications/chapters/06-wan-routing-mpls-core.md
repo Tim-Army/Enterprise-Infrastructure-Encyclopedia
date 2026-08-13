@@ -67,7 +67,7 @@ core# show mpls ldp neighbor
 **Negative test:** enable MPLS but not **LDP** on a link; no labels are exchanged there — no
 LSP forms.
 
-**Cleanup:** `no mpls ldp`.
+**Rollback:** `no mpls ldp`.
 
 ### Lab 6.2 — Verify the label-switched path
 
@@ -83,7 +83,7 @@ core# show mpls ldp bindings
 **Negative test:** assume MPLS forwarding without checking the **LFIB**; verify labels are
 installed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Build an L3VPN
 
@@ -105,7 +105,7 @@ over the shared core.
 **Negative test:** omit **route targets**; VPN routes aren't imported/exported — the VPN
 doesn't connect.
 
-**Cleanup:** `no vrf instance CUST-A`.
+**Rollback:** `no vrf instance CUST-A`.
 
 ### Lab 6.4 — Verify VPN routes
 
@@ -122,7 +122,7 @@ end-to-end L3VPN.
 **Negative test:** check only the global table; **VPN routes live in the VRF/VPNv4 tables**
 — look there.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

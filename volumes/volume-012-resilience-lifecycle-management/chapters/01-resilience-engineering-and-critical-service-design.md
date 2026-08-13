@@ -340,7 +340,7 @@ When measured availability does not match the calculated theoretical availabilit
 
 **Validation Evidence:** Capture the script output before and after step 6 in a `RESULTS.md` file alongside the YAML files, showing the SPOF list shrinking or the tier assignment change.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch1

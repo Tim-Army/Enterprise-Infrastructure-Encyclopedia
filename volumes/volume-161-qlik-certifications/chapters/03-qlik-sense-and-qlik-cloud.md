@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Letting every analyst define their own "Revenue" measure ad hoc. Definitions drift and numbers disagree ("my revenue vs your revenue"); master items provide one governed definition reused everywhere, delivering self-service freedom with consistency.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

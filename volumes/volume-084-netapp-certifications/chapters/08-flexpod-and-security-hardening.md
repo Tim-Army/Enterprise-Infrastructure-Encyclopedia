@@ -84,7 +84,7 @@ PY
 **Negative test:** mix an unvalidated switch/firmware combination into a FlexPod; it falls outside the
 **CVD** and loses joint support — build to a validated design.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Create a scoped admin role
 
@@ -107,7 +107,7 @@ opsvc              ssh         vol_operator
 **Negative test:** give the operator the built-in `admin` role for convenience; that grants
 cluster-wide power — bind the scoped `vol_operator` role instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> security login delete -user-or-group-name opsvc -application ssh -vserver cluster1
@@ -138,7 +138,7 @@ is protected.
 **Negative test:** enable encryption but never back up/escrow the onboard **passphrase**; losing it
 makes the data unrecoverable — escrow keys (or use external KMIP).
 
-**Cleanup:** none (encryption is left enabled; it is the hardened state).
+**Rollback:** none (encryption is left enabled; it is the hardened state).
 
 ### Lab 8.4 — Disable insecure management protocols
 
@@ -161,7 +161,7 @@ false        true
 **Negative test:** leave plain HTTP (or Telnet/RSH) enabled for management; credentials cross the wire
 in clear text — disable insecure protocols and use SSH/HTTPS.
 
-**Cleanup:** none (secure state is the goal).
+**Rollback:** none (secure state is the goal).
 
 ## Lab Verification
 

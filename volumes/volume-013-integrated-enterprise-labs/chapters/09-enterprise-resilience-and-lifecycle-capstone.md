@@ -308,7 +308,7 @@ tolerates faults rather than assuming it.
 capacity only reveals itself in a real outage — controlled failure injection proves resilience in
 advance.
 
-**Cleanup:** restore failed components; confirm health returns to green.
+**Rollback:** restore failed components; confirm health returns to green.
 
 ### Lab 9.2 — Disaster recovery (Topic: DR)
 
@@ -331,7 +331,7 @@ can actually recover.
 finds the gaps (missing backups, un-coded infrastructure, stale runbooks) — a tested DR run is what makes
 recovery real.
 
-**Cleanup:** tear down the DR-test environment.
+**Rollback:** tear down the DR-test environment.
 
 ### Lab 9.3 — Lifecycle operations (Topic: Lifecycle)
 
@@ -353,7 +353,7 @@ whole life, not just at build time.
 decommissioning, guessed capacity); it degrades, drifts, and accretes orphaned resources — managed
 lifecycle keeps it healthy over time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Capstone Design Exercise: the whole environment (Topic: Synthesis)
 
@@ -378,7 +378,7 @@ encyclopedia, which is exactly what this capstone volume exists to prove.
 integration story; it is not a *platform*, just tools — the integration (each layer serving and
 depending on the others) is the deliverable this volume assesses.
 
-**Cleanup:** none (the capstone design is the artifact); tear down the reference environment when the
+**Rollback:** none (the capstone design is the artifact); tear down the reference environment when the
 exercise is complete.
 
 ## Lab Verification

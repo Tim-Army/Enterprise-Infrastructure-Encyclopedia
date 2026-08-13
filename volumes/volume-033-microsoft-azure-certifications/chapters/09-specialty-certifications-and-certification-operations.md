@@ -252,7 +252,7 @@ AVD infrastructure (host pools, session hosts, networking, FSLogix storage).
 **Negative test:** create session hosts before a host pool; hosts join a pool,
 not the reverse.
 
-**Cleanup:** `az desktopvirtualization hostpool delete -g rg-avd -n hp-lab -y`.
+**Rollback:** `az desktopvirtualization hostpool delete -g rg-avd -n hp-lab -y`.
 
 ### Lab 9.2 — AZ-140: Plan and implement identity and security (15–20%)
 
@@ -269,7 +269,7 @@ group — AVD identity and access (RBAC, Conditional Access, SSO).
 **Negative test:** grant VM Contributor to end users for desktop access; AVD uses
 dedicated AVD roles plus Conditional Access.
 
-**Cleanup:** remove the role assignment.
+**Rollback:** remove the role assignment.
 
 ### Lab 9.3 — AZ-140: Plan and implement user environments and apps (20–25%)
 
@@ -286,7 +286,7 @@ profiles to users.
 **Negative test:** store profiles on the session-host OS disk; use FSLogix
 profile containers on Azure Files/NetApp.
 
-**Cleanup:** `az desktopvirtualization applicationgroup delete -g rg-avd -n ag-lab`.
+**Rollback:** `az desktopvirtualization applicationgroup delete -g rg-avd -n ag-lab`.
 
 ### Lab 9.4 — AZ-140: Monitor and maintain an Azure Virtual Desktop infrastructure (10–15%)
 
@@ -303,7 +303,7 @@ autoscaling, and backup/DR maintenance.
 **Negative test:** scale a pooled host pool by hand; configure autoscale scaling
 plans instead.
 
-**Cleanup:** `az monitor diagnostic-settings delete --name avd-diag --resource <hostpool-id>`.
+**Rollback:** `az monitor diagnostic-settings delete --name avd-diag --resource <hostpool-id>`.
 
 ### Lab 9.5 — AZ-120: Migrate SAP workloads to Azure (25–30%)
 
@@ -320,7 +320,7 @@ top AZ-120 domain.
 **Negative test:** "copy" AnyDB to HANA; a database-engine change is a
 heterogeneous migration, not a copy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.6 — AZ-120: Design and implement an infrastructure to support SAP workloads on Azure (25–30%)
 
@@ -336,7 +336,7 @@ tier the infrastructure design uses.
 **Negative test:** run HANA on a non-SAP-certified SKU; SAP support requires
 certified compute and storage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.7 — AZ-120: Design and implement high availability and disaster recovery (HADR) (20–25%)
 
@@ -353,7 +353,7 @@ domain.
 **Negative test:** protect tier-1 SAP with a single availability set; use zones
 plus clustering to meet the SLA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.8 — AZ-120: Maintain SAP workloads on Azure (20–25%)
 
@@ -369,7 +369,7 @@ extension — required for SAP support and ongoing maintenance.
 **Negative test:** skip the SAP monitoring extension; SAP support requires it for
 performance data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.9 — Certification operations: run a primary-source currency check
 
@@ -392,7 +392,7 @@ a retirement); and your own portfolio audited for renewal windows.
 expect ≥1 discrepancy (AI-900 still shown, AI-102 listed as current, or the new
 `AB` family absent).
 
-**Cleanup:** none — file the drift log and confirm this volume, the appendix, and
+**Rollback:** none — file the drift log and confirm this volume, the appendix, and
 CERTIFICATION_BLUEPRINTS.md agree.
 
 ## Lab Verification

@@ -86,7 +86,7 @@ Platform foundation.
 **Negative test:** create a plain Parquet table and expect ACID/time-travel; use
 **Delta**.
 
-**Cleanup:** `spark.sql("DROP TABLE IF EXISTS bronze_events")`
+**Rollback:** `spark.sql("DROP TABLE IF EXISTS bronze_events")`
 
 ### Lab 3.2 — ELT with Spark SQL and Python
 
@@ -105,7 +105,7 @@ transformation (bronze→silver) the exam tests.
 **Negative test:** load straight to gold without cleaning; the **silver** layer is
 where you standardize — don't skip it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Incremental processing: Delta MERGE (upsert)
 
@@ -124,7 +124,7 @@ operation — the incremental-upsert pattern central to the exam.
 **Negative test:** delete-then-insert for upserts; **MERGE** is atomic and
 efficient — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Incremental ingestion: Auto Loader / Structured Streaming
 
@@ -144,7 +144,7 @@ with a checkpoint — the incremental-ingestion area.
 **Negative test:** re-read the whole directory each run; **Auto Loader** tracks new
 files via the checkpoint — process only new data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Production pipelines: Jobs / DLT
 
@@ -162,7 +162,7 @@ alternative) — the production-pipeline area.
 **Negative test:** run notebooks manually in production; use **Jobs/DLT** for
 scheduling, retries, and data-quality expectations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.6 — Data governance: Unity Catalog
 
@@ -179,7 +179,7 @@ Unity Catalog governance area of the exam.
 **Negative test:** grant broad access at the catalog level for one table; grant at
 the **table** level (least privilege).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

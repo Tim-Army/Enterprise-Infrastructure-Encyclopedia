@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** Add a region to the data but not to the consolidation logic — its numbers vanish from the total; membership drives rollups, a core planning concept.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Reporting metadata layer (Cognos Analyst)
 
@@ -61,7 +61,7 @@ cognos> report authored against the MODEL, not the database -> business users re
 
 **Negative test:** Point every report at raw SQL — definitions diverge report to report; the modeled layer exists to prevent exactly that.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 5.3 — Cognos administration (Cognos Administrator)
 
@@ -76,7 +76,7 @@ cognos admin> content store (DB of reports/folders/schedules), dispatchers/servi
 
 **Negative test:** Confusing capabilities (what a user may *do*) with object permissions (what a user may *see*) — the exam separates them deliberately.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 5.4 — Cloud Pak for Data platform shape (CP4D Architect/Admin)
 
@@ -93,7 +93,7 @@ administrator (v4.6)> install, users/roles, service lifecycle, monitoring -> the
 
 **Negative test:** Treating CP4D as a single product rather than a platform of services — the exams test service composition, not one feature set.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

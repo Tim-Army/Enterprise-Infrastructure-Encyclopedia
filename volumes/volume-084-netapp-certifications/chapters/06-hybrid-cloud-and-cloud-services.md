@@ -81,7 +81,7 @@ aggr1_data sg_bucket         object_store
 **Negative test:** attach an object store whose access key lacks write permission; tiering fails —
 grant the bucket read/write to the FabricPool credential.
 
-**Cleanup:** none in the simulator (detach requires all cold data returned first).
+**Rollback:** none in the simulator (detach requires all cold data returned first).
 
 ### Lab 6.2 — Set a volume tiering policy
 
@@ -101,7 +101,7 @@ hot blocks stay on SSD.
 **Negative test:** set `-tiering-policy all` on a hot database volume; every block tiers to object and
 reads become slow and costly — use `auto` or `snapshot-only`.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> volume modify -vserver svm_app -volume vol_finance -tiering-policy none
@@ -129,7 +129,7 @@ PY
 **Negative test:** store latency-sensitive primary workloads directly on object; object is for
 capacity/backup/data-lake — keep primary on ONTAP flash.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Plan SnapMirror to the cloud
 
@@ -155,7 +155,7 @@ PY
 **Negative test:** replicate to a CVO in the same region/account as production; a regional outage takes
 both — target a separate region/account.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

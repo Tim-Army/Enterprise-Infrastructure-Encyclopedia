@@ -30,7 +30,7 @@ set ns ip 10.150.9.5 -gui SECUREONLY -ssh ENABLED -telnet DISABLED
 
 **Negative test:** As `labadmin`, try `shell` — denied by the command policy; priority order (lower first) decided it.
 
-**Cleanup:** `rm system user labadmin; rm system cmdPolicy no_shell`.
+**Rollback:** `rm system user labadmin; rm system cmdPolicy no_shell`.
 
 ### Lab 7.2 — URL transform (rewrite/responder/URL-transform module)
 
@@ -49,7 +49,7 @@ bind lb vserver lb_web -policyName pol_legacy -priority 100 -type REQUEST
 
 **Negative test:** Regex group mismatch (`$2` with one capture group): the transform fails open — transforms need the same regex care as any rewrite.
 
-**Cleanup:** Unbind and remove the transform objects.
+**Rollback:** Unbind and remove the transform objects.
 
 ### Lab 7.3 — Content switching precedence (content switching module)
 
@@ -69,7 +69,7 @@ show cs vserver cs_tm
 
 **Negative test:** Swap the priorities; the catch-all now shadows the specific rule — the exam's favorite content-switching trap.
 
-**Cleanup:** Remove the CS lab objects.
+**Rollback:** Remove the CS lab objects.
 
 ### Lab 7.4 — Optimization (optimization module)
 
@@ -87,7 +87,7 @@ show cmp policy pol_cmp_text
 
 **Negative test:** Compress everything (`-rule true`) and watch already-compressed content (images) burn CPU for nothing — the module is about *selective* optimization.
 
-**Cleanup:** Unbind and remove the compression policy.
+**Rollback:** Unbind and remove the compression policy.
 
 ### Lab 7.5 — Global server load balancing (GSLB module)
 
@@ -110,7 +110,7 @@ show gslb vserver gv_web
 
 **Negative test:** Break MEP (block 3011 between sites): each site keeps answering with only local knowledge — GSLB degrades to static DNS, which the exam expects you to recognize.
 
-**Cleanup:** Remove the GSLB lab objects.
+**Rollback:** Remove the GSLB lab objects.
 
 ### Lab 7.6 — Monitoring with SNMP and AppFlow (troubleshooting module)
 
@@ -130,7 +130,7 @@ bind lb vserver lb_web -policyName pol_flow -priority 100 -type REQUEST
 
 **Negative test:** Collector unreachable: AppFlow queues then drops silently; `show appflow collector` is where you look — telemetry needs its own monitoring.
 
-**Cleanup:** Remove the SNMP/AppFlow lab objects.
+**Rollback:** Remove the SNMP/AppFlow lab objects.
 
 ## Summary and Completion Checklist
 

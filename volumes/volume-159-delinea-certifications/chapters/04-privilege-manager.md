@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Leaving users with standing local admin to avoid support friction. That makes the whole session privileged, so any malware inherits admin; per-application elevation preserves productivity while removing the blanket privilege attackers exploit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

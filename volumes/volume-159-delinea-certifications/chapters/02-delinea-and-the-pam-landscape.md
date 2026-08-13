@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Treating Delinea as a single-product vault vendor. The Thycotic + Centrify merger makes it an end-to-end portfolio (secrets, endpoints, servers, DevOps, service accounts, identity security); a candidate encounters both heritages and the unifying platform.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

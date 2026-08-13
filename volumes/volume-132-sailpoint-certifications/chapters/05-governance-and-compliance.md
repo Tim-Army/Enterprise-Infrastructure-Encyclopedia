@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** A campaign listing only entitlement names with no usage or risk context — the reviewer has no basis to revoke anything, so they certify everything, and the control produces evidence of a process rather than evidence of appropriate access.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Evaluate separation-of-duties policies
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Defining SoD policies but never wiring a remediation workflow — violations accumulate in a dashboard, and at audit you must explain why you detected fraud-enabling access and left it in place, which is worse than not having looked.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Produce audit evidence
 
@@ -145,7 +145,7 @@ EOF
 
 **Negative test:** Keeping only current-state data with no history — you can say what Jane has today but not who approved it or when, and an auditor cannot verify that any control ever operated.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

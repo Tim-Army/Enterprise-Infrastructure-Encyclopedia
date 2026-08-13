@@ -82,7 +82,7 @@ PY
 **Negative test:** cram theory with no hands-on repos; the role exams assume **practice** — use GitHub
 Skills and real repos.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Model the registration flow
 
@@ -106,7 +106,7 @@ PY
 **Negative test:** book an online-proctored exam without checking the **secure-browser/system**
 requirements; verify them first to avoid a failed check-in.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Map a GitHub career
 
@@ -132,7 +132,7 @@ roles.
 **Negative test:** collect a certification and never use the skills as the platform evolves; keep them
 **current** with new features.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

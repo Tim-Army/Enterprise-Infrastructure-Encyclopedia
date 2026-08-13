@@ -353,7 +353,7 @@ a /24 beats the /0 default), which `ip route get` resolves for any destination.
 **Negative test:** assume the default route handles a destination that also matches a more specific
 route; the specific route wins — longest-prefix match, not route order, decides forwarding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Static routes (Topic: Static routing)
 
@@ -372,7 +372,7 @@ default route (`0.0.0.0/0`) is the catch-all when no more-specific route matches
 **Negative test:** add a route via a next hop that is not on a directly-connected subnet; the kernel
 rejects it ("nexthop has invalid gateway") — the next hop must be reachable on a connected interface.
 
-**Cleanup:** `sudo ip route del 192.168.50.0/24; sudo ip route del default via 192.168.10.1`.
+**Rollback:** `sudo ip route del 192.168.50.0/24; sudo ip route del default via 192.168.10.1`.
 
 ### Lab 4.3 — Dynamic routing with OSPF (Topic: Dynamic routing)
 
@@ -393,7 +393,7 @@ without manual edits; `show ip ospf neighbor` in `Full` state confirms the adjac
 means manual edits on every router — dynamic routing propagates changes automatically, which static
 routing cannot.
 
-**Cleanup:** `sudo vtysh -c 'configure terminal' -c 'no router ospf' -c 'end'`.
+**Rollback:** `sudo vtysh -c 'configure terminal' -c 'no router ospf' -c 'end'`.
 
 ### Lab 4.4 — Verify the path (Topic: Path verification)
 
@@ -412,7 +412,7 @@ mtr -n -c5 --report 8.8.8.8 2>/dev/null | head    # per-hop loss/latency over ti
 the trace may show the packet dies at an intermediate hop (a routing/firewall issue), not the
 destination — the path trace localizes the failure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -68,7 +68,7 @@ fn main() { println!("{}", Host { name: "web1".into(), port: 443 }.addr()); }
 **Negative test:** duplicate an `addr` function for each type; a **trait** unifies the
 behavior — implement it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Generic function with a bound
 
@@ -85,7 +85,7 @@ fn main() { announce("web1"); announce(443); }
 **Negative test:** write `announce_str` and `announce_int` separately; **generics + a
 bound** cover both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — HashMap indexing
 
@@ -106,7 +106,7 @@ fn main() {
 **Negative test:** scan a `Vec` of pairs for each lookup; a **HashMap** is O(1) — index
 with it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Iterator chain
 
@@ -125,7 +125,7 @@ fn main() {
 **Negative test:** build the result with a manual index loop + push; an **iterator chain**
 is clearer and bounds-safe.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

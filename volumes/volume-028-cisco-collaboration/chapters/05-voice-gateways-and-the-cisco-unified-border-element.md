@@ -217,7 +217,7 @@ terminating and re-originating SIP between UCM and the ITSP.
 leaves the call at no-answer; `show dial-peer voice <tag>` shows it selected but
 the target down — reachability, not matching, is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Troubleshoot IOS XE dial plans (CLCOR Objective 4.2)
 
@@ -238,7 +238,7 @@ tools expose exactly what each did.
 dial-peer matching surprises you; order matters — `test voice translation-rule`
 proves the rewrite independent of matching.
 
-**Cleanup:** none (read-only test commands).
+**Rollback:** none (read-only test commands).
 
 ### Lab 5.3 — Describe IOS XE media resources (CLCOR Objective 4.3)
 
@@ -258,7 +258,7 @@ UCM over SCCP; the DSP group shows capacity and use.
 common codec; `show voice dsp group all` shows the farm exhausted — capacity, not
 config, is the limit.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Troubleshoot advanced elements of a SIP conversation (CLACC Objective 1.1)
 
@@ -278,7 +278,7 @@ debugs.
 `202`) needs SIP-REFER-to-reINVITE consumption on CUBE — the method-level reject
 is the clue.
 
-**Cleanup:** `no debug ccsip messages`.
+**Rollback:** `no debug ccsip messages`.
 
 ### Lab 5.5 — Describe media optimization and NAT traversal (CLACC Objective 1.2)
 
@@ -298,7 +298,7 @@ when possible; ICE with STUN/TURN traverses NAT for endpoints behind firewalls.
 one-way or no audio results — NAT traversal (ICE/TURN) is required when
 endpoints are not directly routable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — Troubleshoot mid-call signaling (CLACC Objective 1.3)
 
@@ -316,7 +316,7 @@ failing) trace to a rejected re-INVITE or a delayed-offer/early-offer mismatch.
 **Negative test:** a delayed-offer trunk to an early-offer-only peer fails media
 renegotiation on hold/resume — the offer model mismatch is the mid-call cause.
 
-**Cleanup:** `no debug voip ccapi inout`.
+**Rollback:** `no debug voip ccapi inout`.
 
 ### Lab 5.7 — Configure Cisco UCME and SIP SRST (CLACC Objective 2.1)
 
@@ -335,7 +335,7 @@ standalone UCME, preserving local and PSTN calling.
 **Negative test:** an SRST config with a `max-dn`/`max-pool` lower than the phone
 count leaves some phones unregistered in fallback — size SRST to the branch.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.8 — Troubleshoot CUBE dial plan with VoIP Trace (CLACC Objective 2.2)
 
@@ -356,7 +356,7 @@ mismatch, or a down `session target`; VoIP Trace ties the SIP legs together.
 intended one shows the wrong `session target` in the trace — dial-peer
 preference/specificity is the cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.9 — Troubleshoot CUBE advanced dial-peer features (CLACC Objective 2.3)
 
@@ -377,7 +377,7 @@ the order.
 the call despite matching — failover needs at least one reachable target in the
 group.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.10 — Configure advanced SIP interoperability with CUBE (CLACC Objective 2.4)
 
@@ -398,7 +398,7 @@ complete.
 not send returns `403`/`4xx`; the SIP profile that rewrites it is the fix — the
 raw trunk without it fails.
 
-**Cleanup:** unbind the test SIP profile.
+**Rollback:** unbind the test SIP profile.
 
 ## Lab Verification
 

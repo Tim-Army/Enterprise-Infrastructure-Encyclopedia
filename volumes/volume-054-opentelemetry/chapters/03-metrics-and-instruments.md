@@ -73,7 +73,7 @@ monotonic sum.
 **Negative test:** use a counter for a value that decreases (queue depth); use an
 **UpDownCounter** instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Histogram
 
@@ -90,7 +90,7 @@ for ms in (12, 45, 130, 22): latency.record(ms, {"http.route": "/checkout"})
 **Negative test:** track latency with a gauge (last value only); a **histogram** gives
 distribution/percentiles — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Async gauge (observation)
 
@@ -108,7 +108,7 @@ pattern for sampled values.
 **Negative test:** synchronously record a value you can only sample; an **async gauge**
 observes it on the collection cycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — A view to bound cardinality
 
@@ -127,7 +127,7 @@ cardinality via a view.
 **Negative test:** export every attribute including user id; cardinality **explodes** —
 filter with a view.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

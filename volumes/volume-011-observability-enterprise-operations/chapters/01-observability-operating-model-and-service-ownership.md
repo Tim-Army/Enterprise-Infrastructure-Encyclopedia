@@ -374,7 +374,7 @@ across metrics, logs, and traces.
 but not the cause — you need logs/traces to explain a problem you did not predict, which is the
 observability-vs-monitoring distinction.
 
-**Cleanup:** none (read-only queries).
+**Rollback:** none (read-only queries).
 
 ### Lab 1.2 — Service ownership and SLO ownership (Topic: Operating model)
 
@@ -395,7 +395,7 @@ observability data has a responsible consumer rather than being collected and ig
 **Negative test:** collect telemetry for a service no team owns; alerts fire to nobody and the data
 is never acted on — ownership is what turns telemetry into operations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — RED and USE methods (Topic: Signal selection)
 
@@ -416,7 +416,7 @@ complete coverage; a request service is diagnosed with RED, a CPU/disk/queue wit
 not mean users are hurting, and low CPU does not mean they are fine — RED (what users experience) is
 the right lens for a service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.4 — Golden signals (Topic: Golden signals)
 
@@ -441,7 +441,7 @@ these tell you whether users are being served.
 without a health verdict — the golden signals are the small set that answers "is the service OK for
 users."
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

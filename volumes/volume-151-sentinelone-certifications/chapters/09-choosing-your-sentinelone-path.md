@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Choosing a certification by title prestige rather than role. An administrator does not need SIREN's incident-response simulations, and a responder does not need Level 3 API automation — the role-based program rewards matching the cert to the job.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position SentinelOne in the SOC career
 
@@ -131,7 +131,7 @@ EOF
 
 **Negative test:** Treating SentinelOne as a standalone product skill. It sits in the SOC's protect/detect/hunt/respond loop, feeds and competes with SIEM, and overlaps cloud security — isolating it undersells both the platform and the SOC career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

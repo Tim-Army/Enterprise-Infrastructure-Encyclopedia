@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Presenting raw entitlements for approval — reviewers rubber-stamp what they cannot interpret, and the access review becomes a compliance ritual that catches nothing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Birthright roles by attribute (RBAC + ABAC)
 
@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Making all access request-based including birthright — every new hire waits on approvals for the intranet, so the service desk drowns and managers approve reflexively.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Mine roles and detect role explosion
 
@@ -150,7 +150,7 @@ EOF
 
 **Negative test:** Mining with the *union* instead of the intersection — every outlier's access lands in the base role and you over-entitle the whole department, the opposite of least privilege.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

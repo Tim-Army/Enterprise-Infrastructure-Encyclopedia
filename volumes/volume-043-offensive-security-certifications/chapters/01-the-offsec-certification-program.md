@@ -129,7 +129,7 @@ the whole program in one view.
 **Negative test:** rely on an old list; it will miss the **AI-300 (OSAI)** and
 **CyberCore (OSCC)** additions and the OSCP → OSCP+ change — use the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Verify your authorized lab (Topic: Authorization first)
 
@@ -147,7 +147,7 @@ outside an enrolled OffSec lab. Authorization defines scope before any tool runs
 that is unauthorized access — never scan outside your own systems or an
 authorized lab.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — A first enumeration pass on localhost (Topic: Methodology)
 
@@ -165,7 +165,7 @@ credential.
 **Negative test:** skip enumeration and jump to exploitation; OffSec's method is
 **enumerate thoroughly first** — most footholds come from careful enumeration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

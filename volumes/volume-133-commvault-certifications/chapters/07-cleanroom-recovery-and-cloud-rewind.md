@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Recovering into production "because it is faster" — you restore clean data into an environment that may still contain the attacker, and you destroy the evidence needed to find out how they got in.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Dependency-ordered cloud recovery (Cloud Rewind)
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Restoring the highest-value resource first (the database, or the app servers) — each fails or comes up misconfigured because its prerequisites do not exist yet, and you spend the outage rebuilding in an order you discover by trial and error.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Non-disruptive recovery rehearsal
 
@@ -146,7 +146,7 @@ EOF
 
 **Negative test:** Never rehearsing because "it would disrupt production" — the first real test is then the actual disaster, when the authentication gap is discovered with the business watching.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

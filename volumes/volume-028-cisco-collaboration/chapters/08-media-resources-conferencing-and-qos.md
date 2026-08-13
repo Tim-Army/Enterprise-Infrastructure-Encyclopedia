@@ -220,7 +220,7 @@ localize the cause.
 output drops on the priority queue — the congestion/QoS drop, not the codec, is
 the cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Describe QoS for signaling and media over wired and wireless (Objective 6.2)
 
@@ -241,7 +241,7 @@ wired LAN does not.
 best-effort over the air; audio degrades only on Wi-Fi — the wireless QoS mapping
 must preserve the marking.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Describe QoS trust boundaries and LAN classification (Objective 6.3)
 
@@ -261,7 +261,7 @@ an unmanaged PC, re-marking its traffic so it cannot steal the priority queue.
 mark its traffic EF and starve real voice — the trust boundary must classify the
 PC's traffic down.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Configure LLQ (Objective 6.4)
 
@@ -292,7 +292,7 @@ queue (bounded latency) while the policer prevents it from starving other classe
 data classes; conversely too small a `priority percent` drops voice under load —
 size the priority queue to the real voice bandwidth.
 
-**Cleanup:** remove the `service-policy` and the class/policy-maps.
+**Rollback:** remove the `service-policy` and the class/policy-maps.
 
 ## Lab Verification
 

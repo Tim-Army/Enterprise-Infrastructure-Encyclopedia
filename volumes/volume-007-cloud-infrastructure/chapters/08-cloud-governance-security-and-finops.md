@@ -492,7 +492,7 @@ credentials are required.
    policies scoped to specific resource types do not produce false
    positives against resource types outside their intended scope.
 
-**Cleanup**
+**Rollback**
 
 9. Remove the lab directory:
 

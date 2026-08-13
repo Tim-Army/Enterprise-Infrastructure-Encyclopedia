@@ -102,7 +102,7 @@ code (**COF-C03**) — the program in one view.
 **Negative test:** rely on a guide citing **COF-C02**; the current Core is
 **COF-C03** — confirm the version.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Explore the platform (Topic: Foundation)
 
@@ -120,7 +120,7 @@ independently — Snowflake's defining architecture.
 **Negative test:** expect a database to provide compute; **warehouses** provide
 compute, **databases** hold data — they scale separately.
 
-**Cleanup:** `DROP WAREHOUSE IF EXISTS lab_wh; DROP DATABASE IF EXISTS lab_db;`
+**Rollback:** `DROP WAREHOUSE IF EXISTS lab_wh; DROP DATABASE IF EXISTS lab_db;`
 
 ### Lab 1.3 — Role context (Topic: Security foundation)
 
@@ -137,7 +137,7 @@ Snowflake governs access with (a recurring exam theme).
 **Negative test:** run privileged actions as a low role expecting success; Snowflake
 enforces **RBAC** — use a role with the needed grants.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

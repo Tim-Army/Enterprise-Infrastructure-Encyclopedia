@@ -105,7 +105,7 @@ exam is listed.
 **Negative test:** trust a "2024 HashiCorp certs" blog; versions have bumped and
 Consul retired — confirm against developer.hashicorp.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Plan a two-year recertification (Topic: Maintain the credential)
 
@@ -127,7 +127,7 @@ PY
 **Negative test:** expect continuing-education credits to renew it; HashiCorp has
 **no CE model** — recertify by exam.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

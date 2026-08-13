@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Concluding the origin no longer matters. Chapter 03's protections and this chapter's origin-exposure audit exist because attackers who find the real origin IP skip the entire edge.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The DNS audit: find the gray-cloud leak
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Auditing only records you remember creating. The leak is precisely the record nobody remembers — `dev-old` pointing at an address nobody can identify is a finding too.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Hit ratio, TTLs, and what a purge costs
 
@@ -170,7 +170,7 @@ EOF
 
 **Negative test:** Sizing the origin for steady-state load because "the cache handles the rest." The first full purge, cache-busting deploy, or long-tail crawl becomes an outage that the CDN gets blamed for.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

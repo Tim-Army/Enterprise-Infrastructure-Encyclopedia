@@ -103,7 +103,7 @@ for the agentless PLC.
 **Negative test:** plan a host agent for the legacy PLC; it cannot run one — route it through the
 **Gatekeeper**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Model Gatekeeper protection of an OT device
 
@@ -133,7 +133,7 @@ denied — agentless OT segmentation.
 **Negative test:** leave the flat OT network reachable from IT; a compromised laptop reaches the PLC —
 put a **Gatekeeper** in front and default-deny.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Reason about IT/OT convergence coverage
 
@@ -157,7 +157,7 @@ PY
 **Negative test:** run separate, unlinked tools for IT and OT with no shared policy view; a single
 platform gives one policy model across both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Score ColorTokens Xshield against the rubric
 
@@ -180,7 +180,7 @@ strengths.
 **Negative test:** ignore its OT/legacy coverage when scoring; if you have OT, weight **coverage** where
 Xshield's Gatekeeper leads.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

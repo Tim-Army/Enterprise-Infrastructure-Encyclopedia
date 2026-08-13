@@ -35,7 +35,7 @@ sudo nft list set inet cpg role_db
 
 **Expected result.** The artifacts mirror the Check Point commands.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -56,7 +56,7 @@ sudo nft list set inet cpg role_db
 
 **Negative test.** The single most common Check Point mistake is editing and publishing without **installing** — the gateway keeps enforcing the last installed policy. Check `fw stat` install time first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -89,7 +89,7 @@ sudo nft list ruleset | grep -c cpg
 
 **Negative test.** Deleting namespaces but leaving the `cpg` table leaves stale rules matching nothing yet persisting; remove the table too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

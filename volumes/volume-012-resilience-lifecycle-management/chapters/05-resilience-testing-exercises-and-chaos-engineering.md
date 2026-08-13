@@ -329,7 +329,7 @@ If an experiment's abort criteria trigger, or if steady state does not recover p
 
 **Negative Test:** Introduce a deliberate bug by editing `run_experiment` so `rollback_fn()` is called only after the `while` loop completes normally (move it below the loop, after the "Experiment completed" print, and remove the `try`/`finally` wrapper entirely) rather than being structurally guaranteed to run on every exit path. Rerun the original step-3 scenario (`threshold=95.0`, `duration_s=10`) unchanged. Confirm the script still reports the same `ABORT` message at the same elapsed time as before, but now `state["degraded"]` remains `True` after the script exits, because the early `return False` on the abort path no longer passes through any rollback call. Contrast this with step 3's original result, where `finally` guaranteed rollback ran even on the aborted path — demonstrating exactly the unprotected rollback failure mode described in this chapter's Knowledge Checks, and why rollback must be structurally guaranteed rather than merely present in the normal-completion path.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch5

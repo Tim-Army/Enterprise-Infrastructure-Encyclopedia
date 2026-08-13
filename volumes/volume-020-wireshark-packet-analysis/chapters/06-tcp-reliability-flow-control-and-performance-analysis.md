@@ -337,7 +337,7 @@ ends for the session's life.
 scaling requires both SYNs to carry the option — a one-sided offer means no scaling, capping
 throughput on high-BDP paths.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Retransmissions and duplicate ACKs (Topic: TCP reliability)
 
@@ -358,7 +358,7 @@ field shows timeout-based recovery.
 `tcp.analysis` expert layer is what makes retransmission and dup-ACK patterns visible at a
 glance, and it is what the exam expects you to use.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Window size and flow control (Topic: TCP flow control)
 
@@ -379,7 +379,7 @@ network, stalling the transfer.
 receiver zero-window; adding bandwidth changes nothing — the receiving application is not
 draining its socket, which only the window view reveals.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Connection teardown and resets (Topic: TCP teardown)
 
@@ -398,7 +398,7 @@ application crash, or policy drop), so which one ended a connection tells you *h
 means the application or a firewall killed the connection — FIN and RST are different failure
 stories, and conflating them hides the cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — TCP performance: RTT, throughput, and expert info (Topic: TCP performance)
 
@@ -419,7 +419,7 @@ which is the Domain 6.0 troubleshooting deliverable.
 views give measured throughput and a specific fault (loss, zero window, high RTT) — measurement
 replaces speculation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

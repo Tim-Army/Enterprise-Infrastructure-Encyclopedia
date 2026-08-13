@@ -119,7 +119,7 @@ foundations that lead CNPA (Domain 1, 36%).
 **Negative test:** mandate one rigid pipeline with no opt-out; a golden path is
 **paved, not walled** — make the easy path the good one, not the only one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — CNPA: Platform Observability, Security, and Conformance (20%)
 
@@ -140,7 +140,7 @@ provides for every workload — CNPA Domain 2.
 **Negative test:** bolt observability on per team; the platform should provide it
 **by default** so every service is observable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — CNPA: Continuous Delivery & Platform Engineering (16%)
 
@@ -159,7 +159,7 @@ Domain 3.
 **Negative test:** have every team build its own delivery pipeline; the platform
 should offer **CD as a shared, paved capability**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — CNPA: Platform APIs and Provisioning Infrastructure (12%)
 
@@ -178,7 +178,7 @@ Crossplane) — CNPA Domain 4.
 **Negative test:** file a ticket for every database; a **platform API** lets
 developers self-serve within guardrails — automate provisioning.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.5 — CNPA: IDPs and Developer Experience (8%)
 
@@ -197,7 +197,7 @@ PY
 **Negative test:** measure platform success by feature count; measure **developer
 experience** (time-to-first-deploy, adoption) instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.6 — CNPA: Measuring your Platform (8%)
 
@@ -218,7 +218,7 @@ platform, CNPA Domain 6.
 **Negative test:** track only uptime; **DORA + adoption** show whether the
 platform actually improves delivery.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### CNPE — Certified Cloud Native Platform Engineer
 
@@ -238,7 +238,7 @@ isolation, the architecture foundation of CNPE Domain 1.
 **Negative test:** run all tenants in one unbounded namespace; a noisy tenant
 starves others — isolate with namespaces and quotas.
 
-**Cleanup:** `kubectl delete namespace team-a`
+**Rollback:** `kubectl delete namespace team-a`
 
 ### Lab 9.8 — CNPE: GitOps and Continuous Delivery (25%)
 
@@ -258,7 +258,7 @@ delivery) a platform engineer builds — CNPE Domain 2 (tied heaviest).
 **Negative test:** apply platform components manually; reconcile **them** from
 Git too so the platform itself is GitOps-managed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.9 — CNPE: Platform APIs and Self-Service Capabilities (25%)
 
@@ -288,7 +288,7 @@ kubectl get crd databases.platform.example.com
 **Negative test:** expose raw cloud APIs to developers; a **platform CRD** gives
 a guardrailed, self-service abstraction instead.
 
-**Cleanup:** `kubectl delete crd databases.platform.example.com`
+**Rollback:** `kubectl delete crd databases.platform.example.com`
 
 ### Lab 9.10 — CNPE: Observability and Operations (20%)
 
@@ -308,7 +308,7 @@ operate-on-SLOs principle — CNPE Domain 4.
 **Negative test:** alert on raw error counts; use an **SLO burn** so alerts
 reflect user-visible impact.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.11 — CNPE: Security and Policy Enforcement (15%)
 
@@ -327,7 +327,7 @@ Kyverno note) — enforcing security/policy across tenants, CNPE Domain 5.
 **Negative test:** trust each tenant to secure itself; the platform enforces
 **baseline guardrails** for everyone via admission policy.
 
-**Cleanup:** `kubectl label namespace default pod-security.kubernetes.io/warn- --overwrite`
+**Rollback:** `kubectl label namespace default pod-security.kubernetes.io/warn- --overwrite`
 
 ### Lab 9.12 — Keeping the program current (Topic: Verify currency)
 
@@ -345,7 +345,7 @@ associates (KCA, CNPA, CNPE were all recent additions).
 **Negative test:** trust a two-year-old course; the curriculum and Kubernetes
 version have moved — confirm against the source.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

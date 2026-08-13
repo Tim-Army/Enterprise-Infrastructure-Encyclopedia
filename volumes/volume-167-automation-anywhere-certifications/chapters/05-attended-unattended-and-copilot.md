@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Forcing a real-time agent-assist task into an unattended nightly batch. The agent gets no help during the call, and a refund needing judgment is auto-processed with no human check; matching the mode to the task and inserting a human-in-the-loop step is what makes the automation fit the work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

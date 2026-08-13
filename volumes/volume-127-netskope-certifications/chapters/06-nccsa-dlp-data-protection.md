@@ -53,7 +53,7 @@ Regex/data-identifier detectors are DLP's foundation — Netskope ships built-in
 
 **Negative test:** A credit-card regex with no validation (e.g. Luhn check) flags any 16 digits — false positives; production detectors add validators, and the exam tests knowing raw regex over-matches.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Profiles with thresholds
 
@@ -83,7 +83,7 @@ Thresholds distinguish a stray reference from a **spreadsheet of records** — t
 
 **Negative test:** Threshold of 1 on a common pattern — every document with one number becomes an incident; alert fatigue buries real leaks. Thresholds are the tuning that makes DLP usable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Exact Data Match (EDM) concept
 
@@ -112,7 +112,7 @@ EOF
 
 **Negative test:** Using regex where EDM is needed — a regex for "SSN" flags every SSN-shaped string; EDM flags only *your* SSNs, the precision regulated data demands.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Policy action and incident response
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Detection with no action or no incident workflow — you log leaks but don't stop or investigate them; DLP's value is in the response, not the alert.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

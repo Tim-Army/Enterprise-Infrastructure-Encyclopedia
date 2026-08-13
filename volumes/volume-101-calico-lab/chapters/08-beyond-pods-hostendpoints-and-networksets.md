@@ -64,7 +64,7 @@ calicoctl get globalnetworkpolicy security.external-plc -o yaml | grep -A3 "dest
 
 **Negative test.** Remove the trailing `Allow` and every pod's DNS and internet egress breaks, because the policy now denies-by-default on egress for `all()`. The trailing `Allow` is what scopes the guardrail to the PLC and leaves everything else alone. Restore it.
 
-**Cleanup.** Keep the external-PLC guardrail.
+**Rollback.** Keep the external-PLC guardrail.
 
 ### Lab 8.2 — HostEndpoints: policy for the node itself
 
@@ -88,7 +88,7 @@ calicoctl get heps -o wide 2>/dev/null || echo "no HostEndpoints configured yet"
 
 **Negative test.** Apply an all-deny HostEndpoint policy on the single kind node without allowing the API server and you lose `kubectl` to the cluster; only failsafe ports (and a cluster rebuild) save you. This is why the step above is a design exercise, not a live apply.
 
-**Cleanup.** No HostEndpoint was applied; nothing to undo.
+**Rollback.** No HostEndpoint was applied; nothing to undo.
 
 ### Lab 8.3 — Validate the whole segmentation
 
@@ -117,7 +117,7 @@ Both legitimate flows work; the lateral movement is blocked in two independent p
 
 **Negative test.** Delete the `security` tier policy and re-test `hmi → db`; it stays blocked by the namespace policy. Two independent controls is defense in depth — either alone would stop the attack, and removing one does not open the hole.
 
-**Cleanup.** Leave the policies for Chapter 09.
+**Rollback.** Leave the policies for Chapter 09.
 
 ## Summary and Completion Checklist
 

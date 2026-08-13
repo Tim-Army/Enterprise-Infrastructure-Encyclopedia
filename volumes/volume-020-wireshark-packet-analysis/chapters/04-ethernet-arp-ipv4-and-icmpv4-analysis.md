@@ -316,7 +316,7 @@ how the frame is delivered on the segment and demultiplexed to the right L3 prot
 host on the segment processes — the destination MAC's form (unicast/multicast/broadcast)
 determines the delivery scope.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — ARP analysis (Topic: ARP)
 
@@ -336,7 +336,7 @@ L2 attacks.
 that is the classic ARP-spoofing man-in-the-middle pattern — ARP has no authentication, so the
 capture is where you catch it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — IPv4 header and fragmentation (Topic: IPv4)
 
@@ -355,7 +355,7 @@ header carries routing, lifetime, and fragmentation state that explain path and 
 holing (fragments dropped by a firewall); only the `ip.flags`/`ip.frag_offset` view reveals
 it — fragmentation problems are invisible above L3.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — ICMPv4 analysis (Topic: ICMPv4)
 
@@ -375,7 +375,7 @@ telling you why traffic failed.
 an application timeout; that ICMP *is* the root cause (a PMTU black hole) — reading ICMP is
 often the fastest path to the real fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Relying on vaulting and least privilege alone with no detection. A compromised admin or insider can still misuse privilege within the controls; behavioral analytics and ITDR provide the detection layer that prevention cannot, which is why identity security combines both.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

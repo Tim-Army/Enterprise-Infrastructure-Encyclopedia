@@ -81,7 +81,7 @@ db.products.insertMany([
 **Negative test:** insert two documents with the same `_id: 1`; the second is rejected as a duplicate
 key — `_id` is unique.
 
-**Cleanup:** none yet (used by later labs).
+**Rollback:** none yet (used by later labs).
 
 ### Lab 2.2 — Read with a query filter
 
@@ -102,7 +102,7 @@ read.
 **Negative test:** run `find({})` on a huge collection and scroll everything; add a **query filter** and
 projection to fetch only what you need.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Update with operators
 
@@ -123,7 +123,7 @@ db.products.findOne({ _id: 1 })
 **Negative test:** `updateOne({_id:1}, {price:40})` without `$set`; that **replaces** the whole document
 (losing `name`/`tags`) — always use update operators.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Delete precisely
 
@@ -144,7 +144,7 @@ db.products.countDocuments()
 
 **Negative test:** `deleteMany({})`; that empties the whole collection — always pass a filter.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh

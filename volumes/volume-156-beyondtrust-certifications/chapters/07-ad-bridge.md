@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Managing Linux/Unix/Mac with independent local accounts alongside AD for Windows. Identities fragment by platform, offboarding misses hosts, and each local account is a separate credential to steal; AD Bridge consolidates to one directory and one revocation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

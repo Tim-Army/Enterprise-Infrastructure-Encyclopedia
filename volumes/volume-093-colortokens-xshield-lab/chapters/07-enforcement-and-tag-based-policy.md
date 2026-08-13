@@ -127,7 +127,7 @@ omits the app→db allow. The application breaks instantly — `psql` from
 the correct ruleset. This is the outage Observe mode exists to prevent,
 and feeling it once is the best argument for the discipline.
 
-**Cleanup.** Keep enforcement on `ct-db01`. Optionally repeat E4–E5 for
+**Rollback.** Keep enforcement on `ct-db01`. Optionally repeat E4–E5 for
 `ct-app01` to ring-fence the web tier the same way.
 
 ### Lab 7.2 — Tag-based policy (Progressive Segmentation, phase 2: tighten)
@@ -223,7 +223,7 @@ tag, then “rebuild” `ct-app01` at a new address (change its netplan to
 Tags eliminate exactly this failure class — which is why identity-based
 policy is the reason to buy the platform.
 
-**Cleanup.** Restore `ct-app01` to `.11` if you changed it, and reapply
+**Rollback.** Restore `ct-app01` to `.11` if you changed it, and reapply
 its netplan.
 
 ### Lab 7.3 — Windows Filtering Platform enforcement (host-agent mode on Windows)
@@ -333,7 +333,7 @@ refresh policy. Your `netsh` rules may be overridden or merged
 unpredictably — demonstrating exactly why Xshield requires a single
 controller of the native firewall. Remove the GPO rule.
 
-**Cleanup.** Keep the rules; Part F builds on the hmi→plc flow. To
+**Rollback.** Keep the rules; Part F builds on the hmi→plc flow. To
 remove later:
 `Get-NetFirewallRule -Group "Xshield" | Remove-NetFirewallRule`.
 
@@ -430,6 +430,8 @@ endpoint team.
 because “we like not deploying agents.” It has no EDR and can host none
 — the mode simply does not apply. Recognizing which mode is
 *inapplicable* to an asset is as important as knowing which is best.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

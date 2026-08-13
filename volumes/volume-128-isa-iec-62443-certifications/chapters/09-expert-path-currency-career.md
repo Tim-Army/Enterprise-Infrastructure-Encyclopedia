@@ -70,7 +70,7 @@ cat my-62443-plan.md
 
 **Negative test:** A plan that treats the credentials as "done forever" with no re-reading — the standard moves; the discipline of tracking editions is the real currency mechanism here.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Map a control to the standard
 
@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Deploying a control you can't map to an FR/SL/standard part — it may be useful, but you can't defend it in an audit or a design review; 62443 fluency is speaking the standard's language.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

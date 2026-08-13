@@ -73,7 +73,7 @@ resolution — SLES software management.
 **Negative test:** `rpm -i` a downloaded package ignoring dependencies; it may fail or break — use
 **zypper** for resolution.
 
-**Cleanup:** `zypper --non-interactive remove tree` (in a lab).
+**Rollback:** `zypper --non-interactive remove tree` (in a lab).
 
 ### Lab 2.2 — Apply patches
 
@@ -90,7 +90,7 @@ zypper --non-interactive patch 2>/dev/null || echo "zypper patch: applies groupe
 **Negative test:** run `zypper update` and assume you're patched; **`zypper patch`** applies the
 grouped security patches — use it for compliance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Configure with YaST
 
@@ -107,7 +107,7 @@ echo "SLES: YaST (yast2) provides guided modules for most administration tasks"
 **Negative test:** hand-edit every config file without knowing the format; **YaST** validates and
 guides — use it where appropriate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Manage a service with systemd
 
@@ -125,7 +125,7 @@ management.
 **Negative test:** look for services in `/etc/init.d` (SysV); SLES uses **systemd** — use
 `systemctl`/`journalctl`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -116,7 +116,7 @@ container-native pipeline model of CAPA's largest domain.
 **Negative test:** expect steps to run in listed order without `dependencies`; a
 DAG runs tasks in parallel unless dependencies impose order — declare them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — CAPA: Argo CD (34%)
 
@@ -142,7 +142,7 @@ echo "Argo CD reconciles cluster state to Git; selfHeal reverts manual drift."
 **Negative test:** `kubectl edit` a resource Argo CD manages; `selfHeal` reverts
 it to Git — change Git, not the cluster.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — CAPA: Argo Rollouts (18%)
 
@@ -167,7 +167,7 @@ progressive-delivery pattern of CAPA Domain 3.
 **Negative test:** flip 100% of traffic at once ("big bang"); a canary limits
 blast radius by shifting gradually with analysis gates.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — CAPA: Argo Events (12%)
 
@@ -186,7 +186,7 @@ automation of CAPA Domain 4.
 **Negative test:** poll on a timer for changes; Argo Events reacts to **events**
 (webhooks/messages) — push, don't poll.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### CGOA — Certified GitOps Associate
 
@@ -210,7 +210,7 @@ drift) — CGOA Domain 1.
 **declarative desired state in Git, continuously reconciled** — not every
 pipeline qualifies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — CGOA: GitOps Principles (30%)
 
@@ -230,7 +230,7 @@ PY
 **pull-based reconciliation** from a versioned, declarative source — the agent
 pulls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — CGOA: Related Practices (16%)
 
@@ -251,7 +251,7 @@ related-practices context of CGOA Domain 3.
 **Negative test:** treat GitOps as a replacement for CI; CI still builds/tests —
 GitOps handles the **CD/reconcile** half.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.8 — CGOA: GitOps Patterns (20%)
 
@@ -273,7 +273,7 @@ promotion, pull delivery) — CGOA Domain 4.
 **Negative test:** hard-code environment differences into one manifest; use
 **overlays/branches** to promote across environments.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.9 — CGOA: Tooling (14%)
 
@@ -294,7 +294,7 @@ pull-reconcile model — CGOA Domain 5.
 **Negative test:** assume a CI runner doing `kubectl apply` is a GitOps tool; a
 GitOps engine **continuously reconciles** from Git in-cluster.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### CBA — Certified Backstage Associate
 
@@ -315,7 +315,7 @@ PY
 **Negative test:** expect a no-code product; Backstage is a **framework** you
 build and extend in TypeScript — code is involved.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.11 — CBA: Backstage Infrastructure (22%)
 
@@ -334,7 +334,7 @@ model — CBA Domain 2.
 **Negative test:** put production secrets in `app-config.yaml`; use environment
 variables / a secrets store referenced from config.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.12 — CBA: Backstage Catalog (22%)
 
@@ -356,7 +356,7 @@ lifecycle, type) — the Software Catalog that anchors CBA Domain 3.
 **Negative test:** track services in a spreadsheet; the **catalog** ingests
 descriptors from source repos and stays current — register entities in code.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.13 — CBA: Customizing Backstage (32%)
 
@@ -376,7 +376,7 @@ theming, routes) — CBA's largest domain (Domain 4).
 **Negative test:** fork core to add a feature; write a **plugin** instead so
 upgrades stay clean.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### KCA — Kyverno Certified Associate
 
@@ -397,7 +397,7 @@ three rule types — KCA Domain 1.
 **Negative test:** assume you must learn Rego (OPA); Kyverno uses **YAML
 policies**, not a separate language — that is its selling point.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.15 — KCA: Installation, Configuration, and Upgrades (18%)
 
@@ -416,7 +416,7 @@ KCA Domain 2.
 **Negative test:** set `failurePolicy: Fail` on a slow webhook without tuning
 timeouts; you can block all admissions — tune timeouts and scope.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.16 — KCA: Kyverno CLI (12%)
 
@@ -434,7 +434,7 @@ testing — KCA Domain 3.
 **Negative test:** deploy a policy straight to the cluster to see if it works;
 test it with the **Kyverno CLI** first to avoid blocking real workloads.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.17 — KCA: Applying Policies (10%)
 
@@ -463,7 +463,7 @@ on Pods — applying and scoping policy (KCA Domain 4).
 **Negative test:** start in `Enforce` cluster-wide without testing; use **Audit**
 mode first to see impact, then enforce.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.18 — KCA: Writing Policies (32%)
 
@@ -491,7 +491,7 @@ validate/mutate/generate rules, KCA's largest domain (Domain 5).
 **Negative test:** expect a `validate` rule to change resources; only **mutate**
 modifies them — validate only allows/denies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.19 — KCA: Policy Management (10%)
 
@@ -509,7 +509,7 @@ PolicyException — managing and auditing policy at scale (KCA Domain 6).
 **Negative test:** disable a policy globally to unblock one workload; grant a
 scoped **PolicyException** instead, keeping the policy in force elsewhere.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

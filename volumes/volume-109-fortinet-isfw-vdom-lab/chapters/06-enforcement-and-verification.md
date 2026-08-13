@@ -53,7 +53,7 @@ The lateral path is closed; both legitimate flows are untouched.
 
 **Negative test.** Change policy 1's service from `PGSQL` to `SSH` and watch `web->db:5432` break while ssh would pass — proof the *service* match, not just the zone pair, is doing the work. Restore it.
 
-**Cleanup.** Restore any temporary change.
+**Rollback.** Restore any temporary change.
 
 ### Exercise 6.2 — Read the session list and policy hits
 
@@ -84,7 +84,7 @@ sudo nft list chain inet fgt forward | grep 'FGT-DENY'
 
 **Expected result.** The deny rule's counter increments after the `hmi->db` attempt.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 6.3 — Correlate the denial in the log
 
@@ -119,7 +119,7 @@ sudo dmesg | grep -o 'FGT-DENY.*SRC=10.30.3.10.*DPT=5432' | tail -1
 
 **Negative test.** Without `logtraffic`, drops are silent — you would see the failure but have no evidence. Log denies during rollout.
 
-**Cleanup.** Keep logging for Chapter 09.
+**Rollback.** Keep logging for Chapter 09.
 
 ## Summary and Completion Checklist
 

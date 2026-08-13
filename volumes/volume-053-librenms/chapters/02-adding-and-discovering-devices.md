@@ -66,7 +66,7 @@ work.
 **Negative test:** add a device whose SNMP is unreachable; discovery fails — **test
 with `snmpget` first**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Add a device (CLI)
 
@@ -83,7 +83,7 @@ docker compose exec librenms lnms device:list | head
 **Negative test:** add the same device twice; LibreNMS rejects the **duplicate** by
 hostname/IP.
 
-**Cleanup:** `lnms device:remove 127.0.0.1`.
+**Rollback:** `lnms device:remove 127.0.0.1`.
 
 ### Lab 2.3 — Add a device (API) and discover
 
@@ -103,7 +103,7 @@ discovery/poll.
 **Negative test:** rely on the next cron cycle for urgent data; **trigger discovery/
 poll** manually to see results now.
 
-**Cleanup:** delete the device via the API.
+**Rollback:** delete the device via the API.
 
 ### Lab 2.4 — Create a dynamic device group
 
@@ -121,7 +121,7 @@ scalable classification.
 **Negative test:** hand-add devices to a static group; a **dynamic rule** self-populates
 as devices are discovered.
 
-**Cleanup:** delete the device group.
+**Rollback:** delete the device group.
 
 ## Lab Verification
 

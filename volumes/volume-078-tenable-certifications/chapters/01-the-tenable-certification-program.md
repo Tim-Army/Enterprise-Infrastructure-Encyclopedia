@@ -98,7 +98,7 @@ follows.
 **Negative test:** assume one Tenable cert covers everything; each targets a **specific product** —
 pick the one for your platform.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Understand the two-part exam
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** expect a single multiple-choice exam; Tenable requires a **hands-on practical**
 too — prepare for both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** pursue OT Exposure for a pure cloud-VM role; match the cert to your **product and
 role**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

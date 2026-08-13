@@ -43,7 +43,7 @@ Match the dropped 5-tuple against the identity policy; the mismatch is a misclas
 
 **Negative test.** "Fix" a denied workload by adding its address directly to a rule instead of correcting its classification. You have reintroduced address-based policy and broken the identity model. Fix the classification.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -73,7 +73,7 @@ sudo /usr/local/bin/build-identitygraph.sh        # rebuild groups
 
 **Negative test.** Rely on a data-plane path (through `el-gw`) as your break-glass, then enforce a policy that denies it. Use the out-of-band host adapters instead — that is why they exist.
 
-**Cleanup.** Ensure enforcement is restored.
+**Rollback.** Ensure enforcement is restored.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -99,7 +99,7 @@ Then turn Core isolation back on and reboot.
 
 **Negative test.** Leaving VMnet4 configured is harmless but can surprise a later lab that reuses it. Clean it up.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

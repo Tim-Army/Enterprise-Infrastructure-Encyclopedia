@@ -503,7 +503,7 @@ to exchange an AES key).
 **Negative test:** encrypt gigabytes directly with RSA; it is impractically slow and size-limited
 — that is exactly why TLS uses asymmetric only to establish a symmetric session key.
 
-**Cleanup:** `rm -f ~/crypto/msg.* ~/crypto/priv.pem ~/crypto/pub.pem`.
+**Rollback:** `rm -f ~/crypto/msg.* ~/crypto/priv.pem ~/crypto/pub.pem`.
 
 ### Lab 8.2 — Hashing, HMAC, and digital signatures (Topic: Integrity and authenticity)
 
@@ -527,7 +527,7 @@ a shared-key check, and a digital signature proves *authenticity + integrity + n
 tampered file, so a bare hash proves integrity only if delivered over a trusted channel — a
 signature binds the content to an identity.
 
-**Cleanup:** `rm -f ~/crypto/doc.txt ~/crypto/doc.txt.asc; gpg --batch --yes --delete-secret-and-public-key "Lab <lab@example.com>" 2>/dev/null; true`.
+**Rollback:** `rm -f ~/crypto/doc.txt ~/crypto/doc.txt.asc; gpg --batch --yes --delete-secret-and-public-key "Lab <lab@example.com>" 2>/dev/null; true`.
 
 ### Lab 8.3 — TLS and certificate inspection (Topic: Transport security)
 
@@ -547,7 +547,7 @@ man-in-the-middle.
 is the exact condition a MITM presents — certificate validation is the check that catches it, so
 warnings must never be clicked through.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Ransomware resilience: 3-2-1 and restore testing (Topic: Resilience)
 
@@ -574,7 +574,7 @@ exists and the restore is proven.
 is encrypted too and recovery fails — an offline/immutable copy and a tested restore are what make
 backups ransomware-proof.
 
-**Cleanup:** `rm -rf ~/crypto/prod ~/crypto/backup-local ~/crypto/backup-offsite`.
+**Rollback:** `rm -rf ~/crypto/prod ~/crypto/backup-local ~/crypto/backup-offsite`.
 
 ## Lab Verification
 

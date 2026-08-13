@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Planning against a badge you cannot earn — "Technical Mastery: KSD Certification" is a Professional Services credential, not a customer path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Read the metadata bands honestly
 
@@ -151,7 +151,7 @@ EOF
 
 **Negative test:** Quoting a "GCSA exam: 60 questions, 70% pass" figure from a search result. No such figures are published anywhere official.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

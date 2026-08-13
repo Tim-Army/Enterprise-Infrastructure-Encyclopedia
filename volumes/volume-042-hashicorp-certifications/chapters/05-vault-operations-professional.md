@@ -112,7 +112,7 @@ Objective 1.
 **Negative test:** set `tls_disable = true` in production; Vault traffic carries
 secrets — always enable TLS.
 
-**Cleanup:** `rm -f vault.hcl`
+**Rollback:** `rm -f vault.hcl`
 
 ### Lab 5.2 — Objective 2: Monitor a Vault environment
 
@@ -130,7 +130,7 @@ monitoring and forensic trail of Objective 2.
 **Negative test:** operate without an **audit device**; you cannot investigate an
 incident with no record — always enable auditing.
 
-**Cleanup:** `vault audit disable file 2>/dev/null || true`
+**Rollback:** `vault audit disable file 2>/dev/null || true`
 
 ### Lab 5.3 — Objective 3: Employ the Vault security model
 
@@ -148,7 +148,7 @@ concept — Vault's security model (Objective 3).
 **Negative test:** grant broad policies for convenience; the security model is
 **deny-by-default least privilege** — grant only what each path needs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Objective 4: Build fault-tolerant Vault environments
 
@@ -168,7 +168,7 @@ tolerance for Objective 4.
 **Negative test:** run a 2-node cluster expecting HA; even counts risk split-
 brain and can't form quorum after one loss — use **odd** counts (3/5).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Objective 5: Understand HSM integration
 
@@ -191,7 +191,7 @@ protection role — HSM integration (Objective 5).
 **Negative test:** store unseal keys in a wiki for convenience; an **HSM/KMS**
 auto-unseal removes human-held keys from the loop — use it where required.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — Objective 6: Scale Vault for performance
 
@@ -211,7 +211,7 @@ levers — Objective 6.
 **Negative test:** issue millions of long-lived **service** tokens; they persist
 in storage — use **batch** tokens for high-volume, ephemeral workloads.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.7 — Objective 7: Configure access control
 
@@ -233,7 +233,7 @@ revocation only — fine-grained access control (Objective 7).
 **Negative test:** grant `sys/*`; that includes dangerous endpoints — grant only
 the specific `sys/` paths an operator needs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.8 — Objective 8: Configure Vault Agent
 
@@ -262,7 +262,7 @@ echo "Vault Agent: auto-authenticates (AppRole), caches a token, and renders sec
 **Negative test:** hard-code a Vault token in every app; **Vault Agent**
 auto-authenticates and renews so apps never handle raw tokens.
 
-**Cleanup:** `rm -f agent.hcl`
+**Rollback:** `rm -f agent.hcl`
 
 ## Lab Verification
 

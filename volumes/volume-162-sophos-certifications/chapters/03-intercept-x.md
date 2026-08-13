@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Relying only on signature-based antivirus. It misses novel malware and technique-based attacks; Intercept X layers predictive Deep Learning, technique-blocking Exploit Prevention, and EDR so new and evasive threats are caught and what gets through is detected.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

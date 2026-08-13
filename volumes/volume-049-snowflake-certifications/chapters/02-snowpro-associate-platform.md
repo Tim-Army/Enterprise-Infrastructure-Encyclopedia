@@ -81,7 +81,7 @@ foundational structure the Associate tests.
 **Negative test:** create a table with no database/schema context; qualify names
 (`db.schema.table`) — objects live in the hierarchy.
 
-**Cleanup:** `DROP DATABASE IF EXISTS demo_db;`
+**Rollback:** `DROP DATABASE IF EXISTS demo_db;`
 
 ### Lab 2.2 — Compute: warehouses
 
@@ -99,7 +99,7 @@ provisioning and cost control.
 **Negative test:** leave `AUTO_SUSPEND` off; an idle warehouse burns credits — set
 auto-suspend.
 
-**Cleanup:** `DROP WAREHOUSE IF EXISTS demo_wh;`
+**Rollback:** `DROP WAREHOUSE IF EXISTS demo_wh;`
 
 ### Lab 2.3 — Loading: stages and COPY INTO
 
@@ -118,7 +118,7 @@ the Associate exam.
 **Negative test:** `INSERT` millions of rows one by one; use **`COPY INTO`** from a
 stage for bulk loading.
 
-**Cleanup:** `DROP STAGE IF EXISTS demo_stage;`
+**Rollback:** `DROP STAGE IF EXISTS demo_stage;`
 
 ### Lab 2.4 — Querying and access
 
@@ -135,7 +135,7 @@ and the access context the Associate covers.
 **Negative test:** query with no warehouse set; a query needs a **running
 warehouse** — set one first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Emailing PDFs to the supplier and manually keying the order into the ERP. It is slow, error-prone, and unauditable; EDI via the Trading Partner model exchanges structured documents automatically, and Flow adds governed human approval before the ERP write.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -45,7 +45,7 @@ This is the core of the lab. Each exercise carries both tracks. Airwall's method
 
 **Negative test.** Plan to give the PLC its own agent key. It can run no software — so it cannot hold a key or a tunnel. That is exactly why Airwall Gateways exist, and why Chapter 08 carries the PLC onto the overlay from `aw-gw` instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Build the encrypted overlay
 
@@ -118,7 +118,7 @@ ping -c1 10.99.0.12         # aw-db01 over the overlay (routed via the hub)
 
 **Negative test.** Omit a peer's public key from the hub config; that device cannot join — no identity, no connection. Identity is admission; there is no "allow by IP" back door.
 
-**Cleanup.** Keep the overlay; the next lab cloaks the underlay.
+**Rollback.** Keep the overlay; the next lab cloaks the underlay.
 
 ### Lab 6.3 — Cloak the underlay
 
@@ -165,7 +165,7 @@ From `aw-app01` over the overlay:
 
 **Negative test.** Remove the `policy drop` (set it back to `accept`) and re-run the HMI's underlay probe; it reaches the database again. Cloaking — going dark by default — is what removes the underlay attack surface. Restore `policy drop`.
 
-**Cleanup.** Keep the cloaked posture on all agents.
+**Rollback.** Keep the cloaked posture on all agents.
 
 ## Summary and Completion Checklist
 

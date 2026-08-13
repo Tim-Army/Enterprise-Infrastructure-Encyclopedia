@@ -96,7 +96,7 @@ EOF
 
 **Negative test:** Choosing a certification by which has the most job postings, ignoring the business function. You may certify into work you do not want to do, in an area you will then leave — restarting the specialty.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — The practical-exam readiness check
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Filling this out and then studying from a multiple-choice question bank anyway. The checklist and the dump prepare for different exams; only one of them still exists.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Summary and Completion Checklist
 

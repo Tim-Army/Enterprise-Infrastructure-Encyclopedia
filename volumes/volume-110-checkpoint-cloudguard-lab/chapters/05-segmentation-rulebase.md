@@ -49,7 +49,7 @@ sudo nft add rule inet cpg forward ip saddr 10.40.3.10 ip daddr 10.40.4.10 tcp d
 
 **Expected result.** Two accept rules — the exact legitimate flows.
 
-**Cleanup.** Keep the permits.
+**Rollback.** Keep the permits.
 
 ### Exercise 5.2 — Remove the any-any accept and install
 
@@ -85,7 +85,7 @@ sudo nft list chain inet cpg forward
 
 **Expected result.** The chain permits the two flows and logs-and-drops the lateral flow and all other east-west traffic.
 
-**Cleanup.** Keep the ruleset; Chapter 06 converts it to tag-based objects.
+**Rollback.** Keep the ruleset; Chapter 06 converts it to tag-based objects.
 
 ## Summary and Completion Checklist
 

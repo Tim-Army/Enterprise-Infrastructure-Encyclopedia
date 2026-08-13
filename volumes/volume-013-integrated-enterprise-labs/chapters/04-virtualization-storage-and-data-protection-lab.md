@@ -240,7 +240,7 @@ and each VM inherits the network segmentation and identity established in the pr
 bypass the environment's network policy — VM NICs must attach to the correct segment VLAN to stay
 consistent with the fabric.
 
-**Cleanup:** destroy lab-only VMs.
+**Rollback:** destroy lab-only VMs.
 
 ### Lab 4.2 — Shared storage for the environment (Topic: Storage)
 
@@ -260,7 +260,7 @@ integrated storage (Volume VI) gives the environment fault-tolerant capacity wit
 storage; a host loss takes the data with it — resilient shared storage is what lets workloads survive
 host failure and migrate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Data protection (Topic: Backup)
 
@@ -279,7 +279,7 @@ cannot: corruption, deletion, ransomware, and site loss; the tested restore is t
 **Negative test:** rely on storage redundancy as "backup"; ransomware or deletion is faithfully
 mirrored to every copy — a separate, tested, offline backup is what makes the environment recoverable.
 
-**Cleanup:** remove lab-only backup artifacts.
+**Rollback:** remove lab-only backup artifacts.
 
 ### Lab 4.4 — Live migration and availability (Topic: Availability)
 
@@ -299,7 +299,7 @@ environment's services, integrating virtualization and availability design.
 migrate to, so it fails or requires downtime — shared storage is the prerequisite for non-disruptive
 mobility.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

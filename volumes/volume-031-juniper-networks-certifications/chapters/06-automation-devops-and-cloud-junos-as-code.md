@@ -164,7 +164,7 @@ declarative tooling like **Terraform**; each is an entry point for a different s
 every off-box tool fails to connect — a management service (NETCONF/REST/gRPC) must
 be on.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — gRPC and gNMI (Objective: gRPC)
 
@@ -183,7 +183,7 @@ InfluxDB/Grafana), pushing state rather than polling.
 **Negative test:** subscribe to an OpenConfig path the device does not model; the
 subscription returns nothing — the sensor path must exist in a supported model.
 
-**Cleanup:** stop the subscription.
+**Rollback:** stop the subscription.
 
 ### Lab 6.3 — Ansible (Objective: Ansible)
 
@@ -211,7 +211,7 @@ diffs operational state to validate a change did only what was intended.
 **Negative test:** re-run the same play; `changed=0` — idempotence means no redundant
 change, and JSNAPy would flag any unexpected state delta.
 
-**Cleanup:** revert the host-name via a follow-up play or `rollback`.
+**Rollback:** revert the host-name via a follow-up play or `rollback`.
 
 ### Lab 6.4 — Junos Automation Scripts (Objective: Junos Automation Scripts)
 
@@ -231,7 +231,7 @@ scripts** serve custom OIDs — all running in the RE (SLAX/Python).
 **Negative test:** a commit script that raises an error aborts the commit — commit
 scripts can enforce policy by failing non-compliant candidate configs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — YANG (Objective: YANG)
 
@@ -250,7 +250,7 @@ renders the schema for building payloads.
 **Negative test:** send config for an OpenConfig path without loading the OpenConfig
 package/translation; the device rejects it — the model must be supported/loaded.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — NETCONF and PyEZ (Foundational: JNCIA-DevOps)
 
@@ -277,7 +277,7 @@ off-box Junos automation.
 **Negative test:** load malformed `set` syntax; PyEZ raises a `ConfigLoadError` with
 the parse error — structured errors, not silent failure.
 
-**Cleanup:** the script rolls back; no change persists.
+**Rollback:** the script rolls back; no change persists.
 
 ### Lab 6.7 — REST API (Foundational: JNCIA-DevOps)
 
@@ -296,7 +296,7 @@ NETCONF library.
 the connection is refused — the REST service must be enabled and (best practice)
 TLS-secured.
 
-**Cleanup:** none (read-only RPC).
+**Rollback:** none (read-only RPC).
 
 ### Lab 6.8 — Cloud and SDN Foundations (Foundational: JNCIA-Cloud)
 
@@ -315,7 +315,7 @@ CNI, overlay virtual networks), the substrate DevOps automation targets.
 **Negative test:** expect pod-to-pod policy without a CNI that enforces it; a default
 CNI may allow all — the SDN/CNI provides the segmentation the cloud design needs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

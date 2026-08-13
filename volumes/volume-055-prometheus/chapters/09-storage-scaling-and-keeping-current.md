@@ -66,7 +66,7 @@ curl -sS "http://localhost:9090/api/v1/status/tsdb" \
 **Negative test:** ignore series growth; a climbing **series count** signals cardinality
 issues — watch it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Take a TSDB snapshot
 
@@ -82,7 +82,7 @@ curl -sS -X POST "http://localhost:9090/api/v1/admin/tsdb/snapshot" \
 **Negative test:** copy the live `data/` dir while running; take an **atomic snapshot**
 via the admin API instead.
 
-**Cleanup:** remove the snapshot directory when done.
+**Rollback:** remove the snapshot directory when done.
 
 ### Lab 9.3 — Describe remote write
 
@@ -100,7 +100,7 @@ storage beyond local retention.
 **Negative test:** raise local retention to years; the **local TSDB isn't built for
 that** — remote-write to a purpose-built backend.
 
-**Cleanup:** remove the remote_write block.
+**Rollback:** remove the remote_write block.
 
 ### Lab 9.4 — Check the current release
 
@@ -115,7 +115,7 @@ curl -sS "https://api.github.com/repos/prometheus/prometheus/releases/latest" \
 
 **Negative test:** run a long-unsupported release; track **releases** and stay current.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

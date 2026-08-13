@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Building the bot with no Try/Catch and inline repeated login logic. The malformed row crashes the whole run, and a change to the login must be made in every bot; control flow and modular subtasks are what make automations production-grade.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -90,7 +90,7 @@ cat my-confluent-plan.md
 
 **Negative test:** Booking CCDAK without the free Kafka Fundamentals accreditation — you skip a free credential that covers the assumed foundations and would have told you, at no cost, whether you were ready.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam domains
 
@@ -128,7 +128,7 @@ EOF
 
 **Negative test:** Studying all nine chapters evenly for CCAAK — Connect and stream processing are largely outside its scope, while cluster operations and consumer mechanics carry the weight.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

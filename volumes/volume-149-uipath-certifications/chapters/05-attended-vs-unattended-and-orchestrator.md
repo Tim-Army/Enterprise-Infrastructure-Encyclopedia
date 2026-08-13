@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Building an overnight high-volume batch as an attended robot. It requires a human to trigger it, defeating the lights-out purpose — high-volume, no-human-present work is unattended by definition.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Queue throughput: decouple work from workers
 
@@ -110,7 +110,7 @@ EOF
 
 **Negative test:** Processing a large batch sequentially on a single robot. At 50 hours it misses the overnight window, and a crash midway loses the whole run — a queue with a robot pool scales the throughput and survives crashes by tracking each item.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -76,7 +76,7 @@ PY
 
 **Negative test:** put all vSwitches in **one AZ**; an AZ outage takes everything — spread across AZs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Write security-group rules
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** open SSH (22) to `0.0.0.0/0`; the world can brute-force it — restrict SSH to the
 **VPC/bastion**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Design load balancing
 
@@ -118,7 +118,7 @@ frontend.
 **Negative test:** point users at a single ECS instance; it's a SPOF — front it with **SLB/ALB** across
 AZs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Choose an ECS instance type
 
@@ -139,7 +139,7 @@ PY
 **Negative test:** run ML training on a general-purpose instance with no GPU; it's slow/costly — use a
 **GPU instance**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

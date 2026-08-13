@@ -449,7 +449,7 @@ LoadBalancer expose externally.
 endpoints and connections hang/refuse — the selector-to-pod-label match is what wires a
 Service to its backends.
 
-**Cleanup:** `kubectl delete deployment web; kubectl delete svc web web-np`.
+**Rollback:** `kubectl delete deployment web; kubectl delete svc web web-np`.
 
 ### Lab 4.2 — Cluster DNS and service discovery (Topic: DNS)
 
@@ -469,7 +469,7 @@ so workloads discover each other by name, not by hard-coded IP.
 is replaced the IP changes and the caller breaks — the Service DNS name is the stable
 contract.
 
-**Cleanup:** `kubectl delete deployment web; kubectl delete svc web`.
+**Rollback:** `kubectl delete deployment web; kubectl delete svc web`.
 
 ### Lab 4.3 — Ingress (Topic: External traffic)
 
@@ -491,7 +491,7 @@ Service).
 routes — the Ingress resource is only a rule set, and a controller must be running to
 implement it.
 
-**Cleanup:** `kubectl delete ingress web; kubectl delete deployment web; kubectl delete svc web`.
+**Rollback:** `kubectl delete ingress web; kubectl delete deployment web; kubectl delete svc web`.
 
 ### Lab 4.4 — NetworkPolicy (Topic: Traffic policy)
 
@@ -529,7 +529,7 @@ deny-all first, then allow the intended flows.
 **Negative test:** apply the policies on a CNI that does not enforce NetworkPolicy (e.g. plain
 flannel); traffic flows regardless — enforcement requires a policy-capable CNI (Calico/Cilium).
 
-**Cleanup:** `kubectl delete netpol default-deny allow-web -n lab`.
+**Rollback:** `kubectl delete netpol default-deny allow-web -n lab`.
 
 ## Lab Verification
 

@@ -94,7 +94,7 @@ policy) — the IAM depth of the Associate.
 **Negative test:** embed credentials in instances; use **dynamic groups +
 resource principals** so instances authenticate without stored keys.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Associate: VCN networking design
 
@@ -115,7 +115,7 @@ of the Associate.
 **Negative test:** give the DB subnet an Internet Gateway; keep it **private** with
 a Service Gateway — never expose the database.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Associate: compute and storage selection
 
@@ -134,7 +134,7 @@ area of the Associate.
 **Negative test:** fixed shapes for spiky workloads; use **flexible shapes +
 autoscaling** to match demand and cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Associate: database services
 
@@ -155,7 +155,7 @@ area of the Associate.
 **Negative test:** self-manage a DB on a VM when **Autonomous Database** fits;
 prefer managed services to cut operational load.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Professional: high availability and DR
 
@@ -175,7 +175,7 @@ the Professional.
 **Negative test:** deploy in one AD and call it HA; use **multiple ADs/fault
 domains** and **cross-region** for DR.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.6 — Professional: hybrid and multicloud connectivity
 
@@ -196,7 +196,7 @@ interconnect) — the hybrid/multicloud design of the Professional.
 **Negative test:** run production hybrid traffic over VPN expecting FastConnect
 performance; choose **FastConnect** for bandwidth/latency SLAs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.7 — Professional: security architecture
 
@@ -217,7 +217,7 @@ design of the Professional.
 **Negative test:** rely on network controls alone; layer **IAM, encryption, Cloud
 Guard, and WAF** — defense in depth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

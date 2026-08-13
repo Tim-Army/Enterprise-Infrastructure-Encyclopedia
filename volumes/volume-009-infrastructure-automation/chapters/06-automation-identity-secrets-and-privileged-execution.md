@@ -430,7 +430,7 @@ ciphertext is safe in Git while the key stays out of the repo (in a password man
 if later deleted — encrypt (or externalize) secrets *before* the first commit, because Git never
 forgets.
 
-**Cleanup:** `rm -f ~/sec/secrets.yml`.
+**Rollback:** `rm -f ~/sec/secrets.yml`.
 
 ### Lab 6.2 — Dynamic secret injection (Topic: Secret injection)
 
@@ -453,7 +453,7 @@ credential is retrieved on demand, can be short-lived/rotated, and is auditable 
 is compromised until manually rotated — dynamic, short-lived secrets limit the blast radius of a
 leak.
 
-**Cleanup:** `unset DB_PASSWORD`; remove the demo Vault path if created.
+**Rollback:** `unset DB_PASSWORD`; remove the demo Vault path if created.
 
 ### Lab 6.3 — Least-privilege execution (Topic: Privileged execution)
 
@@ -486,7 +486,7 @@ needs, escalating narrowly rather than running everything as root.
 a bug or compromised task now has full privilege — scope escalation to the specific tasks that
 require it.
 
-**Cleanup:** `rm -f ~/sec/play.yml /tmp/priv-marker`.
+**Rollback:** `rm -f ~/sec/play.yml /tmp/priv-marker`.
 
 ### Lab 6.4 — Keep secrets out of code (Topic: Secret hygiene)
 
@@ -512,7 +512,7 @@ that must live near code, and secret-scanning (gitleaks/CI) as a backstop.
 **Negative test:** omit `.gitignore` and commit `app.env`; the API key is now in history and must
 be treated as compromised and rotated — preventing the commit is far cheaper than the cleanup.
 
-**Cleanup:** `rm -rf ~/sec`.
+**Rollback:** `rm -rf ~/sec`.
 
 ## Lab Verification
 

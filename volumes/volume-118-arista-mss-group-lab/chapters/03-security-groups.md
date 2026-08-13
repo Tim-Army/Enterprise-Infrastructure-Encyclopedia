@@ -34,7 +34,7 @@ sudo nft list set inet mss sg_web
 
 **Negative test.** Two groups cannot claim the same endpoint with conflicting policy; an endpoint resolves to exactly one security group at a time.
 
-**Cleanup.** Keep the groups.
+**Rollback.** Keep the groups.
 
 ### Exercise 3.2 — Confirm group resolution
 
@@ -51,7 +51,7 @@ awk '$1=="10.120.3.30"{print "10.120.3.30 -> "$2}' /etc/mss/groups
 
 **Negative test.** A new server added to SG-Web would inherit SG-Web's policy automatically; a policy written against IPs would not cover it — the point of group-based policy.
 
-**Cleanup.** Keep the groups.
+**Rollback.** Keep the groups.
 
 ## Summary and Completion Checklist
 

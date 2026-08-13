@@ -479,7 +479,7 @@ cosmetic.
    restic snapshots
    ```
 
-**Cleanup**
+**Rollback**
 
 8. Remove the lab's repository, source, and restore directories, and unset
    the environment variables:

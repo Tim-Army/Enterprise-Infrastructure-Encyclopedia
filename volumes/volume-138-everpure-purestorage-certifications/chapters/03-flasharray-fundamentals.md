@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Mapping a volume to a second host "temporarily, just to copy some files off" — that is the exact scenario, and the corruption typically appears after the temporary mapping is removed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Protection groups and crash-consistent sets
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Scheduling per-volume snapshots at the same clock time and assuming they are atomic — they start together and complete at different moments under load, which is precisely when consistency matters.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Multipathing and the single-path trap
 
@@ -153,7 +153,7 @@ EOF
 
 **Negative test:** Counting paths without checking which controller they reach — two paths to the same controller looks redundant in a path count and provides no protection against the most common maintenance event.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

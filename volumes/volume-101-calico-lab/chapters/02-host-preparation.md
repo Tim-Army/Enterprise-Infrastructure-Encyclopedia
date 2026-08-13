@@ -27,7 +27,7 @@ docker run --rm hello-world
 
 **Negative test.** Skip the `usermod`/re-login and every `docker` and `kind` command needs `sudo`, which then owns the kubeconfig. Fix the group membership now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install kind and kubectl
 
@@ -49,7 +49,7 @@ kind version && kubectl version --client
 
 **Negative test.** Install a `kubectl` more than one minor version away from the cluster you build in Chapter 03 and you may see version-skew warnings; keep them close.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Install calicoctl
 
@@ -67,7 +67,7 @@ calicoctl version --config /dev/null 2>/dev/null || calicoctl version
 
 **Negative test.** Try to manage a `GlobalNetworkPolicy` with `kubectl` before installing the Calico CRDs; it fails with "no matches for kind". Calico's CRDs arrive with the CNI in Chapter 03.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

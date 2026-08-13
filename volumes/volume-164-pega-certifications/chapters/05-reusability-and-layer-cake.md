@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Copying the application for each business unit, region, and channel. Common changes must be repeated in every copy, variations drift, and forks explode; the situational layer cake defines common logic once and specializes only the differences by layer.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

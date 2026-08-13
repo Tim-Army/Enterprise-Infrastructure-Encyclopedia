@@ -155,7 +155,7 @@ switch an extension of the FortiGate's security fabric.
 **Negative test:** cable the switch but never authorize it in the switch controller; it
 stays offline to management — adoption is an explicit authorization step.
 
-**Cleanup:** remove the lab switch's authorization and restore its port VLANs.
+**Rollback:** remove the lab switch's authorization and restore its port VLANs.
 
 ### Lab 11.2 — FortiAP managed wireless (Topic: Secure wireless)
 
@@ -188,7 +188,7 @@ connected — the FortiGate is the wireless controller, unifying wired and wirel
 **Negative test:** define the VAP but never bind it to the AP's WTP profile radio; the
 SSID never airs — the profile-to-radio binding is what activates it.
 
-**Cleanup:** remove the VAP from the profile and delete `corp-wifi`.
+**Rollback:** remove the VAP from the profile and delete `corp-wifi`.
 
 ### Lab 11.3 — FortiManager central policy (Topic: Central management)
 
@@ -212,7 +212,7 @@ single-pane policy, object, and firmware management across many FortiGates.
 the next install overwrites the local change and flags the device out-of-sync — managed
 devices are edited centrally.
 
-**Cleanup:** remove the lab device from FortiManager if temporary.
+**Rollback:** remove the lab device from FortiManager if temporary.
 
 ### Lab 11.4 — Identity and NAC with FortiAuthenticator (Topic: FortiAuthenticator / FortiNAC)
 
@@ -242,7 +242,7 @@ control.
 **Negative test:** point the FortiGate at the RADIUS server with the wrong shared secret;
 every auth fails with a timeout — the secret must match on both ends.
 
-**Cleanup:** delete the `radius-staff` group and the `FAC` server.
+**Rollback:** delete the `radius-staff` group and the `FAC` server.
 
 ### Lab 11.5 — Enterprise Firewall: advanced routing & troubleshooting (Topic: NSE 7 Enterprise Firewall)
 
@@ -275,7 +275,7 @@ troubleshooting across a multi-FortiGate estate.
 **Negative test:** mismatch the OSPF area or network statement between neighbors; the
 adjacency stalls in `ExStart/Exchange` — area and network agreement is required to peer.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config router ospf

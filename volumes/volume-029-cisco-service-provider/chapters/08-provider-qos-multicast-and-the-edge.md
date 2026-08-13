@@ -208,7 +208,7 @@ service-policy) expresses it.
 policy; a customer can mark all traffic to the priority class — the edge must
 condition and re-mark untrusted traffic.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Implement QoS services (SPCOR Objective 4.5)
 
@@ -228,7 +228,7 @@ TCP-friendly drop in best-effort.
 queues; conversely an undersized priority queue drops real-time traffic — size the
 priority class to the committed rate.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Configure and verify control-plane security (SPCOR Objective 1.5)
 
@@ -247,7 +247,7 @@ is CoPP done in the data plane.
 **Negative test:** disable/raise an LPTS policer for a protocol and a flood of that
 traffic can spike RP CPU — the policers are the control-plane protection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Describe management-plane security (SPCOR Objective 1.6)
 
@@ -268,7 +268,7 @@ TLS, and authenticates via AAA with role-based access.
 facing ones; the RP is exposed to customers — MPP must scope management to the
 management network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.5 — Implement data-plane security (SPCOR Objective 1.7)
 
@@ -289,7 +289,7 @@ addresses), and RTBH for attack mitigation.
 legitimate traffic; strict uRPF fits single-homed, loose fits multihomed — the
 mode must match the topology.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.6 — Describe IPv6 transition mechanisms (SPCOR Objective 2.7)
 
@@ -310,7 +310,7 @@ customers over an IPv6 (or exhausted-IPv4) network.
 you cannot map a session back to a subscriber for lawful intercept/abuse — port-
 block logging is required at SP scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.7 — Implement multicast services (SPCOR Objective 4.4)
 
@@ -330,7 +330,7 @@ tree and the MFIB forwards, with the SP choosing SSM/ASM and RP placement.
 ASM) reachable; (*,G) state cannot build — ASM needs a reachable RP (or use SSM to
 avoid it).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.8 — Compare multicast concepts (SPRI Objective 2.1)
 
@@ -349,7 +349,7 @@ senders) — each fits a different SP service.
 **Negative test:** run IPTV (well-known sources) as ASM with RP complexity when SSM
 removes the RP entirely — the mode should match the application's source model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.9 — Describe multicast concepts (SPRI Objective 2.2)
 
@@ -370,7 +370,7 @@ BSR) for ASM.
 interface than multicast arrives on) drops the stream — unicast routing and the
 multicast path must agree, or use a static mroute.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.10 — Implement PIM-SM operations (SPRI Objective 2.3)
 
@@ -390,7 +390,7 @@ the source's shortest-path tree and prunes off the shared tree once traffic flow
 source invisible on the shared tree; receivers get nothing until SPT — the source
 registration to the RP is required for ASM.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.11 — Troubleshoot multicast routing (SPRI Objective 2.4)
 
@@ -410,7 +410,7 @@ tier.
 **Negative test:** blame the source for a receiver with no IGMP membership on its
 last-hop router — the receiver never asked for the group; check IGMP first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.12 — Implement infrastructure security (SPCNI Objective 4.1)
 
@@ -430,7 +430,7 @@ shared infrastructure resists attack.
 a compromised VNF attack the infrastructure — the management plane must be isolated
 from tenant data planes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.13 — Describe DoS mitigation techniques (SPCNI Objective 4.2)
 
@@ -451,7 +451,7 @@ LPTS/uRPF for infrastructure protection.
 is unreachable); source-based RTBH or FlowSpec drops only the attack — choose the
 mitigation that preserves the service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.14 — Describe NFVI security (SPCNI Objective 4.3)
 
@@ -471,7 +471,7 @@ tenant cannot reach another or the infrastructure.
 other's control interfaces — tenant and management isolation must be enforced in the
 NFVI.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.15 — Describe cloud security solutions (SPCNI Objective 4.4)
 
@@ -491,7 +491,7 @@ firewall/IPS** at the cloud edge, protecting tenant workloads and subscribers.
 traffic between VNFs bypasses the perimeter — microsegmentation/virtual FW is needed
 inside the cloud too.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

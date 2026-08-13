@@ -71,7 +71,7 @@ tmsh show ltm pool web_pool
 **Negative test:** create the pool with `monitor none`; traffic will hit **dead** members —
 always attach a monitor.
 
-**Cleanup:** `tmsh delete ltm pool web_pool`.
+**Rollback:** `tmsh delete ltm pool web_pool`.
 
 ### Lab 3.2 — Create a virtual server
 
@@ -89,7 +89,7 @@ HTTP/TCP profiles and **SNAT automap** — a live service.
 **Negative test:** omit the pool; a virtual server with **no pool** has nowhere to send traffic —
 bind the pool.
 
-**Cleanup:** `tmsh delete ltm virtual web_vs`.
+**Rollback:** `tmsh delete ltm virtual web_vs`.
 
 ### Lab 3.3 — SSL offload profile
 
@@ -107,7 +107,7 @@ at the BIG-IP so it can inspect and steer.
 **Negative test:** pass TLS straight through when the design needs inspection; **offload** with a
 Client SSL profile so the proxy can act on content.
 
-**Cleanup:** `tmsh modify ltm virtual web_vs profiles delete { web_clientssl }; tmsh delete ltm profile client-ssl web_clientssl`.
+**Rollback:** `tmsh modify ltm virtual web_vs profiles delete { web_clientssl }; tmsh delete ltm profile client-ssl web_clientssl`.
 
 ### Lab 3.4 — Verify load balancing state
 
@@ -124,7 +124,7 @@ distributing to healthy servers.
 **Negative test:** assume traffic is balanced without checking; **verify** member state and
 counts — monitors and stats prove it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

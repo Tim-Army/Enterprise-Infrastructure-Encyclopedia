@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Managing servers with shared root passwords and password-only SSH. Access is unattributable, a leaked password grants everything, and identities sprawl as local accounts; Server PAM's AD-bridged identity, MFA, and granular PEDM replace that with least privilege and accountability.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

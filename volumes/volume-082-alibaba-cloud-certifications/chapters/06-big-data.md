@@ -73,7 +73,7 @@ ORDER BY orders DESC;
 **Negative test:** query `sales` with no `ds` filter; it scans **all** partitions (slow, costly) —
 filter on the **partition** column.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Design a DataWorks pipeline
 
@@ -94,7 +94,7 @@ orchestrated data engineering.
 **Negative test:** run transforms manually with no scheduling/dependencies; they break and drift —
 orchestrate with **DataWorks**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Choose batch vs streaming
 
@@ -113,7 +113,7 @@ choice.
 
 **Negative test:** compute fraud alerts in a **nightly batch**; it's hours too late — use **streaming**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Control big-data cost
 
@@ -134,7 +134,7 @@ analytics.
 **Negative test:** keep all raw data forever and full-scan it; costs balloon — apply **lifecycle** and
 **partitioning**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

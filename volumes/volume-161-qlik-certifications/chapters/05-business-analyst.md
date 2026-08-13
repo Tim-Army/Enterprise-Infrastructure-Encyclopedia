@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Building static dashboards with poorly-chosen charts and no interactivity. That hides insight and ignores Qlik's strength; the Business Analyst chooses the right chart for each question and designs selection-driven associative exploration, then communicates via stories.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

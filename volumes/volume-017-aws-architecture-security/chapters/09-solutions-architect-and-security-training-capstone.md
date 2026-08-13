@@ -643,7 +643,7 @@ per-month key charge.
    step 1 blocks an action beyond `PutItem`/`GetItem`/`Scan` regardless
    of what the application code attempts.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws wellarchitected delete-workload --workload-id <WORKLOAD_ID>

@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Trying to build a year-over-year or actual-vs-target comparison with plain aggregations. They all move with the user's selection, so the comparison collapses; set analysis pins part of the expression to a fixed set, which is what makes comparative Qlik analytics possible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

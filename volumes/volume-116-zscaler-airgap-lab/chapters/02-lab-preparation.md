@@ -23,7 +23,7 @@
 
 **Expected result (design).** Every device isolated into a network of one, brokered by the enforcement point. Track 2 reproduces this with per-device routing.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build the flat VLAN and the enforcement point
 
@@ -64,7 +64,7 @@ All five devices are on `10.100.1.0/24` and can reach each other directly — th
 
 **Negative test.** These devices run no security software of their own; there is nothing to install an agent on. Any protection must come from the network layer — which is Airgap's premise.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Confirm the flat VLAN
 
@@ -82,7 +82,7 @@ sudo ip netns exec hmi    bash -c 'nc -z -w2 10.100.1.20 5432 && echo "hmi->db R
 
 **Negative test.** Even devices with no business talking (victim → plc) reach each other — the flat VLAN grants universal east-west by default, the opposite of zero trust.
 
-**Cleanup.** Leave the devices running.
+**Rollback.** Leave the devices running.
 
 ## Summary and Completion Checklist
 

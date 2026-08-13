@@ -418,7 +418,7 @@ schema so events from many sources can be searched and correlated together.
 format and correlation is impossible — normalization to a common schema is what makes cross-source
 detection work.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Detection engineering with Sigma (Topic: Detection engineering)
 
@@ -449,7 +449,7 @@ rather than clicked into a console.
 rule; the detection is not reviewable, portable, or testable — detection-as-code (Sigma) is what
 makes coverage durable and auditable.
 
-**Cleanup:** `rm -f ~/soc/brute-force.yml`.
+**Rollback:** `rm -f ~/soc/brute-force.yml`.
 
 ### Lab 6.3 — Correlation and MITRE ATT&CK mapping (Topic: SOC workflow)
 
@@ -478,7 +478,7 @@ gaps.
 success pattern (a likely compromise) is missed — correlation across events is what elevates
 noise into a real detection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Alert triage and tuning (Topic: SOC operations)
 
@@ -503,7 +503,7 @@ sources to cut false positives, and escalate real ones, so analysts spend time o
 positives and miss the real alert (alert fatigue) — enrichment and tuning are what keep the signal
 above the noise.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

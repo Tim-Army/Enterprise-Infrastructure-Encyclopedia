@@ -144,7 +144,7 @@ view); Solutions Enabler (`sym*`) is the scriptable CLI, with Unisphere for the 
 **Negative test:** create a masking view missing the initiator group; the host sees
 no devices — all three groups plus the masking view are required for access.
 
-**Cleanup:** `symsg -sid 001 delete LAB-SG -force` and delete the device.
+**Rollback:** `symsg -sid 001 delete LAB-SG -force` and delete the device.
 
 ### Lab 4.2 — PowerMax SRDF replication (PowerMax Operate)
 
@@ -163,7 +163,7 @@ enterprise DR and continuous availability.
 **Negative test:** put SRDF/S over a long-distance high-latency link; host write
 latency spikes — synchronous mode requires metro distance, async for longer.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — PowerMax TimeFinder SnapVX (PowerMax Operate)
 
@@ -181,7 +181,7 @@ host-accessible targets) for backup, test/dev, and instant restore.
 **Negative test:** link a SnapVX target smaller than the source; the link fails —
 the linked target must match the source device size.
 
-**Cleanup:** `symsnapvx -sid 001 -sg LAB-SG -name LAB-SNAP terminate`.
+**Rollback:** `symsnapvx -sid 001 -sg LAB-SG -name LAB-SNAP terminate`.
 
 ### Lab 4.4 — PowerScale cluster and SmartPools (PowerScale Deploy)
 
@@ -201,7 +201,7 @@ scaling to petabytes.
 **Negative test:** a file-pool policy targeting a tier with no capacity leaves data on
 the default pool — the target node pool must have space.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — PowerScale SMB/NFS exports (PowerScale Deploy)
 
@@ -221,7 +221,7 @@ security model, so the same data is accessible to Windows, Unix, and analytics.
 **Negative test:** access an SMB share with no permitted user/ACL; access is denied —
 the share plus file-system ACLs govern access.
 
-**Cleanup:** `isi smb shares delete LAB` and `isi nfs exports delete <id>`.
+**Rollback:** `isi smb shares delete LAB` and `isi nfs exports delete <id>`.
 
 ### Lab 4.6 — PowerScale SyncIQ replication (PowerScale Maintenance)
 
@@ -240,7 +240,7 @@ directory granularity with configurable RPO.
 **Negative test:** a SyncIQ policy whose target directory is not writable/prepared
 fails the job — the target cluster must be ready to receive.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.7 — ECS object storage (ECS Deploy)
 
@@ -260,7 +260,7 @@ active/active object access.
 **Negative test:** write to a bucket in a namespace the credential is not entitled to;
 ECS returns access-denied — namespace/bucket policy governs access.
 
-**Cleanup:** `aws --endpoint-url ... s3 rb s3://lab-ecs-bucket --force`.
+**Rollback:** `aws --endpoint-url ... s3 rb s3://lab-ecs-bucket --force`.
 
 ### Lab 4.8 — XtremIO provisioning (XtremIO Operate)
 
@@ -281,7 +281,7 @@ and databases.
 **Negative test:** expect high dedup on unique/encrypted data; XtremIO's ratio drops —
 inline dedup depends on data redundancy.
 
-**Cleanup:** `remove-volume vol-name="LAB-VOL"`.
+**Rollback:** `remove-volume vol-name="LAB-VOL"`.
 
 ### Lab 4.9 — VPLEX / Metro Node virtual volumes (VPLEX Operate)
 
@@ -302,7 +302,7 @@ and metro continuous availability.
 suspends the losing side per the detach rule — the witness/detach policy decides which
 site continues.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.10 — Storage Resource Manager reporting (Storage Resource Manager)
 
@@ -320,7 +320,7 @@ planning and compliance.
 **Negative test:** expect reporting on an array SRM has not discovered/collected;
 it is absent — SRM reports only on collected systems.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

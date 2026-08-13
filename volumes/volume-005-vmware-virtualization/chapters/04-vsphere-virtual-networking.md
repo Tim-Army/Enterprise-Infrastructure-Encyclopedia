@@ -440,7 +440,7 @@ configured once at vCenter and spans all hosts, giving consistent networking, ad
 **Negative test:** manage networking on dozens of hosts with per-host standard switches; a port-group
 change means editing every host — a distributed switch applies it once cluster-wide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Port groups and VLANs (Topic: Port groups)
 
@@ -459,7 +459,7 @@ VMs onto the physical VLANs trunked to the hosts, integrating virtual and physic
 **Negative test:** assign a VM to a port group whose VLAN is not trunked to the host uplinks; the VM has
 no external connectivity — the port-group VLAN must match a VLAN the physical switch trunks.
 
-**Cleanup:** `Remove-VDPortgroup "App-VLAN20"`.
+**Rollback:** `Remove-VDPortgroup "App-VLAN20"`.
 
 ### Lab 4.3 — Network validation (Topic: Verification)
 
@@ -479,7 +479,7 @@ on.
 **Negative test:** assume vMotion will work without testing the vMotion VMkernel network; if `vmkping`
 on that vmk fails, migrations fail — validate each VMkernel network before relying on its service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -281,7 +281,7 @@ possible for every service in it.
 **Negative test:** maintain the integrated environment by hand; it cannot be reproduced, reviewed, or
 rebuilt, and drifts continuously — IaC is what makes a multi-service environment manageable.
 
-**Cleanup:** none (the code is the environment).
+**Rollback:** none (the code is the environment).
 
 ### Lab 6.2 — Automated delivery pipeline (Topic: CI/CD)
 
@@ -309,7 +309,7 @@ to the integrated environment is tested, reviewed, and reversible.
 un-reviewed, and drift from code — the pipeline is the gated path that keeps the environment
 consistent and auditable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Configuration convergence and drift (Topic: Convergence)
 
@@ -328,7 +328,7 @@ manual changes and failures are automatically remediated across every integrated
 **Negative test:** apply config once and never re-converge; services drift as ad-hoc changes accumulate
 — scheduled convergence keeps the environment consistent with its source of truth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Full-environment rebuild from code (Topic: Reproducibility)
 
@@ -349,7 +349,7 @@ is code, so it can be rebuilt for DR (Chapter 09), for a new site, or after a mi
 not in code; the rebuild stalls on the undocumented pieces — full IaC coverage is what makes the
 environment truly reproducible.
 
-**Cleanup:** none (rebuild is the intended capability).
+**Rollback:** none (rebuild is the intended capability).
 
 ## Lab Verification
 

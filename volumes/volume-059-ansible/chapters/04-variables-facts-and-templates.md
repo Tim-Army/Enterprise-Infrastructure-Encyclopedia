@@ -70,7 +70,7 @@ ansible-playbook vars.yml -e greeting="from extra-vars"
 **Negative test:** expect the play var to win over `-e`; **extra-vars** has the highest
 precedence — know the order.
 
-**Cleanup:** `rm -f vars.yml`.
+**Rollback:** `rm -f vars.yml`.
 
 ### Lab 4.2 — Use facts
 
@@ -85,7 +85,7 @@ ansible localhost -m ansible.builtin.setup -a "filter=ansible_python_version"
 **Negative test:** hard-code the OS/version in a play; **facts** let one play adapt per
 host.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Register task output
 
@@ -106,7 +106,7 @@ using output downstream.
 **Negative test:** re-run the command to get the value again; **register** captures it once
 for reuse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Render a template
 
@@ -128,7 +128,7 @@ ansible-playbook tmpl.yml && cat /tmp/ansible_motd.txt
 **Negative test:** build the file with `copy` + inline string interpolation; **template**
 renders Jinja2 with all vars/facts — use it for generated files.
 
-**Cleanup:** `rm -f motd.j2 tmpl.yml /tmp/ansible_motd.txt`.
+**Rollback:** `rm -f motd.j2 tmpl.yml /tmp/ansible_motd.txt`.
 
 ## Lab Verification
 

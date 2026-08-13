@@ -90,7 +90,7 @@ aligns to.
 **Negative test:** study against v12/VMCE material; VMCE+ is **v13** — confirm the build and use v13
 content.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Disconnect-VBRServer
@@ -118,7 +118,7 @@ PY
 
 **Negative test:** plan to sit **VMCSE** without **VMCE+**; VMCE+ is a hard prerequisite — earn it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Confirm the edition and training path
 
@@ -150,7 +150,7 @@ PY
 **Negative test:** assume any single course qualifies you; **all three** trainings are required for
 VMCE+ — complete the full path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

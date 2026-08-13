@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: groups and policy authored once in CloudVision, enforced at line rate on every switch, telemetry centralized.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Macro and micro together at scale (design)
 
@@ -26,7 +26,7 @@
 
 **Expected result (on paper).** A design note: micro for the many, macro-redirect for the few — line-rate segmentation plus targeted inspection.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -46,7 +46,7 @@ echo "MSS enforces on the EOS fabric; off-fabric endpoints and L7 need macro red
 
 **Negative test.** Assume MSS secures every workload. It secures fabric-attached endpoints; a workload not behind an EOS switch needs another control applying consistent policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Enabling protect mode everywhere on day one. A false positive autonomously isolates a domain controller — a self-inflicted outage; detect-first on sensitive groups surfaces and tunes false positives before autonomy acts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

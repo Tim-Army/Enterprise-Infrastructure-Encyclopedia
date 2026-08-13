@@ -74,7 +74,7 @@ ansible-playbook site.yml
 **Negative test:** use `shell: echo ... > file`; it reports **changed every run** — the
 `copy` module is idempotent.
 
-**Cleanup:** `rm -f /tmp/ansible_marker.txt`.
+**Rollback:** `rm -f /tmp/ansible_marker.txt`.
 
 ### Lab 3.2 — Prove idempotence
 
@@ -89,7 +89,7 @@ ansible-playbook site.yml
 **Negative test:** expect changes on every run; a **desired-state** module converges and
 then reports ok — that's correct.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Check mode and diff
 
@@ -106,7 +106,7 @@ preview.
 **Negative test:** apply changes to production untested; **`--check --diff`** previews
 first — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Handlers
 
@@ -130,7 +130,7 @@ actions.
 **Negative test:** restart the service every run unconditionally; a **handler** fires only
 on change — avoid needless restarts.
 
-**Cleanup:** `rm -f /tmp/ansible_cfg.txt`.
+**Rollback:** `rm -f /tmp/ansible_cfg.txt`.
 
 ## Lab Verification
 

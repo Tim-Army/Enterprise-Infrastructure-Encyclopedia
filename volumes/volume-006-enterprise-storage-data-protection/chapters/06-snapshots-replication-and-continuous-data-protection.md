@@ -421,7 +421,7 @@ reserved space to observe the resulting failure mode.
    demonstrating exactly why proactive snapshot-reserve monitoring
    ([Chapter 9](09-storage-automation-observability-capacity-and-lifecycle-operations.md)) is required rather than optional.
 
-**Cleanup**
+**Rollback**
 
 7. Remove the snapshot (if still present), unmount and remove the origin,
    and tear down the volume group and loopback device:

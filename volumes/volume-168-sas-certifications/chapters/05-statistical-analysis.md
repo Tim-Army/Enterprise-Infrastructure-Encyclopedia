@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Reporting a regression's predictions without checking fit, significance, or assumptions. A poorly fitting or assumption-violating model looks authoritative but misleads; assessing R², significance, and diagnostics is what makes a statistical conclusion trustworthy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

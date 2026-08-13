@@ -82,7 +82,7 @@ nodes section.
 **Negative test:** run a cluster at RF1; **redundancy factor 2+** protects against a
 node/disk failure — verify resiliency.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Manage cluster storage
 
@@ -99,7 +99,7 @@ ncli container ls name=lab-ctr
 **Negative test:** enable **on-disk dedup** for a VDI-unfriendly workload; match the
 efficiency to the data or you waste CPU/RAM.
 
-**Cleanup:** `ncli container remove name=lab-ctr`.
+**Rollback:** `ncli container remove name=lab-ctr`.
 
 ### Lab 3.3 — Configure cluster networking and security
 
@@ -116,7 +116,7 @@ networking/security section.
 
 **Negative test:** put all VMs on one flat network; use **VLANs + Flow** to segment.
 
-**Cleanup:** `acli net.delete lab-net`.
+**Rollback:** `acli net.delete lab-net`.
 
 ### Lab 3.4 — Analyze and remediate performance issues
 
@@ -133,7 +133,7 @@ performance section.
 **Negative test:** add hardware blindly; **analyze first** (CPU vs storage vs network)
 then remediate the real bottleneck.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Configure, analyze, and remediate alerts and events
 
@@ -149,7 +149,7 @@ ncli alert ls | head
 **Negative test:** disable noisy alerts wholesale; **tune thresholds** and remediate
 root cause instead of muting.
 
-**Cleanup:** none (read-only unless you acknowledge).
+**Rollback:** none (read-only unless you acknowledge).
 
 ### Lab 3.6 — Manage VM deployment and configuration
 
@@ -166,7 +166,7 @@ acli vm.on lab-vm
 
 **Negative test:** oversize every VM; right-size vCPU/RAM to avoid contention.
 
-**Cleanup:** `acli vm.off lab-vm && acli vm.delete lab-vm`.
+**Rollback:** `acli vm.off lab-vm && acli vm.delete lab-vm`.
 
 ## Lab Verification
 

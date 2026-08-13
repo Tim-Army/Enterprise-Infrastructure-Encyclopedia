@@ -365,7 +365,7 @@ unresponsive iDRAC that does not disrupt the running operating system.
 running OS — an iDRAC reset (`racreset`) recovers the controller alone, so try it before any host
 action.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Server power control (Topic: Power actions)
 
@@ -393,7 +393,7 @@ actions, and the graceful path avoids data loss when the OS is responsive.
 damage and lost work — prefer `graceshutdown`/graceful restart, reserving forced actions for a hung
 host.
 
-**Cleanup:** power the server back to its intended state.
+**Rollback:** power the server back to its intended state.
 
 ### Lab 2.3 — Configuration and factory reset (Topic: Reset)
 
@@ -415,7 +415,7 @@ being-repurposed controller; a full factory reset via the GUI/LC goes further to
 settings; you lose management connectivity to it — understand which settings a reset clears
 (especially network) before running it remotely.
 
-**Cleanup:** reconfigure the iDRAC (network/users) after the lab reset.
+**Rollback:** reconfigure the iDRAC (network/users) after the lab reset.
 
 ### Lab 2.4 — Part-replacement recovery (Topic: Hardware recovery)
 
@@ -437,7 +437,7 @@ Restore), minimizing manual reconfiguration after hardware service.
 firmware/config do not carry over and must be restored by hand — the LC's Easy Restore is what
 automates recovery, but only if enabled beforehand.
 
-**Cleanup:** none (leave LC attributes enabled).
+**Rollback:** none (leave LC attributes enabled).
 
 ## Lab Verification
 

@@ -73,7 +73,7 @@ point-to-point L2 service.
 **Negative test:** create the Epipe with a SAP but **no spoke-SDP**; it can't reach the far site —
 bind the SDP.
 
-**Cleanup:** delete the epipe and SDP.
+**Rollback:** delete the epipe and SDP.
 
 ### Lab 6.2 — Configure a VPLS
 
@@ -91,7 +91,7 @@ A:PE1# show service id 200 base
 **Negative test:** use a VPLS where a simple **Epipe** suffices (two sites only); match the service
 to the topology.
 
-**Cleanup:** delete the vpls.
+**Rollback:** delete the vpls.
 
 ### Lab 6.3 — Configure a VPRN (L3VPN)
 
@@ -111,7 +111,7 @@ MP-BGP VPN-IPv4.
 **Negative test:** omit the **route-target**; VPN routes won't import/export between PEs — set the
 RT.
 
-**Cleanup:** delete the vprn.
+**Rollback:** delete the vprn.
 
 ### Lab 6.4 — Verify services end to end
 
@@ -128,7 +128,7 @@ delivered.
 **Negative test:** declare a service working without checking **SDP/transport**; verify it is up
 end to end.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — EVPN concept
 
@@ -145,7 +145,7 @@ end to end.
 **Negative test:** rely on flood-and-learn at scale; **EVPN** distributes reachability via BGP —
 prefer it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

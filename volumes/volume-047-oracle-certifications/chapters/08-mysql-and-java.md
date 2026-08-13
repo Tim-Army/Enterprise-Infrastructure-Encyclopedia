@@ -93,7 +93,7 @@ transactions on **InnoDB**, a MySQL fundamental.
 **Negative test:** run the transfer on a **MyISAM** table; it has no transactions,
 so a mid-way failure leaves inconsistent data — use InnoDB.
 
-**Cleanup:** `DROP TABLE accounts;`
+**Rollback:** `DROP TABLE accounts;`
 
 ### Lab 8.2 — MySQL: users and privileges
 
@@ -112,7 +112,7 @@ access, a MySQL DBA skill.
 **Negative test:** `GRANT ALL PRIVILEGES ON *.* ... WITH GRANT OPTION`; that is
 superuser — scope to the schema and verbs needed.
 
-**Cleanup:** `DROP USER 'app'@'%';`
+**Rollback:** `DROP USER 'app'@'%';`
 
 ### Lab 8.3 — MySQL: backup and replication
 
@@ -129,7 +129,7 @@ backup/HA area of the MySQL DBA exam.
 **Negative test:** `mysqldump` without `--single-transaction` on a busy InnoDB DB;
 you risk an inconsistent snapshot — use it.
 
-**Cleanup:** `rm -f shop.sql`
+**Rollback:** `rm -f shop.sql`
 
 ### Lab 8.4 — Java SE 21: records and sealed classes
 
@@ -148,7 +148,7 @@ Java SE 21 language features on the exam.
 **Negative test:** write a verbose mutable class with manual getters/equals/
 hashCode; a **record** generates them and is immutable — use it for data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — Java SE 21: pattern matching for switch
 
@@ -169,7 +169,7 @@ double area(Shape s) {
 **Negative test:** add an unreachable `default` and skip a permitted subtype; with
 **sealed** types the compiler enforces exhaustiveness — rely on it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — Java SE 21: virtual threads
 
@@ -189,7 +189,7 @@ the Java 21 concurrency feature the exam covers.
 **Negative test:** spawn 10,000 **platform** threads; that exhausts resources —
 **virtual threads** make massive blocking concurrency cheap.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — Java SE 21: streams and collections
 
@@ -209,7 +209,7 @@ the collections/streams core of the Java exam.
 **Negative test:** hand-write nested loops for this; the **Streams API** is clearer
 and composable — use it for data processing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

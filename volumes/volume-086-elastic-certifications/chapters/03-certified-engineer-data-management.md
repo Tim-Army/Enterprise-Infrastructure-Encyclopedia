@@ -79,7 +79,7 @@ curl -s -k -u elastic:$PW -X PUT "https://localhost:9200/orders" -H 'Content-Typ
 **Negative test:** index `order_id` as `text` and try to aggregate on it; use `keyword` for exact-match
 and aggregation fields.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/orders"
@@ -106,7 +106,7 @@ curl -s -k -u elastic:$PW -X PUT "https://localhost:9200/logs-dyn" -H 'Content-T
 **Negative test:** rely on default dynamic mapping (strings become `text` + `keyword` multi-field,
 doubling storage); a **dynamic template** controls it.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/logs-dyn"
@@ -136,7 +136,7 @@ ready.
 **Negative test:** write time-series logs to one ever-growing index; use a **data stream** so rollover
 manages size.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_data_stream/logs-app-default"
@@ -165,7 +165,7 @@ lifecycle automated.
 **Negative test:** keep every index on the hot tier indefinitely; storage and cost grow without bound —
 attach an **ILM** policy.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_ilm/policy/logs-policy"

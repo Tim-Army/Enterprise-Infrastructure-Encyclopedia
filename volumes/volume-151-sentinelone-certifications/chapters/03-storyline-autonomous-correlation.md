@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Triaging each event as a separate alert. The analyst must manually determine which of the seven are related — slow and error-prone — where Storyline has already drawn the causal chain into one story.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Correlation cuts MTTR and alert load
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Staffing a SOC to triage every raw event as an alert. The volume is impossible and real attacks hide in the noise; correlating into stories makes the workload tractable and surfaces the real attacks.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

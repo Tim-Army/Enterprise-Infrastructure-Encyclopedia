@@ -476,7 +476,7 @@ are created by policy, not physical reconfiguration.
 **Negative test:** expect two overlay segments to communicate with no gateway between them; overlay
 segments are isolated L2 domains — a Tier-1 gateway is required to route between them.
 
-**Cleanup:** delete the lab segments/gateway.
+**Rollback:** delete the lab segments/gateway.
 
 ### Lab 11.2 — Distributed firewall (Topic: Micro-segmentation)
 
@@ -503,7 +503,7 @@ security value.
 **Negative test:** write firewall rules by IP address for dynamic/auto-scaling workloads; addresses
 churn and rules break — group/tag-based membership keeps the policy correct as workloads change.
 
-**Cleanup:** remove the lab DFW policy/groups.
+**Rollback:** remove the lab DFW policy/groups.
 
 ### Lab 11.3 — Network services (Topic: NSX services)
 
@@ -525,7 +525,7 @@ the distributed firewall.
 Tier-0; overlay addresses are not routable externally without the gateway service — the edge-hosted
 gateway is what bridges overlay to physical.
 
-**Cleanup:** remove the lab gateway service.
+**Rollback:** remove the lab gateway service.
 
 ## Lab Verification
 

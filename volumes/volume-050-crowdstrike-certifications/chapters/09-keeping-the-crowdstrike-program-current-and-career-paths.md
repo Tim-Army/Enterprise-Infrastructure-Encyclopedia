@@ -85,7 +85,7 @@ scope before you study).
 **Negative test:** trust a cached list; the vendor adds specialist exams — confirm on
 crowdstrike.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path
 
@@ -107,7 +107,7 @@ PY
 **Negative test:** collect exams at random; **sequence by role** for a coherent skill
 path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

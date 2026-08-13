@@ -87,7 +87,7 @@ myapp
 **Negative test:** ship logs with no `service`/`source`; set them so logs correlate and get the right
 pipeline.
 
-**Cleanup:** remove the conf if not needed.
+**Rollback:** remove the conf if not needed.
 
 ### Lab 7.2 — Parse logs with a grok processor
 
@@ -112,7 +112,7 @@ PY
 **Negative test:** leave the log as raw text and try to alert on 5xx rate; **parse** `http.status_code`
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Reason about indexes and exclusion filters
 
@@ -136,7 +136,7 @@ control via exclusion filters.
 **Negative test:** index all 25M logs/day including debug; use **exclusion filters** to sample/drop
 low-value logs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Create a facet and search
 
@@ -158,7 +158,7 @@ PY
 **Negative test:** grep raw messages for "500"; create a **facet** on the parsed field and search/aggregate
 it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

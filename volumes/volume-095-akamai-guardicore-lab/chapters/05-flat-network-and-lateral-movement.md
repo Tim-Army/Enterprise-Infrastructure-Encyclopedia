@@ -43,7 +43,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Nothing is blocked to find — and that is the finding. A flat network has no negative result, which is why it is dangerous.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -63,7 +63,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Try to justify flow 3. The HMI's only job is polling the PLC; every "convenient" allow you cannot tie to a real dependency keeps estates flat. Keep flow 3 a "no".
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -88,7 +88,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own query from `gc-app01` (`~/checkdb.sh` → 3); it also works. On a flat network the network cannot tell the app from the attacker. Segmentation supplies that difference — and, as Chapter 06 shows, Guardicore's process-aware Reveal makes the difference visible even when the addresses look alike.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

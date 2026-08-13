@@ -263,7 +263,7 @@ free or a portal/login you already hold; download nothing for this lab).
    lockstep with `SOFTWARE_VERSIONS.md`. **Expected result:** a concrete,
    justified review-trigger recommendation.
 
-**Cleanup:** None; this lab is read-only against external sources and
+**Rollback:** None; this lab is read-only against external sources and
 downloads nothing.
 
 ## Lab Verification

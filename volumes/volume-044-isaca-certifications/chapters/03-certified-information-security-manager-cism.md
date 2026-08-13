@@ -98,7 +98,7 @@ the governance alignment CISM Domain 1 expects.
 **Negative test:** build a security strategy with no link to business goals;
 governance ties security to **enterprise objectives**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — CISM D2: Information Security Risk Management (20%)
 
@@ -121,7 +121,7 @@ risk-treatment decisions a security manager owns (Domain 2).
 **Negative test:** mitigate every risk regardless of cost; treatment is an
 **economic** decision balanced against exposure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — CISM D3: Information Security Program (33%)
 
@@ -143,7 +143,7 @@ management that is CISM's largest domain (Domain 3).
 **Negative test:** run a program with no metrics; you cannot manage or report what
 you do not measure — define KPIs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — CISM D4: Incident Management (30%)
 
@@ -167,7 +167,7 @@ incident-management decision-making of Domain 4.
 **Negative test:** treat every incident as SEV1; over-escalation causes fatigue —
 classify by impact and spread, then communicate accordingly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

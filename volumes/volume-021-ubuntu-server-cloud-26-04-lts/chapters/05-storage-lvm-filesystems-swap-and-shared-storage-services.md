@@ -393,7 +393,7 @@ partitions with `parted` (or `fdisk`) and choosing GPT for modern disks is a sto
 **Negative test:** create a partition but skip re-reading the table (`partprobe`) on a busy disk;
 the kernel may not see it — confirm with `lsblk` before building on it.
 
-**Cleanup:** carried through Lab 5.2's cleanup.
+**Rollback:** carried through Lab 5.2's cleanup.
 
 ### Lab 5.2 — Logical Volume Management (Topic: Configuring storage)
 
@@ -415,7 +415,7 @@ grows the filesystem on it).
 **Negative test:** `lvextend` past the VG's free space; it fails with insufficient extents — an LV
 cannot exceed its VG, so extend the VG (add a PV) first.
 
-**Cleanup:** carried through Lab 5.3's cleanup.
+**Rollback:** carried through Lab 5.3's cleanup.
 
 ### Lab 5.3 — Filesystems and persistent mounts (Topic: Creating file systems)
 
@@ -438,7 +438,7 @@ sudo resize2fs /dev/datavg/datalv       # grow ext4 to the LV size after lvexten
 **Negative test:** put a bad UUID/option in `/etc/fstab`; the next boot drops to emergency mode —
 always run `mount -a` after editing `fstab` to catch errors before rebooting.
 
-**Cleanup:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
+**Rollback:** `sudo umount /data`; remove the `fstab` line; `sudo lvremove -y /dev/datavg/datalv;
 sudo vgremove -y datavg; sudo pvremove /dev/vdb1; sudo wipefs -a /dev/vdb`.
 
 ### Lab 5.4 — Swap space (Topic: Configuring storage)
@@ -460,7 +460,7 @@ default installs often use a `/swap.img` file rather than a partition.
 **Negative test:** `swapon` a device you never ran `mkswap` on; it fails "invalid argument" — swap
 must be formatted before it can be enabled.
 
-**Cleanup:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
+**Rollback:** `sudo swapoff /dev/datavg/swaplv`; remove the swap `fstab` line;
 `sudo lvremove -y /dev/datavg/swaplv`.
 
 ### Lab 5.5 — Network storage: NFS client (Topic: Configuring services)
@@ -482,7 +482,7 @@ prevents a boot hang before networking is ready.
 **Negative test:** add an NFS entry without `_netdev`; boot can hang or the mount fails before the
 network is up — network mounts need `_netdev` to order correctly.
 
-**Cleanup:** `sudo umount /mnt/shared`; remove the `fstab` line.
+**Rollback:** `sudo umount /mnt/shared`; remove the `fstab` line.
 
 ## Lab Verification
 

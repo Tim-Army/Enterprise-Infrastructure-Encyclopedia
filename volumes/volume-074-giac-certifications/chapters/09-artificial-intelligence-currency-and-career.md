@@ -82,7 +82,7 @@ detection (GMLE).
 **Negative test:** ship a model without measuring **precision/recall**; it may flag everything —
 **evaluate** before deploying.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — GAIPS: assess an LLM pipeline risk
 
@@ -104,7 +104,7 @@ PY
 **Negative test:** connect an LLM directly to privileged tools with unfiltered user input; **prompt
 injection** becomes command execution — segment and validate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -126,7 +126,7 @@ a focus-area stack.
 **Negative test:** let a cert lapse past **four years**; it's no longer current — renew via **CPE or
 re-exam** ahead of expiry.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

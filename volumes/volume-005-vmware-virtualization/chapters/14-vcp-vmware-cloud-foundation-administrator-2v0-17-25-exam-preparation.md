@@ -312,7 +312,7 @@ a unit.
 **Negative test:** query a workload domain ID that does not exist; the API
 returns `404`, confirming domains are discrete managed objects, not tags.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 14.2 — VMware Compute Fundamentals (Objective 2.2)
 
@@ -330,7 +330,7 @@ mode — the compute foundation a VCF domain stands on.
 is a newer baseline; admission is refused — EVC enforces vMotion
 compatibility across the domain.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 14.3 — VMware Network Fundamentals (Objective 2.4)
 
@@ -350,7 +350,7 @@ per-host standard switches.
 **Negative test:** attach a host to the domain with only a standard switch;
 VCF domain networking validation flags it — the VDS is mandatory.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 14.4 — VCF: Deploy and Configure (Objective 4.1)
 
@@ -372,7 +372,7 @@ spec passed validation and is safe to deploy.
 validation returns `FAILED` with the offending host — VCF validates before
 provisioning, not after.
 
-**Cleanup:** none (validation only; no cluster created).
+**Rollback:** none (validation only; no cluster created).
 
 ### Lab 14.5 — VCF: Manage (Objective 4.2)
 
@@ -391,7 +391,7 @@ administration delegated consistently across every domain.
 **Negative test:** a viewer-role principal attempts to start a domain
 workflow; the API returns `403`, proving role scoping is enforced fleet-wide.
 
-**Cleanup:** `Get-VIPermission | Where-Object {$_.Principal -match 'vcf-admins'} | Remove-VIPermission -Confirm:$false`.
+**Rollback:** `Get-VIPermission | Where-Object {$_.Principal -match 'vcf-admins'} | Remove-VIPermission -Confirm:$false`.
 
 ### Lab 14.6 — VCF: Operations (Objective 4.3)
 
@@ -412,7 +412,7 @@ health view VCF Operations centralizes across the fleet.
 capacity trend spanning domains is missed — the cross-domain view VCF
 Operations exists to provide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 14.7 — Core administrator workflow (integrative)
 
@@ -502,7 +502,7 @@ style workflow, with a deliberate prerequisite-failure negative test.
    documented understanding of each prerequisite gate the import
    workflow would enforce.
 
-8. **Cleanup:** remove the test RBAC role and account, remove the lab
+8. **Rollback:** remove the test RBAC role and account, remove the lab
    workload-domain-style cluster if created solely for this exercise, and
    restore any hosts to their prior state.
 

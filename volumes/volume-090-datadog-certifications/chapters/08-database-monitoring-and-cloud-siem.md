@@ -83,7 +83,7 @@ ranking — the DBM view.
 **Negative test:** analyze each literal query separately; DBM **normalizes** so you see the real top
 consumer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Read an explain plan
 
@@ -105,7 +105,7 @@ column.
 
 **Negative test:** guess at the slowness; read the **explain plan** DBM captures to see the scan.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Model a Cloud SIEM detection rule
 
@@ -132,7 +132,7 @@ defensive detection.
 
 **Negative test:** alert on a single failed login (noise); a **threshold** rule distinguishes an attack.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Triage a security signal
 
@@ -155,7 +155,7 @@ PY
 **Negative test:** close signals without investigating the underlying **logs**; pivot into the evidence
 and respond.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -373,7 +373,7 @@ underpins logging, TLS, and Kerberos.
 **Negative test:** disable time sync and let the clock drift across a maintenance window; logs and
 certificates skew — NTP keeps the clock correct, and `timedatectl` confirms it.
 
-**Cleanup:** none (time sync is expected in operation).
+**Rollback:** none (time sync is expected in operation).
 
 ### Lab 7.2 — DNS resolution with systemd-resolved (Topic: Networking services)
 
@@ -393,7 +393,7 @@ cat /run/systemd/resolve/resolv.conf | grep nameserver | head
 **Negative test:** hand-edit `/etc/resolv.conf` to set DNS; systemd-resolved overwrites it — set
 DNS via netplan (`nameservers:`) or `resolvectl`, which persist correctly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Web server with the firewall (Topic: Configuring servers)
 
@@ -414,7 +414,7 @@ correct content permissions; ufw app profiles simplify the firewall rule.
 **Negative test:** start nginx but leave ufw's default-deny with no `Nginx HTTP` allow; remote
 clients cannot reach it — the service and the firewall rule are both required.
 
-**Cleanup:** `sudo systemctl disable --now nginx; sudo ufw delete allow 'Nginx HTTP'`.
+**Rollback:** `sudo systemctl disable --now nginx; sudo ufw delete allow 'Nginx HTTP'`.
 
 ### Lab 7.4 — Database service (Topic: Configuring services)
 
@@ -435,7 +435,7 @@ grants); Ubuntu ships PostgreSQL and MySQL as packaged services.
 **Negative test:** grant the app user superuser instead of database-scoped rights; it can touch
 every database — scope grants to the specific database, not the whole cluster.
 
-**Cleanup:** `sudo -u postgres psql -c "DROP DATABASE labdb; DROP USER app;"`; disable postgresql
+**Rollback:** `sudo -u postgres psql -c "DROP DATABASE labdb; DROP USER app;"`; disable postgresql
 if lab-only.
 
 ## Lab Verification

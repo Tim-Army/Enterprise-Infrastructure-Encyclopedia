@@ -24,7 +24,7 @@ sudo dmesg | grep -c 'CX-DENY'                                                 #
 
 **Expected result.** Stateful policy with default-drop and the two permits, sanctioned flows tracked, denies recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -45,7 +45,7 @@ sudo dmesg | grep -c 'CX-DENY'                                                 #
 
 **Negative test.** The classic stateful mistake is adding a **reverse permit** "to make replies work" — replies already work by state, and the reverse permit opens an inbound hole. Rely on `established,related`, not a mirror rule.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -64,7 +64,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the `cx` table behind keeps enforcing on the host; remove it too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

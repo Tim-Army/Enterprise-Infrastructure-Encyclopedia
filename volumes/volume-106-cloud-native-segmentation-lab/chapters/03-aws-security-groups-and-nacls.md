@@ -63,7 +63,7 @@ An error occurred (InvalidSubnet.Conflict) ... overlaps with another subnet
 
 Overlap is rejected — the VPC enforces non-overlapping subnets.
 
-**Cleanup.** Deferred to Chapter 09 (the estate must persist across this chapter).
+**Rollback.** Deferred to Chapter 09 (the estate must persist across this chapter).
 
 ### Exercise 3.2 — Launch three instances behind one permissive SG
 
@@ -131,7 +131,7 @@ aws ec2 run-instances --image-id ami-000invalid --instance-type t3.micro
 An error occurred (InvalidAMIID.NotFound) ...
 ```
 
-**Cleanup.** Deferred to Chapter 09.
+**Rollback.** Deferred to Chapter 09.
 
 ### Exercise 3.3 — Prove the lateral movement
 
@@ -163,7 +163,7 @@ OPEN
 
 Both work now. The goal: keep `web → db` open while closing `hmi → db`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.4 — Segment with security groups that reference each other
 
@@ -225,7 +225,7 @@ aws ec2 describe-security-groups --group-ids $DBSG \
 # empty — no CIDR grants 5432; only the web SG does
 ```
 
-**Cleanup.** Keep the role SGs for Chapter 06 (comparison) and Chapter 09 (teardown).
+**Rollback.** Keep the role SGs for Chapter 06 (comparison) and Chapter 09 (teardown).
 
 ### Exercise 3.5 — Defense in depth with a stateless Network ACL
 
@@ -276,7 +276,7 @@ BLOCKED
 
 `web → db` now fails **despite the ingress allow**, because the reply cannot leave. Re-add the egress rule to restore it. This is the number-one NACL mistake — SGs never have it because they are stateful.
 
-**Cleanup.** Restore the egress rule if you removed it. Full teardown is Chapter 09.
+**Rollback.** Restore the egress rule if you removed it. Full teardown is Chapter 09.
 
 ## Summary and Completion Checklist
 

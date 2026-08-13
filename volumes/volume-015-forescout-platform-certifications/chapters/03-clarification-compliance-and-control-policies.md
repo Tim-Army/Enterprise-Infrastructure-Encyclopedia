@@ -340,7 +340,7 @@ actions, evaluated in order, which is the mental model the whole platform runs o
 **Negative test:** put a broad catch-all sub-rule above a specific one; the specific rule
 never matches — sub-rule order decides the outcome, exactly like a firewall rule base.
 
-**Cleanup:** disable/delete the lab policy and remove the `Windows-Hosts` group if
+**Rollback:** disable/delete the lab policy and remove the `Windows-Hosts` group if
 created for the lab.
 
 ### Lab 3.2 — Clarification policy (Topic: Clarification)
@@ -363,7 +363,7 @@ can I do to it," which every downstream compliance/control policy depends on.
 inspection on hosts you cannot authenticate to; the check returns "unknown," not
 "compliant" or "not compliant" — manageability must be established first.
 
-**Cleanup:** disable the lab clarification policy.
+**Rollback:** disable the lab clarification policy.
 
 ### Lab 3.3 — Compliance policy with a grace period (Topic: Compliance)
 
@@ -385,7 +385,7 @@ self-correct before control acts.
 or remediation; a transient state (AV mid-update) locks out a legitimate user — the grace
 period is what prevents brittle, disruptive enforcement.
 
-**Cleanup:** set the policy's actions to audit-only or disable it.
+**Rollback:** set the policy's actions to audit-only or disable it.
 
 ### Lab 3.4 — Staged control actions (Topic: Control)
 
@@ -408,7 +408,7 @@ Enforcement/guest registration), so enforcement is proportionate and reversible.
 one host; a misscoped policy can quarantine production en masse — always stage control on
 a single host and widen scope only after verifying.
 
-**Cleanup:** remove the control actions (return the host to its production VLAN/ACL) and
+**Rollback:** remove the control actions (return the host to its production VLAN/ACL) and
 disable the lab policy; confirm the host regains normal access.
 
 ## Lab Verification

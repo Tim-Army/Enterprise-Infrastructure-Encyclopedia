@@ -318,7 +318,7 @@ is the prerequisite for Labs 6.2–6.5.
 gsop cannot run and the map errors — GigaSMART needs an engine (gsgroup) behind every
 operation.
 
-**Cleanup:** `no map alias gs-map`; `no gsop alias noop-op`; `no gsgroup alias gsg1`.
+**Rollback:** `no map alias gs-map`; `no gsop alias noop-op`; `no gsgroup alias gsg1`.
 
 ### Lab 6.2 — Packet slicing (Topic: Slicing)
 
@@ -344,7 +344,7 @@ how you feed header-only analysis (flow tools, some IDS) without shipping payloa
 full-packet forensic recorder); it loses the data it exists to inspect — slice only for tools
 that need headers, not payload.
 
-**Cleanup:** `no map alias slice-map`; `no gsop alias slice-64`.
+**Rollback:** `no map alias slice-map`; `no gsop alias slice-64`.
 
 ### Lab 6.3 — Data masking (Topic: Masking)
 
@@ -370,7 +370,7 @@ credentials, or PII out of the tool and its storage, a compliance-critical GigaS
 sensitive data now lives in that tool's storage and scope — masking at the fabric is what
 keeps it out.
 
-**Cleanup:** `no map alias mask-map`; `no gsop alias mask-pan`.
+**Rollback:** `no map alias mask-map`; `no gsop alias mask-pan`.
 
 ### Lab 6.4 — De-duplication (Topic: Deduplication)
 
@@ -396,7 +396,7 @@ information — de-duplication reclaims tool capacity wasted on identical copies
 the same packet many times, inflating load and skewing counts — dedup is what removes that
 waste before the tool.
 
-**Cleanup:** `no map alias dedup-map`; `no gsop alias dedup-op`.
+**Rollback:** `no map alias dedup-map`; `no gsop alias dedup-op`.
 
 ### Lab 6.5 — Application metadata intelligence (Topic: Application metadata)
 
@@ -423,7 +423,7 @@ the data a collector must store.
 records; it cannot ingest raw packets — the fabric generating the metadata (this gsop) is
 what feeds those tools.
 
-**Cleanup:** `no map alias amx-map`; `no gsop alias amx-op`.
+**Rollback:** `no map alias amx-map`; `no gsop alias amx-op`.
 
 ## Lab Verification
 

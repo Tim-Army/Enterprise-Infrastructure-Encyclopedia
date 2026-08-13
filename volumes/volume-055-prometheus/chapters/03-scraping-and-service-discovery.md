@@ -71,7 +71,7 @@ configuration.
 **Negative test:** point a job at an endpoint that isn't exposing `/metrics`; the target
 goes **down** — targets must expose Prometheus metrics.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Validate the config with promtool
 
@@ -88,7 +88,7 @@ file.
 **Negative test:** reload a config with a YAML typo; Prometheus **rejects the reload** —
 `promtool check` catches it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Relabel to drop a target
 
@@ -109,7 +109,7 @@ scrape_configs:
 **Negative test:** scrape everything then filter in queries; **relabel at scrape time**
 to avoid ingesting unwanted targets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Reload without restart
 
@@ -125,7 +125,7 @@ curl -sS -X POST "http://localhost:9090/-/reload" -w "HTTP %{http_code}\n"
 **Negative test:** POST `/-/reload` without `--web.enable-lifecycle`; it returns
 **403** — enable the lifecycle endpoint.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

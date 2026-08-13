@@ -32,7 +32,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432  && echo "hmi -> db:5432 REACH"
 
 **Negative test.** Look for a namespace that blocks cross-namespace traffic by default — there is none. Kubernetes namespaces do not isolate network traffic on their own; that is a common and dangerous misconception this lab corrects.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -51,7 +51,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432  && echo "hmi -> db:5432 REACH"
 
 **Negative test.** Express the policy by pod IP instead of label. Pod IPs change on every restart in Kubernetes, so an IP-based rule breaks the first time a pod reschedules. Policy must be label-based.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -70,7 +70,7 @@ kubectl exec -n ot hmi -- sh -c \
 
 **Negative test.** Re-run the legitimate `web → db` probe; it also works, over the same flat network. The cluster cannot tell the app tier from the operator until Calico policy gives it labels to enforce on.
 
-**Cleanup.** None — Chapter 06 begins closing this down.
+**Rollback.** None — Chapter 06 begins closing this down.
 
 ## Summary and Completion Checklist
 

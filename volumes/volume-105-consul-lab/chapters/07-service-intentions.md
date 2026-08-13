@@ -39,7 +39,7 @@ kubectl exec deploy/hmi -c hmi -- nc -z -w2 db 5432 || echo "hmi -> db BLOCKED"
 
 **Negative test.** The app is blocked too — default-deny denies the legitimate flow along with the attack, which is why the next step allows exactly `web → db` and nothing more.
 
-**Cleanup.** Keep the deny-all.
+**Rollback.** Keep the deny-all.
 
 ### Lab 7.2 — Allow the legitimate flows
 
@@ -79,7 +79,7 @@ kubectl exec deploy/hmi -c hmi -- nc -z -w2 db 5432 || echo "hmi -> db  DENIED (
 
 **Negative test.** Add `{ name: hmi, action: allow }` to the `db` intention and the operator gets in. Intentions are the whole control; add only the ones a real dependency needs. Remove it.
 
-**Cleanup.** Keep the intentions.
+**Rollback.** Keep the intentions.
 
 ### Lab 7.3 — Layer 7 intentions (Design Exercise + apply)
 
@@ -120,7 +120,7 @@ kubectl exec deploy/web -c web -- curl -s -o /dev/null -w "POST /post : %{http_c
 
 **Negative test.** Remove the `ServiceDefaults protocol: http` and the L7 permissions are ignored (the intention falls back to L4 allow/deny), so the POST succeeds. L7 intentions need the protocol declared.
 
-**Cleanup.** Keep the intentions.
+**Rollback.** Keep the intentions.
 
 ## Summary and Completion Checklist
 

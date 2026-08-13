@@ -29,7 +29,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.60.9.40 502  && echo "web->plc REAC
 
 **Negative test.** A closed port (`hmi->plc:22`) fails because the PLC runs nothing there — the PLC cannot be hardened; only an external control can protect it.
 
-**Cleanup.** None — Chapter 05 removes the direct path.
+**Rollback.** None — Chapter 05 removes the direct path.
 
 ### Exercise 4.2 — Name the legitimate flows as identity grants
 
@@ -48,7 +48,7 @@ Everything else — most importantly any source to `plc:502` without the `op-hmi
 
 **Negative test.** Expressing the plc rule as "10.60.1.30 may reach 502" (the operator's IP) is exactly the mistake Xage avoids — an IP can be spoofed or reassigned, and a stolen workstation keeps the grant. The grant must be to the *identity*, proven per connection.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Reproduce the attack on the legacy PLC
 
@@ -64,7 +64,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.60.9.40 502 && echo "PIVOT: comprom
 
 **Negative test.** Re-run the legitimate `op-hmi` path — for now it also just "reaches" by IP, indistinguishable from the attack. Only identity brokering will separate them.
 
-**Cleanup.** None — Chapter 05 inserts the brokers.
+**Rollback.** None — Chapter 05 inserts the brokers.
 
 ## Summary and Completion Checklist
 

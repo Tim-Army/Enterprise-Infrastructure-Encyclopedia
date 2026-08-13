@@ -107,7 +107,7 @@ EOF
 
 **Negative test:** Assuming you need an Orion/Observability deployment to study — the underlying math (availability percentages, utilization, baselines, wait-time attribution) is vendor-independent and is what the exams actually probe.
 
-**Cleanup:** `rm -rf ~/solarwinds-study` when done.
+**Rollback:** `rm -rf ~/solarwinds-study` when done.
 
 ### Lab 1.2 — Choose your exam and check the THWACK route
 
@@ -145,7 +145,7 @@ EOF
 
 **Negative test:** Booking "the SolarWinds exam" generically — there are eleven, and the Self-Hosted and SaaS platforms differ enough that preparing for the wrong one wastes the attempt.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

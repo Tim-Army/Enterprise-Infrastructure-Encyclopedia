@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Expecting a single multi-level "BeyondTrust Expert" ladder like some vendors. BeyondTrust's model is per-product Certified Administrator credentials; the breadth comes from certifying on each product you operate, not from climbing tiers.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The exam rule set as a decision
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Treating the 2-year expiry as a fee-only renewal. BeyondTrust requires purchasing new training and passing the current exam again — the renewal re-teaches the current product version, keeping the credential genuinely current.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -25,7 +25,7 @@ journalctl -t xbroker --no-pager | tail -3                                      
 
 **Expected result.** Grants correct, PLC accepting only from the broker, brokers listening, sessions logged.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -45,7 +45,7 @@ journalctl -t xbroker --no-pager | tail -3                                      
 
 **Negative test.** The most dangerous failure is an *alternate path*: a broker that works perfectly is useless if the asset is reachable another way. Verify isolation (no direct route) first, brokering second.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -65,7 +65,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the broker binary or `/etc/xage` behind leaves stale identity data on the host; remove them too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

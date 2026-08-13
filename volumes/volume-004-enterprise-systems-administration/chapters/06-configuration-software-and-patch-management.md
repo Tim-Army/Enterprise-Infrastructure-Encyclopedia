@@ -395,7 +395,7 @@ hand-fixed.
 **Negative test:** configure servers by hand or with one-off scripts; they drift apart and no source
 of truth exists — declarative config management keeps the fleet convergent to a defined state.
 
-**Cleanup:** revert lab-only state.
+**Rollback:** revert lab-only state.
 
 ### Lab 6.2 — Software deployment (Topic: Software distribution)
 
@@ -418,7 +418,7 @@ are approved, consistent, and auditable, not downloaded ad-hoc from the internet
 **Negative test:** let each admin download and install software from arbitrary web sources; versions
 diverge and supply-chain risk rises — a managed source/repo controls what is deployed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Patch management (Topic: Patching)
 
@@ -442,7 +442,7 @@ tooling (unattended-upgrades/WSUS/Intune) automating it and reporting compliance
 **Negative test:** patch reactively only after an incident; known-vulnerable systems stay exposed for
 weeks — a regular, automated patch cycle closes the window between disclosure and remediation.
 
-**Cleanup:** none (read-only in simulation mode).
+**Rollback:** none (read-only in simulation mode).
 
 ### Lab 6.4 — Drift detection and compliance (Topic: Compliance)
 
@@ -462,7 +462,7 @@ cause an incident or audit finding.
 **Negative test:** assume enforced-once configuration stays compliant; manual changes and failed
 patches drift silently — periodic drift/compliance scanning is what surfaces non-compliant hosts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

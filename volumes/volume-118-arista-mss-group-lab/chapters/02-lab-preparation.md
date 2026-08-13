@@ -23,7 +23,7 @@
 
 **Expected result (design).** Groups and group policy in CloudVision, a firewall available for redirect. Track 2 builds the enforcement result.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build endpoints, groups, and a firewall
 
@@ -58,7 +58,7 @@ web->db OPEN
 
 **Negative test.** Without group policy, the routed fabric permits everything — the opposite of MSS-Group's default-deny.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Record group membership
 
@@ -79,7 +79,7 @@ cat /etc/mss/groups
 
 **Expected result.** Four endpoints mapped to four security groups.
 
-**Cleanup.** Keep the membership.
+**Rollback.** Keep the membership.
 
 ## Summary and Completion Checklist
 

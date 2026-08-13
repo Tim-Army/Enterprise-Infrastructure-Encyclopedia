@@ -102,7 +102,7 @@ curl -sSL -A "Mozilla/5.0" "https://education.oracle.com/certification" \
 **Negative test:** trust a course citing `1Z0-1072-23`; the suffix has rolled —
 confirm the current year on education.oracle.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path across families (Topic: Career)
 
@@ -124,7 +124,7 @@ career mapping this volume supports.
 **Negative test:** collect certs with no role in mind; plan the **sequence** for a
 target role instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

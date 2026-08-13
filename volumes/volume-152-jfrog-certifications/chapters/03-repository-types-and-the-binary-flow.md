@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Pulling dependencies directly from public registries in CI. An upstream outage, rate limit, or removed package breaks your builds — a remote caching repository serves cached copies through the disruption.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Virtual repositories simplify developer config
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Making developers configure every underlying repository URL directly. Each change to the topology requires updating every developer and CI config; a virtual repository presents one stable URL and hides the topology.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

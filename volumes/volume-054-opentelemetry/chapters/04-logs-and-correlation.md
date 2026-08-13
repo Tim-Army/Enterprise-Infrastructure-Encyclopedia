@@ -72,7 +72,7 @@ log bridge.
 **Negative test:** print to stdout only; the **bridge** turns logs into structured OTel
 records — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Correlate a log with a trace
 
@@ -92,7 +92,7 @@ log-to-trace correlation.
 **Negative test:** log after the span ends; the record has **no trace context** — log
 within the span.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Receive host logs in the Collector
 
@@ -113,7 +113,7 @@ agentless log collection.
 **Negative test:** ship raw files to a backend unparsed; the **filelog receiver +
 operators** structure them — parse at collection.
 
-**Cleanup:** remove the receiver config.
+**Rollback:** remove the receiver config.
 
 ### Lab 4.4 — Attach resource attributes
 
@@ -131,7 +131,7 @@ consistent source identity across signals.
 **Negative test:** emit signals with no `service.name`; backends can't attribute them —
 set the **resource**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -89,7 +89,7 @@ ISE takes 30–45 minutes to boot the first time; plan around it.
 | `ise/#`, `nad#` | ISE admin CLI / IOS-XE privileged prompt (shown for orientation; you type the command after it) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

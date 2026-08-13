@@ -47,7 +47,7 @@ Test-NetConnection -ComputerName 10.99.0.12 -Port 5432   # HMI -> db over overla
 
 **Negative test.** Add a rule permitting `10.99.0.21 → 10.99.0.12:5432` (authorize the HMI). The attack succeeds again — you placed the HMI in the database's overlay. Membership is policy; grant it only where a real dependency exists. Remove the rule.
 
-**Cleanup.** Keep the trust policy.
+**Rollback.** Keep the trust policy.
 
 ### Lab 7.2 — Confirm the traffic is encrypted
 
@@ -68,7 +68,7 @@ sudo tcpdump -n -i ens34 udp port 51820 &    # WireGuard tunnel
 
 **Negative test.** Point `~/checkdb.sh` back at the underlay address (`~/checkdb.sh 10.10.20.12`); it fails now (the db is cloaked), but had it worked, the `5432` capture would have shown plaintext. The overlay is what moves the traffic off the visible, unencrypted underlay.
 
-**Cleanup.** Stop any remaining captures.
+**Rollback.** Stop any remaining captures.
 
 ### Lab 7.3 — Default-deny is dark, not just blocked
 
@@ -85,7 +85,7 @@ ping 10.99.0.12     # overlay: no reply (not in a shared overlay - invisible)
 
 **Negative test.** Compare with a conventional firewall that `REJECT`s (sends an RST) — that still confirms the host exists. Airwall's default is to be *dark*: unauthorized identities get silence, which yields no reconnaissance signal at all.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Conductor-managed overlays at scale (Design Exercise)
 
@@ -105,7 +105,7 @@ ping 10.99.0.12     # overlay: no reply (not in a shared overlay - invisible)
 
 **Negative test.** Argue hand-rolled WireGuard is "the same thing" as Airwall. The cryptographic overlay is the same; the identity lifecycle, revocation, and scale management are not — which is most of the operational cost of running one.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

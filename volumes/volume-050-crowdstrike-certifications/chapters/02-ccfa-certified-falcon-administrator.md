@@ -86,7 +86,7 @@ Management domain (roles gate console features).
 **Negative test:** grant everyone `falcon_administrator`; assign **least-privilege**
 roles per job function instead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Sensor Deployment
 
@@ -103,7 +103,7 @@ is installed and registered (the Sensor Deployment domain).
 **Negative test:** install without setting the CID (`falconctl -s --cid=<CID>`); the
 sensor cannot register — set the CID at/after install.
 
-**Cleanup:** leave the sensor installed; `falconctl` reads are non-destructive.
+**Rollback:** leave the sensor installed; `falconctl` reads are non-destructive.
 
 ### Lab 2.3 — Host Management and Setup (find RFM)
 
@@ -122,7 +122,7 @@ degrades protection and must be remediated).
 **Negative test:** assume all sensors are healthy; **query RFM** — a kernel/OS
 mismatch silently drops a host into RFM.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Group Creation
 
@@ -143,7 +143,7 @@ Creation domain (groups drive policy).
 **Negative test:** use a static group and add hosts by hand; new endpoints are
 missed — a **dynamic assignment rule** self-populates.
 
-**Cleanup:** `hg.delete_host_groups(ids=[group_id])`.
+**Rollback:** `hg.delete_host_groups(ids=[group_id])`.
 
 ### Lab 2.5 — Policy Application
 
@@ -162,7 +162,7 @@ the Policy Application domain.
 **Negative test:** leave prevention in **Detect-only** in production; set
 appropriate **prevention** actions for real protection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Rules Configuration (exclusions)
 
@@ -181,7 +181,7 @@ Configuration domain (exclusions and custom IOA/detection rules).
 **Negative test:** add a broad `C:\*` exclusion for convenience; scope exclusions
 **narrowly** or you blind the sensor.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.7 — Dashboards and Reports
 
@@ -200,7 +200,7 @@ domain (host-management and detection reporting).
 **Negative test:** eyeball the console daily; **scheduled reports** deliver metrics
 without manual effort.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.8 — Workflows (Falcon Fusion)
 
@@ -219,7 +219,7 @@ domain (event-driven automation).
 **Negative test:** handle every detection manually; a **Fusion workflow** can
 notify/contain automatically on defined triggers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

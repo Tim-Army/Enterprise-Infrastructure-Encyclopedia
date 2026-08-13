@@ -131,7 +131,7 @@ renews it and its expiration date — a program-level renewal plan.
 **Negative test:** plan to earn CEUs separately for A+, Network+, and Security+;
 renewing Security+ alone renews all three — the separate effort is wasted.
 
-**Cleanup:** `rm ~/comptia-renewals.csv`.
+**Rollback:** `rm ~/comptia-renewals.csv`.
 
 ### Lab 8.2 — Verify a certification's renewal rules (Topic: Confirm currency)
 
@@ -148,7 +148,7 @@ a three-year cycle via CEUs — the authoritative basis for a renewal plan.
 **Negative test:** assume a certification is "good for life" without checking;
 lifetime status varies by credential and has changed — verify on the page.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

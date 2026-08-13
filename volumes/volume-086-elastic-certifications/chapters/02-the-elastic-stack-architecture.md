@@ -80,7 +80,7 @@ cluster topology.
 **Negative test:** run a single node with every role in production and wonder why it is unstable; use
 **dedicated masters** and sized data nodes at scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Inspect shards and replicas
 
@@ -104,7 +104,7 @@ resilience.
 **Negative test:** set `number_of_replicas: 0` on critical data; a node loss loses shards — keep at
 least one replica.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Reason about the ingest components
 
@@ -128,7 +128,7 @@ PY
 **Negative test:** deploy a dozen standalone Beats when Fleet-managed Agents would centralize
 management; prefer **Elastic Agent + Fleet** for new work.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Read data-tier assignment
 
@@ -148,7 +148,7 @@ curl -s -k -u elastic:$PW "https://localhost:9200/my-index/_settings/index.routi
 **Negative test:** keep all data on hot (SSD) tier forever; cost balloons — use **ILM** to move aging
 data to warm/cold/frozen (Chapter 03).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

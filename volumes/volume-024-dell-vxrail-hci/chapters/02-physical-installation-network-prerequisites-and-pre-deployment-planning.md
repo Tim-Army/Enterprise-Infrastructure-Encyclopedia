@@ -410,7 +410,7 @@ so the switch must be configured *before* deployment.
 fails or the cluster forms without storage/migration networks — the network must be fully prepared
 first, which is why the exam weights network requirements.
 
-**Cleanup:** none (planning/switch config).
+**Rollback:** none (planning/switch config).
 
 ### Lab 2.2 — Physical cabling and ToR switch prep (Topic: Hardware installation)
 
@@ -431,7 +431,7 @@ first deployment.
 **Negative test:** leave a node port on an access VLAN or without portfast; discovery times out or
 STP delays bring-up — the physical/switch layer must match the VxRail requirements exactly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — The deployment configuration (Topic: Pre-deployment planning)
 
@@ -453,7 +453,7 @@ file is what the Manager consumes to build the cluster unattended, and DNS/NTP m
 fails — DNS forward/reverse records and a reachable NTP source are hard prerequisites, not
 post-deploy tasks.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Pre-deployment validation (Topic: Network initialization)
 
@@ -476,7 +476,7 @@ first attempt.
 MTU 9000, vSAN performance/health suffers after deployment — the `ping -M do -s 8972` proves the
 path end-to-end before you commit.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

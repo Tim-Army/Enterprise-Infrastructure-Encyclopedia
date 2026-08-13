@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Sizing on-prem identity hardware for average load. The peak-hour login spike overwhelms it and logins fail; provisioning for peak instead leaves expensive capacity idle — cloud elasticity absorbs the spikes without either problem.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -38,7 +38,7 @@ The clean redirected flow works, the malicious one is dropped by the firewall, t
 
 **Negative test.** Move `hmi` into `sg_web` and watch `hmi → db` start passing (through the firewall) — proof the decision is group membership. Restore it.
 
-**Cleanup.** Restore group membership.
+**Rollback.** Restore group membership.
 
 ### Exercise 7.2 — Read denies and firewall drops
 
@@ -54,7 +54,7 @@ echo "== firewall drops =="; sudo grep -c FW-DROP /tmp/mssfw.log
 
 **Expected result.** An `MSS-DENY` line for the group-denied `hmi → db`, and a firewall drop count for the malicious redirected payloads — micro (group) and macro (firewall) enforcement both visible.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — The decision follows the group
 
@@ -71,7 +71,7 @@ sudo nft delete element inet mss sg_web '{ 10.120.1.11 }'
 
 **Expected result.** A new endpoint joining SG-Web gains the group policy by membership — the group, not an IP list, decides.
 
-**Cleanup.** Membership restored above.
+**Rollback.** Membership restored above.
 
 ## Summary and Completion Checklist
 

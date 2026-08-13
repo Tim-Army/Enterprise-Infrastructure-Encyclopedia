@@ -74,7 +74,7 @@ PY
 **Negative test:** store shared files by attaching one disk to many ECS (block is single-attach); use
 **NAS** for shared file access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Secure an OSS bucket
 
@@ -95,7 +95,7 @@ secure OSS.
 **Negative test:** set the bucket ACL to **public-read** for convenience; data leaks — keep it
 **private** with scoped policies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Design database high availability
 
@@ -116,7 +116,7 @@ database.
 **Negative test:** run a single RDS instance with no standby; a failure means downtime — deploy an
 **HA replica**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Choose RDS vs PolarDB
 
@@ -135,7 +135,7 @@ PY
 **Negative test:** force a highly elastic, huge-storage workload onto standard RDS; **PolarDB** is
 built for that — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -52,7 +52,7 @@ RPO (4h of lost changes) is set by snapshot frequency; RTO (2.5h down) is set by
 
 **Negative test:** Setting a 4-hour RPO target but assigning workloads a daily-snapshot SLA — you'd lose up to 24h; RPO and snapshot frequency must match, a common RCSA design check.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Orchestrated mass recovery
 
@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Restoring systems alphabetically or all at once without dependency order — the app server comes up before its database and fails; orchestration encodes the order that makes services actually work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Recovery validation (the "0" in 3-2-1-1-0)
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Never testing recovery — the first real restore reveals the backup was corrupt or the app won't come up; validation exists precisely so that discovery happens in a drill, not an outage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

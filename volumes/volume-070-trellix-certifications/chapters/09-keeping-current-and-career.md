@@ -81,7 +81,7 @@ rebrand.
 **Negative test:** rely on legacy **McAfee MA0-###** references; the program is **Trellix** now —
 verify current codes/names on trellix.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a Trellix path
 
@@ -101,7 +101,7 @@ PY
 **Negative test:** deploy endpoint products with no **ePO**; ePO is the management foundation —
 start there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

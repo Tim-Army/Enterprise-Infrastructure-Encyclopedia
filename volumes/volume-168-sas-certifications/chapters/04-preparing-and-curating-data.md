@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Merging without sorting by the key, or ignoring non-matches and bad dates. Rows misalign, unmatched records vanish silently, and invalid dates corrupt time analysis; sorted match-merge plus explicit validation and missing-value handling is what makes curated data trustworthy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

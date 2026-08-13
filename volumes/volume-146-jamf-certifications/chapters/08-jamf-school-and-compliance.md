@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Managing a classroom iPad cart with the corporate one-device-one-user model. It has no concept of per-period student sessions or between-user cleanup; student data bleeds across periods where Jamf School isolates it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Map a CIS benchmark to Jamf mechanisms
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Enforcing a benchmark with profiles but never measuring compliance. You set the baseline but cannot prove it holds — drift goes unseen, and "we're CIS-compliant" is a claim, not a number.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

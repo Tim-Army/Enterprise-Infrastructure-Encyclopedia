@@ -82,7 +82,7 @@ the planning section (AWS).
 **Negative test:** plan on standard instances; NC2 needs **bare-metal** — confirm the
 type is offered in your region.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — AWS: Deploy the cluster
 
@@ -100,7 +100,7 @@ section (AWS).
 **Negative test:** launch EC2 metal manually and install AOS; **NC2 console**
 orchestrates it — use the managed flow.
 
-**Cleanup:** terminate the cluster from the NC2 console if it was for the lab.
+**Rollback:** terminate the cluster from the NC2 console if it was for the lab.
 
 ### Lab 7.3 — AWS: Configure networking and security
 
@@ -117,7 +117,7 @@ configuring section (AWS).
 **Negative test:** open all ports to 0.0.0.0/0; scope **security groups** to required
 ports/sources.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — AWS: Manage the environment
 
@@ -135,7 +135,7 @@ managing section (AWS).
 **Negative test:** leave idle clusters running; **hibernate** to stop bare-metal
 charges.
 
-**Cleanup:** hibernate/terminate as appropriate.
+**Rollback:** hibernate/terminate as appropriate.
 
 ### Lab 7.5 — Azure: Plan the NC2 deployment
 
@@ -152,7 +152,7 @@ planning section (Azure).
 **Negative test:** plan on standard VMs; NC2 on Azure needs **BareMetal** — confirm
 availability in the region.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Azure: Deploy the cluster
 
@@ -169,7 +169,7 @@ deploying section (Azure).
 
 **Negative test:** hand-build BareMetal; use the **NC2 console** managed flow.
 
-**Cleanup:** delete the cluster from the NC2 console if it was for the lab.
+**Rollback:** delete the cluster from the NC2 console if it was for the lab.
 
 ### Lab 7.7 — Azure: Configure networking and security
 
@@ -186,7 +186,7 @@ section (Azure).
 **Negative test:** allow any-any in the NSG; scope **NSG rules** to required
 ports/sources.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.8 — Azure: Manage the environment
 
@@ -202,7 +202,7 @@ ports/sources.
 
 **Negative test:** run idle BareMetal; **hibernate** to control cost.
 
-**Cleanup:** hibernate/delete as appropriate.
+**Rollback:** hibernate/delete as appropriate.
 
 ## Lab Verification
 

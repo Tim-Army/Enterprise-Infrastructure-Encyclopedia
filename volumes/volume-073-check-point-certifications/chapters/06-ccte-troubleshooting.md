@@ -71,7 +71,7 @@ fw monitor -e "accept host(10.0.0.50);" 2>/dev/null | head \
 **Negative test:** debug a firewall drop with **tcpdump** only; it shows the wire, not the
 inspection point — use **fw monitor** for firewall logic.
 
-**Cleanup:** stop the capture (Ctrl-C).
+**Rollback:** stop the capture (Ctrl-C).
 
 ### Lab 6.2 — Capture with tcpdump
 
@@ -87,7 +87,7 @@ tcpdump -nni eth0 host 10.0.0.50 and port 443 -c 20 2>/dev/null \
 **Negative test:** capture with **no filter** on a busy link; the output is unreadable — always
 filter by host/port.
 
-**Cleanup:** none (capture stops at -c count).
+**Rollback:** none (capture stops at -c count).
 
 ### Lab 6.3 — Read kernel drops
 
@@ -104,7 +104,7 @@ fw ctl zdebug + drop 2>/dev/null | head \
 **Negative test:** leave `fw ctl zdebug`/`fw ctl debug` running; CPU spikes — **turn debugs off**
 (`fw ctl debug 0`) immediately after.
 
-**Cleanup:** `fw ctl debug 0` to reset debug flags.
+**Rollback:** `fw ctl debug 0` to reset debug flags.
 
 ### Lab 6.4 — Diagnose resources with cpview
 
@@ -120,7 +120,7 @@ echo "cpview correlates high CPU/drops with the symptom; combine with fw monitor
 **Negative test:** blame the network before checking gateway CPU/memory; **cpview** may show
 saturation — check resources first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

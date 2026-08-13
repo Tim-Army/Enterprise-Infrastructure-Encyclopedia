@@ -84,7 +84,7 @@ FROM demo_db.sales.orders;
 **Negative test:** export to pandas to engineer features; do it **in Snowflake**
 (SQL/Snowpark) to scale and avoid movement.
 
-**Cleanup:** `DROP TABLE IF EXISTS features;`
+**Rollback:** `DROP TABLE IF EXISTS features;`
 
 ### Lab 7.2 — Model development with Snowpark ML
 
@@ -102,7 +102,7 @@ the model-development domain.
 **Negative test:** pull all data to a laptop to train; **Snowpark ML** trains in
 Snowflake compute — keep it in-platform.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Model deployment / registry
 
@@ -119,7 +119,7 @@ deployment/operationalization domain.
 **Negative test:** serve predictions from an external service by shipping data out;
 in-platform **model registry** inference keeps data governed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Cortex ML/AI functions
 
@@ -136,7 +136,7 @@ Cortex domain the exam emphasizes.
 **Negative test:** build a forecasting model from scratch when **Cortex FORECAST**
 fits; use the built-in for standard tasks.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

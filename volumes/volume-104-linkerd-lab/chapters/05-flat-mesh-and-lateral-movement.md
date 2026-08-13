@@ -25,7 +25,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 && echo "hmi -> db:
 
 **Negative test.** Assume meshing isolates workloads. It does not — until you define a `Server` and `AuthorizationPolicy`, the mesh allows all traffic (already mTLS-secured, but unrestricted).
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Identify the legitimate flows by identity
 
@@ -44,7 +44,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 && echo "hmi -> db:
 
 **Negative test.** Express flow 4's denial by pod IP; pod IPs churn and, in a mesh, are not the trust anchor. Use identities.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -60,7 +60,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 && echo "hmi reache
 
 **Negative test.** Re-run the legitimate `web → db`; it works too. mTLS proves *who* each party is but does not decide *whether* they may talk — that is what `AuthorizationPolicy` adds.
 
-**Cleanup.** None — Chapter 06 confirms the automatic mTLS, Chapter 07 adds authorization.
+**Rollback.** None — Chapter 06 confirms the automatic mTLS, Chapter 07 adds authorization.
 
 ## Summary and Completion Checklist
 

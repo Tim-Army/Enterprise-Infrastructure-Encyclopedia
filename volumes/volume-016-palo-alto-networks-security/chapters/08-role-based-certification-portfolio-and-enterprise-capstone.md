@@ -570,7 +570,7 @@ configuration.
     admin@pa-branch-01# commit
     ```
 
-11. **Cleanup:** Decide whether to retain the capstone environment for
+11. **Rollback:** Decide whether to retain the capstone environment for
     [Chapter 09](09-cortex-cloud-security-professional.md)'s Cortex Cloud material (recommended, if lab capacity
     allows) or decommission it. If decommissioning, remove pushed policy
     from Panorama, detach devices from their device groups and template

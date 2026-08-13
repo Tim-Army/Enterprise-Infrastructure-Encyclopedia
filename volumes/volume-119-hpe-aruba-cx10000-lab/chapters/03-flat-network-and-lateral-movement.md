@@ -28,7 +28,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.4.40 502  && echo "hmi->plc REA
 
 **Negative test.** A closed port fails for lack of a service, not policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.2 — Name the flows to permit
 
@@ -45,7 +45,7 @@ Everything else east-west — most importantly `hmi -> db` — is illegitimate.
 
 **Expected result.** A two-line policy plan; return traffic will be handled by connection state, not a second rule.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.3 — Reproduce the lateral movement
 
@@ -59,7 +59,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.130.2.20 5432 && echo "PIVOT: hmi o
 
 **Expected result.** `PIVOT: hmi opened db:5432` — with no stateful policy, the operator reaches the database. Chapter 04 denies this at the ToR.
 
-**Cleanup.** None — Chapter 04 applies stateful policy.
+**Rollback.** None — Chapter 04 applies stateful policy.
 
 ## Summary and Completion Checklist
 

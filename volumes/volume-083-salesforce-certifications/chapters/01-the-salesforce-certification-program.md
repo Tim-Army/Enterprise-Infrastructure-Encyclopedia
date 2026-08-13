@@ -101,7 +101,7 @@ PY
 **Negative test:** assume there's one "Salesforce cert"; there are **dozens across tracks** — choose by
 role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Understand the release cadence and maintenance
 
@@ -120,7 +120,7 @@ PY
 **Negative test:** ignore the **release maintenance** module; your certification can lapse — complete
 it each cycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -141,7 +141,7 @@ PY
 **Negative test:** target **CTA** directly; it sits atop the Architect pyramid and a board review —
 climb the pyramid.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

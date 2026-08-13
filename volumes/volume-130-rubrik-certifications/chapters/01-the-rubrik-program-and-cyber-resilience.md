@@ -64,7 +64,7 @@ EOF
 
 **Negative test:** Studying for "RCE" — it's retired; RCSA is the active certification. Verify the current cert list on training.rubrik.com before scheduling.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Stand up the study lab
 
@@ -80,7 +80,7 @@ echo "           data classification (DSPM), recovery orchestration, and RBAC �
 
 **Negative test:** Expecting the labs to *be* Rubrik Security Cloud — they model the **concepts** RCSA tests; the real platform (production immutability, global data threat analytics, orchestrated mass recovery) carries the authoritative implementation this volume points to.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

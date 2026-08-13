@@ -158,7 +158,7 @@ every DC automatically.
 becomes non-deterministic (round-robin) — avoid conflicting A records for one
 name.
 
-**Cleanup:** remove the record and conditional forwarder.
+**Rollback:** remove the record and conditional forwarder.
 
 ### Lab 6.2 — Verify domain-controller locator records (Topic: Support AD with DNS)
 
@@ -177,7 +177,7 @@ logon fails.
 scavenge; the SRV records can disappear and location fails — Netlogon
 registers the locator records.
 
-**Cleanup:** restart `Netlogon` and run `ipconfig /registerdns` / `dcdiag /fix`.
+**Rollback:** restart `Netlogon` and run `ipconfig /registerdns` / `dcdiag /fix`.
 
 ### Lab 6.3 — Deploy a DHCP scope with options and authorize the server (Topic: Manage DHCP)
 
@@ -199,7 +199,7 @@ DHCP server will not lease in an AD environment.
 refuses to lease and logs an "unauthorized" event — AD authorization is
 mandatory.
 
-**Cleanup:** `Remove-DhcpServerv4Scope -ScopeId 10.10.0.0 -Force`.
+**Rollback:** `Remove-DhcpServerv4Scope -ScopeId 10.10.0.0 -Force`.
 
 ### Lab 6.4 — Configure DHCP failover (Topic: High-availability DHCP)
 
@@ -217,7 +217,7 @@ servers can lease the scope — failover removes the single-server outage risk.
 **Negative test:** create failover with mismatched shared secrets; the
 relationship fails to establish — both partners must share the secret.
 
-**Cleanup:** `Remove-DhcpServerv4Failover -Name "LAN-FO"`.
+**Rollback:** `Remove-DhcpServerv4Failover -Name "LAN-FO"`.
 
 ## Lab Verification
 

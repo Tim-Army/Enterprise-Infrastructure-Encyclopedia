@@ -74,7 +74,7 @@ span.
 **Negative test:** name the span `checkout-order-98213` (unique id); use a **stable
 operation name** and put the id in an attribute.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Nest spans
 
@@ -93,7 +93,7 @@ tree.
 **Negative test:** start child spans without the parent as current; they become
 **siblings/roots** — nest within the active context.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Attributes, events, and status
 
@@ -116,7 +116,7 @@ Error status** — a diagnostic-rich span.
 **Negative test:** swallow the exception silently; **record it + set Error status** so
 the trace shows the failure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Propagate context across a boundary
 
@@ -137,7 +137,7 @@ of distributed tracing.
 **Negative test:** call a downstream service without injecting context; its spans start a
 **new trace** — propagate the header.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

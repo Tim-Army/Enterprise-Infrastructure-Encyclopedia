@@ -42,7 +42,7 @@ sudo nft -f /etc/nftables.conf
 
 **Negative test.** The network rule blocks the HMI, but consider: what if the attacker runs *on `tf-app01` itself* (a webshell on the allowed host)? The source-IP rule would let it through. Lab 7.2 closes that gap.
 
-**Cleanup.** Keep the ring-fence.
+**Rollback.** Keep the ring-fence.
 
 ### Lab 7.2 — Bind the service account to its sanctioned identity
 
@@ -88,7 +88,7 @@ sudo journalctl -k | grep "TF-IDENTITY-DENY" | tail -2
 
 **Negative test.** Remove the owner match (`meta skuid`) and re-run `~/checkdb.sh` as labadmin; it succeeds. Without identity binding, any process on the allowed host inherits the service account's access — exactly the lateral-movement gap TrueFort closes. Restore the match.
 
-**Cleanup.** Keep the owner-matched rule.
+**Rollback.** Keep the owner-matched rule.
 
 ### Lab 7.3 — Enforce on Windows
 
@@ -114,7 +114,7 @@ New-NetFirewallRule -DisplayName "TF mgmt RDP in" -Direction Inbound `
 
 **Negative test.** Remove the management RDP allow and reboot; you may lock yourself out. Re-add it first (Lab 9.2).
 
-**Cleanup.** Keep the enforced Windows posture.
+**Rollback.** Keep the enforced Windows posture.
 
 ### Lab 7.4 — Behavioral baselining and EDR at scale (Design Exercise)
 
@@ -134,7 +134,7 @@ New-NetFirewallRule -DisplayName "TF mgmt RDP in" -Direction Inbound `
 
 **Negative test.** Argue static rules are sufficient because "the app never changes." Real estates change constantly; the rule that never adapts is the rule that is either broken or bypassed.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

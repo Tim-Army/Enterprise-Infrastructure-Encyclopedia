@@ -70,7 +70,7 @@ print(args.host, args.count)   # web1 5
 **Negative test:** read `sys.argv` by hand and index it; **argparse** gives validation,
 help, and types — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Click command
 
@@ -91,7 +91,7 @@ def ping(host, count):
 **Negative test:** hand-roll `--help` text and parsing; **click** generates help and
 handles parsing — prefer it for bigger CLIs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Structured logging
 
@@ -110,7 +110,7 @@ filterable output.
 **Negative test:** `print()` everywhere; **logging** lets you filter by level and route
 to files/syslog — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Package an entry point
 
@@ -128,7 +128,7 @@ installable tool.
 **Negative test:** tell users to run `python /path/script.py`; an **entry point** gives a
 clean command — package it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

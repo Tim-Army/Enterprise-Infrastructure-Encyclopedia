@@ -250,7 +250,7 @@ least-privilege access between every part of the environment, containing lateral
 **Negative test:** allow open traffic between segments; a compromise in one (e.g. a user workstation)
 reaches the whole environment — default-deny with explicit allows is what contains lateral movement.
 
-**Cleanup:** `sudo nft delete table inet zt`.
+**Rollback:** `sudo nft delete table inet zt`.
 
 ### Lab 7.2 — Detection engineering (Topic: Detection)
 
@@ -271,7 +271,7 @@ hosts, cloud) so an attack is visible wherever it touches, which requires the un
 identity → network → host is never correlated — detection needs the aggregated, cross-component
 telemetry.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Incident response (Topic: IR)
 
@@ -292,7 +292,7 @@ and IaC rebuild (Chapter 06) into one response, which is far faster than ad-hoc 
 persistence and cannot be sure it is clean — containment plus rebuild-from-known-good-code is the
 trustworthy eradication.
 
-**Cleanup:** restore the isolated host after the exercise.
+**Rollback:** restore the isolated host after the exercise.
 
 ### Lab 7.4 — Security validation (Topic: Assurance)
 
@@ -313,7 +313,7 @@ are effective.
 (a log source moved, a rule disabled) — emulating the technique and confirming detection is the only
 proof of current coverage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -314,7 +314,7 @@ can invent an argument or keyword that does not exist.
 any check; a hallucinated command or argument fails at runtime — validation
 before execution is exactly what makes AI assistance safe.
 
-**Cleanup:** `rm -f ai_suggested.py`.
+**Rollback:** `rm -f ai_suggested.py`.
 
 ### Lab 10.2 — Security risks in AI-based automation (Topic: AI security risks)
 
@@ -346,7 +346,7 @@ boundary.
 leave your administrative boundary — redaction, not trust in the provider, is
 the control.
 
-**Cleanup:** `rm -f running_config.txt`.
+**Rollback:** `rm -f running_config.txt`.
 
 ### Lab 10.3 — An MCP server with FastMCP (Topic: MCP server for an AI agent)
 
@@ -390,7 +390,7 @@ guessed.
 approval gate; a probabilistic caller can now reload a device — read tools are
 safe to expose, but write tools must sit behind an explicit approval gate.
 
-**Cleanup:** `rm -f netinfo_server.py`.
+**Rollback:** `rm -f netinfo_server.py`.
 
 ### Lab 10.4 — A guarded conversational agent (Topic: LLM conversational agent)
 
@@ -423,7 +423,7 @@ gate keeps a probabilistic caller from taking an irreversible action.
 whatever the model returns; a hallucinated or injected `reload_device` runs —
 the guardrail, not the model's good behavior, is the safety boundary.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.5 — Evaluate AI recommendation accuracy (Topic: Evaluating AI recommendations)
 
@@ -452,7 +452,7 @@ reaches a device.
 with no evaluation; the cleartext rule ships — a measured accuracy metric
 against ground truth is what turns a suggestion into a validated change.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

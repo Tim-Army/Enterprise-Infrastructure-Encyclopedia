@@ -67,7 +67,7 @@ sudo systemctl enable --now nftables
 
 **Negative test.** Skip `net.ipv4.ip_forward=1`; the Data Center hosts you build next will reach `il-gw` but not the internet. Forwarding is what makes a router a router.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Build `il-db01`, the PostgreSQL tier
 
@@ -119,7 +119,7 @@ sudo systemctl restart postgresql
 
 **Negative test.** Leave `listen_addresses` at `localhost`; the app tier cannot connect and you would wrongly blame the network. Confirm the listener before moving on.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Build `il-app01`, the nginx application tier
 
@@ -147,7 +147,7 @@ chmod +x ~/checkdb.sh
 
 **Negative test.** Stop PostgreSQL on `il-db01` and re-run `~/checkdb.sh`; it hangs then fails. This is the flow your policy must *permit*; remember what its success looks like so you notice if a rule breaks it.
 
-**Cleanup.** Restart PostgreSQL on `il-db01` if you stopped it.
+**Rollback.** Restart PostgreSQL on `il-db01` if you stopped it.
 
 ### Lab 4.4 — Build `il-win01`, the Windows SCADA/HMI workstation
 
@@ -177,7 +177,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # HMI -> DB (should be 
 
 **Negative test.** Note that the HMI can reach the database at all. On a correctly segmented network it never should. Chapter 07 makes that true.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Build `il-ot01`, the agentless PLC
 
@@ -218,7 +218,7 @@ sudo ss -ltnp | grep 502
 
 **Negative test.** Try to reach the PLC directly from the Windows host (`Test-NetConnection 10.10.30.50 -Port 502`). It fails — the host has no adapter on VMnet3. Only paths through `il-gw` can reach it, which is exactly the property Chapter 08 relies on.
 
-**Cleanup.** None. Do not install an agent here; that is the whole point.
+**Rollback.** None. Do not install an agent here; that is the whole point.
 
 ### Lab 4.6 — Snapshot the baseline
 
@@ -232,7 +232,7 @@ Shut down all five guests cleanly, then in Workstation take a snapshot named `ba
 
 **Negative test.** Skip snapshots and make a policy mistake in Chapter 07 that locks a host out; without a baseline your only recovery is a rebuild. Take the snapshots.
 
-**Cleanup.** Leave the VMs powered off until Chapter 05.
+**Rollback.** Leave the VMs powered off until Chapter 05.
 
 ## Summary and Completion Checklist
 

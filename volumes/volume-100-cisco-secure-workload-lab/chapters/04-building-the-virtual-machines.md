@@ -64,7 +64,7 @@ sudo systemctl enable --now nftables
 
 **Negative test.** Skip `net.ipv4.ip_forward=1` and internal hosts reach `cw-gw` but not the internet.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Build `cw-db01`, the PostgreSQL tier
 
@@ -98,7 +98,7 @@ sudo systemctl restart postgresql
 
 **Negative test.** Leaving `listen_addresses` at localhost blocks the app tier; confirm the listener first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Build `cw-app01`, the nginx application tier
 
@@ -125,7 +125,7 @@ chmod +x ~/checkdb.sh
 
 **Negative test.** Stop PostgreSQL and re-run `~/checkdb.sh`; it fails. This is the flow policy must permit.
 
-**Cleanup.** Restart PostgreSQL if you stopped it.
+**Rollback.** Restart PostgreSQL if you stopped it.
 
 ### Lab 4.4 — Build `cw-win01`, the Windows SCADA/HMI workstation
 
@@ -155,7 +155,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # HMI -> DB (should be 
 
 **Negative test.** Note the HMI can reach the database at all; on a segmented network it never should. Chapter 07 makes that true.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Build `cw-ot01`, the agentless PLC
 
@@ -196,7 +196,7 @@ sudo ss -ltnp | grep 502
 
 **Negative test.** From the Windows host, `Test-NetConnection 10.10.30.50 -Port 502` fails — the host has no adapter on VMnet3.
 
-**Cleanup.** None. Do not install an agent here — it is the reason Chapter 08 exists.
+**Rollback.** None. Do not install an agent here — it is the reason Chapter 08 exists.
 
 ### Lab 4.6 — Snapshot the baseline
 
@@ -210,7 +210,7 @@ Shut down all five guests cleanly, then take a snapshot named `baseline` on each
 
 **Negative test.** Skip snapshots and a policy mistake in Chapter 07 leaves you rebuilding. Take them.
 
-**Cleanup.** Leave the VMs powered off until Chapter 05.
+**Rollback.** Leave the VMs powered off until Chapter 05.
 
 ## Summary and Completion Checklist
 

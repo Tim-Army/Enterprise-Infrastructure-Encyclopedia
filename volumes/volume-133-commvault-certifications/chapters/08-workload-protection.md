@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Protecting every VM identically at the hypervisor layer for operational simplicity — efficient and uniform, and it quietly leaves every database in the estate on crash-consistent protection.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — The SaaS shared-responsibility gap
 
@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** "Our data is in the cloud, so it is backed up" — replication copies the deletion as faithfully as it copies the data, and the recycle-bin window expires long before most organizations discover the loss.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Recovery granularity
 
@@ -144,7 +144,7 @@ EOF
 
 **Negative test:** Designing only for whole-system disaster recovery — you meet the rare case and fail the common one, and users conclude backups do not work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

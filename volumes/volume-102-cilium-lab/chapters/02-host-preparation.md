@@ -32,7 +32,7 @@ docker run --rm hello-world && kind version && kubectl version --client
 
 **Negative test.** Skip the `usermod`/re-login and every `docker`/`kind` command needs `sudo`, which then owns your kubeconfig. Fix the group membership now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install the cilium and hubble CLIs
 
@@ -56,7 +56,7 @@ cilium version --client && hubble version
 
 **Negative test.** Try `cilium status` now; it errors because no cluster exists yet. The CLI is a client — the cluster arrives in Chapter 03.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

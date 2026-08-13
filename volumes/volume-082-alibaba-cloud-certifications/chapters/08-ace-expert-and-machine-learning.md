@@ -75,7 +75,7 @@ PY
 **Negative test:** call multi-AZ in one region "disaster recovery"; a **region** outage takes it — go
 **multi-region** for DR.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Outline an ML lifecycle on PAI
 
@@ -96,7 +96,7 @@ ML.
 **Negative test:** deploy a model without **evaluation**; it may perform poorly in production —
 evaluate first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Apply responsible AI
 
@@ -118,7 +118,7 @@ ML.
 **Negative test:** deploy a high-impact model with no bias assessment or oversight; it can cause harm —
 apply **responsible AI**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Govern at enterprise scale
 
@@ -139,7 +139,7 @@ PY
 **Negative test:** run everything in one account with no guardrails; blast radius and cost sprawl grow
 — use a **Resource Directory**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -74,7 +74,7 @@ PY
 **Negative test:** let the user retrieve the password and connect directly; no isolation or recording
 — route through **PSM**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Apply just-in-time access
 
@@ -99,7 +99,7 @@ access.
 **Negative test:** grant standing (permanent) admin instead; it's a persistent target — use
 **time-boxed JIT**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Detect and respond to a threat (PTA)
 
@@ -120,7 +120,7 @@ automatic response — PTA detection.
 **Negative test:** log the anomaly with no response; the attacker continues — configure **automatic
 response** (suspend/rotate).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Restrict privileged actions
 
@@ -140,7 +140,7 @@ control.
 **Negative test:** allow any command in a privileged session; a compromised session does maximum
 damage — **restrict** actions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

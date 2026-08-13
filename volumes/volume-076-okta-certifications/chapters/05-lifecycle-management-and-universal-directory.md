@@ -73,7 +73,7 @@ PY
 **Negative test:** hand-edit department in Okta while HR also sets it; the next sync **overwrites**
 your edit — change it at the **source**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Automate provisioning on create
 
@@ -99,7 +99,7 @@ onboarding.
 **Negative test:** provision access manually per hire; it's slow and error-prone — **automate** via
 group rules.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Deprovision on deactivate
 
@@ -121,7 +121,7 @@ closed.
 **Negative test:** deactivate in Okta but leave downstream app accounts; those **orphans** remain
 exploitable — deprovision **downstream** too (SCIM).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Emit a SCIM event
 
@@ -143,7 +143,7 @@ provisioning.
 **Negative test:** rely on the app admin to manually disable leavers; it lags and gets missed — use
 **SCIM** automation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

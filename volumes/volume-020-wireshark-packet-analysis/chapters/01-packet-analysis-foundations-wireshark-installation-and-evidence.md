@@ -329,7 +329,7 @@ and `mergecap` (file surgery) are all present alongside the GUI.
 lists no interfaces or errors — capture requires privilege (or membership in the
 `wireshark`/packet-capture group), which is a setup step, not an analysis one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — First capture and the packet model (Topic: Capture and dissection)
 
@@ -350,7 +350,7 @@ encapsulation layer.
 format rather than inventing packets — the dissectors parse real structure, they do not
 guess.
 
-**Cleanup:** `rm /tmp/first.pcapng`.
+**Rollback:** `rm /tmp/first.pcapng`.
 
 ### Lab 1.3 — Capture metadata and evidence integrity (Topic: Evidence handling)
 
@@ -369,7 +369,7 @@ collection time.
 **Negative test:** edit a single byte of the capture and re-hash; the SHA-256 changes
 entirely — that sensitivity is exactly what makes the hash a tamper-evidence seal.
 
-**Cleanup:** none (retain the hash record).
+**Rollback:** none (retain the hash record).
 
 ### Lab 1.4 — Time references and columns (Topic: Interface fundamentals)
 
@@ -388,7 +388,7 @@ retransmission delays), so choosing the right time display is a core skill, not 
 inter-packet deltas are hard to see — the time reference must match the question (relative for
 sequence, delta for gaps).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Buying a separate point tool for integration, another for API management, another for MDM, and another for EDI. They do not share connectivity, runtime, or governance, so every cross-service flow is a fresh integration; Boomi's unified platform lets one flow span services on a shared foundation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

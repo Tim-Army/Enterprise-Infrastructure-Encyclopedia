@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Relying on signature matching for endpoint protection. Novel malware, a one-byte change, and fileless in-memory attacks all evade it; behavioral detection catches them by their actions.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Machine-speed autonomous response
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Relying on a human SOC to react to ransomware. It encrypts the disk in seconds to minutes — faster than an analyst can read the alert; autonomous on-agent response is the only thing fast enough, which is why the model is autonomy-first.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

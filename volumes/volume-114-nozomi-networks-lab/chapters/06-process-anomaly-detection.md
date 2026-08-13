@@ -44,7 +44,7 @@ tail -1 /tmp/mbproxy.log
 
 A read returning 55 produces no new `ANOMALY` line — only out-of-range values are flagged.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 6.2 — Why both controls are needed
 
@@ -61,7 +61,7 @@ A read returning 55 produces no new `ANOMALY` line — only out-of-range values 
 
 **Negative test.** Relying on segmentation alone would miss the drifted value; relying on detection alone would let the unauthorized write through and only alert after the fact. Both together is the OT-security posture.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

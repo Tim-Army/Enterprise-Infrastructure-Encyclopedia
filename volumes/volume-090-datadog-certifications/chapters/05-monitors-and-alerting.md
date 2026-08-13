@@ -83,7 +83,7 @@ monitor id: 12345678
 **Negative test:** set only a critical threshold with no warning; add a **warning** so you can act before
 it's critical.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -X DELETE "https://api.datadoghq.com/api/v1/monitor/12345678" \
@@ -109,7 +109,7 @@ PY
 **Negative test:** send `"something is wrong"` to a shared channel; template the message with
 **what/where/runbook** and route to the **owner**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reason about anomaly monitors and SLOs
 
@@ -134,7 +134,7 @@ SLO 99.9%/30d -> error budget = 43.2 minutes of downtime allowed
 
 **Negative test:** put a fixed threshold on a metric with daily peaks; use an **anomaly** monitor.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Schedule a downtime
 
@@ -160,7 +160,7 @@ work.
 **Negative test:** deploy without a downtime and page the on-call for expected blips; schedule a
 **downtime**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -X DELETE "https://api.datadoghq.com/api/v1/downtime/98765" \

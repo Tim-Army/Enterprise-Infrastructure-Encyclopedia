@@ -140,7 +140,7 @@ Dell networking.
 substrate (you can `sudo` to a shell) — the disaggregated model is a key foundations
 concept.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Layer 2 and VLANs (PowerSwitch Data Center Deploy)
 
@@ -167,7 +167,7 @@ overlay; the CLI mirrors industry-standard syntax.
 **Negative test:** a trunk not allowing VLAN 10 drops that VLAN's frames even though
 the link is up — the allowed-VLAN list gates trunk traffic.
 
-**Cleanup:** `configure terminal; no interface vlan 10; commit`.
+**Rollback:** `configure terminal; no interface vlan 10; commit`.
 
 ### Lab 7.3 — Layer 3 routing (PowerSwitch Data Center Deploy)
 
@@ -193,7 +193,7 @@ for ECMP reachability between VTEP loopbacks.
 **Negative test:** an OSPF area/MTU mismatch stalls the adjacency below `Full` —
 `show ip ospf neighbor` reveals the stuck state.
 
-**Cleanup:** `configure terminal; no router ospf 1; commit`.
+**Rollback:** `configure terminal; no router ospf 1; commit`.
 
 ### Lab 7.4 — VLT multi-chassis link aggregation (PowerSwitch Data Center Deploy)
 
@@ -218,7 +218,7 @@ access/aggregation tier.
 peers cannot forward as one logical switch — the VLTi and consistent config are
 required.
 
-**Cleanup:** `configure terminal; no vlt-domain 1; commit`.
+**Rollback:** `configure terminal; no vlt-domain 1; commit`.
 
 ### Lab 7.5 — EVPN-VXLAN fabric (PowerSwitch Data Center Deploy)
 
@@ -238,7 +238,7 @@ lifecycle.
 **Negative test:** inconsistent VNI-to-VLAN mapping on one leaf silently drops that
 segment; the endpoints do not learn each other — the mapping must be fabric-consistent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Campus deployment (PowerSwitch Campus Deploy)
 
@@ -258,7 +258,7 @@ OME).
 **Negative test:** connect more PoE devices than the switch's power budget allows;
 lower-priority ports are denied power — the PoE budget/priority governs allocation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — SONiC deployment (SONiC Deploy)
 
@@ -282,7 +282,7 @@ hyperscale-style disaggregated data-center fabrics.
 **Negative test:** expect the OS10 CLI syntax on SONiC; SONiC has its own CLI and a
 config-DB model — the two NOS options on the same hardware differ operationally.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

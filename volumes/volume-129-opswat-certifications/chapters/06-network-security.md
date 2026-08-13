@@ -47,7 +47,7 @@ EOF
 
 **Negative test:** A flat network where any device that plugs in reaches everything — an unmanaged IoT camera or a contractor laptop then has the run of the network; NAC's per-device segmentation is what prevents that, and its absence is the "unsecured network" risk ONSA names.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Layer 2 vs layer 3 enforcement
 
@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Assuming L3 NAC gives the same protection as L2 — an untrusted device on the L2 segment can already attack its neighbors (ARP spoofing, lateral scanning) before any L3 filter applies; the layer matters for the threat surface.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Segment an untrusted device (model)
 
@@ -99,7 +99,7 @@ sudo ip netns exec gw nft list chain ip nac f | grep -c accept
 
 **Negative test:** Admitting the IoT device to the production VLAN "because it's just a camera" — cameras are a common pivot point; the restricted segment is the control that contains them.
 
-**Cleanup:** `for ns in iot gw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del nbr`.
+**Rollback:** `for ns in iot gw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del nbr`.
 
 ## Summary and Completion Checklist
 

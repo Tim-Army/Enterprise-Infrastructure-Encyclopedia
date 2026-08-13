@@ -88,7 +88,7 @@ license-management basics (blueprint topics 1–2).
 **Negative test:** ignore license warnings; repeated violations restrict search —
 monitor daily indexing volume.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Configuration files and precedence
 
@@ -105,7 +105,7 @@ config layering and precedence (a core Admin topic).
 **Negative test:** edit `default/` files; edits belong in **`local/`** — `default/`
 is overwritten on upgrade.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Indexes and buckets
 
@@ -122,7 +122,7 @@ Indexes topic (10%, tied heaviest).
 **Negative test:** set tiny retention and lose needed data; size **retention** to
 requirements before ingesting.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Users, roles, and authentication
 
@@ -140,7 +140,7 @@ concept — user and authentication management.
 **Negative test:** give analysts the `admin` role; scope **roles** to least
 privilege and map from directory groups.
 
-**Cleanup:** `$SPLUNK_HOME/bin/splunk remove role analyst 2>/dev/null || true`
+**Rollback:** `$SPLUNK_HOME/bin/splunk remove role analyst 2>/dev/null || true`
 
 ### Lab 4.5 — Getting Data In and forwarders
 
@@ -162,7 +162,7 @@ the GDI and forwarder basics.
 **Negative test:** deploy heavy forwarders everywhere; the **universal forwarder**
 is lightweight for most endpoints — use HF only where parsing/routing is needed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — Forwarder management (deployment server)
 
@@ -179,7 +179,7 @@ to forwarders) — Forwarder Management (10%, tied heaviest).
 **Negative test:** configure each forwarder by hand; the **deployment server**
 manages them at scale — centralize.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.7 — Inputs: monitor, network, scripted, agentless
 
@@ -200,7 +200,7 @@ the several input topic areas consolidated.
 **Negative test:** open a raw network port with no parsing plan; define
 sourcetype/index and parsing for network inputs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.8 — Parsing phase and manipulating raw data
 
@@ -223,7 +223,7 @@ transform mechanism — the parsing/raw-data topics.
 **Negative test:** rely on default line merging for multiline logs; set
 `LINE_BREAKER`/`SHOULD_LINEMERGE` explicitly for correct event breaking.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

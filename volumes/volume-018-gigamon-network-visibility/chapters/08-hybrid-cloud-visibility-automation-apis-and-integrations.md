@@ -389,7 +389,7 @@ write, so the whole fabric is automatable, not click-only.
 refused (TLS required, 401 on bad auth) — API access is authenticated and encrypted, not
 open.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Configure the fabric through the API (Topic: API automation)
 
@@ -415,7 +415,7 @@ changes repeatable and reviewable as code.
 the API returns a validation error — the API enforces the same role/consistency rules as the
 CLI, so bad definitions fail fast.
 
-**Cleanup:** `curl -sk -u apiuser:<password> -X DELETE ".../api/v1.3/maps/api-map"`.
+**Rollback:** `curl -sk -u apiuser:<password> -X DELETE ".../api/v1.3/maps/api-map"`.
 
 ### Lab 8.3 — Infrastructure as code (Topic: Terraform/Ansible)
 
@@ -435,7 +435,7 @@ reproducible across environments, the operating model for hybrid-cloud scale.
 reverts your drift — IaC-managed objects must be changed in code, or state drifts and
 surprises the next apply.
 
-**Cleanup:** `terraform destroy` (or the playbook's teardown) for lab-only objects.
+**Rollback:** `terraform destroy` (or the playbook's teardown) for lab-only objects.
 
 ### Lab 8.4 — Ecosystem integration (Topic: SIEM/ITSM integration)
 
@@ -455,7 +455,7 @@ a fabric fault becomes an actionable alert rather than a silent blind spot.
 goes unnoticed until an investigation needs that traffic — exporting fabric health is what
 makes blind spots visible.
 
-**Cleanup:** revert the benign lab event; keep the integration (it is the intended state).
+**Rollback:** revert the benign lab event; keep the integration (it is the intended state).
 
 ## Lab Verification
 

@@ -70,7 +70,7 @@ components are in place.
 **Negative test:** assume DNS security is on by default; **verify the service/policies**
 exist — it must be configured.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — DNS forwarding proxies
 
@@ -88,7 +88,7 @@ Defense — the proxy topic.
 **Negative test:** leave clients resolving directly to public DNS; a **forwarding proxy**
 routes them through inspection — deploy it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Security policy configuration
 
@@ -106,7 +106,7 @@ policy — the policy-configuration topic.
 **Negative test:** block-list a few domains by hand; **threat feeds** keep the policy
 current automatically — use them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Endpoint integration
 
@@ -124,7 +124,7 @@ endpoint-integration topic.
 **Negative test:** protect only on-network DNS; **endpoint agents** extend protection to
 roaming users — enroll them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Threat analytics (Threat Insight)
 
@@ -143,7 +143,7 @@ topic (tunneling/DGA/exfiltration detection).
 **Negative test:** watch only blocklist hits; **Threat Insight** detects behavioral
 tunneling/exfil that lists miss — monitor it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

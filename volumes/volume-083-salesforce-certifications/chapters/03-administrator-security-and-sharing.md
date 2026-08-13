@@ -79,7 +79,7 @@ privilege.
 **Negative test:** clone the profile and add the export permission directly; profiles proliferate — use
 a **permission set**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Evaluate the sharing model
 
@@ -104,7 +104,7 @@ the layered model.
 **Negative test:** set OWD Private and expect a peer to see records with no rule; access is **denied**
 — add a **sharing rule**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Open access with a sharing rule
 
@@ -124,7 +124,7 @@ PY
 **Negative test:** lower **OWD to Public** to give the West team access; that over-shares to everyone —
 use a targeted **sharing rule**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Troubleshoot an access issue
 
@@ -148,7 +148,7 @@ troubleshooting.
 **Negative test:** change the sharing model when the real issue is a missing **field-level** permission
 — diagnose **top-down** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

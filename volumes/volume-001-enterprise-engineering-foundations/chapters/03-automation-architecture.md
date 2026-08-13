@@ -423,7 +423,7 @@ so the "how do I build this" knowledge lives in the repo, not in someone's head.
 **Negative test:** document build steps only in a README prose paragraph; steps drift from reality and
 CI runs different commands than developers — a task runner makes the commands executable and shared.
 
-**Cleanup:** `rm -rf ~/auto`.
+**Rollback:** `rm -rf ~/auto`.
 
 ### Lab 3.2 — A CI pipeline (Topic: CI/CD)
 
@@ -453,7 +453,7 @@ green; the pipeline is the mechanical gate that enforces quality.
 **Negative test:** rely on contributors to run checks locally; someone forgets and a broken change
 merges — CI runs the checks on every change without depending on anyone's memory.
 
-**Cleanup:** `rm -rf ~/auto`.
+**Rollback:** `rm -rf ~/auto`.
 
 ### Lab 3.3 — Pre-commit hooks (Topic: Shift-left checks)
 
@@ -478,7 +478,7 @@ machine before they reach CI, the cheapest place to fix them.
 **Negative test:** depend only on CI for whitespace/YAML checks; developers push broken commits and
 wait for a red pipeline — pre-commit catches the same issues seconds earlier, locally.
 
-**Cleanup:** `rm -rf ~/auto`.
+**Rollback:** `rm -rf ~/auto`.
 
 ### Lab 3.4 — Idempotent automation (Topic: Idempotence)
 
@@ -503,7 +503,7 @@ on a schedule, the basis of declarative tools (Terraform, Ansible).
 and re-running corrupts state — non-idempotent automation is dangerous to re-run, which idempotence
 fixes.
 
-**Cleanup:** `rm -rf /tmp/app ensure.sh`.
+**Rollback:** `rm -rf /tmp/app ensure.sh`.
 
 ## Lab Verification
 

@@ -346,7 +346,7 @@ virtual machine.
 **Negative test:** run `--memory 128m` and then a workload that allocates 512 MB inside; the
 cgroup OOM-kills it — the memory limit is enforced by the kernel, not advisory.
 
-**Cleanup:** `podman rm -f iso`.
+**Rollback:** `podman rm -f iso`.
 
 ### Lab 1.2 — Build an OCI image (Topic: Images)
 
@@ -374,7 +374,7 @@ which is smaller, faster to pull, and has less attack surface.
 **Negative test:** collapse to a single stage `FROM golang:1.22`; the image is hundreds of MB
 and ships a compiler into production — the multi-stage split is what makes it lean and secure.
 
-**Cleanup:** `podman rmi localhost/hello:1.0; rm -rf ~/img`.
+**Rollback:** `podman rmi localhost/hello:1.0; rm -rf ~/img`.
 
 ### Lab 1.3 — Registries, tags, and digests (Topic: Registries)
 
@@ -394,7 +394,7 @@ so production deployments pin digests for reproducibility and supply-chain integ
 **Negative test:** deploy `:latest` to production and let someone re-push it; your running
 version silently changes on the next pull — pinning a digest is what prevents that drift.
 
-**Cleanup:** remove the pushed tag from the registry if lab-only.
+**Rollback:** remove the pushed tag from the registry if lab-only.
 
 ### Lab 1.4 — Runtimes and the OCI stack (Topic: Runtimes)
 
@@ -415,7 +415,7 @@ containerd, and Kubernetes' CRI.
 on containerd/CRI-O under Kubernetes — building to the OCI specs is what keeps images portable
 across the whole stack.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

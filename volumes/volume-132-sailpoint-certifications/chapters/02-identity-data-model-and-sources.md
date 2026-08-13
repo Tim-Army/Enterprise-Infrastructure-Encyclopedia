@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Aggregating without a correlation rule — every account becomes uncorrelated, and the identity warehouse is useless: you cannot answer "what does Jane have?" because nothing is joined to Jane.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Identity attributes and the authoritative source
 
@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Two competing authoritative sources (HR *and* a contractor database) with no precedence rule — identities duplicate, and the same human appears twice with different access.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Find orphan and uncorrelated accounts
 
@@ -138,7 +138,7 @@ EOF
 
 **Negative test:** Treating every uncorrelated account as noise and suppressing the report — `svc_backup` holds `Domain Admins` with no accountable owner, which is precisely the account an attacker wants.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

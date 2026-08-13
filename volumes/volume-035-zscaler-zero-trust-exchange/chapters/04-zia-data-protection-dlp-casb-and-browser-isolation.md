@@ -158,7 +158,7 @@ DLP precise enough to block real card data without flagging every number.
 numbers trip the rule and users are blocked constantly — imprecise dictionaries
 make DLP unusable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — CASB: tenant restriction and at-rest scan (Topic: SaaS security)
 
@@ -177,7 +177,7 @@ needs both because they see different data.
 **Negative test:** rely on inline CASB alone; files already resident in the
 SaaS tenant are never scanned — at-rest exposure needs the API path.
 
-**Cleanup:** revert lab CASB policy.
+**Rollback:** revert lab CASB policy.
 
 ### Lab 4.3 — Cloud Browser Isolation (Topic: Isolation)
 
@@ -196,7 +196,7 @@ the boundary, so access is preserved while exfiltration is cut.
 execution and uploads/downloads are possible again — isolation is what removes
 the data path while keeping access.
 
-**Cleanup:** revert lab CBI policy.
+**Rollback:** revert lab CBI policy.
 
 ## Lab Verification
 

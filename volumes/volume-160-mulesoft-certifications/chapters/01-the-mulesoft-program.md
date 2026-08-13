@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Expecting a single "MuleSoft Certified" exam. The program spans three families and seven role-based certifications from Integration Foundations to Platform Architect; you certify for your role along the develop-to-architect path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The Platform Architect domains trace the lifecycle
 
@@ -126,7 +126,7 @@ EOF
 
 **Negative test:** Preparing only to build a Mule flow for the architect exam. The domains span foundations, design, management, deployment, quality, and monitoring of the whole application network; architect competence is platform-wide strategy, not a single implementation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

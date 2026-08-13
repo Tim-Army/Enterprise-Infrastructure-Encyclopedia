@@ -31,7 +31,7 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.110.2.21 5432 && echo "db->db2 REACH
 
 **Negative test.** Contracts did not stop this — they govern *inter*-EPG traffic; intra-EPG traffic needs a separate control.
 
-**Cleanup.** Keep db2.
+**Rollback.** Keep db2.
 
 ### Exercise 6.2 — Enforce intra-EPG isolation
 
@@ -54,7 +54,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.110.2.20 5432 && echo "web->db OPEN
 
 **Negative test.** Intra-EPG isolation without an intra-EPG contract denies *all* peer traffic; if two members legitimately must talk, add a narrow intra-EPG contract rather than disabling isolation.
 
-**Cleanup.** Keep isolation for verification.
+**Rollback.** Keep isolation for verification.
 
 ## Summary and Completion Checklist
 

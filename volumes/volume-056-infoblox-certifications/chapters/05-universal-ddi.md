@@ -68,7 +68,7 @@ access (the navigation topic, programmatically).
 **Negative test:** call the Portal API with a NIOS Grid credential; Universal DDI uses a
 **Portal API token** — use the right auth.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Deploy NIOS-X (hosts)
 
@@ -84,7 +84,7 @@ curl -sS "https://csp.infoblox.com/api/infra/v1/hosts" -H "Authorization: Token 
 **Negative test:** expect services with no host deployed; **deploy NIOS-X** to serve
 DNS/DHCP on-prem.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — DNS: create a zone
 
@@ -102,7 +102,7 @@ topic.
 **Negative test:** create records with no parent **zone**; the zone must exist first —
 create it.
 
-**Cleanup:** `DELETE` the zone by its id.
+**Rollback:** `DELETE` the zone by its id.
 
 ### Lab 5.4 — DHCP: create a subnet
 
@@ -119,7 +119,7 @@ curl -sS -X POST "https://csp.infoblox.com/api/ddi/v1/ipam/subnet" \
 **Negative test:** overlap the subnet with an existing block; Universal DDI flags the
 overlap — keep address space non-overlapping.
 
-**Cleanup:** `DELETE` the subnet by its id.
+**Rollback:** `DELETE` the subnet by its id.
 
 ### Lab 5.5 — Protocol redundancy
 
@@ -137,7 +137,7 @@ topic.
 **Negative test:** serve DNS from one host; **redundant hosts** keep resolution alive on
 failure — design for it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

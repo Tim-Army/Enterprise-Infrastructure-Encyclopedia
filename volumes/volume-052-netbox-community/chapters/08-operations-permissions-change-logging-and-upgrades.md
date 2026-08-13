@@ -72,7 +72,7 @@ privilege with a constraint.
 **Negative test:** grant unconstrained `dcim.device` view to everyone; **constrain** to
 the tenant's objects instead.
 
-**Cleanup:** `perm.delete()`.
+**Rollback:** `perm.delete()`.
 
 ### Lab 8.2 — Read the change log
 
@@ -90,7 +90,7 @@ trail.
 **Negative test:** add external audit logging for NetBox edits; the **built-in change
 log** already records before/after — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Add a journal entry
 
@@ -110,7 +110,7 @@ change log can't infer.
 **Negative test:** keep maintenance notes in a wiki; **journal on the object** so
 context lives with the device.
 
-**Cleanup:** `j.delete()`.
+**Rollback:** `j.delete()`.
 
 ### Lab 8.4 — Back up the database
 
@@ -127,7 +127,7 @@ upgrading.
 **Negative test:** upgrade without a backup; migrations are hard to reverse — **dump
 first**.
 
-**Cleanup:** keep or remove the dump as policy dictates.
+**Rollback:** keep or remove the dump as policy dictates.
 
 ## Lab Verification
 

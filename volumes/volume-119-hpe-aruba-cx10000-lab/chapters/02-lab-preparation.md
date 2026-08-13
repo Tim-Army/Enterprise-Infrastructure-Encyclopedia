@@ -23,7 +23,7 @@
 
 **Expected result (design).** Stateful policy enforced in the ToR DPU, managed by PSM. Track 2 builds the stateful enforcement result.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build endpoints and the stateful ToR host
 
@@ -59,7 +59,7 @@ The host routes all east-west between the endpoints — the position the CX 1000
 
 **Negative test.** Without stateful policy, the routed host permits everything — the opposite of the CX 10000's default-deny stateful firewall.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Confirm the connection-tracking subsystem
 
@@ -75,7 +75,7 @@ sleep 1; sudo conntrack -L 2>/dev/null | grep -m1 5432 || echo "(connection trac
 
 **Expected result.** A tracked connection to `10.130.2.20:5432` appears — the host is tracking state, the capability the CX 10000 accelerates in the DPU for a whole rack at line rate.
 
-**Cleanup.** Leave the endpoints running.
+**Rollback.** Leave the endpoints running.
 
 ## Summary and Completion Checklist
 

@@ -79,7 +79,7 @@ EOF
 
 **Expected result:** A module catalog showing a customer licensing a subset (CDI, Data Quality, CDGC) of the modules, with all licensed modules sharing one metadata fabric so quality rules apply inside integration mappings and cataloged assets carry lineage across modules. The lesson is that IDMC is one platform of separately-licensed but integrated modules — the shared metadata fabric is what distinguishes a platform from a collection of tools, and it is what CLAIRE reasons over.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The control plane and the Secure Agent
 
@@ -110,7 +110,7 @@ EOF
 
 **Expected result:** A runtime model where the cloud control plane designs, schedules, and monitors a job while a Secure Agent deployed in the customer's own VPC does the actual data processing near the data. The lesson is IDMC's hybrid design — design in the cloud, execute near the data — which lets enterprises use a SaaS control plane while keeping sensitive data processing local.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

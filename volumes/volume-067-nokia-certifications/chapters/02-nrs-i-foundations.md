@@ -77,7 +77,7 @@ A:router# show router route-table
 **Negative test:** expect Cisco/Juniper syntax on SR OS; the CLIs differ — learn SR OS `info`/`show
 router`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Configure a port and IP interface
 
@@ -95,7 +95,7 @@ interface up.
 **Negative test:** create an interface with **no port**; SR OS interfaces bind to a **port** —
 attach it.
 
-**Cleanup:** remove the interface and shut the port.
+**Rollback:** remove the interface and shut the port.
 
 ### Lab 2.3 — Configure the system interface
 
@@ -112,7 +112,7 @@ source.
 **Negative test:** source protocols from a physical interface that can flap; use the **system**
 interface for stability.
 
-**Cleanup:** none (keep the system interface).
+**Rollback:** none (keep the system interface).
 
 ### Lab 2.4 — Static routing
 
@@ -129,7 +129,7 @@ forwarding.
 **Negative test:** expect connectivity with no route/next-hop; the **route table** must have the
 prefix — add the static route.
 
-**Cleanup:** remove the static-route-entry.
+**Rollback:** remove the static-route-entry.
 
 ### Lab 2.5 — Verify forwarding state
 
@@ -146,7 +146,7 @@ forwarding readiness.
 **Negative test:** assume a configured route is forwarding without checking the **FIB**; verify it
 is programmed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

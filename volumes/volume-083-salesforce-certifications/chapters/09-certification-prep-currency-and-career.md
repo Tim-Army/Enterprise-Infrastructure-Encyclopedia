@@ -73,7 +73,7 @@ preparation.
 **Negative test:** read modules without a **hands-on** org; exams test applied skill — build in a
 Playground.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Verify a free practice org
 
@@ -91,7 +91,7 @@ PY
 
 **Negative test:** assume you need a paid org to practice; a **Developer Edition** org is free — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -112,7 +112,7 @@ pyramid path.
 **Negative test:** skip a **release maintenance** module; the certification lapses — complete it each
 cycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

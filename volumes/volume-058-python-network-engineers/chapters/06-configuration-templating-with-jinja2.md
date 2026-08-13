@@ -66,7 +66,7 @@ print(t.render(name="core-sw1"))   # hostname core-sw1
 **Negative test:** build config with f-strings and manual escaping; **Jinja2** scales to
 real templates — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Loop over a list
 
@@ -83,7 +83,7 @@ print(t.render(vlans=[{"id":10,"name":"users"},{"id":20,"name":"voice"}]))
 **Negative test:** copy-paste each VLAN stanza by hand; a **loop** stays correct as the
 data grows.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Conditionals
 
@@ -100,7 +100,7 @@ print(t.render(intf="Gi1", shutdown=True))
 **Negative test:** maintain separate templates per variant; a **conditional** keeps one
 template — DRY.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Data-driven from YAML
 
@@ -119,7 +119,7 @@ print(t.render(**data))
 **Negative test:** hard-code values in the template; keep **data external** so one
 template serves many devices.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

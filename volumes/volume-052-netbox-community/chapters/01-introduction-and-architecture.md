@@ -92,7 +92,7 @@ docker compose ps --services --filter status=running | sort
 **Negative test:** start only the `netbox` container; without **postgres/redis** it
 fails to serve — bring up the whole compose stack.
 
-**Cleanup:** `docker compose down` (add `-v` to drop volumes).
+**Rollback:** `docker compose down` (add `-v` to drop volumes).
 
 ### Lab 1.2 — Verify the running version
 
@@ -107,7 +107,7 @@ curl -sS "http://localhost:8000/api/status/" | python3 -c "import sys,json;print
 **Negative test:** assume the latest; **query `/api/status/`** — the running version
 governs which features/fields exist.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Authenticate to the API
 
@@ -126,7 +126,7 @@ install) — proof the token works.
 **Negative test:** call `/api/dcim/sites/` with no token; NetBox returns **403** for
 protected data — authenticate first.
 
-**Cleanup:** delete the token if it was only for the lab.
+**Rollback:** delete the token if it was only for the lab.
 
 ## Lab Verification
 

@@ -85,7 +85,7 @@ architecture-design domain.
 **Negative test:** cluster a small table; **clustering** helps only large tables
 with selective predicates — reserve it for those.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Security and data governance
 
@@ -103,7 +103,7 @@ the governance design of the Architect exam.
 **Negative test:** rely on views alone for masking; **masking policies** apply
 consistently at the column across all access paths.
 
-**Cleanup:** `ALTER TABLE demo_db.sales.customers MODIFY COLUMN email UNSET MASKING POLICY; DROP MASKING POLICY IF EXISTS email_mask;`
+**Rollback:** `ALTER TABLE demo_db.sales.customers MODIFY COLUMN email UNSET MASKING POLICY; DROP MASKING POLICY IF EXISTS email_mask;`
 
 ### Lab 4.3 — Performance at scale
 
@@ -120,7 +120,7 @@ performance-at-scale technique the Architect designs.
 **Negative test:** add search optimization to every table; it has cost — apply it
 where **selective lookups** justify it.
 
-**Cleanup:** `ALTER TABLE demo_db.sales.orders DROP SEARCH OPTIMIZATION;`
+**Rollback:** `ALTER TABLE demo_db.sales.orders DROP SEARCH OPTIMIZATION;`
 
 ### Lab 4.4 — Data sharing and collaboration
 
@@ -139,7 +139,7 @@ the collaboration domain.
 **Negative test:** export data to send to a partner; **secure sharing** gives live,
 governed access with no copy — use it.
 
-**Cleanup:** `DROP SHARE IF EXISTS orders_share;`
+**Rollback:** `DROP SHARE IF EXISTS orders_share;`
 
 ### Lab 4.5 — Migration
 
@@ -157,7 +157,7 @@ the migration domain of the Architect exam.
 **Negative test:** cut over without **row-count/checksum validation**; verify data
 integrity before decommissioning the source.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

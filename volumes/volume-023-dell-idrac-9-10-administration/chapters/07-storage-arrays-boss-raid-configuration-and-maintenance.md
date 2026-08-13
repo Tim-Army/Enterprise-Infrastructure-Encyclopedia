@@ -381,7 +381,7 @@ verify RAID from the controller without booting into a controller BIOS.
 or failed disk mis-targets the build — inventory first so the configuration matches the actual
 hardware.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Create a RAID virtual disk (Topic: RAID configuration)
 
@@ -401,7 +401,7 @@ which is how RAID is built out-of-band and repeatably; RAID-1 mirrors two disks 
 **Negative test:** create a single-disk RAID-0 for data you cannot lose; one disk failure destroys
 it — choose a redundant level (RAID-1/5/6/10) for data that must survive a drive failure.
 
-**Cleanup:** `racadm storage deletevd:Disk.Virtual.0:RAID.Integrated.1-1` + a job to apply, on lab
+**Rollback:** `racadm storage deletevd:Disk.Virtual.0:RAID.Integrated.1-1` + a job to apply, on lab
 hardware only.
 
 ### Lab 7.3 — BOSS boot device (Topic: Boot device)
@@ -421,7 +421,7 @@ separating boot media from the data RAID so data drives are fully available to w
 **Negative test:** install the hypervisor onto the data array instead of BOSS; you consume data
 capacity and couple boot to data-array maintenance — BOSS exists to isolate the boot device.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Array maintenance (Topic: Storage maintenance)
 
@@ -445,7 +445,7 @@ rebuild.
 degraded until someone manually swaps a drive — a hot spare starts the rebuild immediately,
 narrowing the risk window.
 
-**Cleanup:** `racadm storage blink:... -stop` (stop the identify LED); reverse the lab hotspare assignment if
+**Rollback:** `racadm storage blink:... -stop` (stop the identify LED); reverse the lab hotspare assignment if
 needed.
 
 ## Lab Verification

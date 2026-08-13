@@ -238,7 +238,7 @@ repository (optional but recommended).
    exists for the reference card, satisfying the design consideration that
    quick references must not drift silently.
 
-**Cleanup:** Restart any lab service left in a non-default state, remove
+**Rollback:** Restart any lab service left in a non-default state, remove
 temporary backup files created during the exercise, and revoke any
 elevated access granted solely for the lab.
 

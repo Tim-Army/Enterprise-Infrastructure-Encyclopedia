@@ -107,7 +107,7 @@ EOF
 
 **Negative test:** Suppressing not-loaded findings entirely. Reachability is a property of the current deployment, not of the vulnerability.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Measure precision before enabling blocking
 
@@ -153,7 +153,7 @@ EOF
 
 **Negative test:** Enabling blocking estate-wide on default rules at go-live. The first false positive lands on a paying customer, and the control gets disabled entirely rather than tuned.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Plan remediation with DQL
 
@@ -198,7 +198,7 @@ EOF
 
 **Negative test:** Working the backlog in CVSS order. You spend the week on a 3-day code fix affecting one service while a half-day dependency bump affecting fourteen waits.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -81,7 +81,7 @@ db.orders.find({ total: { $gte: 100 }, status: { $in: ["shipped","paid"] } }, { 
 **Negative test:** filter `items == "a"` with `{ items: { $eq: ["a"] } }` expecting element match; that
 matches the whole array — query array membership with `{ items: "a" }` or `$elemMatch`.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.2 — Sort, limit, and project
 
@@ -101,7 +101,7 @@ db.orders.find({ status: "shipped" }, { cust: 1, total: 1, _id: 0 }).sort({ tota
 **Negative test:** fetch all documents into the app and sort in code; push **`sort`/`limit`** to the
 server (ideally index-backed) instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Paginate correctly
 
@@ -122,7 +122,7 @@ db.orders.find({ _id: { $gt: 1 } }).sort({ _id: 1 }).limit(2)
 **Negative test:** page 10,000 with `.skip(20000).limit(2)`; MongoDB scans 20,000 documents first — use a
 **range** on an indexed field.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Connect from a driver
 
@@ -143,7 +143,7 @@ print(top)   # [{'cust': 'amy', 'total': 300}, {'cust': 'amy', 'total': 120}]
 **Negative test:** create a `MongoClient` inside every request handler; reuse **one** client
 (connection pool) for the process.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh

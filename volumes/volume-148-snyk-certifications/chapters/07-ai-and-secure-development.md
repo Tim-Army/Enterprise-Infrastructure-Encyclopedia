@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Relying on human code review to catch insecure AI-generated code. AI writes several times faster than humans review, and developers trust the assistant and review less — automated scanning of the AI's output is what keeps pace.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Constrain excessive agency
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Giving an AI agent broad tool access "to be helpful." An agent that can be steered by untrusted input and holds powerful tools (shell, email) is a prompt-injection away from acting maliciously as you — least privilege on agent tools is the control.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

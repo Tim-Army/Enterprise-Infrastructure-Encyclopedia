@@ -450,7 +450,7 @@ Kerberos.
 drift; logs and certificates skew — NTP is what keeps the clock correct, and `timedatectl`
 confirms it.
 
-**Cleanup:** none (time sync is expected in operation).
+**Rollback:** none (time sync is expected in operation).
 
 ### Lab 7.2 — DNS client and name resolution (Topic: DNS)
 
@@ -471,7 +471,7 @@ resolve names — RHCSA expects configuring the resolver (via NetworkManager, wh
 **Negative test:** hand-edit `/etc/resolv.conf` directly; NetworkManager overwrites it on the
 next connection change — set DNS through `nmcli` so the change persists.
 
-**Cleanup:** restore the original DNS setting on the connection.
+**Rollback:** restore the original DNS setting on the connection.
 
 ### Lab 7.3 — Web server with correct firewall and SELinux (Topic: Web services)
 
@@ -494,7 +494,7 @@ correctly-labeled path (`httpd_sys_content_t`) — the integration RHCE-style ta
 wrong SELinux context; the browser gets 403 while logs show an AVC denial — all three layers
 (service, firewall, SELinux) must line up.
 
-**Cleanup:** `sudo systemctl disable --now httpd; sudo firewall-cmd --permanent
+**Rollback:** `sudo systemctl disable --now httpd; sudo firewall-cmd --permanent
 --remove-service=http && sudo firewall-cmd --reload`.
 
 ### Lab 7.4 — Database service (Topic: Database services)
@@ -517,7 +517,7 @@ users, grants), a common real-world and RHCE task.
 **Negative test:** grant the app user `ALL ON *.*` instead of `ON labdb.*`; it can now touch
 every database — scope grants to the specific database, not globally.
 
-**Cleanup:** `sudo mysql -e "DROP DATABASE labdb; DROP USER 'app'@'localhost';"`; disable
+**Rollback:** `sudo mysql -e "DROP DATABASE labdb; DROP USER 'app'@'localhost';"`; disable
 mariadb if lab-only.
 
 ## Lab Verification

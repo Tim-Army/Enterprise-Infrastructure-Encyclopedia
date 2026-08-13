@@ -80,7 +80,7 @@ Apex.
 **Negative test:** put `[SELECT ...]` **inside** the `for` loop; 200 records = 200 queries → limit
 exception — query **outside** the loop.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Query with SOQL
 
@@ -104,7 +104,7 @@ retrieval.
 **Negative test:** `SELECT ... FROM Opportunity` with no `WHERE`; on a large org it's slow/limited —
 filter selectively.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reason about an LWC
 
@@ -125,7 +125,7 @@ UI.
 **Negative test:** build new UI in the deprecated Visualforce/Aura where **LWC** is the current
 standard — use LWC.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Ensure test coverage
 
@@ -147,7 +147,7 @@ requirement.
 **Negative test:** write tests with no **assertions** just to hit coverage; they don't verify behavior
 — assert real outcomes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

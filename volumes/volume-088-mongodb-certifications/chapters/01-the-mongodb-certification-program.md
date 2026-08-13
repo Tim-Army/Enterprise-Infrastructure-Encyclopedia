@@ -91,7 +91,7 @@ validate.
 **Negative test:** study against a very old 4.x server; commands and the aggregation/`mongosh` surface
 differ — practice on a current major version.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the certification ladder
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** assume one MongoDB exam covers everything; there are **four** role-specific Associate
 exams — pick the one for your role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Confirm your database and readiness
 
@@ -140,7 +140,7 @@ environment.
 **Negative test:** practice against `admin` or `local`; use a dedicated `training` database so you do not
 disturb system collections.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

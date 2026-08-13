@@ -31,7 +31,7 @@ sudo conntrack -L 2>/dev/null | grep -E '5432|502'
 
 **Negative test.** A denied flow (`hmi → db`) never establishes, so it does not appear as an established connection; it appears instead in the deny log — permitted flows in the connection table, denied ones in the log.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 6.2 — Denies and unexpected flows
 
@@ -49,7 +49,7 @@ echo "== active permitted flows =="; sudo conntrack -L 2>/dev/null | grep -c EST
 
 **Negative test.** Without in-fabric telemetry you would need a separate SPAN/collector (as in the OT-monitoring volumes) to see east-west flows; the DPU provides it inline, which is a distinguishing benefit of doing enforcement in the fabric.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

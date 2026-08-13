@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Using a fixed-position RPA bot to read invoices. The moment a vendor's layout differs, the bot reads the wrong cell or fails; IDP generalizes across layouts by learning context, and confidence-based routing keeps the errors it does make from flowing through unchecked.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

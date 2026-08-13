@@ -97,7 +97,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.cwnp.com/certifications/" \
 **Negative test:** assume one expert cert and Pearson VUE delivery; there are **two experts**
 (CWNE/CWISE) and delivery is **Prometric** — confirm on cwnp.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map certifications to levels and tracks
 
@@ -118,7 +118,7 @@ PY
 **Negative test:** target a professional cert with no **CWNA**; CWNA is the **foundation** — earn
 it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a track
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** attempt CWNE without the required professional certs and endorsement; **CWNE
 needs CWNA+CWSP+CWAP+CWDP+CWISA + review** — complete them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

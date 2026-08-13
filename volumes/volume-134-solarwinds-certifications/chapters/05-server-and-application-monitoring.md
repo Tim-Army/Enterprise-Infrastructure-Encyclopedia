@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Building bespoke monitors per server — every host checks slightly different things, coverage gaps are invisible, and improving a check means editing dozens of nodes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Process running versus service working
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Alerting on "service stopped" as the primary application check — you catch only the cleanest failure mode and miss error responses, hangs, and slow degradation, which are the common ones.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Weighted health rollup
 
@@ -142,7 +142,7 @@ EOF
 
 **Negative test:** Treating any failed component as "application down" — you generate alerts for conditions users never notice, and the resulting fatigue means the real outage is treated as one more false alarm.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

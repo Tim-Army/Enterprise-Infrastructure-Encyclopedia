@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Attempting the CSSA or CLSA without the prerequisite below it. The System Architect ladder is gated — CSSA requires CSA and CLSA requires CSSA — so you build capability in order rather than skipping to the top.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The two-part CLSA proves design and build
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Judging Lead-architect competence by a written exam alone. Designing and delivering real Pega applications is a hands-on skill; the CLSA's Application exam proves the candidate can build, which is what an elite architect does.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

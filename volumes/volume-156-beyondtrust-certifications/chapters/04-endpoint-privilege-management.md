@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Giving users standing local admin "so they can install things." That makes the entire session privileged, so any malware they run inherits admin; per-application elevation grants only sanctioned apps elevation while the user stays a standard user.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

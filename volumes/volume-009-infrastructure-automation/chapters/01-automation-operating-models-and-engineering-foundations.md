@@ -431,7 +431,7 @@ and auditable, which is what makes automation safe to run at scale.
 is no history, no review, and no rollback — the un-tracked change is exactly what GitOps and
 automation discipline exist to eliminate.
 
-**Cleanup:** `rm -rf ~/auto/repo`.
+**Rollback:** `rm -rf ~/auto/repo`.
 
 ### Lab 1.2 — Structured data formats (Topic: Data formats)
 
@@ -455,7 +455,7 @@ parsing/generating them in code is a core daily automation skill.
 structures and multi-line values break it — structured data needs a structured parser, not line
 matching.
 
-**Cleanup:** `rm -f ~/auto/data.json`.
+**Rollback:** `rm -f ~/auto/data.json`.
 
 ### Lab 1.3 — Python for automation (Topic: Scripting)
 
@@ -485,7 +485,7 @@ testable functions are the building blocks of automation tooling.
 **Negative test:** `pip install` globally as root across many projects; versions collide and one
 project's upgrade breaks another — the venv is what isolates each project's dependency set.
 
-**Cleanup:** `rm -rf ~/auto/.venv ~/auto/check.py ~/auto/d.json`.
+**Rollback:** `rm -rf ~/auto/.venv ~/auto/check.py ~/auto/d.json`.
 
 ### Lab 1.4 — Idempotence and desired-state thinking (Topic: Design methodology)
 
@@ -515,7 +515,7 @@ rather than blindly repeating actions.
 line — a non-idempotent operation produces drift and damage when re-run, which automation must
 avoid.
 
-**Cleanup:** `rm -f ~/auto/ensure.sh ~/auto/hosts.txt`.
+**Rollback:** `rm -f ~/auto/ensure.sh ~/auto/hosts.txt`.
 
 ## Lab Verification
 

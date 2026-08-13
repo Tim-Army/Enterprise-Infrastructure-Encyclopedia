@@ -82,7 +82,7 @@ Metrics app.
 **Negative test:** hand-write a custom metrics shipper when the **System integration** already collects
 CPU/memory/disk; use the curated integration.
 
-**Cleanup:** remove the test integration from the policy if not needed.
+**Rollback:** remove the test integration from the policy if not needed.
 
 ### Lab 6.2 — Collect and tail logs
 
@@ -108,7 +108,7 @@ curl -s -k -u elastic:$PW "https://localhost:9200/logs-myapp.log-default/_count"
 **Negative test:** copy log files around manually; configure the **Custom Logs integration** to tail
 them continuously instead.
 
-**Cleanup:** remove the integration if not needed.
+**Rollback:** remove the integration if not needed.
 
 ### Lab 6.3 — Monitor uptime with Heartbeat
 
@@ -134,7 +134,7 @@ Uptime app.
 **Negative test:** monitor a public site only from inside the datacenter; run **Heartbeat** from where
 users actually connect.
 
-**Cleanup:** stop the Heartbeat monitor if not needed.
+**Rollback:** stop the Heartbeat monitor if not needed.
 
 ### Lab 6.4 — Query observability data
 
@@ -154,7 +154,7 @@ curl -s -k -u elastic:$PW -X GET "https://localhost:9200/metrics-system.cpu-defa
 **Negative test:** keep metrics, logs, and uptime in three disconnected tools; Elastic unifies them in
 **one** Elasticsearch source for correlation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

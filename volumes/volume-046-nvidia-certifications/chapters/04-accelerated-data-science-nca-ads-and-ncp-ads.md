@@ -93,7 +93,7 @@ GPU-dataframe acceleration NCA-ADS tests.
 **Negative test:** accelerate a 100-row CSV; transfer/setup overhead outweighs the
 gain — accelerate **large** data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — NCA-ADS: GPU machine learning with cuML
 
@@ -112,7 +112,7 @@ ML NCA-ADS covers (near-identical API to scikit-learn).
 **Negative test:** expect every sklearn estimator in cuML; most common ones exist,
 not all — check cuML coverage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — NCA-ADS: when acceleration helps
 
@@ -133,7 +133,7 @@ decision NCA-ADS tests.
 **Negative test:** GPU-accelerate everything reflexively; small/light tasks lose to
 **transfer overhead** — decide by size and cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — NCP-ADS: scaling with Dask
 
@@ -154,7 +154,7 @@ NCP-ADS certifies.
 **Negative test:** load a dataset larger than one GPU's memory into plain cuDF; it
 OOMs — **Dask** partitions across GPUs/nodes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — NCP-ADS: pipeline optimization
 
@@ -173,7 +173,7 @@ NCP-ADS.
 **Negative test:** move data to CPU between every step; **transfers** dominate —
 chain GPU operations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — NCP-ADS: graph analytics (cuGraph)
 
@@ -192,7 +192,7 @@ the ADS ecosystem.
 **Negative test:** run large-graph analytics on CPU NetworkX; **cuGraph** is
 orders of magnitude faster for big graphs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

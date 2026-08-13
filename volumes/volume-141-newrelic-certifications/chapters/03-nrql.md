@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** `FACET` on an attribute with unbounded values. The query returns, the chart is unreadable, and at alert-evaluation time the cost recurs every minute.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Events versus metrics: the same question, two costs
 
@@ -144,7 +144,7 @@ EOF
 
 **Negative test:** Building the daily dashboard on `FROM Transaction` because it worked in testing. It keeps working — 200 times a day, against a full day's events, forever.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — One wrong WHERE, three broken features
 
@@ -183,7 +183,7 @@ EOF
 
 **Negative test:** Validating an alert by checking it matches the dashboard. When both wrap the same NRQL, that check can only ever pass.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

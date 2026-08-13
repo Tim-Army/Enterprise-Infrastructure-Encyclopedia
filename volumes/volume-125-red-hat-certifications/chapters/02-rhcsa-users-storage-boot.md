@@ -30,7 +30,7 @@ id alice; ls -ld /srv/eng; sudo chage -l svcacct | grep -i expire
 
 **Negative test:** Drop the setgid bit (`chmod 0770`) and create a file as alice — it lands in alice's primary group, breaking collaboration; the `2` in `2770` is why the exam asks for it.
 
-**Cleanup:** `sudo userdel -r alice; sudo userdel -r svcacct; sudo groupdel engineering; sudo rm -rf /srv/eng`.
+**Rollback:** `sudo userdel -r alice; sudo userdel -r svcacct; sudo groupdel engineering; sudo rm -rf /srv/eng`.
 
 ### Lab 2.2 — LVM: create, extend, and mount persistently
 
@@ -50,7 +50,7 @@ df -h /data | tail -1
 
 **Negative test:** `lvreduce` an XFS volume — XFS cannot shrink; attempting it (or forgetting `xfs_growfs` after `lvextend`) is the classic storage-task failure. Also: an fstab typo caught by `mount -a` now beats an unbootable system on the exam.
 
-**Cleanup:** Remove the fstab line, `sudo umount /data`, `sudo vgremove -f vgdata`, `sudo losetup -d $LOOP`, `rm -f /root/pv.img`.
+**Rollback:** Remove the fstab line, `sudo umount /data`, `sudo vgremove -f vgdata`, `sudo losetup -d $LOOP`, `rm -f /root/pv.img`.
 
 ### Lab 2.3 — Swap and Stratis/VDO awareness
 
@@ -66,7 +66,7 @@ sudo swapon -a && swapon --show | grep lvswap
 
 **Negative test:** `swapon` a volume you forgot to `mkswap` — "read swap header failed"; the format step is separate from enabling.
 
-**Cleanup:** `sudo swapoff /dev/vgdata/lvswap`, remove the fstab line, `sudo lvremove -f /dev/vgdata/lvswap`.
+**Rollback:** `sudo swapoff /dev/vgdata/lvswap`, remove the fstab line, `sudo lvremove -f /dev/vgdata/lvswap`.
 
 ### Lab 2.4 — Boot targets and recovery
 
@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Reset the root password via `rd.break` but skip `.autorelabel` — SELinux denies login on reboot; the relabel is what makes the recovery actually work.
 
-**Cleanup:** Leave the target at `multi-user` (exam default) or restore as your lab prefers.
+**Rollback:** Leave the target at `multi-user` (exam default) or restore as your lab prefers.
 
 ### Lab 2.5 — Tuning and scheduled tasks
 
@@ -104,7 +104,7 @@ sudo systemctl enable --now crond 2>/dev/null; ls -l /etc/cron.d/sec-updates
 
 **Negative test:** Put a user-crontab line (no user field) into `/etc/cron.d` — cron rejects it; the two formats differ by exactly that field.
 
-**Cleanup:** `sudo rm /etc/cron.d/sec-updates`.
+**Rollback:** `sudo rm /etc/cron.d/sec-updates`.
 
 ## Summary and Completion Checklist
 

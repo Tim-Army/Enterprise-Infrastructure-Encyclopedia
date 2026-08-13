@@ -69,7 +69,7 @@ PY
 **Negative test:** target **CCSM** before **CCSE + ISAs**; the prerequisites gate it — climb in
 order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Build a currency-check routine
 
@@ -90,7 +90,7 @@ PY
 **Negative test:** trust a third-party dump for "current" codes; only **checkpoint.com** is
 authoritative — verify there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

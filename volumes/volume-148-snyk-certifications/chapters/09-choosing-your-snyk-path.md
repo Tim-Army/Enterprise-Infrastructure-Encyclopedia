@@ -93,7 +93,7 @@ EOF
 
 **Negative test:** Treating a Snyk certificate of completion as a done-forever credential. AppSec moves fast (the AI-security classes are barely two years old); a stale understanding is genuinely out of date, so currency here means continuing to learn, not holding a badge.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Snyk in the AppSec / DevSecOps career
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Treating Snyk as a standalone scanner skill. It sits in the code-to-cloud continuum with Wiz, plugs into GitLab/GitHub pipelines, and rests on the OWASP taxonomy — isolating it undersells both the platform and the DevSecOps career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

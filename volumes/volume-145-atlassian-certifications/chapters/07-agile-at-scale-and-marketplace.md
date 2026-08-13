@@ -93,7 +93,7 @@ EOF
 
 **Negative test:** Putting velocity on a dashboard that compares teams. Estimates inflate to compete, and the number stops predicting anything about delivery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Native Jira versus an app: where's the real gap?
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Installing a Marketplace app at the first sign of friction. Half the time native Jira or a premium plan already does it, and each unnecessary app is a future compatibility liability.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — App sprawl and supply-chain risk
 
@@ -180,7 +180,7 @@ EOF
 
 **Negative test:** Leaving Marketplace apps installed indefinitely because "someone might use them." The abandoned-vendor, write-access app is a live risk whether or not anyone uses it, and it breaks the next update.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -99,7 +99,7 @@ PY
 **Negative test:** assume one Qualys cert covers all; each **path/course** targets a product area —
 choose by role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Understand the platform and sensors
 
@@ -121,7 +121,7 @@ blocks.
 **Negative test:** rely on network scans alone; **Cloud Agents** give continuous, off-network
 coverage — use them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -140,7 +140,7 @@ PY
 **Negative test:** skip **VMDR/QQL** foundations and jump to automation; you need the platform basics —
 build up.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -74,7 +74,7 @@ Security Center data.
 **Negative test:** route all scans through one central scanner across WAN links; slow and fragile —
 use **scan zones**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Apply role-based access control
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** give every user full admin; teams see other teams' data and can change scans —
 enforce **RBAC**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Build an Assurance Report Card
 
@@ -116,7 +116,7 @@ reporting.
 **Negative test:** report raw scan counts to executives; an **ARC** shows posture against policy —
 use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Plan on-prem capacity and retention
 
@@ -136,7 +136,7 @@ PY
 **Negative test:** deploy one scanner for thousands of hosts with no retention plan; scans queue and
 data overflows — **size** it properly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

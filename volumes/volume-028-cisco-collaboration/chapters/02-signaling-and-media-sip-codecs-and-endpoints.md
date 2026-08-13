@@ -198,7 +198,7 @@ control to Webex Calling. The node list plus enabled services locates the model.
 Expressway also serves pure on-prem MRA — the enabled Webex connectors, not the
 edge box, define hybrid.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Describe the purpose of edge devices (Objective 1.2)
 
@@ -218,7 +218,7 @@ control never faces the outside directly.
 exposed to external SIP and cannot normalize provider quirks — the edge device
 exists precisely to prevent that.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Describe the cluster upgrade process for Communications Manager (Objective 1.3)
 
@@ -237,7 +237,7 @@ is a switch back; the status command shows an in-progress upgrade's stage.
 **Negative test:** attempt a switch-version with no image on the inactive
 partition; UCM refuses — the upgrade must complete to the inactive side first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Troubleshoot security components (Objective 1.4)
 
@@ -258,7 +258,7 @@ registration, and phone config download; the CTL governs mixed-mode trust.
 while non-secure phones work — the split symptom points straight at the cert,
 not the network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Troubleshoot network components (Objective 1.5)
 
@@ -279,7 +279,7 @@ timestamps, and low-loss paths for media; the four checks localize the layer.
 database replication across the cluster — a "network" fault that looks like a
 security or DB fault until you check the clock.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Deploy endpoints and soft clients (Objective 2.1)
 
@@ -299,7 +299,7 @@ soft clients (Webex App/Jabber) register the same way through service discovery.
 registers but cannot place calls — provisioning is device **plus** line/user
 association.
 
-**Cleanup:** remove the test device if one was added.
+**Rollback:** remove the test device if one was added.
 
 ### Lab 2.7 — Troubleshoot elements of a SIP conversation (Objective 2.2)
 
@@ -320,7 +320,7 @@ problem.
 **Negative test:** chase the endpoint for a `488 Not Acceptable Here`; the SDP
 offer/answer shows a codec mismatch — the SIP body, not the phone, is the cause.
 
-**Cleanup:** `no debug ccsip messages` on CUBE.
+**Rollback:** `no debug ccsip messages` on CUBE.
 
 ### Lab 2.8 — Troubleshoot endpoint registration on UCM and CUBE (Objective 2.3)
 
@@ -341,7 +341,7 @@ failures trace to `voice register` config or reachability during a WAN outage.
 a TFTP (option 150) or cert-trust problem, not call control — check TFTP reach
 before UCM config.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

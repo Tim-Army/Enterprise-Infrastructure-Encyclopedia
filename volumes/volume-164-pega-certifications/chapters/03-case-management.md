@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Modeling a business process as a fixed, hard-coded flowchart. Real work has exceptions and adaptations a rigid flow can't handle; Pega's dynamic cases adapt at runtime — skipping, adding, escalating — which is why case management is its core.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

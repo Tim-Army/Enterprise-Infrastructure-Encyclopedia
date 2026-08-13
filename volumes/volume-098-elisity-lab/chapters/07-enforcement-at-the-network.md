@@ -40,7 +40,7 @@ Test-NetConnection -ComputerName 10.10.30.50 -Port 502    # HMI -> PLC: expect T
 
 **Negative test.** Add `el-win01` to `grp_appserver` in the inventory, rebuild the IdentityGraph, and re-run the attack — it succeeds, because the HMI is now classified as an app server and inherits app-server access. Identity is policy; a misclassification is a hole. Restore the inventory and rebuild.
 
-**Cleanup.** Keep the enforced policy.
+**Rollback.** Keep the enforced policy.
 
 ### Lab 7.2 — Policy follows identity, not address
 
@@ -64,7 +64,7 @@ sudo /usr/local/bin/build-identitygraph.sh
 
 **Negative test.** Re-address the app but *forget* to update the source; the graph still lists the old address, and the app is denied. The model is only as live as its sources — which is why Elisity ingests continuously rather than relying on manual updates. (Restore `el-app01` to `.11` and rebuild.)
 
-**Cleanup.** Ensure `el-app01` is back at `.11` and the graph rebuilt.
+**Rollback.** Ensure `el-app01` is back at `.11` and the graph rebuilt.
 
 ### Lab 7.3 — No endpoint agents (the model's point)
 
@@ -76,7 +76,7 @@ sudo /usr/local/bin/build-identitygraph.sh
 
 **Negative test.** Argue you should "also" put agents on the servers for defense in depth. Nothing stops you (that is what the other volumes in this series do), but note that Elisity's value proposition — protect OT/IoT and unmanaged devices with no agent — evaporates if agents become mandatory. The point is coverage without an endpoint footprint.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — The Virtual Edge and live ingestion (Design Exercise)
 
@@ -96,7 +96,7 @@ sudo /usr/local/bin/build-identitygraph.sh
 
 **Negative test.** Argue manual classification is "fine for a stable estate." Estates are not stable; the manual model fails exactly when it matters — during change, which is when attackers move.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

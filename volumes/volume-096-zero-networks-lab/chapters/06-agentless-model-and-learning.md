@@ -41,7 +41,7 @@ Zero Networks' method is **monitor, learn, least-privilege, then enforce** — a
 
 **Negative test.** Assume the PLC can be protected "like the others" by remote firewall management. It cannot — it exposes no manageable host firewall. That is why Chapter 08 enforces on its neighbor instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Bring the estate under management (or prepare the native firewalls)
 
@@ -88,7 +88,7 @@ Set-NetFirewallProfile -Profile Domain,Private,Public `
 
 **Negative test.** Deny the service account the privilege to manage a host's firewall (Track 1), or remove your own admin rights (Track 2); the platform cannot write rules and the host stays unprotected. Agentless still requires privileged reach to the firewall — that is the trade for installing nothing.
 
-**Cleanup.** Leave the monitoring posture in place.
+**Rollback.** Leave the monitoring posture in place.
 
 ### Lab 6.3 — The learning phase: derive least-privilege rules
 
@@ -119,7 +119,7 @@ Note what is **absent**: no rule for HMI→db, and no standing rule for 22 or 33
 
 **Negative test.** Run the Lab 5.3 attack *during* the learning window and harvest again; the malicious HMI→db flow now appears in the candidate list. Learning faithfully records whatever happens — so the learning window must observe *clean* traffic, or you will bless an attack path. This is why review (Lab 6.4) is mandatory.
 
-**Cleanup.** Keep the allow-list; Chapter 07 enforces it.
+**Rollback.** Keep the allow-list; Chapter 07 enforces it.
 
 ### Lab 6.4 — Review the learned rules
 
@@ -131,7 +131,7 @@ Note what is **absent**: no rule for HMI→db, and no standing rule for 22 or 33
 
 **Negative test.** Accept the learned rules without review. If any unwanted flow occurred during monitoring, you have just codified it as policy. Automation proposes; a human must dispose.
 
-**Cleanup.** Keep the reviewed allow-list.
+**Rollback.** Keep the reviewed allow-list.
 
 ## Summary and Completion Checklist
 

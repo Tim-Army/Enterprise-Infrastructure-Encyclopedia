@@ -270,7 +270,7 @@ in place — the reference architecture's domains realized as products.
 **Negative test:** point products with no architecture leave gaps between
 them; the reference architecture ensures coverage across domains.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Describe recommended capabilities per use case (Objective 1.2)
 
@@ -287,7 +287,7 @@ mapping.
 **Negative test:** enabling every capability without a use case adds latency
 and cost; match capabilities to the requirement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Describe industry security frameworks (Objective 1.3)
 
@@ -304,7 +304,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" >/dev/null 2>&1
 **Negative test:** claiming "zero trust" from one pillar (identity only)
 overstates maturity; ZT spans all pillars.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Describe the SAFE architectural framework (Objective 1.4)
 
@@ -320,7 +320,7 @@ organizes controls by where they sit in the network.
 **Negative test:** a control designed with no PIN context can be misplaced
 (e.g. DLP only at the edge, missing east-west); SAFE ensures placement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.5 — Describe the SAFE Key structure (Objective 1.5)
 
@@ -338,7 +338,7 @@ control.
 **Negative test:** buying a capability with no mapped threat is unjustified;
 the SAFE Key traces each control to a risk.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.6 — Implement user/device certificate authentication (Objective 2.1)
 
@@ -355,7 +355,7 @@ passwords) — strong, phishing-resistant identity for ZT access.
 **Negative test:** password-only access is phishable; certificate/device
 identity raises the bar.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.7 — Implement multifactor authentication (Objective 2.2)
 
@@ -371,7 +371,7 @@ second factor — MFA on every access request.
 **Negative test:** MFA bypass for "trusted" networks is an attack path;
 require MFA regardless of location in ZT.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.8 — Implement endpoint posture for access (Objective 2.3)
 
@@ -387,7 +387,7 @@ evaluated before access — posture as an access condition.
 **Negative test:** granting access without a posture check lets a compromised
 device in; ZT gates on device health.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.9 — Configure SAML/SSO and OIDC (Objective 2.4)
 
@@ -403,7 +403,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/admin/v2/identityproviders" | jq -
 **Negative test:** a broken SAML assertion (clock skew, wrong audience) fails
 SSO; the IdP and SP must agree on claims/time.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.10 — Configure user/device trust with SAML (Objective 2.5)
 
@@ -419,7 +419,7 @@ via SAML — continuous, per-request trust evaluation.
 **Negative test:** trusting a session indefinitely after one auth violates ZT;
 re-evaluate trust continuously.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.11 — Determine endpoint→private-app policy (Objective 3.1)
 
@@ -433,7 +433,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | 
 which private app, no network-level access). **Negative test:** VPN-style
 network access exposes the whole subnet; ZTNA exposes only the app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.12 — Determine endpoint→internet/SaaS policy (Objective 3.2)
 
@@ -447,7 +447,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | 
 vs shadow SaaS) rules. **Negative test:** unrestricted SaaS access enables
 data exfiltration; CASB controls it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.13 — Determine remote-user VPN/ZTNA policy (Objective 3.3)
 
@@ -461,7 +461,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/deployments/v2/roamingcomputers" |
 tunnel is genuinely needed. **Negative test:** default full-VPN for everyone
 over-exposes; prefer ZTNA per app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.14 — Determine network-security-edge policy (Objective 3.4)
 
@@ -475,7 +475,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | 
 inspection at the edge without backhaul. **Negative test:** backhauling
 branch traffic to a DC firewall adds latency; the cloud edge inspects locally.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.15 — Describe MITRE ATT&CK and defense mapping (Objective 4.1)
 
@@ -491,7 +491,7 @@ common taxonomy for defense coverage and gaps.
 **Negative test:** measuring coverage by product count instead of ATT&CK
 technique coverage hides blind spots.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.16 — Describe cloud attack tactics and mitigation (Objective 4.2)
 
@@ -507,7 +507,7 @@ exploitation, lateral movement) with mitigations — cloud-specific defense.
 **Negative test:** on-prem-only detection misses cloud-native attacks; cloud
 telemetry is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.17 — Describe WAF and DDoS protection (Objective 4.3)
 
@@ -524,7 +524,7 @@ front of the app — L7 application protection.
 **Negative test:** a network firewall alone does not stop an L7 injection; the
 WAF inspects the application layer.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.18 — Determine application-enforcement policy (Objective 4.4)
 
@@ -538,7 +538,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | 
 posture, to which app). **Negative test:** IP/port rules cannot express
 per-user app access; application-aware policy can.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.19 — Determine hybrid/multicloud platform security (Objective 4.5)
 
@@ -552,7 +552,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/deployments/v2/networktunnelgroups
 SSE fabric, not per-cloud silos. **Negative test:** per-cloud policy silos
 drift and leave gaps; a unified fabric keeps them consistent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.20 — Describe the Cisco XDR solution (Objective 5.1)
 
@@ -568,7 +568,7 @@ network, and cloud into one incident — the cross-domain SOC view.
 **Negative test:** per-tool alerts without XDR correlation multiply analyst
 effort; XDR unifies them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.21 — Describe visibility/assurance automation use cases (Objective 5.2)
 
@@ -584,7 +584,7 @@ assurance/response automation XDR orchestrates.
 **Negative test:** manual enrichment for every alert does not scale; the
 workflow automates it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.22 — Describe visibility and logging benefits (Objective 5.3)
 
@@ -600,7 +600,7 @@ endpoint, cloud) — breadth of visibility is the value.
 **Negative test:** a blind spot (an unmonitored segment) hides attacker activity;
 comprehensive logging closes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.23 — Validate traffic flow and telemetry baseline (Objective 5.4)
 
@@ -616,7 +616,7 @@ makes an anomaly detectable.
 **Negative test:** alerting with no baseline fires on normal variation;
 baseline first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.24 — Diagnose user application/workload access issues (Objective 5.5)
 
@@ -632,7 +632,7 @@ policy denied) — the diagnosis of a ZT access denial.
 **Negative test:** blaming the app for a posture-driven denial; the activity
 log names the real cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.25 — Verify user access with tools (Objective 5.6)
 
@@ -648,7 +648,7 @@ positive path, not just denials.
 **Negative test:** confirming only that bad traffic is blocked, without
 verifying good traffic passes, risks a policy that blocks everything.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.26 — Analyze application dependencies (Objective 5.7)
 
@@ -664,7 +664,7 @@ dependency map a least-privilege policy must permit.
 **Negative test:** a ZTNA rule that omits a dependency breaks the app; map
 dependencies before tightening.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.27 — Describe response automation use cases (Objective 6.1)
 
@@ -680,7 +680,7 @@ revoke session) — automation that shortens time-to-contain.
 **Negative test:** manual response to a fast-moving attack loses the race;
 automation contains at machine speed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.28 — Determine actions from telemetry (Objective 6.2)
 
@@ -694,7 +694,7 @@ curl -sk -H "Authorization: Bearer $XT" "$XDR/incidents?severity=high" | jq -r '
 (quarantine, revoke, investigate). **Negative test:** ignoring a high-severity
 signal or over-reacting to a low one; match the action to the signal.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.29 — Determine policy from audit reports (Objective 6.3)
 
@@ -709,7 +709,7 @@ echo "audit finding: over-permissive rule -> tighten to least privilege"
 an over-broad rule, add posture). **Negative test:** noting a finding without
 a policy change leaves the gap open.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.30 — Determine action on user/app compromise (Objective 6.4)
 
@@ -725,7 +725,7 @@ force re-authentication — the containment for a confirmed compromise.
 **Negative test:** resetting the password alone leaves active sessions live;
 revoke sessions too.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.31 — Zero-trust application access (integrative)
 
@@ -770,7 +770,7 @@ zero-trust *properties*, though, are observable in those environments.
 - A device-posture denial with a logged reason.
 - Access logs that answer the who/what/where/posture question.
 
-**Cleanup**
+**Rollback**
 
 7. Remove the lab access policy and end the evaluation or dCloud session.
 

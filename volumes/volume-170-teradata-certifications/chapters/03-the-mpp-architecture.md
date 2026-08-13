@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Assuming performance scales just by adding AMPs regardless of distribution. A skewed table leaves most AMPs idle while one is overloaded, so more AMPs do not help; balanced distribution is what makes MPP parallelism deliver.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

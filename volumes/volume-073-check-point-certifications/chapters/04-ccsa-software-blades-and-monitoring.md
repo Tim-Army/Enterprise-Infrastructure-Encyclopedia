@@ -70,7 +70,7 @@ installed, SmartConsole. **Cost:** none.
 **Negative test:** block a business-critical SaaS category; verify in **logs** and refine — tune,
 don't over-block.
 
-**Cleanup:** disable the lab rule.
+**Rollback:** disable the lab rule.
 
 ### Lab 4.2 — Enable Identity Awareness
 
@@ -87,7 +87,7 @@ don't over-block.
 **Negative test:** write user-based rules with Identity Awareness **disabled**; they can't match —
 enable the blade and a source first.
 
-**Cleanup:** none (keep for later labs).
+**Rollback:** none (keep for later labs).
 
 ### Lab 4.3 — Tune Threat Prevention (Detect → Prevent)
 
@@ -105,7 +105,7 @@ Prevention.
 **Negative test:** set **Prevent** on day one with no tuning; legitimate traffic may break — start
 in Detect.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Monitor with cpview and logs
 
@@ -122,7 +122,7 @@ cpstat os -f cpu  2>/dev/null | head || echo "cpview/cpstat/fw stat + SmartConso
 **Negative test:** judge gateway health from a ping alone; **cpview/logs** show CPU, drops, and blade
 load — monitor properly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -45,7 +45,7 @@ chmod +x ~/analyze.sh
 
 **Negative test.** Add the attack flow to `policy.csv` and re-analyze; it flips to PERMIT. Policy analysis is only as good as the policy you feed it — it tells you what *would* happen, so a bad rule is visible here rather than discovered during an outage. Remove it.
 
-**Cleanup.** Keep the analyzed policy.
+**Rollback.** Keep the analyzed policy.
 
 ### Lab 7.2 — Enforce on the host firewall with ipset
 
@@ -75,7 +75,7 @@ sudo iptables -C INPUT -j CW-SEG 2>/dev/null || sudo iptables -A INPUT -j CW-SEG
 
 **Negative test.** `sudo ipset add db_clients 10.10.20.21` (add the HMI) and re-run the attack — it succeeds. The `ipset` is the group; an over-broad group re-authorizes the movement. Remove it: `sudo ipset del db_clients 10.10.20.21`.
 
-**Cleanup.** Keep the enforced ruleset.
+**Rollback.** Keep the enforced ruleset.
 
 ### Lab 7.3 — Enforce on Windows through the Windows Filtering Platform
 
@@ -101,7 +101,7 @@ New-NetFirewallRule -DisplayName "CW mgmt RDP in" -Direction Inbound `
 
 **Negative test.** Remove the management RDP allow and reboot; you may lock yourself out. Re-add it first (Lab 9.2).
 
-**Cleanup.** Keep the enforced Windows posture.
+**Rollback.** Keep the enforced Windows posture.
 
 ### Lab 7.4 — Scopes and cluster-scale ADM (Design Exercise)
 
@@ -121,7 +121,7 @@ New-NetFirewallRule -DisplayName "CW mgmt RDP in" -Direction Inbound `
 
 **Negative test.** Argue hand-written policy is fine because "we know our app." Applications drift, teams change, and undocumented dependencies exist; discovery finds what you do not know, which is exactly where the risk lives.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

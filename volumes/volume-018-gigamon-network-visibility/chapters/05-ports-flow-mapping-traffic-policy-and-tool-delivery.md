@@ -345,7 +345,7 @@ destination, and pass rules, the fundamental unit of tool delivery.
 matches and the tool receives nothing (a by-rule map with no pass rule passes no traffic) —
 a pass rule (or `map-passall`) is required to deliver anything.
 
-**Cleanup:** `no map alias web-to-ids`.
+**Rollback:** `no map alias web-to-ids`.
 
 ### Lab 5.2 — Pass/drop rules and priority (Topic: Traffic policy)
 
@@ -369,7 +369,7 @@ consumes tool capacity, and rule counters prove what matched.
 **Negative test:** rely on drop rules in a map that has no pass rule; a pure-drop by-rule
 map delivers nothing at all — drop rules refine a pass set, they do not create one.
 
-**Cleanup:** `no map alias to-ids-filtered`.
+**Rollback:** `no map alias to-ids-filtered`.
 
 ### Lab 5.3 — GigaStream load-balanced delivery (Topic: Tool delivery)
 
@@ -395,7 +395,7 @@ tool farm, keyed by a configurable hash (e.g. 5-tuple).
 above line rate and the tool sees gaps — spreading across GigaStream members is what matches
 delivery to volume.
 
-**Cleanup:** `no map alias agg-to-farm`; `no gigastream alias ids-farm`.
+**Rollback:** `no map alias agg-to-farm`; `no gigastream alias ids-farm`.
 
 ### Lab 5.4 — Map hierarchy and the shared collector (Topic: Map types)
 
@@ -423,7 +423,7 @@ packet is silently discarded just because no explicit map matched it.
 is dropped and never reaches any tool — the shared collector is the safety net for
 unmatched traffic.
 
-**Cleanup:** `no map alias first-https`; `no map-scollector alias catch-all`.
+**Rollback:** `no map alias first-https`; `no map-scollector alias catch-all`.
 
 ### Lab 5.5 — Port and VLAN tagging (Topic: Traffic identification)
 
@@ -442,7 +442,7 @@ source context that aggregation would otherwise erase.
 **Negative test:** aggregate ten tap points to one tool with no tagging; the tool cannot tell
 which site/segment a packet came from — port/VLAN tagging is what restores that provenance.
 
-**Cleanup:** `no port 1/1/x1 params vlantag`.
+**Rollback:** `no port 1/1/x1 params vlantag`.
 
 ## Lab Verification
 

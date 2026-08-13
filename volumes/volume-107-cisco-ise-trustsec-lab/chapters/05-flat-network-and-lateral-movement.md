@@ -46,7 +46,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.40 502  && echo "hmi->plc REAC
 
 **Negative test.** A flow to a closed port fails regardless of tags — `hmi -> db:502` is refused because nothing listens there, not because of policy. Distinguish "no service" from "denied by policy"; only the latter is segmentation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 5.2 — Name the legitimate flows
 
@@ -66,7 +66,7 @@ Everything else east-west — most importantly `HMI (30) -> DB (20)` — is ille
 
 **Negative test.** Express the WEB→DB rule by IP instead of by SGT and note the fragility: the moment DB scales to a second address or moves VLAN, an IP rule breaks while `WEB → DB` by tag keeps working. Tags are why the policy survives change.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 5.3 — Reproduce the lateral movement
 
@@ -82,7 +82,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.20 5432 && echo "PIVOT: hmi op
 
 **Negative test.** Re-run `web -> db:5432`; it also succeeds. Until the matrix distinguishes the two sources, the enforcer treats the app and the operator identically — which is the whole problem.
 
-**Cleanup.** None — Chapter 06 authors the matrix, Chapter 07 proves enforcement.
+**Rollback.** None — Chapter 06 authors the matrix, Chapter 07 proves enforcement.
 
 ## Summary and Completion Checklist
 

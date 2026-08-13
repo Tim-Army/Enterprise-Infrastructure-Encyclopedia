@@ -48,7 +48,7 @@ Exercises that genuinely cannot be reproduced without the product — the Reveal
 | **Design Exercise** | No environment required and none simulated; written analysis with model answer |
 | **Track 1** / **Track 2** | Real Guardicore path / native-equivalent path |
 
-Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**. Do not skip the negative tests — proving that a thing is *blocked* is the entire product.
+Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**. Do not skip the negative tests — proving that a thing is *blocked* is the entire product.
 
 ### Time and effort
 

@@ -430,7 +430,7 @@ provisioned), decoupling the workload from the specific storage backend.
 stays `Pending` and the Pod cannot start — the claim must be satisfiable by an available PV or
 provisioner.
 
-**Cleanup:** `kubectl delete pod writer; kubectl delete pvc data`.
+**Rollback:** `kubectl delete pod writer; kubectl delete pvc data`.
 
 ### Lab 5.2 — StorageClasses and dynamic provisioning (Topic: Dynamic provisioning)
 
@@ -450,7 +450,7 @@ a PVC into a real volume without an admin pre-creating PVs, and the reclaim poli
 **Negative test:** rely on `reclaimPolicy: Delete` for data you must keep; deleting the PVC
 destroys the volume — use `Retain` for data whose lifetime must outlive the claim.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — StatefulSets (Topic: Stateful platforms)
 
@@ -486,7 +486,7 @@ cannot provide.
 storage collide and the data corrupts — StatefulSet's per-replica identity/volume is what makes
 stateful clustering safe.
 
-**Cleanup:** `kubectl delete statefulset db; kubectl delete pvc -l app=db`.
+**Rollback:** `kubectl delete statefulset db; kubectl delete pvc -l app=db`.
 
 ### Lab 5.4 — Config and secret volumes (Topic: Configuration as data)
 
@@ -510,7 +510,7 @@ many environments without a rebuild.
 image and a secret ends up in the image layers — externalizing config/secrets is what keeps
 one image portable and secrets out of the build.
 
-**Cleanup:** `kubectl delete pod cfg; kubectl delete configmap app-cfg; kubectl delete secret app-sec -n lab`.
+**Rollback:** `kubectl delete pod cfg; kubectl delete configmap app-cfg; kubectl delete secret app-sec -n lab`.
 
 ## Lab Verification
 

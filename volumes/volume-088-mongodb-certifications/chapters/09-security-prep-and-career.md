@@ -82,7 +82,7 @@ db.getSiblingDB("shop").getUser("appuser").roles
 **Negative test:** grant the application `root`; a compromised app credential owns the whole cluster —
 grant `readWrite` on its database only.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh
@@ -112,7 +112,7 @@ a defense-in-depth baseline.
 **Negative test:** rely on a network firewall alone with auth disabled; enable **authentication** and
 TLS regardless of network position.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan certification and career
 
@@ -138,7 +138,7 @@ plan.
 **Negative test:** pay full price without completing a **Learning Path**; complete one to earn the 50%
 discount (or a free exam as a student/educator).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

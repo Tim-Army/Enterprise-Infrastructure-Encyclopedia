@@ -354,7 +354,7 @@ history attributable and trustworthy, the foundation of collaborative engineerin
 **Negative test:** commit with no configured identity; Git either refuses or records a machine-default
 author, and history becomes un-attributable — the identity must be set before the first commit.
 
-**Cleanup:** none (keep the identity).
+**Rollback:** none (keep the identity).
 
 ### Lab 1.2 — Consistent shell and editor (Topic: Environment consistency)
 
@@ -381,7 +381,7 @@ and cross-platform (`CRLF` vs `LF`) breakage, so reviews focus on real changes.
 whitespace/line-ending churn that obscure the actual change — `.editorconfig` standardizes it
 mechanically.
 
-**Cleanup:** none (keep `.editorconfig`).
+**Rollback:** none (keep `.editorconfig`).
 
 ### Lab 1.3 — Version managers for reproducible toolchains (Topic: Toolchain management)
 
@@ -403,7 +403,7 @@ and CI runner uses identical versions, eliminating "works on my machine."
 newer runtime hits behavior differences CI never saw — a pinned per-project version is what makes
 builds reproducible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Verify the toolchain (Topic: Verification)
 
@@ -423,7 +423,7 @@ baseline every later chapter's automation assumes.
 surfaces mid-task as a confusing failure — verifying the toolchain up front turns that into a clear,
 early gap.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

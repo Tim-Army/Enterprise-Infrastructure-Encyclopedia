@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** Choosing `acks=0` for throughput on a financial or ordering pipeline — the throughput gain is real and the data loss is invisible until reconciliation finds it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Why at-least-once duplicates, and how idempotence fixes it
 
@@ -113,7 +113,7 @@ EOF
 
 **Negative test:** Deduplicating in the consumer instead — workable but expensive, and it pushes correctness into every consumer rather than solving it once at the producer.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Transactions for consume-process-produce
 
@@ -150,7 +150,7 @@ EOF
 
 **Negative test:** Enabling transactions on the producer while consumers read with `isolation.level=read_uncommitted` — downstream consumers see aborted records, and the guarantee you paid for does not reach them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -67,7 +67,7 @@ alerting condition.
 **Negative test:** alert on the first missed poll (no delay); a **delay** prevents
 transient-blip flapping.
 
-**Cleanup:** delete the rule.
+**Rollback:** delete the rule.
 
 ### Lab 4.2 — Configure a transport
 
@@ -86,7 +86,7 @@ count) — the delivery path.
 **Negative test:** write rules with **no transport**; alerts fire but nobody is notified
 — configure delivery.
 
-**Cleanup:** remove the transport.
+**Rollback:** remove the transport.
 
 ### Lab 4.3 — Customize a template
 
@@ -104,7 +104,7 @@ actionable notifications.
 **Negative test:** send bare "alert fired" messages; **template** in the context
 responders need to triage.
 
-**Cleanup:** revert the template if changed.
+**Rollback:** revert the template if changed.
 
 ### Lab 4.4 — Set a maintenance window
 
@@ -122,7 +122,7 @@ during the change.
 **Negative test:** upgrade without a maintenance window; you generate a **false-alarm
 storm** — schedule maintenance.
 
-**Cleanup:** let the window expire or remove it.
+**Rollback:** let the window expire or remove it.
 
 ## Lab Verification
 

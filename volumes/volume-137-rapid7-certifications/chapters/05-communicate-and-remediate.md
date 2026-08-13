@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Reporting only open-finding counts month over month — the metric is stable by construction (new findings roughly replace closed ones) and tells you nothing about whether the hard problems are being solved.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Route remediation to the team that owns the fix
 
@@ -124,7 +124,7 @@ EOF
 
 **Negative test:** Emailing the whole findings report to a distribution list — nobody is named, so nobody is accountable, and the natural response is that everyone assumes someone else owns it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Verify remediation and manage exceptions
 
@@ -169,7 +169,7 @@ EOF
 
 **Negative test:** Closing findings on ticket status alone — your metrics improve, the vulnerabilities remain, and the discrepancy surfaces during an incident or an audit rather than during remediation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Publishing RPO targets in a service catalogue without verifying the replication schedules behind them — the numbers are aspirational and the gap surfaces at the worst possible moment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Distance limits synchronous replication
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Specifying synchronous replication between continents for regulatory zero-RPO — the requirement cannot be met as stated, and the honest response is to renegotiate the requirement or accept asynchronous with a short interval.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Active/active and the split-brain mediator
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Hosting the mediator on a VM in one of the two data centers — losing that site takes the mediator with it, and the surviving array has nothing to confirm it should take over.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

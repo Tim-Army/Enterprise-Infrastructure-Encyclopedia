@@ -38,7 +38,7 @@ systemd-analyze critical-chain 2>/dev/null | head -8
 
 **Negative test:** `journalctl` with no unit/priority filter on a busy system — thousands of lines; the exam rewards filtering to the failing unit and severity.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Logging and auditing
 
@@ -55,7 +55,7 @@ sudo ausearch -k shadow-watch 2>/dev/null | tail -2 || echo "no events yet (expe
 
 **Negative test:** Add an audit watch with `auditctl` only (runtime) and expect it after reboot — it's lost; persistent rules go in `/etc/audit/rules.d/`, the distinction the exam tests.
 
-**Cleanup:** `sudo auditctl -W /etc/shadow -p wa -k shadow-watch 2>/dev/null`.
+**Rollback:** `sudo auditctl -W /etc/shadow -p wa -k shadow-watch 2>/dev/null`.
 
 ### Lab 4.3 — Advanced storage: Stratis and VDO
 
@@ -73,7 +73,7 @@ sudo stratis filesystem list
 
 **Negative test:** Format a Stratis-managed device with `mkfs` directly — you bypass and corrupt the pool; Stratis manages the filesystem lifecycle, unlike raw LVM+mkfs.
 
-**Cleanup:** `sudo stratis filesystem destroy labpool labfs; sudo stratis pool destroy labpool; sudo losetup -d $LOOP; rm -f /root/stratis.img`.
+**Rollback:** `sudo stratis filesystem destroy labpool labfs; sudo stratis pool destroy labpool; sudo losetup -d $LOOP; rm -f /root/stratis.img`.
 
 ### Lab 4.4 — Automating administration with scripts + systemd
 
@@ -109,7 +109,7 @@ systemctl list-timers diskreport.timer --no-pager | head -3
 
 **Negative test:** Enable the `.service` instead of the `.timer` — a oneshot service runs once and stops; the **timer** is what schedules it, a distinction the exam draws.
 
-**Cleanup:** `sudo systemctl disable --now diskreport.timer; sudo rm /etc/systemd/system/diskreport.{service,timer} /usr/local/bin/diskreport.sh; sudo systemctl daemon-reload`.
+**Rollback:** `sudo systemctl disable --now diskreport.timer; sudo rm /etc/systemd/system/diskreport.{service,timer} /usr/local/bin/diskreport.sh; sudo systemctl daemon-reload`.
 
 ### Lab 4.5 — Toward RHCA: the Specialist electives
 
@@ -125,7 +125,7 @@ RHCA (Enterprise Linux) = RHCSA/L2 + EX342/L3 + THREE Specialist electives in-tr
 
 **Negative test:** Mixing an OpenShift Specialist into an Enterprise Linux RHCA — no longer allowed; electives must share the track.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

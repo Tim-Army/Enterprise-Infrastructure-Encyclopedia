@@ -45,7 +45,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** There is nothing blocked to find, and the open privileged ports are the point: on a flat network any host can attempt RDP/SSH to any other, which is exactly the lateral-movement path Zero Networks closes with just-in-time MFA.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -65,7 +65,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Argue that "admins need SSH open to the servers." Standing administrative ports are the single most abused lateral-movement path; Zero Networks' answer is to keep them closed and open them just-in-time. Keep row 4 an exception, not a standing allow.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -96,7 +96,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own query from `zn-app01` (`~/checkdb.sh` → 3); it works too. On a flat network nothing distinguishes the app from the attacker, and every server's admin port is reachable from every host. Segmentation plus just-in-time MFA supplies both missing controls.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

@@ -189,7 +189,7 @@ intent exactly.
 **Negative test:** `apk del` a package another package depends on; `apk` refuses or
 warns rather than breaking the closure — dependencies are protected.
 
-**Cleanup:** none (returned to the original set).
+**Rollback:** none (returned to the original set).
 
 ### Lab 3.2 — Enable community and install from it
 
@@ -210,7 +210,7 @@ apk add tftp-hpa
 **Negative test:** search for `tftp-hpa` with only `main` enabled; it is not found —
 the package is in community, which must be enabled first.
 
-**Cleanup:** `apk del tftp-hpa` (Chapter 05 reinstalls it).
+**Rollback:** `apk del tftp-hpa` (Chapter 05 reinstalls it).
 
 ### Lab 3.3 — Pin one package from edge
 
@@ -231,7 +231,7 @@ the `@edge` version installs while the rest of the system stays on stable.
 **Negative test:** point the whole `/etc/apk/repositories` at edge and `apk
 upgrade`; the entire system moves to an unsupported rolling branch — pin instead.
 
-**Cleanup:** `cp /tmp/repos.before /etc/apk/repositories && apk update` to restore
+**Rollback:** `cp /tmp/repos.before /etc/apk/repositories && apk update` to restore
 stable-only sources.
 
 ## Lab Verification

@@ -323,7 +323,7 @@ problem.
 a GigaSMART engine at 100% is silently losing/limiting traffic while every link shows up —
 the counters, not link state, reveal it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Structured troubleshooting: traffic not reaching a tool (Topic: Troubleshooting)
 
@@ -345,7 +345,7 @@ GigaSMART → delivery path is the deterministic order to walk.
 has no RX (dead SPAN source); you "fix" a working map while the tap is still dark — check
 acquisition first, then work downstream.
 
-**Cleanup:** none (read-only diagnostics).
+**Rollback:** none (read-only diagnostics).
 
 ### Lab 9.3 — Capstone Design Exercise: enterprise visibility fabric (Topic: Synthesis)
 
@@ -382,7 +382,7 @@ as much as *what*.
 slicing, or dedup; you saturate tools and budgets and bury analysts — the design value is
 delivering *the right* traffic to each tool, not all traffic to every tool.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

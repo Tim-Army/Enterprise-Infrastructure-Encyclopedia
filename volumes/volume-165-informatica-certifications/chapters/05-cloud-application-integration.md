@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Using a nightly CDI batch to propagate order events. The inventory and shipping systems would be hours stale; real-time application integration requires event/API-triggered processes (CAI), not scheduled bulk loads (CDI).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

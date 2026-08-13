@@ -82,7 +82,7 @@ PY
 **Negative test:** try to book the exam with no completed trainings; they are a hard prerequisite —
 finish them first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan the VMCSE path and migrate from VMCE
 
@@ -105,7 +105,7 @@ VMCE+.
 
 **Negative test:** bank on sitting VMCE now; it retired 31 March 2026 — pursue **VMCE+** instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Map a Veeam career
 
@@ -130,7 +130,7 @@ PY
 **Negative test:** stop at a lapsed credential on an old product version; re-certify on the current
 version to stay current.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -242,7 +242,7 @@ from the data array so a data-disk operation never risks the boot volume.
 then share a controller and lifecycle — the BOSS mirror exists to keep the OS boot device separate
 and redundant.
 
-**Cleanup:** on a throwaway lab server only, `racadm storage deletevd` to redo; otherwise keep it.
+**Rollback:** on a throwaway lab server only, `racadm storage deletevd` to redo; otherwise keep it.
 
 ### Lab 2.2 — The `river` RAID-5 data array (Topic: Data array)
 
@@ -262,7 +262,7 @@ lab VM datastore where you want usable space and survivability without mirroring
 **Negative test:** build the data array as RAID-0 for maximum space; one disk failure loses every VM
 — RAID-5 tolerates a single disk failure, which is the point of the `river` array.
 
-**Cleanup:** keep `river` (it is the build's datastore).
+**Rollback:** keep `river` (it is the build's datastore).
 
 ### Lab 2.3 — Apply and confirm the storage jobs (Topic: Config jobs)
 
@@ -280,7 +280,7 @@ confirming the jobs completed is how you know the arrays are actually built befo
 **Negative test:** start the Proxmox install before the RAID jobs finish; the target disks are not
 yet presented and the installer sees nothing usable — the config jobs must complete first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Verify the presented virtual disks (Topic: Verification)
 
@@ -298,7 +298,7 @@ and the VM storage (Chapter 06) uses `river`.
 **Negative test:** proceed with a virtual disk in a degraded/rebuilding state; performance and
 resilience are compromised from day one — both VDs should be Optimal before building on them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

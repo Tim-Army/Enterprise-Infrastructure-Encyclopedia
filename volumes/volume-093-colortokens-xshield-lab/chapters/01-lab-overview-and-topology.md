@@ -94,7 +94,7 @@ model answer, not as pretend clicking.
 | ****Track 1**** / ****Track 2**** | Real Xshield path / native-equivalent path |
 
 Every exercise follows the same five-part shape: **Objective**,
-**Walkthrough**, **Expected result**, **Negative test**, **Cleanup**. Do
+**Walkthrough**, **Expected result**, **Negative test**, **Rollback**. Do
 not skip the negative tests. In segmentation work, proving that a thing
 is *blocked* is the entire product; proving that a thing is allowed only
 proves you have a network.

@@ -80,7 +80,7 @@ HTTP) — CSCU awareness.
 **Negative test:** trust the email because it "looks like PayPal"; the **look-alike domain** gives it
 away — inspect, don't assume.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — NDE: apply a basic network-defense control
 
@@ -102,7 +102,7 @@ Essentials.
 **Negative test:** default-allow with a few blocks; anything not blocked gets in — use **default
 deny**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — DFE: preserve a file's integrity
 
@@ -120,7 +120,7 @@ integrity handling.
 **Negative test:** analyze the original file directly; work on a **copy** and keep the hash — preserve
 the evidence.
 
-**Cleanup:** `rm -f artifact.log artifact.sha256`.
+**Rollback:** `rm -f artifact.log artifact.sha256`.
 
 ## Lab Verification
 

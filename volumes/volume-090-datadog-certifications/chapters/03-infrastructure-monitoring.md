@@ -87,7 +87,7 @@ flowing.
 **Negative test:** scrape NGINX status with a cron job into a custom metric; enable the **integration**
 instead.
 
-**Cleanup:** remove the conf file if not needed.
+**Rollback:** remove the conf file if not needed.
 
 ### Lab 3.2 — Query a metric (Metrics Explorer backend)
 
@@ -111,7 +111,7 @@ series: 3
 **Negative test:** query a metric with no `by {}` grouping when you need per-host detail; group by a
 **tag** to see outliers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Reason about the host map
 
@@ -132,7 +132,7 @@ PY
 **Negative test:** scan a long table of hosts by hand; the **host map** colors the fleet so the outlier
 pops.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Monitor containers
 
@@ -153,7 +153,7 @@ Docker
 **Negative test:** monitor only host-level metrics in a container platform; enable **container**
 collection to see per-container use.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

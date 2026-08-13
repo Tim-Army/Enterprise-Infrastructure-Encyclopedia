@@ -65,7 +65,7 @@ curl -sS -H "Authorization: Bearer $CRIBL_TOKEN" "$CRIBL/api/v1/system/inputs" \
 **Negative test:** expect data to flow with no Source configured; a **Source** is the entry
 point — configure one.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Understand the pipeline flow
 
@@ -83,7 +83,7 @@ PY
 **Negative test:** put transform logic in a Route; **Routes** match/direct, **Pipelines**
 transform — separate the concerns.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — List destinations
 
@@ -99,7 +99,7 @@ curl -sS -H "Authorization: Bearer $CRIBL_TOKEN" "$CRIBL/api/v1/system/outputs" 
 **Negative test:** process data with no Destination; it has nowhere to go — configure an
 output.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Basic Search query
 
@@ -115,7 +115,7 @@ dataset="cribl_search_sample" | limit 10
 **Negative test:** copy data to a warehouse just to query it; **Search** queries in place —
 avoid the movement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — Deployment options
 
@@ -132,7 +132,7 @@ avoid the movement.
 **Negative test:** run a single instance for a large fleet; a **distributed** Leader +
 Workers scales — plan the topology.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

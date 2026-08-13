@@ -37,7 +37,7 @@ sudo nft list set inet aci quarantine
 
 **Negative test.** Placing the quarantine rule *after* the contract permits would let a quarantined endpoint keep a contracted flow — the uSeg override must be evaluated first, like a top-priority micro-EPG.
 
-**Cleanup.** Keep the micro-EPG.
+**Rollback.** Keep the micro-EPG.
 
 ### Exercise 5.2 — Quarantine a compromised endpoint
 
@@ -62,7 +62,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.110.4.40 502 && echo "hmi->plc OPEN
 
 `hmi->plc OPEN (released)` — membership, driven by attribute, decided isolation; the base contracts never changed.
 
-**Cleanup.** Leave `hmi` out of quarantine for the remaining chapters.
+**Rollback.** Leave `hmi` out of quarantine for the remaining chapters.
 
 ## Summary and Completion Checklist
 

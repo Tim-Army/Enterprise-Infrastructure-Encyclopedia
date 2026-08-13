@@ -518,7 +518,7 @@ objective reliability scorecard that drives the freeze/ship decision.
 **Negative test:** compile SLO status by hand each week; it is slow, error-prone, and skipped when
 busy — automated reporting makes the reliability signal continuous and trustworthy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Auto-remediation (Topic: Toil reduction)
 
@@ -545,7 +545,7 @@ manual kill-switch.
 latency blip); the automation causes an outage — automate only known problems with safe, reversible
 actions, and page a human for anything ambiguous.
 
-**Cleanup:** remove the lab route.
+**Rollback:** remove the lab route.
 
 ### Lab 9.3 — Analytics and anomaly detection (Topic: Analytics)
 
@@ -566,7 +566,7 @@ alarms on normal daily/weekly cycles.
 off-hours anomaly is missed because it is "under the max" — comparing to the seasonal baseline catches
 both directions of anomaly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Design Exercise: an enterprise observability platform (Topic: Synthesis)
 
@@ -600,7 +600,7 @@ reliable and efficient, not on the number of tools deployed.
 operating model; you get expensive dashboards, alert fatigue, and unchanged reliability — the
 platform's value is the operating model and correlation it enables, not the tool count.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

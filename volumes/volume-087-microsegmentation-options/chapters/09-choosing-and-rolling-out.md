@@ -86,7 +86,7 @@ for your own environment).
 **Negative test:** pick the "market leader" without scoring your **own** coverage needs; score every
 option on the same rubric for your estate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Define PoC exit criteria
 
@@ -112,7 +112,7 @@ PY
 **Negative test:** run a PoC with no exit criteria and decide on vibes; define **measurable** criteria up
 front.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Model a phased, monitor-first rollout
 
@@ -138,7 +138,7 @@ default-deny.
 **Negative test:** jump straight to enforce on the whole estate; unmapped flows break — monitor first,
 enforce by risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

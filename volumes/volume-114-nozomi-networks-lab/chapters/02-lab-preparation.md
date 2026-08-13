@@ -23,7 +23,7 @@
 
 **Expected result (design).** Guardian on a mirror, feeding Vantage. Track 2 builds a working protocol-aware enforcer to make the concepts concrete.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build the PLC, operator, and function-aware proxy
 
@@ -102,7 +102,7 @@ READ value= 50
 
 **Negative test.** A non-Modbus probe to 502 gets no valid Modbus reply — the port is Modbus-only, which is exactly what a protocol-aware control will enforce (an L4 firewall would happily allow any payload to 502).
 
-**Cleanup.** Leave the PLC running.
+**Rollback.** Leave the PLC running.
 
 ### Exercise 2.3 — Confirm a write also works (pre-segmentation)
 
@@ -126,7 +126,7 @@ The operator changed a control value directly — the flow an L4 firewall cannot
 
 **Negative test.** Resetting the value needs another write; leave it at 99 for now (Chapter 06 uses the out-of-range value for anomaly detection).
 
-**Cleanup.** Leave the PLC running.
+**Rollback.** Leave the PLC running.
 
 ## Summary and Completion Checklist
 

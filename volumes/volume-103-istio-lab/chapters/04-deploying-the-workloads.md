@@ -27,7 +27,7 @@ kubectl -n ot create serviceaccount sa-hmi
 
 **Negative test.** Forget to label a namespace and its pods get no sidecar — they are outside the mesh, and mTLS/authz will not apply. Confirm the labels: `kubectl get ns -L istio-injection`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy the meshed services (api, db) and clients (web, hmi)
 
@@ -109,7 +109,7 @@ EOF
 
 **Negative test.** Name the API service port `api` instead of `http` and Istio treats it as plain TCP, so L7 HTTP authorization in Chapter 07 will not apply. Prefix HTTP ports with `http`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Deploy the un-meshed PLC
 
@@ -148,7 +148,7 @@ kubectl get pods -n ot
 
 **Negative test.** Remove the `sidecar.istio.io/inject: "false"` annotation and the PLC gets a sidecar — but a real PLC could not run one. The annotation models that constraint.
 
-**Cleanup.** Keep the workloads.
+**Rollback.** Keep the workloads.
 
 ## Summary and Completion Checklist
 

@@ -75,7 +75,7 @@ PY
 **Negative test:** fund the loudest request instead of the highest **risk score**; scarce budget
 misses the real exposure — prioritize by risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — GSOM: compute SOC metrics
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** report "we handled some incidents" with no metrics; leaders can't see trend or
 improvement — measure **MTTD/MTTR**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — GCCC: map to the CIS Critical Controls
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** audit against an ad-hoc checklist; a recognized **framework** (CIS Controls) makes
 gaps measurable and comparable — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

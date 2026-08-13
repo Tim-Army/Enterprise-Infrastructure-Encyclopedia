@@ -40,7 +40,7 @@ ansible web -i inventory -m command -a "uptime"
 
 **Negative test:** Target a group that isn't in the inventory — `ansible: no hosts matched`; group names must match, a precision the exam expects.
 
-**Cleanup:** Keep `~/ex294`.
+**Rollback:** Keep `~/ex294`.
 
 ### Lab 5.2 — Playbooks with variables and handlers
 
@@ -68,7 +68,7 @@ ansible-playbook -i inventory web.yml --syntax-check && echo "syntax OK"
 
 **Negative test:** Reference `{{ pkg }}` without defining it — `undefined variable`; the exam tests variable scoping and precedence.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 5.3 — Templates with Jinja2
 
@@ -94,7 +94,7 @@ ansible web -i inventory -m setup -a "filter=ansible_distribution*" | head -8
 
 **Negative test:** Use `{{ ansible_hostname }}` when fact-gathering is disabled (`gather_facts: false`) — undefined; templates depend on facts being gathered.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 5.4 — Roles and Ansible Galaxy structure
 
@@ -119,7 +119,7 @@ ansible-playbook -i inventory site.yml --syntax-check && echo "role play OK"
 
 **Negative test:** Put a value in both `defaults/main.yml` and `vars/main.yml` — `vars` wins; role variable precedence is a guaranteed exam question.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 5.5 — RHEL System Roles
 
@@ -144,7 +144,7 @@ ansible-playbook -i inventory timesync.yml --syntax-check && echo "system-role p
 
 **Negative test:** Reinvent timesync with hand-written `lineinfile` tasks on chrony.conf — works but isn't what the exam wants; System Roles are the sanctioned, idempotent, portable approach.
 
-**Cleanup:** `rm -rf ~/ex294`.
+**Rollback:** `rm -rf ~/ex294`.
 
 ## Summary and Completion Checklist
 

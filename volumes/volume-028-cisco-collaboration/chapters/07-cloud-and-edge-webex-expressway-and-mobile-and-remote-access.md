@@ -202,7 +202,7 @@ messaging (spaces) under one org and identity, administered from Control Hub.
 **Negative test:** assign a user a Meetings license but not Calling; they can host
 meetings but have no cloud phone number — each service is separately licensed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Describe the call routing process in Webex Calling (CLCOR Objective 5.2)
 
@@ -220,7 +220,7 @@ PSTN).
 **Negative test:** a location with no PSTN connection can call on-net only;
 external calls fail — routing off-net requires a PSTN option on the location.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Implement toll fraud prevention on Webex Calling (CLCOR Objective 5.3)
 
@@ -238,7 +238,7 @@ blocks toll fraud with **Outgoing Calling Permissions** per location/user
 account dials premium-rate numbers — restricting the call type per policy closes
 it.
 
-**Cleanup:** revert the test OCP change.
+**Rollback:** revert the test OCP change.
 
 ### Lab 7.4 — Configure call routing in Webex Calling (CLCOR Objective 5.4)
 
@@ -257,7 +257,7 @@ cloud.
 registered drops the call — the local gateway must be registered and in the route
 group.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Configure cloud meetings (CLCOR Objective 5.5)
 
@@ -275,7 +275,7 @@ policies (recording, entry) set centrally.
 **Negative test:** create a meeting for a user without a Meetings license; the API
 returns an error — the host must be licensed.
 
-**Cleanup:** DELETE the test meeting by its id.
+**Rollback:** DELETE the test meeting by its id.
 
 ### Lab 7.6 — Configure cloud messaging (CLCOR Objective 5.6)
 
@@ -293,7 +293,7 @@ persistent, with memberships, files, and threading, administered by org policy
 **Negative test:** post to a space the token's user is not a member of; the API
 returns `404`/`403` — membership gates access.
 
-**Cleanup:** DELETE the test room.
+**Rollback:** DELETE the test room.
 
 ### Lab 7.7 — Describe cloud collaboration APIs and webhooks (CLCOR Objective 5.7)
 
@@ -312,7 +312,7 @@ automation.
 **Negative test:** a webhook `targetUrl` that does not return `200` gets disabled
 after repeated failures — the receiver must acknowledge deliveries.
 
-**Cleanup:** DELETE the test webhook.
+**Rollback:** DELETE the test webhook.
 
 ### Lab 7.8 — Configure cloud user management (CLCOR Objective 5.8)
 
@@ -331,7 +331,7 @@ what.
 attributes edited in Control Hub (AD is source of truth) — the sync model dictates
 authority.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.9 — Describe Cloud-Connected UC (CLCOR Objective 5.9)
 
@@ -350,7 +350,7 @@ moving call control.
 **Negative test:** a cluster whose CCUC agent has no outbound HTTPS to Webex never
 appears in Control Hub analytics — the connector needs cloud reachability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.10 — Describe Webex Hybrid Services (CLCOR Objective 5.10)
 
@@ -369,7 +369,7 @@ interop).
 **Negative test:** a Hybrid Calendar connector in "offline" state stops @meet/@webex
 keyword scheduling — the connector's health directly gates the hybrid feature.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.11 — Configure SSO for Webex (CLHCT Objective 1.1)
 
@@ -387,7 +387,7 @@ as on-prem UCM SSO, so users sign in once with corporate credentials.
 **Negative test:** an IdP metadata/cert that has rotated but was not re-uploaded to
 Control Hub breaks every SSO login org-wide — the SP↔IdP trust must stay current.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.12 — Configure directory synchronization (CLHCT Objective 1.2)
 
@@ -405,7 +405,7 @@ the cloud directory matches the enterprise, feeding calling/meeting entitlement.
 **Negative test:** a user deleted in AD but with a broken sync remains active in
 Webex, keeping a license — sync health governs deprovisioning too.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.13 — Configure hybrid calendar service (CLHCT Objective 1.3)
 
@@ -424,7 +424,7 @@ presence from calendar.
 **Negative test:** a mailbox not enabled for the calendar service gets no join
 injection despite the keyword — the service must be enabled per user.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.14 — Configure local gateways (CLHCT Objective 1.4)
 
@@ -444,7 +444,7 @@ for Webex Calling, bridging cloud call control to local/PSTN circuits.
 registration to Webex; `show sip-ua status registrar` shows it not registered — the
 trust to Webex must be correct.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.15 — Configure site survivability (CLHCT Objective 1.5)
 
@@ -463,7 +463,7 @@ recovery.
 **Negative test:** a survivability gateway sized below the site's phone count
 leaves some phones down during an outage — capacity must match the site.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.16 — Configure Control Hub calling features (CLHCT Objective 1.6)
 
@@ -480,7 +480,7 @@ call queues, hot desking) per location without on-prem hardware.
 **Negative test:** an auto attendant with a menu key routing to an unassigned
 extension dead-ends — the feature's targets must exist, like on-prem.
 
-**Cleanup:** remove the test auto attendant.
+**Rollback:** remove the test auto attendant.
 
 ### Lab 7.17 — Troubleshoot cloud user management (CLHCT Objective 2.1)
 
@@ -497,7 +497,7 @@ missing role; `invitePending true` means they never activated.
 **Negative test:** blame calling config for a user whose Calling license was never
 assigned — the entitlement, not the dial plan, is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.18 — Diagnose network issues for Webex (CLHCT Objective 2.2)
 
@@ -517,7 +517,7 @@ media.
 raising latency and jitter — the port/QoS path, not the client, causes the
 quality drop.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.19 — Troubleshoot Webex Calling (CLHCT Objective 3.1)
 
@@ -534,7 +534,7 @@ call failures with registration up trace to the location's PSTN/route.
 **Negative test:** a device showing `connected` but calls failing off-net is a
 route-group/PSTN problem, not registration — split the two symptoms.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.20 — Troubleshoot call routing in Webex Calling (CLHCT Objective 3.2)
 
@@ -552,7 +552,7 @@ call history shows the disposition.
 **Negative test:** a call blocked by an Outgoing Calling Permission looks like a
 routing failure but is policy — call history shows "blocked", not "no route".
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.21 — Troubleshoot cloud meetings (CLHCT Objective 3.3)
 
@@ -570,7 +570,7 @@ network (packet loss/jitter), visible in Control Hub Troubleshooting.
 **Negative test:** blame the meeting service for one participant's poor audio when
 Troubleshooting shows only their leg has loss — it is that participant's network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.22 — Troubleshoot cloud messages (CLHCT Objective 3.4)
 
@@ -587,7 +587,7 @@ membership and policy explain most "missing message" reports.
 **Negative test:** an external user blocked by org policy cannot be added to the
 space; the add fails — the policy, not a bug, prevents it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.23 — Troubleshoot endpoint registration to the cloud (CLHCT Objective 3.5)
 
@@ -604,7 +604,7 @@ issue; the status plus the device's onboarding method localize it.
 **Negative test:** a device behind a proxy that intercepts TLS fails cloud
 registration with a cert error — the proxy, not the device, breaks the trust.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.24 — Describe administration functions in Webex (CLHCT Objective 4.1)
 
@@ -622,7 +622,7 @@ admin functions are RBAC-scoped and audited.
 **Negative test:** a read-only admin attempting a config change is denied — the
 administration functions honor RBAC.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.25 — Describe AI features in cloud collaboration (CLHCT Objective 4.2)
 
@@ -640,7 +640,7 @@ assist) are org/site-policy controlled and surface in meetings and analytics.
 **Negative test:** transcripts absent because the site policy disables recording/
 transcription — the AI feature depends on its enabling policy.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.26 — Describe Control Hub migration tool options (CLHCT Objective 4.3)
 
@@ -658,7 +658,7 @@ tool, bulk CSV, config import), each with pre-checks and rollback.
 **Negative test:** running a device migration without the firmware/network
 prerequisites fails the pre-check — the tool validates before migrating.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.27 — Configure hybrid and migration from on-premises to cloud (CLHCT Objective 5.1)
 
@@ -676,7 +676,7 @@ with on-prem during cutover via directory sync and number porting/routing.
 their DID; inbound PSTN still lands on-prem — number routing must move with the
 user.
 
-**Cleanup:** revert the test user to on-prem calling.
+**Rollback:** revert the test user to on-prem calling.
 
 ### Lab 7.28 — Configure advanced dial plans (CLHCT Objective 5.2)
 
@@ -693,7 +693,7 @@ and PSTN egress work consistently during and after migration.
 **Negative test:** overlapping extension ranges between cloud and on-prem without
 a routing rule cause ambiguous routing — the dial plan must disambiguate.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.29 — Implement Webex security (CLHCT Objective 6.1)
 
@@ -712,7 +712,7 @@ enabled), and compliance (retention, eDiscovery, DLP, legal hold).
 compromised admin credential exposes the org — enforcing SSO/MFA for admins closes
 it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.30 — Describe the Webex cloud security realm architecture (CLHCT Objective 6.2)
 
@@ -732,7 +732,7 @@ trust domain of the org.
 encryption Cisco holds keys, and with **Hybrid Data Security** the customer holds
 them — the realm choice determines key custody.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.31 — Configure hybrid data security deployment (CLHCT Objective 6.3)
 
@@ -750,7 +750,7 @@ the customer key custody for compliance.
 **Negative test:** an HDS cluster below quorum stops issuing keys and messaging
 stalls for the org — HDS must maintain its node quorum.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.32 — Describe App Hub, Developer Portal, and Room OS Portal (CLHCT Objective 7.1)
 
@@ -769,7 +769,7 @@ control collaboration endpoints.
 **Negative test:** enabling an App Hub integration grants it API scopes; over-broad
 scopes are a risk — review the requested permissions before authorizing.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.33 — Describe macros on devices (CLHCT Objective 7.2)
 
@@ -787,7 +787,7 @@ customize the endpoint's behavior and UI without a server.
 **Negative test:** a macro with an infinite loop or a bad xAPI call can hang the
 device UI — macros run on the endpoint and must be efficient.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.34 — Construct Webex APIs: Messaging, Meeting, Calling, People, Events (CLHCT Objective 7.3)
 
@@ -805,7 +805,7 @@ Events, and drive Messaging/Meetings/Calling for end-to-end automation.
 **Negative test:** an integration token missing the `spark:kms` or a required
 scope fails encrypted-content calls — each API needs its OAuth scope granted.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.35 — Configure a Mobile and Remote Access solution (CLACC Objective 5.1)
 
@@ -826,7 +826,7 @@ to UCM from outside the firewall without a VPN, via the Expressway pair.
 external FQDN in its SAN blocks MRA login — discovery and cert SAN are the common
 breaks.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.36 — Troubleshoot a Mobile and Remote Access solution (CLACC Objective 5.2)
 
@@ -846,7 +846,7 @@ OAuth/SSO-over-MRA; the alarms and zone status localize the layer.
 a UC service/discovery problem on Expressway-C, not the traversal zone — split
 auth from registration.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.37 — Describe Expressway media traversal (CLACC Objective 5.3)
 
@@ -867,7 +867,7 @@ pinholes.
 range breaks media while signaling survives — one-way/no audio results; the media
 port range must be open on Expressway-E.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.38 — Describe protocol interworking on Expressway (CLACC Objective 5.4)
 
@@ -885,7 +885,7 @@ networks, so mixed estates and B2B partners interoperate.
 **Negative test:** a call between an IPv6-only endpoint and an IPv4-only peer with
 interworking disabled fails — Expressway's interworking is what bridges them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.39 — Configure encrypted calling in Expressway (CLACC Objective 5.5)
 
@@ -903,7 +903,7 @@ force-encrypted) so external/B2B calls are protected end to edge.
 **Negative test:** a zone set to "force encrypted" toward a peer that offers only
 RTP drops the call — the media encryption modes must be compatible.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.40 — Configure security for Cisco Expressway (CLACC Objective 5.6)
 
@@ -924,7 +924,7 @@ Expressway-E.
 management to the internet is exposed — CA certs and management-access restrictions
 are required at the edge.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.41 — Troubleshoot a Business to Business solution (CLACC Objective 5.7)
 
@@ -945,7 +945,7 @@ mismatch.
 not resolve is a DNS problem, not an Expressway config problem — verify the
 partner's SRV first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

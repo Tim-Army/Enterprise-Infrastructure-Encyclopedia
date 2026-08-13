@@ -43,7 +43,7 @@ sudo oscap xccdf eval --profile cis_server_l1 --report /tmp/report.html \
 
 **Negative test:** Claiming "compliant" from a passing scan of the wrong profile — profile selection (CIS L1 vs L2 vs STIG) determines what "compliant" means; the exam tests choosing correctly.
 
-**Cleanup:** `rm -f /tmp/report.html`.
+**Rollback:** `rm -f /tmp/report.html`.
 
 ### Lab 8.2 — Identity Management specialist (EX362)
 
@@ -59,7 +59,7 @@ IdM (FreeIPA) = 389 Directory Server (LDAP) + MIT Kerberos (SSO) + Dogtag (PKI/c
 
 **Negative test:** Managing users in local `/etc/passwd` on each host instead of IdM — defeats central identity; EX362 is precisely about eliminating that sprawl.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.3 — High Availability Clustering specialist (EX436)
 
@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** A cluster without fencing — a partitioned node can corrupt shared storage; EX436 fails designs that skip STONITH.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Services Management and Automation (EX358)
 
@@ -98,7 +98,7 @@ EX358 scope: automate provisioning of network services with Ansible —
 
 **Negative test:** Hand-configuring each service (RHCSA-style) on an EX358 task — the exam wants the *automated*, idempotent, repeatable approach.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.5 — Choosing three for an RHCA
 
@@ -114,7 +114,7 @@ Rule (2026): all three Specialists must be within the SAME track as the Admin+En
 
 **Negative test:** An RHCA mixing EX415 (Enterprise Linux) with EX480 (OpenShift) — invalid post-2026; electives must match the track.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

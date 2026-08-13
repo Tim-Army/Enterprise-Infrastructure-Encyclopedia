@@ -429,7 +429,7 @@ standard permissions plus special bits: setuid, setgid, and the sticky bit.
 (no setgid); files created by different users get *their own* primary group, breaking shared
 access — the setgid bit is what enforces the shared group.
 
-**Cleanup:** `sudo rm -rf /srv/team; sudo groupdel team`.
+**Rollback:** `sudo rm -rf /srv/team; sudo groupdel team`.
 
 ### Lab 6.2 — Access Control Lists (Topic: ACLs)
 
@@ -450,7 +450,7 @@ changing ownership or the primary group, for cases the three standard classes ca
 change the group or open it to `other`, over-granting — ACLs (`setfacl`) exist precisely to
 avoid that.
 
-**Cleanup:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo userdel -r
+**Rollback:** `sudo setfacl -b /srv/report.txt; sudo rm -f /srv/report.txt; sudo userdel -r
 contractor`.
 
 ### Lab 6.3 — SELinux modes, contexts, and booleans (Topic: SELinux)
@@ -475,7 +475,7 @@ modes, managing file contexts (`semanage fcontext` + `restorecon`), and toggling
 `semanage fcontext`; a later `restorecon` or relabel reverts it — `chcon` is temporary, only
 `semanage fcontext` writes the persistent policy.
 
-**Cleanup:** `sudo setsebool -P httpd_can_network_connect off; sudo semanage fcontext -d
+**Rollback:** `sudo setsebool -P httpd_can_network_connect off; sudo semanage fcontext -d
 "/web(/.*)?"; sudo rm -rf /web`.
 
 ### Lab 6.4 — Troubleshoot an SELinux denial (Topic: SELinux troubleshooting)
@@ -498,7 +498,7 @@ is to *fix the context/boolean/port*, never to disable SELinux.
 scores SELinux as enforcing, so this fails the task — always resolve denials with policy
 (context/boolean/port), keeping SELinux enforcing.
 
-**Cleanup:** `sudo semanage port -d -t http_port_t -p tcp 8080` if added only for the lab.
+**Rollback:** `sudo semanage port -d -t http_port_t -p tcp 8080` if added only for the lab.
 
 ## Lab Verification
 

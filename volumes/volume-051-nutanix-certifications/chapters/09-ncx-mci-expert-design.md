@@ -80,7 +80,7 @@ assumptions, and risks — the customer-consultation section.
 **Negative test:** list only requirements; unstated **constraints/assumptions/risks**
 sink designs — capture all four.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Conceptual/logical design
 
@@ -100,7 +100,7 @@ Deliverable (logical design):
 **Negative test:** pick Metro (0 RPO) when 15-min suffices; **match the tier** to the
 requirement to control cost.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Physical design
 
@@ -121,7 +121,7 @@ section.
 **Negative test:** size the BOM before the logical design; **logical first**, then the
 physical build follows from it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

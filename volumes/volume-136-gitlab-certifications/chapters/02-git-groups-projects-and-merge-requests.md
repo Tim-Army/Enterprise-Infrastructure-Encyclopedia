@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Adding a contractor at the top-level group to give them access to one repository — they now hold that role across every project in the organization, including ones nobody intended them to see.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Protected branches and who can actually merge
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Leaving `main` unprotected and relying on team agreement — a rushed hotfix goes straight to `main` at 2 a.m., bypassing review, tests, and every security scan configured on merge requests.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Merge methods and what they do to history
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Squashing every merge by policy on a repository where commits are carefully staged — you lose the ability to bisect to a precise change, and reverting a single logical step becomes reverting a large combined commit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

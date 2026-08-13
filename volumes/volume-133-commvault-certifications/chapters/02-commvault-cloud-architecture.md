@@ -71,7 +71,7 @@ EOF
 
 **Negative test:** Treating the CommServe as "just another server" with ordinary backups — in a site-loss scenario you restore the data but cannot efficiently identify or index it, which turns a recovery into an archaeology project.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Choose a deployment model
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Choosing SaaS for a workload whose data cannot legally leave a jurisdiction — a compliance failure that no amount of encryption configuration retroactively fixes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Place and size MediaAgents
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Solving a missed window by extending it — the window exists because the business needs the systems back; a 20-hour backup on an 8-hour window is not a scheduling problem, it is a placement problem.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

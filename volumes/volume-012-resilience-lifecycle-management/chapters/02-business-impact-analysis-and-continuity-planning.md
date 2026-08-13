@@ -267,7 +267,7 @@ Keep continuity plans in the same version-controlled repository as the criticali
 
 **Negative Test:** Edit `bia-customer-refunds.yaml` so every checkpoint's impact scores are identical (no escalation over time — an unrealistic but useful test case) and rerun `derive_mtd.py`. Confirm the script still returns a value based on the 1-hour checkpoint, and manually verify that this flat-impact scenario should itself be flagged as suspect during BIA quality review, per the checkpoint-monotonicity guidance in this chapter's Validation section.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch2

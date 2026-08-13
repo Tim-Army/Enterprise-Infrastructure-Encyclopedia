@@ -439,7 +439,7 @@ rolling updates with revision history, the standard way to run stateless workloa
 it — the controller reconciles actual state to the declared replica count, so deleting a pod
 does not reduce the workload.
 
-**Cleanup:** `kubectl delete deployment web`.
+**Rollback:** `kubectl delete deployment web`.
 
 ### Lab 3.2 — Scheduling: taints, tolerations, and affinity (Topic: Scheduling)
 
@@ -463,7 +463,7 @@ deliberately.
 node (stays `Pending` if that is the only node) — the taint blocks it, which is exactly its
 purpose (e.g. reserving GPU nodes).
 
-**Cleanup:** `kubectl delete pod pinned; kubectl taint nodes <node> tier=gpu:NoSchedule-;
+**Rollback:** `kubectl delete pod pinned; kubectl taint nodes <node> tier=gpu:NoSchedule-;
 kubectl label nodes <node> disktype-`.
 
 ### Lab 3.3 — Resource requests, limits, and QoS (Topic: Capacity)
@@ -486,7 +486,7 @@ allocated-resources view reflects the request — **requests** drive scheduling 
 **Negative test:** run a Pod with no requests/limits (`BestEffort`); under node memory pressure
 it is the first evicted — requests are what protect a workload from eviction.
 
-**Cleanup:** `kubectl delete pod sized`.
+**Rollback:** `kubectl delete pod sized`.
 
 ### Lab 3.4 — Autoscaling and health probes (Topic: Scaling and health)
 
@@ -509,7 +509,7 @@ readiness and the HPA decides count, so the workload self-heals and self-sizes.
 utilization and does not scale — the HPA needs requests as the denominator for its percentage
 target.
 
-**Cleanup:** `kubectl delete deployment api; kubectl delete hpa api`.
+**Rollback:** `kubectl delete deployment api; kubectl delete hpa api`.
 
 ## Lab Verification
 

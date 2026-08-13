@@ -92,7 +92,7 @@ docker compose ps --services --filter status=running | sort
 **Negative test:** start only the web container; without **db** and the **dispatcher/
 poller** no metrics are collected — bring up the whole stack.
 
-**Cleanup:** `docker compose down` (add `-v` to drop data).
+**Rollback:** `docker compose down` (add `-v` to drop data).
 
 ### Lab 1.2 — Validate the install
 
@@ -108,7 +108,7 @@ install-health check.
 **Negative test:** skip `validate.php` and debug blind; it flags DB schema, cron, and
 permission issues — run it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Authenticate to the API
 
@@ -127,7 +127,7 @@ install) — proof the token works.
 **Negative test:** call `/api/v0/devices` with no token; LibreNMS returns **401** —
 authenticate first.
 
-**Cleanup:** delete the token if it was only for the lab.
+**Rollback:** delete the token if it was only for the lab.
 
 ## Lab Verification
 

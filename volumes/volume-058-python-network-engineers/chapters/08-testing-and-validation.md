@@ -70,7 +70,7 @@ print("all interfaces up")
 **Negative test:** eyeball `show ip int brief`; **assert on parsed data** so validation is
 automatic and repeatable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Compare pre/post snapshots
 
@@ -89,7 +89,7 @@ break.
 **Negative test:** deploy with no post-check; a **flapped neighbor** slips by — always
 compare pre/post.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Genie parse and diff (pattern)
 
@@ -108,7 +108,7 @@ print("Genie: device.parse -> structured; pre.diff(post) -> structured change re
 **Negative test:** diff raw `show` text; **Genie's structured diff** ignores cosmetic
 noise and highlights real changes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Wrap validation in pytest
 
@@ -130,7 +130,7 @@ pytest -q test_state.py
 **Negative test:** validate by hand each deploy; **pytest** runs it consistently in CI —
 automate it.
 
-**Cleanup:** `rm test_state.py`.
+**Rollback:** `rm test_state.py`.
 
 ## Lab Verification
 

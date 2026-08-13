@@ -171,7 +171,7 @@ for Cloud, and Update Manager.
 **Negative test:** run `connect` with outbound 443 to Azure blocked; it fails
 with a connectivity error — Arc needs outbound HTTPS to Azure endpoints.
 
-**Cleanup:** `azcmagent disconnect` and delete the Azure resource.
+**Rollback:** `azcmagent disconnect` and delete the Azure resource.
 
 ### Lab 11.2 — Verify Entra Connect synchronization (Topic: Hybrid identity)
 
@@ -191,7 +191,7 @@ sync gives one identity for cloud and on-premises.
 never appears in Entra ID — sync scope (filtering) controls what is
 projected.
 
-**Cleanup:** remove the test user; leave sync running.
+**Rollback:** remove the test user; leave sync running.
 
 ### Lab 11.3 — Add an Azure File Sync server endpoint with tiering (Topic: Hybrid file services)
 
@@ -211,7 +211,7 @@ local, cold data moves to the cloud.
 **Negative test:** set `VolumeFreeSpacePercent` to `0`; nothing tiers because
 the policy is never triggered — tiering is driven by the free-space policy.
 
-**Cleanup:** remove the server endpoint and Azure resources.
+**Rollback:** remove the server endpoint and Azure resources.
 
 ### Lab 11.4 — Capstone: provision-to-operations for a new application server (Topic: Integrate the volume)
 
@@ -240,7 +240,7 @@ whole volume in one server's lifecycle.
 the computer sits in the default `Computers` container — placement drives
 policy (Chapter 05).
 
-**Cleanup:** decommission `APP10` and remove its gMSA and Azure resources.
+**Rollback:** decommission `APP10` and remove its gMSA and Azure resources.
 
 ## Lab Verification
 

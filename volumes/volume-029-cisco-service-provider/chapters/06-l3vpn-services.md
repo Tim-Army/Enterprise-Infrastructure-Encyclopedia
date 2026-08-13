@@ -204,7 +204,7 @@ and their IPv6 variants; the PE multiplexes many customers over one core.
 the **VRF + RT** construct at the PE — the core just label-switches, oblivious to
 customers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Configure L3VPN (SPCOR Objective 4.3)
 
@@ -224,7 +224,7 @@ into VPNv4 BGP tagged with RTs, and the remote PE imports them by RT into its VR
 leaves the route in VPNv4 BGP but not in the remote VRF — RT import/export must
 pair.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Compare VPN architecture (SPVI Objective 1.1)
 
@@ -245,7 +245,7 @@ multihoming — the modern convergence point.
 flood-and-learn scaling limits; EVPN's control-plane MAC learning is the scalable
 successor — the architecture choice sets the scale ceiling.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Troubleshoot the underlay (SPVI Objective 1.2)
 
@@ -264,7 +264,7 @@ inaccessible and `traceroute mpls` finds the broken hop.
 **Negative test:** debug VRF/RT config for a service that is fine at L3VPN but
 broken in the core LSP — the underlay is the dependency; verify it first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — Describe the L3VPN control plane (SPVI Objective 1.4)
 
@@ -284,7 +284,7 @@ to remote PEs via RR.
 isolated (RT governs import); the RD only guarantees uniqueness in BGP — confusing
 RD with RT is a classic error.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.6 — Describe the L3VPN data plane (SPVI Objective 1.5)
 
@@ -304,7 +304,7 @@ inspects the inner label.
 the outer label — penultimate hop pops it, and only the egress PE reads the VPN
 label.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.7 — Describe routing requirements (SPVI Objective 3.1)
 
@@ -325,7 +325,7 @@ BGP).
 handling; routes can loop as inter-area — the loop-prevention attributes are
 required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.8 — Troubleshoot Intra-AS L3VPNs (SPVI Objective 3.2)
 
@@ -345,7 +345,7 @@ localize it.
 **Negative test:** blame the core for a route that never entered VPNv4 because
 PE-CE redistribution was missing — the ingress PE side is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.9 — Implement multicast VPN (SPVI Objective 3.3)
 
@@ -366,7 +366,7 @@ plane.
 configured; without a provider multicast tunnel the (S,G) has no core transport —
 mVPN must be enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.10 — Implement extranet / shared services (SPVI Objective 3.4)
 
@@ -386,7 +386,7 @@ shared resource without merging them.
 **Negative test:** import the shared RT broadly and customers can reach each other
 through the shared VRF — leak only the specific service prefixes, not full tables.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.11 — Describe Inter-AS L3VPNs (SPVI Objective 3.5)
 
@@ -406,7 +406,7 @@ isolation for scale.
 **Negative test:** use Option C between untrusted SPs; it exposes loopbacks/labels
 across the boundary — Option A/B give better isolation between distrusting ASes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.12 — Describe CSC concepts (SPVI Objective 3.6)
 
@@ -426,7 +426,7 @@ carrier runs its own VPNs over the backbone.
 **Negative test:** run CSC without label exchange on the PE-CE link (plain IP);
 the customer carrier's VPN labels have no transport — CSC requires labeled PE-CE.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.13 — Describe routing requirements for IPv6 VPN (SPVI Objective 4.1)
 
@@ -445,7 +445,7 @@ as VPNv6 with an RD/RT and label, exactly mirroring L3VPN for IPv4.
 **Negative test:** enable IPv6 in the VRF but not the VPNv6 address family in BGP;
 the routes never leave the PE — the VPNv6 AF must be activated on the RR sessions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.14 — Troubleshoot IPv6 VPN provider edge (SPVI Objective 4.2)
 
@@ -465,7 +465,7 @@ plus IPv6-specific issues (VPNv6 AF not activated, IPv6 next-hop encoding).
 encodes the next-hop as IPv4-mapped IPv6 over an IPv4 core — expecting a native
 IPv6 next-hop misdiagnoses it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

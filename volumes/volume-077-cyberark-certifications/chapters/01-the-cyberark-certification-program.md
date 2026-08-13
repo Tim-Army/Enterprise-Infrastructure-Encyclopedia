@@ -104,7 +104,7 @@ PY
 **Negative test:** think CyberArk is only the Vault; it spans **endpoints, secrets, identity, and
 cloud** — use the full map.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map credentials to the progression
 
@@ -127,7 +127,7 @@ reference.
 **Negative test:** target **Guardian** first; it assumes deep Defender/Sentry experience — climb the
 progression.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -147,7 +147,7 @@ PY
 **Negative test:** skip **Trustee/Defender** foundations and jump to deployment; Sentry assumes
 operational fluency — build up.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

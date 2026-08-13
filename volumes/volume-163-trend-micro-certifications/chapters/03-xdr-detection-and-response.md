@@ -67,7 +67,7 @@ EOF
 
 **Negative test:** Investigating each layer's alerts separately. The individually-minor events never connect, so the multi-stage attack is missed and response addresses one symptom while the attack persists; XDR correlates them into one story and enables complete cross-layer response.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

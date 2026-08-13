@@ -83,7 +83,7 @@ grounded, accurate AI.
 **Negative test:** let the agent answer without **grounding**; it may hallucinate an order status —
 ground it in **Data Cloud**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Design a prompt template
 
@@ -105,7 +105,7 @@ guarded prompting.
 **Negative test:** use a vague prompt with no **guardrails**; the model may overshare or invent —
 constrain it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Scope agent actions with oversight
 
@@ -126,7 +126,7 @@ operation.
 **Negative test:** let the agent **issue refunds** autonomously; a mistake costs money — require
 **human approval**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Apply responsible AI
 
@@ -146,7 +146,7 @@ PY
 **Negative test:** deploy an agent with no **testing or oversight**; errors reach customers — apply
 responsible-AI controls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

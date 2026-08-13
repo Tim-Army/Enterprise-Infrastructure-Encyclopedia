@@ -44,7 +44,7 @@ kubectl exec -n dc web -- nslookup db.dc 2>/dev/null || kubectl exec -n dc web -
 
 **Negative test.** "Fix" a blocked flow by deleting all NetworkPolicies. You removed the protection, not the bug. Fix the label or the tier order instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Safe rollback
 
@@ -67,7 +67,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db STILL blocked 
 
 **Negative test.** Delete the namespace default-deny *and* the tier guardrail and the lateral movement returns. Two controls protect; removing both un-protects. Re-apply both.
 
-**Cleanup.** Ensure both controls are back in place.
+**Rollback.** Ensure both controls are back in place.
 
 ### Lab 9.3 — Teardown
 
@@ -86,7 +86,7 @@ Optionally remove the tools (`kind`, `kubectl`, `calicoctl`) from `/usr/local/bi
 
 **Negative test.** Delete the kind Docker containers by hand instead of `kind delete cluster`; kind's metadata is left behind and a later `kind create cluster --name calico-lab` may conflict. Use `kind delete cluster`.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** A rule with no threshold (`tgs_count >= 1`) — it fires on every normal Kerberos request, drowning the SOC; tuning (thresholds, ratios) is what makes a detection usable, a core detection-engineering skill.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Triage: true positive vs noise
 
@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Treating every alert with equal urgency — analysts burn out and miss the real incident in the flood; triage prioritization is what makes a SOC effective, and the practical exams test it under realistic alert volume.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Correlate events into an incident
 
@@ -97,7 +97,7 @@ EOF
 
 **Negative test:** Analyzing each event in isolation — each closes as low-priority, and the compromise proceeds undetected; correlation across time and data sources is what reveals the intrusion the individual alerts hide.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

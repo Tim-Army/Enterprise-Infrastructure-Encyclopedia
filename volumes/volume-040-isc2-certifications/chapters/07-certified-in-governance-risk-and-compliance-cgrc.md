@@ -117,7 +117,7 @@ cadence — the governance foundation CGRC Domain 1 establishes.
 **Negative test:** run controls with no named Authorizing Official; without
 accountable authority, risk acceptance is undefined.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — CGRC: Scope of the System (10%)
 
@@ -139,7 +139,7 @@ the FIPS 199 categorization that scopes the whole authorization, CGRC Domain 2.
 **Negative test:** average the three impact levels; categorization takes the
 **high-water mark**, not the mean.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — CGRC: Selection and Approval of Controls (14%)
 
@@ -160,7 +160,7 @@ then tailoring — the control-selection step of CGRC Domain 3.
 **Negative test:** apply every control in the catalog; baselines are tailored to
 the categorization — more controls is not automatically better.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — CGRC: Implementation of Controls (17%)
 
@@ -183,7 +183,7 @@ produces.
 **Negative test:** mark a control "Implemented" with no description of how;
 assessors need the implementation detail to test it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — CGRC: Assessment/Audit of Controls (16%)
 
@@ -205,7 +205,7 @@ milestone and due date — the assessment-to-remediation workflow of CGRC Domain
 **Negative test:** close a finding without a POA&M or evidence; unremediated
 weaknesses must be tracked to closure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — CGRC: System Compliance (14%)
 
@@ -228,7 +228,7 @@ the risk-acceptance authorization at the core of CGRC Domain 6.
 **Negative test:** grant an unconditional ATO with open High-risk findings; the
 Authorizing Official must accept, mitigate, or condition that risk explicitly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.7 — CGRC: Compliance Maintenance (13%)
 
@@ -249,7 +249,7 @@ point-in-time event.
 **Negative test:** authorize once and never revisit; RMF requires continuous
 monitoring — configuration drift and new threats erode the original ATO.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

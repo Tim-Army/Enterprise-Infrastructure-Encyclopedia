@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Deploying APIs with no gateway policies or monitoring. They are unprotected (no rate limiting or auth) and unobservable; API Manager policies and Anypoint Monitoring are what govern and operate the application network safely at scale.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -381,7 +381,7 @@ firewall reads this on first boot and self-configures management + licensing.
 factory config) instead of the intended state — the file is what makes
 bootstrap zero-touch.
 
-**Cleanup:** `rm -rf bootstrap` after deployment.
+**Rollback:** `rm -rf bootstrap` after deployment.
 
 ### Lab 3.2 — License the firewall (Domain 2: Platform lifecycle)
 
@@ -399,7 +399,7 @@ admin@pa-fw01> request license info
 **Negative test:** apply an auth code already bound to another serial; the
 fetch is rejected — auth codes are single-use per instance.
 
-**Cleanup:** `request license deactivate VM-Series mode auto` before deleting
+**Rollback:** `request license deactivate VM-Series mode auto` before deleting
 the VM, to return the license to the pool.
 
 ### Lab 3.3 — Configure management access and admin roles (Domain 2)
@@ -421,7 +421,7 @@ admin@pa-fw01> show admins
 interface; the box is exposed to the internet — always scope management
 access.
 
-**Cleanup:** delete the admin, role, and permitted-ip, then `commit`.
+**Rollback:** delete the admin, role, and permitted-ip, then `commit`.
 
 ### Lab 3.4 — Generate and manage certificates (Domain 2: Certificates)
 
@@ -441,7 +441,7 @@ the forward-trust certificate for SSL decryption (Chapter 05).
 decryption fails to issue per-site certs — the forward-trust cert must be a
 CA.
 
-**Cleanup:** `delete shared certificate Forward-Trust-CA`, then `commit`.
+**Rollback:** `delete shared certificate Forward-Trust-CA`, then `commit`.
 
 ### Lab 3.5 — Configure dynamic content update schedules (Domain 2)
 
@@ -461,7 +461,7 @@ firewall stays current on signatures automatically.
 with no soak time can push a bad signature into production; production should
 stagger install behind a threshold/delay.
 
-**Cleanup:** remove the update-schedules, then `commit`.
+**Rollback:** remove the update-schedules, then `commit`.
 
 ### Lab 3.6 — Configure virtual systems (Domain 2: VSYS)
 
@@ -481,7 +481,7 @@ firewall partitioned into isolated virtual firewalls.
 sharing it; it is not visible — VSYS provides administrative and object
 isolation by default.
 
-**Cleanup:** `delete vsys vsys2`, set `multi-vsys off`, then `commit`.
+**Rollback:** `delete vsys vsys2`, set `multi-vsys off`, then `commit`.
 
 ### Lab 3.7 — Configure an authentication profile (Domain 2: Authentication)
 
@@ -501,7 +501,7 @@ logins now require directory credentials plus MFA.
 **Negative test:** an unreachable RADIUS server with no local fallback locks
 out all admins; always keep a local admin as a break-glass account.
 
-**Cleanup:** delete the authentication-profile and server-profile, then `commit`.
+**Rollback:** delete the authentication-profile and server-profile, then `commit`.
 
 ### Lab 3.8 — Bootstrap a licensed, configured VM-Series (integrative)
 
@@ -593,7 +593,7 @@ malformed bootstrap file.
 8. Correct the file and confirm the instance recovers on redeploy, or
    discard the failed instance if this is a disposable lab.
 
-9. **Cleanup:** Power off and remove the lab VM-Series instance(s) if they
+9. **Rollback:** Power off and remove the lab VM-Series instance(s) if they
    will not be reused, detach and delete the bootstrap ISO file(s), and
    remove any lab-only port group mappings created solely for this
    exercise.

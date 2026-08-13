@@ -320,7 +320,7 @@ know.
 **Negative test:** add a user to `wheel` on a Debian system expecting sudo; Debian uses the `sudo`
 group — the privileged group name is distribution-specific, so verify it rather than assuming.
 
-**Cleanup:** `sudo userdel -r svcops`.
+**Rollback:** `sudo userdel -r svcops`.
 
 ### Lab 2.2 — Service management with systemd (Topic: Services)
 
@@ -339,7 +339,7 @@ uniformly, though the unit name may differ (`sshd` vs `ssh`).
 **Negative test:** use legacy `service`/`chkconfig` habits on a systemd host and expect boot
 persistence; those are shims — `systemctl enable` is what sets the boot state on modern distros.
 
-**Cleanup:** none (leave SSH enabled).
+**Rollback:** none (leave SSH enabled).
 
 ### Lab 2.3 — Package management (Topic: Software management)
 
@@ -360,7 +360,7 @@ abstracts this.
 **Negative test:** run `apt` commands on an RPM-based host (or vice versa); the command is absent —
 the package manager is distro-family-specific, which multi-distro administration must account for.
 
-**Cleanup:** `sudo dnf remove -y tree 2>/dev/null || sudo apt remove -y tree 2>/dev/null || true`.
+**Rollback:** `sudo dnf remove -y tree 2>/dev/null || sudo apt remove -y tree 2>/dev/null || true`.
 
 ### Lab 2.4 — Logs with journald (Topic: Logging)
 
@@ -380,7 +380,7 @@ priority (`-p`), unit (`-u`), and boot (`-b`) is the core log-analysis skill for
 **Negative test:** grep scattered `/var/log/*` files by hand for a cross-service event; formats differ
 and correlation is hard — `journalctl` provides one queryable, structured journal.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

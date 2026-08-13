@@ -53,7 +53,7 @@ hubble observe --to-pod dc/db --verdict DROPPED | tail -3
 
 **Negative test.** Change `fromEndpoints` on the db policy to `matchLabels: {}` ("any endpoint"); the app works but so would the operator. Least privilege names the source identity. Revert to `app: web`.
 
-**Cleanup.** Keep the policies.
+**Rollback.** Keep the policies.
 
 ### Lab 7.2 — Policy follows identity across a restart
 
@@ -72,7 +72,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db STILL BLOCKED"
 
 **Negative test.** An IP-based rule would have broken here. Identity avoids that entirely.
 
-**Cleanup.** Keep everything.
+**Rollback.** Keep everything.
 
 ### Lab 7.3 — A cluster-wide guardrail
 
@@ -101,7 +101,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db DENIED cluster
 
 **Negative test.** Write a permissive namespace policy allowing everything to `db`; the cluster-wide guardrail still denies the operator, because both must allow for traffic to pass. Defense in depth.
 
-**Cleanup.** Keep the guardrail for Chapter 08.
+**Rollback.** Keep the guardrail for Chapter 08.
 
 ## Summary and Completion Checklist
 

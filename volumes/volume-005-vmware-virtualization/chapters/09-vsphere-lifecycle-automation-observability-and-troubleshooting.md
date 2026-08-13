@@ -443,7 +443,7 @@ maintenance mode) so they are identical and current, replacing per-host baseline
 **Negative test:** patch each host individually to different builds; the cluster becomes inconsistent
 and unsupported combinations creep in — vLCM's single desired image keeps every host identical.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Automation with PowerCLI (Topic: Automation)
 
@@ -464,7 +464,7 @@ provisioning) are automated and consistent rather than clicked per object.
 **Negative test:** perform a fleet-wide change by clicking each VM/host in the UI; it is slow and
 error-prone — PowerCLI applies it uniformly and repeatably.
 
-**Cleanup:** none (read-only report).
+**Rollback:** none (read-only report).
 
 ### Lab 9.3 — Troubleshooting (Topic: Troubleshooting)
 
@@ -489,7 +489,7 @@ localizing a fault to a host, VM, storage, or network layer rather than guessing
 cause (storage APD, network loss, resource exhaustion) a restart will not fix — read the evidence
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

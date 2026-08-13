@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Putting the security agent in Self Service as an optional install. It is mandatory; offering it means the devices that most need it are the ones whose users never install it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Test scripts on a pilot before fleet-wide
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Deploying an untested script straight to the fleet because it "worked on my machine." The 4% with a different disk layout break simultaneously — a pilot would have surfaced the bug on one or two devices instead.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Pick the app-deployment model
 
@@ -168,7 +168,7 @@ EOF
 
 **Negative test:** Treating "push versus Self Service" and "VPP versus package" as the same choice. They are independent — an App Store app can be pushed or offered, and a custom package can be pushed or offered; you decide both.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

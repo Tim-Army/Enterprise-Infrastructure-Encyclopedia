@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Preparing for a 2026 SAP practical exam with a question dump. It targets a format that was retired by March 2026; the exam is a live-system task with the docs open.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Open-book with AI changes what to practice
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Studying for the practical exam by memorizing more thoroughly. You are optimizing the one dimension the open-book format explicitly neutralizes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Plan around the 20-day scoring window
 
@@ -177,7 +177,7 @@ EOF
 
 **Negative test:** Scheduling a video-scored SAP exam the week before a deadline that requires the certification. The result lands ~20 business days later; the deadline passes uncertified.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -33,7 +33,7 @@ kubectl exec -n dc web -- curl -s -o /dev/null -w "web -> api POST /post: %{http
 
 **Negative test.** There is nothing blocked to find, at any layer. That includes the sensitive `POST /post`, which no Layer 3/4 control could ever distinguish from the benign `GET /get` — they are the same 5-tuple. Only L7 policy can tell them apart.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -53,7 +53,7 @@ kubectl exec -n dc web -- curl -s -o /dev/null -w "web -> api POST /post: %{http
 
 **Negative test.** Try to write rule 4 as an L3/L4 firewall rule. You cannot — `GET /get` and `POST /post` are identical at L4. This is the gap Cilium L7 policy fills.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -72,7 +72,7 @@ kubectl exec -n dc web -- curl -s -o /dev/null -w "web POST /post abused: %{http
 
 **Negative test.** Re-run the legitimate `web → api GET /get`; it works too. The cluster cannot yet distinguish a read from a write, or the app from the operator, until Cilium policy gives it identity and L7 awareness.
 
-**Cleanup.** None — Chapter 06 begins visibility, Chapters 07–08 enforcement.
+**Rollback.** None — Chapter 06 begins visibility, Chapters 07–08 enforcement.
 
 ## Summary and Completion Checklist
 

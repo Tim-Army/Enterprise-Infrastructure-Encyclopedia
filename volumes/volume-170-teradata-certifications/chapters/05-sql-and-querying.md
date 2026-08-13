@@ -86,7 +86,7 @@ EOF
 
 **Negative test:** Never collecting statistics and joining tables not distributed on the join column. The optimizer guesses and redistributes the wrong table while every join moves data over the BYNET; co-locating joins by design and keeping statistics fresh is what makes queries fast at scale.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

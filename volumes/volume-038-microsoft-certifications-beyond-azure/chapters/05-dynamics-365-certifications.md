@@ -156,7 +156,7 @@ marketing/data app MB-910 introduces.
 **Negative test:** expect Customer Insights to work without unified customer
 data; it needs data sources mapped first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — MB-910: Describe Dynamics 365 Sales (20–25%)
 
@@ -172,7 +172,7 @@ pipeline app.
 **Negative test:** treat a lead and an opportunity as the same; a lead is
 qualified *into* an opportunity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — MB-910: Describe Dynamics 365 Customer Service (20–25%)
 
@@ -188,7 +188,7 @@ entity.
 **Negative test:** resolve a case with an open child activity; some
 configurations block resolution until activities close.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — MB-910: Describe Dynamics 365 Field Service (15–20%)
 
@@ -203,7 +203,7 @@ GET {org}/api/data/v9.2/msdyn_workorders?$select=msdyn_name&$top=5
 **Negative test:** schedule a work order with no bookable resource; scheduling
 requires resources and requirements.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — MB-910: Explore the core capabilities of customer engagement apps in Dynamics 365 (15–20%)
 
@@ -219,7 +219,7 @@ shared Dataverse/Power Platform foundation of CE.
 **Negative test:** assume CE apps run on their own database; they all share
 Dataverse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — MB-920: Describe Dynamics 365 Supply Chain Management (35–40%)
 
@@ -236,7 +236,7 @@ supply-chain scope MB-920 describes.
 **Negative test:** treat CE product records as F&O released products; F&O uses
 its own data model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.7 — MB-920: Describe Dynamics 365 Finance (30–35%)
 
@@ -251,7 +251,7 @@ Journals: General journal, AP/AR, Fixed assets
 
 **Negative test:** post to a closed fiscal period; period status must be open.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.8 — MB-920: Describe the core capabilities of the finance and operations apps (25–30%)
 
@@ -267,7 +267,7 @@ Cross-company data via virtual entities / OData $filter=dataAreaId eq 'usmf'
 **Negative test:** expect data to be shared across all legal entities by
 default; most data is company-specific.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.9 — MB-230: Manage cases in Customer Service (51–55%)
 
@@ -284,7 +284,7 @@ management.
 **Negative test:** create a case with no customer; the `customerid` lookup is
 required.
 
-**Cleanup:** `DELETE {org}/api/data/v9.2/incidents(<id>)`.
+**Rollback:** `DELETE {org}/api/data/v9.2/incidents(<id>)`.
 
 ### Lab 5.10 — MB-230: Configure representative experience and routing (25–30%)
 
@@ -299,7 +299,7 @@ GET {org}/api/data/v9.2/queues?$select=name&$top=5
 **Negative test:** route work with no capacity profile; unified routing needs
 agent capacity configured.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.11 — MB-230: Extend Customer Service (15–20%)
 
@@ -315,7 +315,7 @@ Service.
 **Negative test:** apply an SLA with no business hours; SLA timers need a
 calendar.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.12 — MB-240: Configure field service applications (20–25%)
 
@@ -331,7 +331,7 @@ configuration.
 **Negative test:** enable auto-geocoding with no maps provider key; geocoding
 needs a configured provider.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.13 — MB-240: Manage work orders and customer assets (25–30%)
 
@@ -347,7 +347,7 @@ record.
 **Negative test:** track functional location without an asset hierarchy; assets
 model the equipment being serviced.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.14 — MB-240: Schedule and dispatch work orders (15–20%)
 
@@ -362,7 +362,7 @@ GET {org}/api/data/v9.2/bookableresourcebookings?$select=starttime,endtime&$top=
 **Negative test:** dispatch with no resource requirements; the schedule board
 matches requirements to resources.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.15 — MB-240: Manage the Field Service mobile app (5–10%)
 
@@ -379,7 +379,7 @@ technician experience.
 **Negative test:** expect full data offline by default; only the offline profile
 tables sync.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.16 — MB-240: Manage inventory and purchasing by using the built-in inventory management system (5–10%)
 
@@ -395,7 +395,7 @@ orders.
 **Negative test:** use F&O advanced WMS expectations here; FS has a lightweight
 inventory model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.17 — MB-240: Implement Microsoft Power Platform (5–10%)
 
@@ -410,7 +410,7 @@ you extend with flows and apps.
 
 **Negative test:** build FS customizations outside a solution; use ALM.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.18 — MB-280: Implement Dynamics 365 Sales (30–35%)
 
@@ -425,7 +425,7 @@ GET {org}/api/data/v9.2/leads?$select=subject,statecode&$top=5
 **Negative test:** skip lead qualification; qualifying creates the opportunity,
 account, and contact.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.19 — MB-280: Configure and customize Dataverse and model-driven apps (35–40%)
 
@@ -440,7 +440,7 @@ pac solution list; pac data list-tables 2>/dev/null | head
 **Negative test:** add fields to managed tables from another publisher; add your
 own solution/publisher instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.20 — MB-280: Demonstrate Dynamics 365 Customer Insights capabilities (10–15%)
 
@@ -456,7 +456,7 @@ capability MB-280 uses for targeting.
 **Negative test:** segment on stale data; segments reflect the last data
 refresh.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.21 — MB-280: Extend and enhance Dynamics 365 Sales capabilities (10–15%)
 
@@ -472,7 +472,7 @@ extension mechanism.
 **Negative test:** put complex server logic in a business rule; use a flow or
 plug-in for that.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.22 — MB-330: Implement product information management (25–30%)
 
@@ -489,7 +489,7 @@ information management.
 **Negative test:** sell a product not released to the legal entity; release it
 to the company first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.23 — MB-330: Implement inventory and asset management (20–25%)
 
@@ -504,7 +504,7 @@ GET {fno}/data/InventOnhand?$select=ItemId,AvailPhysical&$top=5
 **Negative test:** trust on-hand without a warehouse dimension; on-hand is
 tracked by storage/tracking dimensions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.24 — MB-330: Implement and manage supply chain processes (15–20%)
 
@@ -518,7 +518,7 @@ GET {fno}/data/PurchaseOrderHeadersV2?$select=PurchaseOrderNumber,OrderVendorAcc
 
 **Negative test:** confirm a PO with no vendor; the vendor account is required.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.25 — MB-330: Implement warehouse management and transportation management (20–25%)
 
@@ -534,7 +534,7 @@ Mobile device (WHS app) executes work; wave/load for transportation
 **Negative test:** use basic warehousing steps for an advanced-WMS-enabled item;
 advanced WMS requires work creation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.26 — MB-330: Implement master planning (10–15%)
 
@@ -551,7 +551,7 @@ and demand balancing.
 **Negative test:** run planning with no coverage group on items; coverage
 settings drive the results.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.27 — MB-335: Configure products (20–25%)
 
@@ -567,7 +567,7 @@ Variant = combination of dimensions; released per legal entity
 **Negative test:** create variants with no dimension group; variants require the
 dimension configuration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.28 — MB-335: Configure production prerequisites (20–25%)
 
@@ -584,7 +584,7 @@ prerequisites.
 **Negative test:** schedule production with no route; operations scheduling needs
 routes and resources.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.29 — MB-335: Implement production methods (20–25%)
 
@@ -600,7 +600,7 @@ style.
 **Negative test:** use discrete production orders for a formula/co-product
 process; process manufacturing needs batch orders.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.30 — MB-335: Configure and manage production control (15–20%)
 
@@ -615,7 +615,7 @@ Production order: Created -> Estimated -> Scheduled -> Released -> Started -> Re
 **Negative test:** report as finished before starting; the status sequence is
 enforced.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.31 — MB-335: Implement additional supply chain management features (10–15%)
 
@@ -630,7 +630,7 @@ Asset management (work orders/maintenance) | Sensor Data Intelligence (IoT) | Pl
 **Negative test:** assume Planning Optimization and legacy MRP behave
 identically; the optimization engine differs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.32 — MB-500: Plan the architecture and solution design (5–10%)
 
@@ -646,7 +646,7 @@ Extensions over over-layering; source control in Azure DevOps
 **Negative test:** over-layer standard code; use extensions (event handlers,
 chain-of-command) instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.33 — MB-500: Apply developer tools (5–10%)
 
@@ -662,7 +662,7 @@ Build via msbuild / deployable package; DB sync for table changes
 **Negative test:** edit metadata directly in the running environment; develop in
 a dev box and deploy a package.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.34 — MB-500: Design and develop AOT elements (15–20%)
 
@@ -680,7 +680,7 @@ AOT elements without over-layering.
 **Negative test:** add the field by editing `CustTable` directly; use the
 extension.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.35 — MB-500: Develop and test code (20–25%)
 
@@ -702,7 +702,7 @@ development and unit testing (SysTest).
 **Negative test:** query the database in a loop per record; use set-based
 operations for performance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.36 — MB-500: Implement reporting (10–15%)
 
@@ -718,7 +718,7 @@ Embedded Power BI via aggregate measurements
 **Negative test:** build every report in SSRS; use Electronic Reporting for
 configurable regulatory formats.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.37 — MB-500: Integrate and manage data solutions (15–20%)
 
@@ -733,7 +733,7 @@ GET {fno}/data/CustomersV3?$select=CustomerAccount,OrganizationName&$top=5
 **Negative test:** integrate against a staging table directly; use published
 data entities.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.38 — MB-500: Implement security and optimize performance (10–15%)
 
@@ -749,7 +749,7 @@ Performance: set-based ops, indexes, caching, SysTraceCol/PerfSDK
 **Negative test:** grant a role broad table access directly; assign duties and
 privileges instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.39 — MB-700: Architect solutions (25–30%)
 
@@ -765,7 +765,7 @@ Non-functional: performance, security, localization
 **Negative test:** architect with no environment/ALM plan; F&O needs LCS-managed
 environments.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.40 — MB-700: Define solution strategies (45–50%)
 
@@ -782,7 +782,7 @@ domain.
 **Negative test:** big-bang migrate with no mock cutovers; run iterative mock
 go-lives.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.41 — MB-700: Manage implementations (10–15%)
 
@@ -799,7 +799,7 @@ management.
 **Negative test:** skip the FastTrack solution-blueprint review; the gate
 catches architecture risks.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.42 — MB-700: Manage testing (15–20%)
 
@@ -816,7 +816,7 @@ releases.
 **Negative test:** rely only on manual testing across monthly updates;
 automate regression with RSAT.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.43 — MB-800: Set up Business Central (20–25%)
 
@@ -832,7 +832,7 @@ Multiple companies per environment
 **Negative test:** post before defining posting groups; posting requires the
 group setup.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.44 — MB-800: Configure financials (30–35%)
 
@@ -849,7 +849,7 @@ financials.
 **Negative test:** post a sale with no general/VAT posting setup; the posting
 matrix must be complete.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.45 — MB-800: Configure sales and purchasing (10–15%)
 
@@ -865,7 +865,7 @@ Item cards + prices; posting from documents updates the ledger
 **Negative test:** invoice an item with no unit cost/price setup; documents need
 item pricing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.46 — MB-800: Perform Business Central operations (30–35%)
 
@@ -881,7 +881,7 @@ daily BC operations.
 **Negative test:** edit a posted invoice; posted documents are immutable — use a
 credit memo.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.47 — MB-820: Describe Business Central (10–15%)
 
@@ -896,7 +896,7 @@ Events + subscribers for extensibility (no code modification of base)
 
 **Negative test:** modify base-app objects; BC development is extension-only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.48 — MB-820: Install, develop, and deploy for Business Central (10–15%)
 
@@ -913,7 +913,7 @@ the develop/deploy unit.
 **Negative test:** deploy without bumping the `app.json` version; the runtime
 rejects an unchanged version on publish.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.49 — MB-820: Develop by using AL objects (35–40%)
 
@@ -932,7 +932,7 @@ table 50100 "Lab Widget"
 **Negative test:** reuse an object ID from the reserved range; use your assigned
 ID range in `app.json`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.50 — MB-820: Develop by using AL (15–20%)
 
@@ -953,7 +953,7 @@ codeunit 50100 "Lab Ops"
 **Negative test:** put business logic in page triggers; factor it into codeunits
 for testability.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.51 — MB-820: Work with development tools (10–15%)
 
@@ -969,7 +969,7 @@ Symbols downloaded via AL: Download symbols; Docker/cloud sandbox as target
 **Negative test:** develop without downloading symbols; IntelliSense and
 compilation need the base-app symbols.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.52 — MB-820: Integrate Business Central with other applications (10–15%)
 
@@ -989,7 +989,7 @@ page 50101 "Widget API"
 **Negative test:** expose a UI page as an integration point; use an API page
 (stable contract) instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.53 — MB-210: Configure Dynamics 365 Sales (35–40%)
 
@@ -1005,7 +1005,7 @@ GET {org}/api/data/v9.2/savedqueries?$select=name&$filter=returnedtypecode eq 'o
 **Negative test:** customize the default solution directly; use your own
 publisher/solution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.54 — MB-210: Manage core sales features (30–35%)
 
@@ -1021,7 +1021,7 @@ GET {org}/api/data/v9.2/quotes?$select=name,totalamount&$top=5
 **Negative test:** create a quote with no price list; quote lines require a price
 list.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.55 — MB-210: Configure additional tools and services (25–30%)
 
@@ -1037,7 +1037,7 @@ forecasting, Sales Insights).
 **Negative test:** expect forecasting without a configured forecast hierarchy;
 set it up first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.56 — MB-220: Configure marketing applications (15–20%)
 
@@ -1053,7 +1053,7 @@ Journeys (marketing) is configured on.
 **Negative test:** install Journeys in a non-managed environment; it requires a
 managed Dataverse environment.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.57 — MB-220: Manage segments and lists (10–15%)
 
@@ -1068,7 +1068,7 @@ GET {org}/api/data/v9.2/msdynmkt_segments?$select=msdynmkt_name&$top=5
 **Negative test:** journey to a static list that is never refreshed; use dynamic
 segments for live audiences.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.58 — MB-220: Create and manage marketing forms and pages (5–10%)
 
@@ -1084,7 +1084,7 @@ Consent captured per form; double opt-in where required
 **Negative test:** capture data without consent mapping; compliance requires
 consent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.59 — MB-220: Manage leads, contacts, and accounts (5–10%)
 
@@ -1100,7 +1100,7 @@ leads.
 **Negative test:** score leads with no scoring model; configure lead scoring
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.60 — MB-220: Create and manage marketing email messages (10–15%)
 
@@ -1117,7 +1117,7 @@ campaigns.
 **Negative test:** send without a verified sending domain; deliverability and
 compliance fail.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.61 — MB-220: Manage customer journeys (20–25%)
 
@@ -1133,7 +1133,7 @@ journeys (triggers, branches, actions).
 **Negative test:** publish a journey with no exit criteria; journeys need
 completion/exit conditions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.62 — MB-220: Manage events and webinars (10–15%)
 
@@ -1148,7 +1148,7 @@ GET {org}/api/data/v9.2/msevtmgt_events?$select=msevtmgt_name&$top=5
 **Negative test:** run a webinar with no registration form; attendees cannot
 register.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.63 — MB-220: Configure Dynamics 365 Customer Voice (5–10%)
 
@@ -1164,7 +1164,7 @@ Satisfaction metrics (NPS/CSAT) feed segmentation
 **Negative test:** email surveys outside the consent framework; respect
 communication consent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.64 — MB-260: Design Dynamics 365 Customer Insights - Data solutions (5–10%)
 
@@ -1181,7 +1181,7 @@ Data.
 **Negative test:** unify before mapping keys; unification needs match keys per
 source.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.65 — MB-260: Ingest data into Customer Insights - Data (10–15%)
 
@@ -1197,7 +1197,7 @@ CDP.
 
 **Negative test:** full-refresh a huge source each run; use incremental refresh.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.66 — MB-260: Create customer profiles through data unification (30–35%)
 
@@ -1214,7 +1214,7 @@ of Customer Insights - Data.
 **Negative test:** merge with an over-broad match rule; distinct customers
 collapse into one profile.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.67 — MB-260: Implement AI predictions in Customer Insights - Data (5–10%)
 
@@ -1230,7 +1230,7 @@ Predictions become profile attributes usable in measures/segments
 **Negative test:** trust a churn model with no training window/label; predictions
 need historical labels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.68 — MB-260: Configure measures and segments (10–15%)
 
@@ -1246,7 +1246,7 @@ actionable audiences.
 
 **Negative test:** segment on a stale profile; segments reflect the last refresh.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.69 — MB-260: Configure third-party connections and administer Customer Insights - Data (5–10% + 5–10%)
 
@@ -1263,7 +1263,7 @@ CDP (this lab pairs the two small MB-260 domains).
 **Negative test:** export PII to an ad platform without consent; respect
 consent/compliance on activation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.70 — MB-310: Implement financial management (40–45%)
 
@@ -1279,7 +1279,7 @@ Journals: general, allocation, periodic; posting definitions
 **Negative test:** post to a dimension combination outside the account structure;
 account structures constrain valid combinations.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.71 — MB-310: Implement accounts receivable, credit, collections, and subscription billing (15–20%)
 
@@ -1295,7 +1295,7 @@ Credit & collections: credit limits, aging, collection cases; subscription billi
 **Negative test:** invoice a customer over their credit limit with no hold; credit
 management should block or warn.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.72 — MB-310: Implement and manage accounts payable and expenses (10–15%)
 
@@ -1312,7 +1312,7 @@ payment.
 **Negative test:** pay an invoice that failed 3-way match; matching policies gate
 payment.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.73 — MB-310: Manage budgeting (10–15%)
 
@@ -1328,7 +1328,7 @@ Budget planning: scenarios, workflow, allocation
 **Negative test:** enable budget control with no over-budget permissions/actions;
 transactions block unexpectedly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.74 — MB-310: Manage fixed assets (10–15%)
 
@@ -1344,7 +1344,7 @@ Integration: acquire from AP/PO; value models per book
 **Negative test:** depreciate an asset with no value model/book; books drive
 depreciation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

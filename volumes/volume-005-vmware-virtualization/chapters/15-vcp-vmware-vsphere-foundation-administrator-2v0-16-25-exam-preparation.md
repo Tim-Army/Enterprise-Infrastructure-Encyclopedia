@@ -291,7 +291,7 @@ virtualization.
 host RAM; the last `Start-VM` fails with an insufficient-resources error —
 over-commitment applies to unreserved capacity only.
 
-**Cleanup:** none (read-only inspection).
+**Rollback:** none (read-only inspection).
 
 ### Lab 15.2 — VMware Compute Fundamentals (Objective 2.2)
 
@@ -311,7 +311,7 @@ placed inside it — compute delivered within an enforced boundary.
 **Negative test:** raise the VM's CPU reservation above the pool's limit;
 power-on is admission-denied, proving the pool ceiling is enforced.
 
-**Cleanup:** `Remove-VM vvf-c1 -DeletePermanently -Confirm:$false; Remove-ResourcePool vvf-rp -Confirm:$false`.
+**Rollback:** `Remove-VM vvf-c1 -DeletePermanently -Confirm:$false; Remove-ResourcePool vvf-rp -Confirm:$false`.
 
 ### Lab 15.3 — VMware Storage Fundamentals (Objective 2.3)
 
@@ -332,7 +332,7 @@ disks.
 free space; creation fails, while a thin disk of the same logical size
 succeeds — the provisioning model matters.
 
-**Cleanup:** delete any test VMDK created.
+**Rollback:** delete any test VMDK created.
 
 ### Lab 15.4 — VMware Network Fundamentals (Objective 2.4)
 
@@ -353,7 +353,7 @@ attachment point.
 uplink trunks only VLAN 1; the VM has a link but no L2 reachability —
 the VLAN mismatch a fundamentals question tests.
 
-**Cleanup:** `Remove-VirtualPortGroup -VirtualPortGroup (Get-VirtualPortGroup -Name vvf-pg) -Confirm:$false`.
+**Rollback:** `Remove-VirtualPortGroup -VirtualPortGroup (Get-VirtualPortGroup -Name vvf-pg) -Confirm:$false`.
 
 ### Lab 15.5 — VVF: Deploy and Configure (Objective 4.1)
 
@@ -374,7 +374,7 @@ core services — the configuration checklist a new host must satisfy.
 time-synchronization alarm and certificate operations may fail — why NTP is
 a deploy-time requirement.
 
-**Cleanup:** none (inspection; revert any service change made).
+**Rollback:** none (inspection; revert any service change made).
 
 ### Lab 15.6 — VVF: Manage (Objective 4.2)
 
@@ -394,7 +394,7 @@ datacenter, propagating to children — least-privilege delegation.
 **Negative test:** a member of that group attempts to delete a host; the
 action is denied (the role lacks host privileges), proving RBAC scoping.
 
-**Cleanup:** `Get-VIPermission -Entity (Get-Datacenter | Select -First 1) | Where-Object {$_.Principal -match 'vvf-operators'} | Remove-VIPermission -Confirm:$false`.
+**Rollback:** `Get-VIPermission -Entity (Get-Datacenter | Select -First 1) | Where-Object {$_.Principal -match 'vvf-operators'} | Remove-VIPermission -Confirm:$false`.
 
 ### Lab 15.7 — VVF: Operate (Objective 4.3)
 
@@ -414,7 +414,7 @@ Get-VM $vm.Name | Select Name, @{N='Host';E={$_.VMHost.Name}}, PowerState
 generations and EVC disabled; it fails a compatibility check — the
 constraint EVC exists to remove.
 
-**Cleanup:** none (the VM remains running; migrate back if desired).
+**Rollback:** none (the VM remains running; migrate back if desired).
 
 ### Lab 15.8 — VVF: Consume and Automate (Objective 4.4)
 
@@ -434,7 +434,7 @@ that drives automated, policy-based operations instead of manual selection.
 category is `Single` cardinality, it is rejected — the guardrail that keeps
 automation deterministic.
 
-**Cleanup:** `Get-Tag -Category vvf-env | Remove-Tag -Confirm:$false; Remove-TagCategory vvf-env -Confirm:$false`.
+**Rollback:** `Get-Tag -Category vvf-env | Remove-Tag -Confirm:$false; Remove-TagCategory vvf-env -Confirm:$false`.
 
 ### Lab 15.9 — Combined administrator-exam self-assessment (integrative)
 
@@ -507,7 +507,7 @@ self-assessment.
    deploy/configure/operate and troubleshoot/optimize domains
    specifically.
 
-8. **Cleanup:** stop and remove synthetic load VMs, remove the test VM
+8. **Rollback:** stop and remove synthetic load VMs, remove the test VM
    and storage policy, disable vSAN if it was enabled solely for this
    lab, and remove the VDS/port groups if created solely for this
    exercise.

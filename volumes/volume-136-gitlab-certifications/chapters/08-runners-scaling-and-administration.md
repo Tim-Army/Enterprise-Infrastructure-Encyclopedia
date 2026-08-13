@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Using a `shell` runner on a public repository — an outside contributor's merge request can run arbitrary commands on the runner host with its privileges.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Size runners against queue time
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Sizing runners to keep utilization near 100% for cost efficiency — you have deliberately built a permanent queue, and the cost you saved reappears as engineering time spent waiting.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Cache keys and hit rate
 
@@ -163,7 +163,7 @@ EOF
 
 **Negative test:** Adding cache to every job without measuring hit rate — the pipeline gets slower, and because the cache "is configured" nobody suspects it as the cause.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

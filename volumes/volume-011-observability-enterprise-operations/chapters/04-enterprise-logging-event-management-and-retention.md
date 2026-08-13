@@ -470,7 +470,7 @@ field, join to traces by `trace_id`, and aggregate, none of which free-text logs
 needs brittle regex and breaks when the format changes — structured (JSON/logfmt) logging is what
 makes logs queryable at scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — LogQL queries (Topic: Log querying)
 
@@ -493,7 +493,7 @@ a stream selector (`{}`), pipeline filters/parsers (`| json | level="error"`), a
 aggregate across hosts or over time — a log system with LogQL is what makes logs queryable like
 metrics.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Log-derived metrics (Topic: Log metrics)
 
@@ -519,7 +519,7 @@ strings, events with no dedicated metric), bridging logs into the alerting/SLO w
 instrument everything in advance — deriving metrics from existing logs covers the long tail without
 new instrumentation.
 
-**Cleanup:** remove the lab rule.
+**Rollback:** remove the lab rule.
 
 ### Lab 4.4 — Retention and tiering (Topic: Retention)
 
@@ -543,7 +543,7 @@ keeps cost bounded.
 slow — retention/tiering matched to actual query and compliance needs is what makes logging
 sustainable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

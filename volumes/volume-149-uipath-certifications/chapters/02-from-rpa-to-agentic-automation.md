@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Expecting a rule-based robot to handle any invoice format. It breaks on the first unfamiliar layout and kicks it to a human; handling ambiguity needs a reasoning agent, which is the agentic addition.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Orchestrate robots, agents, and humans
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Handing every step to an AI agent because agents are flexible. Agents are slower, costlier, and less reliable than robots on high-volume deterministic steps, and they cannot own accountable decisions — the value is the right collaborator per step, not agents everywhere.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

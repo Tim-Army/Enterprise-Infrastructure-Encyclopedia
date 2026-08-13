@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Approving the custom approval routing because "that's how we've always done it." It is 15 build-days plus a permanent retest liability, for a process that was never a competitive advantage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — The Explore phase sets the real scope
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Rushing Explore to "get to the real work" of configuration. The requirements you did not fit-to-standard become customizations you build in Realize and retest forever.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Process and people: why OCM pairs with Activate
 
@@ -174,7 +174,7 @@ EOF
 
 **Negative test:** Measuring project success by go-live date and budget alone. Both can be green while adoption is 35% and the realized value is a third of what was promised.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

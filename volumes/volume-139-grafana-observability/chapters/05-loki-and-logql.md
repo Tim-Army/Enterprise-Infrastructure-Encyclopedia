@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Writing `{env="prod"} | json | app="api"` — it returns the right answer by scanning and parsing every production log line, when `{app="api", env="prod"}` would have selected the streams directly from the index.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Label design and stream explosion
 
@@ -151,7 +151,7 @@ EOF
 
 **Negative test:** Adding `trace_id` as a label to make trace-to-log correlation easy — Chapter 06 shows correlation works by *querying* the trace ID within a selected stream, no label required.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Metrics from logs
 
@@ -189,7 +189,7 @@ EOF
 
 **Negative test:** Building an alert on a log-derived metric over a wide time range and a loose selector — it re-scans an enormous volume every evaluation interval, which is expensive and eventually times out.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -24,7 +24,7 @@ kubectl get nodes
 
 **Negative test.** Disable the default CNI here as you did for Calico/Cilium and the node stays `NotReady` — Istio needs a working pod network beneath it. Leave the default CNI in place.
 
-**Cleanup.** None yet.
+**Rollback.** None yet.
 
 ### Lab 3.2 — Install the Istio control plane
 
@@ -42,7 +42,7 @@ istioctl verify-install
 
 **Negative test.** Deploy a workload into a namespace *before* labeling it for injection and it gets no sidecar — it is in the cluster but not in the mesh, so mTLS and AuthorizationPolicy do not apply to it. Labeling comes in Chapter 04.
 
-**Cleanup.** Keep the cluster and Istio; Chapter 04 deploys the workloads.
+**Rollback.** Keep the cluster and Istio; Chapter 04 deploys the workloads.
 
 ## Summary and Completion Checklist
 

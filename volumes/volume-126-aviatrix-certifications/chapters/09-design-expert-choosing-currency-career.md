@@ -75,7 +75,7 @@ cat my-multicloud-design.md
 
 **Negative test:** A design that adds a firewall or egress choke point with no HA — the Design Expert flags single points of failure; resilience is a first-class dimension, not an afterthought.
 
-**Cleanup:** Keep the design.
+**Rollback:** Keep the design.
 
 ### Lab 9.2 — Currency check
 
@@ -95,7 +95,7 @@ echo "verified 3 Aug 2026 — re-verify before scheduling"
 
 **Negative test:** Studying a cached course list — Aviatrix reshapes its focused-course lineup periodically; the official catalog is authoritative.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

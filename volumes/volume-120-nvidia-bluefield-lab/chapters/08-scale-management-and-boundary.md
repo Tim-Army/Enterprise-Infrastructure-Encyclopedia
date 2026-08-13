@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: per-server DPU enforcement, central policy distribution and telemetry, capacity scaling with the server count.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Where BlueField fits (design)
 
@@ -32,7 +32,7 @@ They compose: use per-server DPUs for tamper-resistant, host-adjacent enforcemen
 
 **Expected result (on paper).** A design note placing BlueField as the tamper-resistant, host-adjacent enforcement layer.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -52,7 +52,7 @@ echo "BlueField enforces at DPU-equipped NICs; non-DPU servers and deep process 
 
 **Negative test.** Assume a BlueField secures a server with no DPU. It does not — enforcement is where the DPU is; a non-DPU host needs another control.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

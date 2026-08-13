@@ -194,7 +194,7 @@ one process.
 **Negative test:** mismatch the IS-IS network type (point-to-point vs broadcast)
 on two ends; the adjacency stalls — the interface circuit type must match.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Implement OSPF v2 and v3 (SPCOR Objective 2.2)
 
@@ -213,7 +213,7 @@ both with address families), area design bounding LSA flooding.
 **Negative test:** an OSPF area/type mismatch or MTU mismatch leaves neighbors in
 `EXSTART`; `show ospf neighbor` shows the stuck state — MTU and area must match.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Compare OSPF and IS-IS (SPRI Objective 1.1)
 
@@ -232,7 +232,7 @@ often favor IS-IS for its simplicity and scale.
 **Negative test:** assume area design is identical; OSPF areas require an ABR and
 area 0 backbone, IS-IS uses flat levels (L1/L2) — the topology constraints differ.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Troubleshoot OSPF multiarea operations (SPRI Objective 1.2)
 
@@ -252,7 +252,7 @@ or a discontiguous area 0; the border-routers and IA routes localize it.
 lost its area-0 adjacency — without a backbone connection the ABR cannot inject
 inter-area routes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Troubleshoot IS-IS multilevel operations (SPRI Objective 1.3)
 
@@ -273,7 +273,7 @@ the attached bit absent.
 route-leak; it only gets a default via the attached bit — enable L2→L1 leaking for
 specifics.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Describe IPv6 tunneling mechanisms (SPRI Objective 1.6)
 
@@ -293,7 +293,7 @@ IPv6 across an IPv4/MPLS core without dual-stacking every P router.
 without 6PE the IPv6 packets have no transport — the tunneling/6PE mechanism is
 required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

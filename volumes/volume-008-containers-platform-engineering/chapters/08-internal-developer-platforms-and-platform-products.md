@@ -535,7 +535,7 @@ cert-manager, and most platform abstractions.
 **Negative test:** create a `Widget` before applying the CRD; the API rejects an unknown kind —
 the CRD must register the type before any instance can exist.
 
-**Cleanup:** `kubectl delete widget w1; kubectl delete crd widgets.platform.example.com`.
+**Rollback:** `kubectl delete widget w1; kubectl delete crd widgets.platform.example.com`.
 
 ### Lab 8.2 — Crossplane composite resources (Topic: Infrastructure composition)
 
@@ -559,7 +559,7 @@ developers self-serve without touching cloud consoles.
 they provision inconsistently and off-policy — the composition is what encodes the platform's
 guardrails into a self-service API.
 
-**Cleanup:** delete the claim (`kubectl delete bucket <name>`) so Crossplane deprovisions the
+**Rollback:** delete the claim (`kubectl delete bucket <name>`) so Crossplane deprovisions the
 cloud resource.
 
 ### Lab 8.3 — Golden paths and self-service (Topic: Platform products)
@@ -581,7 +581,7 @@ platform's CI/CD, security, and observability defaults — a golden path is the 
 reinvents CI/security/observability differently and inconsistently — a golden path encodes the
 right way as the easy way, which docs alone cannot.
 
-**Cleanup:** remove any scaffolded lab repo/resources.
+**Rollback:** remove any scaffolded lab repo/resources.
 
 ### Lab 8.4 — Multi-tenancy: namespaces, quotas, and isolation (Topic: Multi-tenancy)
 
@@ -612,7 +612,7 @@ give a tenant a bounded, isolated slice so one team cannot starve or reach into 
 workload starves the others and RBAC cannot separate them — the namespace boundary plus quotas
 is the unit of multi-tenant isolation.
 
-**Cleanup:** `kubectl delete namespace tenant-a`.
+**Rollback:** `kubectl delete namespace tenant-a`.
 
 ## Lab Verification
 

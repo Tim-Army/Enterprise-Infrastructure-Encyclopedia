@@ -468,7 +468,7 @@ without a playbook, useful for quick checks and facts.
 **Negative test:** target a host missing from the inventory; Ansible reports it does not match —
 the inventory is the authoritative host list, and only listed hosts/groups can be targeted.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Idempotent playbooks (Topic: Playbooks)
 
@@ -501,7 +501,7 @@ change is needed, so re-running a playbook is safe and converges rather than rep
 **Negative test:** use the `command`/`shell` module to `echo` into the file instead of `copy`;
 it reports `changed` every run — raw commands are not idempotent, so prefer state-based modules.
 
-**Cleanup:** `rm -rf /tmp/ansible-marker /tmp/ansible-dir`.
+**Rollback:** `rm -rf /tmp/ansible-marker /tmp/ansible-dir`.
 
 ### Lab 3.3 — Roles and variables (Topic: Roles)
 
@@ -531,7 +531,7 @@ clear variable-precedence model, the standard way to organize non-trivial automa
 **Negative test:** put everything in one giant playbook with no roles; it becomes unmaintainable
 and hard to share — roles are what make automation modular and reusable across projects.
 
-**Cleanup:** `rm -rf ~/ans/roles ~/ans/play.yml /tmp/role-marker`.
+**Rollback:** `rm -rf ~/ans/roles ~/ans/play.yml /tmp/role-marker`.
 
 ### Lab 3.4 — Templates and handlers (Topic: Templating)
 
@@ -565,7 +565,7 @@ change rather than every run.
 change-notified handler; you cause needless restarts — handlers exist to act only when something
 actually changed.
 
-**Cleanup:** `rm -f ~/ans/conf.yml /tmp/app.conf`.
+**Rollback:** `rm -f ~/ans/conf.yml /tmp/app.conf`.
 
 ## Lab Verification
 

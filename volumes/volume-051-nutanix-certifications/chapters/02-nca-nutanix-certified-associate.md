@@ -80,7 +80,7 @@ solutions/tools section.
 **Negative test:** assume ESXi; `acli host.list` shows the actual hypervisor — Nutanix
 runs **AHV** by default.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Describe Nutanix platform administration
 
@@ -97,7 +97,7 @@ administration section.
 **Negative test:** manage VMs on the host with libvirt directly; use **`acli`/Prism**
 so AOS tracks state consistently.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Describe cluster configuration and maintenance
 
@@ -114,7 +114,7 @@ configuration/maintenance section.
 
 **Negative test:** upgrade firmware by hand; **LCM** orchestrates it safely — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Understand platform health and monitoring
 
@@ -131,7 +131,7 @@ monitoring section.
 **Negative test:** wait for users to report issues; the **health dashboard/alerts**
 surface problems proactively — watch them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

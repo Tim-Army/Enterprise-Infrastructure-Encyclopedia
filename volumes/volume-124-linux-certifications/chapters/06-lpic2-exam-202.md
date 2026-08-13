@@ -36,7 +36,7 @@ dig +short www.lab.test @127.0.0.1
 
 **Negative test:** Bump the zone serial *down* and reload — secondaries would never transfer; serial discipline is the classic DNS operations question.
 
-**Cleanup:** Remove the zone lines and `sudo apt-get remove -y bind9`.
+**Rollback:** Remove the zone lines and `sudo apt-get remove -y bind9`.
 
 ### Lab 6.2 — Web services with Apache (Topic 208)
 
@@ -54,7 +54,7 @@ echo "vhost grammar: <VirtualHost *:80> ServerName / DocumentRoot; a2ensite/a2en
 
 **Negative test:** Enable a vhost without `ServerName` on a name-based setup — the wrong site answers; name-based vhosting resolves by Host header, the mechanism the exam tests.
 
-**Cleanup:** `sudo apt-get remove -y apache2`.
+**Rollback:** `sudo apt-get remove -y apache2`.
 
 ### Lab 6.3 — File sharing (Topic 209)
 
@@ -72,7 +72,7 @@ echo "/srv/share 127.0.0.1(ro)" | sudo tee -a /etc/exports >/dev/null && sudo ex
 
 **Negative test:** An NFS export without the host restriction (`/srv/share *(rw)`) — world-writable network storage; the exam expects you to flinch.
 
-**Cleanup:** Remove the share/export lines; `sudo apt-get remove -y samba nfs-kernel-server`.
+**Rollback:** Remove the share/export lines; `sudo apt-get remove -y samba nfs-kernel-server`.
 
 ### Lab 6.4 — Network client management (Topic 210)
 
@@ -91,7 +91,7 @@ grep -m2 "^auth" /etc/pam.d/sshd 2>/dev/null || grep -m2 auth /etc/pam.d/* 2>/de
 
 **Negative test:** Overlapping DHCP ranges in two subnets of one scope file — `dhcpd -t` catches it; validating before restarting is the operational habit.
 
-**Cleanup:** `rm /tmp/dhcpd-lab.conf; sudo apt-get remove -y isc-dhcp-server`.
+**Rollback:** `rm /tmp/dhcpd-lab.conf; sudo apt-get remove -y isc-dhcp-server`.
 
 ### Lab 6.5 — E-mail services (Topic 211)
 
@@ -109,7 +109,7 @@ echo "aliases: /etc/aliases + newaliases ; ~/.forward ; delivery: procmail/sieve
 
 **Negative test:** Alias loop (`a: b` and `b: a` in `/etc/aliases`) — mail bounces with a loop error; aliases are a graph, and loops are the classic misconfiguration.
 
-**Cleanup:** `sudo apt-get remove -y postfix bsd-mailx`.
+**Rollback:** `sudo apt-get remove -y postfix bsd-mailx`.
 
 ### Lab 6.6 — System security (Topic 212)
 
@@ -127,7 +127,7 @@ echo "fail2ban / openvpn / security advisories (CVE feeds) round out the topic"
 
 **Negative test:** Enable forwarding without any filter policy — the host routes everything; forwarding plus default-accept is the accidental-router misconfiguration the exam wants you to catch.
 
-**Cleanup:** `rm labkey labkey.pub; sudo sysctl -w net.ipv4.ip_forward=0`.
+**Rollback:** `rm labkey labkey.pub; sudo sysctl -w net.ipv4.ip_forward=0`.
 
 ## Summary and Completion Checklist
 

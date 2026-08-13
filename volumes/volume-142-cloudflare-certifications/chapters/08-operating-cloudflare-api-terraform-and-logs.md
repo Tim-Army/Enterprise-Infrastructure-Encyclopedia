@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Running the drift check only after incidents. That converts it from prevention into archaeology — accurate, and late.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Are the logs actually arriving?
 
@@ -141,7 +141,7 @@ EOF
 
 **Negative test:** Alerting only on what the logs contain. A dead pipeline produces no logs, hence no alerts, hence green dashboards over a 26-hour evidence gap.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — The tunnel is infrastructure now
 
@@ -177,7 +177,7 @@ EOF
 
 **Negative test:** Running a second replica on the same host as the first. Host reboot takes both; the redundancy existed only in the replica count.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

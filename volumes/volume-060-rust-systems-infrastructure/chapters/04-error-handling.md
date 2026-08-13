@@ -70,7 +70,7 @@ fn main() {
 **Negative test:** return a bare `u16` and use 0 for failure; **`Result`** makes failure
 explicit and unignorable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Propagate with ?
 
@@ -89,7 +89,7 @@ fn main() { println!("{:?}", add_ports("80", "x")); }
 **Negative test:** match each parse manually and nest the handling; **`?`** forwards errors
 without the boilerplate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Custom error with thiserror
 
@@ -110,7 +110,7 @@ fn main() { println!("{}", ConfigError::Missing("host".into())); }
 **Negative test:** return `String` errors everywhere; **typed errors** (thiserror) let
 callers match on the cause.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — App errors with anyhow context
 
@@ -130,7 +130,7 @@ failure.
 **Negative test:** surface a bare OS error with no context; **`.context(...)`** tells the
 operator *what* failed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

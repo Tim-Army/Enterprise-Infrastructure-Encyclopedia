@@ -308,7 +308,7 @@ editor.
    trigger an out-of-cycle review. **Expected result:** a concrete,
    justified review-cadence recommendation.
 
-**Cleanup:** None required; this lab is read-only against external
+**Rollback:** None required; this lab is read-only against external
 sources. Remove any locally cached copies of vendor documentation pages
 downloaded solely for verification if they are not needed for future
 reference.

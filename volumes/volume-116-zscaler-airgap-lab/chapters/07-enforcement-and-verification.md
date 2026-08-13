@@ -38,7 +38,7 @@ Only the one sanctioned flow succeeds; every lateral path is isolated, including
 
 **Negative test.** Add a second sanctioned flow (`hmi → plc:502`) and watch only it open — the model grants exactly what you permit, nothing adjacent. Remove it afterward to keep the plan.
 
-**Cleanup.** Remove any temporary rule.
+**Rollback.** Remove any temporary rule.
 
 ### Exercise 7.2 — Read the enforcement log
 
@@ -55,7 +55,7 @@ sudo dmesg | grep -o 'AIRGAP-DENY.*SRC=10.100.1.50.*DPT=[0-9]*' | tail -3
 
 **Negative test.** The sanctioned `web → db` produces no deny line — only unpermitted east-west is logged, so the log is a clean feed of lateral-movement attempts.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Confirm it was agentless and non-disruptive
 
@@ -71,7 +71,7 @@ done
 
 **Expected result.** Every device still has its original `10.100.1.x` address (now `/32`), and none is running any security software — the segmentation came entirely from the network layer, exactly Airgap's agentless promise.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

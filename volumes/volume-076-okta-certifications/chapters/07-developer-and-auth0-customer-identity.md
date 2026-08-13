@@ -75,7 +75,7 @@ PY
 **Negative test:** use the **implicit** flow for a SPA; tokens leak in the URL — use **Auth Code +
 PKCE**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Handle tokens safely in a public client
 
@@ -97,7 +97,7 @@ client security.
 **Negative test:** embed a **client secret** in the SPA; anyone can read it — public clients use
 **PKCE**, no secret.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Add an Auth0 Action / Okta hook
 
@@ -124,7 +124,7 @@ extension.
 **Negative test:** put trust decisions only in the client app; bypass the client and they're gone —
 enforce in the **Action/hook** (server side).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Model an Auth0 B2B organization
 
@@ -147,7 +147,7 @@ Organizations.
 **Negative test:** force all B2B customers through one shared connection; they can't use their own
 IdP — use **Organizations**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

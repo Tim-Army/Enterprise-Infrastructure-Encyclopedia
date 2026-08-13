@@ -295,7 +295,7 @@ scaling analysis beyond what clicking through the GUI allows.
 impractical — field extraction plus shell tools (or the statistics in Lab 8.2) is how you
 analyze at scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Statistics: conversations, endpoints, protocol hierarchy (Topic: Statistics)
 
@@ -315,7 +315,7 @@ seconds, pointing you at the top talkers and dominant protocols before you filte
 protocol that is 0.1% of the traffic while missing the 80% that matters — the statistics tell
 you where to look first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Capture-file surgery: editcap and mergecap (Topic: File manipulation)
 
@@ -335,7 +335,7 @@ multi-source captures workable and shareable (including trimming to just the rel
 **Negative test:** email a 4 GB capture to share a 10-second event; it is unusable — slice to
 the window with `editcap -A/-B` and share kilobytes, not gigabytes.
 
-**Cleanup:** `rm chunk*.pcapng merged.pcapng window.pcapng clean.pcapng`.
+**Rollback:** `rm chunk*.pcapng merged.pcapng window.pcapng clean.pcapng`.
 
 ### Lab 8.4 — Security investigation (Topic: Threat hunting)
 
@@ -359,7 +359,7 @@ core investigation skill, and these patterns are how an infection shows up in th
 the *behavioral* patterns (beacon interval, flow volume, rare destinations) are visible in the
 capture even when payloads are not.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.5 — Automation (Topic: Automation)
 
@@ -380,7 +380,7 @@ than manual GUI work.
 **Negative test:** repeat a manual GUI analysis daily by hand; it does not scale and drifts
 between runs — scripting `tshark` makes the analysis repeatable, fast, and consistent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

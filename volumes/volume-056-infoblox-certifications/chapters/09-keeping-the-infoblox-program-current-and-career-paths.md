@@ -83,7 +83,7 @@ Defense, NetMRI**) — confirming scope before you study.
 **Negative test:** trust a cached NIOS-only list; **Universal DDI/Threat Defense** are
 current — confirm on infoblox.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path
 
@@ -105,7 +105,7 @@ PY
 **Negative test:** collect credentials at random; **sequence by role/product** for a
 coherent path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

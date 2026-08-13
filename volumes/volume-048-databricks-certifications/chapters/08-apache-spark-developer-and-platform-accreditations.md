@@ -94,7 +94,7 @@ transformations vs eager actions (a core Spark concept).
 **Negative test:** expect `filter`/`withColumn` to execute immediately; they are
 **lazy** — an action triggers execution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — DataFrame API: select, filter, transform
 
@@ -114,7 +114,7 @@ API transformations the exam tests.
 **Negative test:** use raw SQL strings everywhere; the **DataFrame API** (typed,
 composable) is what this exam assesses — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Joins and aggregations
 
@@ -131,7 +131,7 @@ exam covers.
 **Negative test:** collect and aggregate in Python; **Spark aggregations** run
 distributed — keep it in Spark.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Performance: caching and partitioning
 
@@ -149,7 +149,7 @@ recomputation — the tuning concepts (partitioning, caching) the exam tests.
 **Negative test:** cache a DataFrame used only once; caching has overhead — cache
 only **reused** data.
 
-**Cleanup:** `df.unpersist()`
+**Rollback:** `df.unpersist()`
 
 ### Lab 8.5 — Adaptive Query Execution
 
@@ -166,7 +166,7 @@ strategy, skew) — a performance topic on the exam.
 **Negative test:** hand-tune shuffle partitions and disable AQE; **AQE** adapts at
 runtime — leave it on unless you have a specific reason.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — Platform accreditations: architecture and administration
 
@@ -186,7 +186,7 @@ Platform Architect/Administrator accreditation scope.
 **Negative test:** treat these as proctored certifications; they are free
 **accreditations** — useful, but distinct from the role-based certs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

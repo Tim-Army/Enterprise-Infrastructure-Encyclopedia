@@ -110,7 +110,7 @@ one — no shell, no installer, no third-party software on a real PLC.
 Forcing the agent model onto OT is the classic Xshield design error; the
 Gatekeeper exists precisely for this asset class. Reassign it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Onboard the Xshield host agent
 
@@ -294,7 +294,7 @@ observe (Track 1) the asset failing to apply policy, or (Track 2) your
 is the documented Xshield Windows prerequisite — a single controller of
 the native firewall — made tangible.
 
-**Cleanup.** Leave the Observe layer in place; E3–E6 build on it.
+**Rollback.** Leave the Observe layer in place; E3–E6 build on it.
 
 ### Lab 6.3 — Discover and visualize traffic (the flow map)
 
@@ -408,7 +408,7 @@ app→db flow (and break the app in E5) or miss an unwanted flow (and
 leave a hole). Discovery-before-policy is not ceremony; skipping it is
 how real rollouts cause outages.
 
-**Cleanup.** None — keep the map as your policy specification.
+**Rollback.** None — keep the map as your policy specification.
 
 ### Lab 6.4 — Ring-fence the application (Progressive Segmentation, phase 1)
 
@@ -524,7 +524,7 @@ you have just re-authorized the exact lateral movement you set out to
 stop. Over-broad groups are the most common way a real policy quietly
 fails. Remove it.
 
-**Cleanup.** Keep the ring-fence; E5 enforces it.
+**Rollback.** Keep the ring-fence; E5 enforces it.
 
 ## Summary and Completion Checklist
 

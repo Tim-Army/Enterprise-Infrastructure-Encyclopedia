@@ -41,7 +41,7 @@ sudo nft add rule inet illumio segmentation ip daddr 10.10.30.50 \
 
 **Negative test.** From `il-app01`, try to reach the PLC: `nc -vz 10.10.30.50 502`. It is blocked and logged. Now temporarily add a permit and it succeeds — proving the deny, not the network, is what stops it. Remove the permit.
 
-**Cleanup.** Keep the managed-host enforcement.
+**Rollback.** Keep the managed-host enforcement.
 
 ### Lab 8.2 — Enforce the path on the router (the NEN's job, done natively)
 
@@ -66,7 +66,7 @@ sudo nft add rule inet illumio forward ip daddr 10.10.30.0/24 \
 
 **Negative test.** From `il-app01`, `nc -vz 10.10.30.50 502` — blocked at the router even though `il-app01`'s own outbound deny were removed. The choke point makes the control complete. This is exactly why "one path in" is a security property, not an inconvenience.
 
-**Cleanup.** Keep the forward chain.
+**Rollback.** Keep the forward chain.
 
 ### Lab 8.3 — Validate the containment end to end
 
@@ -103,7 +103,7 @@ Both legitimate flows work; every lateral-movement path proven in Chapter 05 is 
 
 **Negative test.** Revert `il-db01` to Visibility Only (Track 1) or flip its segmentation policy back to `accept` (Track 2) and re-run the HMI→db probe; it reaches again. Enforcement, not visibility, is what blocks — a reminder that a map alone protects nothing. Re-enforce.
 
-**Cleanup.** Leave the enforced estate for Chapter 09, which operates and then tears it down.
+**Rollback.** Leave the enforced estate for Chapter 09, which operates and then tears it down.
 
 ## Summary and Completion Checklist
 

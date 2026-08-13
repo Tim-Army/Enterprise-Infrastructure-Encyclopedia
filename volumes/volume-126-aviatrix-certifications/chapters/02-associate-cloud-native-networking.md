@@ -48,7 +48,7 @@ sudo ip netns exec public ip addr show public-e | grep inet
 
 **Negative test:** Give both subnets the same host address — collision; subnets within a VPC must use non-overlapping ranges, the constraint that becomes painful across merged clouds (overlapping CIDRs).
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 2.2 — Route tables decide public vs private
 
@@ -71,7 +71,7 @@ sudo ip netns exec private ip route | grep -q default || echo "private: no defau
 
 **Negative test:** Add the IGW default route to `private` too — it becomes internet-facing, the accidental-exposure mistake native networking makes easy (and Aviatrix egress control prevents).
 
-**Cleanup:** Namespaces persist for the chapter.
+**Rollback:** Namespaces persist for the chapter.
 
 ### Lab 2.3 — Peering vs transit
 
@@ -100,7 +100,7 @@ Full-mesh peering explodes quadratically; a **transit hub** grows linearly — w
 
 **Negative test:** Peering also isn't transitive (A–B and B–C does not give A–C) — a fact the exam tests and a reason hubs win.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — The multicloud problem statement
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Assuming native peering handles overlapping CIDRs — it refuses them; the overlay's NAT is what makes merged/overlapping estates work.
 
-**Cleanup:** `for ns in public private igw vpc-rtr; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del vpc-br`.
+**Rollback:** `for ns in public private igw vpc-rtr; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del vpc-br`.
 
 ## Summary and Completion Checklist
 

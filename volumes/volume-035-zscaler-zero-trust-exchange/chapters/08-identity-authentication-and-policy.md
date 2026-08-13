@@ -154,7 +154,7 @@ policy silently fails.
 group-less and group rules never match — the fix is the IdP's attribute
 mapping, not the Zscaler rule.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — SCIM lifecycle (Topic: Provisioning)
 
@@ -173,7 +173,7 @@ access.
 **Negative test:** rely on SAML alone with no SCIM; a disabled employee's
 Zscaler identity lingers — provisioning/deprovisioning needs SCIM.
 
-**Cleanup:** revert lab user/group changes.
+**Rollback:** revert lab user/group changes.
 
 ### Lab 8.3 — Group-based policy (Topic: Identity-driven policy)
 
@@ -192,7 +192,7 @@ in the IdP changes Zscaler access automatically.
 breaks the moment addresses change and does not follow the user — identity-based
 rules are what make policy portable and correct.
 
-**Cleanup:** remove lab rules.
+**Rollback:** remove lab rules.
 
 ## Lab Verification
 

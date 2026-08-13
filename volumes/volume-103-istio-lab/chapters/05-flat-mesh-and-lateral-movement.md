@@ -32,7 +32,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 && echo "hmi -> db:
 
 **Negative test.** Assume the mesh isolates workloads by default. It does not — a mesh with no `AuthorizationPolicy` allows all service-to-service traffic. Adding Istio without policy buys you mTLS-capable transport and observability, not segmentation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Identify the legitimate flows by principal
 
@@ -52,7 +52,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 && echo "hmi -> db:
 
 **Negative test.** Try to express flow 4's denial by source IP. In a mesh, the sidecar re-originates traffic, and identity — not IP — is the reliable discriminator. Use principals.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -69,7 +69,7 @@ kubectl exec -n dc deploy/web -c web -- curl -s -o /dev/null -w "web POST /post 
 
 **Negative test.** Re-run the legitimate `web → api GET /get`; it works too. Until Istio has an mTLS-verified identity *and* an AuthorizationPolicy, the mesh cannot tell the operator from the app, or a read from a write.
 
-**Cleanup.** None — Chapter 06 turns on mTLS and identity, Chapter 07 authorization.
+**Rollback.** None — Chapter 06 turns on mTLS and identity, Chapter 07 authorization.
 
 ## Summary and Completion Checklist
 

@@ -143,7 +143,7 @@ is the SOC's log store, correlation, and reporting hub.
 **Negative test:** enable FortiAnalyzer logging but leave the device unauthorized on the
 analyzer; logs are refused and analytics stay empty — device registration must be accepted.
 
-**Cleanup:** disable the FortiAnalyzer log setting if lab-only.
+**Rollback:** disable the FortiAnalyzer log setting if lab-only.
 
 ### Lab 12.2 — FortiSIEM correlation (Topic: FortiSIEM)
 
@@ -163,7 +163,7 @@ raw multi-source events into prioritized incidents with context.
 **Negative test:** rely on a single log source for correlation; cross-source rules (auth +
 traffic + endpoint) cannot fire — SIEM's value is correlating across the whole estate.
 
-**Cleanup:** none (read-only analytics).
+**Rollback:** none (read-only analytics).
 
 ### Lab 12.3 — FortiSOAR playbook (Topic: FortiSOAR)
 
@@ -185,7 +185,7 @@ with the human approving high-impact steps.
 false-positive playbook run disrupts production — high-impact actions need a human-approval
 task in the playbook.
 
-**Cleanup:** revert any test block pushed to the FortiGate.
+**Rollback:** revert any test block pushed to the FortiGate.
 
 ### Lab 12.4 — Endpoint detection with FortiEDR and FortiSandbox (Topic: FortiEDR / FortiSandbox)
 
@@ -215,7 +215,7 @@ behavior on the endpoint itself — layered detection across network and host.
 **Negative test:** rely only on signature AV for a zero-day; it has no signature and passes
 — sandbox detonation and EDR behavior analysis are what catch the unknown.
 
-**Cleanup:** disable the FortiSandbox integration if lab-only.
+**Rollback:** disable the FortiSandbox integration if lab-only.
 
 ### Lab 12.5 — Network detection with FortiNDR (Topic: FortiNDR)
 
@@ -235,7 +235,7 @@ NDR adds the network-behavior layer to the SOC's detection coverage.
 **Negative test:** feed FortiNDR no mirrored traffic and expect detections; with nothing to
 analyze the dashboard is empty — NDR requires a traffic feed (SPAN/mirror) to work.
 
-**Cleanup:** remove the mirror configuration if lab-only.
+**Rollback:** remove the mirror configuration if lab-only.
 
 ## Lab Verification
 

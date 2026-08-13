@@ -102,7 +102,7 @@ token with the `default` policy — authentication producing a token (Objective 
 **Negative test:** treat the root token as an auth method; **auth methods** issue
 scoped tokens per identity — root is for setup only.
 
-**Cleanup:** `vault login root >/dev/null`
+**Rollback:** `vault login root >/dev/null`
 
 ### Lab 4.2 — Objective 2: Vault policies
 
@@ -121,7 +121,7 @@ vault policy read app
 **Negative test:** grant `path "*" { capabilities = ["sudo","root"] }`; that is
 full access — scope policies to the exact paths and capabilities needed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Objective 3: Vault tokens
 
@@ -138,7 +138,7 @@ as the carrier of identity and authorization (Objective 3).
 **Negative test:** issue long-lived, broadly-scoped tokens; short **TTLs** and
 narrow policies limit blast radius — scope and expire tokens.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Objective 4: Vault leases
 
@@ -157,7 +157,7 @@ vault lease list sys/leases/lookup 2>/dev/null | head || \
 **Negative test:** issue credentials that never expire; **leases** ensure secrets
 are short-lived and revocable — rely on them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Objective 5: Secrets engines
 
@@ -176,7 +176,7 @@ secrets engine with versioning (Objective 5).
 **Negative test:** store long-lived cloud keys statically forever; prefer a
 **dynamic** secrets engine that generates short-lived credentials on demand.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — Objective 6: Encryption as a service
 
@@ -198,7 +198,7 @@ encryption as a service where Vault holds the key but not the data (Objective 6)
 **Negative test:** ship encryption keys to every app; **transit** centralizes key
 management — apps call Vault to encrypt/decrypt.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.7 — Objective 7: Vault architecture fundamentals
 
@@ -215,7 +215,7 @@ seal/barrier model that protects data at rest (Objective 7).
 **Negative test:** assume the storage backend can read secrets; Vault encrypts
 **before** storage (the barrier) — the backend only sees ciphertext.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.8 — Objective 8: Vault deployment architecture
 
@@ -235,7 +235,7 @@ Consul storage, Shamir or auto-unseal) — deployment architecture (Objective 8)
 **Negative test:** run a single dev node in production; you need **HA storage**
 and a real **unseal** strategy — dev mode is for learning only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.9 — Objective 9: Access management architecture
 
@@ -254,7 +254,7 @@ architecture (Objective 9).
 **Negative test:** manage each auth method's users in isolation; the **identity**
 system unifies them into entities and groups — model identity centrally.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Deploying an autonomous agent for a task that was really a one-time question. You built a delegated worker to answer something a copilot handles in one turn.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — The data foundation feeds everything downstream
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Buying the AI capability and pointing it at ungoverned data across three systems. It answers confidently and inconsistently, because the three systems never agreed on who a customer is.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Positioning versus developer certifications
 
@@ -158,7 +158,7 @@ EOF
 
 **Negative test:** A developer pursuing positioning certifications to "understand AI strategy." Useful context, wrong credential — the hiring question for a developer is C_AIG's build skill, not C_BCSBS's articulation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

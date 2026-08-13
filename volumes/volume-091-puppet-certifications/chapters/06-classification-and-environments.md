@@ -85,7 +85,7 @@ PY
 
 **Negative test:** classify `web1` with three roles; a node gets **one** role that composes profiles.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Reason about directory environments
 
@@ -107,7 +107,7 @@ PY
 
 **Negative test:** develop directly in `production`; use a **development**/feature environment first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Model a control-repo deployment
 
@@ -133,7 +133,7 @@ Manager — auditable code delivery.
 **Negative test:** copy modules onto the server by hand; use a **control repo + r10k** so deployment is
 versioned and reviewed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Promote code between environments
 
@@ -156,7 +156,7 @@ PY
 **Negative test:** merge straight to production without testing; promote through **environments** with
 review.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

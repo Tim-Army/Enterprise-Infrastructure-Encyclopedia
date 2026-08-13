@@ -70,7 +70,7 @@ ansible-playbook --syntax-check play.yml
 **Negative test:** run a playbook with a YAML typo directly; **`--syntax-check`** catches it
 first — check before running.
 
-**Cleanup:** `rm -f play.yml`.
+**Rollback:** `rm -f play.yml`.
 
 ### Lab 8.2 — Lint with ansible-lint
 
@@ -86,7 +86,7 @@ naming) — enforced best practices.
 **Negative test:** rely on review for style/idempotence risks; **ansible-lint** catches
 them mechanically — gate on it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Assert a condition
 
@@ -107,7 +107,7 @@ them mechanically — gate on it.
 **Negative test:** proceed without checking prerequisites; an **`assert`** fails fast with a
 clear message.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Molecule idempotence (describe)
 
@@ -125,7 +125,7 @@ testing.
 **Negative test:** ship a role that reports changes on every run; Molecule's **idempotence
 test** fails it — fix the non-idempotent task.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

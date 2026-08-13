@@ -72,7 +72,7 @@ print(len(results))   # 10 (in ~0.4s, not 2s)
 **Negative test:** poll hosts in a serial loop; 10 × 0.2s = **2s** vs ~0.4s parallel —
 fan out I/O.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Async I/O with asyncio
 
@@ -93,7 +93,7 @@ print(len(asyncio.run(main())))   # 10
 **Negative test:** call `await` outside an event loop; async code needs
 **`asyncio.run`**/a loop — run it properly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Bound concurrency with a semaphore
 
@@ -116,7 +116,7 @@ print(len(asyncio.run(main())))     # 9, max 3 at a time
 **Negative test:** launch 1000 requests unbounded; you **hit rate limits/overload** — cap
 with a semaphore/pool.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Choose threads vs processes
 
@@ -133,7 +133,7 @@ print("I/O -> threads/asyncio ; CPU -> processes")
 **Negative test:** use threads for CPU-bound work; the **GIL** serializes it — use
 **processes** for CPU.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

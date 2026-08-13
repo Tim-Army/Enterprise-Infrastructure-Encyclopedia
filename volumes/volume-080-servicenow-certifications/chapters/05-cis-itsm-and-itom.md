@@ -75,7 +75,7 @@ prioritization.
 **Negative test:** let agents set priority by gut feel; it's inconsistent — derive from **impact ×
 urgency**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Plan a change with risk and approval
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** route a high-risk DB patch as a **standard** (pre-approved) change; it skips review
 — classify by **risk**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Populate the CMDB with Discovery
 
@@ -116,7 +116,7 @@ PY
 
 **Negative test:** maintain the CMDB by hand; it drifts immediately — automate with **Discovery**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Correlate events into an alert
 
@@ -141,7 +141,7 @@ Management.
 **Negative test:** open an incident for every raw monitoring event; agents drown — **correlate**
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

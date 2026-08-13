@@ -398,7 +398,7 @@ security implication is directly observable rather than theoretical.
    should be reserved for narrowly justified cases and never used as a
    default.
 
-**Cleanup**
+**Rollback**
 
 7. On `nfs-client01`, unmount the export:
 

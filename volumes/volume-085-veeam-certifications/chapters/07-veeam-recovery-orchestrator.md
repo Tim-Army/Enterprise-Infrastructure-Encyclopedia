@@ -83,7 +83,7 @@ value.
 **Negative test:** treat manual runbooks as DR; VRO makes recovery **tested and documented** — automate
 it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Build a recovery plan with ordered steps
 
@@ -108,7 +108,7 @@ PY
 **Negative test:** recover the app tier before its database; the app fails its readiness check — order
 network → data → app → web.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Run a non-disruptive DR test
 
@@ -133,7 +133,7 @@ proof.
 
 **Negative test:** "test" DR by failing over production; use a **non-disruptive** isolated test instead.
 
-**Cleanup:** none (the fenced lab tears down automatically).
+**Rollback:** none (the fenced lab tears down automatically).
 
 ### Lab 7.4 — Verify a backup with SureBackup
 
@@ -155,7 +155,7 @@ SureBackup-App   Success
 **Negative test:** trust untested backups; a corrupt backup only shows up at restore time — verify with
 **SureBackup**.
 
-**Cleanup:** none (SureBackup tears down its virtual lab automatically).
+**Rollback:** none (SureBackup tears down its virtual lab automatically).
 
 ## Lab Verification
 

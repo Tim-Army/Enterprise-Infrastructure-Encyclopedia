@@ -137,7 +137,7 @@ a controller pair over a pooled back end, the foundation ISM defines.
 file system until a host (or the array's NAS) formats/exports it — the personality
 determines the access method.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — RAID and data protection (Topic: Storage Systems — RAID)
 
@@ -158,7 +158,7 @@ rebuilds, the modern default.
 second failure during a long rebuild loses data — RAID 6 (dual parity) or
 distributed sparing addresses the rebuild-window risk.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Provisioning: thin volumes (Topic: Storage Systems — Provisioning)
 
@@ -178,7 +178,7 @@ monitoring `subscribed` vs `used` is essential to avoid an out-of-space conditio
 `used` reaches capacity, writes fail array-wide — thin provisioning requires
 capacity monitoring and alerts.
 
-**Cleanup:** `delete volume LAB-VOL`.
+**Rollback:** `delete volume LAB-VOL`.
 
 ### Lab 1.4 — Fibre Channel SAN (Topic: Storage Networking — FC SAN)
 
@@ -201,7 +201,7 @@ across two fabrics (A/B).
 **Negative test:** a host whose WWPN is not zoned to the array sees no LUNs even
 though the cable is up — zoning, not link state, admits the initiator.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.5 — IP SAN and NVMe over Fabrics (Topic: Storage Networking — IP SAN)
 
@@ -221,7 +221,7 @@ IP block transport.
 **Negative test:** discover an iSCSI portal with no LUN masked to the initiator's
 IQN; login succeeds but no block device appears — host-to-LUN masking is required.
 
-**Cleanup:** `iscsiadm -m node -T iqn.dell:lab-target -u`.
+**Rollback:** `iscsiadm -m node -T iqn.dell:lab-target -u`.
 
 ### Lab 1.6 — NAS and file storage (Topic: Storage Networking — NAS)
 
@@ -240,7 +240,7 @@ storage handling the file system, permissions, and protocol.
 **Negative test:** mount an NFS export not permitted for the client's IP; the mount
 is refused — export access rules (host/subnet) gate NAS access.
 
-**Cleanup:** `umount /mnt/nfs`.
+**Rollback:** `umount /mnt/nfs`.
 
 ### Lab 1.7 — Object and cloud storage (Topic: Storage Systems — Object)
 
@@ -261,7 +261,7 @@ cloud/archive workloads.
 returns `AccessDenied` — object access is governed by keys and policies, not host
 mounts.
 
-**Cleanup:** `aws --endpoint-url ... s3 rb s3://lab-bucket --force`.
+**Rollback:** `aws --endpoint-url ... s3 rb s3://lab-bucket --force`.
 
 ### Lab 1.8 — Backup, archive, and deduplication (Topic: Business Continuity — Backup)
 
@@ -282,7 +282,7 @@ ratio is often 10–50×, making disk-based backup and replication economical.
 appliance; the dedup ratio collapses toward 1× — dedup works on redundancy, which
 encryption/compression removes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.9 — Replication: local and remote (Topic: Business Continuity — Replication)
 
@@ -303,7 +303,7 @@ distance) protects against site loss, the core of a DR strategy.
 link; application write latency spikes — synchronous suits metro distance; async (or
 Dell's active/active metro) suits longer distance.
 
-**Cleanup:** `delete snapshot LAB-SNAP`.
+**Rollback:** `delete snapshot LAB-SNAP`.
 
 ### Lab 1.10 — Storage security and management (Topic: Security and Management)
 
@@ -325,7 +325,7 @@ encryption** (self-encrypting drives/controller), and audit; management/monitori
 data center for RMA; the data is readable off-array — encryption protects retired/
 stolen media, which access control alone does not.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

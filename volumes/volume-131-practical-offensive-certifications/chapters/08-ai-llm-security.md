@@ -54,7 +54,7 @@ EOF
 
 **Negative test:** Relying only on a keyword filter — injection can be obfuscated, encoded, or indirect (via a poisoned document the model reads); the architectural controls (isolation, least-privilege tools) are what hold when the filter is bypassed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Never trust LLM output as code
 
@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** "The LLM is helpful, so its output is safe to run" — an attacker who can influence the prompt (directly or via retrieved content) can make the model emit harmful output; model output is never trusted as code.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Guardrails for an AI agent
 
@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** An agent with broad tool access and no approval gates — a prompt injection (Lab 8.1) can then drive it to take real destructive actions; least privilege and human-in-the-loop are the controls that contain that, and the AI certs teach why.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

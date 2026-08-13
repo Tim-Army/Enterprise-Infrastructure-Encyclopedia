@@ -29,7 +29,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet8*" -AddressFamily IPv4 | Select-Object 
 
 **Negative test.** Changing the subnet after building VMs breaks egress until re-addressed. Fix it now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Configure VMnet2 (host-only — Data Center)
 
@@ -49,7 +49,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet2*" -AddressFamily IPv4 | Select-Object 
 
 **Negative test.** Leaving DHCP on lets a lease renewal mask a blocked-flow result. Off is deliberate.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Configure VMnet3 (host-only — OT Cell, fully isolated)
 
@@ -69,7 +69,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Ticking the host adapter here gives a path that bypasses the gateway; the PLC could then be reached off-overlay. Leave it unchecked.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -460,7 +460,7 @@ why trend-based forecasting catches risk a static threshold misses.
    than a trend-based forecast, precisely the gap [Chapter 1](01-enterprise-storage-architecture-and-service-design.md) warned could
    turn thin-provisioning exhaustion into an unplanned outage.
 
-**Cleanup**
+**Rollback**
 
 6. Unmount and remove the lab filesystem and working files:
 

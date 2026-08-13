@@ -93,7 +93,7 @@ EOF
 
 **Negative test:** Calling someone a "data scientist" who can only build models but cannot curate data or assess results. The models are unreliable because the surrounding lifecycle is missing; the composite credential exists precisely to certify the whole pipeline, not one fragment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

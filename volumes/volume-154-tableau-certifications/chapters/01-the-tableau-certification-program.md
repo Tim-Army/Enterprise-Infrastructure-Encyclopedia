@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Treating the Certified Data Analyst as a multiple-choice recall exam. It includes 8–10 hands-on labs — it validates *performing* analysis in Tableau, which a question bank cannot cover.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Where Tableau fits in the data stack
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Treating a data warehouse as sufficient for analytics. It stores and processes data but does not make it human-understandable; Tableau is the visualization layer that turns stored data into insight a person can act on.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

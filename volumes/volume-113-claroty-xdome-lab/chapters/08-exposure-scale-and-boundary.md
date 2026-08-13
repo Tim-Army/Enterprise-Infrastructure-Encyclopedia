@@ -26,7 +26,7 @@ awk '$5!="cve=none"{print "PRIORITIZE segmentation around " $1 " (" $5 ")"}' /et
 
 **Expected result.** `PRIORITIZE segmentation around 10.70.4.40 (cve=CVE-2023-0001)` — the vulnerable PLC is the first asset to wrap tightly, because discovery told you it is both critical and exposed.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Scale: collectors, sites, and the Purdue model (design)
 
@@ -36,7 +36,7 @@ awk '$5!="cve=none"{print "PRIORITIZE segmentation around " $1 " (" $5 ")"}' /et
 
 **Expected result (on paper).** A design note: collectors per cell, zones per Purdue level, policy pushed to the firewalls/NAC at each boundary, one tenant for estate-wide visibility.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -57,7 +57,7 @@ echo "xDome sees and decides; an enforcer blocks. No enforcer, no enforcement."
 
 **Negative test.** Assume enabling xDome secures the plant. It secures nothing until an enforcer applies its policy — discovery and detection are necessary but not sufficient.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

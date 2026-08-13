@@ -72,7 +72,7 @@ admin@fw> show high-availability state
 **Negative test:** run a lone firewall for a critical path; a failure is an **outage** — deploy
 an HA pair.
 
-**Cleanup:** `set deviceconfig high-availability enabled no` then `commit`.
+**Rollback:** `set deviceconfig high-availability enabled no` then `commit`.
 
 ### Lab 4.2 — Push policy from Panorama
 
@@ -91,7 +91,7 @@ consistent, centralized policy.
 **Negative test:** configure each branch firewall by hand; **Panorama** device groups keep
 policy consistent — push centrally.
 
-**Cleanup:** delete the rule and `commit-all`.
+**Rollback:** delete the rule and `commit-all`.
 
 ### Lab 4.3 — NAT and decryption
 
@@ -111,7 +111,7 @@ routable egress.
 **Negative test:** leave TLS undecrypted everywhere; **Content-ID** can't inspect encrypted
 threats — decrypt where policy/law allow.
 
-**Cleanup:** delete the NAT and decryption rules and `commit`.
+**Rollback:** delete the NAT and decryption rules and `commit`.
 
 ### Lab 4.4 — Prisma SD-WAN path selection
 
@@ -128,7 +128,7 @@ threats — decrypt where policy/law allow.
 **Negative test:** pin every app to one static link; **app-aware** selection uses the best path
 per app — steer dynamically.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Automate Panorama with the API
 
@@ -146,7 +146,7 @@ visibility for automation.
 **Negative test:** track the fleet in a spreadsheet; **Panorama's API** is the source of truth —
 query it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

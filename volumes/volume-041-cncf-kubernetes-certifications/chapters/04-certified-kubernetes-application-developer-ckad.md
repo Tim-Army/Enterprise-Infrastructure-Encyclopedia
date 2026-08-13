@@ -111,7 +111,7 @@ kubectl exec web -c nginx -- cat /usr/share/nginx/html/index.html
 **Negative test:** put the seed logic in the main container's startup; the init
 pattern guarantees ordering and separation — use it for setup steps.
 
-**Cleanup:** `kubectl delete pod web`
+**Rollback:** `kubectl delete pod web`
 
 ### Lab 4.2 — CKAD: Application Deployment (20%)
 
@@ -130,7 +130,7 @@ revision and reports success — managed deployment and rollback, CKAD Domain 2.
 **Negative test:** delete and recreate the Deployment to "roll back"; that loses
 history — use `rollout undo` which is revision-aware.
 
-**Cleanup:** `kubectl delete deploy app`
+**Rollback:** `kubectl delete deploy app`
 
 ### Lab 4.3 — CKAD: Application Observability and Maintenance (15%)
 
@@ -160,7 +160,7 @@ self-healing, CKAD Domain 3.
 liveness probe *restarts* the container instead of just removing it from Service
 endpoints — pick the right probe.
 
-**Cleanup:** `kubectl delete pod probed`
+**Rollback:** `kubectl delete pod probed`
 
 ### Lab 4.4 — CKAD: Application Environment, Configuration and Security (25%)
 
@@ -191,7 +191,7 @@ CKAD domain.
 **Negative test:** bake the greeting into the image; rebuilding for every config
 change is the anti-pattern ConfigMaps solve.
 
-**Cleanup:** `kubectl delete pod cfg; kubectl delete configmap appcfg`
+**Rollback:** `kubectl delete pod cfg; kubectl delete configmap appcfg`
 
 ### Lab 4.5 — CKAD: Services and Networking (20%)
 
@@ -211,7 +211,7 @@ Service name — in-cluster connectivity via DNS and a Service, CKAD Domain 5.
 **Negative test:** hard-code a pod IP in the client; pods are ephemeral — target
 the Service DNS name, which is stable.
 
-**Cleanup:** `kubectl delete deploy api svc api`
+**Rollback:** `kubectl delete deploy api svc api`
 
 ## Lab Verification
 

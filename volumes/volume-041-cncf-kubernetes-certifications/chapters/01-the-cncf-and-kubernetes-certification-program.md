@@ -137,7 +137,7 @@ curl -sSL "https://raw.githubusercontent.com/cncf/curriculum/master/README.md" \
 **Negative test:** rely on a years-old course syllabus; it targets a retired
 Kubernetes version and outdated `kubectl` behavior — use the live curriculum.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Stand up a practice cluster (Topic: Prepare to practice)
 
@@ -154,7 +154,7 @@ performance-based practice.
 **Negative test:** try to study a performance-based exam with no cluster; there
 is nothing to practice against — always have a live cluster.
 
-**Cleanup:** keep the cluster for the rest of the volume, or `kind delete cluster --name lab`.
+**Rollback:** keep the cluster for the rest of the volume, or `kind delete cluster --name lab`.
 
 ### Lab 1.3 — Build kubectl muscle memory (Topic: Exam technique)
 
@@ -171,7 +171,7 @@ a timed exam.
 **Negative test:** hand-write every YAML from memory under time pressure;
 generate a skeleton imperatively and edit it instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

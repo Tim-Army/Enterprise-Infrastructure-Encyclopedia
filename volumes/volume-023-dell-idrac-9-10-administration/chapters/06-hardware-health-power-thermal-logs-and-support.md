@@ -406,7 +406,7 @@ one query tells you whether a server is OK or which component is degraded.
 failed redundant PSU shows only in the sensor/health data — the monitoring readout is what surfaces
 degradation before an outage.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Power monitoring and capping (Topic: Power)
 
@@ -428,7 +428,7 @@ planning, and supports data-center power budgeting.
 a load spike trips the breaker — power monitoring and caps are what keep draw within the circuit's
 safe budget.
 
-**Cleanup:** `racadm set System.Power.Cap.Enable Disabled` if set only for the lab.
+**Rollback:** `racadm set System.Power.Cap.Enable Disabled` if set only for the lab.
 
 ### Lab 6.3 — Thermal monitoring (Topic: Thermal)
 
@@ -449,7 +449,7 @@ fan is an early warning that thermal monitoring surfaces.
 over-temperature; the fan failure or blocked airflow was visible earlier in the sensor data —
 thermal monitoring catches it before the protective shutdown.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Logs and support collection (Topic: Troubleshooting)
 
@@ -470,7 +470,7 @@ Dell support or your own analysis.
 log hold the *history* (a prior correctable-ECC storm, a firmware change) that explains it — the
 logs are where the timeline lives.
 
-**Cleanup:** remove the generated support bundle if lab-only.
+**Rollback:** remove the generated support bundle if lab-only.
 
 ## Lab Verification
 

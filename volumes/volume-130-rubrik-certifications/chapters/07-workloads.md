@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** Taking a crash-consistent snapshot of a busy database without quiescing/log-awareness — you may recover a database in an inconsistent state; application-consistent + transaction-log protection is what enables clean point-in-time database recovery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Application-consistent vs crash-consistent
 
@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Assuming all snapshots are equal — restoring a crash-consistent database snapshot may require lengthy repair or lose in-flight transactions; the consistency level determines the recovery quality.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — SaaS and the shared-responsibility gap
 
@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Assuming "it's in the cloud, so it's backed up" — SaaS providers guarantee *service* availability, not recovery of *your data* from deletion/ransomware; the shared-responsibility gap is what third-party SaaS backup fills.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

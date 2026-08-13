@@ -72,7 +72,7 @@ pytest -q test_ports.py
 **Negative test:** ship the parser with no test; a regression **breaks silently** — test
 it.
 
-**Cleanup:** `rm test_ports.py`.
+**Rollback:** `rm test_ports.py`.
 
 ### Lab 8.2 — A fixture
 
@@ -91,7 +91,7 @@ def test_count(hosts):
 
 **Negative test:** duplicate setup in every test; a **fixture** centralizes it — DRY.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Mock an external call
 
@@ -114,7 +114,7 @@ def test_status():
 **Negative test:** call the real API in a unit test; it's **slow and flaky** — mock the
 boundary.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Lint and type gates
 
@@ -132,7 +132,7 @@ enforced quality.
 **Negative test:** rely on review alone for style/types; **ruff + mypy** catch them
 mechanically in CI — gate on them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

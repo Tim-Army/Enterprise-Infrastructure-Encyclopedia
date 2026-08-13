@@ -337,7 +337,7 @@ mirrored to them.
 visibility; controller traffic never crosses to where the sensor sees it — sensor placement
 must follow the Purdue levels you intend to observe.
 
-**Cleanup:** none (design/placement exercise).
+**Rollback:** none (design/placement exercise).
 
 ### Lab 8.2 — Deploy a passive sensor to Command Center (Topic: Sensor deployment)
 
@@ -359,7 +359,7 @@ OT visibility plane, exactly as the Enterprise Manager does for IT appliances.
 SPAN/TAP; it sees only its own broadcast domain and discovers almost nothing — passive DPI
 requires a mirror of the target traffic.
 
-**Cleanup:** deregister the lab sensor if it was added only for the exercise.
+**Rollback:** deregister the lab sensor if it was added only for the exercise.
 
 ### Lab 8.3 — Industrial-protocol deep packet inspection (Topic: Protocol visibility)
 
@@ -381,7 +381,7 @@ which is the basis for OT threat detection.
 malicious *write* to a PLC that rides normal-looking traffic — protocol-aware DPI is what
 sees the dangerous control action.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — OT asset inventory and network map (Topic: Asset visibility)
 
@@ -402,7 +402,7 @@ attempting any detection or control.
 drop under active probing — OT inventory must be passive, which is exactly why eyeInspect
 listens rather than scans.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

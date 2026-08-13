@@ -448,7 +448,7 @@ pressure; **containment before eradication** preserves evidence and stops the bl
 evidence); you destroy the forensic record and may miss how they got in, inviting reinfection —
 the ordered lifecycle preserves both evidence and root-cause.
 
-**Cleanup:** `rm -f ~/ir/ir-playbook.md`.
+**Rollback:** `rm -f ~/ir/ir-playbook.md`.
 
 ### Lab 7.2 — Evidence acquisition and chain of custody (Topic: Digital evidence)
 
@@ -472,7 +472,7 @@ copies, and log every transfer (chain of custody), so the evidence can be shown 
 **Negative test:** analyze the original evidence directly and take no hash; any accidental change
 is undetectable and the evidence is challengeable — always hash first and work on verified copies.
 
-**Cleanup:** `rm -f ~/ir/evidence.dat ~/ir/evidence.image ~/ir/evidence.sha256 ~/ir/custody.log`.
+**Rollback:** `rm -f ~/ir/evidence.dat ~/ir/evidence.image ~/ir/evidence.sha256 ~/ir/custody.log`.
 
 ### Lab 7.3 — Host-artifact and timeline analysis (Topic: Forensics techniques)
 
@@ -495,7 +495,7 @@ persistence, command history), and a **timeline** correlates them into the seque
 sequence and the persistence mechanism — ordering artifacts by time is what turns scattered clues
 into a coherent attack narrative.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Network forensics of an incident (Topic: Incident analysis)
 
@@ -517,7 +517,7 @@ capture, feeding the IOC list used to scope the incident and hunt for other affe
 are IOCs that reveal *other* compromised hosts talking to the same C2 — network forensics is how
 you find the full blast radius.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

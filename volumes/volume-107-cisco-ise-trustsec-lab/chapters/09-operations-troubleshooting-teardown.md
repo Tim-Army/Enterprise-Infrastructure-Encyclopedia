@@ -34,7 +34,7 @@ sudo nft list chain inet cts forward # matrix + counters
 
 **Expected result.** The three artifacts mirror the five Cisco commands.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -55,7 +55,7 @@ sudo nft list chain inet cts forward # matrix + counters
 
 **Negative test.** Restarting ISE or the NAD to "fix" a policy problem usually wastes 40 minutes and changes nothing — TrustSec faults are almost always trust, binding, or matrix-deploy issues, not stuck processes. Diagnose with the five commands first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -87,7 +87,7 @@ sudo nft list ruleset | grep -c cts
 
 **Negative test.** Deleting the namespaces but leaving the `cts` table means stale rules match nothing and quietly persist; remove the table too so no orphaned policy lingers.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

@@ -336,7 +336,7 @@ CIA triad the domain defines.
 **Negative test:** an empty threat log with allow-all policy means threats
 pass uninspected; "no logs" is not "no threats."
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Network fundamentals (Domain 2)
 
@@ -354,7 +354,7 @@ admin@pa-fw01> show session id <id>
 App-ID shows the true L7 app regardless of port — why the OSI layers are
 distinct.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Network security (Domain 3)
 
@@ -370,7 +370,7 @@ permits untrust→trust SSH) — the NGFW's default-deny posture.
 **Negative test:** the same test intrazone (trust→trust) is allowed by the
 implicit rule — trust level, set by the zone, is what changes the outcome.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.4 — Endpoint security (Domain 4)
 
@@ -388,7 +388,7 @@ where GlobalProtect is deployed — endpoint posture feeding network policy.
 encryption) still connects; endpoint security requires the HIP check to gate
 access.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.5 — Cloud security (Domain 5)
 
@@ -407,7 +407,7 @@ the customer configures and consumes it.
 misconfigured policy is the customer's responsibility, not the vendor's — the
 shared-responsibility line.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.6 — Security operations (Domain 6)
 
@@ -424,7 +424,7 @@ collector/SIEM — the telemetry a SOC's detection and response depends on.
 **Negative test:** a firewall not forwarding logs is invisible to the SOC;
 detection needs the telemetry, so forwarding is a SecOps prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.7 — Identity security (Domain 7)
 
@@ -442,7 +442,7 @@ security.
 attribute activity to a person; identity mapping is what enables
 accountability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.8 — First-touch firewall initialization (integrative)
 
@@ -538,7 +538,7 @@ validation.
    **Expected result:** Hostname reads `pa-lab-fw01`, the management IP
    reads `10.10.10.5`, and `labeng` appears as a configured administrator.
 
-9. **Cleanup:** If this lab firewall will be reused for [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)'s
+9. **Rollback:** If this lab firewall will be reused for [Chapter 03](03-vm-series-deployment-licensing-and-bootstrap.md)'s
    bootstrap exercises, remove the lab-only administrator account and
    restore any organization-standard baseline configuration:
 

@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Treating Visual Analytics as only a static dashboard and exporting numbers to another tool for any analysis. You lose the built-in forecasting/analytics and the governed, in-memory data; SAS Visual Analytics puts analytics in the report itself, on trusted data.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

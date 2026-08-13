@@ -50,7 +50,7 @@ EOF
 
 **Negative test:** Trusting one AV verdict as authoritative — vendors have blind spots and detection lag; multiscanning's value is precisely the coverage no single engine provides. (It still won't catch a true zero-day — that's CDR's job.)
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Proactive DLP at the file boundary
 
@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Applying DLP only to email bodies, not file *contents* — the SSN sitting inside an attached spreadsheet leaks; file-content DLP (into archives and documents) is what OPSWAT's platform provides.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Static vs dynamic analysis
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Trusting the `.jpg` extension — the real file type is what matters; extension spoofing is trivial, and static true-type detection is the counter.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

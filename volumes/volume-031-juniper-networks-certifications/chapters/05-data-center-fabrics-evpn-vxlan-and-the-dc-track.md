@@ -152,7 +152,7 @@ on the leaves.
 bridge that segment; the endpoints do not learn each other — the VNI mapping must be
 consistent fabric-wide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Juniper Apstra Architecture (Objective: Juniper Apstra Architecture)
 
@@ -172,7 +172,7 @@ RBAC/event-log/syslog govern and record operations.
 not connected; Apstra cannot deploy or telemeter it — the agent link is the control
 path.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Apstra Design Phase (Objective: Apstra Design Phase)
 
@@ -194,7 +194,7 @@ specific hardware.
 interface map/device profile cannot be built — the design abstractions must resolve
 to real hardware.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Apstra Build and Deploy Phases (Objective: Apstra Build and Deploy Phases)
 
@@ -213,7 +213,7 @@ mode controls whether a device is actively configured or drained.
 **Negative test:** a node left in `ready` (not `deploy`) mode is modeled but not
 configured on the device — the deploy mode gates whether intent reaches the switch.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.5 — Blueprint Operations (Objective: Blueprint Operations)
 
@@ -233,7 +233,7 @@ all with root-cause analysis.
 **Negative test:** commit staged changes with unresolved build errors; Apstra blocks
 the commit — intent must be consistent before it deploys.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — Data Center Multitenancy (Objective: Data Center Multitenancy)
 
@@ -252,7 +252,7 @@ policy, and Data Center Interconnect, isolating tenants over the shared fabric.
 **Negative test:** two tenants sharing a routing zone can route between each other —
 each tenant needs its own routing zone (VRF) for isolation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.7 — Intent-Based Analytics (Objective: Intent-Based Analytics)
 
@@ -272,7 +272,7 @@ metrics (e.g., traffic imbalance, missing BGP sessions) and raise anomalies, and
 **Negative test:** a probe whose expected state does not match reality raises an
 anomaly — IBA flags the deviation, which is the point of intent-based operation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -76,7 +76,7 @@ Only the two group flows are permitted; every other group pair is denied. The `S
 | `eos#` | EOS CLI (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

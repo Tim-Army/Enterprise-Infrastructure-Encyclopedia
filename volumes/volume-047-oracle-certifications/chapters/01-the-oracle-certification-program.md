@@ -111,7 +111,7 @@ curl -sSL -A "Mozilla/5.0" "https://education.oracle.com/certification" \
 **Negative test:** rely on a fixed code with no year suffix for OCI; the **suffix
 rolls annually** — confirm the current one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Confirm the tooling (Topic: Prepare to practice)
 
@@ -128,7 +128,7 @@ practice environment for Oracle labs.
 **Negative test:** study Java SE 21 on an old JDK; language features differ by
 version — use **JDK 21**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Run your first SQL (Topic: SQL foundation)
 
@@ -144,7 +144,7 @@ SELECT table_name FROM user_tables ORDER BY table_name FETCH FIRST 5 ROWS ONLY;
 **Negative test:** use `LIMIT 5` (MySQL/Postgres syntax) on Oracle; Oracle uses
 **`FETCH FIRST n ROWS ONLY`** — know the dialect.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

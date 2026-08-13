@@ -342,7 +342,7 @@ it you derive the network address, broadcast, and usable host range.
 **Negative test:** treat the network (`.0`) or broadcast (`.63`) address as an assignable host; they
 are reserved — usable hosts are `num_addresses - 2`, which the calculation makes explicit.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Subnetting with VLSM (Topic: Subnetting)
 
@@ -367,7 +367,7 @@ address space is used efficiently instead of one-size-fits-all.
 **Negative test:** subnet a /24 into equal /28s regardless of need; a 100-host segment does not fit a
 /28 (14 hosts) while a point-to-point link wastes a /28 — VLSM right-sizes each subnet.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — IPv6 addressing (Topic: IPv6)
 
@@ -393,7 +393,7 @@ reachability.
 multicast not broadcast, NDP not ARP, and global addressing not NAT — reading the address types shows
 the different model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Apply and verify addressing (Topic: Verification)
 
@@ -413,7 +413,7 @@ subnet) versus routed (different subnet); the gateway must be in the host's own 
 different /26); the host cannot reach the gateway directly and has no default path — the gateway must
 be on-subnet.
 
-**Cleanup:** `sudo ip addr del 192.168.10.5/26 dev eth0`.
+**Rollback:** `sudo ip addr del 192.168.10.5/26 dev eth0`.
 
 ## Lab Verification
 

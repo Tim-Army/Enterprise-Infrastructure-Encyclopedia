@@ -115,7 +115,7 @@ features (ICA Domain 1).
 **Negative test:** apply Istio traffic rules in a namespace without injection;
 with no sidecar, the rules do nothing — enable injection first.
 
-**Cleanup:** `kubectl label namespace default istio-injection- --overwrite`
+**Rollback:** `kubectl label namespace default istio-injection- --overwrite`
 
 ### Lab 7.2 — ICA: Traffic Management (35%)
 
@@ -147,7 +147,7 @@ splitting 90/10 across them — the weighted routing/canary pattern of ICA Domai
 **Negative test:** reference a `subset` in a VirtualService with no matching
 DestinationRule; the subset is undefined — define subsets in the DestinationRule.
 
-**Cleanup:** delete the VirtualService/DestinationRule if applied.
+**Rollback:** delete the VirtualService/DestinationRule if applied.
 
 ### Lab 7.3 — ICA: Securing Workloads (25%)
 
@@ -169,7 +169,7 @@ workload identity and encryption, ICA Domain 3.
 **Negative test:** rely on `PERMISSIVE` mode in production; it also accepts
 plaintext — use STRICT once all workloads are meshed.
 
-**Cleanup:** delete the PeerAuthentication if applied.
+**Rollback:** delete the PeerAuthentication if applied.
 
 ### Lab 7.4 — ICA: Troubleshooting (20%)
 
@@ -186,7 +186,7 @@ proxy-config commands — the mesh-troubleshooting workflow of ICA Domain 4.
 **Negative test:** debug with `kubectl` alone; mesh problems live in the **Envoy
 sidecar config** — use `istioctl proxy-config` and `analyze`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### CCA — Cilium Certified Associate
 
@@ -208,7 +208,7 @@ PY
 **Negative test:** assume policy is enforced by IP; Cilium uses **label-derived
 identity**, so policy survives pod IP churn — think identity, not IP.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — CCA: Network Policy (18%)
 
@@ -235,7 +235,7 @@ to `api` — L7-aware policy, a Cilium differentiator (CCA Domain 2).
 **Negative test:** expect a standard Kubernetes NetworkPolicy to filter by HTTP
 method/path; it is L3/L4 only — use a **CiliumNetworkPolicy** for L7.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.7 — CCA: Service Mesh (16%)
 
@@ -254,7 +254,7 @@ Cilium's service-mesh approach (CCA Domain 3), contrasted with Istio's sidecars.
 **Negative test:** assume every mesh needs per-pod sidecars; Cilium's eBPF model
 avoids them — know both architectures.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.8 — CCA: Network Observability (10%)
 
@@ -271,7 +271,7 @@ pattern — per-flow visibility with policy verdicts (CCA Domain 4).
 **Negative test:** debug drops by guesswork; **Hubble** shows the exact flow and
 whether policy `DROPPED` it — observe, don't guess.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.9 — CCA: Installation and Configuration (10%)
 
@@ -288,7 +288,7 @@ cilium connectivity test 2>/dev/null | head -3 || echo "(connectivity test valid
 **Negative test:** assume the CNI is healthy because pods have IPs; run `cilium
 status` and the **connectivity test** to confirm the datapath.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.10 — CCA: Cluster Mesh (10%)
 
@@ -308,7 +308,7 @@ CIDR requirements (CCA Domain 6).
 **Negative test:** overlap pod CIDRs across clusters and expect mesh to work;
 CIDRs must be routable/unique — plan addressing first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.11 — CCA: eBPF (10%)
 
@@ -328,7 +328,7 @@ technology domain of CCA (Domain 7).
 **Negative test:** describe eBPF as a userspace proxy; it runs **in the kernel**
 — that is the source of its performance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.12 — CCA: BGP and External Networking (6%)
 
@@ -347,7 +347,7 @@ smallest CCA domain (Domain 8), important for on-prem/bare-metal.
 **Negative test:** assume a cloud LoadBalancer exists on bare metal; on-prem you
 advertise routes with **BGP** (or use MetalLB) instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

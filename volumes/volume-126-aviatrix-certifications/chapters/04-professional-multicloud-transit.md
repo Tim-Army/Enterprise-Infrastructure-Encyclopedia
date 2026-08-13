@@ -50,7 +50,7 @@ sudo ip netns exec tgwA ip route | grep 10.30
 
 **Negative test:** Propagate without filtering and include an overlapping CIDR — ambiguous routing; Aviatrix transit uses route filtering and NAT to keep overlapping estates deterministic, a Professional topic.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 4.2 — Active-active with ECMP
 
@@ -74,7 +74,7 @@ sudo ip netns exec spoke-ha ip route show 10.0.0.0/8
 
 **Negative test:** Configure a single next hop "with a standby" — you lose half your throughput and add failover delay; active-active is why Aviatrix HA both scales and fails over fast.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 4.3 — Failover
 
@@ -91,7 +91,7 @@ echo "surviving gateway now carries all traffic — the Controller would re-conv
 
 **Negative test:** A design with a single gateway (no HA pair) — the failure is an outage, not a failover; the Professional exam expects HA pairs everywhere in the transit/spoke path.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 4.4 — Network segmentation on transit
 
@@ -122,7 +122,7 @@ Transit **network domains** segment spoke groups: prod and dev are isolated, bot
 
 **Negative test:** Placing prod and dev in the same domain "to simplify" — they gain full reachability; domains exist precisely to prevent that lateral path.
 
-**Cleanup:** `for ns in tgwA tgwB spoke-ha; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del t1; sudo ip link del t2`.
+**Rollback:** `for ns in tgwA tgwB spoke-ha; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del t1; sudo ip link del t2`.
 
 ## Summary and Completion Checklist
 

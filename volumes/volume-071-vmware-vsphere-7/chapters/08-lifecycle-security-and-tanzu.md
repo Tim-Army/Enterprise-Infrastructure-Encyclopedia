@@ -73,7 +73,7 @@ remediation.
 **Negative test:** patch hosts individually with ad-hoc bundles; **vLCM images** keep the cluster
 identical — manage centrally.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Enable lockdown mode
 
@@ -92,7 +92,7 @@ exposure.
 **Negative test:** leave hosts with open direct root access; **lockdown mode** funnels access through
 vCenter — enable it.
 
-**Cleanup:** set lockdown mode back to `lockdownDisabled` in a lab.
+**Rollback:** set lockdown mode back to `lockdownDisabled` in a lab.
 
 ### Lab 8.3 — Host profile compliance
 
@@ -109,7 +109,7 @@ across hosts — configuration drift caught.
 **Negative test:** assume hosts are identical without checking; **host profiles** verify compliance —
 test it.
 
-**Cleanup:** `Remove-VMHostProfile gold -Confirm:$false`.
+**Rollback:** `Remove-VMHostProfile gold -Confirm:$false`.
 
 ### Lab 8.4 — vSphere with Tanzu concept
 
@@ -126,7 +126,7 @@ test it.
 **Negative test:** stand up a separate, ungoverned Kubernetes stack beside vSphere; **Tanzu** runs
 K8s on the same platform — use it where it fits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

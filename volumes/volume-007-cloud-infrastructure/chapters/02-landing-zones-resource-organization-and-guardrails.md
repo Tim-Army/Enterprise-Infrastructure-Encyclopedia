@@ -416,7 +416,7 @@ or credentials are required.
    this policy is intentionally scoped to prevent only new noncompliant
    creation.
 
-**Cleanup**
+**Rollback**
 
 8. Remove the lab directory:
 

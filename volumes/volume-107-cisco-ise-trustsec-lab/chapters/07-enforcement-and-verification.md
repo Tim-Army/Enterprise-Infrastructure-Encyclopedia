@@ -45,7 +45,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.40 502  && echo "hmi->plc OPEN
 
 **Negative test.** Move the operator's binding to WEB (10) temporarily and watch `hmi → db` start working — proof the decision is made purely on the tag, not the address. Restore HMI (30) afterward.
 
-**Cleanup.** Restore any temporary binding.
+**Rollback.** Restore any temporary binding.
 
 ### Exercise 7.2 — Read the enforcement counters
 
@@ -78,7 +78,7 @@ sudo nft list chain inet cts forward | grep counter
 
 **Expected result.** The drop rule's counter increments after the `hmi → db` attempt — the Track 2 equivalent of the HW-Denied column.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Correlate the denial centrally
 
@@ -104,7 +104,7 @@ sudo dmesg | grep -o 'CTS-DROP.*SRC=10.10.1.30.*DPT=5432' | tail -1
 
 **Negative test.** Without the `log` rule, drops are silent; you would see the connection fail but have no record. Always log denies during a rollout so you can tell a working policy from a broken one.
 
-**Cleanup.** Keep the logging for Chapter 09's operations review.
+**Rollback.** Keep the logging for Chapter 09's operations review.
 
 ## Summary and Completion Checklist
 

@@ -29,7 +29,7 @@ xage> Assets > add db  (10.60.1.20, PostgreSQL/5432) via node-it
 
 **Expected result (design).** Each asset sits behind an enforcement node; there is no unbrokered path to it. This is the shape Track 2 builds concretely.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build endpoints, an isolated OT cell, and a broker
 
@@ -65,7 +65,7 @@ db hmi plc web
 
 **Negative test.** The OT cell and IT segment are separate bridges; without routing/brokering the host is the only thing between them — exactly where the broker will sit.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start services and show the legacy PLC is exposed
 
@@ -84,7 +84,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.60.9.40 502 && echo "hmi -> plc:502
 
 **Negative test.** `nc -z -w2 10.60.9.40 22` fails (no ssh) — the PLC has *no* services to authenticate with; it cannot defend itself, which is precisely why an external broker is needed.
 
-**Cleanup.** Leave services running; Chapter 05 inserts the broker.
+**Rollback.** Leave services running; Chapter 05 inserts the broker.
 
 ## Summary and Completion Checklist
 

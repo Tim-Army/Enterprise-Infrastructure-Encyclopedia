@@ -68,7 +68,7 @@ cat my-netskope-plan.md
 
 **Negative test:** A plan pinned to "NSK100" or an assumed free window — both have moved; the plan must re-verify against netskope.com.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Currency check
 
@@ -89,7 +89,7 @@ echo "verified 3 Aug 2026 — re-verify before scheduling"
 
 **Negative test:** Trusting a third-party site's exam code or "free forever" claim — both drift; netskope.com is authoritative.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -74,7 +74,7 @@ PY
 **Negative test:** self-attest to compliance without **evidence**; PC provides the **pass/fail
 evidence** — assess it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Map controls to a benchmark
 
@@ -95,7 +95,7 @@ compliance.
 **Negative test:** write ad-hoc controls with no benchmark; auditors want **recognized standards** —
 use CIS/STIG.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Reason about PCI and ASV
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** run any internal scan and call it PCI-compliant; PCI requires **ASV** external
 scans — use the ASV process.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Prioritize failed controls
 
@@ -137,7 +137,7 @@ remediation.
 **Negative test:** fix compliance failures alphabetically; a **regulated** PCI failure waits —
 prioritize by regulation/risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

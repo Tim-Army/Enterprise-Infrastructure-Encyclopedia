@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Chasing the CLSA without CSA/CSSA or hands-on practice. The ladder is prerequisite-gated and the CLSA requires building a real app; progress through CSA and CSSA with hands-on practice, not by jumping to the top.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Pega in the low-code career
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Treating Pega as just a BPM workflow tool. It is a model-driven low-code platform spanning case management, reuse architecture, real-time AI decisioning, and robotics; the skills cover building, orchestrating, reusing, deciding, and automating across complex enterprise work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

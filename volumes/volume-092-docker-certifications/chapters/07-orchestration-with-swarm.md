@@ -79,7 +79,7 @@ active.
 **Negative test:** run a two-manager Swarm and expect quorum on one failure; use an **odd** number of
 managers.
 
-**Cleanup:** (Swarm left active for the chapter; `docker swarm leave --force` at the end).
+**Rollback:** (Swarm left active for the chapter; `docker swarm leave --force` at the end).
 
 ### Lab 7.2 — Create and scale a service
 
@@ -102,7 +102,7 @@ web   5/5
 **Negative test:** run three `docker run` containers by hand; a **service** reschedules failed tasks and
 scales — containers do not.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker service rm web
@@ -136,7 +136,7 @@ demo_redis   1/1
 **Negative test:** start each service with separate `service create` commands; a **stack** deploys the
 whole app declaratively.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker stack rm demo && rm -f stack.yml
@@ -164,7 +164,7 @@ rollout.
 **Negative test:** put the API key in an environment variable or image layer; use a Swarm **secret**
 (encrypted, scoped).
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker service rm app && docker secret rm api_key && docker swarm leave --force

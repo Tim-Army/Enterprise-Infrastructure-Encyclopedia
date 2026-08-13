@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Building a synthetic monitor against one resolved edge IP. It tests one edge's health, not your service — and outlives the answer's validity by months.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — GTM failover arithmetic
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Setting probes aggressive and TTL to 10 seconds everywhere. Now a thirty-second origin brownout triggers a full flap cycle, and your resolvers carry 6x the query load, for services whose RTO was "within the hour."
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Property versions and the staging gate
 
@@ -171,7 +171,7 @@ EOF
 
 **Negative test:** Activating straight to production "because the change is trivial." v43 was trivial; the 2023 rule it looped against was the part nobody remembered.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

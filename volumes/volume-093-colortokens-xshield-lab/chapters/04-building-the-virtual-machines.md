@@ -411,7 +411,7 @@ once, because “the gateway is up and pings fine but nothing routes
 through it” is a genuinely common troubleshooting scenario, and
 forwarding is the first thing to check.
 
-**Cleanup.** None yet — `ct-gw` runs for the rest of the lab.
+**Rollback.** None yet — `ct-gw` runs for the rest of the lab.
 
 ### Lab 4.2 — Build ct-app01: the application tier
 
@@ -522,7 +522,7 @@ adapter) instead of `10.10.20.254`. Local pings succeed but
 NATting for you. A wrong-but-pingable gateway is a subtle failure worth
 having seen.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Build ct-db01: the database tier
 
@@ -656,7 +656,7 @@ no business touching the database at all. That contrast is the entire
 argument for microsegmentation, and you want to have felt it rather than
 read it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Build ct-win01: the Windows workload and SCADA/HMI
 
@@ -888,7 +888,7 @@ state that is worse than either extreme, because you believe you are
 protected and you are not. This is the most commonly-hit Windows
 prerequisite in real Xshield rollouts. Uninstall it before continuing.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Build ct-ot01: the agentless “PLC”
 
@@ -1103,7 +1103,7 @@ control-protocol session to a PLC.** In a real plant that is a
 reportable finding. It works because the network is flat and `ct-gw`
 forwards everything. Part F is the remedy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — Baseline snapshot set and boot order
 
@@ -1178,7 +1178,7 @@ fails with “Temporary failure resolving” because its only route to DNS
 is through a router that is not running. Dependency ordering is real,
 and this is a five-second lesson.
 
-**Cleanup.** None — this is the working baseline for Parts D through G.
+**Rollback.** None — this is the working baseline for Parts D through G.
 
 ## Summary and Completion Checklist
 

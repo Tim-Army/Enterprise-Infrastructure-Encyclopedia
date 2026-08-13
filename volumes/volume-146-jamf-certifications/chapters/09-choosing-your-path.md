@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Collecting certs across all three tracks at once without a role focus. The tracks are three jobs; depth in yours beats breadth across all three, and the ladder rewards climbing one track before spanning.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Jamf in the Apple-in-enterprise career
 
@@ -141,7 +141,7 @@ EOF
 
 **Negative test:** Treating Jamf as a niche skill with no adjacencies. It sits squarely in the management/identity/security/compliance story — isolating it from Intune, identity, and SOC skills undersells both the platform and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

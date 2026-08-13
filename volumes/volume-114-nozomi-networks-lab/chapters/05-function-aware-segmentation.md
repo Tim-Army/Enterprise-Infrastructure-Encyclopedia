@@ -71,7 +71,7 @@ sudo ip netns exec hmi python3 /usr/local/bin/mbclient.py write 10.80.1.40 502 1
 NO-RESPONSE (denied?)
 ```
 
-**Cleanup.** Keep the proxy and isolation.
+**Rollback.** Keep the proxy and isolation.
 
 ### Exercise 5.2 — Reads pass, writes are denied
 
@@ -104,7 +104,7 @@ The read passes; the write is blocked because its Modbus function code is not pe
 sudo ip netns exec hmi bash -c 'printf "GET / HTTP/1.0\r\n\r\n" | nc -w2 10.80.1.1 1502'; echo "(dropped: not Modbus read)"
 ```
 
-**Cleanup.** Keep the enforcement for Chapter 06.
+**Rollback.** Keep the enforcement for Chapter 06.
 
 ## Summary and Completion Checklist
 

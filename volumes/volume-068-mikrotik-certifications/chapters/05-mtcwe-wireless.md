@@ -71,7 +71,7 @@ secured AP.
 **Negative test:** bring up the SSID with the **default (open)** security profile; attach a
 **WPA2/WPA3** profile — never open for corporate.
 
-**Cleanup:** `/interface wireless set wlan1 disabled=yes; /interface wireless security-profiles remove corp`.
+**Rollback:** `/interface wireless set wlan1 disabled=yes; /interface wireless security-profiles remove corp`.
 
 ### Lab 5.2 — Configure a station
 
@@ -88,7 +88,7 @@ client connectivity.
 
 **Negative test:** mismatch the **SSID or key**; association fails — match them.
 
-**Cleanup:** reset the interface.
+**Rollback:** reset the interface.
 
 ### Lab 5.3 — Verify RF quality
 
@@ -104,7 +104,7 @@ client connectivity.
 
 **Negative test:** judge a link by "it associated" alone; check **signal/CCQ** for real quality.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — CAPsMAN centralization
 
@@ -121,7 +121,7 @@ client connectivity.
 **Negative test:** configure each AP by hand across a campus; **CAPsMAN** centralizes it — use it
 at scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

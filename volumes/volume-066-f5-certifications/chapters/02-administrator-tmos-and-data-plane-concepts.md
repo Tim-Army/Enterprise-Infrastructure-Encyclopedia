@@ -74,7 +74,7 @@ traffic management.
 **Negative test:** provision every module at `dedicated`; that **exhausts** resources — provision
 only what you need at an appropriate level.
 
-**Cleanup:** `tmsh modify sys provision ltm level none` (in a lab).
+**Rollback:** `tmsh modify sys provision ltm level none` (in a lab).
 
 ### Lab 2.2 — Configure a VLAN and self-IP
 
@@ -92,7 +92,7 @@ data-plane network.
 **Negative test:** assign a virtual server with no VLAN/self-IP path to the servers; base
 **networking** must exist first — build the VLAN and self-IP.
 
-**Cleanup:** `tmsh delete net self 10.10.20.5; tmsh delete net vlan external`.
+**Rollback:** `tmsh delete net self 10.10.20.5; tmsh delete net vlan external`.
 
 ### Lab 2.3 — Verify the full-proxy model
 
@@ -110,7 +110,7 @@ inspection.
 **Negative test:** treat BIG-IP as a simple packet forwarder; it is a **full proxy** — reason
 about two connections.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Read system state via iControl REST
 
@@ -127,7 +127,7 @@ programmable.
 
 **Negative test:** screen-scrape the GUI for state; **iControl REST** returns JSON — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

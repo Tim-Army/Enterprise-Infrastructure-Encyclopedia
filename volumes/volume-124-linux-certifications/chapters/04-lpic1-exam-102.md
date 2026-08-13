@@ -35,7 +35,7 @@ chmod +x check.sh && ./check.sh 2 && echo "exit=$?"
 
 **Negative test:** Change `exit 0` to `exit 3`; `echo $?` prints `3` and `&&` chains stop running — exit codes drive scripting logic, and the exam tests reading them.
 
-**Cleanup:** `rm check.sh`.
+**Rollback:** `rm check.sh`.
 
 ### Lab 4.2 — User interfaces and desktops (Topic 106)
 
@@ -54,7 +54,7 @@ EOF
 
 **Negative test:** Claiming a server needs X installed for `ssh -X` *from* it — forwarding needs the client-side pieces (`xauth`) not a full desktop; a favorite trick question.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Administrative tasks (Topic 107)
 
@@ -72,7 +72,7 @@ date -d "next Monday 03:17" 2>/dev/null || true
 
 **Negative test:** Read the cron line as "3:17 every day" — field order (minute hour dom month dow) says otherwise; cron-field ordering is a guaranteed exam item.
 
-**Cleanup:** `sudo crontab -r -u labuser; sudo userdel -r labuser; rm /tmp/labcron`.
+**Rollback:** `sudo crontab -r -u labuser; sudo userdel -r labuser; rm /tmp/labcron`.
 
 ### Lab 4.4 — Essential system services (Topic 108)
 
@@ -89,7 +89,7 @@ echo "mail: MTA concepts (postfix/sendmail aliases, ~/.forward) ; print: CUPS (l
 
 **Negative test:** `timedatectl set-time` while NTP sync is active — refused; the daemon owns the clock, an operational truth the exam encodes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Networking fundamentals (Topic 109)
 
@@ -107,7 +107,7 @@ ss -tln | head -5
 
 **Negative test:** `ping` a firewalled host and conclude "network down" — TCP services may still answer; `ss`/`nc` distinguish ICMP policy from real outage, and the exam probes exactly that reasoning.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — Security (Topic 110)
 
@@ -125,7 +125,7 @@ echo "harden: su/sudo policy, ulimits, ssh keys + agent, gpg basics, disable unu
 
 **Negative test:** A world-writable SUID-root binary (never create one outside a throwaway VM) is the canonical catastrophe the audit exists to catch — recognize the pattern on sight.
 
-**Cleanup:** None (read-only).
+**Rollback:** None (read-only).
 
 ## Summary and Completion Checklist
 

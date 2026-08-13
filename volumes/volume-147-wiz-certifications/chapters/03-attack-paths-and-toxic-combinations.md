@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Flagging every workload with a critical vulnerability. Four of six here have a critical vuln, but only one is a toxic combination — treating the vuln alone as the risk floods the queue and misses that the others lack exposure, privilege, or data access.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Prioritize by path, and find the chokepoint
 
@@ -138,7 +138,7 @@ EOF
 
 **Negative test:** Working the queue in CVSS order. The two highest-scored CVEs are on isolated boxes off any path to sensitive data; fixing them first spends effort on non-risks while the real chokepoint waits.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

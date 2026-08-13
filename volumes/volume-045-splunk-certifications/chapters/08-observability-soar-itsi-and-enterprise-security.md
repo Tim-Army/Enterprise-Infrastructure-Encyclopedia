@@ -98,7 +98,7 @@ Splunk Observability Cloud — the O11y Metrics User's core deployment skill.
 **Negative test:** hand-push metrics from scripts; the **OpenTelemetry Collector**
 is the standard, scalable collection path — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — O11y: explore metrics and build a detector
 
@@ -117,7 +117,7 @@ alerting O11y certifies.
 **Negative test:** alert on a single spike; require the condition to **persist**
 (duration) to avoid noise.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — SOAR: build a playbook
 
@@ -137,7 +137,7 @@ gate — the automation the SOAR Automation Developer builds.
 **Negative test:** auto-disable accounts on any alert; gate **high-impact**
 actions behind approval — avoid harmful automation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — ITSI: model a service and KPIs
 
@@ -156,7 +156,7 @@ service-intelligence modeling ITSI certifies.
 **Negative test:** monitor only infrastructure metrics; ITSI models **service**
 health (business impact), not just hosts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — ES Admin: manage a correlation search
 
@@ -176,7 +176,7 @@ ES administration (data models + correlation searches) the ES Admin performs.
 **Negative test:** run correlation searches on raw data; ES relies on **accelerated
 CIM data models** — build on them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

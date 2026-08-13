@@ -65,7 +65,7 @@ a pipeline. **Cost:** none.
 **Negative test:** forward every debug line to an expensive SIEM; **drop/sample** low-value
 data to cut cost.
 
-**Cleanup:** remove the function.
+**Rollback:** remove the function.
 
 ### Lab 4.2 — Mask sensitive data
 
@@ -83,7 +83,7 @@ pipeline.
 **Negative test:** mask at the destination; **mask in Stream** so PII never leaves in the
 clear.
 
-**Cleanup:** remove the function.
+**Rollback:** remove the function.
 
 ### Lab 4.3 — Enrich with a lookup
 
@@ -100,7 +100,7 @@ clear.
 **Negative test:** hard-code owner mappings in an Eval; a **lookup table** is maintainable
 and reusable.
 
-**Cleanup:** remove the function.
+**Rollback:** remove the function.
 
 ### Lab 4.4 — Package a Pack
 
@@ -117,7 +117,7 @@ and reusable.
 **Negative test:** rebuild the same pipelines per environment; a **Pack** packages them
 once — reuse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — Measure the reduction
 
@@ -133,7 +133,7 @@ curl -sS -H "Authorization: Bearer $CRIBL_TOKEN" "$CRIBL/api/v1/system/metrics?f
 
 **Negative test:** claim reduction without measuring; **track in/out bytes** to prove it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

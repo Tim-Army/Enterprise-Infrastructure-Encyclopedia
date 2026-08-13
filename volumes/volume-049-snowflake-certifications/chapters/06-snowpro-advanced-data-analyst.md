@@ -80,7 +80,7 @@ the exam tests.
 **Negative test:** self-join to compute running totals; a **window function** is
 clearer and faster.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Semi-structured data (VARIANT / FLATTEN)
 
@@ -99,7 +99,7 @@ FROM demo_db.raw.events_json, LATERAL FLATTEN(input => v:tags) t;
 **Negative test:** regex-parse JSON as text; Snowflake's **VARIANT/FLATTEN** handle
 it natively — use them.
 
-**Cleanup:** `DROP TABLE IF EXISTS demo_db.raw.events_json;`
+**Rollback:** `DROP TABLE IF EXISTS demo_db.raw.events_json;`
 
 ### Lab 6.3 — Data quality and preparation
 
@@ -117,7 +117,7 @@ precede analysis.
 **Negative test:** analyze without profiling; **check quality first** or your
 analysis inherits the data's flaws.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Consumption and Cortex AI
 
@@ -134,7 +134,7 @@ the consumption domain plus native AI.
 **Negative test:** export data to an external tool for simple sentiment; **Cortex**
 functions run in-platform — use them where they fit.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

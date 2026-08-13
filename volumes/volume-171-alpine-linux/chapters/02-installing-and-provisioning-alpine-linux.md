@@ -189,7 +189,7 @@ rc-status                     # OpenRC brought services up
 **Negative test:** answer `none` at the disk prompt; the system runs only in RAM
 and loses everything on reboot — choose `sys` for a persistent install.
 
-**Cleanup:** keep the VM for later chapters, or delete it.
+**Rollback:** keep the VM for later chapters, or delete it.
 
 ### Lab 2.2 — Provision from a cloud image and fix DNS
 
@@ -221,7 +221,7 @@ index. This is the single most common Alpine-cloud-image surprise.
 resolve the mirror even though the IP and gateway are correct — the address was set
 but the resolver was not.
 
-**Cleanup:** none — the resolver fix is wanted. (Make it durable in Chapter 04.)
+**Rollback:** none — the resolver fix is wanted. (Make it durable in Chapter 04.)
 
 ### Lab 2.3 — First-boot verification and baseline
 
@@ -241,7 +241,7 @@ the volume.
 **Negative test:** skip `apk update` before installing packages later; you may pull
 stale indexes or miss a security update — always refresh the index first.
 
-**Cleanup:** snapshot the VM as `baseline` (`qm snapshot 140 baseline` on Proxmox).
+**Rollback:** snapshot the VM as `baseline` (`qm snapshot 140 baseline` on Proxmox).
 
 ## Lab Verification
 

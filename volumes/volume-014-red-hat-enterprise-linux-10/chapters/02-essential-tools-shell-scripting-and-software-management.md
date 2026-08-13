@@ -363,7 +363,7 @@ is removed).
 `cat soft.txt` (fails — dangling symlink) — this proves the inode-vs-name distinction the
 exam expects you to know.
 
-**Cleanup:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
+**Rollback:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
 
 ### Lab 2.2 — Text processing and I/O redirection (Topic: Essential tools)
 
@@ -385,7 +385,7 @@ the core text-processing tools RHCSA tasks lean on for extracting and transformi
 the prior content is gone — redirection operators are exact, and choosing the wrong one loses
 data.
 
-**Cleanup:** `rm -f ~/lab/users.txt ~/lab/firstthree.txt`.
+**Rollback:** `rm -f ~/lab/users.txt ~/lab/firstthree.txt`.
 
 ### Lab 2.3 — Archiving and compression (Topic: Essential tools)
 
@@ -408,7 +408,7 @@ directories, the standard RHCSA backup/transfer mechanism.
 in a pipeline that needs it; modern `tar` autodetects, but a raw `gzip -d` on a `.tar` (not
 `.tar.gz`) fails — the tool must match the file's actual format.
 
-**Cleanup:** `rm -rf ~/lab/src ~/lab/backup.tar.gz`.
+**Rollback:** `rm -rf ~/lab/src ~/lab/backup.tar.gz`.
 
 ### Lab 2.4 — A simple shell script (Topic: Create shell scripts)
 
@@ -442,7 +442,7 @@ conditionals (`if [ ]`), loops (`for`), input/output, and meaningful exit codes.
 wrong interpreter or fail — the shebang declares the interpreter, and `chmod +x` makes it
 executable; both are required.
 
-**Cleanup:** `rm -f ~/lab/report.sh`.
+**Rollback:** `rm -f ~/lab/report.sh`.
 
 ## Lab Verification
 

@@ -37,7 +37,7 @@ The usual cause is a wrong identity string (ServiceAccount or namespace) in the 
 
 **Negative test.** "Fix" a denied flow by deleting the `Server`. You removed the deny-by-default that protects the port. Fix the identity or add the `AuthorizationPolicy` instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Safe rollback
 
@@ -60,7 +60,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Delete the `Server`, the `AuthorizationPolicy`, *and* set the default to `all-unauthenticated`; the lateral movement returns. Re-apply the controls.
 
-**Cleanup.** Restore the intended policy state.
+**Rollback.** Restore the intended policy state.
 
 ### Lab 9.3 — Teardown
 
@@ -79,7 +79,7 @@ Optionally remove the `kind`, `kubectl`, and `linkerd` binaries.
 
 **Negative test.** Deleting the kind containers by hand leaves metadata behind; a later recreate may conflict. Use `kind delete cluster`.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

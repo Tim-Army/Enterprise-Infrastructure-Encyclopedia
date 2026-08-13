@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Using one general-purpose agent with every tool for all tasks — it works, and you have granted write access for jobs that only needed read, expanding the blast radius of every mistake.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Least privilege for agent tools via MCP
 
@@ -115,7 +115,7 @@ EOF
 
 **Negative test:** Granting an agent `merge_mr` so it can "finish the job" — you have removed the human review step that catches the cases where the agent was confidently wrong.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — AI-assisted code still goes through the pipeline
 
@@ -153,7 +153,7 @@ EOF
 
 **Negative test:** Exempting AI-generated merge requests from review to capture the productivity gain — you have removed the control precisely where volume increased, which is the worst possible place to remove it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

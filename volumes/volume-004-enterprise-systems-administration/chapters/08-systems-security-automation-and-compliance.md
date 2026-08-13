@@ -346,7 +346,7 @@ a standard baseline so compliance is provable, not assumed.
 **Negative test:** deploy servers with vendor defaults and no benchmark; unnecessary services and weak
 settings remain — a hardening pass against CIS/STIG closes the well-known exposures.
 
-**Cleanup:** `rm -f C:\baseline.inf` on Windows if created.
+**Rollback:** `rm -f C:\baseline.inf` on Windows if created.
 
 ### Lab 8.2 — Access control and least privilege (Topic: Authorization)
 
@@ -370,7 +370,7 @@ compromised account cannot do more than its function; over-privileged accounts a
 **Negative test:** give operators full sudo/Domain Admin "for convenience"; any compromise becomes
 total — scoped privileges (specific sudo commands, delegated rights) contain the blast radius.
 
-**Cleanup:** `sudo rm -f /etc/sudoers.d/dbadmin`.
+**Rollback:** `sudo rm -f /etc/sudoers.d/dbadmin`.
 
 ### Lab 8.3 — Security automation (Topic: Automation)
 
@@ -398,7 +398,7 @@ forgotten.
 **Negative test:** apply security settings by hand on each host; they drift, some hosts are missed,
 and there is no audit trail — automation applies the control uniformly and provably.
 
-**Cleanup:** revert lab-only changes.
+**Rollback:** revert lab-only changes.
 
 ### Lab 8.4 — Audit and compliance (Topic: Compliance)
 
@@ -419,7 +419,7 @@ frameworks require.
 the posture and an audit fails — compliance is evidence-based, produced by continuous auditing and
 scanning.
 
-**Cleanup:** `sudo auditctl -W /etc/passwd -p wa -k identity 2>/dev/null; true`.
+**Rollback:** `sudo auditctl -W /etc/passwd -p wa -k identity 2>/dev/null; true`.
 
 ## Lab Verification
 

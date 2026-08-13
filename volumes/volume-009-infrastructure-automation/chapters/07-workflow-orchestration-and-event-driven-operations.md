@@ -400,7 +400,7 @@ automation is governed and self-service rather than ad-hoc on someone's laptop.
 is no RBAC, no audit, and no shared credential rotation — the platform's job template is what
 makes execution controlled and repeatable.
 
-**Cleanup:** delete the lab job template/project if created only for the exercise.
+**Rollback:** delete the lab job template/project if created only for the exercise.
 
 ### Lab 7.2 — Event-driven automation (Topic: Event-driven operations)
 
@@ -433,7 +433,7 @@ human in the middle.
 inconsistent — codifying the known remediation as a rulebook action makes it instant and uniform
 (escalate only the novel cases).
 
-**Cleanup:** `rm -f rulebook.yml`.
+**Rollback:** `rm -f rulebook.yml`.
 
 ### Lab 7.3 — Workflow chaining (Topic: Workflows)
 
@@ -455,7 +455,7 @@ pipeline with conditional paths and approvals, orchestrating multi-step operatio
 rollback; under pressure a step is skipped — the workflow encodes the order, the failure paths,
 and the approval so they are never forgotten.
 
-**Cleanup:** delete the lab workflow if created only for the exercise.
+**Rollback:** delete the lab workflow if created only for the exercise.
 
 ### Lab 7.4 — Scheduling and triggered execution (Topic: Triggered operations)
 
@@ -477,7 +477,7 @@ drift runs) and event/API-triggered execution (from pipelines, chatops, or other
 skipped on holidays and busy days — a schedule guarantees it runs, and the API lets other systems
 trigger it deterministically.
 
-**Cleanup:** remove the lab schedule if created only for the exercise.
+**Rollback:** remove the lab schedule if created only for the exercise.
 
 ## Lab Verification
 

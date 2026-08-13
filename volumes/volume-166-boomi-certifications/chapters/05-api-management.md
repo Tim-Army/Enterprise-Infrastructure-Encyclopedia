@@ -113,7 +113,7 @@ EOF
 
 **Negative test:** Exposing back-end processes directly with no gateway. There is no authentication, no rate limiting, and no inventory, so any caller can hammer the back-end and undocumented endpoints accumulate as zombie APIs; the gateway and Control Plane are what make APIs safe and governed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

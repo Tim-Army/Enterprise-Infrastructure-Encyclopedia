@@ -157,7 +157,7 @@ scenarios.
 introduces a routing loop under the time pressure — the policy discipline from
 Chapter 02 is what prevents the classic JNCIE mistake.
 
-**Cleanup:** roll back to the pre-lab configuration group/snapshot.
+**Rollback:** roll back to the pre-lab configuration group/snapshot.
 
 ### Lab 9.2 — JNCIE-SP integrative build (Service Provider expert readiness)
 
@@ -180,7 +180,7 @@ CoS, and multicast, at expert speed.
 transport; the service fails despite correct VRF config — verify the underlay LSP
 first, the SP troubleshooting discipline.
 
-**Cleanup:** roll back to the pre-lab snapshot.
+**Rollback:** roll back to the pre-lab snapshot.
 
 ### Lab 9.3 — JNCIE-SEC integrative build (Security expert readiness)
 
@@ -203,7 +203,7 @@ IDP/UTM/ATP, and identity-aware policy, then troubleshooting under time.
 does not match leaves return traffic unroutable — policy and NAT must both be
 correct for the flow to complete.
 
-**Cleanup:** roll back to the pre-lab snapshot.
+**Rollback:** roll back to the pre-lab snapshot.
 
 ### Lab 9.4 — JNCIE-DC integrative build (Data Center expert readiness)
 
@@ -226,7 +226,7 @@ virtual networks), DCI, and (increasingly) **Apstra** intent-based operation.
 that segment's traffic — the fabric-wide consistency check is the JNCIE-DC
 discipline.
 
-**Cleanup:** roll back to the pre-lab snapshot.
+**Rollback:** roll back to the pre-lab snapshot.
 
 ### Lab 9.5 — Cross-track troubleshooting and certification operations
 
@@ -250,7 +250,7 @@ that frame exam day.
 cuts your management session is unrecoverable without console — `commit confirmed`
 auto-rolls-back and is the expert's safety net under time.
 
-**Cleanup:** `rollback 0` and restore the baseline snapshot.
+**Rollback:** `rollback 0` and restore the baseline snapshot.
 
 ## Lab Verification
 

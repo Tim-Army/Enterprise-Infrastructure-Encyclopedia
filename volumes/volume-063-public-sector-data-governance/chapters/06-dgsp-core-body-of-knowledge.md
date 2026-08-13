@@ -83,7 +83,7 @@ PY
 **Negative test:** report only completeness; duplicates and invalid dates hide — measure
 **several dimensions**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Classify metadata and lineage
 
@@ -106,7 +106,7 @@ findability layer FOIA depends on.
 **Negative test:** keep only technical metadata; without **business** definitions the public
 and FOIA officers cannot understand the data — capture all three.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — MDM golden record
 
@@ -127,7 +127,7 @@ authoritative citizen identity across programs.
 **Negative test:** keep both records as equally true; conflicting identities break service and
 reporting — apply an MDM **survivorship** rule.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Data lifecycle state machine
 
@@ -149,7 +149,7 @@ that honors the retention schedule.
 **Negative test:** keep data forever "just in case"; retention law requires **disposition** —
 model the terminal stage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Bind classification to controls
 
@@ -170,7 +170,7 @@ metadata enforcing the legal layer.
 **Negative test:** set access per dataset by hand; **classification-driven** control is
 consistent and auditable — bind it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

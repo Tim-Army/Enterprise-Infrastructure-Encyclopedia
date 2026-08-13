@@ -48,7 +48,7 @@ gcloud compute networks subnets create dup --network=microseg --range=10.10.1.0/
 ERROR: ... Invalid IP CIDR range: 10.10.1.0/24 conflicts with ...
 ```
 
-**Cleanup.** Deferred to Chapter 09.
+**Rollback.** Deferred to Chapter 09.
 
 ### Exercise 5.2 — Launch three instances with tags and service accounts
 
@@ -97,7 +97,7 @@ db    RUNNING
 hmi   RUNNING
 ```
 
-**Cleanup.** Deferred to Chapter 09.
+**Rollback.** Deferred to Chapter 09.
 
 ### Exercise 5.3 — Prove the lateral movement
 
@@ -126,7 +126,7 @@ gcloud compute ssh web --zone=us-central1-a --command \
 OPEN
 ```
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 5.4 — Segment with tag-targeted, then service-account-targeted rules
 
@@ -183,7 +183,7 @@ BLOCKED
 
 Now even `web` is blocked, because the deny (700) beats the allow (790). Restore `deny-any-db-sa` to priority 910. This is GCP's whole model in one experiment: **priority, not specificity, decides.**
 
-**Cleanup.** Keep the rules for Chapter 06; teardown is Chapter 09.
+**Rollback.** Keep the rules for Chapter 06; teardown is Chapter 09.
 
 ## Summary and Completion Checklist
 

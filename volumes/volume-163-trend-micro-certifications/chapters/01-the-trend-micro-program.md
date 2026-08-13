@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Expecting a single "Trend Micro Certified" exam. Certifications are per-product Certified Professional credentials; you certify on the specific solutions you deploy and manage.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Scenario-based exam format
 
@@ -107,7 +107,7 @@ EOF
 
 **Negative test:** Preparing for a Trend Micro exam by memorizing facts alone. The scenario-based items require analyzing real cases and applying judgment (resolving conflicts, isolation, automated response); hands-on understanding of deploying and managing the product is what passes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

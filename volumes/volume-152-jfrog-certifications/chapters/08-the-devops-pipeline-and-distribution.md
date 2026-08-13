@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Treating each JFrog capability as an isolated feature. Their value is the composed, gated end-to-end flow through the hub — build info, Curation, Xray, promotion, and Distribution together deliver a binary that is traceable, secure, and reproducible, which no single feature provides alone.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

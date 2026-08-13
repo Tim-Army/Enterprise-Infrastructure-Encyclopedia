@@ -75,7 +75,7 @@ Write-Output "vSphere 8 is the last release to support baselines -> use images"
 **Negative test:** keep managing with **baselines**; they end after vSphere 8 — migrate to
 **images** now.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Enable lockdown mode
 
@@ -91,7 +91,7 @@ Get-VMHost $h | Select Name, @{N='Lockdown';E={$_.ExtensionData.Config.LockdownM
 
 **Negative test:** leave open direct root access; **lockdown mode** reduces exposure — enable it.
 
-**Cleanup:** set lockdown back to `lockdownDisabled` in a lab.
+**Rollback:** set lockdown back to `lockdownDisabled` in a lab.
 
 ### Lab 8.3 — Verify secure boot / TPM
 
@@ -108,7 +108,7 @@ esxcli hardware trustedboot get 2>/dev/null || echo "TPM 2.0 + Secure Boot -> ES
 **Negative test:** run ESXi with **no secure boot/TPM** on capable hardware; enable them for boot
 attestation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Tanzu workload availability zones
 
@@ -125,7 +125,7 @@ attestation.
 **Negative test:** run all Tanzu workloads in one failure domain; **availability zones** spread them
 — use them for resilience.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

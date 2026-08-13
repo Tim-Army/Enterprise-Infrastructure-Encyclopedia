@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Collecting all nine certifications regardless of role. The credentials validate role skill; start with the Generalist for breadth, certify for the role you perform, and extend to the frontier — rather than pursuing roles you do not work.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Cloudera in the data-platform career
 
@@ -124,7 +124,7 @@ EOF
 
 **Negative test:** Treating Cloudera as a niche Hadoop skill. It is a full hybrid data platform spanning administration, engineering, streaming, analytics, and AI, built on open-source foundations that transfer across the data field; the skills are broad and current, not legacy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

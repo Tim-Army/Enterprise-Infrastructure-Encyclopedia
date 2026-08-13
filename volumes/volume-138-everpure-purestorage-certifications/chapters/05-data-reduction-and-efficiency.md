@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Sizing a new array using the ratio observed on an existing one with different data — a VDI-derived 12:1 applied to a database estate under-provisions by roughly a factor of four.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Data reduction versus total efficiency
 
@@ -106,7 +106,7 @@ EOF
 
 **Negative test:** Reporting total efficiency to finance as the sizing basis — the array looks four times more capable than it is, and the shortfall appears as an emergency purchase.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Capacity forecast against realistic ratios
 
@@ -145,7 +145,7 @@ EOF
 
 **Negative test:** Forecasting with a single blended ratio — the blend is dominated by whichever workload is largest today, and it mis-predicts as the mix shifts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

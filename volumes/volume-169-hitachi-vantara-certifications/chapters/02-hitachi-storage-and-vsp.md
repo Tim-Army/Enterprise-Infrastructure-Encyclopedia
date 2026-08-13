@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Running a transactional database on object storage, or a single-controller array for a mission-critical app. The database suffers with object semantics/latency, and a single controller means an outage on failure; matching storage type to workload and using redundant enterprise arrays is what storage administration is about.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

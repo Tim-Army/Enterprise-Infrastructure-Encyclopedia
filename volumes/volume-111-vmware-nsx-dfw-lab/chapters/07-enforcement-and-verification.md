@@ -34,7 +34,7 @@ sudo ip netns exec db nft list chain inet vnic input | grep -E "counter|policy d
 
 **Expected result.** The drop policy counter increments for the `hmi → db` attempt; the accept counter increments for `web → db`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.2 — Correlate the drop in a DFW log
 
@@ -61,7 +61,7 @@ sudo dmesg | grep -o 'DFW-DROP.*SRC=10.50.1.30.*DPT=5432' | tail -1
 
 **Negative test.** A rule without logging enabled produces no entry — enable logging on denies during a rollout so a working policy is distinguishable from a broken path.
 
-**Cleanup.** Keep logging for Chapter 09.
+**Rollback.** Keep logging for Chapter 09.
 
 ### Exercise 7.3 — The decision follows the tag
 
@@ -79,7 +79,7 @@ sudo ip netns exec db nft add element inet vnic g_web '{ 10.50.1.10 }'
 
 **Expected result.** After removing web from `g_web`, `web → db` is `BLOCKED`; re-adding restores it. The rule never changed — only group membership did.
 
-**Cleanup.** Restore membership.
+**Rollback.** Restore membership.
 
 ## Summary and Completion Checklist
 

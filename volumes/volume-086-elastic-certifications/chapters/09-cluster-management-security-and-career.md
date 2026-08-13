@@ -79,7 +79,7 @@ curl -s -k -u elastic:$PW "https://localhost:9200/_cluster/allocation/explain?pr
 **Negative test:** restart nodes blindly to fix `yellow`; use **allocation/explain** to find the actual
 cause first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Create a least-privilege role and API key
 
@@ -101,7 +101,7 @@ curl -s -k -u elastic:$PW -X POST "https://localhost:9200/_security/api_key" -H 
 **Negative test:** hand an app the `elastic` superuser credentials; issue a **scoped API key** with only
 the needed index privileges instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_security/role/logs_reader"
@@ -127,7 +127,7 @@ SLM).
 **Negative test:** run a cluster with no snapshot repository; a disaster loses everything — register a
 repo and schedule **SLM**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X DELETE "https://localhost:9200/_snapshot/backup_repo/snap-1"
@@ -158,7 +158,7 @@ PY
 **Negative test:** study 8.15-only topics for an exam you will sit after 1 September 2026; prepare for
 **9.3** (ES|QL, semantic search, RBAC).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

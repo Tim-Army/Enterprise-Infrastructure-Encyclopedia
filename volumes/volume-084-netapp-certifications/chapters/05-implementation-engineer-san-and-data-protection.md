@@ -80,7 +80,7 @@ Warning: promote the specified Snapshot copy? {y|n}: y
 **Negative test:** delete a volume that has only local Snapshots and expect to recover from them; local
 Snapshots die with the volume — mirror off-box for DR.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> volume snapshot delete -vserver svm_app -volume vol_finance -snapshot before_change
@@ -108,7 +108,7 @@ svm_app:vol_finance svm_dr:vol_finance_dr Snapmirrored Idle   true
 **Negative test:** create the relationship but skip `snapmirror initialize`; the destination has no
 baseline and cannot serve data — always initialize.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> snapmirror delete -destination-path svm_dr:vol_finance_dr
@@ -137,7 +137,7 @@ PY
 **Negative test:** use a short DR mirror as your only backup; you cannot recover last month's file —
 add a **vault** policy with long retention.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Explain MetroCluster continuous availability
 
@@ -161,7 +161,7 @@ PY
 **Negative test:** promise a zero-RPO SLA with nightly SnapVault only; a mid-day outage loses hours —
 use MetroCluster (or SnapMirror Sync) for that SLA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -24,7 +24,7 @@ sudo dmesg | grep -c 'XDOME-DENY'              # deviations blocked
 
 **Expected result.** Zones and policy present, enforced rules matching the policy, deviations counted.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -45,7 +45,7 @@ sudo dmesg | grep -c 'XDOME-DENY'              # deviations blocked
 
 **Negative test.** The subtle failure is a **stale baseline**: the plant changed but the baseline did not, so legitimate new flows are blocked as deviations. Re-baseline on change, and treat deviations as review items, not automatic incidents.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -64,7 +64,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the captures and baseline files behind leaves observed OT traffic on disk — sensitive in a real plant; remove them.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

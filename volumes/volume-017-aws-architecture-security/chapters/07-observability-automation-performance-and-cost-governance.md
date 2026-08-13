@@ -427,7 +427,7 @@ move.
 **Negative test:** keep everything in `STANDARD` for rarely read data;
 the monthly bill stays high — the waste Intelligent-Tiering removes.
 
-**Cleanup:** delete the Intelligent-Tiering configuration.
+**Rollback:** delete the Intelligent-Tiering configuration.
 
 ### Lab 7.2 — Design cost-optimized compute solutions (SAA-C03 4.2)
 
@@ -449,7 +449,7 @@ on a Savings Plan.
 **Negative test:** put a stateful, interruption-sensitive service on Spot; a
 reclaim causes an outage — the cost win applies only to tolerant workloads.
 
-**Cleanup:** none (read-only calculation).
+**Rollback:** none (read-only calculation).
 
 ### Lab 7.3 — Design cost-optimized database solutions (SAA-C03 4.3)
 
@@ -469,7 +469,7 @@ instance is cheaper.
 **Negative test:** a fixed provisioned instance sized for peak sits mostly
 idle and overspends between peaks.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Design cost-optimized network architectures (SAA-C03 4.4)
 
@@ -490,7 +490,7 @@ private subnets now avoids per-GB NAT data-processing charges.
 **Negative test:** route S3 traffic through a NAT gateway instead; every GB
 incurs NAT processing cost the endpoint would have made free.
 
-**Cleanup:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <id>`.
+**Rollback:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids <id>`.
 
 ### Lab 7.5 — CloudWatch alarm on a custom metric (integrative)
 
@@ -574,7 +574,7 @@ charge beyond the free tier.
    **Expected result:** `"OK"`, and a second SNS notification confirming
    the alarm recovered, proving the alarm is not one-directional.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws cloudwatch delete-alarms --alarm-names lab-queue-depth-high

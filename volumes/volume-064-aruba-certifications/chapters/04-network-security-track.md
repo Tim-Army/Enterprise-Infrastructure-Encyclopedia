@@ -74,7 +74,7 @@ access.
 **Negative test:** leave the port open with no 802.1X; unauthenticated devices get on the
 network — **enable authentication**.
 
-**Cleanup:** `configure terminal; no radius-server host 10.1.1.10`.
+**Rollback:** `configure terminal; no radius-server host 10.1.1.10`.
 
 ### Lab 4.2 — Role and enforcement (dynamic segmentation)
 
@@ -94,7 +94,7 @@ segmentation by role.
 **Negative test:** give the camera full VLAN access; enforce **least privilege** by role via
 PEF.
 
-**Cleanup:** `configure terminal; no port-access role iot-camera`.
+**Rollback:** `configure terminal; no port-access role iot-camera`.
 
 ### Lab 4.3 — Device profiling
 
@@ -110,7 +110,7 @@ and control over unmanaged/IoT gear.
 
 **Negative test:** treat every unknown MAC as trusted; **profile** it and constrain by role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Query ClearPass via the API
 
@@ -129,7 +129,7 @@ visibility.
 **Negative test:** read the ClearPass GUI to audit sessions at scale; the **API** answers it
 programmatically — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Posture check concept
 
@@ -147,7 +147,7 @@ programmatically — use it.
 **Negative test:** grant full access without a posture check; gate on **health** for
 Zero-Trust access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

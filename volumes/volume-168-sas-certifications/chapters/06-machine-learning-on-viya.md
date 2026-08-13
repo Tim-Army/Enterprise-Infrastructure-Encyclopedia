@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Choosing the model by its accuracy on the training data. A model that memorizes training data scores perfectly there but fails on new customers; comparing on a held-out validation partition is what selects a model that actually generalizes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

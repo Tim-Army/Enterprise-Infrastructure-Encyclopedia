@@ -35,7 +35,7 @@ cat /etc/xdome/zones
 
 **Negative test.** An asset in no zone matches no zone-to-zone rule and, under default-deny, is isolated — every asset must be zoned for the policy to cover it.
 
-**Cleanup.** Keep the zone map.
+**Rollback.** Keep the zone map.
 
 ### Exercise 5.2 — Derive the zone-to-zone policy
 
@@ -66,7 +66,7 @@ Two zone-to-zone allow rules, derived from the sanctioned baseline; everything e
 
 **Negative test.** Note the policy has no `OT-Ops -> IT-Data` rule — the curated baseline never sanctioned `hmi → db`, so the derived policy denies it automatically. The segmentation came from the observation, not from writing a deny by hand.
 
-**Cleanup.** Keep the policy; Chapter 06 pushes it to the enforcer.
+**Rollback.** Keep the policy; Chapter 06 pushes it to the enforcer.
 
 ## Summary and Completion Checklist
 

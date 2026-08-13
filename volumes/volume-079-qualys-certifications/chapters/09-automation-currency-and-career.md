@@ -78,7 +78,7 @@ PY
 **Negative test:** handle new assets and critical vulns manually; it doesn't scale — automate with
 **QFlow**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Outline a CAR remediation script
 
@@ -99,7 +99,7 @@ PY
 **Negative test:** push an untested CAR script fleet-wide; it could break systems — **test** and scope
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -121,7 +121,7 @@ a path.
 **Negative test:** learn one module and stop; the platform is **broad and evolving** — keep learning
 via the free courses.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

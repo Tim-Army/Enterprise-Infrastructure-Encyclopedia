@@ -72,7 +72,7 @@ routing.
 **Negative test:** configure `/routing bgp peer` (v6 syntax) on v7; use the **v7 `bgp connection`**
 model.
 
-**Cleanup:** `/routing bgp connection remove [find name=peer-isp]`.
+**Rollback:** `/routing bgp connection remove [find name=peer-isp]`.
 
 ### Lab 7.2 — Filter BGP routes
 
@@ -90,7 +90,7 @@ policy-controlled BGP.
 
 **Negative test:** advertise with **no filter**; you may leak routes — filter output.
 
-**Cleanup:** reset the connection filter and remove the rules.
+**Rollback:** reset the connection filter and remove the rules.
 
 ### Lab 7.3 — Enable MPLS with LDP
 
@@ -107,7 +107,7 @@ policy-controlled BGP.
 
 **Negative test:** enable LDP with a **down IGP**; labels follow the IGP — fix routing first.
 
-**Cleanup:** `/mpls ldp remove [find]`.
+**Rollback:** `/mpls ldp remove [find]`.
 
 ### Lab 7.4 — VPLS concept
 
@@ -124,7 +124,7 @@ policy-controlled BGP.
 **Negative test:** stretch a customer L2 across the internet with no encapsulation; **VPLS over
 MPLS** provides the isolated L2 VPN — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

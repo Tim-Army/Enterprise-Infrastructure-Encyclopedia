@@ -291,7 +291,7 @@ the FSCE lab exam assumes.
 **Negative test:** try to change enforcement from the Asset Inventory; actions are
 authored in the Policy Manager — the inventory shows state, policies change it.
 
-**Cleanup:** none (read-only navigation).
+**Rollback:** none (read-only navigation).
 
 ### Lab 2.2 — Manage a plugin (Topic: Plugin architecture)
 
@@ -313,7 +313,7 @@ and do.
 stopped or not installed; the property never resolves and the policy cannot match — the
 plugin must be running for its properties to exist.
 
-**Cleanup:** revert any plugin config changed only for the lab.
+**Rollback:** revert any plugin config changed only for the lab.
 
 ### Lab 2.3 — Read built-in versus custom properties (Topic: Properties)
 
@@ -333,7 +333,7 @@ evaluate; understanding a property's source explains why it did (or did not) res
 scan, for hosts you only see passively; the property is blank and the rule misfires — a
 property's resolution method must match how you actually see the host.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Read the classification engine and confidence (Topic: Classification)
 
@@ -354,7 +354,7 @@ automated decision made on it.
 you risk acting on a misidentified device — gate strong actions on high-confidence
 classification (or add clarification first, Chapter 03).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

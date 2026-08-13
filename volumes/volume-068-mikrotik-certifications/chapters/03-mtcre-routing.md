@@ -69,7 +69,7 @@ forwarding.
 
 **Negative test:** expect remote reachability with **no route**; add the route/next-hop.
 
-**Cleanup:** `/ip route remove [find dst-address=10.20.0.0/24]`.
+**Rollback:** `/ip route remove [find dst-address=10.20.0.0/24]`.
 
 ### Lab 3.2 — PTP addressing
 
@@ -86,7 +86,7 @@ forwarding.
 **Negative test:** use a large subnet for a two-router link; **/30 (or /32)** fits PTP — size it
 right.
 
-**Cleanup:** `/ip address remove [find interface=ether1]`.
+**Rollback:** `/ip address remove [find interface=ether1]`.
 
 ### Lab 3.3 — OSPF on RouterOS v7
 
@@ -104,7 +104,7 @@ right.
 **Negative test:** configure `/routing ospf network` (v6 syntax) on v7; use the **v7
 instance/area/interface-template** model.
 
-**Cleanup:** `/routing ospf instance remove [find name=default]`.
+**Rollback:** `/routing ospf instance remove [find name=default]`.
 
 ### Lab 3.4 — EoIP tunnel
 
@@ -120,7 +120,7 @@ instance/area/interface-template** model.
 
 **Negative test:** use EoIP but never **bridge** it; add it to the bridge to carry L2 traffic.
 
-**Cleanup:** `/interface eoip remove eoip-siteB`.
+**Rollback:** `/interface eoip remove eoip-siteB`.
 
 ### Lab 3.5 — GRE tunnel
 
@@ -139,7 +139,7 @@ instance/area/interface-template** model.
 **Negative test:** send private traffic over the internet with no tunnel; **encapsulate** with
 GRE/IPIP (and IPsec) — don't expect bare routing.
 
-**Cleanup:** `/interface gre remove gre-siteB`.
+**Rollback:** `/interface gre remove gre-siteB`.
 
 ## Lab Verification
 

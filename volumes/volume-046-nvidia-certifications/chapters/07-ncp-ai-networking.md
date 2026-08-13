@@ -93,7 +93,7 @@ fabric health NCP-AIN starts from.
 **Negative test:** assume a link is fine because it is up; check **rate** and
 errors — a downgraded link throttles training.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Topology: non-blocking fat-tree
 
@@ -112,7 +112,7 @@ requires for scalable collectives.
 **Negative test:** oversubscribe the fabric to save cost; **all-reduce** needs full
 bisection bandwidth — under-provisioning throttles training.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Spectrum-X (Ethernet for AI)
 
@@ -131,7 +131,7 @@ core NCP-AIN comparison.
 **Negative test:** run RoCE without **congestion control/lossless** config;
 Ethernet AI fabric needs it to avoid drops — configure it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — RDMA and GPUDirect
 
@@ -150,7 +150,7 @@ data-path efficiency NCP-AIN tests.
 **Negative test:** route GPU-to-GPU traffic through host memory; **GPUDirect**
 avoids that copy — enable it for performance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — NCCL over the fabric
 
@@ -170,7 +170,7 @@ fabric-validation skill NCP-AIN requires.
 **Negative test:** benchmark single-GPU FLOPS and assume the cluster scales;
 **NCCL busbw** reveals the network's real collective throughput — test it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.6 — BlueField DPUs
 
@@ -188,7 +188,7 @@ PY
 **Negative test:** assume the host CPU handles all network/security at line rate;
 **DPUs** offload it, freeing the CPU and adding isolation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

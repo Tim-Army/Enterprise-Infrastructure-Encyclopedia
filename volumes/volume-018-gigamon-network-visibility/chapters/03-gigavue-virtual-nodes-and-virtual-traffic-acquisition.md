@@ -312,7 +312,7 @@ there is no physical chassis, all orchestrated from FM.
 Series deployment fails at launch — FM's orchestration role needs the cloud IAM permissions
 to create and manage the nodes.
 
-**Cleanup:** delete the V Series node/deployment from FM to stop cloud charges.
+**Rollback:** delete the V Series node/deployment from FM to stop cloud charges.
 
 ### Lab 3.2 — Acquire traffic with the Universal Cloud Tap (Topic: Cloud acquisition)
 
@@ -333,7 +333,7 @@ instance or the cloud fabric, so visibility follows workloads that have no cable
 mirroring configured; the fabric sees nothing from it — cloud traffic must be acquired by an
 agent or provider mirroring before the fabric can process it.
 
-**Cleanup:** remove the UCT/agent from the lab workloads.
+**Rollback:** remove the UCT/agent from the lab workloads.
 
 ### Lab 3.3 — Monitoring domain and traffic policy (Topic: Cloud traffic policy)
 
@@ -354,7 +354,7 @@ and tunneled to the tool — the monitoring session is the cloud analogue of Flo
 arrives (no cross-VPC L2) — cloud tool delivery uses tunnels (VXLAN/L2GRE), which the
 traffic policy's destination defines.
 
-**Cleanup:** undeploy the monitoring session.
+**Rollback:** undeploy the monitoring session.
 
 ### Lab 3.4 — Container/Kubernetes-aware tapping (Topic: Container visibility)
 
@@ -374,7 +374,7 @@ label-selected pods that physical taps bring to a switch port.
 never leaves the node's virtual switch, so the VM tap misses it — a container-aware tap
 (UCT-C) is required for east-west pod visibility.
 
-**Cleanup:** remove the UCT-C DaemonSet and the monitoring session.
+**Rollback:** remove the UCT-C DaemonSet and the monitoring session.
 
 ## Lab Verification
 

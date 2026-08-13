@@ -52,7 +52,7 @@ gcloud compute firewall-rules list --filter="network=microseg AND name~db" \
 
 **Negative test.** None — this is a read-only comparison.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Choosing the right identity construct
 

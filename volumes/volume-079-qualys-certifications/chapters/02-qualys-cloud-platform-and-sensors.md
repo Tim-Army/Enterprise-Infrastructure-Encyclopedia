@@ -74,7 +74,7 @@ PY
 **Negative test:** cover laptops with network scans only; they're often off-network — use **Cloud
 Agents**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Reason about the Cloud Agent advantage
 
@@ -96,7 +96,7 @@ advantage.
 **Negative test:** wait for the next scan window to learn about a new critical vuln; an **agent**
 reports it continuously — prefer agents for endpoints.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Search with QQL
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** export everything and filter in a spreadsheet; **QQL** filters at the source —
 query the platform.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Tag assets for scope
 
@@ -141,7 +141,7 @@ context.
 
 **Negative test:** manage scope by static IP lists; they drift — use **dynamic tags**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

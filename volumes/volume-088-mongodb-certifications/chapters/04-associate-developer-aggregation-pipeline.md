@@ -85,7 +85,7 @@ db.orders.aggregate([
 **Negative test:** put `$match` after `$group`; the group processes cancelled orders too — filter
 **first**.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.2 — Project computed fields
 
@@ -108,7 +108,7 @@ db.orders.aggregate([
 **Negative test:** return the raw grouped docs and compute the tier in the app; compute it in
 **`$project`** on the server.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Unwind an array
 
@@ -133,7 +133,7 @@ db.carts.aggregate([
 **Negative test:** `$group` on the array field directly; you group by the whole array, not its elements —
 `$unwind` first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Join with `$lookup`
 
@@ -159,7 +159,7 @@ join.
 **Negative test:** fetch orders and customers separately and join in the app; use **`$lookup`** for an
 occasional join (or embed if always read together).
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh

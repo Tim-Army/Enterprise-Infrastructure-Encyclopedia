@@ -71,7 +71,7 @@ esxcli network vswitch standard portgroup list
 **Negative test:** manage a large cluster with per-host **vSS** and expect consistency; drift is
 inevitable — move to a **vDS**.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Create a distributed switch and port group
 
@@ -89,7 +89,7 @@ across hosts.
 **Negative test:** create the same port group on each host's vSS; a **vDS** defines it once for all —
 use it.
 
-**Cleanup:** `Remove-VDSwitch vds-prod -Confirm:$false`.
+**Rollback:** `Remove-VDSwitch vds-prod -Confirm:$false`.
 
 ### Lab 5.3 — Add a VMkernel adapter for vMotion
 
@@ -108,7 +108,7 @@ host traffic.
 **Negative test:** run vMotion on the management VMkernel with no separation; **dedicate** a
 VMkernel/VLAN to vMotion for performance and isolation.
 
-**Cleanup:** remove the VMkernel adapter.
+**Rollback:** remove the VMkernel adapter.
 
 ### Lab 5.4 — NIC teaming and failover
 
@@ -126,7 +126,7 @@ balanced networking.
 **Negative test:** run a port group on a **single uplink**; a NIC/switch failure drops the network —
 **team** the uplinks.
 
-**Cleanup:** revert the teaming policy.
+**Rollback:** revert the teaming policy.
 
 ## Lab Verification
 

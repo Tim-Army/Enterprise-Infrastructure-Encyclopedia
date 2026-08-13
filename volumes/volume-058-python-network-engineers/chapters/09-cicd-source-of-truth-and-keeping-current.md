@@ -67,7 +67,7 @@ for i,s in enumerate(stages,1): print(f"{i}. {s}")
 **Negative test:** deploy straight from a laptop; a **CI pipeline** adds review, audit, and
 validation — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Render from a source of truth
 
@@ -86,7 +86,7 @@ CI.
 **Negative test:** keep variables in the pipeline scripts; source them from the **source
 of truth** so there's one model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Gate on validation
 
@@ -104,7 +104,7 @@ print("exit:", gate("+interface Lo1\n-no router bgp"))   # 1 -> blocked
 **Negative test:** auto-approve every diff; **gate** on dangerous patterns and require
 review.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Track the ecosystem
 
@@ -120,7 +120,7 @@ updates.
 **Negative test:** pin libraries once and never update; **track releases** and update
 deliberately (they add platform support/fixes).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

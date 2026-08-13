@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Filtering to "critical and high only" and working down by CVSS — F4 (a 6.5 actively exploited on a domain controller) is excluded by the filter entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Known-exploited status reorders everything
 
@@ -109,7 +109,7 @@ EOF
 
 **Negative test:** Treating a public catalog of known-exploited vulnerabilities as the complete definition of urgency — it is a floor, not a ceiling; targeted attacks use flaws that never appear in any catalog.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Produce a queue a team can actually work
 
@@ -148,7 +148,7 @@ EOF
 
 **Negative test:** Handing engineering the full export with a request to "work through it" — the list is unworkable, so nothing gets prioritized and the highest-risk items receive no more attention than the rest.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

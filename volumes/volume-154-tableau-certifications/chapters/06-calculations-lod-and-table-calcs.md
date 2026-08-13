@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Trying to compute a customer lifetime total on an order-level view with a plain aggregation. It would sum only the current order's level; a FIXED LOD expression computes at the customer level regardless of the view, which is what mixing levels requires.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Table calculation: running total and percent of total
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Assuming a table calculation gives the same result regardless of direction. A running total along months differs from one down categories — table calcs depend on the partition and order (compute using), a common source of error.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

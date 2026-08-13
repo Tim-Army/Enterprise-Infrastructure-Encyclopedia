@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Choosing by which exam sounds more senior. They are both Associates; there is nothing above them to optimize for yet.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — The free-tier practice syllabus
 
@@ -128,7 +128,7 @@ EOF
 
 **Negative test:** Substituting a third-party "Cloudflare certification course" for the free tier. The vendor gives you the actual product for nothing; a course *about* the product is a strictly worse use of the same hours.
 
-**Cleanup:** Keep the syllabus; it doubles as the practice log.
+**Rollback:** Keep the syllabus; it doubles as the practice log.
 
 ## Summary and Completion Checklist
 

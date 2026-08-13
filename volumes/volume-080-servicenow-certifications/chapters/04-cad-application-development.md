@@ -79,7 +79,7 @@ query pattern.
 **Negative test:** query all incidents then filter in JavaScript; that pulls everything — use
 **addQuery** to filter at the database.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 4.2 — Choose Business Rule vs Client Script
 
@@ -101,7 +101,7 @@ Script)** — correct placement.
 **Negative test:** enforce data integrity only in a **Client Script**; an API call bypasses the
 browser — enforce server-side.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Model a scoped app boundary
 
@@ -121,7 +121,7 @@ PY
 **Negative test:** build everything in the **global** scope; changes can collide with the base system
 — use a **scoped app**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Outline a REST integration
 
@@ -143,7 +143,7 @@ integration.
 **Negative test:** hardcode credentials in the script; use a **credential/connection record** and
 handle errors — secure the integration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

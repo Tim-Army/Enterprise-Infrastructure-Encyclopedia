@@ -379,7 +379,7 @@ console shows where attention is needed and each critical device links to the fa
 view and miss a pattern (e.g. a bad firmware batch) — the roll-up is what surfaces fleet-wide
 health trends.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Alert policies and the alert pipeline (Topic: Alert pipeline)
 
@@ -400,7 +400,7 @@ the right people are notified about the right events.
 **Negative test:** forward every alert with no policy filtering; recipients get flooded and
 ignore them (alert fatigue) — policies scope which alerts matter and where they go.
 
-**Cleanup:** delete the lab alert policy.
+**Rollback:** delete the lab alert policy.
 
 ### Lab 4.3 — Custom reports (Topic: Reporting)
 
@@ -419,7 +419,7 @@ answers stakeholders need (compliance, warranty, capacity) without manual data g
 **Negative test:** answer "which servers are out of warranty?" by checking each device by hand; it
 does not scale and goes stale — a scheduled report keeps the answer current automatically.
 
-**Cleanup:** delete the lab report.
+**Rollback:** delete the lab report.
 
 ### Lab 4.4 — Job engine and integrations (Topic: Jobs and integrations)
 
@@ -441,7 +441,7 @@ SMTP/syslog/SupportAssist test arrives — the **job engine** runs all asynchron
 console and Dell has no telemetry for proactive support — integrations connect OME to the wider
 operations and support ecosystem.
 
-**Cleanup:** revert any test integration config if lab-only.
+**Rollback:** revert any test integration config if lab-only.
 
 ## Lab Verification
 

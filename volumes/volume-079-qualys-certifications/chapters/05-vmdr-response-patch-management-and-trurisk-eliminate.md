@@ -76,7 +76,7 @@ integrated response.
 **Negative test:** export the vuln list to a separate patch tool and lose tracking; the **integrated**
 loop closes it — patch in-platform.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Apply a non-patch mitigation (TruRisk Eliminate)
 
@@ -96,7 +96,7 @@ PY
 **Negative test:** leave an unpatchable vuln open because "there's no patch"; a **mitigation** still
 reduces risk — apply one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Verify remediation
 
@@ -117,7 +117,7 @@ remediation.
 **Negative test:** close the ticket without re-assessing; the vuln may still be present — **verify**
 via the agent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Measure risk reduction
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** report only "patches deployed"; that's activity, not **risk reduction** — track
 TruRisk trend.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

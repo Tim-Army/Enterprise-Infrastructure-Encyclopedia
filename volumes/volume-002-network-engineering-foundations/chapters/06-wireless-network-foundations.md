@@ -383,7 +383,7 @@ channel choice and width trade range against throughput and interference.
 and throughput collapses — only 1/6/11 are non-overlapping in 2.4 GHz, which is a core RF-planning
 constraint.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — SSID and security (Topic: Wireless security)
 
@@ -402,7 +402,7 @@ WPA2/WPA3 encrypt, Enterprise (802.1X) adds per-user identity, while Open networ
 (Enterprise for corporate) is the baseline, and per-user 802.1X beats a shared PSK for access
 control.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Coverage and capacity design (Topic: RF design)
 
@@ -425,7 +425,7 @@ channels serve more clients.
 contention throttles everyone despite full signal bars — capacity (AP density + channel plan) is what
 serves high client counts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Wireless troubleshooting (Topic: Wireless troubleshooting)
 
@@ -445,7 +445,7 @@ capacity (too many clients); the signal and rate tell you which.
 problem is coverage, not routing — check the RF link (signal/rate) before the higher layers for
 wireless.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

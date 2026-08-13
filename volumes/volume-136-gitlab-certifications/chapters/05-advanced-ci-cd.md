@@ -96,7 +96,7 @@ EOF
 
 **Negative test:** Appending a new rule to the bottom of an existing list that already ends in a catch-all — the new rule is unreachable, and its author will swear it should be matching.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — DAG scheduling with `needs`
 
@@ -142,7 +142,7 @@ EOF
 
 **Negative test:** Adding `needs` everywhere without thinking — you can accidentally drop a real dependency, and a deploy job starts before the artifact it requires has been produced.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Environments, protection, and manual gates
 
@@ -178,7 +178,7 @@ EOF
 
 **Negative test:** Protecting the production *environment* but leaving production credentials as unprotected variables (Chapter 04) — the deployment job is gated while the credential remains readable from any branch pipeline.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

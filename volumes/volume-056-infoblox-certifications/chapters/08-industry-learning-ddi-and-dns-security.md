@@ -67,7 +67,7 @@ fundamentals).
 **Negative test:** assume one record type suffices; DNS has **many types** (A/AAAA/NS/MX/
 TXT/PTR) — know each.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — DDI Professional (advanced DNS/DHCP)
 
@@ -84,7 +84,7 @@ dig example.com SOA +short
 **Negative test:** ignore the **SOA/serial** during zone changes; the serial drives
 secondary transfers — track it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — DNS Security Associate (threats)
 
@@ -101,7 +101,7 @@ DSA threat-awareness scope.
 **Negative test:** treat all DNS traffic as benign; **tunneling/exfiltration** hides in
 DNS — inspect it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — DNS Security Professional (mitigation)
 
@@ -118,7 +118,7 @@ DNS — inspect it.
 **Negative test:** rely on a single control (a blocklist); **layer** integrity, blocking,
 rate-limiting, and analytics.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -51,7 +51,7 @@ Same app, same activity, **different instance → different policy**. A domain-b
 
 **Negative test:** Blocking `onedrive.com` wholesale to stop personal use — you break the sanctioned corporate instance too; instance awareness is precisely what avoids that blunt outcome.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Activity-level control
 
@@ -75,7 +75,7 @@ EOF
 
 **Negative test:** All-or-nothing app control (allow or block the whole app) — you either accept the risky activities or lose the app; granular activity policy is the middle path CASB provides.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Shadow IT discovery and CCI
 
@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Blocking every unsanctioned app reflexively — you drive users to workarounds and miss that some "shadow" apps are legitimately useful (coach/sanction them instead); CCI informs a nuanced response.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Inline CASB enforcement
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Inline-only CASB misses data users shared before onboarding Netskope, or via unmanaged devices hitting the SaaS directly; API-enabled protection closes that gap.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

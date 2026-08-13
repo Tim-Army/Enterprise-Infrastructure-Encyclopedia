@@ -134,7 +134,7 @@ clear absence) — the virtualization and containerization of cloud architecture
 **Negative test:** assume containers and VMs give the same isolation; containers
 share the host kernel.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Cloud+: Deployment (19%)
 
@@ -154,7 +154,7 @@ and validated, the essence of IaC deployment.
 **Negative test:** delete a comma to break the JSON; the parser errors — IaC must
 be valid to apply.
 
-**Cleanup:** `rm -f /tmp/vm.json`.
+**Rollback:** `rm -f /tmp/vm.json`.
 
 ### Lab 3.3 — Cloud+: Operations (17%)
 
@@ -170,7 +170,7 @@ backup/recovery and observability in operations.
 **Negative test:** treat the snapshot as live; changes after the snapshot are
 not captured.
 
-**Cleanup:** `rm -rf /tmp/vol /tmp/vol.snap`.
+**Rollback:** `rm -rf /tmp/vol /tmp/vol.snap`.
 
 ### Lab 3.4 — Cloud+: Security (19%)
 
@@ -187,7 +187,7 @@ IAM and attack-surface review.
 **Negative test:** leave the key at 644; a world-readable private key is an IAM
 failure.
 
-**Cleanup:** `rm -f /tmp/cloud.key`.
+**Rollback:** `rm -f /tmp/cloud.key`.
 
 ### Lab 3.5 — Cloud+: DevOps fundamentals (10%)
 
@@ -203,7 +203,7 @@ to a CI/CD pipeline.
 
 **Negative test:** commit with nothing staged; there is nothing to commit.
 
-**Cleanup:** `rm -rf "$d"`.
+**Rollback:** `rm -rf "$d"`.
 
 ### Lab 3.6 — Cloud+: Troubleshooting (12%)
 
@@ -220,7 +220,7 @@ misconfiguration.
 **Negative test:** indent `port` with a tab; YAML rejects tabs — a classic
 misconfiguration.
 
-**Cleanup:** `rm -f /tmp/svc.yaml`.
+**Rollback:** `rm -f /tmp/svc.yaml`.
 
 ### Lab 3.7 — Linux+: System management (23%)
 
@@ -236,7 +236,7 @@ and interface addresses — core system management.
 **Negative test:** read `get-default` as the running target; it shows the
 configured default.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.8 — Linux+: Services and user management (20%)
 
@@ -253,7 +253,7 @@ user/group and service management.
 **Negative test:** run `useradd svcuser` twice; the second reports the account
 exists.
 
-**Cleanup:** `sudo userdel -r svcuser 2>/dev/null; sudo groupdel apps 2>/dev/null || true`.
+**Rollback:** `sudo userdel -r svcuser 2>/dev/null; sudo groupdel apps 2>/dev/null || true`.
 
 ### Lab 3.9 — Linux+: Security (18%)
 
@@ -269,7 +269,7 @@ sudo -l 2>/dev/null | head; touch /tmp/s.conf && chmod 640 /tmp/s.conf && stat -
 **Negative test:** set the config 666; a world-writable config violates
 hardening.
 
-**Cleanup:** `rm -f /tmp/s.conf`.
+**Rollback:** `rm -f /tmp/s.conf`.
 
 ### Lab 3.10 — Linux+: Automation, orchestration, and scripting (17%)
 
@@ -289,7 +289,7 @@ a Python calculation, the automation building blocks.
 **Negative test:** execute `/tmp/a.sh` without the exec bit or an interpreter;
 permission denied.
 
-**Cleanup:** `rm -f /tmp/a.sh`.
+**Rollback:** `rm -f /tmp/a.sh`.
 
 ### Lab 3.11 — Linux+: Troubleshooting (22%)
 
@@ -307,7 +307,7 @@ ps -eo pid,comm,%cpu --sort=-%cpu | head -3
 **Negative test:** let `/` fill and expect services to keep writing; a full root
 breaks logging and services.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.12 — Server+: Server hardware installation and management (18%)
 
@@ -324,7 +324,7 @@ deployment and capacity planning.
 **Negative test:** assume more disks means redundancy; RAID 0 adds capacity but
 no redundancy.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.13 — Server+: Server administration (30%)
 
@@ -341,7 +341,7 @@ listeners exist — server roles and network services.
 **Negative test:** assume a role is active because the package is installed; it
 must be enabled and running.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.14 — Server+: Security and disaster recovery (24%)
 
@@ -358,7 +358,7 @@ and disaster recovery.
 **Negative test:** keep the only backup on the source disk; one disk failure
 loses both.
 
-**Cleanup:** `rm -f /tmp/db.sql /tmp/db.sql.enc /tmp/offsite.enc`.
+**Rollback:** `rm -f /tmp/db.sql /tmp/db.sql.enc /tmp/offsite.enc`.
 
 ### Lab 3.15 — Server+: Troubleshooting (28%)
 
@@ -373,7 +373,7 @@ uptime; free -h | awk '/Mem:/{print "mem free:",$4}'; ping -c1 -W2 127.0.0.1 >/d
 **Negative test:** read high load as CPU-bound without checking I/O wait; load
 includes uninterruptible I/O.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

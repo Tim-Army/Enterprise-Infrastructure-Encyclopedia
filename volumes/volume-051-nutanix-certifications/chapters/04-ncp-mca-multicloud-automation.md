@@ -81,7 +81,7 @@ section.
 **Negative test:** script everything imperatively; **declarative blueprints** are
 repeatable and self-documenting — prefer them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy and configure Self-Service
 
@@ -100,7 +100,7 @@ the deployment section.
 **Negative test:** hard-code the image name; use a **macro/variable** so one blueprint
 serves many environments.
 
-**Cleanup:** delete the blueprint/app if it was for the lab.
+**Rollback:** delete the blueprint/app if it was for the lab.
 
 ### Lab 4.3 — Validate blueprints, runbooks, and playbooks
 
@@ -118,7 +118,7 @@ section.
 **Negative test:** publish without a dry-run; **validate** so a bad macro/credential
 doesn't fail at runtime.
 
-**Cleanup:** disable the playbook if it was for the lab.
+**Rollback:** disable the playbook if it was for the lab.
 
 ## Lab Verification
 

@@ -25,7 +25,7 @@ SRX  --(standing deny-quarantine policy)-->  contains the host
 
 **Negative test (reasoning).** Assume threat feeds alone segment the network. They do not — feeds drive *reaction*; the *static* least-privilege policy (Chapter 05) is what stops lateral movement in the absence of any alert. You need both.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 8.2 — Staged rollout
 
@@ -50,7 +50,7 @@ sudo dmesg | grep -c 'WOULD-DENY'
 
 **Negative test.** Deleting the permit-any before authoring the specific permits denies the legitimate flows too — order the change as permit-first, then remove permit-any.
 
-**Cleanup.** Return to the enforcing ruleset from Chapter 05.
+**Rollback.** Return to the enforcing ruleset from Chapter 05.
 
 ### Exercise 8.3 — The boundary
 
@@ -71,7 +71,7 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.20.2.11 5432 2>/dev/null || echo "in
 
 **Negative test.** Assume one big zone with an intra-zone deny suffices. Intra-zone traffic on the same L2 segment never reaches the SRX, so the deny never applies — zone design, not policy alone, determines what the firewall can enforce.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

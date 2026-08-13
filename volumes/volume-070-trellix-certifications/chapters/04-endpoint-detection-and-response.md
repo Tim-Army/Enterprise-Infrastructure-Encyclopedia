@@ -75,7 +75,7 @@ hypothesis-driven hunt.
 **Negative test:** browse detections randomly hoping to spot evil; **real-time search** answers a
 hypothesis — query it.
 
-**Cleanup:** none (read-only hunt).
+**Rollback:** none (read-only hunt).
 
 ### Lab 4.2 — Investigate the process story
 
@@ -93,7 +93,7 @@ scoping.
 **Negative test:** react to a single alert without the **story**; investigate the causality chain
 to understand scope first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Take a reaction (contain)
 
@@ -111,7 +111,7 @@ investigate.
 **Negative test:** delete the malware and move on without containment; **contain first** to stop
 lateral movement, then eradicate.
 
-**Cleanup:** un-isolate after remediation (in a lab).
+**Rollback:** un-isolate after remediation (in a lab).
 
 ### Lab 4.4 — Query EDR via the API
 
@@ -128,7 +128,7 @@ curl -sk -H "Authorization: Bearer $EDR_TOKEN" "https://<edr-tenant>/edr/v2/dete
 **Negative test:** copy detections out of the console to automate; the **API** feeds automation —
 use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Feed detection back to prevention
 
@@ -145,7 +145,7 @@ use it.
 **Negative test:** investigate and close without hardening; **feed findings into prevention** so the
 threat can't recur.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

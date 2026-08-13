@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Relying only on local snapshots and no remote replication. A site disaster destroys the array and every local snapshot with it; remote replication to a second site is what survives losing the primary site — local protection alone is not disaster recovery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

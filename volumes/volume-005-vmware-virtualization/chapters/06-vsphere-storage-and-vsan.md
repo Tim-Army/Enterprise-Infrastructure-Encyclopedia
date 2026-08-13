@@ -682,7 +682,7 @@ VMs pausing on a full datastore.
 **Negative test:** run a datastore to near-full; thin-provisioned VMs and snapshots can exhaust it and
 pause VMs — monitor datastore free space and alarm before it fills.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — vSAN (Topic: Software-defined storage)
 
@@ -702,7 +702,7 @@ definitive storage check.
 **Negative test:** plan usable capacity from raw disk totals; FTT/RAID overhead and slack space make
 usable far less than raw — vSAN capacity planning must account for the resilience policy overhead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Storage policies (Topic: Storage policy-based management)
 
@@ -722,7 +722,7 @@ survives and its space overhead.
 **Negative test:** apply an FTT=2 RAID-6 policy on a cluster with too few hosts; objects are
 non-compliant (RAID-6 needs ≥6 hosts) — the policy's resilience must fit the cluster size.
 
-**Cleanup:** revert the lab VM to the default policy if changed.
+**Rollback:** revert the lab VM to the default policy if changed.
 
 ## Lab Verification
 

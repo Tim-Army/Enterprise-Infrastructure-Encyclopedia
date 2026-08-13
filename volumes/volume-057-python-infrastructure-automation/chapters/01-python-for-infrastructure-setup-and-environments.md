@@ -85,7 +85,7 @@ python -c "import sys; print('venv:', sys.prefix != sys.base_prefix)"
 **Negative test:** `pip install` without a venv into system Python; it can **break OS
 tooling** — always isolate.
 
-**Cleanup:** `deactivate && rm -rf .venv`.
+**Rollback:** `deactivate && rm -rf .venv`.
 
 ### Lab 1.2 — Install and pin a dependency
 
@@ -101,7 +101,7 @@ pip freeze | grep -i requests
 **Negative test:** ship code depending on `requests` with no declared dependency; it
 **fails on a clean machine** — declare/pin it.
 
-**Cleanup:** none (inside the venv).
+**Rollback:** none (inside the venv).
 
 ### Lab 1.3 — Verify the version and run a script
 
@@ -118,7 +118,7 @@ python hello.py
 **Negative test:** assume `python` is Python 3; on some systems `python` is 2 or absent —
 use **`python3`**/the venv and check `--version`.
 
-**Cleanup:** `rm hello.py`.
+**Rollback:** `rm hello.py`.
 
 ## Lab Verification
 

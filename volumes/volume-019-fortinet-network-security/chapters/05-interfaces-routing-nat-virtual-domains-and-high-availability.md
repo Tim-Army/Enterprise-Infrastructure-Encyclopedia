@@ -472,7 +472,7 @@ switch/hypervisor layer becomes part of your security boundary. A successful cro
 ping shows `ttl=63`: the decrement from 64 is the proof the traffic was *routed* through the
 firewall rather than switched around it.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config system zone
@@ -526,7 +526,7 @@ tests.
 expect load-sharing; only the lower-distance route installs — equal distance (ECMP) is
 required to share.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config router static
@@ -593,7 +593,7 @@ addressing behind a routable pool.
 interface IP instead of the pool — the pool binding is what selects the translated
 address.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config firewall policy
@@ -672,7 +672,7 @@ service on a public address.
 still occurs but every service is exposed, not just HTTPS — the VIP as `dstaddr` plus a
 tight service is what scopes exposure.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config firewall policy
@@ -735,7 +735,7 @@ VDOMs partition one appliance into independent security domains.
 **Negative test:** expect traffic to cross VDOMs automatically; it does not without an
 inter-VDOM link — isolation is the point, and inter-VDOM routing is explicit.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 config vdom
@@ -956,7 +956,7 @@ is orphaned. Downstream hosts lose their gateway with no error to explain it.
 config — as proof they are active. `diagnose ip address list` (the running state) is the truth;
 the saved config can describe interfaces the license refuses to instantiate.
 
-**Cleanup:** none — the next two labs rebuild the topology inside the budget.
+**Rollback:** none — the next two labs rebuild the topology inside the budget.
 
 ### Lab 5.9 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
 
@@ -1046,7 +1046,7 @@ end
 instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.8). Physical ports
 are tied to real vNICs and are never purged — that is the whole point of the shift.
 
-**Cleanup:** none — Lab 5.10 validates this topology.
+**Rollback:** none — Lab 5.10 validates this topology.
 
 ### Lab 5.10 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
 
@@ -1100,7 +1100,7 @@ through the same reboot and the segment-A host's gateway ping goes to **100% los
 is the real exam — the VLAN design passes Step 1 and fails Step 2; the physical-port design
 passes both.
 
-**Cleanup:** leave the topology in place — it is the working eval-fit ISFW the rest of your labs
+**Rollback:** leave the topology in place — it is the working eval-fit ISFW the rest of your labs
 can build on.
 
 ## Lab Verification

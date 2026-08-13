@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Hand-coding data access, UI, and business logic in a custom language. That loses Pega's model-driven speed, reuse, and guardrail compliance; the System Architect builds with data types, data pages, model-driven UI, and decision rules on the platform.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

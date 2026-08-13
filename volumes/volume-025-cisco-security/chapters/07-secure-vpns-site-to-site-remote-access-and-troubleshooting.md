@@ -301,7 +301,7 @@ ideal for a fully-meshed private WAN.
 **Negative test:** GETVPN over the public internet breaks (no NAT traversal,
 original header preserved); it is for private (MPLS) transport.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Implement DMVPN (Objective 1.2)
 
@@ -320,7 +320,7 @@ spoke-to-spoke tunnel forming on demand — Phase 3 direct spoke traffic.
 **Negative test:** without `ip nhrp shortcut`/`redirect`, spoke-to-spoke
 hairpins through the hub (Phase 1); Phase 3 needs both.
 
-**Cleanup:** `no interface tunnel0`.
+**Rollback:** `no interface tunnel0`.
 
 ### Lab 7.3 — Implement FlexVPN with local AAA (Objective 1.3)
 
@@ -340,7 +340,7 @@ local AAA — FlexVPN's unified IKEv2 framework for site-to-site and RA.
 no attributes (IP/routes) and the tunnel is useless; authorization is
 required.
 
-**Cleanup:** remove the IKEv2 profile and AAA list.
+**Rollback:** remove the IKEv2 profile and AAA list.
 
 ### Lab 7.4 — Implement AnyConnect IKEv2 on ASA/routers (Objective 2.1)
 
@@ -356,7 +356,7 @@ assigned pool address and group policy — RA VPN over IKEv2/IPsec.
 **Negative test:** an IKEv2 RA connection with no client profile pushing the
 IKEv2 protocol falls back or fails; the profile selects the protocol.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Implement AnyConnect SSL VPN on ASA (Objective 2.2)
 
@@ -372,7 +372,7 @@ default RA VPN where firewalls block IKEv2/IPsec.
 **Negative test:** DTLS blocked by a firewall forces TLS-only, degrading
 real-time performance; permit DTLS/UDP 443 for best experience.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Implement Clientless SSL VPN on ASA (Objective 2.3)
 
@@ -389,7 +389,7 @@ browser — no client install, for limited app access.
 **Negative test:** expecting full network access from clientless; it proxies
 specific apps only, not an IP tunnel.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — Implement FlexVPN on routers (Objective 2.4)
 
@@ -407,7 +407,7 @@ the router-based unified RA VPN.
 **Negative test:** a FlexVPN RA client with no authorization pool gets no
 address; the authorization policy must define one.
 
-**Cleanup:** remove the authorization policy.
+**Rollback:** remove the authorization policy.
 
 ### Lab 7.8 — Troubleshoot IPsec (Objective 3.1)
 
@@ -425,7 +425,7 @@ debug names the mismatch (transform set, proxy ACL, PSK).
 **Negative test:** a mismatched Phase 2 proxy ACL (interesting traffic) leaves
 Phase 1 up but no data flows; check both phases.
 
-**Cleanup:** `undebug all`.
+**Rollback:** `undebug all`.
 
 ### Lab 7.9 — Troubleshoot DMVPN (Objective 3.2)
 
@@ -443,7 +443,7 @@ HUB# debug nhrp packet
 **Negative test:** a tunnel-key mismatch drops NHRP silently; both ends must
 share the key.
 
-**Cleanup:** `undebug all`.
+**Rollback:** `undebug all`.
 
 ### Lab 7.10 — Troubleshoot FlexVPN (Objective 3.3)
 
@@ -460,7 +460,7 @@ HUB# debug crypto ikev2
 **Negative test:** a certificate-authenticated FlexVPN peer with an expired
 cert fails IKEv2 AUTH; check PKI validity/time.
 
-**Cleanup:** `undebug all`.
+**Rollback:** `undebug all`.
 
 ### Lab 7.11 — Troubleshoot AnyConnect IKEv2/SSL (Objective 3.4)
 
@@ -477,7 +477,7 @@ policy, certificate, license limit).
 **Negative test:** hitting the AnyConnect license limit rejects new sessions
 though config is correct; check the license count.
 
-**Cleanup:** `undebug all`.
+**Rollback:** `undebug all`.
 
 ### Lab 7.12 — Troubleshoot Clientless SSL VPN (Objective 3.5)
 
@@ -494,7 +494,7 @@ engine, DNS, plugin) — clientless rewriting is fragile per-app.
 **Negative test:** a complex web app that the rewrite engine cannot proxy
 breaks clientless; use AnyConnect for full access instead.
 
-**Cleanup:** `undebug all`.
+**Rollback:** `undebug all`.
 
 ### Lab 7.13 — Identify GETVPN/FlexVPN/DMVPN/IPsec components (Objective 4.1)
 
@@ -511,7 +511,7 @@ component.
 **Negative test:** confusing DMVPN's NHRP with FlexVPN's IKEv2 config leads to
 the wrong troubleshooting path; the components identify the technology.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.14 — Identify FlexVPN/IPsec/Clientless components (Objective 4.2)
 
@@ -528,7 +528,7 @@ the components an RA VPN is assembled from.
 **Negative test:** a connection profile referencing a missing group policy
 fails; the components must all be present and linked.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.15 — Identify VPN technology from config output I (Objective 4.3)
 
@@ -545,7 +545,7 @@ the configuration.
 **Negative test:** a static crypto map is legacy site-to-site, not DMVPN/
 FlexVPN; the config keywords distinguish them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.16 — Identify VPN technology from config output II (Objective 4.4)
 
@@ -562,7 +562,7 @@ from config.
 **Negative test:** assuming any `webvpn` line means clientless; AnyConnect SSL
 also uses `webvpn` — check for the client-enable line.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.17 — Identify split-tunneling requirements (Objective 4.5)
 
@@ -579,7 +579,7 @@ tunnel-all — the policy deciding what traffic uses the VPN.
 adding latency; split-tunnel sends only corporate traffic over it (with the
 security trade-off).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.18 — Design a site-to-site VPN solution (Objective 4.6)
 
@@ -597,7 +597,7 @@ option.
 **Negative test:** GETVPN over the internet, or a full mesh of static tunnels
 at 100 sites — the anti-patterns each design avoids.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.19 — Design a remote-access VPN solution (Objective 4.7)
 
@@ -614,7 +614,7 @@ app access, no install); plus split-tunnel and posture. Record the driver.
 **Negative test:** clientless for users needing full network access
 under-serves them; match the technology to the access requirement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.20 — Identify ECC algorithms (Objective 4.8)
 
@@ -631,7 +631,7 @@ stronger security at smaller key sizes than RSA/DH group 14.
 **Negative test:** pairing an ECDSA certificate with an RSA-only IKEv2 policy
 fails auth; the algorithms must match end to end.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.21 — Build and troubleshoot a route-based IKEv2 site-to-site VPN (integrative)
 
@@ -677,7 +677,7 @@ licensed appliances: CML routers carry site-to-site IKEv2 fully.
 - A diagnosed phase-2 proxy-ID mismatch, distinguished from a phase-1
   failure.
 
-**Cleanup**
+**Rollback**
 
 7. Remove the lab tunnel configuration or revert to saved baselines, and
    end the CML or dCloud session.

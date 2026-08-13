@@ -43,7 +43,7 @@ EOF
 
 **Negative test.** The policy is not in the workload namespaces — `sudo ip netns exec web nft list ruleset` shows nothing, yet web's traffic is filtered. Enforcement is beside the workload, not on it.
 
-**Cleanup.** Keep the policies.
+**Rollback.** Keep the policies.
 
 ### Exercise 4.2 — The DPU policy holds
 
@@ -69,7 +69,7 @@ hmi->plc OPEN
 
 Each workload reaches only its sanctioned target; the lateral flows are denied at the workload's own DPU.
 
-**Cleanup.** Keep the policies for the out-of-band chapter.
+**Rollback.** Keep the policies for the out-of-band chapter.
 
 ## Summary and Completion Checklist
 

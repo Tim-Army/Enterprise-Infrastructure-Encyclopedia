@@ -166,7 +166,7 @@ guessing.
 weak-Wi-Fi or bad-hop problem is invisible there — ZDX measures the whole path
 end to end for exactly that reason.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Cloud Path and deep tracing (Topic: Diagnosis)
 
@@ -186,7 +186,7 @@ hop, which is the difference between "it's slow" and a root cause.
 issue; it tells you *that* not *where* — diagnosis needs Cloud Path/deep
 tracing.
 
-**Cleanup:** stop the lab deep trace.
+**Rollback:** stop the lab deep trace.
 
 ### Lab 9.3 — Operations: roles, logging, automation (Topic: Platform ops)
 
@@ -207,7 +207,7 @@ reproducible config rather than click-ops on a shared super-admin.
 streaming; a mistake is unattributable and Zscaler is a telemetry silo — roles
 and NSS/LSS are what make operations accountable.
 
-**Cleanup:** revert lab role/log/config changes.
+**Rollback:** revert lab role/log/config changes.
 
 ## Lab Verification
 

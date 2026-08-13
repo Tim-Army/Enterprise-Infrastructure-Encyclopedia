@@ -76,7 +76,7 @@ cat my-gitlab-plan.md
 
 **Negative test:** Buying all five exams at once to "lock in" a plan — every enrollment starts its own 14-day clock, and the ones you cannot reach in two weeks expire unused at $150 each.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam domains
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Studying evenly across all nine chapters for the Agile Portfolio Management exam — its scope is essentially one chapter, so most of that effort earns nothing toward the credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

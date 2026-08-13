@@ -70,7 +70,7 @@ cat my-rubrik-plan.md
 
 **Negative test:** A plan targeting "RCE" or assuming open access — RCE is retired and Rubrik University needs support credentials; verify both before starting.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Currency check
 
@@ -91,7 +91,7 @@ echo "verified 4 Aug 2026 — re-verify before scheduling"
 
 **Negative test:** Studying an old feature list — Rubrik ships new security capabilities frequently; training.rubrik.com is authoritative.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

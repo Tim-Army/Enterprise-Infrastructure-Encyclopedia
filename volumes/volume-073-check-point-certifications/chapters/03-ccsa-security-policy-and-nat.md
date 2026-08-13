@@ -72,7 +72,7 @@ SmartConsole. **Cost:** none.
 **Negative test:** put an **Any/Any/Accept** rule at the top; it shadows everything below — order
 specific rules first.
 
-**Cleanup:** delete the lab rule.
+**Rollback:** delete the lab rule.
 
 ### Lab 3.2 — Add the cleanup rule
 
@@ -89,7 +89,7 @@ specific rules first.
 **Negative test:** rely on the invisible implicit cleanup (no log); add an **explicit** logged
 cleanup rule — you need the logs.
 
-**Cleanup:** keep the cleanup rule (best practice).
+**Rollback:** keep the cleanup rule (best practice).
 
 ### Lab 3.3 — Configure Automatic Hide NAT
 
@@ -106,7 +106,7 @@ Hide NAT.
 **Negative test:** publish an internal server with **Hide** NAT (inbound fails); use **Static** NAT
 for inbound-reachable servers.
 
-**Cleanup:** disable the lab NAT.
+**Rollback:** disable the lab NAT.
 
 ### Lab 3.4 — Install policy
 
@@ -123,7 +123,7 @@ mgmt_cli install-policy policy-package "Standard" access true threat-prevention 
 **Negative test:** edit rules and skip **Install Policy**; nothing changes on the gateway — install
 to enforce.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Read the logs
 
@@ -139,7 +139,7 @@ to enforce.
 **Negative test:** assume a rule works without checking logs; the **logs** are the evidence — read
 them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

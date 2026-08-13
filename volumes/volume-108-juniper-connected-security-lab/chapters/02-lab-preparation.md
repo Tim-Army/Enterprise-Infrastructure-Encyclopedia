@@ -42,7 +42,7 @@ ge-0/0/3.0  up up inet 10.20.4.1/24
 
 **Negative test.** Interfaces without a zone assignment (next chapter) drop all transit traffic — SRX will not forward through an interface that is not in a security zone. Addressing is necessary but not sufficient.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ### Exercise 2.2 — Track 2: build the native zone host
 
@@ -84,7 +84,7 @@ sudo ip netns exec web ping -c1 10.20.9.9 | grep -o "0 received"
 0 received
 ```
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start the workload services
 
@@ -113,7 +113,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.2.10 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

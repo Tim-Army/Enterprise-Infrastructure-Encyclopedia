@@ -132,7 +132,7 @@ git add README.md; git -c user.email=a@b.c -c user.name=lab commit -qm init; git
 
 **Negative test:** commit with nothing staged; there is nothing to commit.
 
-**Cleanup:** `rm -rf "$d"`.
+**Rollback:** `rm -rf "$d"`.
 
 ### Lab 8.2 — GH-900: Work with GitHub repositories (10–15%)
 
@@ -147,7 +147,7 @@ gh repo create lab-demo --private --clone; cd lab-demo; gh repo view --json name
 **Negative test:** push to a repo you have no write access to; permissions block
 it.
 
-**Cleanup:** `gh repo delete lab-demo --yes`.
+**Rollback:** `gh repo delete lab-demo --yes`.
 
 ### Lab 8.3 — GH-900: Collaborate using GitHub (10–15%)
 
@@ -164,7 +164,7 @@ git push -u origin feature; gh pr create --fill
 **Negative test:** commit straight to `main` on a protected branch; branch
 protection requires a PR.
 
-**Cleanup:** `gh pr close feature`.
+**Rollback:** `gh pr close feature`.
 
 ### Lab 8.4 — GH-900: Apply modern development practices (10–15%)
 
@@ -184,7 +184,7 @@ practice.
 
 **Negative test:** store secrets in the YAML; use encrypted Actions secrets.
 
-**Cleanup:** remove the workflow file.
+**Rollback:** remove the workflow file.
 
 ### Lab 8.5 — GH-900: Manage projects with GitHub (5–10%)
 
@@ -201,7 +201,7 @@ Projects.
 **Negative test:** track work only in commit messages; issues/projects give
 visibility and triage.
 
-**Cleanup:** close the issue.
+**Rollback:** close the issue.
 
 ### Lab 8.6 — GH-900: Explore the GitHub community (5–10%)
 
@@ -217,7 +217,7 @@ CONTRIBUTING) — the open-source community practices GH-900 covers.
 **Negative test:** publish a public repo with no LICENSE; without one, others
 have no legal right to reuse it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.7 — GH-100: Manage GitHub identities and access (15–20%)
 
@@ -234,7 +234,7 @@ administration.
 **Negative test:** grant repo access to individuals instead of teams; teams
 scale permission management.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.8 — GH-100: Administer GitHub Enterprise environment (10–15%)
 
@@ -250,7 +250,7 @@ enterprise governance.
 **Negative test:** leave the default repo permission at `write` for all members;
 tighten to `read` and grant up.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.9 — GH-100: Implement secure software development and compliance (25–30%)
 
@@ -268,7 +268,7 @@ SDLC controls.
 **Negative test:** allow force-pushes to `main`; protect history on default
 branches.
 
-**Cleanup:** delete the protection rule.
+**Rollback:** delete the protection rule.
 
 ### Lab 8.10 — GH-100: Manage GitHub Actions (20–25%)
 
@@ -284,7 +284,7 @@ governing CI/CD.
 **Negative test:** allow all actions from any author; restrict to verified/local
 actions for supply-chain safety.
 
-**Cleanup:** revert the policy.
+**Rollback:** revert the policy.
 
 ### Lab 8.11 — GH-100: Monitor and optimize GitHub usage (10–15%)
 
@@ -300,7 +300,7 @@ usage/cost.
 **Negative test:** run every job on the largest runner; right-size runners and
 cache to cut minutes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.12 — GH-300: Use GitHub Copilot responsibly (15–20%)
 
@@ -317,7 +317,7 @@ with.
 **Negative test:** merge Copilot output unreviewed; the developer is accountable
 for the code.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.13 — GH-300: Use GitHub Copilot features (25–30%)
 
@@ -334,7 +334,7 @@ gh copilot suggest "list the 5 largest files in this repo"
 **Negative test:** treat Copilot Chat and code completion as the same feature;
 they have distinct contexts and controls.
 
-**Cleanup:** `gh extension remove gh-copilot`.
+**Rollback:** `gh extension remove gh-copilot`.
 
 ### Lab 8.14 — GH-300: Understand GitHub Copilot data and architecture (10–15%)
 
@@ -351,7 +351,7 @@ architecture.
 **Negative test:** assume Copilot indexes your whole repo by default; it uses
 in-editor context (plus indexing when enabled).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.15 — GH-300: Apply prompt engineering and context crafting (10–15%)
 
@@ -370,7 +370,7 @@ Strong: leading comment + signature + example:
 **Negative test:** prompt with a vague one-liner; specific context yields better
 completions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.16 — GH-300: Improve developer productivity with GitHub Copilot (10–15%)
 
@@ -387,7 +387,7 @@ workflows.
 **Negative test:** accept generated tests without running them; verify they pass
 and are meaningful.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.17 — GH-300: Configure privacy, content exclusions, and safeguards (10–15%)
 
@@ -404,7 +404,7 @@ safeguards.
 **Negative test:** rely on exclusions to protect secrets; never commit secrets in
 the first place.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.18 — GH-500: Describe GitHub Security suites, features, and ecosystem (15–20%)
 
@@ -420,7 +420,7 @@ code scanning — the GHAS suite overview.
 **Negative test:** assume GHAS is on by default for private repos; it must be
 enabled (and licensed).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.19 — GH-500: Configure and use Secret Protection (formerly secret scanning) (15–20%)
 
@@ -438,7 +438,7 @@ leaked credentials.
 **Negative test:** rely on scanning after the fact; push protection stops the
 secret before it lands.
 
-**Cleanup:** disable as needed.
+**Rollback:** disable as needed.
 
 ### Lab 8.20 — GH-500: Configure and use supply chain security (formerly Dependabot/Dependency Review) (15–20%)
 
@@ -459,7 +459,7 @@ security (SBOM, alerts, updates).
 **Negative test:** ignore Dependabot PRs; unpatched dependencies are a top supply-
 chain risk.
 
-**Cleanup:** remove the file.
+**Rollback:** remove the file.
 
 ### Lab 8.21 — GH-500: Configure and use Code Security (formerly Code Scanning with CodeQL) (10–15%)
 
@@ -484,7 +484,7 @@ vulnerabilities.
 **Negative test:** treat every CodeQL alert as critical; triage by severity and
 exploitability.
 
-**Cleanup:** remove the workflow.
+**Rollback:** remove the workflow.
 
 ### Lab 8.22 — GH-500: Security operations: best practices, prioritization, and remediation (15–20%)
 
@@ -500,7 +500,7 @@ workflow.
 **Negative test:** dismiss alerts as "won't fix" without justification; record a
 dismissal reason for audit.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.23 — GH-500: GitHub Security suites administration (10–15%)
 
@@ -517,7 +517,7 @@ gh api -X PATCH orgs/{org} \
 **Negative test:** enable per repo forever; set org defaults so new repos inherit
 protection.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.24 — GH-600: Prepare agent architecture and SDLC processes (15–20%)
 
@@ -534,7 +534,7 @@ development architecture.
 **Negative test:** let an agent merge to `main` unattended; require review and
 CI gates.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.25 — GH-600: Implement tool use and environment interaction (20–25%)
 
@@ -551,7 +551,7 @@ interaction.
 **Negative test:** hand the agent a classic PAT with full scopes; use
 fine-grained, minimal permissions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.26 — GH-600: Manage memory, state, and execution (10–15%)
 
@@ -567,7 +567,7 @@ Execution: idempotent steps + checkpoints so a rerun does not duplicate side eff
 **Negative test:** stuff all history into the prompt; summarize/retrieve to stay
 within context limits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.27 — GH-600: Perform evaluation, error analysis, and tuning (15–20%)
 
@@ -584,7 +584,7 @@ agent quality.
 **Negative test:** tune on vibes with no fixed test set; regressions hide without
 measurement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.28 — GH-600: Orchestrate multi-agent coordination (15–20%)
 
@@ -600,7 +600,7 @@ Terminate on success criteria or a max-step budget
 **Negative test:** run agents in parallel on shared state with no locking; serialize
 or partition to avoid conflicts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.29 — GH-600: Implement guardrails and accountability (10–15%)
 
@@ -617,7 +617,7 @@ accountability for agents.
 **Negative test:** allow autonomous writes with no approval or logging; agents
 need bounded, auditable authority.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.30 — GH-200: Author and manage workflows (20–25%)
 
@@ -637,7 +637,7 @@ managing workflow dependencies.
 **Negative test:** run `deploy` without `needs: test`; deploy runs even when tests
 fail.
 
-**Cleanup:** remove the workflow.
+**Rollback:** remove the workflow.
 
 ### Lab 8.31 — GH-200: Consume and troubleshoot workflows (15–20%)
 
@@ -655,7 +655,7 @@ troubleshooting workflows.
 **Negative test:** re-run the whole workflow when only one job failed; use
 `--failed` to save minutes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.32 — GH-200: Author and maintain actions (15–20%)
 
@@ -676,7 +676,7 @@ maintaining custom actions.
 **Negative test:** publish an action with no version tag; consumers pin to a
 mutable branch and break unpredictably.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.33 — GH-200: Manage GitHub Actions for the enterprise (20–25%)
 
@@ -693,7 +693,7 @@ enterprise Actions governance (runners, permissions, policies).
 **Negative test:** grant `write` default workflow permissions org-wide; scope to
 read and elevate per job.
 
-**Cleanup:** revert the permission.
+**Rollback:** revert the permission.
 
 ### Lab 8.34 — GH-200: Secure and optimize automation (10–15%)
 
@@ -712,7 +712,7 @@ supply chain and optimizing run time.
 **Negative test:** reference `@main` for a third-party action; a compromised main
 runs in your pipeline — pin to a SHA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

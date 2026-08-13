@@ -217,7 +217,7 @@ into a programmable REST/JSON-RPC endpoint scripts can drive.
 **Negative test:** call NX-API without `feature nxapi` enabled; the connection
 is refused — the feature must be on.
 
-**Cleanup:** none (read-only call).
+**Rollback:** none (read-only call).
 
 ### Lab 6.2 — Evaluate automation and orchestration technologies (DCCOR Objective 4.2)
 
@@ -238,7 +238,7 @@ state and converges, configuration management runs tasks.
 next `plan` shows the drift as changes to reconcile — state tracking is the
 difference from a fire-and-forget script.
 
-**Cleanup:** none (plan does not modify infrastructure).
+**Rollback:** none (plan does not modify infrastructure).
 
 ### Lab 6.3 — Describe OpenConfig, IETF, and native YANG models (DCNAUTO Objective 1.1)
 
@@ -261,7 +261,7 @@ know when each applies.
 **Negative test:** request a model the switch does not implement; NETCONF
 returns `data-missing` — you can only drive models the device supports.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Describe ACI network-centric mode: EPG, BD, contracts, VRFs (DCNAUTO Objective 1.2)
 
@@ -280,7 +280,7 @@ network-centric mode each VLAN becomes a BD+EPG and contracts replace ACLs, the
 network-centric mode still enforces the ACI allow-list model, unlike a flat
 VLAN.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — Describe DPUs in data center network switches (DCNAUTO Objective 1.3)
 
@@ -299,7 +299,7 @@ offloads networking, security, and storage services from the host CPU
 fall back to host CPU, consuming cores the workload needs — the contrast is the
 DPU's value.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.6 — Describe NETCONF, gNMI, gRPC, and gNOI (DCNAUTO Objective 1.4)
 
@@ -322,7 +322,7 @@ objective.
 **Negative test:** call gNMI without `feature grpc`; the gRPC dial fails — each
 protocol needs its feature enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.7 — Construct a gRPC payload from a YANG module (DCNAUTO Objective 1.5)
 
@@ -343,7 +343,7 @@ requests instead of guessing structure.
 **Negative test:** send a payload with a path not in the model; the device
 rejects it with a schema error — the YANG model is the contract.
 
-**Cleanup:** clear the test description.
+**Rollback:** clear the test description.
 
 ### Lab 6.8 — Describe Infrastructure as Code and GitOps (DCNAUTO Objective 2.1)
 
@@ -363,7 +363,7 @@ desired-state authority a pipeline reconciles onto the fabric.
 **Negative test:** change the device out-of-band; without a reconcile pipeline
 the repo and fabric diverge — GitOps requires the pipeline to close the loop.
 
-**Cleanup:** `cd .. && rm -rf fabric-iac`.
+**Rollback:** `cd .. && rm -rf fabric-iac`.
 
 ### Lab 6.9 — Construct Jinja2 configuration templates (DCNAUTO Objective 2.2)
 
@@ -390,7 +390,7 @@ config, the core of templated automation.
 raises `UndefinedError` (with `StrictUndefined`) — catching template errors
 before push is the point.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.10 — Construct an Ansible playbook with controller and device collections (DCNAUTO Objective 2.3)
 
@@ -420,7 +420,7 @@ collections drive box-level config, and both are idempotent.
 **Negative test:** run the device task against a switch already having VLAN 30;
 `changed=0` — merged state only acts on drift.
 
-**Cleanup:** re-run the device task with `state: deleted` for VLAN 30.
+**Rollback:** re-run the device task with `state: deleted` for VLAN 30.
 
 ### Lab 6.11 — Construct a Terraform plan with controller and device providers (DCNAUTO Objective 2.4)
 
@@ -443,7 +443,7 @@ box-level resources; both converge to declared state.
 **Negative test:** `plan` again after apply/import; `0 to add` — state tracking
 prevents duplicate creation.
 
-**Cleanup:** `terraform destroy` or delete tenant `TF-DC`.
+**Rollback:** `terraform destroy` or delete tenant `TF-DC`.
 
 ### Lab 6.12 — Troubleshoot Ansible and Terraform automation (DCNAUTO Objective 2.5)
 
@@ -462,7 +462,7 @@ the layer.
 **Negative test:** rewrite playbook logic when the cause is a `403` (account
 lacks a role) — check auth and reachability before logic.
 
-**Cleanup:** fix the named cause; re-run to a clean result.
+**Rollback:** fix the named cause; re-run to a clean result.
 
 ### Lab 6.13 — Python automation with ncclient (DCNAUTO Objective 3.1)
 
@@ -485,7 +485,7 @@ semantics.
 **Negative test:** `edit-config` malformed XML; NETCONF returns an `rpc-error`
 the script must handle — structured errors, unlike screen-scraping.
 
-**Cleanup:** discard any candidate changes (no commit).
+**Rollback:** discard any candidate changes (no commit).
 
 ### Lab 6.14 — Day-0 provisioning with POAP (DCNAUTO Objective 3.2)
 
@@ -504,7 +504,7 @@ zero-touch device-level provisioning DCNAUTO expects.
 **Negative test:** a switch with a saved startup-config skips POAP entirely —
 POAP runs only on an unprovisioned box.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.15 — On-box programmability and automation with NX-OS (DCNAUTO Objective 3.3)
 
@@ -524,7 +524,7 @@ including scheduled and event-driven automation.
 **Negative test:** call `cli()` with an invalid command; it raises an exception
 the script must catch — on-box scripts still get CLI errors.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.16 — Describe templates and policies in Nexus Dashboard (DCNAUTO Objective 3.4)
 
@@ -545,7 +545,7 @@ consistently.
 **out-of-sync** against the template — the template, not the box, is the
 authority.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.17 — Construct network configuration templates with Nexus Dashboard (DCNAUTO Objective 3.5)
 
@@ -566,7 +566,7 @@ intent, not device syntax.
 **Negative test:** POST with a VLAN outside the fabric's pool; NDFC rejects it —
 templates validate against fabric settings.
 
-**Cleanup:** DELETE the `AUTO-NET` network.
+**Rollback:** DELETE the `AUTO-NET` network.
 
 ### Lab 6.18 — Describe the capabilities and features of NX-API (DCNAUTO Objective 3.6)
 
@@ -587,7 +587,7 @@ interface over HTTP(S).
 **Negative test:** call the DME path with a wrong class; the switch returns an
 error — the DME model, like ACI's, is closed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.19 — Describe network topology simulation for operations (DCNAUTO Objective 4.1)
 
@@ -608,7 +608,7 @@ before touching production.
 simulation stage; there is no safe rollback rehearsal — simulation is the safety
 net the objective teaches.
 
-**Cleanup:** stop the test simulation.
+**Rollback:** stop the test simulation.
 
 ### Lab 6.20 — Change validation with pyATS (DCNAUTO Objective 4.2)
 
@@ -629,7 +629,7 @@ check, the operational guardrail for automation.
 surfaces the unexpected delta — validation catches side effects a blind push
 misses.
 
-**Cleanup:** `rm -rf pre post`.
+**Rollback:** `rm -rf pre post`.
 
 ### Lab 6.21 — Describe model-driven telemetry architecture (DCNAUTO Objective 4.3)
 
@@ -650,7 +650,7 @@ from.
 **Negative test:** a subscription referencing a nonexistent sensor-group streams
 nothing — every component must resolve.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.22 — Configure a model-driven telemetry subscription on NX-OS (DCNAUTO Objective 4.4)
 
@@ -678,7 +678,7 @@ gRPC — the configured push pipeline a collector consumes.
 `show telemetry transport` shows the connection failing — telemetry is only as
 good as the receiver.
 
-**Cleanup:** `no feature telemetry`.
+**Rollback:** `no feature telemetry`.
 
 ### Lab 6.23 — Integrate with a network source of truth (DCNAUTO Objective 4.5)
 
@@ -697,7 +697,7 @@ inventory and intended state, so automation and reality stay aligned.
 **Negative test:** run automation from a stale static inventory; it targets
 decommissioned or missing devices — the SoT integration is what prevents drift.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.24 — Python script retrieving health via CLI and Nexus Dashboard (DCNAUTO Objective 4.6)
 
@@ -724,7 +724,7 @@ fabric-level signals programmatically.
 **Negative test:** an expired ND token returns `401`; the script must
 re-authenticate — robust health collectors handle token refresh.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.25 — Troubleshoot packet flow for containerized workloads on Linux (DCNAUTO Objective 4.7)
 
@@ -745,7 +745,7 @@ traverses to reach the fabric.
 **Negative test:** a pod whose veth is not enslaved to the bridge has no
 connectivity; `bridge link` omits it — the missing enslavement is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.26 — Describe AI-assisted code development for network automation (DCNAUTO Objective 5.1)
 
@@ -766,7 +766,7 @@ accelerates authoring, but the objective is that generated automation is
 module or wrong idempotence can change unintended state — validation is
 mandatory, not optional.
 
-**Cleanup:** none (check mode makes no changes).
+**Rollback:** none (check mode makes no changes).
 
 ### Lab 6.27 — Describe security risks in AI-based network automation (DCNAUTO Objective 5.2)
 
@@ -786,7 +786,7 @@ and dry-run are the controls.
 may be logged or retained — never send secrets to an AI service, the core risk
 this objective names.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.28 — Describe AI-agent integration with devices, controllers, and platforms (DCNAUTO Objective 5.3)
 
@@ -807,7 +807,7 @@ channel.
 controller loses RBAC and audit — integration must preserve the governance the
 platform APIs enforce.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

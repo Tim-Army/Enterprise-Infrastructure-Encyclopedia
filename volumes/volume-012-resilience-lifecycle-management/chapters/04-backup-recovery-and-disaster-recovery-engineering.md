@@ -332,7 +332,7 @@ tar -tzf "$LATEST" > /dev/null 2>&1 && echo "UNEXPECTED: archive still passed in
 
 Confirm the truncated archive fails the `tar -tzf` integrity check with a message such as `truncated gzip input`, rather than silently appearing to succeed — this is the specific failure mode the verification step exists to catch before a real restore is attempted against it. If your `truncate` implementation does not support the `-s -200` relative-size syntax, remove the same number of bytes with an equivalent tool (for example, `head -c -200 "$LATEST" > "$LATEST.tmp" && mv "$LATEST.tmp" "$LATEST"` on GNU coreutils).
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 cd ~ && rm -rf ~/labs/resilience-ch4

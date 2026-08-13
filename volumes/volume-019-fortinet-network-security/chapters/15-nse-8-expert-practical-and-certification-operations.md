@@ -146,7 +146,7 @@ and troubleshoot the whole path under time pressure.
 change fixed (or broke) what — expert practice is one hypothesis, one change, re-test, as
 `diagnose debug flow` guides you.
 
-**Cleanup:** revert the injected fault and tear down lab-only tunnels/policies.
+**Rollback:** revert the injected fault and tear down lab-only tunnels/policies.
 
 ### Lab 15.2 — Design Exercise: multi-site secure architecture (Topic: NSE 8 design)
 
@@ -177,7 +177,7 @@ the pieces form one coherent Security Fabric — the deliverable NSE 8 actually 
 model, inspection depth, scale strategy), and an unexplained config cannot be evaluated or
 maintained.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

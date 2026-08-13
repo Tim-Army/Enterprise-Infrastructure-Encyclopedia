@@ -82,7 +82,7 @@ is **withheld/redacted** — FOIA operationalized.
 **Negative test:** claim FOIA-ready with no catalog entry; if records cannot be **found** the
 deadline is missed — catalog first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Classify PII under the Privacy Act
 
@@ -105,7 +105,7 @@ driving access and disclosure rules.
 **Negative test:** treat SSN as ordinary data; the **Privacy Act** requires protection —
 classify and restrict PII.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Records-retention schedule
 
@@ -129,7 +129,7 @@ defensible schedule.
 **Negative test:** delete a case file at year 2; its schedule says **7 years** — early
 destruction violates the Federal Records Act.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Map security controls (FISMA/NIST)
 
@@ -152,7 +152,7 @@ compliance made explicit.
 **Negative test:** host agency data in a non-FedRAMP cloud; federal data requires **FedRAMP
 authorization** — verify before onboarding.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Open-data compliance check
 
@@ -174,7 +174,7 @@ and openly licensed** — the Evidence Act / OPEN Data Act bar.
 **Negative test:** publish a PDF that skipped privacy review; open data must be
 **machine-readable and privacy-cleared** — fix both before publishing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

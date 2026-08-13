@@ -75,7 +75,7 @@ PY
 **Negative test:** hand-code the Teams REST call when a **spoke** exists; that's more work and less
 maintainable — use the spoke.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Define a Performance Analytics indicator
 
@@ -95,7 +95,7 @@ PY
 **Negative test:** use a point-in-time **report** to show improvement over months; you need **PA
 snapshots** for trend — use PA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Apply Now Assist responsibly
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** auto-send AI-drafted customer replies with no review; errors reach customers — keep
 a **human in the loop**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Choose Reporting vs Performance Analytics
 
@@ -138,7 +138,7 @@ choice.
 **Negative test:** answer a **trend** question with a point-in-time report; it can't show the trend —
 use PA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

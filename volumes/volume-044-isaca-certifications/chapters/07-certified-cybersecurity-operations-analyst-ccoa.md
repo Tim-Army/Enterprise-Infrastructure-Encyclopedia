@@ -96,7 +96,7 @@ fundamentals (Domain 1) an analyst reasons from.
 **Negative test:** analyze alerts without knowing the environment's normal;
 **baseline** the technology first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — CCOA: Cybersecurity Principles and Risks
 
@@ -117,7 +117,7 @@ foundation of Domain 2.
 **Negative test:** treat all incidents as confidentiality breaches; classify by
 which CIA property is threatened to pick the right control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — CCOA: Adversarial Tactics, Techniques and Procedures
 
@@ -138,7 +138,7 @@ of Domain 3.
 **Negative test:** track only file-hash indicators; **TTPs** catch variants that
 change hashes — analyze behavior.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — CCOA: Incident Detection and Response
 
@@ -155,7 +155,7 @@ detect-and-respond core of Domain 4.
 **Negative test:** alert on every failure; tune thresholds so true attacks stand
 out — then respond.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — CCOA: Securing Assets
 
@@ -172,7 +172,7 @@ asset-securing domain (D5) that shrinks what must be monitored.
 **Negative test:** monitor a huge attack surface instead of reducing it; **harden
 first**, then monitor what remains.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

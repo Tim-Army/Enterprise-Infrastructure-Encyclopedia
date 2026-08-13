@@ -482,7 +482,7 @@ computes and applies the diff, and a converged state is a no-op plan.
 and plans to recreate it — Terraform reconciles real state to the declared state, catching
 out-of-band changes.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color`.
+**Rollback:** `terraform destroy -auto-approve -no-color`.
 
 ### Lab 2.2 — State management (Topic: State)
 
@@ -504,7 +504,7 @@ with locking so concurrent applies do not corrupt it (local state is fine only f
 from reality and the next apply misbehaves — change resources through Terraform, never by editing
 state directly (use `terraform state` subcommands if you must).
 
-**Cleanup:** `terraform destroy -auto-approve -no-color`.
+**Rollback:** `terraform destroy -auto-approve -no-color`.
 
 ### Lab 2.3 — Variables and outputs (Topic: Parameterization)
 
@@ -531,7 +531,7 @@ expose values for other configs/pipelines to consume.
 **Negative test:** hard-code the environment string in ten places instead of a variable; a change
 means editing all ten — variables centralize the value so one input drives the whole config.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color; rm -f ~/tf/vars.tf`.
+**Rollback:** `terraform destroy -auto-approve -no-color; rm -f ~/tf/vars.tf`.
 
 ### Lab 2.4 — Reusable modules (Topic: Modules)
 
@@ -558,7 +558,7 @@ instantiated many times consistently.
 **Negative test:** copy-paste the same resource block for every instance instead of a module;
 they drift as edits land inconsistently — a module is the single definition every caller shares.
 
-**Cleanup:** `terraform destroy -auto-approve -no-color; rm -rf ~/tf`.
+**Rollback:** `terraform destroy -auto-approve -no-color; rm -rf ~/tf`.
 
 ## Lab Verification
 

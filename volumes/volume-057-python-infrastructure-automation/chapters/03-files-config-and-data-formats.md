@@ -63,7 +63,7 @@ print(p.suffix, p.parent, p.name)   # .yaml configs/prod app.yaml
 **Negative test:** join paths with `+ "/"` strings; **pathlib** handles separators
 portably (Windows/POSIX) — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Read/write JSON
 
@@ -82,7 +82,7 @@ print(back["tags"][0])   # prod
 **Negative test:** build JSON by string formatting; **`json.dumps`** escapes correctly —
 never hand-format JSON.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Parse YAML config
 
@@ -99,7 +99,7 @@ print(doc["service"]["replicas"])   # 3
 **Negative test:** use `yaml.load` on untrusted input; it can **construct arbitrary
 objects** — always `safe_load`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Process CSV inventory
 
@@ -117,7 +117,7 @@ print(rows[1]["ip"])   # 10.0.0.2
 **Negative test:** `split(",")` the lines by hand; **`csv`** handles quoting/escaping —
 use it for real data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

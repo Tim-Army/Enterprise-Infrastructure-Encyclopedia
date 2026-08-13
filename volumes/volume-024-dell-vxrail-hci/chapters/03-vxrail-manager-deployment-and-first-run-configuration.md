@@ -328,7 +328,7 @@ nodes appearing confirms the network prep (Chapter 02) is correct and the build 
 uplink/MTU is wrong — the discovery count is the immediate check that the physical/network layer is
 right before you deploy.
 
-**Cleanup:** none (proceed to Lab 3.2).
+**Rollback:** none (proceed to Lab 3.2).
 
 ### Lab 3.2 — Run the deployment wizard (Topic: Cluster build)
 
@@ -350,7 +350,7 @@ vSAN cluster.
 partway and must be cleaned up — let validation pass cleanly before starting, because a mid-build
 failure is costly to unwind.
 
-**Cleanup:** none (proceed to validation).
+**Rollback:** none (proceed to validation).
 
 ### Lab 3.3 — Validate the built cluster (Topic: Deployment validation)
 
@@ -369,7 +369,7 @@ and the vSphere Client) confirms the build succeeded before any workload is plac
 **Negative test:** place production VMs immediately without checking vSAN health; a disk-group or
 network warning left from deployment degrades storage under load — validate health first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — First post-deployment tasks (Topic: Post-deployment)
 
@@ -391,7 +391,7 @@ a freshly built cluster into a production-ready, supported, monitored platform.
 reviewed storage policy, and no monitoring; the first hardware fault has no proactive case and the
 default policy may not match your resilience needs — post-deploy tasks are what make it operable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

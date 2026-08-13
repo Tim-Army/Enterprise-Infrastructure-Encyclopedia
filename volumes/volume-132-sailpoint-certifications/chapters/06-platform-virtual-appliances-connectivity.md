@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Assigning every source to one cluster to "keep it simple" — the blast radius of a single VA cluster failure becomes the entire identity program, and geographically distant sources aggregate over a long network path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Choose the connectivity path per source
 
@@ -104,7 +104,7 @@ EOF
 
 **Negative test:** Granting Domain Admin to the AD connector service account "so provisioning always works" — you have created a highly privileged credential stored in a connector configuration, which is exactly the credential an attacker targets to grant themselves access everywhere.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Troubleshoot a failing source
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Starting with the schema because the error mentions attributes — if the VA is down, every source reports errors and none of them are about schema.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -169,7 +169,7 @@ iosStoreApp, etc.) and publishing state — the app catalog Intune manages.
 **Negative test:** query for an app that was never added; nothing returns —
 only added apps appear.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Reason about a Win32 detection rule (Topic: Win32 apps)
 
@@ -189,7 +189,7 @@ trustworthy.
 (e.g., a system DLL); every device reports installed even without the app —
 detection must be specific to the app.
 
-**Cleanup:** correct or remove the test detection rule.
+**Rollback:** correct or remove the test detection rule.
 
 ### Lab 7.3 — Create an iOS App Protection Policy (Topic: MAM for BYOD)
 
@@ -210,7 +210,7 @@ device.
 applies only to the corporate (managed) account context — MAM protects the
 corporate identity's data.
 
-**Cleanup:** remove the app protection policy.
+**Rollback:** remove the app protection policy.
 
 ### Lab 7.4 — Check Autopilot device registration (Topic: Windows Autopilot)
 
@@ -228,7 +228,7 @@ device provisions itself on first boot.
 **Negative test:** boot a device whose hardware hash was never imported; it
 goes through normal OOBE, not Autopilot — registration is the prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

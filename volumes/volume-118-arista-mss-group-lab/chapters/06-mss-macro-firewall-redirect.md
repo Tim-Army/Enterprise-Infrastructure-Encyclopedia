@@ -63,7 +63,7 @@ sudo ip netns exec web bash -c 'printf "SELECT 1\n" | nc -w2 10.120.2.20 5432 &&
 sudo ip netns exec web bash -c 'printf "DROP TABLE users\n" | nc -w2 10.120.2.20 5432'; sudo grep -m1 FW-DROP /tmp/mssfw.log
 ```
 
-**Cleanup.** Keep the redirect.
+**Rollback.** Keep the redirect.
 
 ### Exercise 6.2 — Other flows are not redirected
 
@@ -82,7 +82,7 @@ sudo grep -c . /tmp/mssfw.log
 
 **Negative test.** Redirecting *every* flow through one firewall would make it a bottleneck; MSS macro is used selectively, with MSS-Group handling the bulk at line rate.
 
-**Cleanup.** Keep both policies for verification.
+**Rollback.** Keep both policies for verification.
 
 ## Summary and Completion Checklist
 

@@ -38,7 +38,7 @@ A `403` from the sidecar is policy working; the usual cause is the wrong princip
 
 **Negative test.** "Fix" a 403 by deleting the AuthorizationPolicy. You removed the authorization to make a denied request pass — which was the abuse. Fix the principal or the operation instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Safe rollback
 
@@ -62,7 +62,7 @@ kubectl patch peerauthentication default -n istio-system --type merge -p '{"spec
 
 **Negative test.** Leaving the mesh in PERMISSIVE "to be safe" removes the mTLS guarantee — plaintext to meshed services is accepted again. Restore STRICT when done.
 
-**Cleanup.** Ensure STRICT mTLS is restored.
+**Rollback.** Ensure STRICT mTLS is restored.
 
 ### Lab 9.3 — Teardown
 
@@ -81,7 +81,7 @@ Optionally remove the `kind`, `kubectl`, and `istioctl` binaries.
 
 **Negative test.** Deleting the kind containers by hand leaves metadata behind; a later recreate may conflict. Use `kind delete cluster`.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

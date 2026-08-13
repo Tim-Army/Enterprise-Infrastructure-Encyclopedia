@@ -47,7 +47,7 @@ aws logs filter-log-events --log-group-name /vpc/microseg \
 # empty — this log captures REJECT only; switch traffic-type to ALL to see accepts
 ```
 
-**Cleanup.** Flow logs and the log group are deleted in Chapter 09.
+**Rollback.** Flow logs and the log group are deleted in Chapter 09.
 
 ### Exercise 8.2 — Azure NSG / VNet Flow Logs
 
@@ -85,7 +85,7 @@ az network watcher flow-log show -l eastus -g microseg-lab-rg --name dbflow --qu
 false
 ```
 
-**Cleanup.** The storage account and flow log are removed in Chapter 09.
+**Rollback.** The storage account and flow log are removed in Chapter 09.
 
 ### Exercise 8.3 — GCP Firewall Rules Logging
 
@@ -117,7 +117,7 @@ gcloud logging read 'jsonPayload.rule_details.action=ALLOW AND jsonPayload.conne
 network:microseg/firewall:allow-web-db-sa
 ```
 
-**Cleanup.** Logging is disabled implicitly when the rules are deleted in Chapter 09.
+**Rollback.** Logging is disabled implicitly when the rules are deleted in Chapter 09.
 
 ## Observe, then enforce
 

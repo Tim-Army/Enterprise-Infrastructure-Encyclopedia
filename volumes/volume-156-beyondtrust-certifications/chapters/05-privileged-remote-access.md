@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Giving a third-party vendor a VPN account and the target's admin password. That grants broad network reach and leaves a credential on an endpoint you don't control; PRA brokers access to just the target and injects the credential so it is never disclosed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

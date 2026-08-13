@@ -356,7 +356,7 @@ the tool insertion.
 or upgrade drops the production link — the fabric's inline-tool insertion is what lets you
 add heartbeat and bypass around the tool (Labs 7.2–7.3).
 
-**Cleanup:** `no map-passall alias inline-map`; `no inline-tool alias itool1`;
+**Rollback:** `no map-passall alias inline-map`; `no inline-tool alias itool1`;
 `no inline-network alias inet1`.
 
 ### Lab 7.2 — Heartbeat and failover action (Topic: Production safety)
@@ -383,7 +383,7 @@ fails; production traffic is dropped and the link goes down — the failover act
 deliberate choice between availability (`tool-bypass`) and security (`drop`), and it must be
 set consciously.
 
-**Cleanup:** revert to the lab's intended failover policy; disable heartbeat if lab-only.
+**Rollback:** revert to the lab's intended failover policy; disable heartbeat if lab-only.
 
 ### Lab 7.3 — Physical and logical bypass (Topic: Bypass protection)
 
@@ -407,7 +407,7 @@ failures — layered bypass keeps the production link up across the full range o
 down hard — physical bypass (a protected combo module) is what survives a total node failure,
 which logical bypass alone cannot.
 
-**Cleanup:** restore the intended bypass configuration.
+**Rollback:** restore the intended bypass configuration.
 
 ### Lab 7.4 — Inline TLS/SSL decryption (Topic: TLS decryption)
 
@@ -431,7 +431,7 @@ encrypted threats.
 distribution, and some tools cannot decrypt at all — centralizing decryption at the fabric is
 the efficient, consistent approach (mind privacy/compliance policy on what may be decrypted).
 
-**Cleanup:** `no gsop alias ssl-inline`; `no gsgroup alias gsg-ssl`; remove the decryption
+**Rollback:** `no gsop alias ssl-inline`; `no gsgroup alias gsg-ssl`; remove the decryption
 profile if lab-only.
 
 ## Lab Verification

@@ -47,7 +47,7 @@ kubectl exec -n dc web -- nc -z -w2 plc.ot 502 || echo "web -> plc BLOCKED"
 
 **Negative test.** Delete `default-deny-ingress` in `ot` and re-run; `web → plc` reaches again, because without a default-deny the allow rules are additive over an allow-all base. Default-deny is the floor everything else builds on. Re-apply it.
 
-**Cleanup.** Keep the OT policies.
+**Rollback.** Keep the OT policies.
 
 ### Lab 7.2 — A cluster-wide guardrail with GlobalNetworkPolicy
 
@@ -94,7 +94,7 @@ kubectl exec -n dc web -- nc -z -w2 db.dc 5432 && echo "web -> db still ALLOWED"
 
 **Negative test.** Write a permissive namespace `NetworkPolicy` allowing everything to `db`, then re-test `hmi → db`; it stays denied, because the `security` tier is evaluated before the default tier. Tiers are how a platform team keeps guardrails an app team cannot accidentally override.
 
-**Cleanup.** Keep the guardrail.
+**Rollback.** Keep the guardrail.
 
 ### Lab 7.3 — Policy survives pod restart
 
@@ -121,7 +121,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db STILL BLOCKED"
 
 **Negative test.** Imagine you had written the rule against the old pod IP. After this restart it would either fail open (allow a new pod that reused the IP) or fail closed (block the legitimate db). Labels avoid both.
 
-**Cleanup.** Keep everything for Chapter 08.
+**Rollback.** Keep everything for Chapter 08.
 
 ## Summary and Completion Checklist
 

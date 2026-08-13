@@ -44,7 +44,7 @@ show application status ise
 
 **Negative test.** Browsing to the UI before services finish shows a "still initializing" page — ISE is slow to start; wait for the Application Server to report `running`, not just the OS login.
 
-**Cleanup.** Leave ISE running; it is the policy engine for the whole lab.
+**Rollback.** Leave ISE running; it is the policy engine for the whole lab.
 
 ### Exercise 2.2 — Track 1: bring up the IOS-XE enforcer
 
@@ -73,7 +73,7 @@ The enforcer can reach ISE (required for RADIUS and SGACL download).
 
 **Negative test.** With `aaa new-model` absent, later `cts` and RADIUS commands are rejected — TrustSec rides on the AAA subsystem, so enable it first.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ### Exercise 2.3 — Track 2: build the native enforcement host
 
@@ -127,7 +127,7 @@ sudo ip netns exec web ping -c1 10.10.1.99 | grep -o "0 received"
 
 A non-existent endpoint is unreachable — the fabric only carries what you created.
 
-**Cleanup.** Namespaces persist for the lab. Teardown is Chapter 09.
+**Rollback.** Namespaces persist for the lab. Teardown is Chapter 09.
 
 ### Exercise 2.4 — Start the workload services
 
@@ -156,7 +156,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.10.1.20 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Deduplicating within a single client only, rather than globally across the MediaAgent — you lose exactly the cross-server OS savings that produce most of the ratio.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Order of operations: dedup before encryption
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Enabling client-side encryption before deduplication to "be secure by default" — you get the same security posture and lose the entire deduplication benefit, potentially multiplying the storage bill several-fold.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Size the DDB and decide when to seal
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Sealing the DDB routinely "to keep it tidy" — every seal discards deduplication against all prior data, so the next backups store full baselines again and storage jumps.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

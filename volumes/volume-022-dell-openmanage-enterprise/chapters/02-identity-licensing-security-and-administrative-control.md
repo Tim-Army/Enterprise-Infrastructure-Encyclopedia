@@ -408,7 +408,7 @@ can do and which devices it touches.
 **Negative test:** give every operator the Administrator role with global scope; any one can
 push firmware fleet-wide or change appliance security — role + scope is what contains that.
 
-**Cleanup:** delete the lab user.
+**Rollback:** delete the lab user.
 
 ### Lab 2.2 — Directory integration (Topic: Centralized identity)
 
@@ -428,7 +428,7 @@ in AD drive OME access, rather than maintaining local accounts per appliance.
 central revocation and per-person attribution — directory-backed groups make access consistent and
 auditable.
 
-**Cleanup:** remove the imported directory group/mapping if lab-only.
+**Rollback:** remove the imported directory group/mapping if lab-only.
 
 ### Lab 2.3 — Replace the TLS certificate (Topic: Login security)
 
@@ -453,7 +453,7 @@ and drives firmware, so its TLS identity must be trusted, not clicked-through.
 warning; that habit hides a real man-in-the-middle — a properly signed certificate removes the
 warning so a genuine one stands out.
 
-**Cleanup:** none (keep the trusted certificate).
+**Rollback:** none (keep the trusted certificate).
 
 ### Lab 2.4 — Licensing tiers (Topic: Licensing)
 
@@ -473,7 +473,7 @@ templates, configuration compliance, and deeper automation used in later chapter
 only base licensing; those features are gated — the per-device advanced license (this lab) is what
 enables Chapter 08's template/compliance work.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

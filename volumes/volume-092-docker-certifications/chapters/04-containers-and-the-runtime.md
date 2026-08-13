@@ -74,7 +74,7 @@ api   0.0.0.0:9000->80/tcp   Up 2 seconds
 
 **Negative test:** run it foreground without `-d` and lose the terminal; use **`-d`** for services.
 
-**Cleanup:** (removed at the end of Lab 4.4).
+**Rollback:** (removed at the end of Lab 4.4).
 
 ### Lab 4.2 — Exec and read logs
 
@@ -97,7 +97,7 @@ inspection.
 **Negative test:** rebuild the image to add a debug echo; use **`docker exec`** to inspect a running
 container.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.3 — Apply resource limits
 
@@ -117,7 +117,7 @@ mem=268435456 cpus=500000000
 **Negative test:** run untrusted or heavy containers with **no limits**; set `--memory`/`--cpus` so one
 container cannot starve the host.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.4 — Add a health check
 
@@ -140,7 +140,7 @@ it.
 **Negative test:** assume a running container is serving traffic; a **health check** confirms it actually
 responds.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f api web2

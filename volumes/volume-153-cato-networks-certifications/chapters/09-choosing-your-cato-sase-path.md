@@ -90,7 +90,7 @@ EOF
 
 **Negative test:** Skipping SASE Expert Level 1 for an advanced course. The advanced courses assume the SASE concept Level 1 grounds; even for experienced engineers it is the sensible free starting point.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position SASE in the network-and-security career
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Treating SASE as a narrow product skill. It sits at the convergence of networking and security, is identity-driven (ZTNA), and connects users to cloud workloads — isolating it undersells both the discipline and the career at the industry's convergence point.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -251,6 +251,8 @@ reads `folder` or `organization` if the project sits in a hierarchy, and
 is blank for a standalone project — which is itself the answer to "is
 this project governed from above?"
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 3.2 — Managing billing configuration *(guide topic 1.2)*
 
 ```bash
@@ -263,6 +265,8 @@ gcloud billing projects describe "$PROJECT_ID" \
 fix it before continuing. Note the billing account is a *separate* object
 from the project, which is why budgets attach to it.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 3.3 — Planning and configuring compute resources *(guide topic 2.1)*
 
 ```bash
@@ -273,6 +277,8 @@ gcloud compute machine-types list --filter="zone:us-central1-a AND name~'^e2-'" 
 **Expected result:** a short table including `e2-micro` with `guestCpus: 2`
 and `memoryMb: 1024`. Sizing is a selection problem before it is a
 provisioning problem — this is the catalogue you select from.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 3.4 — Planning and configuring data storage options *(guide topic 2.2)*
 
@@ -286,6 +292,8 @@ gcloud storage buckets describe "gs://ace-lab-${PROJECT_ID}" \
 **Expected result:** `US-CENTRAL1 STANDARD True`. Uniform bucket-level
 access being `True` matters: it disables per-object ACLs, which is the
 configuration that makes effective access reasonable to audit.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.5 — Planning and configuring network resources *(guide topic 2.3)*
 
@@ -301,6 +309,8 @@ gcloud compute networks subnets list --network=vpc-ace \
 VPC itself is global; only the subnet carries a region, which is the
 Google Cloud networking fact Chapter 06 builds on.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.6 — Deploying Compute Engine resources *(guide topic 3.1)*
 
 ```bash
@@ -315,6 +325,8 @@ gcloud compute instances describe vm-ace --zone=us-central1-a \
 external IP — the instance is reachable only inside the VPC, which is the
 posture the security chapters assume.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.7 — Deploying Google Kubernetes Engine resources *(guide topic 3.2)*
 
 ```bash
@@ -327,6 +339,8 @@ gcloud container clusters describe gke-ace --region=us-central1 \
 **Expected result:** `RUNNING` and a version string. This takes several
 minutes and is the most expensive resource in the chapter — if you are
 watching cost, read the expected result here and skip to Lab 3.9.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.8 — Deploying Cloud Run and Cloud Functions *(guide topic 3.3)*
 
@@ -342,6 +356,8 @@ gcloud run services describe svc-ace --region=us-central1 \
 `curl` that URL and you should get the sample page — Cloud Run scales to
 zero, so the first request is measurably slower than the second.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.9 — Deploying data solutions *(guide topic 3.4)*
 
 ```bash
@@ -352,6 +368,8 @@ bq ls --format=pretty "${PROJECT_ID}:"
 **Expected result:** a table listing `ace_lab`. Creating a dataset is
 free; queries against it are not, which is why Chapter 04's dry-run habit
 exists.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.10 — Deploying networking resources *(guide topic 3.5)*
 
@@ -366,6 +384,8 @@ gcloud compute firewall-rules list --filter="network:vpc-ace" \
 `tcp:22` and `icmp`. Google Cloud denies ingress by default, so without
 this rule the instance from Lab 3.6 is unreachable even from inside the
 subnet.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.11 — Implementing resources through infrastructure as code *(guide topic 3.6)*
 
@@ -386,6 +406,8 @@ cd /tmp && terraform init -input=false >/dev/null && \
 plan is the deliverable here — infrastructure as code is examined as a
 declarative workflow, and reading a plan before applying is the habit.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.12 — Managing Compute Engine resources *(guide topic 4.1)*
 
 ```bash
@@ -399,6 +421,8 @@ gcloud compute instances describe vm-ace --zone=us-central1-a --format='value(st
 bills for its persistent disk — stopping is not deleting, and the exam
 tests that distinction.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 3.13 — Managing Google Kubernetes Engine resources *(guide topic 4.2)*
 
 ```bash
@@ -411,6 +435,8 @@ kubectl get deployment web -o wide
 Autopilot the node appears on demand, so `READY` may take a minute —
 `kubectl get pods -w` shows the transition.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.14 — Managing Cloud Run resources *(guide topic 4.3)*
 
 ```bash
@@ -421,6 +447,8 @@ gcloud run services describe svc-ace --region=us-central1 \
 
 **Expected result:** `3`. Capping max instances is the standard guard
 against a traffic spike turning into a bill spike.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.15 — Managing storage and database solutions *(guide topic 4.4)*
 
@@ -441,6 +469,8 @@ gcloud storage buckets describe "gs://ace-lab-${PROJECT_ID}" --format='value(lif
 
 **Expected result:** the rule echoed back with `age: 1`.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.16 — Managing networking resources *(guide topic 4.5)*
 
 ```bash
@@ -454,6 +484,8 @@ gcloud compute networks subnets describe snet-ace --region=us-central1 \
 Subnet ranges can be expanded but **never shrunk**, which is why initial
 CIDR planning (Lab 3.5) matters.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.17 — Monitoring and logging *(guide topic 4.6)*
 
 ```bash
@@ -465,6 +497,8 @@ gcloud logging read \
 **Expected result:** at least one row showing your own account and the
 time you ran Lab 3.12 — Admin Activity audit logs are on by default and
 answer "who did this?" without configuration.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 3.18 — Managing IAM *(guide topic 5.1)*
 
@@ -485,6 +519,8 @@ gcloud projects test-iam-permissions "$PROJECT_ID" \
 **Expected result:** the permissions you actually hold are echoed back;
 any you lack are simply absent from the response.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.19 — Managing service accounts *(guide topic 5.2)*
 
 ```bash
@@ -497,6 +533,8 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
 
 **Expected result:** `roles/storage.objectViewer` in the updated policy —
 a *predefined* role, not a basic one.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.20 — Negative test: prove the role is genuinely scoped
 
@@ -520,6 +558,8 @@ gcloud storage ls "gs://ace-lab-${PROJECT_ID}/"
 
 **Expected result:** `ace.txt` still listed.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.21 — Cleanup
 
 ```bash
@@ -531,6 +571,8 @@ gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
 cluster, instance, bucket, dataset, and service account together — which
 is why the sandbox project is the unit of teardown. Confirm in the billing
 console that GKE and Cloud Run stop accruing.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

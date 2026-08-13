@@ -435,7 +435,7 @@ a pointer that breaks if the target is removed; distinguishing them is core term
 **Negative test:** `rm file.txt`, then `cat hard.txt` (works — data persists) vs `cat soft.txt`
 (fails — dangling symlink) — this proves the inode-vs-name distinction.
 
-**Cleanup:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
+**Rollback:** `rm -f ~/lab/file.txt ~/lab/hard.txt ~/lab/soft.txt`.
 
 ### Lab 2.2 — Text processing and redirection (Topic: Managing system resources)
 
@@ -456,7 +456,7 @@ the terminal's core tools for extracting and reporting on system data.
 **Negative test:** use `>` where you meant `>>` and overwrite a report you meant to append to;
 prior content is lost — redirection operators are exact.
 
-**Cleanup:** `rm -f ~/lab/users.txt ~/lab/topmem.txt`.
+**Rollback:** `rm -f ~/lab/users.txt ~/lab/topmem.txt`.
 
 ### Lab 2.3 — APT and snap package management (Topic: Managing applications)
 
@@ -478,7 +478,7 @@ and channels, is an exam competency.
 **Negative test:** expect a snap to stay on a fixed version by default; snaps auto-refresh from
 their channel — pin with `snap refresh --hold` or a specific channel, unlike an APT `hold`.
 
-**Cleanup:** `sudo apt-mark unhold tree; sudo apt remove -y tree; sudo snap remove hello-world`.
+**Rollback:** `sudo apt-mark unhold tree; sudo apt remove -y tree; sudo snap remove hello-world`.
 
 ### Lab 2.4 — A simple shell script (Topic: Scripting)
 
@@ -505,7 +505,7 @@ codes is expected across the terminal and DevOps domains.
 **Negative test:** omit the `#!/bin/bash` shebang or `chmod +x`; the script runs under the wrong
 interpreter or is not executable — both are required to run a script directly.
 
-**Cleanup:** `rm -f ~/lab/report.sh`.
+**Rollback:** `rm -f ~/lab/report.sh`.
 
 ## Lab Verification
 

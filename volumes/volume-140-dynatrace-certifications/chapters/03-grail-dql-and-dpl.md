@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Writing `fetch | parse | filter` because it reads more naturally left-to-right. It returns identical results at many times the cost, and nothing in the output signals the waste.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Build a DQL pipeline
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Omitting the filter entirely and parsing everything to "see what's there." Exploration is legitimate, but do it on a narrow time range, not a wide one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Schema-on-read against three log formats
 
@@ -203,7 +203,7 @@ EOF
 
 **Negative test:** Concluding that log formats no longer matter. Deferring the cost is not eliminating it, and a popular badly-shaped source pays that cost on every query by every user.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

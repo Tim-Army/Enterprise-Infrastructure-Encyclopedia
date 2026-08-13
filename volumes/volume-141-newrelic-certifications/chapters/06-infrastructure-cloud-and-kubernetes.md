@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Tuning everything to minimum after a billing surprise, with no record. Three weeks later the undiagnosable incident arrives, and nobody remembers that process telemetry was the price.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Kubernetes: aggregate at the workload, not the pod
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Alerting on pod restarts by pod name to "catch the flapping one." The flapping pod is replaced mid-flap; the alert history fragments across names and the pattern becomes invisible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Correlate network and application to cut MTTR
 
@@ -177,7 +177,7 @@ EOF
 
 **Negative test:** Keeping network monitoring in a separate tool "because the network team prefers it." Both tools are individually fine, and every cross-domain incident pays the bridge-call tax.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

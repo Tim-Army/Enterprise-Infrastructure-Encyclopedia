@@ -92,7 +92,7 @@ curl -sSL -A "Mozilla/5.0" "https://mikrotik.com/training/about" \
 **Negative test:** assume any exam can be taken first; **MTCNA is the prerequisite** — confirm on
 mikrotik.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map certificates to focus
 
@@ -112,7 +112,7 @@ PY
 
 **Negative test:** target MTCINE directly; it needs **MTCNA and MTCRE** first — sequence them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certificate path
 
@@ -131,7 +131,7 @@ PY
 
 **Negative test:** skip MTCNA for a specialist track; **MTCNA gates all** — earn it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -78,7 +78,7 @@ pattern.
 **Negative test:** commit the password to Git "temporarily"; it lives in history forever — **never**
 hardcode it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Write access policy-as-code (Conjur)
 
@@ -106,7 +106,7 @@ privilege.
 **Negative test:** grant every host access to every secret; one compromised app leaks all — scope
 **per identity per secret**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Use a dynamic (short-lived) secret
 
@@ -128,7 +128,7 @@ PY
 **Negative test:** hand out a long-lived static key to a pipeline; if leaked it's valid for months —
 use **dynamic** secrets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Apply the secretless pattern
 
@@ -151,7 +151,7 @@ strongest pattern.
 **Negative test:** assume fetching at runtime is the only option; **secretless** removes the secret
 from the app entirely where supported — prefer it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

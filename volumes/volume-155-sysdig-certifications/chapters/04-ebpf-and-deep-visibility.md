@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Relying on application logs to detect a runtime attack. An attacker operating below the application leaves no log entry; the system-call stream captured by eBPF sees every action because every action is a syscall.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

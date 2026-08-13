@@ -37,7 +37,7 @@ sudo nft list chain inet cx forward
 
 **Negative test.** Note there is **no** reverse rule for `db → web` — the return traffic is permitted by `established`, not a second permit. On a stateless ACL fabric you would need both directions; the DPU's state tracking is what removes that.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Exercise 4.2 — The stateful policy holds
 
@@ -61,7 +61,7 @@ hmi->plc OPEN
 
 The two flows pass (with return traffic auto-permitted by state); `hmi → db` is denied by default. This is firewall-grade east-west policy, enforced where a stateless ACL fabric would need a separate firewall.
 
-**Cleanup.** Keep the policy for the stateful-advantage chapter.
+**Rollback.** Keep the policy for the stateful-advantage chapter.
 
 ## Summary and Completion Checklist
 

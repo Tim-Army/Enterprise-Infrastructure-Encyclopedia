@@ -359,7 +359,7 @@ admin@panorama> show devices connected
 **Negative test:** onboard a device whose serial is not added to Panorama; it
 connects but Panorama refuses to manage it — the serial must be registered.
 
-**Cleanup:** remove the panorama-server on the firewall and the device from
+**Rollback:** remove the panorama-server on the firewall and the device from
 the group, then `commit`.
 
 ### Lab 6.2 — Configure templates and a template stack (Management)
@@ -380,7 +380,7 @@ DNS and other device settings are now centrally managed.
 higher-priority template wins silently — stack ordering resolves conflicts,
 so order matters.
 
-**Cleanup:** delete the template-stack and template, then `commit`.
+**Rollback:** delete the template-stack and template, then `commit`.
 
 ### Lab 6.3 — Configure a device-group hierarchy (Management)
 
@@ -401,7 +401,7 @@ policy defined once at the parent applies to all children.
 the child's pre-rules evaluate before the parent's, changing the effective
 order — inheritance order is a design consideration.
 
-**Cleanup:** delete both device groups, then `commit`.
+**Rollback:** delete both device groups, then `commit`.
 
 ### Lab 6.4 — Configure shared and pre/post rules (Policy management)
 
@@ -421,7 +421,7 @@ rules, plus a device-group pre-rule — layered central policy.
 device-group deny makes the deny unreachable everywhere; Shared pre-rules
 evaluate first globally.
 
-**Cleanup:** delete both rules, then `commit`.
+**Rollback:** delete both rules, then `commit`.
 
 ### Lab 6.5 — Configure a Collector Group for logging (Logging)
 
@@ -440,7 +440,7 @@ firewalls forward logs to Panorama for central reporting and correlation.
 **Negative test:** a Collector Group with no assigned collector drops
 forwarded logs; the collector membership is what stores them.
 
-**Cleanup:** delete the Collector Group, then `commit`.
+**Rollback:** delete the Collector Group, then `commit`.
 
 ### Lab 6.6 — Commit and push to managed devices (Operations)
 
@@ -459,7 +459,7 @@ push applies to member firewalls; `show jobs` reports success per device.
 leaves the change on Panorama but not enforced on firewalls — both steps are
 required.
 
-**Cleanup:** none (the push is the intended state).
+**Rollback:** none (the push is the intended state).
 
 ### Lab 6.7 — Configure Panorama high availability (Operations)
 
@@ -479,7 +479,7 @@ survives a Panorama node failure.
 Panorama nodes are down (they cache config); Panorama HA protects
 *management*, not the data plane — know what HA does and does not cover.
 
-**Cleanup:** `set deviceconfig high-availability enabled no`, then `commit`.
+**Rollback:** `set deviceconfig high-availability enabled no`, then `commit`.
 
 ### Lab 6.8 — Device-group hierarchy, template stack, and push (integrative)
 
@@ -585,7 +585,7 @@ demonstrates local device drift overriding expected behavior.
    admin@pa-branch-01# commit
    ```
 
-10. **Cleanup:** If this lab environment will be reused in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md),
+10. **Rollback:** If this lab environment will be reused in [Chapter 07](07-firewall-operations-troubleshooting-upgrades-and-automation.md),
     leave the device group, template stack, and log forwarding
     configuration in place; otherwise remove the lab-only device group
     assignment and pushed rules from Panorama:

@@ -143,7 +143,7 @@ four tracks branch — the structure the rest of this volume follows chapter by 
 **Negative test:** assume the tracks start at NSE 4; they branch at NSE 5 — NSE 4 is a
 single common associate exam that all four tracks build on.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.2 — Choose a track and build a study plan (Topic: Track selection)
 
@@ -167,7 +167,7 @@ products you already have to practice on — the plan that makes the NSE 5–7 c
 **Negative test:** pick a track by prestige rather than role; you will study products you
 never touch and retain little — track choice should follow the systems you operate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

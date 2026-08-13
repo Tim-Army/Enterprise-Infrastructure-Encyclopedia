@@ -71,7 +71,7 @@ PY
 **Negative test:** expect Privilege Cloud to reach internal targets with no **connector**; it can't —
 deploy connectors.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Build an EPM elevation policy
 
@@ -93,7 +93,7 @@ privilege.
 **Negative test:** leave users as local admin so "everything works"; malware inherits admin — **remove**
 it and elevate selectively.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Apply application control (allow-list)
 
@@ -118,7 +118,7 @@ control.
 **Negative test:** rely only on a **block-list**; new malware isn't on it — prefer **allow-listing**
 with restrict-by-default.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Audit privilege elevations
 
@@ -137,7 +137,7 @@ PY
 
 **Negative test:** elevate with no logging; you can't investigate abuse — **log** every elevation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

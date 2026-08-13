@@ -212,7 +212,7 @@ admits a device.
 target's; FLOGI succeeds but the device cannot reach the target — VSAN
 membership isolates the fabric.
 
-**Cleanup:** `interface fc1/1 ; shutdown` if the port was brought up for the
+**Rollback:** `interface fc1/1 ; shutdown` if the port was brought up for the
 lab.
 
 ### Lab 5.2 — Describe network storage systems: NFS and iSCSI (DCCOR Objective 3.2)
@@ -233,7 +233,7 @@ IP-fabric alternatives to Fibre Channel.
 to the initiator's IQN; discovery returns the target but `login` yields no
 LUNs — access requires initiator-group mapping on the array.
 
-**Cleanup:** `iscsiadm -m node -u` to log out any test session.
+**Rollback:** `iscsiadm -m node -u` to log out any test session.
 
 ### Lab 5.3 — Describe software updates and their impacts: disruptive/nondisruptive and EPLD (DCCOR Objective 3.3)
 
@@ -251,7 +251,7 @@ show install all impact epld bootflash:m9000-epld.9.4.img
 **Negative test:** attempt ISSU during an active zone-set change or with a
 single supervisor; the impact check reports it as disruptive.
 
-**Cleanup:** none (impact check is read-only).
+**Rollback:** none (impact check is read-only).
 
 ### Lab 5.4 — Implement infrastructure monitoring with SPAN and Nexus Dashboard (DCCOR Objective 3.4)
 
@@ -276,7 +276,7 @@ visibility.
 **Negative test:** set the destination to a normal F port instead of `SD`;
 NX-OS rejects it — FC SPAN destinations must be SD mode.
 
-**Cleanup:** `no monitor session 1` and revert `fc1/12` mode.
+**Rollback:** `no monitor session 1` and revert `fc1/12` mode.
 
 ### Lab 5.5 — Describe installation and initial setup: NX-OS, DCNM, POAP (DCSAN Objective 1.1)
 
@@ -296,7 +296,7 @@ push them at scale.
 the `loader>` prompt — boot variables are what make the switch bootable
 unattended.
 
-**Cleanup:** none (read-only; do not clear boot variables in production).
+**Rollback:** none (read-only; do not clear boot variables in production).
 
 ### Lab 5.6 — Describe secure boot (DCSAN Objective 1.2)
 
@@ -314,7 +314,7 @@ tampered image.
 **Negative test:** compute the hash of a truncated/altered image; it will not
 match Cisco's published value — integrity verification catches tampering.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.7 — Implement Fibre Channel port channels (DCSAN Objective 2.1)
 
@@ -337,7 +337,7 @@ that load-balances FC exchanges and survives a single link loss.
 **Negative test:** add a member with a mismatched speed or VSAN allowed list;
 it is suspended, not added — port-channel members must be compatible.
 
-**Cleanup:** `no interface port-channel 10`.
+**Rollback:** `no interface port-channel 10`.
 
 ### Lab 5.8 — Implement Fibre Channel protocol services: Name Service and CFS (DCSAN Objective 2.2)
 
@@ -357,7 +357,7 @@ zoning/IVR config fabric-wide.
 change stays local and a later merge conflicts — CFS is what keeps the fabric
 consistent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.9 — Implement FCoE: FIP, PFC, ETS, DCBX/LLDP (DCSAN Objective 2.3)
 
@@ -377,7 +377,7 @@ the four pieces that make Ethernet lossless enough to carry FC.
 **Negative test:** disable PFC on the FCoE class; FCoE logins drop under
 congestion — without lossless behavior, FC-over-Ethernet fails.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.10 — Implement VSANs (DCSAN Objective 2.4)
 
@@ -399,7 +399,7 @@ one physical SAN into isolated virtual fabrics, each with its own services.
 **Negative test:** move an interface to a suspended VSAN; the port goes
 `isolated` — membership in an inactive VSAN drops the port.
 
-**Cleanup:** `vsan database ; no vsan 100`.
+**Rollback:** `vsan database ; no vsan 100`.
 
 ### Lab 5.11 — Implement NPV and NPIV (DCSAN Objective 2.5)
 
@@ -418,7 +418,7 @@ consuming domain IDs; NPIV lets multiple logins share a port.
 **Negative test:** connect an NPV edge to a core with NPIV disabled; host
 logins fail — the core must accept multiple logins on the proxied port.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.12 — Implement device aliases and zoning (DCSAN Objective 2.6)
 
@@ -448,7 +448,7 @@ asterisk on logged-in members — access control by pWWN, the SAN's segmentation
 but is a design fault (cross-talk risk) — single-initiator zoning is the
 best-practice the negative highlights.
 
-**Cleanup:** deactivate the test zoneset and remove the zone/aliases.
+**Rollback:** deactivate the test zoneset and remove the zone/aliases.
 
 ### Lab 5.13 — Configure inter-VSAN routing (DCSAN Objective 2.7)
 
@@ -476,7 +476,7 @@ fabrics.
 **Negative test:** enable IVR without NAT across overlapping domain IDs; IVR
 reports a domain conflict — NAT (or unique domains) is required.
 
-**Cleanup:** deactivate `IVR-ZS` and remove the IVR configuration.
+**Rollback:** deactivate `IVR-ZS` and remove the IVR configuration.
 
 ### Lab 5.14 — Implement VSAN extensions (DCSAN Objective 2.8)
 
@@ -495,7 +495,7 @@ the extension used for remote replication between data centers.
 no FC write-acceleration shows degraded throughput — distance and tuning
 matter for VSAN extension.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.15 — Configure DCNM: SAN client, licensing, Device Manager (DCSAN Objective 3.1)
 
@@ -516,7 +516,7 @@ licensing gates the advanced features.
 **Negative test:** query DCNM for a fabric the switch was never added to; it is
 absent — DCNM manages only discovered fabrics.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.16 — Configure RBAC (DCSAN Objective 3.2)
 
@@ -539,7 +539,7 @@ RBAC confines operators to specific VSANs and command sets.
 **Negative test:** log in as `sanuser` and attempt a `config` command; it is
 denied — the role permits only `show`.
 
-**Cleanup:** `no username sanuser ; no role name san-oper`.
+**Rollback:** `no username sanuser ; no role name san-oper`.
 
 ### Lab 5.17 — Configure Fibre Channel fabric security (DCSAN Objective 3.3)
 
@@ -563,7 +563,7 @@ fabric.
 **Negative test:** connect an unlisted switch; its ISL is isolated and a
 fabric-binding violation is logged — the binding enforces membership.
 
-**Cleanup:** `fabric-binding deactivate vsan 100 ; no feature fabric-binding`.
+**Rollback:** `fabric-binding deactivate vsan 100 ; no feature fabric-binding`.
 
 ### Lab 5.18 — Describe slow-drain analysis (DCSAN Objective 3.4)
 
@@ -582,7 +582,7 @@ counters localize it.
 **Negative test:** a healthy port shows zero txwait and no credit loss; the
 contrast is how you distinguish a slow drainer from a busy-but-healthy port.
 
-**Cleanup:** `clear counters interface fc1/1` after recording.
+**Rollback:** `clear counters interface fc1/1` after recording.
 
 ### Lab 5.19 — Implement SAN telemetry streaming (DCSAN Objective 3.5)
 
@@ -604,7 +604,7 @@ flow-level visibility.
 **Negative test:** query analytics on an interface where the feature is not
 applied; the result is empty — telemetry streams only from instrumented ports.
 
-**Cleanup:** `interface fc1/1 ; no analytics type fc-scsi ; no feature
+**Rollback:** `interface fc1/1 ; no analytics type fc-scsi ; no feature
 analytics`.
 
 ### Lab 5.20 — Troubleshoot Fibre Channel domains and duplicate domain ID (DCSAN Objective 4.1)
@@ -623,7 +623,7 @@ healthy fabric has unique IDs — a duplicate causes a VSAN to segment.
 fabric; `show fcdomain` reports the VSAN `isolated` due to the conflict — the
 symptom of duplicate domains.
 
-**Cleanup:** restore the domain ID to `auto` / a unique value and reinitialize.
+**Rollback:** restore the domain ID to `auto` / a unique value and reinitialize.
 
 ### Lab 5.21 — Troubleshoot zoning and zone merge failure (DCSAN Objective 4.2)
 
@@ -643,7 +643,7 @@ merge, isolating the link.
 cleanly — the contrast confirms the failure is a *conflict*, not merely
 different content.
 
-**Cleanup:** reconcile the zonesets (import/overwrite) and re-enable the ISL.
+**Rollback:** reconcile the zonesets (import/overwrite) and re-enable the ISL.
 
 ### Lab 5.22 — Troubleshoot boot and upgrade issues (DCSAN Objective 4.3)
 
@@ -663,7 +663,7 @@ status — a failed upgrade or a missing image is why a switch lands in
 the switch fails to boot — the boot variable must reference a present, valid
 image.
 
-**Cleanup:** set boot variables to the correct present images and save.
+**Rollback:** set boot variables to the correct present images and save.
 
 ## Lab Verification
 

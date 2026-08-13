@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** Remove the `cx` gate: counts spread across `00`/`01`/`10`/`11` — superposition without entanglement; the difference is exam material.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Prompt engineering discipline (Generative AI Engineer)
 
@@ -64,7 +64,7 @@ watsonx.ai> Prompt Lab (trial): model=granite; try the same prompt at:
 
 **Negative test:** Temperature 0 with a sampling-dependent instruction ("give me three different options") — the model repeats itself; parameters and prompts must agree.
 
-**Cleanup:** Trial project cleanup as desired.
+**Rollback:** Trial project cleanup as desired.
 
 ### Lab 2.3 — RAG shape (Generative AI Engineer / Data Scientist)
 
@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Ask a question none of the documents cover — the top score is low and the grounded answer should be "not in context"; retrieval quality gates generation quality.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Lakehouse and governance concepts (Data Lakehouse / Governance Advisor)
 
@@ -103,7 +103,7 @@ watsonx.governance> register a model use case; track: owner, risk tier, evaluati
 
 **Negative test:** Try to place "prompt a model" in watsonx.data or "query Iceberg" in watsonx.governance — wrong product; the portfolio grammar assigns each job one home.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 2.5 — Assistant vs Orchestrate (AI Assistant / Orchestrate Engineer)
 
@@ -118,7 +118,7 @@ orchestrate> build: skills that DO things (run an API, chain apps into an automa
 
 **Negative test:** Building a multi-system automation as a dialog tree — the wrong tool's exam will tell you why.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

@@ -83,7 +83,7 @@ version`.
 **Negative test:** leave a downstream service uninstrumented; it becomes a **black hole** in the service
 map — instrument it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Add a custom span
 
@@ -110,7 +110,7 @@ operation.
 **Negative test:** guess which internal step is slow with no custom spans; add a **span** around the
 suspect logic.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Analyze a slow trace
 
@@ -136,7 +136,7 @@ the slow step.
 **Negative test:** conclude "the app is slow" from a single latency number; the **trace** shows the slow
 **span**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Search traces by criteria
 
@@ -154,7 +154,7 @@ PY
 
 **Negative test:** scroll all traces hoping to spot problems; **search** by service/status/duration/tags.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

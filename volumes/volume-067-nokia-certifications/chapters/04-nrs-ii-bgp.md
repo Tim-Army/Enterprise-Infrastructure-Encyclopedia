@@ -69,7 +69,7 @@ route distribution.
 **Negative test:** peer IBGP with an **unreachable** system IP; the IGP must reach the peer — fix
 reachability first.
 
-**Cleanup:** `configure router bgp group "internal" shutdown`.
+**Rollback:** `configure router bgp group "internal" shutdown`.
 
 ### Lab 4.2 — Configure EBGP
 
@@ -85,7 +85,7 @@ A:router# show router bgp neighbor 172.16.0.2
 
 **Negative test:** set the wrong **peer-as**; EBGP won't establish with an AS mismatch — match it.
 
-**Cleanup:** `configure router bgp group "external" shutdown`.
+**Rollback:** `configure router bgp group "external" shutdown`.
 
 ### Lab 4.3 — Apply a route policy
 
@@ -104,7 +104,7 @@ advertisement.
 **Negative test:** export with **no policy**; you may leak internal/transit routes — filter with a
 policy.
 
-**Cleanup:** remove the export policy.
+**Rollback:** remove the export policy.
 
 ### Lab 4.4 — Verify BGP routes
 
@@ -121,7 +121,7 @@ working end to end.
 **Negative test:** assume routes are installed without checking; verify **best path** and the route
 table.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

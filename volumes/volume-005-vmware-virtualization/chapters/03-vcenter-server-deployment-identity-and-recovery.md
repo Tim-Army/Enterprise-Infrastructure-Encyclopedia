@@ -446,7 +446,7 @@ permissions, and cluster services (HA/DRS, Chapter 07) that individual ESXi host
 **Negative test:** manage many hosts by connecting to each ESXi directly; you lose clusters, vMotion,
 DRS/HA, and central permissions — vCenter is what turns hosts into a managed cluster.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Identity and permissions (Topic: Access control)
 
@@ -466,7 +466,7 @@ least-privilege delegation is possible (e.g. a team manages only its cluster's V
 **Negative test:** grant everyone the Administrator role at the vCenter root; any user can alter the
 whole environment — role + object scoping is what enforces least privilege.
 
-**Cleanup:** remove the lab permission.
+**Rollback:** remove the lab permission.
 
 ### Lab 3.3 — vCenter backup and recovery (Topic: Recovery)
 
@@ -486,7 +486,7 @@ vCenter is down, but management is lost without it.
 **Negative test:** run vCenter with no backups; losing the appliance means rebuilding clusters, roles,
 and configuration by hand — the file-based backup preserves all of it for a clean restore.
 
-**Cleanup:** none (keep the backup schedule).
+**Rollback:** none (keep the backup schedule).
 
 ## Lab Verification
 

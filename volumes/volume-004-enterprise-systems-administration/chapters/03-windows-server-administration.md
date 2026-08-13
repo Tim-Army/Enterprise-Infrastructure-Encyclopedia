@@ -294,7 +294,7 @@ compose queries without text parsing.
 PowerShell passes structured objects, so filter on properties (`Where-Object Status -eq 'Running'`),
 not text.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Roles and features (Topic: Server roles)
 
@@ -314,7 +314,7 @@ Linux.
 **Negative test:** install roles by clicking through Server Manager on many servers; it does not scale
 — `Install-WindowsFeature` in a script deploys the same role identically across the fleet.
 
-**Cleanup:** `Uninstall-WindowsFeature -Name Web-Server` if installed only for the lab.
+**Rollback:** `Uninstall-WindowsFeature -Name Web-Server` if installed only for the lab.
 
 ### Lab 3.3 — Local accounts and services (Topic: Accounts and services)
 
@@ -335,7 +335,7 @@ standalone servers.
 over-privileged service accounts are a common attack path — scope local group membership to least
 privilege.
 
-**Cleanup:** `Remove-LocalUser -Name "svcops"`; restore the Spooler start type.
+**Rollback:** `Remove-LocalUser -Name "svcops"`; restore the Spooler start type.
 
 ### Lab 3.4 — Event logs (Topic: Windows logging)
 
@@ -354,7 +354,7 @@ event ID) is how you investigate faults and security events on Windows.
 **Negative test:** scroll the Event Viewer GUI to find a specific event across thousands; it is slow —
 `Get-WinEvent -FilterHashtable` queries by log/level/ID precisely, the scalable approach.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

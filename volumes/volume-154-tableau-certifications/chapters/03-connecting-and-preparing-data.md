@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Using a live connection to a slow warehouse for an interactive dashboard. Every filter re-queries the slow source, making the dashboard sluggish; an extract into the Hyper engine makes interaction fast.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Why relationships avoid the join-duplication trap
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Flattening one-to-many tables with a manual join and summing the parent-level measure. The parent value repeats on every child row and is double-counted; relationships keep granularity separate and aggregate each measure at its correct level.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

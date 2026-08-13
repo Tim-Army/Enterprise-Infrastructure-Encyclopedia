@@ -145,7 +145,7 @@ snapshot you diff next month to see betas, renames, and retirements.
 **Negative test:** try to enumerate from the rendered browse page with
 `curl | grep`; you get the SPA shell, not the list — use the API.
 
-**Cleanup:** keep `certs-today.txt` as the baseline; remove if not needed.
+**Rollback:** keep `certs-today.txt` as the baseline; remove if not needed.
 
 ### Lab 9.2 — Check an exam for retirement (Topic: Verify before studying)
 
@@ -163,7 +163,7 @@ study plan (AI-900) before wasting effort.
 **Negative test:** trust a six-month-old blog's exam code without checking;
 you may study a renumbered or retired exam — always verify on Learn.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

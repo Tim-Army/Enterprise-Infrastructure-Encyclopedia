@@ -305,7 +305,7 @@ HTTP client; `jq` or `yq` for structured output; a Markdown editor.
    format/delivery notes. **Expected result:** a complete, evidence-backed
    API reference card for the chosen platform.
 
-**Cleanup:** Revoke or rotate any temporary API credential created solely
+**Rollback:** Revoke or rotate any temporary API credential created solely
 for this lab, and redact any token, key, or secret value from all saved
 evidence before committing the card to version control.
 

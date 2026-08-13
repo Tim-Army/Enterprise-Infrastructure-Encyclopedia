@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Scoping the migration by project count. The 340 projects migrate mechanically; the 22 apps and 15 DC-internal scripts are the effort, and skipping assessment discovers them in production.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Clean up before you migrate
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Migrating the instance as-is to "sort it out later." The dead projects, unused apps, and sprawled schemes land on the new platform, which is now messy from day one and harder to clean in Cloud.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Wave migration versus big bang
 
@@ -169,7 +169,7 @@ EOF
 
 **Negative test:** A single big-bang weekend cutover for a 12-team instance. The app gap surfaces Monday morning for everyone at once, and rollback blocks the entire company.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

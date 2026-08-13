@@ -100,7 +100,7 @@ pipeline.
 **Negative test:** send OTLP to a Collector that isn't running; the exporter gets
 **connection refused** — start it first.
 
-**Cleanup:** `docker rm -f otelcol`.
+**Rollback:** `docker rm -f otelcol`.
 
 ### Lab 1.2 — Send a trace over OTLP/HTTP
 
@@ -119,7 +119,7 @@ end-to-end OTLP ingestion.
 **Negative test:** POST to `/v1/traces` with malformed protobuf/JSON; the Collector
 rejects it (**4xx**) — match the OTLP schema.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Verify component versions
 
@@ -135,7 +135,7 @@ component version.
 **Negative test:** assume signals/features exist regardless of version; **check the
 version** — OTel components evolve independently.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

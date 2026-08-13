@@ -382,7 +382,7 @@ admin@pa-fw01> show interface ethernet1/1
 with intra-zone default set to deny; it is dropped — the zone, not the
 interface, is the policy boundary.
 
-**Cleanup:** `delete network interface ethernet1/1 layer3 ip 203.0.113.2/30` (and the zones), then `commit`.
+**Rollback:** `delete network interface ethernet1/1 layer3 ip 203.0.113.2/30` (and the zones), then `commit`.
 
 ### Lab 4.2 — Configure a virtual router and static routing (Domain 1: Routing)
 
@@ -402,7 +402,7 @@ egress interface in the routing table.
 disappears and traffic is dropped — an interface must belong to the VR to
 route.
 
-**Cleanup:** `delete network virtual-router default routing-table ip static-route default`, then `commit`.
+**Rollback:** `delete network virtual-router default routing-table ip static-route default`, then `commit`.
 
 ### Lab 4.3 — Configure dynamic routing with BGP (Domain 1: Routing)
 
@@ -423,7 +423,7 @@ learned prefixes appear in `show routing route`.
 **Negative test:** set the wrong `peer-as`; the session stays in
 `Connect`/`Active` — the AS mismatch BGP will not establish over.
 
-**Cleanup:** `delete network virtual-router default protocol bgp`, then `commit`.
+**Rollback:** `delete network virtual-router default protocol bgp`, then `commit`.
 
 ### Lab 4.4 — Configure source and destination NAT (Domain 1: NAT)
 
@@ -444,7 +444,7 @@ share the egress IP, and 443 to `203.0.113.2` translates to `10.10.20.50`.
 (post-NAT) instead of `untrust` (pre-NAT); it never matches — NAT rules use
 the pre-NAT zone.
 
-**Cleanup:** `delete rulebase nat rules Outbound-DIPP` and `Inbound-Web`, then `commit`.
+**Rollback:** `delete rulebase nat rules Outbound-DIPP` and `Inbound-Web`, then `commit`.
 
 ### Lab 4.5 — Configure active/passive HA (Domain 1: HA)
 
@@ -465,7 +465,7 @@ admin@pa-fw01> show high-availability state
 **Negative test:** mismatch the PAN-OS version between members; HA state
 shows `non-functional` — version parity is required for A/P HA.
 
-**Cleanup:** `set deviceconfig high-availability enabled no`, then `commit`.
+**Rollback:** `set deviceconfig high-availability enabled no`, then `commit`.
 
 ### Lab 4.6 — Configure HA link and path monitoring (Domain 1: HA)
 
@@ -485,7 +485,7 @@ fails, the group's failover condition triggers.
 forces a failover even though the firewall itself is healthy — tune the
 monitored target carefully.
 
-**Cleanup:** disable path-monitoring, then `commit`.
+**Rollback:** disable path-monitoring, then `commit`.
 
 ### Lab 4.7 — Configure GlobalProtect portal and gateway (Domain 1: GlobalProtect)
 
@@ -507,7 +507,7 @@ client appears in `current-user` with an assigned tunnel IP.
 bound to the portal; clients fail the TLS handshake — GlobalProtect requires
 a valid certificate.
 
-**Cleanup:** delete the GlobalProtect gateway, portal, and `tunnel.1`, then `commit`.
+**Rollback:** delete the GlobalProtect gateway, portal, and `tunnel.1`, then `commit`.
 
 ### Lab 4.8 — Configure an IPSec site-to-site tunnel (Domain 1: Tunnels)
 
@@ -528,7 +528,7 @@ tunnel interface up.
 and `show vpn ike-sa` shows no established gateway — the crypto must match
 both ends.
 
-**Cleanup:** delete the IPSec tunnel, IKE gateway, and `tunnel.2`, then `commit`.
+**Rollback:** delete the IPSec tunnel, IKE gateway, and `tunnel.2`, then `commit`.
 
 ### Lab 4.9 — Configure PAN-OS SD-WAN (SD-WAN Engineer: Deployment)
 
@@ -549,7 +549,7 @@ reported — application traffic can now be steered by a path-quality policy.
 carries has no eligible path; traffic falls back to the default route,
 bypassing SD-WAN steering.
 
-**Cleanup:** `set network sdwan enable no`, then `commit`.
+**Rollback:** `set network sdwan enable no`, then `commit`.
 
 ### Lab 4.10 — Interfaces, routing, NAT, and A/P HA failover (integrative)
 
@@ -666,7 +666,7 @@ pair with a deliberate failover test.
     admin@pa-fw01# commit
     ```
 
-11. **Cleanup:** If this lab pair will be reused in later chapters, leave
+11. **Rollback:** If this lab pair will be reused in later chapters, leave
     the HA and NAT configuration in place; otherwise remove the lab-only
     NAT and security rules and disable HA:
 

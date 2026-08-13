@@ -154,7 +154,7 @@ EOF
 
 **Negative test:** Counting "34 Dynatrace certifications" as a menu of options — most of them require a partner organization or Dynatrace employment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Build a study plan against what is actually published
 
@@ -190,7 +190,7 @@ cat my-dynatrace-plan.md
 
 **Negative test:** Filling in a fee or passing score from a search result. If Dynatrace has not published it, a third party did not learn it legitimately.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Summary and Completion Checklist
 

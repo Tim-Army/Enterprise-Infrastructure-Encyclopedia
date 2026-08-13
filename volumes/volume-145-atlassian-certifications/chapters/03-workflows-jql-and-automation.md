@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Adding mandatory fields and conditions to "improve data quality." Past a threshold, users escape the friction by faking transitions, and the data quality drops.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — JQL performance: narrow first
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Leading a JQL filter with a text search or custom-field scan. It works on a small instance and crawls on a large one, especially behind a frequently-loaded dashboard.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Automation without loops or mystery
 
@@ -167,7 +167,7 @@ EOF
 
 **Negative test:** Building automation rules ad hoc without ownership or documentation. Six months later "why did this ticket auto-close?" is unanswerable, and two rules are quietly ping-ponging on every edit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

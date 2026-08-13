@@ -75,7 +75,7 @@ role — secure wireless access.
 **Negative test:** stand up an open or PSK SSID for staff; use **WPA3/802.1X** with roles for
 corporate access.
 
-**Cleanup:** remove the test SSID.
+**Rollback:** remove the test SSID.
 
 ### Lab 5.2 — Assign a wireless role
 
@@ -90,7 +90,7 @@ corporate access.
 
 **Negative test:** write separate wireless-only policy; converge on the **same roles** as wired.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — RF plan reasoning
 
@@ -111,7 +111,7 @@ guidance — an RF plan sized for demand.
 **Negative test:** place APs only for coverage; high-density areas need **capacity** — size by
 users per AP.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Read WLAN health from Central
 
@@ -129,7 +129,7 @@ curl -sS -H "Authorization: Bearer $CENTRAL_TOKEN" \
 **Negative test:** check each AP's LED to judge health; **Central's API** reports the WLAN
 centrally — query it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

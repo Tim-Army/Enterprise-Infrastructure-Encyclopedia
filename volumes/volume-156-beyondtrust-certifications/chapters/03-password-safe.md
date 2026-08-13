@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Storing privileged passwords in a shared spreadsheet or script, even encrypted at rest. If a human ever holds the plaintext, it can be phished, pasted, and reused; vaulting with injection plus rotation is what removes the exposure.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Session management makes privileged access accountable
 
@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Letting administrators connect directly to production with a vaulted password and no session brokering. You lose isolation, the audit trail, and live oversight — the accountability that PAM (and every auditor) requires.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

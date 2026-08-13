@@ -76,7 +76,7 @@ the XSIAM analyst view.
 **Negative test:** inspect one raw log source at a time; **XSIAM** unifies the model — query
 across it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Review AI-reduced incidents
 
@@ -92,7 +92,7 @@ across it.
 
 **Negative test:** triage every raw alert manually; **XSIAM** reduces them — work incidents.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Build an XSOAR playbook
 
@@ -114,7 +114,7 @@ automated response with a human gate.
 **Negative test:** auto-quarantine on any match with no approval; keep a **human checkpoint** on
 consequential actions.
 
-**Cleanup:** disable/delete the test playbook.
+**Rollback:** disable/delete the test playbook.
 
 ### Lab 7.4 — Automate via the XSOAR API
 
@@ -133,7 +133,7 @@ curl -sk -X POST "https://<xsoar>/incident" -H "Authorization: $XSOAR_KEY" \
 **Negative test:** open incidents by hand for automated sources; the **API** integrates them —
 use it.
 
-**Cleanup:** close/delete the test incident.
+**Rollback:** close/delete the test incident.
 
 ## Lab Verification
 

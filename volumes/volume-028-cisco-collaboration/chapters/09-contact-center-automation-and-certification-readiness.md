@@ -217,7 +217,7 @@ ingress and CVA/IVR media.
 **Negative test:** an entry point with no mapped telephony connection cannot
 receive PSTN calls — the connection option must be provisioned to the entry point.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Configure Webex Contact Center telephony integration (CLCCE Objective 1.2)
 
@@ -234,7 +234,7 @@ join between the carrier/trunk and the contact-center logic.
 **Negative test:** a dial number with no entry-point mapping rings but never enters
 a flow — the number→entry-point→flow chain must be complete.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Configure inbound and outdial telephony for agents (CLCCE Objective 1.3)
 
@@ -251,7 +251,7 @@ permitted ANI; both are provisioned per tenant/agent profile.
 **Negative test:** an agent whose profile lacks outdial permission or a valid ANI
 cannot place external calls — the outdial entry point and ANI are prerequisites.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Configure components to route voice calls (CLCCE Objective 1.4)
 
@@ -269,7 +269,7 @@ the contact to a team or skill-based queue with a distribution policy.
 overflow leaves callers waiting indefinitely — the routing needs overflow/RONA
 handling.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.5 — Troubleshoot voice channels (CLCCE Objective 1.5)
 
@@ -287,7 +287,7 @@ stopped.
 **Negative test:** blame the flow for calls that never create a task — no task
 means the problem is upstream at telephony ingress, not routing.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.6 — Describe network requirements for Webex Contact Center (CLCCE Objective 2.1)
 
@@ -306,7 +306,7 @@ concurrent agent; blocked media forces failures or poor audio.
 state channel; agents drop to "not connected" — the real-time channels must be
 allowed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.7 — Configure Webex Contact Center users (CLCCE Objective 2.2)
 
@@ -323,7 +323,7 @@ outdial), and team membership.
 **Negative test:** an agent with no team assignment cannot receive queued contacts
 — team/queue mapping is required for routing to reach them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.8 — Configure the desktop experience (CLCCE Objective 2.3)
 
@@ -340,7 +340,7 @@ layout, features, and permissions each team gets).
 **Negative test:** a layout referencing a broken custom-widget URL shows an empty
 panel — custom desktop widgets must resolve.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.9 — Configure recording (CLCCE Objective 2.4)
 
@@ -357,7 +357,7 @@ retrievable in the Recording Management/Analyzer.
 **Negative test:** a recording schedule scoped to a queue that no flow uses records
 nothing — the schedule must target active queues.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.10 — Configure visualizations and dashboards (CLCCE Objective 2.5)
 
@@ -375,7 +375,7 @@ on dashboards, scoped by role.
 shows no live data — the data source (real-time vs historical) must match the
 report type.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.11 — Configure components to route digital contacts (CLCCE Objective 3.1)
 
@@ -393,7 +393,7 @@ curl -s -H "Authorization: Bearer $WBX" "https://api.wxcc-us1.cisco.com/organiza
 digital channel capability never gets answered — agent multimedia profiles must
 include the channel.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.12 — Troubleshoot digital channels (CLCCE Objective 3.2)
 
@@ -412,7 +412,7 @@ stopped.
 expired is an integration problem, not a flow problem — check the channel asset
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.13 — Configure advanced voice flow design (CLCCE Objective 4.1)
 
@@ -431,7 +431,7 @@ routing.
 **Negative test:** an HTTP Request node to an API that times out with no error
 branch stalls the flow — advanced nodes need error handling.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.14 — Configure advanced digital flow design (CLCCE Objective 4.2)
 
@@ -450,7 +450,7 @@ the interaction, feeding the Analyzer.
 deliver it (e.g., no chat window persistence) yields no responses — the delivery
 path must support the survey.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.15 — Describe prebuilt and custom connectors (CLCCE Objective 4.3)
 
@@ -468,7 +468,7 @@ like Salesforce/ServiceNow, WhatsApp/social) and supports **custom** connectors
 screen-pop; the desktop shows no customer record — the connector auth must be
 current.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.16 — Describe Webex Contact Center APIs (CLCCE Objective 4.4)
 
@@ -485,7 +485,7 @@ search/analytics, enabling automation and custom reporting/integration.
 **Negative test:** a token without the contact-center scope returns `403` — the CC
 APIs require the appropriate integration scope.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.17 — Describe AI assistant features (CLCCE Objective 4.5)
 
@@ -503,7 +503,7 @@ and **agent wellness** (burnout signals), each org/policy controlled.
 **Negative test:** AI summaries absent because transcription is disabled — the AI
 features depend on transcription/recording being enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.18 — Describe the Webex AI Agent (CLCCE Objective 4.6)
 
@@ -520,7 +520,7 @@ before escalating to a human, with a handoff carrying context.
 **Negative test:** an AI Agent with no escalation path traps callers when it cannot
 resolve the query — a human handoff must be configured.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.19 — Git version-control operations (CLAUTO Objective 1.1)
 
@@ -540,7 +540,7 @@ reviewing and deploying scripts safely.
 **Negative test:** `git push` with no remote configured fails — a remote must be
 added before pushing.
 
-**Cleanup:** `rm -rf collab-auto`.
+**Rollback:** `rm -rf collab-auto`.
 
 ### Lab 9.20 — Describe API styles: REST, RPC, SOAP (CLAUTO Objective 1.2)
 
@@ -560,7 +560,7 @@ envelope (AXL); RPC-style APIs call a named method — collaboration mixes all t
 **Negative test:** send a REST body to the AXL SOAP endpoint; it rejects the payload
 — the styles are not interchangeable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.21 — Describe sync vs async API patterns (CLAUTO Objective 1.3)
 
@@ -580,7 +580,7 @@ are synchronous.
 **Negative test:** assume a bulk job finished on submit; the devices are not updated
 until the job completes — you must poll the job status.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.22 — Interpret Python for collaboration automation (CLAUTO Objective 1.4)
 
@@ -604,7 +604,7 @@ you to interpret in automation scripts.
 **Negative test:** reference an undefined attribute; Python raises `AttributeError`
 — interpreting the traceback is part of the skill.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.23 — Describe Python virtual environments (CLAUTO Objective 1.5)
 
@@ -621,7 +621,7 @@ versions (webexteamssdk, zeep for AXL) per project, avoiding dependency conflict
 **Negative test:** installing an SDK system-wide risks version clashes across
 projects — the venv is the isolation that prevents it.
 
-**Cleanup:** `rm -rf wbxenv`.
+**Rollback:** `rm -rf wbxenv`.
 
 ### Lab 9.24 — Describe infrastructure roles in collaboration (CLAUTO Objective 1.6)
 
@@ -641,7 +641,7 @@ endpoint.
 **Negative test:** automation targeting a single node instead of the load-balanced
 VIP fails when that node is down — target the service, not one host.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.25 — Automate UCM MACs with the AXL API (CLAUTO Objective 2.1)
 
@@ -667,7 +667,7 @@ provisioning automation.
 **Negative test:** an `addPhone` referencing a nonexistent device pool throws an
 AXL fault — AXL validates referential integrity.
 
-**Cleanup:** remove any test phone added.
+**Rollback:** remove any test phone added.
 
 ### Lab 9.26 — Automate UCM dial plan/cluster with AXL (CLAUTO Objective 2.2)
 
@@ -685,7 +685,7 @@ run read `executeSQLQuery`/thin SQL for reporting.
 **Negative test:** an `executeSQLUpdate` on a production table without care can
 corrupt the dial plan — prefer the typed AXL methods over raw SQL updates.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 9.27 — Describe UCM CTI APIs TAPI/JTAPI (CLAUTO Objective 2.3)
 
@@ -704,7 +704,7 @@ devices.
 **Negative test:** a JTAPI app whose user lacks "Standard CTI Enabled" and device
 control cannot observe/control calls — the CTI permissions are the gate.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.28 — Describe the UCM Serviceability Perfmon API and RTMT (CLAUTO Objective 2.4)
 
@@ -723,7 +723,7 @@ can pull performance/health data for dashboards and alerting.
 **Negative test:** collect a counter with a bad object/instance name; the service
 returns a fault — counter names must match the Perfmon schema.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.29 — Describe the IP Phone Services API (CLAUTO Objective 2.5)
 
@@ -741,7 +741,7 @@ custom on-phone applications and integrations.
 **Negative test:** malformed `CiscoIPPhone` XML shows an "XML error" on the phone —
 the phone strictly parses the schema.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.30 — Describe Finesse REST APIs and gadgets (CLAUTO Objective 2.6)
 
@@ -758,7 +758,7 @@ agent desktop, both used to build contact-center integrations.
 **Negative test:** a gadget calling a Finesse API without the agent's authenticated
 session gets `401` — gadgets act within the agent's authenticated context.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.31 — Describe Webex REST API capabilities and authentication (CLAUTO Objective 3.1)
 
@@ -775,7 +775,7 @@ messages, meetings, devices), and rate-limited; auth scope governs access.
 **Negative test:** an expired/invalid token returns `401`; an out-of-scope call
 returns `403` — the token and its scopes gate every call.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.32 — Implement admin operations on Webex org/users/licenses (CLAUTO Objective 3.2)
 
@@ -793,7 +793,7 @@ programmatically for scale.
 **Negative test:** an admin token lacking org-admin scope cannot modify other users
 — administrative operations require an admin-scoped token.
 
-**Cleanup:** revert any test license change.
+**Rollback:** revert any test license change.
 
 ### Lab 9.33 — Automate Webex spaces and memberships in Python (CLAUTO Objective 3.3)
 
@@ -816,7 +816,7 @@ messaging automation.
 **Negative test:** add a member the org's external policy blocks; the SDK raises an
 API error — org policy still applies to automation.
 
-**Cleanup:** `api.rooms.delete(room.id)`.
+**Rollback:** `api.rooms.delete(room.id)`.
 
 ### Lab 9.34 — Implement notifications in Python (CLAUTO Objective 3.4)
 
@@ -838,7 +838,7 @@ messages API for team visibility.
 **Negative test:** post to a room the token's identity is not a member of; the API
 returns `404` — the bot/user must be in the space.
 
-**Cleanup:** delete the test message.
+**Rollback:** delete the test message.
 
 ### Lab 9.35 — Implement interactive bots with buttons and cards (CLAUTO Objective 3.5)
 
@@ -858,7 +858,7 @@ building approval/self-service workflows in Webex.
 `attachmentActions` does nothing on click — the bot must subscribe to the action
 webhook.
 
-**Cleanup:** delete the test message.
+**Rollback:** delete the test message.
 
 ### Lab 9.36 — Describe Webex bots, embedded apps, guest issuer, integrations (CLAUTO Objective 3.6)
 
@@ -877,7 +877,7 @@ unauthenticated external users); each fits a different automation pattern.
 their own identity and cannot impersonate users — an integration (OAuth) is needed
 for user-context actions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.37 — Embed Webex messaging with Widgets (CLAUTO Objective 3.7)
 
@@ -896,7 +896,7 @@ a user access token, so developers add collaboration without building the UI.
 **Negative test:** embed a widget with an expired token; it renders an auth error —
 the widget needs a valid user token at load.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.38 — Describe the Webex SDKs (CLAUTO Objective 3.8)
 
@@ -914,7 +914,7 @@ libraries.
 **Negative test:** an SDK version predating an API feature lacks the method; upgrade
 the SDK — the SDK must track the API.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.39 — Automate room devices with xAPI (CLAUTO Objective 4.1)
 
@@ -933,7 +933,7 @@ runs Commands, so scripts control endpoints directly (or via the cloud xAPI).
 **Negative test:** a `putxml` command the device does not support returns an error
 element — the xAPI command schema is device/version specific.
 
-**Cleanup:** none (Standby Deactivate is benign).
+**Rollback:** none (Standby Deactivate is benign).
 
 ### Lab 9.40 — Monitor room device events with xAPI (CLAUTO Objective 4.2)
 
@@ -951,7 +951,7 @@ automation reacts to the device in real time (e.g., logging, room automation).
 **Negative test:** an HttpFeedback URL that is unreachable stops receiving events;
 the device drops the registration — the listener must be reachable.
 
-**Cleanup:** deregister the test feedback.
+**Rollback:** deregister the test feedback.
 
 ### Lab 9.41 — Deploy custom controls for room devices (CLAUTO Objective 4.3)
 
@@ -968,7 +968,7 @@ JavaScript) or xAPI, to trigger room automation (lights, blinds, presets).
 **Negative test:** a UI extension whose macro was removed shows the button but does
 nothing — the control and its macro must both be present.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.42 — Describe room-device deployment (CLAUTO Objective 4.4)
 
@@ -986,7 +986,7 @@ Expressway; deployment automation sets provisioning, config, and macros at scale
 config mismatches; it fails to register — the provisioning mode and config must
 agree.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.43 — Describe the Webex Meetings REST API (CLAUTO Objective 5.1)
 
@@ -1003,7 +1003,7 @@ scheduling and reporting automation.
 **Negative test:** list meetings for another host without delegate/admin scope
 returns only your own — cross-user access needs the right scope.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.44 — Implement meetings management via REST (CLAUTO Objective 5.2)
 
@@ -1021,7 +1021,7 @@ invitees and registration at scale.
 **Negative test:** a PUT with an end time before the start returns a validation
 error — the API enforces meeting-time sanity.
 
-**Cleanup:** `DELETE /v1/meetings/$MID`.
+**Rollback:** `DELETE /v1/meetings/$MID`.
 
 ### Lab 9.45 — Configure Cisco Meeting Server via REST (CLAUTO Objective 5.3)
 
@@ -1039,7 +1039,7 @@ spaces and in-call control are automated (provisioning, dynamic conferences).
 **Negative test:** create a coSpace with a `uri` already in use; CMS returns a
 duplicate error — coSpace URIs must be unique.
 
-**Cleanup:** `DELETE /api/v1/coSpaces/<id>` for the test space.
+**Rollback:** `DELETE /api/v1/coSpaces/<id>` for the test space.
 
 ## Lab Verification
 

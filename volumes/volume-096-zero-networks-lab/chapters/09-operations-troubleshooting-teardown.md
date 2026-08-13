@@ -39,7 +39,7 @@ Match the dropped 5-tuple against the learned allow-list; a legitimate flow that
 
 **Negative test.** "Fix" a blocked admin connection by adding a standing allow. You have removed the just-in-time control. Use a grant instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -67,7 +67,7 @@ sudo nft -f /etc/nftables.conf  # re-enforce
 
 **Negative test.** Rely on standing SSH as your break-glass, then enforce a policy that (correctly) closes it. You are locked out until the console grant or the snapshot. With just-in-time access, plan your break-glass around the console or the host adapter, not a standing port.
 
-**Cleanup.** Ensure `zn-db01` is enforced again.
+**Rollback.** Ensure `zn-db01` is enforced again.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -93,7 +93,7 @@ Then turn Core isolation back on and reboot.
 
 **Negative test.** Leaving a host connected to a real deployment means it keeps managing that host's firewall after the lab. Remove it.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

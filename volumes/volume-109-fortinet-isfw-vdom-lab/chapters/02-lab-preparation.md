@@ -73,7 +73,7 @@ From here on, an eval reader reads `port2`–`port5` as `v2001`–`v2004`.
 
 **Negative test.** With no firewall policy (next chapters), transit traffic between ports is dropped by the implicit deny — addressing the interfaces is necessary but not sufficient. The FortiGate forwards nothing until a policy permits it.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 #### Real-world note — pin the management interface, and give it a return route
 
@@ -148,7 +148,7 @@ sudo ip netns exec web ping -c1 10.30.9.9 | grep -o "0 received"
 0 received
 ```
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start the workload services
 
@@ -177,7 +177,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ### Exercise 2.4 — Track 1: scope management with a specific route (the surgical alternative)
 
@@ -227,7 +227,7 @@ future data-side default.
 reachability to **named** admin networks only, not to everything a default route
 would. Add an `edit 2` route for each additional admin subnet.
 
-**Cleanup.** Keep the route if you manage across subnets; otherwise
+**Rollback.** Keep the route if you manage across subnets; otherwise
 `config router static` → `delete 1` → `end`. The default route (Exercise 2.1) and
 this scoped route are **alternatives — use one, not both**.
 

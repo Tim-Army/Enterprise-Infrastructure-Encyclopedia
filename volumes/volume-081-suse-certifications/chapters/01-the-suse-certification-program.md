@@ -95,7 +95,7 @@ PY
 
 **Negative test:** think SUSE is only SLES; it spans **Kubernetes and security** — use the full map.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map levels to roles
 
@@ -116,7 +116,7 @@ PY
 **Negative test:** treat SCA and SCE as interchangeable; **SCE** is advanced engineering — pick by
 role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -134,7 +134,7 @@ PY
 
 **Negative test:** jump to a Rancher cert with no Linux base; **SLES** grounds it — build up.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

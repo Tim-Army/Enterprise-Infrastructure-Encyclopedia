@@ -80,7 +80,7 @@ program.
 **Negative test:** list "increase revenue" as a driver; public agencies govern for **service,
 transparency, and compliance** — drop commercial drivers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Mission-alignment matrix
 
@@ -106,7 +106,7 @@ scope.
 **Negative test:** add an initiative with no driver; if it maps to nothing it is **scope
 creep** — cut it or find its driver.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Open-data "publish by default" check
 
@@ -129,7 +129,7 @@ PY
 **Negative test:** publish a dataset with PII to satisfy "open by default"; **privacy law
 overrides** — aggregate or withhold PII.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Risk-driver register
 
@@ -151,7 +151,7 @@ PY
 **Negative test:** track risks with no owning driver or law; each public-sector risk should
 name the **obligation** it threatens.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

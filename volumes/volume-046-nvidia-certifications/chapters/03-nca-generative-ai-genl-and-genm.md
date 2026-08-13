@@ -96,7 +96,7 @@ prompt-engineering foundation NCA-GENL tests.
 **Negative test:** ask an open question with no context or constraints; you invite
 hallucination — ground and constrain the prompt.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — GENL: retrieval-augmented generation (RAG)
 
@@ -116,7 +116,7 @@ the grounding technique central to GENL.
 **Negative test:** fine-tune a model to memorize changing facts; **RAG** keeps
 knowledge fresh and citable without retraining — use it for knowledge.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — GENL: fine-tuning approaches
 
@@ -137,7 +137,7 @@ fine-tune) — the fine-tuning concepts GENL covers (NeMo enables these).
 **Negative test:** full fine-tune for a small format change; **LoRA/PEFT** is far
 cheaper — match the method to the need.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — GENL: serving with NIM and evaluation
 
@@ -156,7 +156,7 @@ steps of GENL.
 **Negative test:** ship an LLM app with no evaluation; measure **groundedness and
 task metrics** before and after changes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — GENM: multimodal models and data
 
@@ -176,7 +176,7 @@ tasks — the foundation of NCA-GENM.
 **Negative test:** train multimodal on unaligned data; **aligned** multimodal
 pairs are required — data alignment is critical.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.6 — GENM: diffusion and generation
 
@@ -195,7 +195,7 @@ conditioning) — a GENM topic.
 **Negative test:** expect deterministic output without fixing the **seed**;
 generation is stochastic — set the seed for reproducibility.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

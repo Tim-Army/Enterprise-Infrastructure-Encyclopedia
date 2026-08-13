@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Remediating container vulnerabilities CVE-by-CVE in each image. Most come from the shared base, so patching individually is endless — changing the base image once removes dozens across every image that inherits it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

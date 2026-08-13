@@ -336,7 +336,7 @@ volumes can grow, mirror, and span devices without reformatting, unlike fixed pa
 **Negative test:** put data on a raw fixed partition; growing it later means backup/repartition/
 restore — an LVM/Storage-Spaces volume resizes online.
 
-**Cleanup:** `sudo umount /data; sudo lvremove -y /dev/datavg/datalv; sudo vgremove -y datavg; sudo pvremove /dev/vdb`.
+**Rollback:** `sudo umount /data; sudo lvremove -y /dev/datavg/datalv; sudo vgremove -y datavg; sudo pvremove /dev/vdb`.
 
 ### Lab 7.2 — Network file services (Topic: Shared storage)
 
@@ -361,7 +361,7 @@ Windows standard, and cross-platform estates often serve both.
 **Negative test:** export a share to everyone read-write with no host/user restriction; any client can
 alter the data — NFS export options and SMB permissions must scope access to intended clients/users.
 
-**Cleanup:** remove the export/share line and re-export/`Remove-SmbShare Data`.
+**Rollback:** remove the export/share line and re-export/`Remove-SmbShare Data`.
 
 ### Lab 7.3 — Backup and restore (Topic: Data protection)
 
@@ -381,7 +381,7 @@ backups add scheduling, offsite/immutable copies, and retention (3-2-1).
 **Negative test:** run backups but never test a restore; the first real recovery discovers the backups
 are unusable — an untested backup is not a backup, so restore-testing is mandatory.
 
-**Cleanup:** `rm -rf /tmp/restore /backup/data-*.tar.gz`.
+**Rollback:** `rm -rf /tmp/restore /backup/data-*.tar.gz`.
 
 ### Lab 7.4 — Quotas and permissions (Topic: Access and limits)
 
@@ -401,7 +401,7 @@ can use), preventing both unauthorized access and one user filling shared storag
 **Negative test:** share storage with no quotas; one user or a runaway process fills the volume and
 everyone's writes fail — quotas bound each consumer's usage.
 
-**Cleanup:** `sudo rm -rf /data/team`.
+**Rollback:** `sudo rm -rf /data/team`.
 
 ## Lab Verification
 

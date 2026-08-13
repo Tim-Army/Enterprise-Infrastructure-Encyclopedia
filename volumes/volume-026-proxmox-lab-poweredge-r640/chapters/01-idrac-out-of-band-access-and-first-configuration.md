@@ -223,7 +223,7 @@ install, and console for this build, so securing it first is step zero.
 **Negative test:** leave the factory-default iDRAC password; anyone on the management network can
 take over the server's out-of-band controller — changing it is the first hardening step.
 
-**Cleanup:** none (keep the new password).
+**Rollback:** none (keep the new password).
 
 ### Lab 1.2 — iDRAC management network (Topic: Network configuration)
 
@@ -244,7 +244,7 @@ on DHCP.
 **Negative test:** run the build with the iDRAC on DHCP; a lease change mid-install drops your
 console/virtual-media session — a static address keeps out-of-band access stable.
 
-**Cleanup:** none (keep the static address).
+**Rollback:** none (keep the static address).
 
 ### Lab 1.3 — Virtual console and virtual media (Topic: Remote presence)
 
@@ -264,7 +264,7 @@ OS install (Chapter 03) runs through them.
 **Negative test:** plan to install Proxmox by walking a USB stick to the rack; virtual console/media
 do it remotely — for a headless lab server they are the install path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Server readiness and health (Topic: Operational readiness)
 
@@ -283,7 +283,7 @@ fan, or an out-of-date controller that would cause problems later.
 **Negative test:** install the OS onto a server with a failing PSU or badly outdated PERC firmware;
 you chase phantom OS issues that are really hardware — a health/firmware check first rules that out.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

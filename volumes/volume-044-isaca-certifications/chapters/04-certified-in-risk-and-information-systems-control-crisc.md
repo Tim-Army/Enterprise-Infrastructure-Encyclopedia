@@ -97,7 +97,7 @@ foundation (Domain 1) that frames every risk decision.
 **Negative test:** treat all risks with one blanket appetite; appetite **varies**
 by risk type — state it per category.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — CRISC D2: IT Risk Assessment (22%)
 
@@ -119,7 +119,7 @@ the assessment of Domain 2.
 **Negative test:** rank by likelihood alone; a rare but catastrophic risk still
 ranks high — risk is likelihood × impact.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — CRISC D3: Risk Response and Reporting (32%)
 
@@ -141,7 +141,7 @@ response-and-reporting deliverable that is CRISC's largest domain.
 **Negative test:** report risk status with no thresholds; a **KRI** needs a
 threshold to signal action — define them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — CRISC D4: Technology and Security (20%)
 
@@ -162,7 +162,7 @@ technology/security control linkage of Domain 4.
 **Negative test:** deploy controls with no link to a risk; every control should
 **treat** an identified risk and reduce residual risk measurably.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

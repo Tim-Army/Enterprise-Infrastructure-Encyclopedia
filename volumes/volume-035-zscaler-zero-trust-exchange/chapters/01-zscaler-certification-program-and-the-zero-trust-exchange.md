@@ -188,7 +188,7 @@ third-party exam-dump sites are frequently wrong and are excluded as sources.
 them as the blueprint; they routinely misstate domains and weights — only the
 vendor page is authoritative.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Confirm egress through the Zero Trust Exchange (Topic: Architecture)
 
@@ -208,7 +208,7 @@ policy on every session.
 you instead see a Zscaler node — traffic is terminated and re-originated by the
 exchange, so the origin IP is Zscaler's.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Locate the nearest service edge (Topic: Cloud footprint)
 
@@ -228,7 +228,7 @@ any portal or API work.
 **Negative test:** administer a tenant against the wrong cloud's portal/API;
 you see none of its configuration — cloud selection is not cosmetic.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

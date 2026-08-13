@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Running separate endpoint, identity, and cloud tools in separate consoles. Each sees a low-priority event and dismisses it; only cross-surface correlation reveals the account-takeover-and-exfiltration attack spanning all three.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

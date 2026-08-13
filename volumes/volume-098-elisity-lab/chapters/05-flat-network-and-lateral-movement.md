@@ -43,7 +43,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Nothing is blocked to find — the finding is that the enforcement point currently enforces nothing, so any identity can reach any resource.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows and their identities
 
@@ -63,7 +63,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Express the policy as "10.10.20.11 → 10.10.40.40:5432" instead. It works until the app is re-addressed or replaced, then silently fails. Elisity writes policy by identity precisely so it survives re-addressing. Keep the identities, not the addresses.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -88,7 +88,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own query from `el-app01` (`~/checkdb.sh` → 3); it also crosses `el-gw` and works. The router forwards both identically — it cannot tell **AppServer** from **HMI** until Elisity gives it identity-based policy to enforce.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

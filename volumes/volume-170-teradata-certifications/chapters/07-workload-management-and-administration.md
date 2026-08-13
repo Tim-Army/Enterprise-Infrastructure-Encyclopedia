@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Running all workloads at equal priority with no space limits or governance. A single batch query or runaway report consumes the engine and exhausts spool, and everyone's queries fail; workload prioritization, space management, and governance rules are what keep a busy warehouse reliable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

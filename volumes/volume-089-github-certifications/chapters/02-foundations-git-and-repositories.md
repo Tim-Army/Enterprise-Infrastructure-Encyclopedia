@@ -77,7 +77,7 @@ a1b2c3d (HEAD -> main, origin/main) Initial commit
 **Negative test:** create a public repo for private code by omitting `--private`; specify visibility
 deliberately.
 
-**Cleanup:** (repo removed at the end of Lab 2.4).
+**Rollback:** (repo removed at the end of Lab 2.4).
 
 ### Lab 2.2 — Commit and push a change
 
@@ -102,7 +102,7 @@ e4f5g6h (HEAD -> main, origin/main) Add .gitignore for build artifacts
 **Negative test:** `git commit -am` a huge mix of unrelated changes; commit **small, logical** changes
 with focused messages.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 2.3 — Branch for a change
 
@@ -126,7 +126,7 @@ branch 'feature/add-docs' set up to track 'origin/feature/add-docs'.
 **Negative test:** commit the docs change straight to `main`; branch first so the change can be reviewed
 in a PR.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 2.4 — Open a pull request
 
@@ -147,7 +147,7 @@ https://github.com/octocat/foundations-demo/pull/1
 **Negative test:** merge the branch locally and push to `main` with no PR; open a **pull request** so the
 change is reviewed.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 gh repo delete octocat/foundations-demo --yes

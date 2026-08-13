@@ -45,7 +45,7 @@ EOF
 
 **Negative test:** Securing only the internet perimeter while leaving USB and vendor-file paths uninspected — the majority of OT infections arrive via removable media and trusted-vendor files, not the internet; CIP covers *every* boundary.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The threat model: weaponized files and carrier devices
 
@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Relying on a single antivirus scan to "clear" a file — signature AV misses zero-days and benign-looking active content; CIP combines multiscanning (Chapter 04) with CDR (Chapter 03), not AV alone.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — OPSWAT core technologies at a glance
 
@@ -96,7 +96,7 @@ EOF
 
 **Negative test:** Treating any single technology as sufficient — CDR handles active content but not a compromised device; NAC handles device trust but not a weaponized file. CIP layers them, which is the program's through-line.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

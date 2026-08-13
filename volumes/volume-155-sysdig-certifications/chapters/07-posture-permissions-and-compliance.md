@@ -68,7 +68,7 @@ EOF
 
 **Negative test:** Right-sizing permissions by guessing what an identity needs. You either leave excess (risk) or break the workload (removed a needed permission); observing actual runtime usage grounds least privilege in what is genuinely required.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

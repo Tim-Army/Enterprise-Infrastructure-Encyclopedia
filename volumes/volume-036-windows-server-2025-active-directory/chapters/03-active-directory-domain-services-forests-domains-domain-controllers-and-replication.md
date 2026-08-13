@@ -182,7 +182,7 @@ AD DS and (with `-InstallDns`) an AD-integrated DNS zone in one step.
 unreachable server; promotion warns about DNS delegation and later
 replication/logon fail — a DC depends on working DNS.
 
-**Cleanup:** demote with `Uninstall-ADDSDomainController` (lab only).
+**Rollback:** demote with `Uninstall-ADDSDomainController` (lab only).
 
 ### Lab 3.2 — Inspect FSMO role placement (Topic: Manage operations masters)
 
@@ -201,7 +201,7 @@ single-DC forest — the first DC holds every FSMO role until they are moved.
 an offline DC; it fails (or a seize is required) — roles transfer cleanly
 only between online DCs; seizing is for permanent loss.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Create a site and subnet (Topic: Configure sites)
 
@@ -220,7 +220,7 @@ exists, and inter-site replication follows the site link.
 **Negative test:** create two subnets that overlap; AD rejects the overlap —
 a subnet maps to exactly one site.
 
-**Cleanup:** `Remove-ADReplicationSubnet "10.20.0.0/24"; Remove-ADReplicationSite "London"`.
+**Rollback:** `Remove-ADReplicationSubnet "10.20.0.0/24"; Remove-ADReplicationSite "London"`.
 
 ### Lab 3.4 — Check replication health (Topic: Monitor replication)
 
@@ -239,7 +239,7 @@ healthy multi-master directory converges with no failures.
 grow and `dcdiag` flags a replication error — replication needs RPC and the
 directory ports open between DCs.
 
-**Cleanup:** restore the firewall rule.
+**Rollback:** restore the firewall rule.
 
 ## Lab Verification
 

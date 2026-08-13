@@ -75,7 +75,7 @@ The `MGMT → DB` flow is the lateral movement to deny; every other inter-zone f
 | `srx#`, `[edit]` | Junos operational / configuration mode (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

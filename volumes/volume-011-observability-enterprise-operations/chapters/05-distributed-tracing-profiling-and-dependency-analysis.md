@@ -475,7 +475,7 @@ together.
 each service's average but not *this* request's path — only the trace shows where this specific
 request spent its time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Query traces by attribute (Topic: Trace analysis)
 
@@ -496,7 +496,7 @@ failures (slow + errored + a specific service) out of millions of traces, turnin
 you cannot query what was not stored — sampling policy must retain the traces you will need to query
 (errors, slow).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Service dependency and span metrics (Topic: Dependency analysis)
 
@@ -517,7 +517,7 @@ errors originate/propagate, which no static architecture diagram keeps current.
 dependencies; it drifts from reality as services change — the span-derived service graph is generated
 from real traffic and stays current.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Continuous profiling and latency analysis (Topic: Profiling)
 
@@ -537,7 +537,7 @@ a *span*, profiling localizes it to a *line of code*, closing the last gap in ro
 *why* — profiling connects the slow span to the code path, so the fix is targeted rather than
 guessed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

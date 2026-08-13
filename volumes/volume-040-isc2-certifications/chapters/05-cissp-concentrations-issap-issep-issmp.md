@@ -136,7 +136,7 @@ architectural requirement — the GRC-to-design linkage ISSAP tests.
 **Negative test:** design controls first and retrofit compliance; drivers should
 *originate* requirements, not be reverse-justified.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — ISSAP D2: Security Architecture Modeling (22%)
 
@@ -157,7 +157,7 @@ model an ISSAP produces and defends.
 **Negative test:** rely on a single strong perimeter; once breached there is no
 depth — model multiple independent layers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — ISSAP D3: Infrastructure and System Security (32%)
 
@@ -178,7 +178,7 @@ domain.
 **Negative test:** allow the web tier to reach the database directly; the app
 tier is the enforced boundary — do not bypass it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — ISSAP D4: Identity and Access Management Architecture (25%)
 
@@ -199,7 +199,7 @@ IAM architecture pattern ISSAP designs (SAML/OIDC, IdP/SP trust).
 **Negative test:** have each application store its own passwords; that multiplies
 credential risk — federate to a central IdP.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### ISSEP — Engineering
 
@@ -224,7 +224,7 @@ the SP 800-160 mindset ISSEP is built on.
 **Negative test:** add security only at verification; engineering security in
 starts at requirements — "shift left."
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — ISSEP D2: Risk Management (14%)
 
@@ -244,7 +244,7 @@ risk process ISSEP applies to systems.
 **Negative test:** treat authorization as a one-time checkbox; RMF's final step
 is *continuous* monitoring — risk is managed over time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.7 — ISSEP D3: Security Planning and Design (30%)
 
@@ -265,7 +265,7 @@ requirements-traceability matrix that is ISSEP's heaviest domain.
 **Negative test:** implement controls with no requirement behind them; every
 control should trace to a requirement, and every requirement to a control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.8 — ISSEP D4: Systems Implementation, Verification, and Validation (14%)
 
@@ -283,7 +283,7 @@ implementation satisfies the security requirement, ISSEP's V&V activity.
 **Negative test:** declare a control "done" without a test; verification requires
 *evidence* that the requirement is met.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.9 — ISSEP D5: Secure Operations, Change Management, and Disposal (17%)
 
@@ -304,7 +304,7 @@ NIST 800-88 sanitization tiers — the operate-and-dispose end of the lifecycle.
 **Negative test:** decommission a disk by deleting files; deletion is not
 sanitization — purge or destroy per data sensitivity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### ISSMP — Management
 
@@ -326,7 +326,7 @@ organizational-authority clarity ISSMP leadership requires.
 **Negative test:** assign two Accountable parties; accountability must be
 singular or decisions stall — exactly one "A."
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.11 — ISSMP D2: Systems Lifecycle Management (15%)
 
@@ -347,7 +347,7 @@ oversight of the system lifecycle ISSMP owns.
 **Negative test:** manage only the build phase; security governance spans
 initiate-to-dispose, not just development.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.12 — ISSMP D3: Risk Management (20%)
 
@@ -370,7 +370,7 @@ decisions a security manager defends, ISSMP's second-heaviest domain.
 **Negative test:** mitigate every risk regardless of cost; some risks are cheaper
 to accept or transfer — treatment is an economic decision.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.13 — ISSMP D4: Security Operations (18%)
 
@@ -392,7 +392,7 @@ ISSMP manages, not the packet-level work SSCP does.
 **Negative test:** measure alert *volume* as success; fewer, higher-fidelity
 alerts and faster MTTR matter more than raw counts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.14 — ISSMP D5: Contingency Management (12%)
 
@@ -413,7 +413,7 @@ drives BC/DR priorities, ISSMP's contingency domain.
 **Negative test:** restore easiest systems first during a disaster; recover by
 **business criticality**, per the BIA.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.15 — ISSMP D6: Law, Ethics, and Security Compliance Management (14%)
 
@@ -436,7 +436,7 @@ obligation.
 **Negative test:** track each regulation's controls separately; a crosswalk
 shows one control often satisfies many — reduce duplicated effort.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

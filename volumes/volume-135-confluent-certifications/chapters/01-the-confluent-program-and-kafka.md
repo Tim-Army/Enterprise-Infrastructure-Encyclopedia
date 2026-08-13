@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Assuming you must operate a production-scale cluster to learn Kafka — partition assignment, offset semantics, and compatibility rules are logic you can reason about directly, and that logic is what the exams probe.
 
-**Cleanup:** `rm -rf ~/confluent-study` when done.
+**Rollback:** `rm -rf ~/confluent-study` when done.
 
 ### Lab 1.2 — Choose your path and check the exam-day requirements
 
@@ -141,7 +141,7 @@ EOF
 
 **Negative test:** Booking the exam for tomorrow without running the System Check — if your connection or browser setup fails at launch, you lose both the appointment and the fee, and inside five days you cannot reschedule.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

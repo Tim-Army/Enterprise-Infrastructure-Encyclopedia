@@ -154,7 +154,7 @@ is not a network destination.
 "HR" now reaches every host in the range — a broad segment recreates VPN-style
 reachability and breaks least privilege.
 
-**Cleanup:** remove the lab segment/policy.
+**Rollback:** remove the lab segment/policy.
 
 ### Lab 5.2 — Verify the connector is outbound-only (Topic: Dark apps)
 
@@ -177,7 +177,7 @@ the internet, the structural advantage over a VPN or published reverse proxy.
 save a hop"; it now has an internet-facing attack surface — the outbound-only
 model is exactly what you would be discarding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Trace the access chain (Topic: Troubleshooting)
 
@@ -200,7 +200,7 @@ guessing.
 there is no route to the app — it is brokered, so the fault is always a link in
 the segment/connector/policy chain.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

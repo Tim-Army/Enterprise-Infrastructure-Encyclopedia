@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Running one-off Spark scripts by hand with no orchestration or tuning. You lose scheduling, dependencies, retries, and observability, and untuned jobs are slow and expensive; Airflow DAGs plus performance tuning make pipelines production-grade.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

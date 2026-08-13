@@ -74,7 +74,7 @@ s.close()
 **Negative test:** send `configure`/`vlan 100` over SSH with a screen-scraper; **pyaoscx/REST**
 is structured and idempotent — use it.
 
-**Cleanup:** delete VLAN 100 (`Vlan(s,100).delete()`).
+**Rollback:** delete VLAN 100 (`Vlan(s,100).delete()`).
 
 ### Lab 7.2 — Declarative config with Ansible
 
@@ -96,7 +96,7 @@ declarative, repeatable config.
 **Negative test:** push raw CLI lines with a generic module; the **aos_cx** resource modules are
 idempotent — prefer them.
 
-**Cleanup:** set `state: delete`.
+**Rollback:** set `state: delete`.
 
 ### Lab 7.3 — Read state via the AOS-CX REST API
 
@@ -113,7 +113,7 @@ programmable.
 
 **Negative test:** parse `show version` text; **REST** returns structured data — query it.
 
-**Cleanup:** `rm -f cj.txt`.
+**Rollback:** `rm -f cj.txt`.
 
 ### Lab 7.4 — Provision through Aruba Central groups
 
@@ -130,7 +130,7 @@ Central.
 **Negative test:** configure each switch individually in Central; use **groups/templates** for
 consistency at scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — NetConductor fabric from intent
 
@@ -148,7 +148,7 @@ hand.
 **Negative test:** hand-build every VTEP/EVPN peer; **NetConductor** generates the fabric from
 intent — use it for scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

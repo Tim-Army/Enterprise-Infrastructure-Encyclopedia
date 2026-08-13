@@ -68,7 +68,7 @@ fn main() {
 **Negative test:** pass loose parallel variables (name, port, active) everywhere; a
 **struct** keeps them together and typed.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Enum with data
 
@@ -91,7 +91,7 @@ fn main() { println!("{}", describe(&State::Up { since: 1000 })); }
 **Negative test:** represent state with two booleans; **enum variants** make impossible
 states (e.g., down-and-up) unrepresentable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Option and match
 
@@ -114,7 +114,7 @@ fn main() {
 **Negative test:** return `-1`/0 as a "not found" sentinel; **`Option`** forces the caller
 to handle `None` — no silent sentinels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Methods with impl
 
@@ -136,7 +136,7 @@ fn main() {
 **Negative test:** scatter free functions taking the struct everywhere; **methods** keep
 behavior with the data.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

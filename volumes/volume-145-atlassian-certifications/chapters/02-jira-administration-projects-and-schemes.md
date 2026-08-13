@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Making everything team-managed "so teams are happy." Cross-project reporting becomes impossible and the audited finance workflow has no enforced consistency — a compliance problem.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — A scheme's blast radius
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Editing the shared scheme to satisfy one project's request. The other five inherit the change, and the audit-record projects just became deletable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Scheme sprawl and consolidation
 
@@ -176,7 +176,7 @@ EOF
 
 **Negative test:** Cloning a workflow every time a project wants one small variation. Within a year the instance has a workflow per project and no admin can predict what any change affects.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

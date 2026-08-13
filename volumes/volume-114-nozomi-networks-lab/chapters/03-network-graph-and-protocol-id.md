@@ -49,7 +49,7 @@ printf 'fc 3 (ReadHolding)\nfc 6 (WriteSingle)\n'
 
 **Negative test.** A pure L4 view would report only "hmi → plc:502" and could not tell the read from the write — which is why the write cannot be blocked without protocol awareness.
 
-**Cleanup.** Keep `/tmp/mb.pcap`.
+**Rollback.** Keep `/tmp/mb.pcap`.
 
 ### Exercise 3.2 — Build the link inventory
 
@@ -71,7 +71,7 @@ cat /etc/nozomi/links
 
 **Negative test.** If discovery only recorded "modbus" without the functions, you could not write a read-only policy — the function granularity is the point.
 
-**Cleanup.** Keep the inventory.
+**Rollback.** Keep the inventory.
 
 ## Summary and Completion Checklist
 

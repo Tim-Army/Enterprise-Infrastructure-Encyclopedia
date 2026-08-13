@@ -68,7 +68,7 @@ with manager.connect(host="10.0.0.11", port=830, username="admin", password="adm
 **Negative test:** connect to :830 when NETCONF is **disabled**; enable it (`netconf-yang`)
 first.
 
-**Cleanup:** the `with` closes the session.
+**Rollback:** the `with` closes the session.
 
 ### Lab 5.2 — NETCONF edit-config
 
@@ -88,7 +88,7 @@ with manager.connect(host="10.0.0.11", port=830, username="admin", password="adm
 **Negative test:** edit `running` directly without candidate/commit; use the
 **candidate + commit** model for safe transactions.
 
-**Cleanup:** delete Loopback102 via another edit-config.
+**Rollback:** delete Loopback102 via another edit-config.
 
 ### Lab 5.3 — RESTCONF GET
 
@@ -107,7 +107,7 @@ print(r.status_code, "->", list(r.json().keys()))
 **Negative test:** omit the `Accept: application/yang-data+json` header; set the correct
 **media type** for RESTCONF.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Contrast NETCONF and RESTCONF
 
@@ -123,7 +123,7 @@ print("RESTCONF: https:443, JSON/XML, REST verbs (simple integration).")
 **Negative test:** force RESTCONF for a multi-step transactional change; **NETCONF's
 candidate/commit** is safer there — pick per need.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

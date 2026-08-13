@@ -99,7 +99,7 @@ PY
 **Negative test:** assume EC-Council is only CEH; it spans **defense, forensics, SOC, cloud,
 executive, and AI** — use the full track map.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Understand the CEH exam model
 
@@ -120,7 +120,7 @@ reference.
 **Negative test:** expect one exam for CEH Master; it requires **both** the knowledge and practical
 exams — plan for two.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan an authorized, defensive path
 
@@ -140,7 +140,7 @@ PY
 **Negative test:** target CCISO with no security foundation; it expects **experience** — build the
 track first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

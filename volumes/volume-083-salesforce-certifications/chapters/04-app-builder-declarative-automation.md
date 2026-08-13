@@ -76,7 +76,7 @@ PY
 **Negative test:** write an Apex trigger for this simple automation; **Flow** handles it declaratively —
 use Flow.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Write a validation rule
 
@@ -101,7 +101,7 @@ quality.
 **Negative test:** rely on users to enter valid data with no **validation rule**; bad data creeps in —
 enforce at save.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Choose the right automation tool
 
@@ -121,7 +121,7 @@ PY
 **Negative test:** use a **formula field** to modify other records; formulas are read-only — use a
 **Flow**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Build a declarative app
 
@@ -141,7 +141,7 @@ PY
 **Negative test:** hand-code the UI in Apex/LWC for a simple CRUD app; **App Builder** assembles it
 declaratively — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

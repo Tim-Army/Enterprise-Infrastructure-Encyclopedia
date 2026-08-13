@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Treating SIREN as a multiple-choice knowledge exam. It requires ~45 hours of training and is simulation-heavy — it validates *doing* incident response on the platform, which a question bank cannot cram.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The three signatures of the platform
 
@@ -128,7 +128,7 @@ EOF
 
 **Negative test:** Expecting a signature-based antivirus model. Signatures only catch known-bad hashes and miss novel threats; SentinelOne's behavioral AI detects by behavior and responds autonomously, which is what the certifications teach you to operate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

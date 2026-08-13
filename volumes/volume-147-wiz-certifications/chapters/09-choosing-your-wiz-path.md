@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Waiting for a "complete" Wiz certification catalog before starting. The program is expanding by design; Cloud Fundamentals exists now and anchors every path — starting there beats waiting for a lineup that will keep growing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Wiz in the cloud-security career
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Treating Wiz as a standalone tool skill divorced from cloud fundamentals. You cannot secure clouds you do not understand — Wiz sits on top of AWS/Azure/GCP knowledge and feeds SOC pipelines; isolating it undersells both the platform and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

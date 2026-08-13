@@ -39,7 +39,7 @@ docker exec mqlab dspmq
 
 **Negative test:** `docker exec mqlab dspmq` before startup completes shows the QM `STATUS(Starting)` — MQ objects have lifecycle states the exam expects you to read.
 
-**Cleanup:** `docker rm -f mqlab` at chapter end.
+**Rollback:** `docker rm -f mqlab` at chapter end.
 
 ### Lab 6.2 — Queues and a round-trip message (MQ Administrator)
 
@@ -56,7 +56,7 @@ sleep 3; kill %1 2>/dev/null
 
 **Negative test:** Define the queue with `DEFPSIST(NO)`, put a message, restart the QM — the message is gone; persistence is a per-message/queue property, and the exam tests exactly this.
 
-**Cleanup:** Removed with the container.
+**Rollback:** Removed with the container.
 
 ### Lab 6.3 — Channels connect queue managers (MQ Administrator)
 
@@ -71,7 +71,7 @@ DISPLAY CHSTATUS(LAB.SVRCONN)" | runmqsc QM1'
 
 **Negative test:** A client connecting with no matching SVRCONN channel or wrong auth gets `MQRC_NOT_AUTHORIZED`/`2035` — the single most common MQ ticket, and a favorite exam scenario.
 
-**Cleanup:** Removed with the container.
+**Rollback:** Removed with the container.
 
 ### Lab 6.4 — ACE integration flows (App Connect Enterprise Developer)
 
@@ -86,7 +86,7 @@ ace> a message flow: input node (MQ/HTTP/file) -> transform (mapping/compute/ESQ
 
 **Negative test:** Using MQ alone to "transform" a message — MQ moves bytes; ACE transforms them. The exam separates transport from mediation.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 6.5 — API Connect and DataPower (Solution Implementer / DataPower Admin)
 
@@ -102,7 +102,7 @@ datapower> the hardened gateway enforcing the APIs: TLS, threat protection, mess
 
 **Negative test:** Expecting API Connect to do low-level threat protection itself — that is DataPower's job; the two-product split is the design the exams test.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 6.6 — Cloud Pak for Integration and Sterling (CP4I Architect / Sterling Admin)
 
@@ -119,7 +119,7 @@ sterling file gateway (v6.2)> managed file transfer: partner onboarding, routing
 
 **Negative test:** Using MQ or ACE for large partner file exchange with onboarding/non-repudiation — that is Sterling's domain; matching the workload to the product is the architect's job.
 
-**Cleanup:** `docker rm -f mqlab` to finish the chapter.
+**Rollback:** `docker rm -f mqlab` to finish the chapter.
 
 ## Summary and Completion Checklist
 

@@ -36,7 +36,7 @@ echo "hello" | sudo ip netns exec web nc -w2 10.130.2.20 5432 || echo "reply BLO
 sudo nft insert rule inet cx forward index 0 ct state established,related accept   # restore
 ```
 
-**Cleanup.** State rule restored above.
+**Rollback.** State rule restored above.
 
 ### Exercise 5.2 — Unsolicited traffic on the reply tuple is dropped
 
@@ -52,7 +52,7 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.130.1.10 5432 && echo "db->web OPEN"
 
 **Negative test.** This is the exact hole stateful enforcement closes: reply-permitting without state is an inbound hole; the DPU's tracking removes it while still allowing legitimate replies.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

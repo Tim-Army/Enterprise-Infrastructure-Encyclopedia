@@ -349,7 +349,7 @@ scheduler reconcile desired state, which is the model every later chapter builds
 Pods stay `Pending` — each control-plane component has a distinct job, and losing one degrades
 a specific function.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Bootstrap and join (Topic: Cluster lifecycle)
 
@@ -372,7 +372,7 @@ CNI is installed (nodes stay `NotReady` without one).
 **Negative test:** skip installing a CNI; nodes stay `NotReady` and Pods never get IPs —
 networking is a required add-on, not built in.
 
-**Cleanup:** `kubeadm reset` on lab nodes to tear the cluster down.
+**Rollback:** `kubeadm reset` on lab nodes to tear the cluster down.
 
 ### Lab 2.3 — etcd backup and restore (Topic: State management)
 
@@ -397,7 +397,7 @@ static pod at it.
 everything not in Git (secrets, dynamic objects, CRs) — the etcd snapshot is the authoritative
 recovery point.
 
-**Cleanup:** `sudo rm -f /var/backups/etcd-snapshot.db` if lab-only.
+**Rollback:** `sudo rm -f /var/backups/etcd-snapshot.db` if lab-only.
 
 ### Lab 2.4 — Cluster upgrade (Topic: Lifecycle operations)
 
@@ -420,7 +420,7 @@ version at a time, and draining is what makes a rolling node upgrade non-disrupt
 **Negative test:** skip a minor version (e.g. 1.30 → 1.32 in one jump); `kubeadm` refuses —
 the supported path is sequential minor upgrades, control plane before nodes.
 
-**Cleanup:** `kubectl uncordon` any cordoned nodes.
+**Rollback:** `kubectl uncordon` any cordoned nodes.
 
 ## Lab Verification
 

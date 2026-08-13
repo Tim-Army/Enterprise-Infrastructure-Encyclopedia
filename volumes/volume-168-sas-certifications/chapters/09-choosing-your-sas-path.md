@@ -87,7 +87,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — a programmer takes Programming Specialist then Advanced; a data scientist builds toward the composite; an admin takes Viya Administration. The lesson is to start with programming, add your specialty, and either compose toward the Data Scientist capstone or take the administration pole.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: the SAS analytics lifecycle end to end
 
@@ -128,7 +128,7 @@ EOF
 
 **Expected result:** A capstone taking raw data through curation (drop invalid), description (means by group), modeling and assessment (a rule and its accuracy), and reporting. The lesson synthesizes the volume: SAS covers the whole analytics lifecycle — curate, describe, model, assess, report — with statistical rigor at each step, which is exactly what the programming, analytics, ML, and Data Scientist certifications prepare you to do.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -486,7 +486,7 @@ logical egress the rules steer over.
 member; FortiOS steers via SD-WAN rules instead — membership changes how egress is
 selected.
 
-**Cleanup:** `set status disable` under `config system sdwan` after the later labs.
+**Rollback:** `set status disable` under `config system sdwan` after the later labs.
 
 ### Lab 8.2 — Performance SLA and health checks (Topic: SD-WAN SLA)
 
@@ -521,7 +521,7 @@ links that meet the application's requirements.
 brown-out link from a healthy one and keeps sending traffic into loss — the SLA probe is
 what makes steering application-aware.
 
-**Cleanup:** removed with the SD-WAN block in Lab 8.1 cleanup.
+**Rollback:** removed with the SD-WAN block in Lab 8.1 cleanup.
 
 ### Lab 8.3 — SD-WAN steering rules (Topic: SD-WAN rules)
 
@@ -556,7 +556,7 @@ member and order — rules translate link health into per-application path selec
 is dropped instead of failing over — `mode sla` with priority members is what makes
 steering resilient.
 
-**Cleanup:** removed with the SD-WAN block in Lab 8.1 cleanup.
+**Rollback:** removed with the SD-WAN block in Lab 8.1 cleanup.
 
 ### Lab 8.4 — Central management and automation (Topic: FortiManager / automation stitches)
 
@@ -597,7 +597,7 @@ events into responses without an operator watching logs.
 **Negative test:** define a trigger with no action (or vice versa); nothing happens —
 the stitch must bind a trigger to an action to automate.
 
-**Cleanup:** delete the stitch, action, and trigger; unset central-management if lab-only.
+**Rollback:** delete the stitch, action, and trigger; unset central-management if lab-only.
 
 ### Lab 8.5 — Structured troubleshooting (Topic: Troubleshooting)
 
@@ -623,7 +623,7 @@ the definitive tool for answering "why is this traffic allowed/denied/misrouted?
 *actual* matched policy and route, which often differs from the assumed one — trace,
 don't guess.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 diagnose debug reset

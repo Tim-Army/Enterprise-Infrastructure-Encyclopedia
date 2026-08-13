@@ -83,7 +83,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — a newcomer starts free with Essentials then Advanced; a developer takes Advanced then AI Automation Engineer; a CoE lead adds the APA Leader Masterclass. The lesson is to start free with Essentials, prove development with Advanced, and move to AI Automation Engineer as automation becomes AI-driven.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: an end-to-end agentic automation
 
@@ -121,7 +121,7 @@ EOF
 
 **Expected result:** A capstone where Document Automation extracts an invoice, an AI agent reasons and escalates the over-threshold amount for human approval under a guardrail, a deterministic bot performs the audited ERP entry, and Bot Insight measures the impact. The lesson synthesizes the volume: modern automation combines AI understanding (IDP), agent reasoning, deterministic bot action, and human oversight — governed and measured — which is exactly what the Essentials → Advanced → AI Automation Engineer path prepares you to build.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

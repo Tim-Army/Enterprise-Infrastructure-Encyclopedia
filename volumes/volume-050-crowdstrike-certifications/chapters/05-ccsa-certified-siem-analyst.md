@@ -80,7 +80,7 @@ Querying and Analytics domain.
 **Negative test:** query `*` with no grouping over all time; **filter and aggregate**
 — raw scans are slow and unreadable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Detection Logic and Alert Analysis
 
@@ -98,7 +98,7 @@ and Alert Analysis domain (which rules fire and why).
 **Negative test:** treat all alerts equally; group by **rule/severity** to prioritize
 the meaningful ones.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Incident Investigation
 
@@ -116,7 +116,7 @@ the Incident Investigation domain (correlation).
 **Negative test:** investigate one log source; **correlate across sources** — the
 incident spans endpoint, identity, and network.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Reporting and Communication
 
@@ -133,7 +133,7 @@ Reporting and Communication domain.
 **Negative test:** paste raw rows into a report; a **timechart/summary** communicates
 trend to stakeholders.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

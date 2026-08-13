@@ -85,7 +85,7 @@ SQL on a `catalog.schema.table` (Databricks SQL).
 **Negative test:** query `employees` without the catalog/schema under Unity
 Catalog; qualify it fully to avoid ambiguity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — SQL for analysis: window functions
 
@@ -104,7 +104,7 @@ QUALIFY rnk <= 3;
 **Negative test:** self-join to compute per-group ranking; a **window function** is
 clearer and faster — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Visualizations and dashboards
 
@@ -123,7 +123,7 @@ visualization/dashboard area of the exam.
 **Negative test:** email static screenshots; a **live dashboard** with parameters
 and refresh stays current — build it in Databricks SQL.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Governance and data management for analysts
 
@@ -141,7 +141,7 @@ governance context an analyst works within.
 **Negative test:** assume access to any table; **Unity Catalog** grants are
 per-object — you see only what you're granted.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

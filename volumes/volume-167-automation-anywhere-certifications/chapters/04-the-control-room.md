@@ -105,7 +105,7 @@ EOF
 
 **Negative test:** Hardcoding the ERP password in the bot and letting anyone deploy. The secret leaks into every copy and audit/version history, and there is no least-privilege control; the Credential Vault plus RBAC and the audit log are what make an automation fleet secure and governable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

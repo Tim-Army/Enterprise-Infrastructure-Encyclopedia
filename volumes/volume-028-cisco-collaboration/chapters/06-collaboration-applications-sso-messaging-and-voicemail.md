@@ -202,7 +202,7 @@ key off Integrated Windows AD, Kerberos, two-factor (2FA), or a third-party IdP;
 **Negative test:** enable SSO with an IdP whose contract/metadata does not
 include the UCM SP; login loops back — the trust must be mutual (SP↔IdP).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Describe the SAML SSO login process flow (CLICA Objective 1.2)
 
@@ -221,7 +221,7 @@ and grants the session.
 **Negative test:** a clock skew between SP and IdP beyond the assertion's
 NotBefore/NotOnOrAfter window rejects the assertion — SSO needs synchronized NTP.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.3 — Describe SAML 2.0 components (CLICA Objective 1.3)
 
@@ -244,7 +244,7 @@ them).
 UCM expects HTTP-POST fails assertion delivery — the binding must match on both
 sides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Describe SAML SSO configuration (CLICA Objective 1.4)
 
@@ -264,7 +264,7 @@ UCM, upload UCM SP metadata into the IdP, map the LDAP UID claim, then test.
 sAMAccountName) authenticates the user at the IdP but fails the UCM lookup — the
 claim mapping is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.5 — Describe OAuth 2.0 (CLICA Objective 1.5)
 
@@ -283,7 +283,7 @@ authenticate once and silently refresh, rather than re-prompting per service.
 re-prompts and SSO-over-MRA breaks — OAuth refresh tokens are what make
 single-login work across services.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.6 — Configure Cisco Unified IM and Presence on-premises (CLICA Objective 2.1)
 
@@ -304,7 +304,7 @@ UCM users.
 failover; users on the down node lose presence — replication health is the HA
 prerequisite.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.7 — Troubleshoot Cisco Unified IM and Presence on-premises (CLICA Objective 2.2)
 
@@ -325,7 +325,7 @@ localize it.
 down cluster-wide — a service-level fault presents as every client failing at
 once.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.8 — Configure Cisco Unity Connection (CLICA Objective 3.1)
 
@@ -345,7 +345,7 @@ MWI, uses routing rules for direct/forwarded calls, and imports users via LDAP.
 search space fails — Unity's routing obeys its own search scopes, mirroring UCM's
 CSS/partition model.
 
-**Cleanup:** remove the test call handler.
+**Rollback:** remove the test call handler.
 
 ### Lab 6.9 — Troubleshoot Cisco Unity Connection (CLICA Objective 3.2)
 
@@ -364,7 +364,7 @@ issue; MWI stuck on traces to the UCM integration (Lab 6.11).
 **Negative test:** an auto-attendant that dead-ends traces to a routing rule
 whose target handler was deleted — the rule, not the greeting, is the break.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.10 — Implement toll fraud prevention in Unity Connection (CLICA Objective 3.3)
 
@@ -383,7 +383,7 @@ transfer rules dialing out; restriction tables blocking those patterns close it.
 to an extension" that is really an external number via the operator — the
 restriction table is what blocks it.
 
-**Cleanup:** revert any test restriction-table change.
+**Rollback:** revert any test restriction-table change.
 
 ### Lab 6.11 — Troubleshoot Unity Connection integration with UCM (CLICA Objective 3.4)
 
@@ -403,7 +403,7 @@ and Unity.
 **Negative test:** MWI on/off DNs configured differently on UCM and Unity leaves
 lamps stuck on — the two sides must agree on the MWI extensions.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.12 — Describe digital networking in multicluster Unity (CLICA Objective 3.5)
 
@@ -422,7 +422,7 @@ mailboxes in another and see a unified directory.
 remote recipients; cross-location voicemail addressing fails — the networking
 link is the dependency.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.13 — Configure DNS for service discovery (CLICA Objective 4.1)
 
@@ -441,7 +441,7 @@ nslookup -type=SRV _collab-edge._tls.example.com
 breaks zero-touch discovery; a missing `_collab-edge` breaks MRA from outside —
 each record enables a discovery path.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.14 — Troubleshoot service discovery (CLICA Objective 4.2)
 
@@ -460,7 +460,7 @@ the client's email domain and the SRV zone.
 finds the records; discovery fails despite correct records in the other zone —
 the domain the client queries must host the SRVs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.15 — Troubleshoot Jabber/Webex App phone control (CLICA Objective 4.3)
 
@@ -481,7 +481,7 @@ registered.
 phone though the softphone works — the CTI permission gates deskphone control
 specifically.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.16 — Troubleshoot Jabber/Webex App voicemail integration (CLICA Objective 4.4)
 
@@ -501,7 +501,7 @@ service, and both in the user's service profile, plus Unity credentials.
 **Negative test:** a user with a voicemail service but no mailstore service sees
 message-waiting but cannot open visual voicemail — both UC services are required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.17 — Troubleshoot certificate validation (CLICA Objective 4.5)
 
@@ -521,7 +521,7 @@ used).
 FQDN triggers a trust prompt every login — a CA-signed cert with the correct SAN
 removes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.18 — Describe Unified Attendant Console Advanced integration (CLICA Objective 4.6)
 
@@ -539,7 +539,7 @@ presence (IM&P), and the directory, so an operator queues and transfers calls.
 **Negative test:** a CUACA app user missing CTI control of its route points
 cannot receive queued calls — the CTI association is the integration linchpin.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.19 — Troubleshoot Webex App functions (CLICA Objective 4.7)
 
@@ -559,7 +559,7 @@ issues split cleanly: login = SSO/OAuth/discovery (Labs 6.1–6.14), call signal
 `_collab-edge`/Expressway problem, not a client bug — the on-net-works/off-net-
 fails split points to the edge.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -41,7 +41,7 @@ echo "0 rules => open egress: the workload can initiate to any destination the g
 
 **Negative test:** Relying on the workload's own host firewall for egress control — an attacker with the workload disables it; egress enforced **at the gateway** (outside the workload) is the point.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 5.2 — FQDN allowlist at the gateway
 
@@ -66,7 +66,7 @@ sudo ip netns exec egw nft list chain ip egress out | grep -c drop
 
 **Negative test:** Allowlist by a hardcoded IP for a CDN-hosted service — it works until the CDN rotates IPs, then breaks; **FQDN** rules survive the rotation, which is the exam's core egress argument.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 5.3 — Verify allow-vs-deny
 
@@ -83,7 +83,7 @@ sudo ip netns exec egw nft list chain ip egress out | tail -3
 
 **Negative test:** Set the chain policy to `accept` "temporarily" — egress reverts to open; default-**deny** is the security property, and the exam checks you keep it.
 
-**Cleanup:** `for ns in wl egw; do sudo ip netns del $ns 2>/dev/null; done`.
+**Rollback:** `for ns in wl egw; do sudo ip netns del $ns 2>/dev/null; done`.
 
 ### Lab 5.4 — Egress patterns: centralized vs distributed
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Centralized egress with no HA on the shared gateway — a single choke point becomes a single point of failure; egress gateways need the active-active HA of [Chapter 04](04-professional-multicloud-transit.md).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

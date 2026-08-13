@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Assuming you need a licensed Insight tenant to study — prioritization logic, SLA arithmetic, and detection tuning are vendor-independent reasoning, and that reasoning is what the exams test.
 
-**Cleanup:** `rm -rf ~/rapid7-study` when finished.
+**Rollback:** `rm -rf ~/rapid7-study` when finished.
 
 ### Lab 1.2 — Choose an exam and plan around the enrollment path
 
@@ -133,7 +133,7 @@ EOF
 
 **Negative test:** Budgeting only the $215 and assuming you can book tonight — the purchase-order step involves your organization and takes as long as it takes.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

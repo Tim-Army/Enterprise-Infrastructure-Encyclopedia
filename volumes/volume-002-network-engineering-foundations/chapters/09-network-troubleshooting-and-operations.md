@@ -430,7 +430,7 @@ fault there makes everything above it fail; fixing the lowest layer often resolv
 **Negative test:** start debugging the application (L7) when the interface is down (L1); you waste
 time above a broken foundation — check the lowest layers first, since higher layers depend on them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Physical and Layer-2 faults (Topic: L1/L2 troubleshooting)
 
@@ -450,7 +450,7 @@ speed), rising CRC/errors (bad cable/SFP), or failed ARP (peer unreachable at L2
 climbing CRC errors and a half-duplex mismatch; the fault is physical (cable/duplex) — the L1/L2
 counters name it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Layer-3 faults (Topic: L3 troubleshooting)
 
@@ -472,7 +472,7 @@ localizes.
 no route (or the wrong next hop); the fault is local routing/addressing — check the route and mask
 before blaming the far end.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Capstone: end-to-end triage (Topic: Synthesis)
 
@@ -496,7 +496,7 @@ which is the disciplined triage every prior chapter's tools feed into.
 without the layered check; you may "fix" the wrong thing or mask the real fault — the method isolates
 the actual broken layer before any change.
 
-**Cleanup:** none (read-only diagnostics).
+**Rollback:** none (read-only diagnostics).
 
 ## Lab Verification
 

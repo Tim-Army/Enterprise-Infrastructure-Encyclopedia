@@ -98,7 +98,7 @@ echo "Next: research each open service's version for known issues (enumeration -
 **Negative test:** scan only common ports (`-F`) and stop; full-port, service, and
 script enumeration finds what a quick scan misses.
 
-**Cleanup:** `rm -f scan.txt`
+**Rollback:** `rm -f scan.txt`
 
 ### Lab 3.2 — Web and application attacks (content discovery)
 
@@ -119,7 +119,7 @@ sensitive files, disable directory listing, and monitor for enumeration.
 **Negative test:** assume the app has no hidden content; **enumerate directories
 and files** — hidden endpoints are common footholds.
 
-**Cleanup:** `pkill -f 'http.server 8080' 2>/dev/null || true`
+**Rollback:** `pkill -f 'http.server 8080' 2>/dev/null || true`
 
 ### Lab 3.3 — Password attacks (on your own hashes)
 
@@ -138,7 +138,7 @@ and slow hashing (Argon2/bcrypt) with lockout.
 **Negative test:** crack a hash you do not own; only ever attack **your own** or
 authorized-lab credentials.
 
-**Cleanup:** `rm -f mine.hash mywords.txt; rm -f ~/.john/john.pot 2>/dev/null || true`
+**Rollback:** `rm -f mine.hash mywords.txt; rm -f ~/.john/john.pot 2>/dev/null || true`
 
 ### Lab 3.4 — Privilege escalation enumeration (Linux)
 
@@ -156,7 +156,7 @@ sudoers regularly.
 **Negative test:** attempt escalation before enumerating; you escalate *through*
 a specific misconfiguration you must first find — enumerate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Lateral movement and pivoting (concept + local proof)
 
@@ -175,7 +175,7 @@ networks and monitor for unexpected tunnels.
 **Negative test:** assume a flat network is fine; **segmentation** limits lateral
 movement — pivoting exploits its absence.
 
-**Cleanup:** `pkill -f 'ssh -f -N -L 9000' 2>/dev/null || true`
+**Rollback:** `pkill -f 'ssh -f -N -L 9000' 2>/dev/null || true`
 
 ### Lab 3.6 — Active Directory enumeration (concept)
 
@@ -198,7 +198,7 @@ service-account passwords, and monitoring (e.g., for spraying/Kerberoasting).
 **Negative test:** brute-force AD accounts blindly; that triggers lockouts and
 alerts — enumerate paths and use targeted, authorized techniques.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.7 — Cloud (AWS) enumeration (concept)
 
@@ -219,7 +219,7 @@ least-privilege IAM, block public storage, and restrict metadata access.
 **Negative test:** enumerate a cloud account you do not own; cloud testing needs
 explicit authorization — never touch another tenant.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

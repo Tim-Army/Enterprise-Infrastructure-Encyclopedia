@@ -97,7 +97,7 @@ EOF
 
 **Negative test:** Assuming you need a paid GitLab tier to study — the free tier covers everything the Associate exams assess, and the concepts model fine locally.
 
-**Cleanup:** `rm -rf ~/gitlab-study` when finished.
+**Rollback:** `rm -rf ~/gitlab-study` when finished.
 
 ### Lab 1.2 — Plan against the exam mechanics
 
@@ -137,7 +137,7 @@ EOF
 
 **Negative test:** Buying the exam before working the free learning path — you pay $150 for content that was available at no cost, and a failed second attempt means paying again at full price.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -29,7 +29,7 @@ show vpn vserver gw_ext
 
 **Negative test:** Without the SSLVPN feature enabled the `add vpn vserver` fails — features gate commands.
 
-**Cleanup:** Keep for the following labs.
+**Rollback:** Keep for the following labs.
 
 ### Lab 6.2 — Authentication (authentication and authorization module)
 
@@ -45,7 +45,7 @@ bind authentication vserver gw_ext -policy pol_ldap -priority 100
 
 **Negative test:** Wrong `ldapLoginName` attribute: binds succeed, user logons fail — the classic misconfiguration the exam presents as "admin works, users don't."
 
-**Cleanup:** Keep for 6.3.
+**Rollback:** Keep for 6.3.
 
 ### Lab 6.3 — Session policy and end-user experience (end-user access module)
 
@@ -61,7 +61,7 @@ bind vpn vserver gw_ext -policy pol_ica -priority 100
 
 **Negative test:** `icaProxy ON` with no `wihome`: logon succeeds into nothing — a session policy must say where to land.
 
-**Cleanup:** Keep for 6.4.
+**Rollback:** Keep for 6.4.
 
 ### Lab 6.4 — CVAD integration (integration module)
 
@@ -77,7 +77,7 @@ show vpn vserver gw_ext | grep -A2 STA
 
 **Negative test:** Mismatch the STA lists (gateway lists ddc1, StoreFront lists ddc2): enumeration works, launches fail with a ticket error — the most-tested integration break.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Rewrite and responder (AppExpert module)
 
@@ -96,7 +96,7 @@ add responder policy pol_block "HTTP.REQ.URL.CONTAINS(\"/admin\")" act_block
 
 **Negative test:** Bind the rewrite as `-type REQUEST`; the header never appears on responses — direction matters on every bind.
 
-**Cleanup:** Unbind and remove the lab policies.
+**Rollback:** Unbind and remove the lab policies.
 
 ### Lab 6.6 — Content switching in front of the gateway (content switching module)
 
@@ -116,7 +116,7 @@ bind cs vserver cs_front -vServer gw_ext -targetVserver gw_ext 2>/dev/null || tr
 
 **Negative test:** Two policies matching the same request: the lower priority number wins — precedence, not specificity.
 
-**Cleanup:** Remove the CS lab objects.
+**Rollback:** Remove the CS lab objects.
 
 ### Lab 6.7 — Troubleshooting with nstrace (troubleshooting module)
 
@@ -133,7 +133,7 @@ shell ls /var/nstrace/
 
 **Negative test:** Trace without a filter on a busy box — gigabytes of noise; the exam rewards knowing to filter at capture time.
 
-**Cleanup:** `shell rm -rf /var/nstrace/*` in the lab.
+**Rollback:** `shell rm -rf /var/nstrace/*` in the lab.
 
 ## Summary and Completion Checklist
 

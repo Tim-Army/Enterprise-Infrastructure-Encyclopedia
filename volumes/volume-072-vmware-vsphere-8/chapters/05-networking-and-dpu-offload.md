@@ -69,7 +69,7 @@ Get-VDPortgroup -VDSwitch $vds
 
 **Negative test:** replicate a port group on each host's vSS; a **vDS** defines it once — use it.
 
-**Cleanup:** `Remove-VDSwitch vds8-prod -Confirm:$false`.
+**Rollback:** `Remove-VDSwitch vds8-prod -Confirm:$false`.
 
 ### Lab 5.2 — Add a vMotion VMkernel adapter
 
@@ -87,7 +87,7 @@ host traffic.
 
 **Negative test:** share vMotion with management traffic; **dedicate** a VMkernel/VLAN to vMotion.
 
-**Cleanup:** remove the VMkernel adapter.
+**Rollback:** remove the VMkernel adapter.
 
 ### Lab 5.3 — DPU-offloaded networking concept
 
@@ -104,7 +104,7 @@ host traffic.
 **Negative test:** expect DPU offload benefits with a software-only host; offload needs a **DPU** —
 size hardware for it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — NIC teaming and NIOC
 
@@ -123,7 +123,7 @@ bandwidth-protected networking.
 **Negative test:** run on a **single uplink** with no NIOC; a failure drops the network and vSAN can
 starve — team and protect.
 
-**Cleanup:** revert the teaming policy.
+**Rollback:** revert the teaming policy.
 
 ## Lab Verification
 

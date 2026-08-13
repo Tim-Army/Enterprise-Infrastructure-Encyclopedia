@@ -50,7 +50,7 @@ sleep 2; curl -s localhost:8081 | head -1; podman rm -f cnlab 2>/dev/null || doc
 
 **Negative test:** `EXPOSE 80` but the ubi9 httpd listens on 8080 — the container serves nothing on the mapped port; matching the image's actual port is the developer's job.
 
-**Cleanup:** `rm -rf ~/ex188`.
+**Rollback:** `rm -rf ~/ex188`.
 
 ### Lab 7.2 — Config and secrets (EX288)
 
@@ -68,7 +68,7 @@ kubectl -n cn get secret appsec -o jsonpath='{.data.TOKEN}' | base64 -d; echo
 
 **Negative test:** Bake the token into the image instead — it ships in every layer, unrotatable; Secrets exist precisely to keep credentials out of images, the lesson EX288 enforces.
 
-**Cleanup:** `kubectl delete namespace cn`.
+**Rollback:** `kubectl delete namespace cn`.
 
 ### Lab 7.3 — Health probes (EX288)
 
@@ -100,7 +100,7 @@ kubectl -n cn get deployment probed
 
 **Negative test:** A readiness probe pointing at a wrong path/port — the pod runs but never becomes Ready and gets no traffic; "app up but no traffic" is the probe-misconfiguration signature.
 
-**Cleanup:** `kubectl delete namespace cn`.
+**Rollback:** `kubectl delete namespace cn`.
 
 ### Lab 7.4 — AI track orientation (provisional)
 
@@ -117,7 +117,7 @@ AI track (exam codes pending at 3 Aug 2026):
 
 **Negative test:** Registering for an "AI track" exam number from a third-party site — provisional/unofficial; only redhat.com confirms the codes for the newest track.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

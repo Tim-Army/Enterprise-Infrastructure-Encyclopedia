@@ -501,7 +501,7 @@ histogram.
 **Negative test:** read a counter's raw value as if it were meaningful (it just grows since process
 start); only its `rate()` over a window is useful — misusing the type gives nonsense numbers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — PromQL: rate, aggregation, quantiles (Topic: PromQL)
 
@@ -522,7 +522,7 @@ buckets) are the core operations behind every SLI and dashboard.
 the tail that users feel — percentiles from the histogram (p95/p99) are what represent user
 experience.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Define an SLI/SLO and error budget (Topic: SLOs)
 
@@ -544,7 +544,7 @@ stabilize (budget exhausted).
 reliability means every incident is a crisis with no agreed threshold — the SLO + error budget is
 what makes reliability a managed trade-off, not an absolute.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Multi-window, multi-burn-rate alerting (Topic: SLO alerting)
 
@@ -574,7 +574,7 @@ ones.
 every transient spike (noise) or miss a slow burn that quietly exhausts the budget — the
 two-window burn-rate design is what makes SLO alerts both sensitive and quiet.
 
-**Cleanup:** remove the lab rule.
+**Rollback:** remove the lab rule.
 
 ## Lab Verification
 

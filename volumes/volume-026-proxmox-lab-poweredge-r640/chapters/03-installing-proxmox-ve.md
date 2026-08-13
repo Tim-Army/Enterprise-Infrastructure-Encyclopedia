@@ -221,7 +221,7 @@ needed at the rack.
 normal order (or PXE) and never reaches the installer — the boot-device override is what lands you in
 the installer.
 
-**Cleanup:** `racadm remoteimage -d` after the install completes.
+**Rollback:** `racadm remoteimage -d` after the install completes.
 
 ### Lab 3.2 — Install to the BOSS mirror (Topic: Installation)
 
@@ -243,7 +243,7 @@ on hardware RAID avoids stacking ZFS on top of a RAID controller (which hides di
 volume; you couple boot to data, or give ZFS a single opaque device it cannot manage — target the
 boot mirror with a plain filesystem.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — First boot and web UI (Topic: First boot)
 
@@ -262,7 +262,7 @@ API; confirming all reachable means the install succeeded.
 **Negative test:** expect the UI on the standard HTTPS 443; Proxmox serves its UI on **8006** — using
 the wrong port makes it look "down" when it is fine.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Verify the installation (Topic: Verification)
 
@@ -281,7 +281,7 @@ responding, which is the baseline before configuring repos, networking, and stor
 **Negative test:** proceed to configure the node while a service (pve-cluster/pveproxy) is failed;
 subsequent steps error mysteriously — confirm the node status is healthy first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

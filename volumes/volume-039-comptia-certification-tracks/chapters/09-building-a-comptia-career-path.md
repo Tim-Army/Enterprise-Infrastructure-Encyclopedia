@@ -132,7 +132,7 @@ on verified, current exams.
 **Negative test:** include a retired code (SY0-601 or CAS-004) in the roadmap;
 verification shows the current version — never plan on retired codes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Bridge to a vendor volume (Topic: Pairing)
 
@@ -151,7 +151,7 @@ vendor volume that provides platform depth — the intended pairing.
 **Negative test:** treat Cloud+ as a substitute for an AWS/Azure/GCP
 certification; it is the vendor-neutral complement — pair, don't replace.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

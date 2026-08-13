@@ -93,7 +93,7 @@ of 1Z0-1085.
 **Negative test:** treat a compartment as region-scoped; compartments span regions
 in a tenancy — they are a logical/IAM boundary.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Identity and Access Management (IAM)
 
@@ -113,7 +113,7 @@ IAM model 1Z0-1085 tests.
 **Negative test:** grant `manage all-resources` in the tenancy for convenience;
 scope policies to a **compartment** and least verb.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Compute and storage
 
@@ -133,7 +133,7 @@ of 1Z0-1085.
 **Negative test:** use Object Storage as a boot volume; **Block Volume** backs
 instances — match the storage type to the use.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Networking (VCN)
 
@@ -154,7 +154,7 @@ foundation of 1Z0-1085.
 **Negative test:** put a database in a **public** subnet with an Internet gateway;
 keep data tiers in **private** subnets — segment by exposure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — AI Foundations: AI/ML/DL basics
 
@@ -174,7 +174,7 @@ PY
 **Negative test:** use "AI" and "deep learning" interchangeably; DL is a **subset**
 of ML, which is a subset of AI — be precise.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — AI Foundations: OCI AI services
 
@@ -197,7 +197,7 @@ of 1Z0-1122.
 **Negative test:** build a custom OCR model when **OCI Vision/Document
 Understanding** already does it; use the managed service where it fits.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

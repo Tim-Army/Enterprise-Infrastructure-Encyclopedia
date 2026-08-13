@@ -28,7 +28,7 @@ Get-ConfigZone | Select-Object Name, ControllerNames               # zones and m
 
 **Negative test:** Stop SQL in the lab: with Local Host Cache, existing brokering continues on the elected controller; without it, new launches fail — the exam's favorite DR distinction.
 
-**Cleanup:** Restart SQL.
+**Rollback:** Restart SQL.
 
 ### Lab 4.2 — Advanced access with Gateway and StoreFront (module 2)
 
@@ -44,7 +44,7 @@ netscaler> show vpn vserver        # gateway vserver UP, STA bound
 
 **Negative test:** Remove the STA binding on the gateway; external enumeration still works but launches fail with a ticketing error — STA is the piece candidates forget.
 
-**Cleanup:** Rebind the STA.
+**Rollback:** Rebind the STA.
 
 ### Lab 4.3 — Policies and profiles (module 3)
 
@@ -60,7 +60,7 @@ Get-BrokerAssignmentPolicyRule | Select-Object -First 3 Name
 
 **Negative test:** Set two conflicting policies with inverted priorities; the resultant set (Studio > Policies > Modeling) shows which won and why — model before you deploy.
 
-**Cleanup:** Remove lab policies.
+**Rollback:** Remove lab policies.
 
 ### Lab 4.4 — Workspace Environment Management (module 4)
 
@@ -75,7 +75,7 @@ wem> System Optimization: enable CPU spike protection + memory management on the
 
 **Negative test:** Assign the same drive letter by GPO and WEM; the collision demonstrates why module 4 insists on one owner per setting.
 
-**Cleanup:** Remove the lab WEM actions.
+**Rollback:** Remove the lab WEM actions.
 
 ### Lab 4.5 — Advanced security (module 5)
 
@@ -91,7 +91,7 @@ Get-BrokerDesktopGroup LabGroup | Select-Object Name, AppProtection*
 
 **Negative test:** Launch from a client without App Protection support; the launch is refused for the protected group — protection is enforced at brokering, not best-effort.
 
-**Cleanup:** Set both flags back to `$false`.
+**Rollback:** Set both flags back to `$false`.
 
 ### Lab 4.6 — Advanced troubleshooting (module 6)
 
@@ -106,7 +106,7 @@ Get-BrokerConnectionLog -MaxRecordCount 5 | Select-Object BrokeringTime, Machine
 
 **Negative test:** Put the whole catalog in maintenance mode and launch: the connection log names the refusal cause — a *controlled* failure to practice reading.
 
-**Cleanup:** Exit maintenance mode.
+**Rollback:** Exit maintenance mode.
 
 ### Lab 4.7 — Hybrid and cloud concepts (module 7)
 
@@ -121,7 +121,7 @@ resource location> Cloud Connectors x2, VDAs, StoreFront (optional local), Gatew
 
 **Negative test:** Assume Gateway Service and lose the direct-HDX requirement your design had — hairpinning session traffic through the cloud POP; the module wants you to catch that trade-off.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ## Summary and Completion Checklist
 

@@ -270,7 +270,7 @@ a Markdown editor; a location to store evidence files.
    directory to version control. **Expected result:** a complete,
    versioned acceptance record exists for the change.
 
-**Cleanup:** Redact any secrets or personal data discovered in captured
+**Rollback:** Redact any secrets or personal data discovered in captured
 evidence before committing; remove evidence for the intentional Fail test
 if it referenced a non-representative lab condition that could confuse
 future readers, or clearly label it as a lab exercise artifact.

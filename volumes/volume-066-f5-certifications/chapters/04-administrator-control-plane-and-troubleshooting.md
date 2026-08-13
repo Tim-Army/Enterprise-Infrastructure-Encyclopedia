@@ -71,7 +71,7 @@ tmsh show cm sync-status
 **Negative test:** run a lone BIG-IP for a critical service; a failure is an **outage** — deploy
 an HA device group.
 
-**Cleanup:** `tmsh delete cm device-group dg1` (in a lab).
+**Rollback:** `tmsh delete cm device-group dg1` (in a lab).
 
 ### Lab 4.2 — Back up the configuration (UCS)
 
@@ -88,7 +88,7 @@ changes.
 **Negative test:** make changes with no backup; a bad change is then hard to undo — **UCS backup**
 first.
 
-**Cleanup:** none (keep the backup).
+**Rollback:** none (keep the backup).
 
 ### Lab 4.3 — Read logs top-down
 
@@ -106,7 +106,7 @@ diagnosis path.
 **Negative test:** restart services blindly; troubleshoot **top-down** (virtual/pool/member/
 monitor) using logs first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Generate a qkview for iHealth
 
@@ -124,7 +124,7 @@ troubleshooting.
 **Negative test:** open a support case with no qkview; **iHealth/qkview** speeds diagnosis —
 generate it.
 
-**Cleanup:** `rm -f /var/tmp/support.qkview` (in a lab).
+**Rollback:** `rm -f /var/tmp/support.qkview` (in a lab).
 
 ## Lab Verification
 

@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Extracting warehouse data to a separate spreadsheet or BI tool to bypass governance. That loses Ranger's access controls and Atlas's lineage, risking exposure of restricted data and untrustworthy analysis; analysts query governed data in-platform and visualize it there.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

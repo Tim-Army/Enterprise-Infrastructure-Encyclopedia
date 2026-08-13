@@ -364,7 +364,7 @@ path, and its forwarding hardware — the component's function made concrete.
 to route between VLANs without an SVI/L3 license) fails — the role bounds the
 function.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Describe topology architectures (CCNA 1.2, ENCOR 1.1)
 
@@ -381,7 +381,7 @@ locating the device in the access/distribution/core hierarchy.
 **Negative test:** a collapsed-core design at scale (access straight to core)
 loses the distribution aggregation point; the topology drives the tier count.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Compare interfaces and identify cable issues (CCNA 1.3, 1.4)
 
@@ -398,7 +398,7 @@ collisions (duplex mismatch), or err-disabled ports — the L1 diagnostics.
 **Negative test:** a duplex mismatch shows rising late collisions on one side
 and CRC on the other while the link stays up — the "slow, not down" fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.4 — Compare TCP to UDP (CCNA 1.5)
 
@@ -417,7 +417,7 @@ low-overhead.
 it does not — UDP trades reliability for overhead, so critical logs need TCP
 syslog or a reliable transport.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.5 — Configure and verify IPv4 addressing and subnetting (CCNA 1.6, 1.7)
 
@@ -436,7 +436,7 @@ SW1# show ip route connected
 **Negative test:** two SVIs with overlapping subnets; the second is rejected
 or drops traffic — subnets must not overlap.
 
-**Cleanup:** `no interface vlan 20`.
+**Rollback:** `no interface vlan 20`.
 
 ### Lab 1.6 — Configure and verify IPv6 addressing (CCNA 1.8, 1.9)
 
@@ -457,7 +457,7 @@ interface.
 link-local/ND is up; link-local (not the global) is what neighbor discovery
 uses first.
 
-**Cleanup:** `no interface vlan 20`.
+**Rollback:** `no interface vlan 20`.
 
 ### Lab 1.7 — Verify IP parameters for a client OS (CCNA 1.10)
 
@@ -475,7 +475,7 @@ matching what `ipconfig`/`ip addr`/`ifconfig` shows on the host.
 never got a lease; the empty DHCP binding confirms the failure is DHCP, not
 the host.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.8 — Explain virtualization fundamentals (CCNA 1.12, ENCOR 2.1)
 
@@ -494,7 +494,7 @@ compares.
 **Negative test:** assuming one physical switch means one routing table;
 VRFs (and, off-box, VMs/containers) virtualize that assumption away.
 
-**Cleanup:** `no vrf definition RED`.
+**Rollback:** `no vrf definition RED`.
 
 ### Lab 1.9 — Describe switching concepts (CCNA 1.13)
 
@@ -511,7 +511,7 @@ size — the L2 forwarding decisions frame flooding, learning, and filtering.
 **Negative test:** a MAC flap (same MAC on two ports) logs a
 `MAC_MOVE`/loop warning — the switching-loop symptom STP exists to prevent.
 
-**Cleanup:** `clear mac address-table dynamic` (rebuilds by learning).
+**Rollback:** `clear mac address-table dynamic` (rebuilds by learning).
 
 ### Lab 1.10 — Describe network virtualization concepts (ENCOR 2.3)
 
@@ -530,7 +530,7 @@ SD-Access (Chapter 09) builds on.
 **Negative test:** collapsing all tenants into the global table forfeits the
 overlay isolation network virtualization provides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.11 — Bring up a Catalyst 9000 baseline (integrative)
 
@@ -620,7 +620,7 @@ from factory defaults to a hardened, licensed, install-mode device.
    CAMPUS-ACCESS-01# copy startup-config tftp:
    ```
 
-**Cleanup**
+**Rollback**
 
 - If this is a shared lab switch, restore factory defaults before handing
   it back:

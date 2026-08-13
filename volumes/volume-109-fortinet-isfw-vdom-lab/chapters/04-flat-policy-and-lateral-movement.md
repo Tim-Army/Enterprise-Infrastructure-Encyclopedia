@@ -55,7 +55,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.4.10 502  && echo "hmi->plc REAC
 
 **Negative test.** A flow to a closed port (`hmi->db:502`) fails because nothing listens, not because of policy. Distinguish "no service" from "denied."
 
-**Cleanup.** Leave the permit-all until Chapter 05 replaces it.
+**Rollback.** Leave the permit-all until Chapter 05 replaces it.
 
 ### Exercise 4.2 — Name the legitimate flows
 
@@ -74,7 +74,7 @@ Everything else east-west — most importantly `MGMT -> DB` (hmi -> db) — is i
 
 **Negative test.** Write the APP→DB rule against the db IP rather than the `db` address object and note it breaks if db re-addresses; the named object survives change.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Reproduce the lateral movement
 
@@ -90,7 +90,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.30.2.10 5432 && echo "PIVOT: hmi op
 
 **Negative test.** Re-run `web->db`; it also succeeds. Until policy distinguishes the sources, the firewall treats app and operator identically.
 
-**Cleanup.** None — Chapter 05 authors least-privilege policy.
+**Rollback.** None — Chapter 05 authors least-privilege policy.
 
 ## Summary and Completion Checklist
 

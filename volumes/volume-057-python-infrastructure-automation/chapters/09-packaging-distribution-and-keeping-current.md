@@ -73,7 +73,7 @@ buildable package.
 **Negative test:** ship a lone `.py` with imports and no metadata; users can't install
 its **deps/command** — package it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Build a wheel
 
@@ -89,7 +89,7 @@ ls dist/*.whl
 **Negative test:** email a zip of source; a **wheel** installs cleanly with deps —
 distribute that.
 
-**Cleanup:** `rm -rf dist build *.egg-info`.
+**Rollback:** `rm -rf dist build *.egg-info`.
 
 ### Lab 9.3 — Install a CLI tool with pipx
 
@@ -106,7 +106,7 @@ distribution.
 **Negative test:** `pip install` CLI tools into system Python; **pipx** isolates each —
 avoid dependency collisions.
 
-**Cleanup:** `pipx uninstall ruff`.
+**Rollback:** `pipx uninstall ruff`.
 
 ### Lab 9.4 — Check the Python version status
 
@@ -122,7 +122,7 @@ python -c "import sys; print('supported (3.12+):', sys.version_info[:2] >= (3,12
 **Negative test:** run an **end-of-life** Python (e.g., 3.8); upgrade to a **supported**
 release for security fixes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

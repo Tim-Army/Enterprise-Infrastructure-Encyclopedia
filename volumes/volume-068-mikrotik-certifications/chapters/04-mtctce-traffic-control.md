@@ -72,7 +72,7 @@ MTCTCE walkthroughs. **Shared prerequisites** — a RouterOS node (CHR) passing 
 **Negative test:** mark packets with no **connection mark** first; mark the connection, then packets
 — it's efficient and correct.
 
-**Cleanup:** remove the mangle rules.
+**Rollback:** remove the mangle rules.
 
 ### Lab 4.2 — Simple queue
 
@@ -87,7 +87,7 @@ MTCTCE walkthroughs. **Shared prerequisites** — a RouterOS node (CHR) passing 
 
 **Negative test:** expect fairness with no queue; unshaped traffic can starve others — add a queue.
 
-**Cleanup:** `/queue simple remove guest`.
+**Rollback:** `/queue simple remove guest`.
 
 ### Lab 4.3 — Queue tree with marks
 
@@ -103,7 +103,7 @@ MTCTCE walkthroughs. **Shared prerequisites** — a RouterOS node (CHR) passing 
 **Negative test:** build a queue tree with **no packet mark**; it matches nothing — mark first
 (Lab 4.1), then shape.
 
-**Cleanup:** `/queue tree remove https-shape`.
+**Rollback:** `/queue tree remove https-shape`.
 
 ### Lab 4.4 — Address list
 
@@ -120,7 +120,7 @@ policy.
 
 **Negative test:** write one rule per address; an **address list** collapses them — use it.
 
-**Cleanup:** remove the filter rule and address list.
+**Rollback:** remove the filter rule and address list.
 
 ### Lab 4.5 — Web proxy
 
@@ -137,7 +137,7 @@ policy.
 **Negative test:** expect proxy filtering without redirecting traffic to it; also add a NAT
 redirect (or set clients) so traffic reaches the proxy.
 
-**Cleanup:** `/ip proxy set enabled=no`.
+**Rollback:** `/ip proxy set enabled=no`.
 
 ## Lab Verification
 

@@ -91,7 +91,7 @@ EOF
 
 **Expected result:** A track map listing Boomi's certifications across seven tracks (Integration Developer, Administrator, Architect, API Management, Data Hub, Flow, B2B/EDI), each labeled Associate or Professional, with a note that Boomi AI is training-only. The lesson is that Boomi certifications are organized by platform service and role, you certify on the service you use, and Integration Developer is the flagship starting track.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Record the exam mechanics
 
@@ -120,7 +120,7 @@ EOF
 
 **Expected result:** A record of Boomi's exam mechanics — open-book and open-platform, no time limit, multiple-choice/multiple-response plus an optional practical section, course-backed, $125, with no weighted blueprint. The lesson is that Boomi certification proves applied, hands-on competency on the live platform rather than closed-book recall, and the required course is the effective blueprint.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

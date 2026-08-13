@@ -72,7 +72,7 @@ one member.
 **Negative test:** run a stateful app with no persistence; users **bounce** between servers and
 lose sessions — add persistence.
 
-**Cleanup:** `tmsh modify ltm virtual web_vs persist none; tmsh delete ltm persistence cookie web_cookie`.
+**Rollback:** `tmsh modify ltm virtual web_vs persist none; tmsh delete ltm persistence cookie web_cookie`.
 
 ### Lab 5.2 — Priority group activation
 
@@ -90,7 +90,7 @@ the active group drops below the minimum — active/standby backends.
 **Negative test:** put all members in one priority group expecting standby behavior; use
 **priority-group + min-active-members** for active/standby.
 
-**Cleanup:** reset priority-group to 0 on both members.
+**Rollback:** reset priority-group to 0 on both members.
 
 ### Lab 5.3 — Write an iRule
 
@@ -110,7 +110,7 @@ traffic handling.
 **Negative test:** solve everything with iRules; prefer built-in **profiles/policies** and reserve
 iRules for what they cannot express.
 
-**Cleanup:** detach and delete the iRule.
+**Rollback:** detach and delete the iRule.
 
 ### Lab 5.4 — OneConnect optimization
 
@@ -128,7 +128,7 @@ the backend, lower server load.
 **Negative test:** open a new server connection per client request at scale; **OneConnect** pools
 them — enable it for HTTP.
 
-**Cleanup:** remove and delete the OneConnect profile.
+**Rollback:** remove and delete the OneConnect profile.
 
 ### Lab 5.5 — Troubleshoot with statistics (301b)
 
@@ -145,7 +145,7 @@ health — the 301b troubleshooting view.
 **Negative test:** assume load is even without stats; **verify** with per-member counters and
 health.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

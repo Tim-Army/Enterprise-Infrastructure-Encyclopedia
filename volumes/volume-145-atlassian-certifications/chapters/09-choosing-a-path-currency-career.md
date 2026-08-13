@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Pursuing the ACP admin certification when your role is running projects (ACA) on a deployment you do not administer. You certify in a job you do not hold, on a surface you do not touch.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — The free-first preparation plan
 
@@ -146,7 +146,7 @@ EOF
 
 **Negative test:** Buying third-party study material before exhausting Atlassian's free training and prep course. The official resources are free, comprehensive, and aligned to the exam; the paid alternatives rarely improve on them.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Summary and Completion Checklist
 

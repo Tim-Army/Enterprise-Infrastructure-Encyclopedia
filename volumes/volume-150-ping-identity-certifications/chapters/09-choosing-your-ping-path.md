@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Chasing a Ping certification for a product your organization does not run. The program is product-specific; certify on the products in your actual identity architecture, and let breadth across those beat an unused credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Ping in the identity career
 
@@ -130,7 +130,7 @@ EOF
 
 **Negative test:** Treating Ping federation as a self-contained skill. It enforces access that governance (SailPoint) should review, reads a directory, and issues MFA — the identity pillars interlock, and isolating one undersells both the platform and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

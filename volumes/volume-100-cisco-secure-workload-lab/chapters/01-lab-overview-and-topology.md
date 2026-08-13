@@ -49,7 +49,7 @@ Exercises that genuinely cannot be reproduced without the product — cluster-sc
 | **Design Exercise** | No deployment required and none simulated; written analysis with model answer |
 | **Track 1** / **Track 2** | Real Secure Workload path / native-equivalent path |
 
-Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**. Do not skip the negative tests — proving a thing is *blocked* is the entire product.
+Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**. Do not skip the negative tests — proving a thing is *blocked* is the entire product.
 
 ### Time and effort
 

@@ -107,7 +107,7 @@ basis of discovery.
 **Negative test:** run a dev agent in production; it disables **ACLs and TLS** —
 dev mode is for learning only.
 
-**Cleanup:** keep the agent running for the next labs.
+**Rollback:** keep the agent running for the next labs.
 
 ### Lab 6.2 — Consul: register and discover a service
 
@@ -126,7 +126,7 @@ dig @127.0.0.1 -p 8600 web.service.consul +short 2>/dev/null || \
 **Negative test:** hard-code a service's IP:port in clients; services move —
 resolve through **Consul** so clients follow the catalog.
 
-**Cleanup:** `consul services deregister -id=web 2>/dev/null || true`
+**Rollback:** `consul services deregister -id=web 2>/dev/null || true`
 
 ### Lab 6.3 — Consul: the key/value store (dynamic configuration)
 
@@ -144,7 +144,7 @@ listing under `app/` — the KV store for dynamic, centralized configuration.
 **Negative test:** bake config into each service's image; the **KV store** lets
 you change config centrally without a rebuild.
 
-**Cleanup:** `consul kv delete -recurse app/`
+**Rollback:** `consul kv delete -recurse app/`
 
 ### Lab 6.4 — Consul: service mesh intentions (authorization)
 
@@ -162,7 +162,7 @@ service-mesh authorization model where identity, not IP, governs traffic.
 **Negative test:** allow all mesh traffic by default; **intentions** should
 default-deny and allow only required service pairs.
 
-**Cleanup:** `consul intention delete web db 2>/dev/null || true; pkill -f 'consul agent -dev' 2>/dev/null || true`
+**Rollback:** `consul intention delete web db 2>/dev/null || true; pkill -f 'consul agent -dev' 2>/dev/null || true`
 
 ### Lab 6.5 — The wider stack: map tools to problems
 
@@ -187,7 +187,7 @@ only Terraform and Vault currently certify.
 **Negative test:** assume every HashiCorp tool has a certification; only
 **Terraform** and **Vault** do today — verify before planning a path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

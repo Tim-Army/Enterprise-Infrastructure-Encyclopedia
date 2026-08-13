@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Developing straight in production with no environments, monitoring, or architecture review. A bad deploy takes down live integrations with no test gate, failures go unnoticed, and the runtime is undersized; environments, monitoring, and architecture are what make Boomi production-grade.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

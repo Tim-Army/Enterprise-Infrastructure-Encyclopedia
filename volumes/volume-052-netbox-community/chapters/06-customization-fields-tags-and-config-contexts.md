@@ -71,7 +71,7 @@ attribute.
 **Negative test:** stuff extra data in the description; a **typed custom field** is
 queryable and validated — use it.
 
-**Cleanup:** `cf.delete()`.
+**Rollback:** `cf.delete()`.
 
 ### Lab 6.2 — Tag an object
 
@@ -88,7 +88,7 @@ print("leaf01 tags:", [t.name for t in nb.dcim.devices.get(dev.id).tags])
 **Negative test:** encode classification in the name (`leaf01-edge`); a **tag** filters
 cleanly across models — prefer it.
 
-**Cleanup:** `dev.tags=[]; dev.save(); tag.delete()`.
+**Rollback:** `dev.tags=[]; dev.save(); tag.delete()`.
 
 ### Lab 6.3 — Define a config context
 
@@ -108,7 +108,7 @@ site-scoped context — merged automation data.
 **Negative test:** hard-code NTP in each device; a **config context** applies by scope
 and stays DRY.
 
-**Cleanup:** `cc.delete()`.
+**Rollback:** `cc.delete()`.
 
 ### Lab 6.4 — Add an export template
 
@@ -128,7 +128,7 @@ downstream artifact.
 **Negative test:** hand-build inventory files; an **export template** renders live from
 the source of truth — no drift.
 
-**Cleanup:** `tmpl.delete()`.
+**Rollback:** `tmpl.delete()`.
 
 ## Lab Verification
 

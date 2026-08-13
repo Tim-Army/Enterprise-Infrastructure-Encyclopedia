@@ -49,7 +49,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 22     # expect False (admin 
 
 **Negative test.** Add a standing `tcp dport 22 accept` "so admins can always get in". You have re-opened the most abused lateral-movement port to every host on the segment. Remove it — admin access comes from Lab 7.2, not a standing rule.
 
-**Cleanup.** Keep the enforced ruleset.
+**Rollback.** Keep the enforced ruleset.
 
 ### Lab 7.2 — Just-in-time MFA for privileged ports
 
@@ -100,7 +100,7 @@ Now "authenticate" and grant a 120-second window, then connect within it:
 
 **Negative test.** Grant with no timeout (`nft add element inet zeronet jit_ssh '{ 10.10.20.1 }'`). The port stays open indefinitely — you have recreated the standing admin port just-in-time was meant to eliminate. Always grant with a timeout.
 
-**Cleanup.** `sudo nft flush set inet zeronet jit_ssh`.
+**Rollback.** `sudo nft flush set inet zeronet jit_ssh`.
 
 ### Lab 7.3 — Enforce and gate RDP on Windows
 
@@ -133,7 +133,7 @@ Start-Job { Start-Sleep 120; Remove-NetFirewallRule -DisplayName "ZN JIT RDP" } 
 
 **Negative test.** Leave the JIT RDP rule in place permanently; you have a standing admin port again. The auto-remove job is the point.
 
-**Cleanup.** `Remove-NetFirewallRule -DisplayName "ZN JIT RDP" -ErrorAction SilentlyContinue`.
+**Rollback.** `Remove-NetFirewallRule -DisplayName "ZN JIT RDP" -ErrorAction SilentlyContinue`.
 
 ### Lab 7.4 — Learning and identity at scale (Design Exercise)
 
@@ -153,7 +153,7 @@ Start-Job { Start-Sleep 120; Remove-NetFirewallRule -DisplayName "ZN JIT RDP" } 
 
 **Negative test.** Argue IP-based JIT is "good enough". It stops standing exposure but not an attacker operating from the very host an admin uses; identity and a second factor are what close that gap.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

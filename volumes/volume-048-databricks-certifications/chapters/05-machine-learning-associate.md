@@ -88,7 +88,7 @@ with mlflow.start_run():
 **Negative test:** train without logging; you cannot compare or reproduce runs —
 always track with **MLflow**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — AutoML: baseline model
 
@@ -106,7 +106,7 @@ notebook — the AutoML area of the exam.
 **Negative test:** hand-tune from scratch before a baseline; **AutoML** gives a
 fast, reproducible baseline to beat.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Feature Store / Feature Engineering
 
@@ -125,7 +125,7 @@ the Feature Store area (prevents training/serving skew).
 **Negative test:** compute features differently in training vs serving; the
 **Feature Store** guarantees consistency — use it for both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Spark ML: scale training
 
@@ -145,7 +145,7 @@ training for data beyond one node (the scaling area).
 **Negative test:** `collect()` a huge dataset to pandas for training; it OOMs —
 use **Spark ML** to train in a distributed way.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Model evaluation
 
@@ -163,7 +163,7 @@ expects (choose the metric for the problem).
 **Negative test:** use accuracy on an imbalanced dataset; prefer **AUC/precision/
 recall** — match the metric to the problem.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — Register and stage a model
 
@@ -180,7 +180,7 @@ Registry — the model-management area of the exam.
 **Negative test:** copy model files around by hand; the **Model Registry** versions
 and governs them — register instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

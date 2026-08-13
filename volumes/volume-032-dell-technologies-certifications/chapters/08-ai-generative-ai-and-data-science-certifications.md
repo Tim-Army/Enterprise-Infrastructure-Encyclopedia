@@ -141,7 +141,7 @@ and the AI lifecycle; the `usage` object shows the tokens the request consumed.
 inconsistent/hallucination-prone — temperature trades determinism for creativity, a
 core foundations concept.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Prompt engineering (Prompt Engineering)
 
@@ -163,7 +163,7 @@ bare question.
 free-form and harder to parse — the prompt structure, not the model, drives
 reliability.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Agentic AI foundations (Agentic AI Foundations)
 
@@ -185,7 +185,7 @@ what it may do.
 destructive action; it may invoke it — agentic systems need scoped, governed tools,
 the safety foundation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — AI security (AI Security)
 
@@ -204,7 +204,7 @@ LLM Top 10); defenses include input/output filtering, least privilege, and isola
 **Negative test:** a system with no input/output guardrails leaks the secret to the
 injection — unfiltered LLM I/O is the vulnerability AI security addresses.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.5 — Data science foundations (Data Science Foundations)
 
@@ -227,7 +227,7 @@ shows the IOPS↔latency relationship.
 **Negative test:** infer causation from the correlation; correlation is not causation —
 a foundational analytics caution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — Data engineering optimize (Data Engineering Optimize)
 
@@ -251,7 +251,7 @@ PowerScale/ECS with the compute tier reading only needed partitions.
 **Negative test:** query one day's data from a single un-partitioned CSV; the engine
 scans everything — partitioning/columnar layout is what makes selective reads cheap.
 
-**Cleanup:** `rm -rf out.parquet`.
+**Rollback:** `rm -rf out.parquet`.
 
 ### Lab 8.7 — Data science optimize (Data Science Optimize)
 
@@ -277,7 +277,7 @@ under/over-fitting as `C` changes.
 **Negative test:** pick the model with the best *training* accuracy (highest C);
 it may overfit — cross-validation, not training fit, is the honest selection criterion.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.8 — Dell AI Factory infrastructure with NVIDIA (AI Server & Infrastructure with NVIDIA)
 
@@ -301,7 +301,7 @@ certifications.
 flag; it sees no GPU and falls back to CPU — the GPU runtime plumbing is required to
 expose accelerators to workloads.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.9 — Gen AI model augmentation and data engineering (Gen AI Model Augmentation Solution)
 
@@ -329,7 +329,7 @@ from its own governed data instead of only pretrained knowledge.
 hallucinate product specifics — grounding the answer in retrieved, engineered data is
 what RAG adds.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

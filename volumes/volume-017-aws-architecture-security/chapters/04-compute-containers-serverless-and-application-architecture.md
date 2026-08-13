@@ -476,7 +476,7 @@ without the consumer being present, the essence of loose coupling.
 **Negative test:** a synchronous producer→consumer call fails entirely when
 the consumer is down; the queue instead buffers the work for later.
 
-**Cleanup:** `aws sqs delete-queue --queue-url "$QUEUE_URL"`.
+**Rollback:** `aws sqs delete-queue --queue-url "$QUEUE_URL"`.
 
 ### Lab 4.2 — Design high-performing and elastic compute solutions (SAA-C03 3.2)
 
@@ -499,7 +499,7 @@ compute that adds capacity under load and removes it when idle.
 **Negative test:** a fixed fleet of 2 instances saturates under a spike and
 drops requests; the scaling policy is what preserves performance.
 
-**Cleanup:** `aws autoscaling delete-auto-scaling-group --auto-scaling-group-name web-asg --force-delete`.
+**Rollback:** `aws autoscaling delete-auto-scaling-group --auto-scaling-group-name web-asg --force-delete`.
 
 ### Lab 4.3 — Lambda behind API Gateway with least privilege (integrative)
 
@@ -604,7 +604,7 @@ avoid leaving unused resources.
    `AccessDeniedException` from DynamoDB, confirming the least-privilege
    role is what allowed the write in step 4, not an implicit broader grant.
 
-6. **Cleanup:**
+6. **Rollback:**
 
    ```bash
    aws apigatewayv2 delete-api --api-id "$API_ID"

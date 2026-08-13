@@ -80,7 +80,7 @@ admin.
 **Negative test:** grant the team `admin` for convenience; use **write**/**maintain** unless they truly
 administer the repo.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 gh api -X DELETE orgs/acme/teams/backend/repos/acme/service-api
@@ -109,7 +109,7 @@ JSON
 **Negative test:** leave `main` unprotected; anyone with write can push or force-push — enforce a
 **ruleset**.
 
-**Cleanup:** delete the ruleset via the API/UI if not needed.
+**Rollback:** delete the ruleset via the API/UI if not needed.
 
 ### Lab 7.3 — Reason about SSO and provisioning
 
@@ -132,7 +132,7 @@ offboarding.
 
 **Negative test:** manage members by hand without SSO/SCIM; leavers keep access — enforce **SSO + SCIM**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Review the audit log
 
@@ -153,7 +153,7 @@ compliance.
 **Negative test:** rely on memory for who changed what; query the **audit log** for an authoritative
 record.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -129,7 +129,7 @@ FC/iSCSI/NVMe.
 **Negative test:** create a volume without mapping it to a host; the host sees no
 LUN — provisioning plus a **host mapping** is required for access.
 
-**Cleanup:** DELETE the volume by its id.
+**Rollback:** DELETE the volume by its id.
 
 ### Lab 3.2 — PowerStore snapshots and thin clones (PowerStore Operate)
 
@@ -147,7 +147,7 @@ writable, sharing blocks with the source until changed, ideal for test/dev.
 **Negative test:** delete the source volume with dependent snapshots/clones; PowerStore
 blocks or requires handling the dependents — the data relationships are enforced.
 
-**Cleanup:** delete the clone and snapshot.
+**Rollback:** delete the clone and snapshot.
 
 ### Lab 3.3 — PowerStore replication (PowerStore Operate)
 
@@ -166,7 +166,7 @@ policy-driven RPO.
 session falls behind and misses the RPO — the RPO must fit the data-change rate and
 bandwidth.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — PowerStore file / NAS (PowerStore Deploy)
 
@@ -184,7 +184,7 @@ snapshots, quotas, and replication on file systems too.
 **Negative test:** create a file system with no NAS server; the API requires a
 `nas_server_id` — the NAS server (the file protocol endpoint) must exist first.
 
-**Cleanup:** delete the file system then the NAS server.
+**Rollback:** delete the file system then the NAS server.
 
 ### Lab 3.5 — PowerStore sizing and design (PowerStore Design)
 
@@ -205,7 +205,7 @@ drives) as needed.
 over-provisions drives — effective capacity (after dedup/compression) is the sizing
 basis.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.6 — Unity provisioning with uemcli (Unity Deploy)
 
@@ -224,7 +224,7 @@ provisioning, hosts, snapshots, and replication.
 returns an error — the pool must have capacity (thin allows over-subscription with
 monitoring).
 
-**Cleanup:** `uemcli ... /stor/prov/luns/lun -name LAB-LUN delete`.
+**Rollback:** `uemcli ... /stor/prov/luns/lun -name LAB-LUN delete`.
 
 ### Lab 3.7 — Unity snapshots and replication (Unity Operate)
 
@@ -243,7 +243,7 @@ DR, managed through uemcli or Unisphere.
 required low-latency link; sessions fail or throttle writes — synchronous needs a
 metro-distance link.
 
-**Cleanup:** `uemcli ... /prot/snap -name LAB-SNAP delete`.
+**Rollback:** `uemcli ... /prot/snap -name LAB-SNAP delete`.
 
 ### Lab 3.8 — PowerVault ME5 provisioning (PowerVault ME5)
 
@@ -264,7 +264,7 @@ storage.
 **Negative test:** map a volume without defining the host/initiator; the host cannot
 access it — mapping requires a known initiator.
 
-**Cleanup:** `delete volumes LAB-VOL` then `delete disk-groups dg01`.
+**Rollback:** `delete volumes LAB-VOL` then `delete disk-groups dg01`.
 
 ### Lab 3.9 — CloudIQ monitoring (PowerStore/Unity Operate)
 
@@ -282,7 +282,7 @@ cybersecurity assessment.
 **Negative test:** expect CloudIQ data from a system with SupportAssist/connectivity
 disabled; it does not report — the system must send telemetry to CloudIQ.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

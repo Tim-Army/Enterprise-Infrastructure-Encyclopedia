@@ -42,7 +42,7 @@ cat /etc/xage/identities
 
 **Negative test.** An identity with no token cannot be brokered — access requires a *proven* identity, not merely a network position. A blank token is rejected.
 
-**Cleanup.** Keep the identities.
+**Rollback.** Keep the identities.
 
 ### Exercise 3.2 — Bind identities to assets (access policy)
 
@@ -72,7 +72,7 @@ cat /etc/xage/policy
 
 **Negative test.** A grant for `op-hmi → db:5432` is absent, so even a valid operator identity cannot reach the database through the broker — least privilege per identity, not per network.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ## Summary and Completion Checklist
 

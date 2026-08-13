@@ -36,7 +36,7 @@ Add-AdminRight -Administrator "LAB\helpdesk1" -Role "Help Desk Administrator" -S
 
 **Negative test:** Have `helpdesk1` attempt a catalog change in Studio; it is refused — the role does not carry it.
 
-**Cleanup:** `Remove-AdminAdministrator -Name "LAB\helpdesk1"`.
+**Rollback:** `Remove-AdminAdministrator -Name "LAB\helpdesk1"`.
 
 ### Lab 3.2 — Director for monitoring (module 5)
 
@@ -52,7 +52,7 @@ Get-BrokerMachine -SummaryState Unregistered | Measure-Object | Select-Object Co
 
 **Negative test:** Filter Director's Trends view to a nonexistent time range or an idle group — empty panels are data ("nothing happened"), not a monitoring failure; the exam distinguishes the two.
 
-**Cleanup:** None (read-only).
+**Rollback:** None (read-only).
 
 ### Lab 3.3 — Citrix Scout (module 6)
 
@@ -67,7 +67,7 @@ studio> Citrix Scout > Collect > select controllers + VDAs > Start
 
 **Negative test:** Run Scout against a VDA with WinRM blocked; collection for that machine fails — Scout depends on WinRM reachability, a detail the troubleshooting module tests.
 
-**Cleanup:** Delete the lab archives.
+**Rollback:** Delete the lab archives.
 
 ### Lab 3.4 — Printing policies (module 7)
 
@@ -83,7 +83,7 @@ Get-BrokerSession | Select-Object -First 1 UserName   # confirm a session exists
 
 **Negative test:** Set auto-create to all client printers with native drivers on a lab VDA; logon slows and the event log records driver installs — the failure mode the UPD policy exists to prevent.
 
-**Cleanup:** Revert the lab policy.
+**Rollback:** Revert the lab policy.
 
 ### Lab 3.5 — PowerShell fluency (module 8)
 
@@ -100,7 +100,7 @@ Set-BrokerDesktopGroup LabGroup -InMaintenanceMode $false
 
 **Negative test:** While in maintenance mode, attempt a launch: the store hides or refuses the resource — maintenance mode drains without destroying.
 
-**Cleanup:** Done in the walkthrough.
+**Rollback:** Done in the walkthrough.
 
 ### Lab 3.6 — Citrix Cloud and Cloud Connectors (module 9)
 
@@ -115,7 +115,7 @@ Get-Service cdf* , Citrix* | Select-Object Name, Status | Sort-Object Name | Sel
 
 **Negative test:** Stop both lab connectors; brokering for that resource location fails (local host cache on the connectors is the resilience story — one connector must be up).
 
-**Cleanup:** Restart the services.
+**Rollback:** Restart the services.
 
 ## Summary and Completion Checklist
 

@@ -74,7 +74,7 @@ The DFW permits `Web → Database` (PostgreSQL) and `Operators → OT` (Modbus);
 | `nsx>` | NSX Policy API call (orientation only) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

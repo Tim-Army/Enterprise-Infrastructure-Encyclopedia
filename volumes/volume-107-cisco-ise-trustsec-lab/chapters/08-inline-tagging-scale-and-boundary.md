@@ -25,7 +25,7 @@ and the peer trusts and forwards the tag. Because virtual IOS-XE images and this
 
 **Negative test (reasoning).** Assume you can enable inline tagging everywhere in a mixed estate. You cannot — a non-capable hop strips the CMD field, so the tag is lost downstream. This is exactly why SXP exists and why real deployments are hybrid.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 8.2 — Monitor mode before enforcement
 
@@ -59,7 +59,7 @@ sudo dmesg | grep -c 'WOULD-DROP'
 
 **Negative test.** Enforcing a large matrix without a monitor-mode pass risks denying a flow you did not know was legitimate. Monitor mode is the standard, and skipping it is the classic TrustSec outage.
 
-**Cleanup.** Return the chain to the enforcing ruleset from Chapter 06.
+**Rollback.** Return the chain to the enforcing ruleset from Chapter 06.
 
 ### Exercise 8.3 — The boundary: what cannot be tagged
 
@@ -80,7 +80,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.10.1.99 5432 || echo "unknown-dst u
 
 **Negative test.** Assume an empty Unknown row is safe. It defaults to the matrix default — if that is Permit IP, every unclassified device roams freely. The Unknown group must be a conscious decision.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -96,7 +96,7 @@ PY
 **Negative test:** use a WIC feature for a customer-facing app; **CIC/Auth0** is built for that —
 match the cloud to the use case.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map credentials to the ladder
 
@@ -117,7 +117,7 @@ PY
 
 **Negative test:** book the **Architect** first; its prerequisites gate it — climb the ladder.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -137,7 +137,7 @@ PY
 **Negative test:** pursue the Consultant with no Administrator; prerequisites block it — build up in
 order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

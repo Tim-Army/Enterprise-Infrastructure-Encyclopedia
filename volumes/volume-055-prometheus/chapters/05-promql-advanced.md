@@ -69,7 +69,7 @@ buckets.
 **Negative test:** run `histogram_quantile` on raw `_bucket` (no `rate`); you get wrong
 values — **rate the buckets** first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Subquery (max of a rate)
 
@@ -86,7 +86,7 @@ curl -sSG "http://localhost:9090/api/v1/query" \
 **Negative test:** try `max_over_time(rate(...[5m]))` without the subquery `[1h:1m]`; you
 need the **subquery range** to evaluate over time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Vector matching with group_left
 
@@ -104,7 +104,7 @@ metric — many-to-one vector matching.
 **Negative test:** join on mismatched labels; the match **produces nothing** — align the
 `on(...)` labels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Forecast with predict_linear
 
@@ -122,7 +122,7 @@ capacity alerts.
 **Negative test:** alert only when a resource is already full; **predict_linear** warns
 before it happens — alert on the forecast.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -148,7 +148,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.isc2.org/certifications" \
 **Negative test:** rely on an old blog that still lists `CAP` or `HCISPP`; CAP
 was renamed **CGRC** and HCISPP is retired — use the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map a credential to its experience requirement (Topic: Plan the path)
 
@@ -169,7 +169,7 @@ the concentrations require the CISSP plus 2 — the ladder ISC2 enforces.
 **Negative test:** assume experience is waived if you pass; without it you are an
 **Associate of ISC2**, not certified.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Confirm an exam outline's effective date (Topic: Verify currency)
 
@@ -187,7 +187,7 @@ took effect **15 April 2024**) — always study the current blueprint.
 **Negative test:** study a 2021-era CISSP outline; the domain weights changed in
 the 2024 refresh — confirm the effective date first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

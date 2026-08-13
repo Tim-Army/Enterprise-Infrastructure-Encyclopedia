@@ -167,7 +167,7 @@ Get-ClusterNode | Select-Object Name, State
 example, inconsistent updates); the cluster is unsupported and may behave
 unpredictably — fix validation warnings before proceeding.
 
-**Cleanup:** `Remove-Cluster -Name "CL01" -Force -CleanupAD`.
+**Rollback:** `Remove-Cluster -Name "CL01" -Force -CleanupAD`.
 
 ### Lab 9.2 — Configure a witness for quorum (Topic: Cluster quorum)
 
@@ -187,7 +187,7 @@ with two nodes plus a witness, losing one node still leaves a majority.
 quorum and shuts the role down to prevent split-brain — an even node count
 needs a witness.
 
-**Cleanup:** `Remove-Item \\FS01\Witness -Recurse -Force` after reconfiguring quorum.
+**Rollback:** `Remove-Item \\FS01\Witness -Recurse -Force` after reconfiguring quorum.
 
 ### Lab 9.3 — Replicate a VM with Hyper-V Replica (Topic: Disaster recovery)
 
@@ -209,7 +209,7 @@ Replica gives cross-site recovery without shared storage.
 `HV02`; it fails with an authorization error — the replica host must accept
 replication first.
 
-**Cleanup:** `Remove-VMReplication -VMName "APP01"`.
+**Rollback:** `Remove-VMReplication -VMName "APP01"`.
 
 ### Lab 9.4 — Back up and inspect system state (Topic: Backup and restore)
 
@@ -229,7 +229,7 @@ the basis for authoritative restore.
 older than the tombstone lifetime; the object cannot be restored — keep
 recent system-state backups.
 
-**Cleanup:** remove the lab backup target contents if reclaiming space.
+**Rollback:** remove the lab backup target contents if reclaiming space.
 
 ## Lab Verification
 

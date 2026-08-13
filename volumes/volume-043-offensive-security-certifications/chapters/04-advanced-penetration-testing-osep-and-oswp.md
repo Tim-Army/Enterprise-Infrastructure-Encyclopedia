@@ -106,7 +106,7 @@ catches them — OSEP knowledge framed as **detection engineering**.
 **Negative test:** assume signature AV is the only control; modern **behavioral
 EDR/AMSI/ETW** catch what signatures miss — defense is layered.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — OSEP: application whitelisting and its bypass classes (concept)
 
@@ -127,7 +127,7 @@ the hardening — OSEP-level understanding aimed at stronger controls.
 **Negative test:** allow-list by **path**; writable allowed paths are bypassable —
 prefer publisher/hash rules.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — OSEP: advanced Active Directory and Kerberos (concept)
 
@@ -148,7 +148,7 @@ hardening — the OSEP AD depth, oriented to defense.
 **Negative test:** rely on password length alone against Kerberoasting; **gMSA**
 and monitoring are the durable controls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — OSEP: post-exploitation and lateral movement (concept)
 
@@ -168,7 +168,7 @@ hardening — OSEP post-exploitation framed defensively.
 **Negative test:** trust a flat, unmonitored network; **segmentation + telemetry**
 are what stop and reveal lateral movement.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### OSWP — Wireless
 
@@ -192,7 +192,7 @@ core knowledge, used to choose **WPA3** and strong auth.
 **Negative test:** run WPA2 with a short PSK; a captured handshake yields the key
 offline — use a long passphrase or **WPA3/enterprise**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — OSWP: your own wireless posture (authorized)
 
@@ -211,7 +211,7 @@ management, rogue-AP detection.
 **Negative test:** capture or attack a neighbor's network; that is illegal — OSWP
 practice uses **your own** access points only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

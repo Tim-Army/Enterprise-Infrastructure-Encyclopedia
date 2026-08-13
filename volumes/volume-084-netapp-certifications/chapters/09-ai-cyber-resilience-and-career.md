@@ -83,7 +83,7 @@ ransomware-like activity.
 **Negative test:** treat ARP as a preventive firewall and skip backups; ARP **detects and snapshots**
 but recovery needs protected copies — keep SnapMirror/SnapVault copies too.
 
-**Cleanup:** none (ARP is left enabled — the protected state).
+**Rollback:** none (ARP is left enabled — the protected state).
 
 ### Lab 9.2 — Apply immutable SnapLock retention
 
@@ -108,7 +108,7 @@ become WORM and cannot be altered or early-deleted.
 **Negative test:** store immutable regulatory records on a normal volume; an admin or attacker can
 delete them — use a **SnapLock** WORM volume.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> volume offline -vserver svm_app -volume vol_archive
@@ -142,7 +142,7 @@ PY
 **Negative test:** let an NCDA lapse past its validity while chasing an Expert exam; the foundation
 expires — recertify on cadence with the current exam.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

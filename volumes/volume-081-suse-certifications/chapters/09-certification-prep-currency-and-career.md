@@ -73,7 +73,7 @@ preparation.
 **Negative test:** memorize commands with no **hands-on**; SUSE exams test practical decisions —
 practice.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Verify a free practice setup
 
@@ -89,7 +89,7 @@ echo "SUSE practice: openSUSE Leap (free, close to SLES) + K3s (free K8s) cover 
 **Negative test:** assume you need a paid SLES license to practice; **openSUSE Leap** is free and
 close — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -109,7 +109,7 @@ PY
 
 **Negative test:** hold an old SLES-version cert forever; renew as **product versions** advance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

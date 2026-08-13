@@ -35,7 +35,7 @@ sudo nft list tables | grep fgt
 
 **Expected result.** The artifacts mirror the FortiOS commands.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -60,7 +60,7 @@ sudo nft list tables | grep fgt
 
 **Negative test.** Rebooting the FortiGate rarely fixes a policy problem — faults are almost always policy order, service scope, interface/zone assignment, or a missing inter-VDOM link. Use the lookup first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -103,7 +103,7 @@ sudo nft list ruleset | grep -c fgt
 
 **Negative test.** Deleting namespaces but leaving the `fgt` tables leaves stale rules matching nothing yet persisting; remove the tables too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

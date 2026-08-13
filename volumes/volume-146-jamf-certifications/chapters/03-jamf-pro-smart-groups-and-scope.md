@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Building a static group for "devices needing the update." It is correct the day you make it and wrong the day anything changes — re-patching fixed devices and missing new ones.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Know the scope before you deploy
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Deploying a destructive policy to a Smart Group without reviewing current membership. The group's OS criterion silently includes the kiosk and the server, and the erase reaches them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Extension attributes: collect what you need to target
 
@@ -174,7 +174,7 @@ EOF
 
 **Negative test:** Trying to target non-compliant devices with built-in inventory alone. The facts that define compliance (agent status, FileVault) are not standard fields; without extension attributes there is no Smart Group to build.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

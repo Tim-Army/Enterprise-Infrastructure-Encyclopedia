@@ -336,7 +336,7 @@ log in once, then pass the token in the `Authorization` header on every request.
 **Negative test:** call `/api/hosts` with no `Authorization` header (or an expired token);
 the API returns 401/403 — the token, not network reachability, authorizes each call.
 
-**Cleanup:** none (read-only); tokens expire on their own.
+**Rollback:** none (read-only); tokens expire on their own.
 
 ### Lab 7.2 — Read and update host state via the API (Topic: API automation)
 
@@ -360,7 +360,7 @@ ticketing) drive Forescout properties, which in turn drive policy and control.
 plugin overwrites it on next resolution — external systems should drive **custom** fields,
 not fight the platform's own property resolution.
 
-**Cleanup:** clear the custom field/tag set during the lab.
+**Rollback:** clear the custom field/tag set during the lab.
 
 ### Lab 7.3 — Web API governance (Topic: API governance)
 
@@ -382,7 +382,7 @@ open management backdoor.
 account; any host on that range can drive enforcement platform-wide — unrestricted API
 access is a control-plane risk.
 
-**Cleanup:** revert any lab-only client-IP or account changes.
+**Rollback:** revert any lab-only client-IP or account changes.
 
 ### Lab 7.4 — Capstone Design Exercise: multi-site deployment (Topic: Synthesis)
 
@@ -417,7 +417,7 @@ engagement both grade, where *why* matters as much as *what*.
 a scoping or policy error becomes an outage — the staged, audit-first rollout is the design
 choice that makes the deployment safe.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

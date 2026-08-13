@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Trusting only immutable backups that remain reachable on the production network. A deep enough compromise can still threaten them; a truly air-gapped, isolated vault is what survives worst-case attacks and enables safe clean-room recovery.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

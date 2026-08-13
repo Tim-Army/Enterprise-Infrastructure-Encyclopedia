@@ -66,7 +66,7 @@ curl -sS -H "X-Auth-Token: $TOKEN" "$LNMS/api/v0/devices" \
 **Negative test:** ignore poll time until gaps appear; **watch `last_polled_timetaken`**
 against the interval proactively.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Confirm rrdcached
 
@@ -81,7 +81,7 @@ docker compose exec librenms sh -c 'grep -i rrdcached config.php 2>/dev/null; pg
 **Negative test:** run at scale without rrdcached; direct RRD writes become an **I/O
 bottleneck** — enable it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.3 — Inspect the dispatcher
 
@@ -97,7 +97,7 @@ are scheduled.
 **Negative test:** assume cron alone suffices at scale; the **dispatcher** distributes
 work across pollers — run it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.4 — Add a poller node (describe)
 
@@ -116,7 +116,7 @@ scale.
 **Negative test:** vertically scale one node forever; **distributed polling** scales
 past a single host's limits.
 
-**Cleanup:** none (describe-only).
+**Rollback:** none (describe-only).
 
 ## Lab Verification
 

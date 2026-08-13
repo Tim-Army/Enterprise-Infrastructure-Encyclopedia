@@ -75,7 +75,7 @@ PY
 **Negative test:** actively scan the PLCs to inventory them; that can crash the process — use
 **passive** monitoring.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Detect an unauthorized OT change
 
@@ -97,7 +97,7 @@ PY
 **Negative test:** monitor only for IT-style malware in OT; **controller changes** are the real OT
 threat — watch for them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Prioritize OT vulnerabilities by process safety
 
@@ -118,7 +118,7 @@ process-safety prioritization.
 **Negative test:** prioritize OT purely by **CVSS**; you may fix a lobby display before a safety
 controller — weight by **process safety**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Reason about IT/OT segmentation
 
@@ -140,7 +140,7 @@ segmentation.
 **Negative test:** allow IT to reach controllers directly; IT threats cross into OT — enforce the
 **DMZ**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

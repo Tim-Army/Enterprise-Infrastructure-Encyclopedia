@@ -52,7 +52,7 @@ mkspoke azure-spoke 100.64.0.12 10.30.1.1/32
 
 **Negative test:** Attach a spoke but skip the transit-side route (`ip route add` in tgw) — traffic reaches the transit and dies; the Controller's job is programming those routes, and forgetting them is the overlay's version of an unattached spoke.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 3.2 — Prove any-to-any transit reachability
 
@@ -67,7 +67,7 @@ sudo ip netns exec tgw ip route | grep -E "10.20.1.1|10.30.1.1"
 
 **Negative test:** Remove the Azure spoke's route from transit — the ping fails though both spokes are "up"; reachability is a property of the transit route table the Controller programs, not of the attachment alone.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 3.3 — Encryption in flight
 
@@ -88,7 +88,7 @@ sudo ip netns exec tgw sh -c 'echo "transit gateway would terminate encrypted tu
 
 **Negative test:** Assuming native cloud transit is always encrypted — it isn't uniformly; the exam tests knowing where Aviatrix adds confidentiality.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 3.4 — The single control plane and CoPilot
 
@@ -109,7 +109,7 @@ sudo ip netns exec tgw ip route | wc -l   # the "controller-programmed" route co
 
 **Negative test:** Conflating CoPilot (observe) with the Controller (configure) — the exam separates configuration from visibility; changes are made on the Controller, not in CoPilot.
 
-**Cleanup:** `for ns in tgw aws-spoke azure-spoke; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del transit`.
+**Rollback:** `for ns in tgw aws-spoke azure-spoke; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del transit`.
 
 ## Summary and Completion Checklist
 

@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Assuming a Grafana Cloud subscription is required to learn the platform — the open-source stack covers most of the curriculum, though Cloud-only features (Asserts, IRM, Synthetic Monitoring) are exactly that.
 
-**Cleanup:** `rm -rf ~/grafana-study` when finished.
+**Rollback:** `rm -rf ~/grafana-study` when finished.
 
 ### Lab 1.2 — Plan a badge path
 
@@ -160,7 +160,7 @@ EOF
 
 **Negative test:** Buying a third-party "Certified Grafana Associate" course — that credential does not appear in Grafana's catalog, and the official learning content is free.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -72,7 +72,7 @@ against.
 **Negative test:** provision VMs without checking **free space**; a full datastore stuns VMs —
 monitor it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Configure Round Robin multipathing
 
@@ -90,7 +90,7 @@ esxcli storage nmp device list -d <naa.id>
 **Negative test:** leave a fixed single path on multipathed storage; use **Round Robin** for
 redundancy and throughput.
 
-**Cleanup:** revert PSP if needed (in a lab).
+**Rollback:** revert PSP if needed (in a lab).
 
 ### Lab 6.3 — Apply a storage policy (SPBM)
 
@@ -108,7 +108,7 @@ driven storage.
 **Negative test:** place a VM on a specific datastore hoping for the right protection; **SPBM**
 enforces it — attach a policy.
 
-**Cleanup:** reset to the default policy.
+**Rollback:** reset to the default policy.
 
 ### Lab 6.4 — Storage vMotion
 
@@ -123,7 +123,7 @@ storage flexibility.
 
 **Negative test:** power off a VM to move its storage; **Storage vMotion** does it live — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — vSAN health concept
 
@@ -141,7 +141,7 @@ storage.
 **Negative test:** run vSAN with **FTT=0** for important VMs; a single failure loses data — set an
 appropriate FTT.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

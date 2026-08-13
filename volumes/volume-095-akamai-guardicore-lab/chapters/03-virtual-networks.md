@@ -28,7 +28,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet8*" -AddressFamily IPv4 |
 
 **Negative test.** Changing the subnet after building VMs breaks egress until every guest is re-addressed. Fix it now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Configure VMnet2 (host-only — Data Center)
 
@@ -49,7 +49,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet2*" -AddressFamily IPv4 |
 
 **Negative test.** Leaving DHCP on lets a lease renewal mask a blocked-flow test result. Off is deliberate.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Configure VMnet3 (host-only — OT Cell, fully isolated)
 
@@ -69,7 +69,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Ticking the host adapter here gives the host a path that bypasses `gc-gw`; every enforcement result in Chapter 08 would then be measured on the wrong path. Leave it unchecked.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Plan the management route
 
@@ -85,7 +85,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Adding a host route `10.10.30.0/24 → 10.10.20.254` and then "proving" the PLC is blocked measures the wrong path. Do not add it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -373,7 +373,7 @@ catalog (Volume XXII) and know exactly what is behind.
 firmware bug in an unpatched component causes intermittent faults — the full inventory is what makes
 component-level currency visible.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 8.2 — Update a component (Topic: Updates)
 
@@ -394,7 +394,7 @@ without booting a vendor tool; the job model makes updates schedulable and audit
 it — DUPs are model-validated and signed, which is why you update from Dell's packages/catalog, not
 arbitrary binaries.
 
-**Cleanup:** none (leave the component updated).
+**Rollback:** none (leave the component updated).
 
 ### Lab 8.3 — Lifecycle Controller rollback (Topic: Firmware lifecycle)
 
@@ -414,7 +414,7 @@ re-downloading; rollback is the safety net that makes firmware updates low-risk.
 **Negative test:** update firmware with no awareness of rollback; a regression seems to strand you
 on the bad version — the LC's retained previous image is exactly what you roll back to.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Staged updates and the job queue (Topic: Update orchestration)
 
@@ -436,7 +436,7 @@ them together in a single maintenance window, minimizing reboots and disruption.
 server bounces repeatedly and the window drags — staging to the job queue applies them in one
 coordinated reboot.
 
-**Cleanup:** `racadm jobqueue delete -i <jobid>` for any lab-only pending job.
+**Rollback:** `racadm jobqueue delete -i <jobid>` for any lab-only pending job.
 
 ## Lab Verification
 

@@ -40,7 +40,7 @@ The lateral path is dropped by the Cleanup rule; both legitimate flows are untou
 
 **Negative test.** Change the `web-to-db` rule's service from PGSQL to SSH and watch web→db:5432 break while ssh would pass — proof the *service* match is part of the decision. Restore it and re-install.
 
-**Cleanup.** Restore and re-install any temporary change.
+**Rollback.** Restore and re-install any temporary change.
 
 ### Exercise 7.2 — Connections and rule hits
 
@@ -73,7 +73,7 @@ sudo nft list chain inet cpg forward | grep 'CPG-DENY'
 
 **Expected result.** The deny rule's counter increments after the hmi→db attempt.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Correlate the drop in the log
 
@@ -99,7 +99,7 @@ sudo dmesg | grep -o 'CPG-DENY.*SRC=10.40.3.10.*DPT=5432' | tail -1
 
 **Negative test.** A rule with `track None` produces no log — you would see the failure but have no evidence. Log the Cleanup rule and denies during rollout.
 
-**Cleanup.** Keep logging for Chapter 09.
+**Rollback.** Keep logging for Chapter 09.
 
 ## Summary and Completion Checklist
 

@@ -385,7 +385,7 @@ servers identical, eliminating per-server manual BIOS/iDRAC setup.
 **Negative test:** configure each new server's BIOS/RAID/iDRAC by hand; they drift and onboarding
 is slow — a captured template makes deployment consistent and repeatable.
 
-**Cleanup:** delete the lab template if created only for the exercise.
+**Rollback:** delete the lab template if created only for the exercise.
 
 ### Lab 8.2 — Configuration compliance baseline (Topic: Configuration compliance)
 
@@ -405,7 +405,7 @@ drift from the golden profile and lets you remediate back to it, so servers stay
 replacements drift silently — the compliance baseline is what surfaces configuration drift after
 deployment.
 
-**Cleanup:** delete the lab configuration baseline.
+**Rollback:** delete the lab configuration baseline.
 
 ### Lab 8.3 — REST API automation (Topic: APIs)
 
@@ -430,7 +430,7 @@ templates, baselines), so every console action is automatable; the session token
 **Negative test:** call `/api/DeviceService/Devices` with no `X-Auth-Token` header; it returns 401
 — the API is authenticated per request via the session token, not open.
 
-**Cleanup:** the session token expires; no cleanup needed.
+**Rollback:** the session token expires; no cleanup needed.
 
 ### Lab 8.4 — Higher-level automation (Topic: Automation)
 
@@ -452,7 +452,7 @@ integrating OME into the same IaC/GitOps workflow as the rest of the infrastruct
 brittle and unauditable — a supported Ansible/PowerShell module gives idempotent, reviewable
 automation.
 
-**Cleanup:** revert any lab-only changes made by the playbook.
+**Rollback:** revert any lab-only changes made by the playbook.
 
 ## Lab Verification
 

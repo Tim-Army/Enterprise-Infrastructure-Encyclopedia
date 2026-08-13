@@ -74,7 +74,7 @@ hypothesis-driven hunt.
 **Negative test:** scroll raw logs by hand; **XQL** filters to the hypothesis — query, don't
 scroll.
 
-**Cleanup:** none (read-only hunt).
+**Rollback:** none (read-only hunt).
 
 ### Lab 6.2 — Review a stitched incident
 
@@ -92,7 +92,7 @@ isolated alerts.
 **Negative test:** chase each alert separately; **stitching** groups them into one incident —
 work the incident.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Tune a detection (Engineer)
 
@@ -112,7 +112,7 @@ coverage.
 **Negative test:** disable the rule globally to stop the noise; scope the **exclusion** instead —
 keep detection where it matters.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Query XDR via the API
 
@@ -131,7 +131,7 @@ curl -sk -X POST "https://api-<tenant>.xdr.paloaltonetworks.com/public_api/v1/in
 **Negative test:** copy incidents out of the GUI to automate; the **API** feeds automation — use
 it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

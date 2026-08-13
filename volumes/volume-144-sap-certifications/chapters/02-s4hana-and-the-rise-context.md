@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Scoping an ECC→S/4HANA move as a version upgrade. The custom reports reading the old aggregate tables break, and "why is finance's report empty?" becomes the go-live incident.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Public vs Private vs on-premise, by requirement
 
@@ -142,7 +142,7 @@ EOF
 
 **Negative test:** Studying Public Edition configuration for a Private Edition role. The processes and customization model differ; the certification specifies the edition because the work does.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — RISE vs GROW, and the module lane
 
@@ -184,7 +184,7 @@ EOF
 
 **Negative test:** Pursuing a broad "S/4HANA certification" with no module. The catalog has no such thing at consultant level — you certify in FI, or SD, or MM; the module is the credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

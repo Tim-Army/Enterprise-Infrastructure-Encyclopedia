@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Attempting the DevOps Engineer or an HA/DR cert without the Artifactory foundation. They assume the repository model; Associate Artifactory is the prerequisite understanding that the others build on.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position JFrog in the DevOps career
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Treating JFrog as an isolated artifact-storage tool. It is the binary hub and supply-chain-security control point at the center of the delivery pipeline, complementing source-code tools, dev-side scanners, container platforms, and IaC — isolating it undersells both the platform and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -270,7 +270,7 @@ for name, o in options.items():
 Options that cannot physically work in a disconnected, agent-hostile site stay on the list and waste a
 procurement cycle.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 15.2 — Distinguish validated from claimed FIPS
 
@@ -292,7 +292,7 @@ for v, c in claims.items():
 **Negative test.** Accept "FIPS-compliant" in a requirements matrix. It commonly means the product calls
 approved algorithms from an unvalidated implementation — which fails a FIPS control.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 15.3 — Build a weighted shortlist from the matrix
 
@@ -314,7 +314,7 @@ constraints are met.
 **Negative test.** Remove `cost_clarity`. The two tie, and you lose the only column where one option
 gives you a number without a sales cycle.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 15.4 — Re-verify a compliance claim
 
@@ -333,7 +333,7 @@ gives you a number without a sales cycle.
 **Negative test.** Cite a vendor datasheet instead. Datasheets routinely claim validation held by a
 different module version, or by an OEM component rather than the product.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

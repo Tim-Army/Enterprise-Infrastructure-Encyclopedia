@@ -88,7 +88,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — e.g. a data engineer starts with CDI Developer Professional then adds Cloud Data Quality; a governance lead starts with CDGC Professional then MDM Developer. The lesson is to certify on your central module first (CDI for most), broaden across the shared platform, and add Practitioner when you deliver projects.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: data through every module
 
@@ -141,7 +141,7 @@ EOF
 
 **Expected result:** A capstone tracing three raw rows through CDI (ingest), Cloud Data Quality (standardize/validate), MDM (match to two golden records), and CDGC (catalog, classify PII, lineage) — ending with governed golden records. The lesson synthesizes the volume: Informatica turns scattered source data into integrated, trustworthy, mastered, governed data on one platform over one metadata fabric, and the module certifications each prepare you to build one stage of that life cycle.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Cramming the Certified Data Analyst from a question bank. It has hands-on labs that test performing analysis in Tableau — preparation means building real workbooks (free via Tableau Public), not memorizing facts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Tableau in the data-analytics career
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Treating Tableau as a standalone drawing tool. It sits on data platforms, rests on SQL and data-modeling, and increasingly integrates AI — isolating it from the data stack and data literacy undersells both the tool and the analytics career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

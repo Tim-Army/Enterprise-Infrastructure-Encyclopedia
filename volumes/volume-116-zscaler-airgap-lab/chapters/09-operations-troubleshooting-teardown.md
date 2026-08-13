@@ -24,7 +24,7 @@ sudo dmesg | grep -c 'AIRGAP-DENY'                                          # la
 
 **Expected result.** Default-drop with only the sanctioned allow, every device routing solely via the enforcer, denied attempts recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -45,7 +45,7 @@ sudo dmesg | grep -c 'AIRGAP-DENY'                                          # la
 
 **Negative test.** The subtle failure is an **incomplete network-of-one**: a device that can still ARP a peer directly (static ARP entry, a second interface, an enforcement gap) has a lateral path the policy never sees. Verify the enforcer is the *only* neighbor before trusting the isolation.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -66,7 +66,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving `proxy_arp` enabled changes host ARP behavior beyond the lab; reset it as above.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

@@ -112,7 +112,7 @@ PY
 **Negative test:** pick one host-agent tool and assume it covers OT/IoT it cannot install on; add an
 **appliance/network** model for agentless assets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Build a weighted scoring rubric
 
@@ -139,7 +139,7 @@ Rubric weights (sum = 1.00):
 **Negative test:** weight only license price; you may pick a tool that misses half your estate — weight
 **coverage** and **operability**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Score an option against the rubric
 
@@ -166,7 +166,7 @@ Weighted score: 4.00 / 5
 **Negative test:** compare vendors by feature-count checklists; a weighted score against **your**
 priorities is more honest than a longest-list-wins tally.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Decide the failure mode
 
@@ -189,7 +189,7 @@ default.
 **Negative test:** accept the vendor default failure mode without deciding; pick it per asset class to
 match your risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

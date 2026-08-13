@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Trusting summary statistics alone to characterize a dataset. Two datasets with the same mean and correlation can have completely different shapes; only plotting them reveals outliers, curves, and clusters the numbers conceal.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — The perceptual-accuracy hierarchy
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Choosing a pie chart to compare many values, or encoding a quantity in color hue. The eye judges angles, areas, and hues poorly; position and length (a bar or scatter) let viewers decode the differences accurately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

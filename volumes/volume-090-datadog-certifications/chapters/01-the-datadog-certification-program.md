@@ -84,7 +84,7 @@ Agent (v7.55.0)
 **Negative test:** study without a running Agent; the Fundamentals exam is about **Agent** configuration
 — install and run it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Confirm API access
 
@@ -103,7 +103,7 @@ curl -s "https://api.datadoghq.com/api/v1/validate" \
 
 **Negative test:** commit the API key into a repo or script; keep it in an environment variable/secret.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Map the certification ladder
 
@@ -128,7 +128,7 @@ PY
 
 **Negative test:** treat all Datadog exams as one; each is role-specific — pick the one for your work.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Trying to automate a whole process with RPA bots alone. Bots handle UI-driven and no-API tasks but not integration, decisioning, or judgment; Pega combines RPA with integration, cases, decisioning, and humans (hyperautomation), and GenAI accelerates the design.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -67,7 +67,7 @@ curl -sSG "http://localhost:9090/api/v1/query" \
 **Negative test:** match a label value that doesn't exist; you get an **empty result** —
 check label values with `/api/v1/label/<name>/values`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Rate of a counter
 
@@ -84,7 +84,7 @@ curl -sSG "http://localhost:9090/api/v1/query" \
 **Negative test:** query the raw counter for a graph; it only **climbs** — wrap it in
 `rate()`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Aggregate with by
 
@@ -102,7 +102,7 @@ label.
 **Negative test:** `sum()` without `by`; you lose all labels — use **`by (code)`** to
 keep the dimension you need.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Filter with a comparison
 
@@ -119,7 +119,7 @@ curl -sSG "http://localhost:9090/api/v1/query" \
 **Negative test:** eyeball all series to find high ones; a **comparison operator** filters
 server-side — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

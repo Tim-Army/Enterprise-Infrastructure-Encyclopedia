@@ -53,7 +53,7 @@ Get-BrokerMachine | Select-Object MachineName, RegistrationState, DesktopGroupNa
 
 **Negative test:** Stop the VDA service on a lab machine (`Stop-Service BrokerAgent`); `Get-BrokerMachine` shows it `Unregistered` and launches fail until it re-registers.
 
-**Cleanup:** `Start-Service BrokerAgent` on the lab machine.
+**Rollback:** `Start-Service BrokerAgent` on the lab machine.
 
 ### Lab 2.2 — Catalog and delivery group
 
@@ -69,7 +69,7 @@ Get-BrokerApplication | Select-Object ApplicationName, Enabled, AllAssociatedDes
 
 **Negative test:** Disable a delivery group (`Set-BrokerDesktopGroup -Name LabGroup -Enabled $false`); its resources vanish from StoreFront on next refresh — entitlement is the delivery group, not the catalog.
 
-**Cleanup:** Re-enable the group.
+**Rollback:** Re-enable the group.
 
 ### Lab 2.3 — Follow a launch
 
@@ -84,7 +84,7 @@ Get-BrokerSession | Select-Object UserName, DesktopGroupName, MachineName, Proto
 
 **Negative test:** Launch with the VDA's port 1494/2598 blocked; the store enumerates the icon (broker reachable) but the HDX connection fails — enumeration and session traffic are separate paths, a distinction the exam probes.
 
-**Cleanup:** Log the test session off.
+**Rollback:** Log the test session off.
 
 ## Summary and Completion Checklist
 

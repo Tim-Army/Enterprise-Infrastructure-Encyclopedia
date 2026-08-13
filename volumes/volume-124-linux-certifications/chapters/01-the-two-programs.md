@@ -67,7 +67,7 @@ curl -s https://www.lpi.org/our-certifications/exam-101-objectives | tr -s ' \n'
 
 **Negative test:** Study from a book's table of contents instead of the objectives — books drift from objective versions (101-500 is v5.0; 201-450 is v4.5); the objectives page is the contract.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Confirm the LFCT retirement
 
@@ -81,7 +81,7 @@ curl -s -o /dev/null -w "%{http_code}\n" https://training.linuxfoundation.org/lf
 
 **Negative test:** A third-party site still selling "LFCT prep" — stale mirrors again; the vendor's own inactive notice wins.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

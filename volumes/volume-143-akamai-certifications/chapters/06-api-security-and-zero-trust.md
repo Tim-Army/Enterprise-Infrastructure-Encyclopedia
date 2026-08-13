@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Buying runtime monitoring without discovery. It watches the documented APIs beautifully while `/internal/reports` leaks PII unmonitored.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — API Security versus the WAF, on one request stream
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Deploying API Security and relaxing the WAF, or vice versa. Each move opens the class of attack the removed layer owned; the SQLi and the BOLA need different defenders.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — North-south and east-west under one vendor
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Calling an estate "zero trust" with EAA alone. The front door is bounded; a compromised app still has the run of the hallway until east-west segmentation exists.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

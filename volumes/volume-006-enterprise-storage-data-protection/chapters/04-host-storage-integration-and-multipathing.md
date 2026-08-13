@@ -504,7 +504,7 @@ when one path is deliberately removed.
    **Expected result:** the previously failed path returns to `active
    ready running` due to `failback immediate`.
 
-**Cleanup**
+**Rollback**
 
 7. Unmount and remove the multipath device configuration:
 

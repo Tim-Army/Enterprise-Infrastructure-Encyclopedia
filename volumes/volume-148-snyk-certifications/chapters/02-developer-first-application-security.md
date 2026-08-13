@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Judging an AppSec tool by how many vulnerabilities it finds. Detection without remediation produces a backlog, not security — the meaningful metric is how many findings get fixed, which depends on fix advice and workflow fit.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Adoption beats exhaustiveness
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Choosing an AppSec tool on detection rate alone. A 95%-accurate scanner adopted by 15% of developers reduces less risk than an 85%-accurate one adopted by 90% — adoption is the multiplier that detection-focused comparisons ignore.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

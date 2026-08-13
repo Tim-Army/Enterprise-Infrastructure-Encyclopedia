@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Raising `tasks.max` to fix a slow sink — throughput does not change, because the partition count is the real constraint.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Single Message Transforms
 
@@ -112,7 +112,7 @@ EOF
 
 **Negative test:** Trying to deduplicate or aggregate with SMTs — they see one record at a time with no state, so it cannot be done there regardless of how the transform is written.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Dead-letter queues and error tolerance
 
@@ -149,7 +149,7 @@ EOF
 
 **Negative test:** Configuring a DLQ and never alerting on its depth — you have converted a loud failure into a silent one, which is worse than the default because it removes the signal that something is wrong.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

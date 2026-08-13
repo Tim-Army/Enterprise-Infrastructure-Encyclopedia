@@ -104,7 +104,7 @@ cluster1-02           true    true
 **Negative test:** run `cluster show` and find a node with `Health false`; a degraded node must be
 recovered before administration — investigate with `system node show`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the certification path
 
@@ -129,7 +129,7 @@ PY
 **Negative test:** plan to sit **Implementation Engineer — Data Protection (NS0-528)** with no NCDA;
 the Specialist credential assumes ONTAP administration — earn the NCDA first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Read your entitlements and roles
 
@@ -153,7 +153,7 @@ administration and the exams assume.
 **Negative test:** grant a day-to-day operator the `admin` role; create a scoped role
 (`security login role create`) with only the needed command directories instead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

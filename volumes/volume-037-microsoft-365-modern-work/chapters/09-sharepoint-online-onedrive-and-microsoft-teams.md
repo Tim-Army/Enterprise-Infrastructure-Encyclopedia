@@ -164,7 +164,7 @@ the ceiling every site inherits.
 while the tenant is `ExternalUserSharingOnly`; the site cannot exceed the
 tenant — the stricter tenant setting wins.
 
-**Cleanup:** restore the prior tenant sharing setting.
+**Rollback:** restore the prior tenant sharing setting.
 
 ### Lab 9.2 — Create a site with a quota and disable its sharing (Topic: Sites and storage)
 
@@ -183,7 +183,7 @@ per-site control within the tenant ceiling.
 **Negative test:** set a quota larger than the tenant pool allows; it is capped
 — site quotas draw from the tenant storage pool.
 
-**Cleanup:** `Remove-SPOSite -Identity "https://contoso.sharepoint.com/sites/Falcon"`.
+**Rollback:** `Remove-SPOSite -Identity "https://contoso.sharepoint.com/sites/Falcon"`.
 
 ### Lab 9.3 — Create a Team and assign a messaging policy (Topic: Teams administration)
 
@@ -203,7 +203,7 @@ disabling GIFs — Teams features are governed by assigned policies.
 **Negative test:** expect the policy to apply instantly; it can take time to
 propagate and needs a Teams restart — allow for propagation.
 
-**Cleanup:** remove the team and the messaging policy.
+**Rollback:** remove the team and the messaging policy.
 
 ### Lab 9.4 — Check a user's voice enablement (Topic: Teams Phone)
 
@@ -220,7 +220,7 @@ True` and a `LineUri` — both are required to place PSTN calls.
 **Negative test:** check a user with no number assignment; `LineUri` is empty
 and calls fail — assign a number and enable enterprise voice first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

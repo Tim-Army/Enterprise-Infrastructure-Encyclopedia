@@ -49,7 +49,7 @@ ping -c1 10.10.20.12   # the db answers pings; it is visible on the underlay
 
 **Negative test.** Nothing is blocked to find, and everything is discoverable — which is the finding: on the underlay, an attacker can both *see* and *reach* every device. Airwall's overlay makes protected devices invisible (cloaked) and reachable only by authorized identities.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -69,7 +69,7 @@ ping -c1 10.10.20.12   # the db answers pings; it is visible on the underlay
 
 **Negative test.** Try to justify flow 3. On an Airwall overlay, unless the HMI and the database are placed in the same overlay network, the HMI cannot even *see* the database — so the burden is not "block it" but "never authorize it". Keep flow 3 a "no".
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -94,7 +94,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own query from `aw-app01` (`~/checkdb.sh` → 3); it works too, over the same flat underlay. The underlay cannot tell the app from the attacker — the overlay's cryptographic identity can.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

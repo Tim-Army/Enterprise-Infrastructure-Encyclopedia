@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Enabling SSO and 2SV and assuming everyone is covered. The personal-email signups and unclaimed-domain contractors authenticate with Atlassian passwords, entirely outside the enforced policy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — SCIM closes the offboarding hole
 
@@ -137,7 +137,7 @@ EOF
 
 **Negative test:** Relying on periodic access reviews to catch departed users. Between reviews, ex-employees hold live credentials to whatever they last accessed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Product access at org scale
 
@@ -185,7 +185,7 @@ EOF
 
 **Negative test:** Granting everyone every product "to keep it simple." The agent seats alone, spread across a whole company, cost more than the entire minimized allocation — for access most users never touch.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

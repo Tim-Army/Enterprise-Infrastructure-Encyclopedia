@@ -366,7 +366,7 @@ errored frames; the visibility fabric ingests either on a *network* port.
 the switch silently drops mirrored packets and your tools see incomplete traffic — a TAP
 avoids this, which is why production visibility prefers TAPs.
 
-**Cleanup:** `no port 1/1/x1 params admin enable` if the port was enabled only for the lab.
+**Rollback:** `no port 1/1/x1 params admin enable` if the port was enabled only for the lab.
 
 ### Lab 1.2 — Aggregation and replication (Topic: Fabric function)
 
@@ -387,7 +387,7 @@ tool see exactly the traffic it needs from any tap point, decoupling tools from 
 the fabric; adding a tool means re-cabling taps, and two tools cannot share one tap
 cleanly — aggregation/replication in the fabric is what removes that rigidity.
 
-**Cleanup:** none (read-only in this chapter; maps are built in Chapter 05).
+**Rollback:** none (read-only in this chapter; maps are built in Chapter 05).
 
 ### Lab 1.3 — Fabric roles: network, tool, and hybrid ports (Topic: Tool delivery)
 
@@ -409,7 +409,7 @@ fabric.
 **Negative test:** map traffic *to* a port still typed `network`; the fabric rejects it —
 delivery targets must be `tool` (or inline-tool) ports, so role assignment precedes any map.
 
-**Cleanup:** `no port 1/1/x2 params admin enable` if enabled only for the lab.
+**Rollback:** `no port 1/1/x2 params admin enable` if enabled only for the lab.
 
 ## Lab Verification
 

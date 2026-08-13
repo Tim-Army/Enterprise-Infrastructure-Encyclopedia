@@ -386,7 +386,7 @@ id alice ; sudo chage -l alice | head
 **Negative test:** create a user with `useradd` (not `adduser`) and forget `-m`; no home directory
 is created and login misbehaves — `adduser` creates the home by default, `useradd` needs `-m`.
 
-**Cleanup:** `sudo deluser --remove-home alice; sudo groupdel engineers`.
+**Rollback:** `sudo deluser --remove-home alice; sudo groupdel engineers`.
 
 ### Lab 4.2 — Privilege escalation with sudo (Topic: Securing access)
 
@@ -406,7 +406,7 @@ sudo.
 **Negative test:** edit `/etc/sudoers` directly and save a syntax error; sudo breaks for everyone
 — always use `visudo`, which refuses to save an invalid file.
 
-**Cleanup:** `sudo rm -f /etc/sudoers.d/engineers`.
+**Rollback:** `sudo rm -f /etc/sudoers.d/engineers`.
 
 ### Lab 4.3 — SSH key-based authentication (Topic: Securing access)
 
@@ -425,7 +425,7 @@ than passwords and the basis for automation.
 **Negative test:** set `~/.ssh` or `authorized_keys` group/other-writable; `sshd` refuses the key
 — SSH enforces strict permissions on key files.
 
-**Cleanup:** remove the lab key from `~/.ssh/authorized_keys`; delete `~/.ssh/id_ed25519*` if
+**Rollback:** remove the lab key from `~/.ssh/authorized_keys`; delete `~/.ssh/id_ed25519*` if
 lab-only.
 
 ### Lab 4.4 — Networking with netplan (Topic: Configuring networking)
@@ -455,7 +455,7 @@ apply that prevents locking yourself out.
 **Negative test:** set an address with `ip addr add` and reboot; it is gone — `ip` changes are
 runtime-only, while netplan writes the persistent configuration.
 
-**Cleanup:** `sudo rm /etc/netplan/99-lab.yaml && sudo netplan apply`.
+**Rollback:** `sudo rm /etc/netplan/99-lab.yaml && sudo netplan apply`.
 
 ### Lab 4.5 — Firewalling with ufw (Topic: Securing access)
 
@@ -475,7 +475,7 @@ inbound stance with explicit allow rules, the exam's server-access hardening ste
 **Negative test:** enable `ufw` before allowing OpenSSH on a remote box; you lock yourself out of
 SSH — always allow the management service *before* enabling a default-deny firewall.
 
-**Cleanup:** `sudo ufw delete allow 8080/tcp; sudo ufw disable` if lab-only.
+**Rollback:** `sudo ufw delete allow 8080/tcp; sudo ufw disable` if lab-only.
 
 ## Lab Verification
 

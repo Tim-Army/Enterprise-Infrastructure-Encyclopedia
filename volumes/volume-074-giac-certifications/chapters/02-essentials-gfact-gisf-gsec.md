@@ -73,7 +73,7 @@ representation, the GFACT foundation.
 **Negative test:** assume base64 is encryption; it is **encoding** (reversible, no key) — GFACT
 distinguishes them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — GISF: apply the CIA triad to a risk
 
@@ -96,7 +96,7 @@ GISF fundamentals.
 **Negative test:** address only Confidentiality (encryption) and ignore Availability; a lost laptop
 with no backup still causes an outage — cover all three.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — GSEC: verify integrity with a hash and cipher
 
@@ -116,7 +116,7 @@ core GSEC crypto and defense-in-depth.
 **Negative test:** detect tampering by eyeballing the file; a one-byte change alters the **hash** —
 use checksums, not inspection.
 
-**Cleanup:** `rm -f file.txt file.enc`.
+**Rollback:** `rm -f file.txt file.enc`.
 
 ## Lab Verification
 

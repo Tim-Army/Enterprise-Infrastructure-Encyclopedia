@@ -398,7 +398,7 @@ edge roles — an overlay (VXLAN) on a routed underlay with LISP control.
 **Negative test:** treating the underlay routing as the fabric; the overlay
 (and its VNs/SGTs) is what carries segmentation, not the underlay IGP.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Diagnose problems with debugs (ENCOR 4.1)
 
@@ -416,7 +416,7 @@ filter avoids the CPU hit of an unfiltered debug.
 **Negative test:** an unconditioned `debug ip packet` on a busy router can
 spike CPU and drop traffic; always condition first.
 
-**Cleanup:** `debug platform condition stop` and `undebug all`.
+**Rollback:** `debug platform condition stop` and `undebug all`.
 
 ### Lab 9.3 — Configure and verify Flexible NetFlow (ENCOR 4.2)
 
@@ -433,7 +433,7 @@ feeding the assurance/collector pipeline.
 **Negative test:** an exporter pointing at an unreachable collector shows
 rising export failures; the flow data never leaves the device.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Configure SPAN/RSPAN/ERSPAN (ENCOR 4.3)
 
@@ -451,7 +451,7 @@ capture tool — local SPAN (RSPAN across switches, ERSPAN across L3).
 **Negative test:** a SPAN destination that is also a normal forwarding port
 can loop or overload; the destination should be dedicated.
 
-**Cleanup:** `no monitor session 1`.
+**Rollback:** `no monitor session 1`.
 
 ### Lab 9.5 — Configure and verify IP SLA (ENCOR 4.4)
 
@@ -468,7 +468,7 @@ measurement of path health.
 **Negative test:** an SLA with too-long a frequency misses a brief brownout
 between probes; assurance needs a frequency matched to the SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.6 — Use Catalyst Center for assurance (ENCOR 4.5, ENARSI 4.7)
 
@@ -484,7 +484,7 @@ correlates telemetry into a single health view and root-cause guidance.
 **Negative test:** chasing individual syslog messages instead of the health
 score/issue view multiplies effort; assurance aggregates them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.7 — Configure NETCONF/RESTCONF (ENCOR 4.6)
 
@@ -502,7 +502,7 @@ interfaces assurance and automation platforms use to read/write config.
 **Negative test:** enabling `restconf` without `ip http secure-server`
 leaves no HTTPS transport; the API is unreachable until TLS is on.
 
-**Cleanup:** `no netconf-yang` if enabled only for the lab.
+**Rollback:** `no netconf-yang` if enabled only for the lab.
 
 ### Lab 9.8 — Determine assurance agent types (ENNA 1.1)
 
@@ -518,7 +518,7 @@ types — each suited to a different vantage point.
 **Negative test:** a cloud agent cannot see inside the enterprise LAN; agent
 type must match where the measurement is needed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.9 — Determine agent location (ENNA 1.2)
 
@@ -534,7 +534,7 @@ determines which segments a test can observe.
 **Negative test:** all agents at HQ cannot characterize a branch's ISP; the
 location must cover the path under scrutiny.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.10 — Describe active and passive monitoring (ENNA 1.3)
 
@@ -551,7 +551,7 @@ observation of real traffic) — the two assurance methods (RFC 7799).
 **Negative test:** relying on passive data alone misses a path with no
 traffic yet; active probes test it before users do.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.11 — Describe ThousandEyes WAN Insights (ENNA 1.4)
 
@@ -567,7 +567,7 @@ paths — the data WAN Insights turns into recommendations.
 **Negative test:** a single test to one target cannot characterize a
 multi-path SD-WAN; test each transport.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.12 — Describe Cisco technology integration (ENNA 1.5)
 
@@ -583,7 +583,7 @@ ThousandEyes path visibility — end-to-end from device to internet.
 **Negative test:** device health without internet-path visibility misses an
 ISP problem; the integration adds the outside-in view.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.13 — Describe setting a metric baseline (ENNA 1.6)
 
@@ -599,7 +599,7 @@ reference an alert threshold is set against.
 **Negative test:** a static threshold with no baseline fires on normal
 diurnal variation; baseline first, then alert on deviation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.14 — Select the integration type (ENNA 1.7)
 
@@ -615,7 +615,7 @@ PagerDuty) — the integration that routes assurance signals to ops.
 **Negative test:** an alert with no notification target is invisible to ops;
 the integration type is what surfaces it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.15 — Select a network assurance platform (ENNA 1.8)
 
@@ -631,7 +631,7 @@ curl -sk -H "X-Auth-Token: $DT" "$DNAC/dna/intent/api/v1/network-health" | jq -r
 **Negative test:** using a campus platform to assure a SaaS path it cannot
 see; the platform must match the domain.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.16 — Configure enterprise agent (ENNA 2.1)
 
@@ -647,7 +647,7 @@ network infra — vantage points inside the enterprise.
 **Negative test:** an agent behind a proxy without the right config cannot
 reach the controller and stays `offline`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.17 — Describe endpoint agent deployment at scale (ENNA 2.2)
 
@@ -663,7 +663,7 @@ measure the actual user experience at scale.
 **Negative test:** endpoint agents on only a few machines cannot represent
 the fleet's experience; scale the deployment.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.18 — Configure tests with ThousandEyes/Meraki Insight (ENNA 2.3)
 
@@ -679,7 +679,7 @@ synthetic transactions assurance runs continuously.
 **Negative test:** a test interval too coarse for a short outage misses it;
 match interval to the SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.19 — Configure endpoint agent tests (ENNA 2.4)
 
@@ -695,7 +695,7 @@ experience measured from the endpoint out.
 **Negative test:** an endpoint test to an internal-only URL from a remote
 user fails by design; scope the target to what the user should reach.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.20 — Describe synthetic monitoring limits (ENNA 2.5)
 
@@ -712,7 +712,7 @@ not every real user action.
 **Negative test:** treating a passing synthetic test as proof all users are
 fine; it validates the scripted path only.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.21 — Implement web authentication methods (ENNA 2.6)
 
@@ -728,7 +728,7 @@ reach protected apps — the test authenticates like a real user.
 **Negative test:** a test with no/incorrect auth to a protected app gets a
 `401` and reports a false outage; match the auth to the app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.22 — Diagnose network issues (ENNA 3.1)
 
@@ -744,7 +744,7 @@ hop where a problem begins (ISP vs enterprise).
 **Negative test:** blaming the app for slowness that path-vis shows starts at
 an ISP hop; the data assigns the fault correctly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.23 — Diagnose end-device network issues (ENNA 3.2)
 
@@ -760,7 +760,7 @@ signal, DNS time) — the "it's the user's Wi-Fi" root cause made visible.
 **Negative test:** escalating a Wi-Fi/gateway problem to the network team;
 endpoint data shows the fault is local.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.24 — Diagnose web application performance (ENNA 3.3)
 
@@ -776,7 +776,7 @@ points at the server, high `dnsTime` at resolution, and so on.
 **Negative test:** a single "slow" number hides which phase is slow; the
 breakdown localizes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.25 — Identify security issues (ENNA 3.4)
 
@@ -792,7 +792,7 @@ assurance data doubling as a security signal (DDoS, hijack, DNS tampering).
 **Negative test:** monitoring only reachability misses a hijack that still
 "resolves"; the path/BGP view is what exposes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.26 — Configure alert rules on network conditions (ENNA 4.1)
 
@@ -808,7 +808,7 @@ for 3 rounds) — condition-based alerting.
 **Negative test:** a rule that fires on a single round produces alert
 storms on transient blips; require multiple consecutive rounds.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.27 — Configure alert rules on end-user experience (ENNA 4.2)
 
@@ -824,7 +824,7 @@ availability) — not just infrastructure counters.
 **Negative test:** green infrastructure with a slow app still hurts users;
 experience alerts catch what device metrics miss.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.28 — Select deliverables and validate alerts (ENNA 4.3, 4.4)
 
@@ -841,7 +841,7 @@ history proving the rules actually trigger — validated, not assumed.
 **Negative test:** an alert rule never validated may have a typo'd threshold
 that never fires; the 7-day history is the proof.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.29 — Recommend capacity-planning optimization (ENNA 4.5)
 
@@ -858,7 +858,7 @@ capacity planning.
 **Negative test:** recommending an upgrade from one bad day rather than a
 trend over-provisions; the window matters.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.30 — Provision two SD-Access fabric sites (integrative)
 
@@ -953,7 +953,7 @@ policy enforcement between two test endpoints.
    reflects the updated deny entry — confirming centrally authored fabric
    policy took effect without any manual per-device ACL change.
 
-**Cleanup**
+**Rollback**
 
 - Remove the deny SGACL added in the negative test if the fabric is
   shared with other labs.

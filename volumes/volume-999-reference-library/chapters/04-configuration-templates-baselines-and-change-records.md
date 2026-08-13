@@ -328,7 +328,7 @@ sufficient).
    **Expected result:** the system and its declared baseline agree again,
    with the reconciliation decision documented.
 
-**Cleanup:** Revert the lab system to its pre-lab state if it is shared,
+**Rollback:** Revert the lab system to its pre-lab state if it is shared,
 remove any temporary backup files, and delete lab-only entries from
 version control if the repository is shared beyond this exercise.
 

@@ -102,7 +102,7 @@ PY
 **Negative test:** rely on the pre-2025 ACE levels; the program was **revised 1 Jun 2025**
 — confirm on training.arista.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Query EOS via eAPI
 
@@ -120,7 +120,7 @@ labs).
 **Negative test:** call `/command-api` without eAPI enabled; enable it (`management api
 http-commands`) first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Confirm the management surfaces
 
@@ -138,7 +138,7 @@ and automate Arista.
 **Negative test:** assume CLI-only; **eAPI/Python/CloudVision** enable automation — use
 them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

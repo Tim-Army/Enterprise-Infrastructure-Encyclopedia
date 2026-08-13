@@ -69,7 +69,7 @@ PY
 **Negative test:** memorize service names with no **hands-on** building; the exam tests applied
 knowledge — practice.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Verify a free practice setup
 
@@ -88,7 +88,7 @@ PY
 **Negative test:** leave practice resources running after sessions; trial credits/charges accrue —
 **tear down** after each lab.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Plan currency and career
 
@@ -108,7 +108,7 @@ PY
 **Negative test:** hold an old cert without renewing; services and exams change — renew on the
 **two-year** cycle.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

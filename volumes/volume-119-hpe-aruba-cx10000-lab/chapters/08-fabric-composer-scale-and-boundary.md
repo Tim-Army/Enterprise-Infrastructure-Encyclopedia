@@ -16,7 +16,7 @@
 
 **Expected result (on paper).** A design note: one DPU per ToR firewalling its rack, PSM/FC as the central policy and telemetry plane, stateful capacity scaling with the fabric.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.2 — Where the DPU model fits (design)
 
@@ -26,7 +26,7 @@
 
 **Expected result (on paper).** A design note: stateless group policy for speed, DPU stateful firewalling for firewall-grade east-west, host/service controls for L7.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -46,7 +46,7 @@ echo "The DPU firewalls its rack's east-west; off-ToR servers and L7 need comple
 
 **Negative test.** Assume the CX 10000 secures every workload. It secures traffic crossing its ToR; a server on a non-CX-10000 switch needs another control applying consistent stateful policy.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

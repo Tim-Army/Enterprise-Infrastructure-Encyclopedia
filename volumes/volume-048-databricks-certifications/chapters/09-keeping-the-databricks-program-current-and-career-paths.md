@@ -102,7 +102,7 @@ misses.
 Context Engineer certs and the Hadoop Migration Architect retirement — confirm on
 databricks.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path (Topic: Career)
 
@@ -124,7 +124,7 @@ role-based certs — the career mapping this volume supports.
 **Negative test:** expect CE credits to renew certifications; Databricks renews **by
 exam** — plan to re-test.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

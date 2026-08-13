@@ -105,7 +105,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.paloaltonetworks.com/services/education/
 **Negative test:** study a pre-2025 "PCNSE/PCNSA" cert list; those exams are **retired** —
 confirm the role-based framework on paloaltonetworks.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map credentials to level and track
 
@@ -132,7 +132,7 @@ PY
 **Negative test:** register for a legacy code exam; those are **retired** — pick a current
 role-based credential.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a track and level path
 
@@ -153,7 +153,7 @@ PY
 **Negative test:** attempt a Specialist exam with no Foundational base; start with the shared
 **Foundational** credentials.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

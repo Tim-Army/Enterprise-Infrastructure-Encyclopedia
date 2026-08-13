@@ -70,7 +70,7 @@ resource set for a wide IP.
 **Negative test:** point a wide IP at raw server IPs with no pool; use a **GSLB pool** so health
 and method apply.
 
-**Cleanup:** `tmsh delete gtm pool a site_pool`.
+**Rollback:** `tmsh delete gtm pool a site_pool`.
 
 ### Lab 6.2 — Create a wide IP
 
@@ -87,7 +87,7 @@ balancing by DNS.
 **Negative test:** publish an A record straight to one site; a **wide IP** gives multi-site
 failover — use it.
 
-**Cleanup:** `tmsh delete gtm wideip a www.example.com`.
+**Rollback:** `tmsh delete gtm wideip a www.example.com`.
 
 ### Lab 6.3 — Topology-based steering
 
@@ -105,7 +105,7 @@ proximity-based GSLB.
 **Negative test:** send all clients to one site regardless of location; **topology** returns the
 closest — configure it for proximity.
 
-**Cleanup:** delete the topology record and reset the wide IP mode.
+**Rollback:** delete the topology record and reset the wide IP mode.
 
 ### Lab 6.4 — Verify resolution and health
 
@@ -121,7 +121,7 @@ tmsh show gtm pool a site_pool members
 **Negative test:** trust configuration without querying; **dig** the wide IP and check member
 health to prove it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

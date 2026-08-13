@@ -101,7 +101,7 @@ agent required.
 **Negative test:** skip the learning phase and enforce immediately; legitimate but unobserved flows are
 denied — learn first, review, then enforce.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Model multi-factor segmentation on a privileged port
 
@@ -130,7 +130,7 @@ privileged port.
 **Negative test:** leave admin ports permanently open to a management subnet; a compromised jump host
 moves laterally — gate them with **MFA** just-in-time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reason about coverage and requirements
 
@@ -155,7 +155,7 @@ core requirement.
 **Negative test:** assume 100% coverage without checking management reachability; hosts with no path are
 uncovered — verify reachability.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Score Zero Networks against the rubric
 
@@ -178,7 +178,7 @@ strengths.
 **Negative test:** score it only on granularity vs an L7 agent tool; weight **automation/agentless/MFA**
 where they matter to you.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -96,7 +96,7 @@ EOF
 
 **Negative test:** Letting an unbounded agent act autonomously on any amount with any tool. A large or wrong action executes with no human check and no tool restriction; guardrails, human oversight, and auditability are what make agentic automation production-grade rather than a risk.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

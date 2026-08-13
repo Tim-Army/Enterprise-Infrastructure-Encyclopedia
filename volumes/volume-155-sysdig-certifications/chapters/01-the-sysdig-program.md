@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Expecting a single proctored Sysdig certification like AWS's. Sysdig's program is Credly-badged accreditations plus the open-source Falco training path — hands-on and current, but a different, badge-based model.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Runtime-first: what posture alone misses
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Relying on posture/image scanning alone for cloud-native security. A container can pass every static check and still be exploited at runtime via a 0-day; only runtime detection sees the shell spawn, the drift, and the C2 callout as they happen.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

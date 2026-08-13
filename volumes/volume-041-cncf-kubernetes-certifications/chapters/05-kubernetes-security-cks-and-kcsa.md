@@ -123,7 +123,7 @@ specific flows.
 **Negative test:** rely on the cluster's open-by-default networking; without a
 default-deny, any pod can reach any other — start closed.
 
-**Cleanup:** `kubectl delete namespace secure`
+**Rollback:** `kubectl delete namespace secure`
 
 ### Lab 5.2 — CKS: Cluster Hardening (15%)
 
@@ -142,7 +142,7 @@ minimizing the credential and RBAC surface, CKS Domain 2.
 **Negative test:** leave the default token automounted in every pod; a
 compromised pod then holds an API credential — disable it where unused.
 
-**Cleanup:** `kubectl delete sa app`
+**Rollback:** `kubectl delete sa app`
 
 ### Lab 5.3 — CKS: System Hardening (10%)
 
@@ -159,7 +159,7 @@ node-hardening checklist — CKS Domain 3 (host, not just cluster).
 **Negative test:** harden only Kubernetes objects and ignore the node OS; a
 compromised node undermines the whole cluster — harden the host too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — CKS: Minimize Microservice Vulnerabilities (20%)
 
@@ -180,7 +180,7 @@ a top CKS domain.
 they're safe; without Pod Security enforcement there is no guardrail — label the
 namespace.
 
-**Cleanup:** `kubectl delete namespace restricted`
+**Rollback:** `kubectl delete namespace restricted`
 
 ### Lab 5.5 — CKS: Supply Chain Security (20%)
 
@@ -200,7 +200,7 @@ echo "Also: scan images (Trivy/Grype) + generate an SBOM (Syft) + verify signatu
 **Negative test:** deploy `:latest`; the running image can change under you and
 cannot be verified — pin to a digest and verify provenance.
 
-**Cleanup:** `kubectl delete deploy web 2>/dev/null || true`
+**Rollback:** `kubectl delete deploy web 2>/dev/null || true`
 
 ### Lab 5.6 — CKS: Monitoring, Logging and Runtime Security (20%)
 
@@ -223,7 +223,7 @@ runtime-detection concept (Falco) — the detect-and-respond domain of CKS.
 **Negative test:** run without audit logging or runtime detection; you cannot
 investigate an incident you never recorded — enable both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### KCSA — Kubernetes and Cloud Native Security Associate
 
@@ -247,7 +247,7 @@ frames KCSA.
 **Negative test:** secure only the cluster and ignore the cloud account or the
 code; the 4Cs are nested — a weak outer layer exposes the inner ones.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.8 — KCSA: Kubernetes Cluster Component Security (22%)
 
@@ -265,7 +265,7 @@ holds all state — the component attack surface KCSA Domain 2 emphasizes.
 **Negative test:** leave etcd unencrypted and broadly reachable; anyone with etcd
 access reads every Secret — encrypt at rest and lock it down.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.9 — KCSA: Kubernetes Security Fundamentals (22%)
 
@@ -286,7 +286,7 @@ passes through — the security fundamentals KCSA Domain 3 tests.
 **Negative test:** assume a valid token means full access; authentication only
 proves identity — **authorization** (RBAC) decides what it may do.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.10 — KCSA: Kubernetes Threat Model (16%)
 
@@ -307,7 +307,7 @@ reasoning KCSA Domain 4 requires.
 **Negative test:** defend only the perimeter; the threat model includes insider
 and lateral-movement paths — mitigate each vector.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.11 — KCSA: Platform Security (16%)
 
@@ -329,7 +329,7 @@ workloads.
 **Negative test:** trust every image pushed to the registry; without admission/
 image policy, an untrusted image can run — enforce a policy gate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.12 — KCSA: Compliance and Security Frameworks (10%)
 
@@ -350,7 +350,7 @@ NSA/CISA, NIST 800-190) — the compliance grounding of KCSA Domain 6.
 **Negative test:** claim compliance without measuring against a benchmark; run
 **kube-bench** (CIS) to produce evidence.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

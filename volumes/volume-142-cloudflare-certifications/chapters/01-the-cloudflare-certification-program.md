@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Accepting a question count from any non-Cloudflare source. The domain outlines are behind the exam login; nobody outside has them legitimately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Certification or accreditation?
 
@@ -134,7 +134,7 @@ EOF
 
 **Negative test:** Listing an accreditation as "Cloudflare certified" on a résumé. It is a real credential described wrongly, and a wrongly described credential reads worse than an absent one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

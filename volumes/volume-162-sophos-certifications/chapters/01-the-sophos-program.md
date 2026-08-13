@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Expecting a single "Sophos Certified Professional" exam. Certifications are role-tier-plus-product (Technician through Architect, per product); you certify for your role on the specific products you operate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Match tier to role need
 
@@ -108,7 +108,7 @@ EOF
 
 **Negative test:** Pursuing the Architect tier for a help-desk support role. The tiers map to depth; a support role is served by Technician, while Architect suits those designing and deploying — match the tier to the job.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

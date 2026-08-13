@@ -39,7 +39,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 plc.ot 502 && echo "hmi -> plc
 
 **Negative test.** Launch a pod in a namespace *without* injection and try to reach `api.dc:8080`; STRICT mTLS refuses it — the caller has no mesh identity to present. That is the point: an un-identified caller cannot reach a meshed service.
 
-**Cleanup.** Keep STRICT mTLS.
+**Rollback.** Keep STRICT mTLS.
 
 ### Lab 6.2 — See the SPIFFE identities
 
@@ -57,7 +57,7 @@ istioctl x describe pod -n dc "$(kubectl get pod -n dc -l app=db -o jsonpath='{.
 
 **Negative test.** Look for the identity to be the pod IP or name; it is neither. Identity is the ServiceAccount, issued as a certificate, so it cannot be spoofed by taking over an IP.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Verify encryption and mutual authentication
 
@@ -73,7 +73,7 @@ istioctl x describe pod -n dc "$(kubectl get pod -n dc -l app=api -o jsonpath='{
 
 **Negative test.** Recall the un-meshed PLC: `istioctl x describe` shows it is *not* in the mesh, so it has no mTLS and no identity. Chapter 08 addresses what that means for protecting it.
 
-**Cleanup.** Keep the mesh in STRICT mTLS for Chapter 07.
+**Rollback.** Keep the mesh in STRICT mTLS for Chapter 07.
 
 ## Summary and Completion Checklist
 

@@ -72,7 +72,7 @@ view across sources.
 **Negative test:** query one raw source at a time; **Helix** normalizes and correlates across
 sources — search there.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Correlation rule
 
@@ -90,7 +90,7 @@ the XDR advantage.
 **Negative test:** treat the EDR and IPS alerts as separate; **correlation** ties them into one
 incident — write the rule.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Response playbook
 
@@ -111,7 +111,7 @@ automated response with a human gate.
 **Negative test:** auto-isolate hosts on any match with no approval; keep a **human checkpoint** on
 consequential actions.
 
-**Cleanup:** disable/delete the test playbook.
+**Rollback:** disable/delete the test playbook.
 
 ### Lab 7.4 — XDR incident view
 
@@ -132,7 +132,7 @@ detection and response.
 **Negative test:** chase three siloed alerts in three consoles; **XDR** correlates them into one —
 work the incident.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

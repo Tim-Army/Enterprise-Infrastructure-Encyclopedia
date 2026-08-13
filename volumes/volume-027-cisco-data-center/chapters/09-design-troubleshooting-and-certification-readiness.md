@@ -207,7 +207,7 @@ DR/BDR election, not a fault. The interface output localizes it.
 broadcast segment that is normal — the misdiagnosis wastes a window. Confirm
 adjacency need before acting.
 
-**Cleanup:** correct the MTU (or timers/area) and confirm `FULL`.
+**Rollback:** correct the MTU (or timers/area) and confirm `FULL`.
 
 ### Lab 9.2 — Troubleshoot switching protocols: RSTP+, LACP, vPC (DCIT Objective 1.2)
 
@@ -227,7 +227,7 @@ attribute.
 **Negative test:** treat the suspended VLAN as a physical-link fault; the ports
 are up — the cause is configuration consistency, not cabling.
 
-**Cleanup:** align the mismatched parameter on both peers; confirm the VLAN
+**Rollback:** align the mismatched parameter on both peers; confirm the VLAN
 returns to forwarding.
 
 ### Lab 9.3 — Troubleshoot overlay protocols: VXLAN EVPN (DCIT Objective 1.3)
@@ -250,7 +250,7 @@ intermittent unicast loss with ARP working points to an **underlay MTU hole**.
 `ping` with large packets across each underlay path localizes the bad link —
 overlay symptoms often have underlay causes.
 
-**Cleanup:** restore extended communities / MTU; confirm end-to-end reachability.
+**Rollback:** restore extended communities / MTU; confirm end-to-end reachability.
 
 ### Lab 9.4 — Troubleshoot ACI (DCIT Objective 1.4)
 
@@ -269,7 +269,7 @@ health score drops on the affected object.
 **Negative test:** assume a data-plane problem when the fault clearly shows an
 unresolved policy relationship — in ACI, read the fault before the wire.
 
-**Cleanup:** resolve the relationship (bind BD/path); confirm the fault clears.
+**Rollback:** resolve the relationship (bind BD/path); confirm the fault clears.
 
 ### Lab 9.5 — Troubleshoot UCS rack servers (DCIT Objective 2.1)
 
@@ -289,7 +289,7 @@ Event Log — the fault plus SEL localize a rack-server association failure.
 **Negative test:** re-acknowledge the server repeatedly hoping association
 completes; without fixing the named fault it will not — read the fault reason.
 
-**Cleanup:** correct the named cause; re-associate and confirm.
+**Rollback:** correct the named cause; re-associate and confirm.
 
 ### Lab 9.6 — Troubleshoot UCS blade chassis (DCIT Objective 2.2)
 
@@ -309,7 +309,7 @@ under-provisioned — the policy vs actual-link mismatch is the classic cause.
 **Negative test:** lower the discovery policy to "1-link" to force discovery;
 it hides an actual cabling fault — fix the cabling, do not mask it.
 
-**Cleanup:** restore correct cabling/policy; re-acknowledge the chassis.
+**Rollback:** restore correct cabling/policy; re-acknowledge the chassis.
 
 ### Lab 9.7 — Troubleshoot packet flow from server to fabric (DCIT Objective 2.3)
 
@@ -330,7 +330,7 @@ or a disjoint-L2 uplink-group problem — the pinning output localizes it.
 pinning points to a downed border interface — trace the pin before blaming the
 endpoint.
 
-**Cleanup:** correct the uplink/pinning; confirm the vNIC forwards.
+**Rollback:** correct the uplink/pinning; confirm the vNIC forwards.
 
 ### Lab 9.8 — Troubleshoot hardware interoperability (DCIT Objective 2.4)
 
@@ -349,7 +349,7 @@ interop fault — the details output names the incompatible part.
 **Negative test:** force a link up with an unsupported optic; it may link but
 error under load — the compatibility matrix, not link state, is the arbiter.
 
-**Cleanup:** replace with a supported part; confirm clean counters.
+**Rollback:** replace with a supported part; confirm clean counters.
 
 ### Lab 9.9 — Troubleshoot firmware upgrades, packages, and interoperability — compute (DCIT Objective 2.5)
 
@@ -368,7 +368,7 @@ halted on an incompatible bundle names the version conflict.
 **Negative test:** assume the upgrade hung when it is correctly waiting at a
 `user-ack` maintenance gate — check the FSM before intervening.
 
-**Cleanup:** acknowledge or correct the bundle; let the FSM complete.
+**Rollback:** acknowledge or correct the bundle; let the FSM complete.
 
 ### Lab 9.10 — Troubleshoot Fibre Channel physical infrastructure (DCIT Objective 3.1)
 
@@ -387,7 +387,7 @@ in the transceiver/down-reason, distinct from a services problem.
 **Negative test:** chase zoning when the port down-reason is `SFP validation
 failed` — the physical layer must be clean before services matter.
 
-**Cleanup:** replace/reseat the optic or fix the VSAN; confirm the port is `up`.
+**Rollback:** replace/reseat the optic or fix the VSAN; confirm the port is `up`.
 
 ### Lab 9.11 — Troubleshoot Fibre Channel services (DCIT Objective 3.2)
 
@@ -406,7 +406,7 @@ target missing from the **active zoneset** — an FC-services problem is
 **Negative test:** reseat cables for a problem that is purely zoning; FLOGI was
 already fine — read the name server and active zoneset first.
 
-**Cleanup:** add the correct zone/activate; confirm the initiator sees the
+**Rollback:** add the correct zone/activate; confirm the initiator sees the
 target.
 
 ### Lab 9.12 — Troubleshoot automation and scripting tools (DCIT Objective 4.1)
@@ -426,7 +426,7 @@ layer.
 **Negative test:** rewrite the playbook logic when the real cause is a `403`
 (the automation account lacks a role) — check auth before logic.
 
-**Cleanup:** fix credentials/feature/reachability; re-run to `changed=0`.
+**Rollback:** fix credentials/feature/reachability; re-run to `changed=0`.
 
 ### Lab 9.13 — Troubleshoot programmability and orchestration (DCIT Objective 4.2)
 
@@ -444,7 +444,7 @@ changed the fabric out-of-band) or an expired API token, both visible here.
 **Negative test:** `terraform apply` to "force" past drift without reading the
 plan — you may overwrite a deliberate out-of-band change; read the plan first.
 
-**Cleanup:** reconcile state (import or revert); re-plan to a clean diff.
+**Rollback:** reconcile state (import or revert); re-plan to a clean diff.
 
 ### Lab 9.14 — Troubleshoot firmware upgrades, packages, and interoperability — fabric (DCIT Objective 5.1)
 
@@ -463,7 +463,7 @@ supervisor) — the incompatibility list names it.
 **Negative test:** retry ISSU unchanged after it aborted for incompatibility;
 it will abort again — resolve the named feature or accept a disruptive upgrade.
 
-**Cleanup:** resolve incompatibilities or schedule a disruptive window; complete
+**Rollback:** resolve incompatibilities or schedule a disruptive window; complete
 the install.
 
 ### Lab 9.15 — Troubleshoot centralized management integration: Nexus Dashboard and Intersight (DCIT Objective 5.2)
@@ -483,7 +483,7 @@ connector / proxy / certificate** problem, not a fabric fault.
 outbound HTTPS to Intersight is blocked — the management integration is the
 break, and the data plane is fine.
 
-**Cleanup:** restore connector reachability/certs; confirm `Connected`.
+**Rollback:** restore connector reachability/certs; confirm `Connected`.
 
 ### Lab 9.16 — Troubleshoot network security (DCIT Objective 5.3)
 
@@ -502,7 +502,7 @@ policy drop, not a forwarding fault — the counters and logs pinpoint which.
 **Negative test:** chase routing for traffic an ACL is dropping by design;
 the ACLLOG entry names the denied flow — read the logs before the routing table.
 
-**Cleanup:** adjust the ACL/CoPP if the drop was unintended; re-verify.
+**Rollback:** adjust the ACL/CoPP if the drop was unintended; re-verify.
 
 ### Lab 9.17 — Troubleshoot ACI security domains and role mapping (DCIT Objective 5.4)
 
@@ -521,7 +521,7 @@ tagged with a domain the user does not belong to are invisible to them — a
 **Negative test:** grant `admin` to "fix" it when correct scoping is the goal —
 over-granting hides the real mapping error and breaks least privilege.
 
-**Cleanup:** correct the domain membership/role; confirm scoped access.
+**Rollback:** correct the domain membership/role; confirm scoped access.
 
 ### Lab 9.18 — Troubleshoot data center compute security (DCIT Objective 5.5)
 
@@ -541,7 +541,7 @@ it.
 **Negative test:** switch to local auth to "unblock" logins, masking a
 reachable-AAA problem — fix the provider, do not bypass central auth.
 
-**Cleanup:** restore the AAA provider/order; keep insecure protocols disabled.
+**Rollback:** restore the AAA provider/order; keep insecure protocols disabled.
 
 ### Lab 9.19 — Troubleshoot storage security (DCIT Objective 5.6)
 
@@ -562,7 +562,7 @@ device.
 isolated by fabric binding — the violation log, not the physical layer, is the
 cause.
 
-**Cleanup:** authorize the device (or remove it); clear the violation and
+**Rollback:** authorize the device (or remove it); clear the violation and
 confirm the port joins.
 
 ## Design Exercise

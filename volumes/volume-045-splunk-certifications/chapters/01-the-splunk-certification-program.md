@@ -120,7 +120,7 @@ Architect/Consultant, the Cybersecurity Defense trio, and the O11y Metrics User.
 **Negative test:** rely on a pre-2024 list; it misses the **Advanced Power User**
 and the **Cybersecurity Defense** track — use the live page.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Read a test blueprint (Topic: Verify currency)
 
@@ -138,7 +138,7 @@ Events 15%, Data Models 10%) — the authoritative study scope.
 **Negative test:** study from a random course syllabus; the **blueprint** defines
 the exam — start there.
 
-**Cleanup:** `rm -f pu.pdf`
+**Rollback:** `rm -f pu.pdf`
 
 ### Lab 1.3 — Run your first SPL search (Topic: SPL foundation)
 
@@ -154,7 +154,7 @@ the search → transform (`stats`) → sort pattern that is the heart of SPL.
 **Negative test:** expect results with no `index=`; scope every search to an index
 and time range — unscoped searches are slow and may return nothing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -23,7 +23,7 @@
 
 **Expected result (design).** Per-server DPUs enforcing policy in an isolated trust domain. Track 2 reproduces the out-of-band property.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build workloads behind DPU namespaces
 
@@ -77,7 +77,7 @@ web->db OPEN
 
 **Negative test.** The workload namespace (`web`) has no interface into `dpu-web` beyond the one veth; it cannot enter or configure the DPU namespace — the separation the out-of-band property depends on.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Confirm the flat state
 
@@ -92,7 +92,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.140.0.20 5432 && echo "hmi->db REAC
 
 **Expected result.** Both REACH — before DPU policy, the workloads reach targets they should not. Chapter 04 denies these at each DPU.
 
-**Cleanup.** Leave running.
+**Rollback.** Leave running.
 
 ## Summary and Completion Checklist
 

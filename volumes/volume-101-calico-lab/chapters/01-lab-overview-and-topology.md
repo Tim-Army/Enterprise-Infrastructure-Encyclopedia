@@ -93,7 +93,7 @@ Budget an evening. Unlike the VM-based labs in this series, there are no long OS
 | `kubectl ...` | Run against the kind cluster from the host |
 | **Enterprise note** | A capability that needs Calico Enterprise/Cloud, described but not built |
 
-Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**. Do not skip the negative tests — proving a thing is *blocked* is the entire product.
+Every exercise follows the same five-part shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**. Do not skip the negative tests — proving a thing is *blocked* is the entire product.
 
 ## Summary and Completion Checklist
 

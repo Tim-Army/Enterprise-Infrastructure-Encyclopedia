@@ -76,7 +76,7 @@ policy before reaching the app.
 **Negative test:** publish the app with no access profile; unauthenticated users reach it
 directly — gate it with APM.
 
-**Cleanup:** detach and delete the access profile.
+**Rollback:** detach and delete the access profile.
 
 ### Lab 8.2 — Add authentication and SSO
 
@@ -93,7 +93,7 @@ seamless access.
 **Negative test:** prompt for credentials at both APM and the app; **SSO** passes them once —
 configure it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Per-request policy
 
@@ -111,7 +111,7 @@ at logon.
 **Negative test:** authorize only at logon; **per-request policy** re-checks each request — add it
 for Zero Trust.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Solution Expert integration (401)
 
@@ -134,7 +134,7 @@ DNS global availability — the Solution Expert deliverable.
 **Negative test:** deploy the modules in isolation; the **expert** design integrates them into one
 defended service.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -229,7 +229,7 @@ without stacking ZFS on the RAID controller; this is the datastore the ten VMs w
 see or manage the individual disks behind the PERC, losing its self-healing/scrub value — LVM-thin
 is the appropriate layer on hardware RAID.
 
-**Cleanup:** keep `river` (it is the build's VM datastore).
+**Rollback:** keep `river` (it is the build's VM datastore).
 
 ### Lab 6.2 — Storage content types (Topic: Content types)
 
@@ -249,7 +249,7 @@ cat /etc/pve/storage.cfg
 it — the content-type setting governs what a storage can store, so ISO media needs an `iso`-capable
 storage (Lab 6.3).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — ISO repository storage (Topic: ISO repository)
 
@@ -269,7 +269,7 @@ backups — the ISO repository (Chapter 07) needs an `iso`-content storage; a di
 **Negative test:** store ISOs on the small BOSS boot mirror (`local`); it fills quickly and risks the
 OS volume — put the ISO library on the large `river` array where there is room.
 
-**Cleanup:** remove `riverfiles` only if reworking the storage layout.
+**Rollback:** remove `riverfiles` only if reworking the storage layout.
 
 ### Lab 6.4 — Verify storage (Topic: Verification)
 
@@ -288,7 +288,7 @@ VM disks will land on the RAID-5 array and ISOs/backups have a home before you b
 create, VM disks fall back to the tiny boot mirror and fill it — verify storage is online and sized
 first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

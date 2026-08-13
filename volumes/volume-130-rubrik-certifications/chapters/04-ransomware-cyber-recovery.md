@@ -49,7 +49,7 @@ EOF
 
 **Negative test:** Watching only production endpoints for ransomware — a stealthy strain may evade EDR, but it cannot hide the mass-encryption footprint in the backup deltas; the backup is an independent sensor.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Find the last clean snapshot
 
@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** "Just restore last night's backup" — if last night is already encrypted, you've recovered the ransomware; the last-clean-snapshot selection (informed by Data Threat Analytics) is what prevents that.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Threat hunting in backups
 
@@ -101,7 +101,7 @@ EOF
 
 **Negative test:** Only scanning live systems for the IOC — you learn it's present now but not *when it arrived* or *what else it reached*; the historical snapshots give the timeline live scanning can't.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -394,7 +394,7 @@ platforms distinguish graceful termination (SIGTERM / Stop-Process) from forced 
 **Negative test:** force-kill (`-KILL`/`-Force`) a database process to "free resources"; you risk data
 corruption — a graceful stop lets the process clean up, so force is the last resort.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Service management (Topic: Services)
 
@@ -419,7 +419,7 @@ and Windows (`Status`/`StartType`); administrators must set both deliberately.
 **Negative test:** start a service manually without setting it to start at boot; it is gone after a
 reboot — the boot/startup state (`enable`/`Automatic`) is separate from the current run state.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Resource limits (Topic: Resource control)
 
@@ -438,7 +438,7 @@ starving the host, protecting other workloads and the system itself.
 **Negative test:** run a memory-leaking process with no limit; it consumes all RAM and the OOM killer
 takes down other services — a resource cap contains the damage to the offending process.
 
-**Cleanup:** `sudo systemctl set-property chronyd.service MemoryMax=infinity 2>/dev/null; true`.
+**Rollback:** `sudo systemctl set-property chronyd.service MemoryMax=infinity 2>/dev/null; true`.
 
 ### Lab 5.4 — Scheduled tasks (Topic: Scheduling)
 
@@ -464,7 +464,7 @@ the same.
 **Negative test:** rely on an admin to run nightly maintenance manually; it is skipped on holidays and
 busy days — a scheduler guarantees it runs.
 
-**Cleanup:** `sudo rm -f /etc/cron.d/nightly` / `Unregister-ScheduledTask -TaskName "Nightly"`.
+**Rollback:** `sudo rm -f /etc/cron.d/nightly` / `Unregister-ScheduledTask -TaskName "Nightly"`.
 
 ## Lab Verification
 

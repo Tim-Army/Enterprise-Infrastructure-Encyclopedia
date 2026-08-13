@@ -67,7 +67,7 @@ echo "SLES: Snapper auto-snapshots before + after system changes on Btrfs root"
 **Negative test:** assume a bad `zypper patch` can't be undone; **Snapper rollback** reverts it — use
 it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Reason about a rollback
 
@@ -86,7 +86,7 @@ PY
 **Negative test:** rebuild the server from scratch after a bad update; **snapshot rollback** is minutes
 — use it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Manage storage with LVM
 
@@ -103,7 +103,7 @@ echo "resize a logical volume + filesystem (lab): lvextend -L +5G /dev/vg0/data 
 **Negative test:** create fixed partitions with no LVM; growing them later is hard — use **LVM** for
 flexibility.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Mount a filesystem via fstab
 
@@ -118,7 +118,7 @@ echo "SLES: /etc/fstab defines persistent mounts (device/UUID, mountpoint, fs ty
 
 **Negative test:** `mount` a filesystem manually only; it's gone after reboot — add it to **fstab**.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

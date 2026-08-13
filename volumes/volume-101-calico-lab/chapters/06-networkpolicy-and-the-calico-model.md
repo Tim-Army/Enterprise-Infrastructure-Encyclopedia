@@ -38,7 +38,7 @@ kubectl exec -n dc web -- nc -z -w2 db.dc 5432 || echo "web -> db BLOCKED (not y
 
 **Negative test.** Note that `web → db` is blocked too. Default-deny denies the legitimate flow along with the attack; that is why the next step *adds back* exactly what the app needs and nothing more.
 
-**Cleanup.** Keep the default-deny.
+**Rollback.** Keep the default-deny.
 
 ### Lab 6.2 — Allow the app tier to reach the database
 
@@ -73,7 +73,7 @@ kubectl exec -n ot hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db STILL BLOCKED"
 
 **Negative test.** Change the `from` selector to `podSelector: {}` ("allow from anything in this namespace") and the app still works — but so would any compromised pod in `dc`. Least privilege names the *source label*, not "anything". Revert to `app=web`.
 
-**Cleanup.** Keep both policies.
+**Rollback.** Keep both policies.
 
 ### Lab 6.3 — The Calico model
 
@@ -100,7 +100,7 @@ Calico stores Kubernetes NetworkPolicies as its own `knp.default.*` policies and
 
 **Negative test.** Assume Kubernetes NetworkPolicy alone can express "deny RDP everywhere, then let teams allow within their namespace". It cannot — it is namespaced and allow-only. That is exactly the gap Calico tiers and GlobalNetworkPolicy fill.
 
-**Cleanup.** Keep the policies for Chapter 07.
+**Rollback.** Keep the policies for Chapter 07.
 
 ## Summary and Completion Checklist
 

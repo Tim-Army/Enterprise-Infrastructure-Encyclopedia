@@ -368,7 +368,7 @@ from the vSphere Client's VxRail plugin, so operators work in one console, not t
 management surface is the vCenter plugin — knowing where VxRail functions live in vCenter is an
 exam and operational essential.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — The vSAN datastore and storage policies (Topic: vSAN storage)
 
@@ -389,7 +389,7 @@ overhead.
 SAN; vSAN is policy-driven and object-distributed — you set intent (FTT, stripe, RAID) via policy,
 not manual placement.
 
-**Cleanup:** revert the lab VM to the default policy; delete the lab policy if unused.
+**Rollback:** revert the lab VM to the default policy; delete the lab policy if unused.
 
 ### Lab 4.3 — The division of management (Topic: Management boundaries)
 
@@ -410,7 +410,7 @@ or firmware by hand (that is VxRail LCM), but you run VMs/DRS/HA normally throug
 break the validated state and the supported path — ESXi/firmware updates must go through VxRail LCM
 (Chapter 06), which is the boundary this lab establishes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — vSAN health check (Topic: Storage health)
 
@@ -436,7 +436,7 @@ on VxRail it should be watched continuously because storage underpins every work
 becomes packet loss and degraded VMs — Skyline Health surfaces it early, so a clean health check is
 the bar before and after any change.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -80,7 +80,7 @@ PY
 
 **Negative test:** expect agents to compile their own catalogs; the **primary server** compiles them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Inspect agent certificate state
 
@@ -103,7 +103,7 @@ Requested Certificates:
 **Negative test:** enable **autosign `*`** to save time; a rogue node could enroll — sign trusted CSRs
 explicitly (`puppetserver ca sign --certname db1.example.com`).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Read a run report
 
@@ -128,7 +128,7 @@ failures — the compliance/troubleshooting view.
 **Negative test:** ignore reports and assume nodes are compliant; **read reports** for failed runs and
 unexpected corrective changes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Reason about PuppetDB and exported resources
 
@@ -150,7 +150,7 @@ node — PuppetDB's cross-node value.
 **Negative test:** hardcode every backend in the LB config; **export/collect** via PuppetDB so it updates
 as nodes change.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

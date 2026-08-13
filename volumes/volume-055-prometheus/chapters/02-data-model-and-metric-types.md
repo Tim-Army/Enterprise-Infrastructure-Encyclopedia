@@ -69,7 +69,7 @@ exposition format.
 **Negative test:** parse metrics with ad-hoc regex ignoring `# TYPE`; the **TYPE**
 comment tells you how to interpret the series — read it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Identify a counter vs gauge
 
@@ -85,7 +85,7 @@ typed **counter** — the two most common types.
 **Negative test:** graph a counter's raw value as a rate; counters need **`rate()`** —
 raw counters only ever climb.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Inspect a histogram
 
@@ -101,7 +101,7 @@ histogram's structure.
 **Negative test:** use a summary expecting to aggregate quantiles across instances;
 **histograms** aggregate, summaries don't — prefer histograms.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Reason about cardinality
 
@@ -118,7 +118,7 @@ scope.
 **Negative test:** add a label like `request_id`; each value spawns a **new series** —
 cardinality explodes, so keep labels bounded.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

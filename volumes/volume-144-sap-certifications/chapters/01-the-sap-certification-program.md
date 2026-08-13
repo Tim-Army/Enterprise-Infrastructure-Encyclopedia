@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Treating a Professional certification as "the advanced version of the Associate exam." It is an experience-gated claim; 24 months of real project work is not a study task.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The purchasing model and the practice hours
 
@@ -150,7 +150,7 @@ EOF
 
 **Negative test:** Buying a one-attempt exam for a first practical exam with no practice-system time. The format is unfamiliar and hands-on; the practice hours are where you learn the exam is not like the old one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

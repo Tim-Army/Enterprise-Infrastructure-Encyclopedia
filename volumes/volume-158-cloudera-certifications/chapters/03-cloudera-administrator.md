@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Managing a cloud CDP deployment with an on-prem, provision-for-peak mindset. You would over-provision and overspend; cloud administration means auto-scaling to demand and controlling cost, a distinct skill set certified separately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

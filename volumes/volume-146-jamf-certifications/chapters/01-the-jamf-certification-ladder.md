@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Assuming all Jamf exams are multiple choice like the 100. The Tech level adds practical tasks and the Admin/Expert levels are scenario-based — you cannot cram them from a question bank.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Choose a track by what you manage
 
@@ -151,7 +151,7 @@ EOF
 
 **Negative test:** Treating Jamf Protect as "advanced Jamf Pro." It is a different product (security, not management) with its own ladder; a Pro Admin is not partway to a Protect cert.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

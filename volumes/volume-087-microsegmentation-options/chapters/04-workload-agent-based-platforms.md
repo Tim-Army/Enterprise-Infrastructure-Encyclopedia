@@ -120,7 +120,7 @@ workloads inherit policy by label.
 **Negative test:** write Illumio rules per-IP; you lose the label portability that is the point — use
 labels.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Reason about dependency mapping (Secure Workload)
 
@@ -146,7 +146,7 @@ allowlist.
 **Negative test:** auto-enforce every observed flow including one-off noise; review **rare** flows
 before allowing them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Compare the three agent platforms
 
@@ -169,7 +169,7 @@ PY
 **Negative test:** assume any of the three segments OT devices they cannot install on; pair with an
 appliance/network model for those.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Reason about agent coverage risk
 
@@ -189,7 +189,7 @@ PY
 **Negative test:** enforce default-deny with 9% of hosts lacking agents; those hosts are either exposed
 or broken — reach coverage first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

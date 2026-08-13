@@ -131,7 +131,7 @@ low-code delivery.
 **Negative test:** assume Power Platform replaces all pro-code development; it
 accelerates low-code, not every scenario.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — PL-900: Manage the Microsoft Power Platform environment (20–25%)
 
@@ -147,7 +147,7 @@ environment management PL-900 introduces.
 **Negative test:** build production apps in the Default environment; use a
 dedicated environment with a Dataverse database.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — PL-900: Demonstrate the capabilities of Power Apps (20–25%)
 
@@ -162,7 +162,7 @@ pac application list
 **Negative test:** treat canvas and model-driven apps as interchangeable;
 model-driven is data-first on Dataverse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — PL-900: Demonstrate the capabilities of Power Automate (20–25%)
 
@@ -178,7 +178,7 @@ capability.
 **Negative test:** use a scheduled flow for real-time reaction; an automated
 (trigger) flow fires on events.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.5 — PL-900: Describe features and capabilities of agents in Microsoft Copilot Studio (20–25%)
 
@@ -194,7 +194,7 @@ now covers.
 **Negative test:** deploy an agent with no topics or knowledge; an empty agent
 cannot answer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.6 — PL-200: Configure Microsoft Dataverse (25–30%)
 
@@ -210,7 +210,7 @@ platform PL-200 configures.
 **Negative test:** back a model-driven app with SharePoint lists; model-driven
 apps require Dataverse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.7 — PL-200: Create apps by using Microsoft Power Apps (25–30%)
 
@@ -226,7 +226,7 @@ creates.
 **Negative test:** publish an app without sharing it; unshared apps are
 invisible to users.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.8 — PL-200: Create and manage logic and process automation (25–30%)
 
@@ -242,7 +242,7 @@ the logic PL-200 manages.
 **Negative test:** build automation outside a solution; un-solutioned components
 are hard to move between environments.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.9 — PL-200: Manage environments (15–20%)
 
@@ -258,7 +258,7 @@ management (ALM) PL-200 covers.
 **Negative test:** develop and run production in one environment; separate
 dev/test/prod.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.10 — PL-300: Prepare the data (25–30%)
 
@@ -276,7 +276,7 @@ data preparation in Power BI.
 **Negative test:** model before cleaning; nulls and wrong types corrupt every
 downstream measure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.11 — PL-300: Visualize and analyze the data (25–30%)
 
@@ -293,7 +293,7 @@ analysis PL-300 tests.
 **Negative test:** use a calculated column where a measure is needed; measures
 compute in filter context.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.12 — PL-300: Manage and secure Power BI (15–20%)
 
@@ -310,7 +310,7 @@ row-level security.
 **Negative test:** publish a report with no row-level security on sensitive
 data; every viewer then sees all rows.
 
-**Cleanup:** `Disconnect-PowerBIServiceAccount`.
+**Rollback:** `Disconnect-PowerBIServiceAccount`.
 
 ### Lab 4.13 — PL-400: Create a technical design (10–15%)
 
@@ -326,7 +326,7 @@ PL-400 developer designs against.
 **Negative test:** customize directly in the Default solution; use a dedicated
 publisher/solution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.14 — PL-400: Build Power Platform Solutions (10–15%)
 
@@ -342,7 +342,7 @@ builds in.
 **Negative test:** ship an unmanaged solution to production; export as managed
 for target environments.
 
-**Cleanup:** `rm -rf ./sln`.
+**Rollback:** `rm -rf ./sln`.
 
 ### Lab 4.15 — PL-400: Implement Power Apps improvements (10–15%)
 
@@ -358,7 +358,7 @@ code.
 **Negative test:** put heavy logic in the canvas formula bar; complex logic
 belongs in components/plug-ins.
 
-**Cleanup:** remove the scaffold directory.
+**Rollback:** remove the scaffold directory.
 
 ### Lab 4.16 — PL-400: Extend the user experience (10–15%)
 
@@ -373,7 +373,7 @@ pac pcf init --namespace lab --name UxDemo --template dataset && echo "dataset P
 **Negative test:** rebuild native grid behavior in canvas when a PCF control
 exists; reuse platform components.
 
-**Cleanup:** remove the scaffold directory.
+**Rollback:** remove the scaffold directory.
 
 ### Lab 4.17 — PL-400: Extend the platform (30–35%)
 
@@ -389,7 +389,7 @@ the largest PL-400 domain.
 **Negative test:** run long operations synchronously in a plug-in; use
 async/child flows to avoid timeouts.
 
-**Cleanup:** `rm -rf ./plugin`.
+**Rollback:** `rm -rf ./plugin`.
 
 ### Lab 4.18 — PL-400: Develop integrations (10–15%)
 
@@ -405,7 +405,7 @@ integrations call.
 **Negative test:** poll the Web API for changes; use change tracking/webhooks
 for efficient integration.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.19 — PL-500: Design automations (25–30%)
 
@@ -421,7 +421,7 @@ designer chooses.
 **Negative test:** design an unattended RPA flow with no service account;
 unattended runs need a dedicated identity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.20 — PL-500: Develop automations (45–50%)
 
@@ -437,7 +437,7 @@ desktop RPA).
 **Negative test:** hard-code credentials in a flow; use connection references
 and Key Vault.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.21 — PL-500: Deploy and manage automations (20–25%)
 
@@ -453,7 +453,7 @@ across environments.
 **Negative test:** recreate a flow manually in prod; export/import via a managed
 solution.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.22 — PL-600: Perform solution envisioning and requirement analysis (45–50%)
 
@@ -469,7 +469,7 @@ solution architect analyzes for requirements.
 **Negative test:** design a target with no as-is analysis; requirements must map
 to current gaps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.23 — PL-600: Architect a solution (35–40%)
 
@@ -485,7 +485,7 @@ architecture surface PL-600 designs.
 **Negative test:** architect an enterprise solution in a single environment; ALM
 needs separated environments.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.24 — PL-600: Implement the solution (15–20%)
 
@@ -501,7 +501,7 @@ implementation step.
 **Negative test:** implement directly in production with no test import;
 validate in test first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

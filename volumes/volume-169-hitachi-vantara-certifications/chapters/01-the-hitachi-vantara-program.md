@@ -86,7 +86,7 @@ EOF
 
 **Expected result:** A map of the two credential categories — Qualification (HQT exams, Associate/Professional, medium-stakes, some open-book) and Certification (HCE exams, Specialist/Expert, high-stakes, proctored, hands-on) — and the Associate→Professional→Specialist→Expert progression. The lesson is that HVCP splits into "know it" HQT qualifications and "prove you can do it" proctored HCE certifications, across four levels, valid 2–3 years.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map the tracks and exam mechanics
 
@@ -120,7 +120,7 @@ EOF
 
 **Expected result:** A track map (block/file/object storage, data protection, Ops Center, Pentaho, converged infrastructure) with the HQT-6742 mechanics (35 questions, 60 minutes, 65%, $100). The lesson is that HVCP certifications span Hitachi Vantara's product domains, you certify in the track matching your role, and HQT qualification exams like HQT-6742 are short and accessible while HCE certifications are deeper and proctored.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

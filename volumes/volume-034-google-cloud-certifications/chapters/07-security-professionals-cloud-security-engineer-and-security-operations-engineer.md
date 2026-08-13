@@ -249,6 +249,8 @@ gcloud organizations list --format='table(displayName, id)' 2>&1 | head -3
 Cloud Identity is where users and groups originate before IAM ever grants
 them anything — the identity layer beneath access.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.2 — Managing service accounts *(topic 1.2)*
 
 ```bash
@@ -260,6 +262,8 @@ gcloud iam service-accounts describe "$SA" --format='value(email, disabled)'
 **Expected result:** the email and `disabled:` blank (= enabled). Note
 **no key was created** — that is the secure default this exam rewards.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.3 — Managing authentication *(topic 1.3)*
 
 ```bash
@@ -270,6 +274,8 @@ gcloud iam service-accounts keys list --iam-account="$SA" \
 **Expected result:** one `SYSTEM_MANAGED` key and **no** `USER_MANAGED`
 keys. User-managed keys are the leak risk; their absence is the finding
 you want.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.4 — Managing authorization controls *(topic 1.4)*
 
@@ -284,6 +290,8 @@ gcloud projects get-iam-policy "$PROJECT_ID" --flatten='bindings[].members' \
 **Expected result:** `roles/storage.objectViewer` — a predefined role, not
 a basic one. Authorization is additive and inherited downward.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.5 — Defining the resource hierarchy *(topic 1.5)*
 
 ```bash
@@ -293,6 +301,8 @@ gcloud projects describe "$PROJECT_ID" --format='value(parent.type, parent.id)'
 **Expected result:** `folder` or `organization` with an ID, or blank for a
 standalone project. The hierarchy is where inherited IAM and policy
 originate — security design starts here.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.6 — Designing perimeter security *(topic 2.1)*
 
@@ -304,6 +314,8 @@ gcloud access-context-manager policies list --organization="$(gcloud projects de
 **Expected result:** an access policy name, or a message that none exists
 / no org. VPC Service Controls perimeters live under an access policy —
 the control that answers *where data may go*.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.7 — Configuring boundary segmentation *(topic 2.2)*
 
@@ -319,6 +331,8 @@ gcloud compute firewall-rules describe deny-all-ingress \
 default-deny posture readable rather than implicit — segmentation as
 written intent.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.8 — Establishing private connectivity *(topic 2.3)*
 
 ```bash
@@ -332,6 +346,8 @@ gcloud compute networks subnets describe snet-sec --region=us-central1 \
 **Expected result:** `True`. Private Google Access lets workloads reach
 Google APIs with no external IP — the private-connectivity building block.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.9 — Preventing data loss *(topic 3.1)*
 
 ```bash
@@ -341,6 +357,8 @@ gcloud services list --available --filter="name:dlp" --format='value(name)'
 **Expected result:** `dlp.googleapis.com` available. Sensitive Data
 Protection (DLP) discovers and de-identifies sensitive data — the topic-3.1
 control, applied before data spreads.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.10 — Managing encryption *(topic 3.2)*
 
@@ -358,6 +376,8 @@ gcloud storage buckets describe "gs://sec-lab-${PROJECT_ID}" --format='value(def
 Reading it back is the verification; the create command alone is not
 evidence.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 7.11 — Securing AI workloads *(topic 3.3)*
 
 ```bash
@@ -367,6 +387,8 @@ gcloud services list --available --filter="name:aiplatform" --format='value(name
 **Expected result:** `aiplatform.googleapis.com` available. Securing AI
 workloads (a recent guide addition) means the same controls — IAM, CMEK,
 VPC-SC — applied to Vertex AI resources; confirm current guide wording.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.12 — Automating infrastructure security *(topic 4.1)*
 
@@ -381,6 +403,8 @@ gcloud resource-manager org-policies list --project="$PROJECT_ID" \
 is security automation — a guardrail that enforces itself on every future
 resource without a human in the loop.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.13 — Logging, monitoring, and detection *(topic 4.2)*
 
 ```bash
@@ -394,6 +418,8 @@ gcloud scc findings list "$(gcloud projects describe "$PROJECT_ID" --format='val
 Center findings or an access message. This is the Security Operations
 Engineer overlap — detection is built on these two surfaces.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 7.14 — Supporting compliance requirements *(topic 5.1)*
 
 ```bash
@@ -404,6 +430,8 @@ gcloud resource-manager org-policies describe constraints/gcp.resourceLocations 
 **Expected result:** a location allow-list, or a "not currently enforced"
 result. Data-residency compliance is expressed as this constraint — a
 regulatory requirement made technical.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 7.15 — Data Access audit logs *(operations, cross-topic)*
 
@@ -416,6 +444,8 @@ grep -c auditConfigs /tmp/pol.json || echo "no Data Access audit logs configured
 project. Admin Activity logs are always on; Data Access logs are **not**,
 so "who read this object?" has no answer unless enabled in advance — the
 lesson that surfaces only during an investigation.
+
+**Rollback:** None — read-only; this lab only inspects state or dry-runs commands (no resources are created), so there is nothing to revert.
 
 ### Lab 7.16 — Negative test and cleanup
 
@@ -442,6 +472,8 @@ gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
 **Expected result:** `DELETE_REQUESTED`. Re-enabling the key first avoids
 leaving a disabled-key alert behind; project deletion removes the key
 ring, bucket, VPC, and policies together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

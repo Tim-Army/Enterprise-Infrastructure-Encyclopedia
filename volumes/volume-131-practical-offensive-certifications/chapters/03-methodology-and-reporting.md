@@ -52,7 +52,7 @@ EOF
 
 **Negative test:** Starting testing with a verbal "sure, go ahead" and no signed scope — legally and professionally unacceptable; the signed authorization is what makes the work lawful, and its absence stops everything.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Structure a professional report
 
@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** A report that lists vulnerabilities with no severity, no evidence, and no remediation — it fails the exam and fails the client; communication and actionability are the point, not a raw scanner dump.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Risk-rate a finding
 
@@ -103,7 +103,7 @@ EOF
 
 **Negative test:** Reporting every finding at the same severity (or by raw CVSS alone) — the client can't prioritize; business context is what turns a vulnerability list into an actionable risk report.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

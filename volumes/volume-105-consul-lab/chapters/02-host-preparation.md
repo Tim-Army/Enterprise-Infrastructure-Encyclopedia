@@ -29,7 +29,7 @@ docker run --rm hello-world && kind version && kubectl version --client
 
 **Negative test.** Skip the `usermod`/re-login and every `docker`/`kind` command needs `sudo`. Fix the group membership now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Install helm and the consul CLI
 
@@ -51,7 +51,7 @@ helm version && consul version
 
 **Negative test.** Run `consul members` now; it errors because no Consul agent is reachable. The cluster and Consul arrive in Chapter 03.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

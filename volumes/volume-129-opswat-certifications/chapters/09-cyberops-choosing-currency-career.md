@@ -70,7 +70,7 @@ cat my-opswat-plan.md
 
 **Negative test:** A plan that jumps to paid product Professionals without the free CIP/Associate foundation — you learn the buttons without the boundary-defense concepts the Associates teach; the free foundation is the point.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Currency check
 
@@ -91,7 +91,7 @@ echo "verified 4 Aug 2026 — re-verify before scheduling"
 
 **Negative test:** Assuming "free forever" and "never expires" — both have exceptions here; opswatacademy.com and Credly are authoritative.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

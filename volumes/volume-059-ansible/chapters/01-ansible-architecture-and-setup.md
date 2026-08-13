@@ -88,7 +88,7 @@ target.
 **Negative test:** target a host with no Python; the module **fails** — Ansible needs
 Python on targets (or use raw/network modules).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Run an ad-hoc command
 
@@ -103,7 +103,7 @@ ansible localhost -m ansible.builtin.setup -a "filter=ansible_distribution*"
 **Negative test:** run `shell: uname` to gather facts; the **setup** module returns
 structured facts — prefer purpose-built modules.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Verify the version
 
@@ -118,7 +118,7 @@ ansible --version | head -1
 **Negative test:** assume features exist regardless of version; **check `--version`** —
 modules/collections track the core version.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

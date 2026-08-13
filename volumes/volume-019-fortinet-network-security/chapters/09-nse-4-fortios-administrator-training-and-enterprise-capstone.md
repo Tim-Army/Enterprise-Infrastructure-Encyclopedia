@@ -392,7 +392,7 @@ one policy path demonstrates all five objectives working together.
 users match and bypass identity control — every objective's control must be present for
 the edge to be genuinely secured.
 
-**Cleanup:** delete policy 1 and revert lab routing/tunnels.
+**Rollback:** delete policy 1 and revert lab routing/tunnels.
 
 ### Lab 9.2 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
@@ -417,7 +417,7 @@ the operator's built-in gap analysis after a build.
 gaps like clear-text admin or uninspected policies stay invisible — the rating is what
 surfaces them.
 
-**Cleanup:** `set status disable` under `config system csf` if lab-only.
+**Rollback:** `set status disable` under `config system csf` if lab-only.
 
 ### Lab 9.3 — Exam-readiness self-check (Capstone: objective mapping)
 
@@ -440,7 +440,7 @@ areas, so hands-on coverage of each is the readiness bar.
 **Negative test:** study only Content Inspection because it is the largest slice; the
 other 70–75% of the exam is untouched — the weights guide emphasis, not exclusion.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

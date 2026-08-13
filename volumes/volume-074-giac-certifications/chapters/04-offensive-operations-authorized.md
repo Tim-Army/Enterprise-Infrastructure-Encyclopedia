@@ -85,7 +85,7 @@ scope — the GPEN gate.
 **Negative test:** point at an out-of-scope or third-party host; the gate must return **STOP** — no
 authorization, no test.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — GPEN/GEVA: run an authorized local scan
 
@@ -103,7 +103,7 @@ assessment step.
 **Negative test:** scan an address you were not authorized for; that is out of scope and
 prohibited — scan only **in-scope, owned** systems.
 
-**Cleanup:** none (read-only scan of localhost).
+**Rollback:** none (read-only scan of localhost).
 
 ### Lab 4.3 — GEVA: prioritize findings by risk
 
@@ -125,7 +125,7 @@ report defenders can act on.
 **Negative test:** hand over raw scanner output unsorted; defenders can't tell what to fix first —
 **prioritize** by risk.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — GWAPT/GMOB: scope a web/mobile assessment
 
@@ -149,7 +149,7 @@ approach (process, not exploit code).
 **Negative test:** jump to running exploit tooling with no methodology or scope; professional
 assessment is **structured and authorized** — plan first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

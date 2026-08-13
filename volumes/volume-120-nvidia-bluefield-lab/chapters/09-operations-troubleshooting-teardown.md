@@ -24,7 +24,7 @@ sudo dmesg | grep -cE 'DPU-(WEB|HMI)-DENY'
 
 **Expected result.** Each DPU holds its policy, the workloads hold none, denies recorded — enforcement out-of-band.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -45,7 +45,7 @@ sudo dmesg | grep -cE 'DPU-(WEB|HMI)-DENY'
 
 **Negative test.** The defining mistake is placing enforcement **in the workload namespace** (a host-agent model) and believing it is out-of-band — it is not. The policy must live in the DPU namespace, which the workload cannot reach.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -64,7 +64,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the workload-subnet routes on the host is harmless once the namespaces are gone, but removing them keeps the routing table clean.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

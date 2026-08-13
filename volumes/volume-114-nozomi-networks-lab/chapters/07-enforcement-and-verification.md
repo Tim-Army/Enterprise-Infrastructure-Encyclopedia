@@ -38,7 +38,7 @@ Only the Modbus read succeeds; writes (via proxy or direct) and non-Modbus are d
 
 **Negative test.** Change `ALLOW_FC` in the proxy to include `6` and watch the write start succeeding — proof the decision is the function code, not the port. Restore `ALLOW_FC = {3, 4}`.
 
-**Cleanup.** Restore the proxy if changed, and restart it.
+**Rollback.** Restore the proxy if changed, and restart it.
 
 ### Exercise 7.2 — Denials vs anomalies in the log
 
@@ -63,7 +63,7 @@ ANOMALY value=300 out of [20,80]
 
 A `DENY` (segmentation) and an `ANOMALY` (detection) — two different event types from one tool, exactly the pairing Nozomi provides.
 
-**Cleanup.** Restore a normal value if you wish (`write` directly on the PLC to 55).
+**Rollback.** Restore a normal value if you wish (`write` directly on the PLC to 55).
 
 ### Exercise 7.3 — The decision is the function and the value, not the address
 
@@ -78,7 +78,7 @@ sudo ip netns exec hmi python3 /usr/local/bin/mbclient.py write 10.80.1.1 1502 4
 
 **Expected result.** Identical source and destination:port, opposite outcomes — the function code decided, which is the whole difference from an L4 firewall.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

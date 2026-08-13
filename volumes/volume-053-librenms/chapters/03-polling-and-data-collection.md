@@ -65,7 +65,7 @@ cycle and its duration.
 **Negative test:** ignore poll runtime; if it **exceeds the interval** you get gaps —
 watch the timing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Inspect an RRD file
 
@@ -82,7 +82,7 @@ persisting.
 **Negative test:** assume data is stored; **check `last_update`** — a stale timestamp
 means polling stopped.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Check availability (ping)
 
@@ -98,7 +98,7 @@ curl -sS -H "X-Auth-Token: $TOKEN" "$LNMS/api/v0/devices/127.0.0.1" \
 **Negative test:** rely only on SNMP polls for up/down; **ping** detects reachability
 even when SNMP is degraded.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Enable an application metric
 
@@ -116,7 +116,7 @@ applications mechanism.
 **Negative test:** expect app metrics with no agent/extend script; **deploy the script**
 on the device first.
 
-**Cleanup:** disable the application if it was for the lab.
+**Rollback:** disable the application if it was for the lab.
 
 ## Lab Verification
 

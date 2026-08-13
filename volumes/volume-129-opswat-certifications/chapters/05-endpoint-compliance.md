@@ -49,7 +49,7 @@ The compliant managed device is admitted; the BYOD laptop (stale AV, no encrypti
 
 **Negative test:** Admitting by identity alone (the user authenticated) without checking the device — a valid user on a compromised, unpatched laptop carries the threat inside; posture is a separate, necessary gate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Enforcement without killing productivity
 
@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Blocking every non-compliant device outright — the help desk drowns and users route around the control (personal hotspots, shadow IT); graduated enforcement with auto-remediation is why posture control survives contact with real users.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — BYOD and the risk it adds
 
@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Treating a BYOD device like a managed one — it lacks the enterprise controls a managed device has; equal treatment under-protects the critical environment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -323,7 +323,7 @@ global footprint no single data center can match.
 returns `InvalidParameterValue`, proving the list is authoritative, not
 free text.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.2 — Identify design principles of the AWS Cloud
 
@@ -341,7 +341,7 @@ the canonical source of the six design-principle pillars.
 **Negative test:** query a nonexistent lens alias; the filter returns
 empty, confirming the alias must be exact.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.3 — Understand benefits of and strategies for migration
 
@@ -361,7 +361,7 @@ API-driven.
 initialized returns `UninitializedAccountException`, the prompt to
 initialize before a migration.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.4 — Understand concepts of cloud economics
 
@@ -381,7 +381,7 @@ per-hour figure, the unit cloud economics reasons about.
 **Negative test:** omit the `location` filter and the query returns many
 conflicting prices, showing why economics comparisons must fix the Region.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.5 — Understand the AWS shared responsibility model
 
@@ -400,7 +400,7 @@ all "in the cloud" responsibilities that belong to the customer, not AWS.
 patching, physical security); its absence *is* the lesson — that half is
 not yours to query or manage.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.6 — Understand security, governance, and compliance concepts
 
@@ -420,7 +420,7 @@ the governance control plane (AWS Config) answers — the mechanism behind
 `describe-compliance-by-config-rule` returns nothing, showing governance
 requires the recorder to be on first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.7 — Identify AWS access management capabilities
 
@@ -438,7 +438,7 @@ access posture.
 **Negative test:** `NoSuchEntity` on a production account is itself a
 finding: no enforced password policy is a governance gap.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.8 — Identify components and resources for security
 
@@ -455,7 +455,7 @@ building blocks of identity security.
 **Negative test:** a root entry with no MFA device is the highest-priority
 security finding an account can surface.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.9 — Define methods of deploying and operating in the AWS Cloud
 
@@ -474,7 +474,7 @@ Systems Manager (operate) are both reachable.
 agent fails with `InvalidInstanceId`, showing managed operations require the
 agent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.10 — Define the AWS global infrastructure
 
@@ -491,7 +491,7 @@ Region, each an isolated failure domain — the basis of every HA design.
 **Negative test:** launch two "HA" instances into the *same* AZ; a single
 AZ failure takes both down, the anti-pattern this topic exists to correct.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.11 — Identify AWS compute services
 
@@ -510,7 +510,7 @@ distinguish.
 **Negative test:** filter for `t9.*`; the empty result shows the family
 names are fixed, not arbitrary.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.12 — Identify AWS database services
 
@@ -527,7 +527,7 @@ aws rds describe-db-engine-versions \
 **Negative test:** there is no `mongodb` engine here; document databases
 live in a different service (Amazon DocumentDB), a common distractor.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.13 — Identify AWS network services
 
@@ -545,7 +545,7 @@ account starts with.
 **Negative test:** in an account whose default VPC was deleted, the query
 returns null, showing networking is a resource that can be absent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.14 — Identify AWS storage services
 
@@ -565,7 +565,7 @@ tiers.
 Glacier without restoring it first; it fails with `InvalidObjectState`,
 demonstrating class-dependent access.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.15 — Identify AI/ML and analytics services
 
@@ -585,7 +585,7 @@ groups together.
 **Negative test:** call `aws bedrock` in an unsupported Region; it returns
 an endpoint error, showing these services are Region-scoped.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.16 — Identify services from other in-scope categories
 
@@ -602,7 +602,7 @@ decoupling primitives that appear across many in-scope categories.
 **Negative test:** publish to a non-existent topic ARN; `NotFound` proves
 the topic must exist before it can decouple anything.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.17 — Compare AWS pricing models
 
@@ -621,7 +621,7 @@ aws ec2 describe-spot-price-history --instance-types t3.micro \
 notice (2-minute warning) proves the discount buys interruptible capacity, not
 reliability.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.18 — Understand billing, budget, and cost-management resources
 
@@ -639,7 +639,7 @@ Budgets and Cost Explorer visualize.
 **Negative test:** query a future month; the empty result shows cost data
 is historical, so budgets are the forward-looking control.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.19 — Identify AWS technical resources and Support options
 
@@ -656,7 +656,7 @@ outcome identifies the account's support tier.
 **Negative test:** `SubscriptionRequiredException` confirms the Support API
 itself requires a paid plan, a fact the exam tests directly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.20 — Explain basic AI concepts and terminologies
 
@@ -675,7 +675,7 @@ IMAGE, EMBEDDING) — the concrete meaning of terms like "multimodal."
 model supports; the empty result shows modality is a real model property,
 not a label you can assume.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.21 — Identify practical use cases for AI
 
@@ -694,7 +694,7 @@ without training a model, illustrating "AI as a managed service."
 **Negative test:** pass `--language-code zz`; `UnsupportedLanguageException`
 shows even managed AI has defined input constraints.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.22 — Describe the AI/ML development lifecycle
 
@@ -712,7 +712,7 @@ service.
 **Negative test:** invoke an endpoint that is not `InService`; the call
 fails, showing "deployed" is a distinct lifecycle state from "trained."
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.23 — Explain the basic concepts of generative AI
 
@@ -730,7 +730,7 @@ distinct from embedding or image models.
 **Negative test:** filter `--by-output-modality VIDEO`; an empty or short
 list shows the generative catalog is modality-specific.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.24 — Understand capabilities and limitations of GenAI
 
@@ -752,7 +752,7 @@ aws bedrock-runtime invoke-model --region us-east-1 \
 correctly from training data alone — the limitation (no real-time
 knowledge) that motivates retrieval augmentation.
 
-**Cleanup:** `rm -f /tmp/titan-out.json`.
+**Rollback:** `rm -f /tmp/titan-out.json`.
 
 ### Lab 10.25 — Describe AWS infrastructure and technologies for GenAI
 
@@ -770,7 +770,7 @@ RAG building block exists and is API-addressable.
 **Negative test:** query knowledge bases in a Region without Bedrock Agents;
 the endpoint error shows the GenAI infrastructure is Region-bound.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.26 — Describe design considerations for FM applications
 
@@ -789,7 +789,7 @@ control that enforces content and topic boundaries at design time.
 send that topic; the response is blocked, proving the design control acts
 at runtime.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.27 — Choose effective prompt-engineering techniques
 
@@ -811,7 +811,7 @@ and constraints in the prompt produce structure in the output.
 **Negative test:** re-run with just "storage?"; the vaguer prompt yields a
 rambling, unstructured answer — the case for prompt engineering.
 
-**Cleanup:** `rm -f /tmp/prompt.json`.
+**Rollback:** `rm -f /tmp/prompt.json`.
 
 ### Lab 10.28 — Describe the training and fine-tuning process for FMs
 
@@ -830,7 +830,7 @@ custom models — the fine-tuning lifecycle surface.
 **Negative test:** starting a customization job without a training-data S3
 URI fails validation, showing fine-tuning is data-driven, not a toggle.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.29 — Describe methods to evaluate FM performance
 
@@ -847,7 +847,7 @@ models on accuracy, toxicity, and robustness rather than by intuition.
 **Negative test:** compare two models by a single hand-picked prompt; the
 inconsistency across prompts shows why systematic evaluation exists.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.30 — Explain the development of responsible AI systems
 
@@ -866,7 +866,7 @@ that filters hateful content at high strength.
 **Negative test:** send hateful input through the guardrail; it is blocked
 with your configured message, proving the policy is enforced, not advisory.
 
-**Cleanup:** `aws bedrock delete-guardrail --guardrail-identifier <id>`.
+**Rollback:** `aws bedrock delete-guardrail --guardrail-identifier <id>`.
 
 ### Lab 10.31 — Recognize the importance of transparent and explainable models
 
@@ -885,7 +885,7 @@ to produce bias metrics and feature-attribution (SHAP) reports.
 feature attributions, the opacity that transparency requirements exist to
 prevent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.32 — Explain methods to secure AI systems
 
@@ -903,7 +903,7 @@ aws bedrock get-model-invocation-logging-configuration --region us-east-1 \
 **Negative test:** `None` means prompts and completions are not audited; on
 a production AI system that is a security finding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 10.33 — Recognize governance and compliance regulations for AI systems
 
@@ -925,7 +925,7 @@ audit record that compliance regimes for AI require.
 `ValidationException` shows the audit sink must be genuinely writable, not
 merely declared.
 
-**Cleanup:** delete the logging configuration and the `/ai/bedrock-audit`
+**Rollback:** delete the logging configuration and the `/ai/bedrock-audit`
 log group.
 
 ### Lab 10.34 — Build a verified certification plan and cost-safe sandbox (integrative)
@@ -986,7 +986,7 @@ up.
    retired certification still listed, or a missing new one. This is the
    point of the exercise: it demonstrates why step 2 uses primary sources.
 
-6. **Cleanup:** the budget alarm is free and worth keeping. Remove any
+6. **Rollback:** the budget alarm is free and worth keeping. Remove any
    other resources created while exploring, and confirm the sandbox has no
    running compute before you stop.
 

@@ -99,7 +99,7 @@ NCP-US, NCP-CI-AWS, NCP-CI-Azure, NCM-MCI, NCX-MCI**) — the program map.
 **Negative test:** trust a third-party list; vendors add/rename tracks — confirm on
 nutanix.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Confirm cluster access (ncli)
 
@@ -116,7 +116,7 @@ access.
 **Negative test:** run `acli`/`ncli` off-cluster; these run on a CVM/Prism context —
 connect to the cluster first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Confirm the level/track model
 
@@ -136,7 +136,7 @@ PY
 **Negative test:** treat all NCPs as one exam; each **track** is a separate blueprint
 and exam — pick the right one.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

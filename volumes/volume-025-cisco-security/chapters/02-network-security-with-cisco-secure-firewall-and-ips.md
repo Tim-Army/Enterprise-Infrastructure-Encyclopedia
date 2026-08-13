@@ -279,7 +279,7 @@ L2 bump-in-the-wire) — the mode dictates addressing and NAT behavior.
 **Negative test:** expecting NAT on a transparent-mode firewall; transparent
 mode bridges and does not route/NAT the way routed mode does.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Implement NGIPS modes (Objective 1.2)
 
@@ -296,7 +296,7 @@ only) — the enforcement posture per interface pair.
 **Negative test:** expecting a passive/tap interface to block an exploit; it
 only alerts — inline is required to drop.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — Implement high-availability options (Objective 1.3)
 
@@ -313,7 +313,7 @@ survives a unit failure without dropping established connections.
 **Negative test:** an HA pair with mismatched software/licenses cannot form
 HA; parity is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.4 — Describe virtual and cloud deployment (Objective 1.4)
 
@@ -329,7 +329,7 @@ the same FTD software across form factors, managed by FMC/cdFMC.
 **Negative test:** sizing a cloud FTDv below the throughput requirement
 throttles inspection; size the instance to the traffic.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Configure FMC system settings (Objective 2.1)
 
@@ -345,7 +345,7 @@ for the whole FTD estate.
 **Negative test:** an FMC and FTD on incompatible versions cannot deploy
 policy; check the compatibility matrix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Configure policies in FMC (Objective 2.2)
 
@@ -361,7 +361,7 @@ attached to rules) — the core FTD enforcement policy.
 **Negative test:** a broad allow above a specific block shadows it; rule order
 is the control, provable with `packet-tracer`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.7 — Configure security features in FMC (Objective 2.3)
 
@@ -377,7 +377,7 @@ verdicts) — the IPS layer on permitted flows.
 **Negative test:** an allow rule with no intrusion policy passes traffic
 uninspected; attach the IPS policy to inspect.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.8 — Configure objects in FMC (Objective 2.4)
 
@@ -393,7 +393,7 @@ centrally-managed definitions.
 **Negative test:** editing an object changes every rule using it; scope shared
 objects carefully.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.9 — Configure devices in FMC (Objective 2.5)
 
@@ -409,7 +409,7 @@ curl -sk -H "X-auth-access-token: $FT" "$FMC/api/fmc_config/v1/domain/$DOMAIN/de
 **Negative test:** a device not yet registered to FMC cannot receive policy;
 register it first.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.10 — Describe Snort in FTD (Objective 2.6)
 
@@ -426,7 +426,7 @@ engine behind IPS, App-ID, and file/URL detection.
 **Negative test:** a Snort restart during deploy briefly interrupts
 inspection; schedule deploys accordingly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.11 — Troubleshoot with FMC GUI and CLI (Objective 3.1)
 
@@ -442,7 +442,7 @@ final ALLOW/DROP and the rule that decided it — the definitive flow diagnosis.
 **Negative test:** guessing from connection events instead of `packet-tracer`
 misses which phase dropped the flow; the tracer names it.
 
-**Cleanup:** none (diagnostic).
+**Rollback:** none (diagnostic).
 
 ### Lab 2.12 — Configure dashboards and reporting (Objective 3.2)
 
@@ -458,7 +458,7 @@ view of the FTD estate.
 **Negative test:** a dashboard with no data source configured shows nothing;
 the correlation/reporting feed must be on.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.13 — Troubleshoot connectivity and inspection (Objective 3.3)
 
@@ -475,7 +475,7 @@ the correlation/reporting feed must be on.
 **Negative test:** a capture with no match filter fills the buffer and can
 load the box; always filter.
 
-**Cleanup:** `no capture CAP`.
+**Rollback:** `no capture CAP`.
 
 ### Lab 2.14 — Analyze risk and standard reports (Objective 3.4)
 
@@ -491,7 +491,7 @@ reports — the data behind the security posture reports.
 **Negative test:** a report over a window with inspection disabled understates
 risk; ensure inspection was active for the report period.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.15 — Describe device management tools (Objective 3.5)
 
@@ -507,7 +507,7 @@ cloud-delivered FMC) — the management options for FTD.
 **Negative test:** an FTD managed by FDM cannot also be managed by FMC
 simultaneously; one manager at a time.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.16 — Configure Secure Firewall Malware Defense (Objective 4.1)
 
@@ -523,7 +523,7 @@ curl -sk -H "X-auth-access-token: $FT" "$FMC/api/fmc_config/v1/domain/$DOMAIN/po
 **Negative test:** a file policy set to detect-only logs malware but does not
 block it; set block for enforcement.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.17 — Configure Secure Endpoint (Objective 4.2)
 
@@ -539,7 +539,7 @@ endpoint EDR that correlates with network malware events.
 **Negative test:** endpoint and network malware events analyzed separately
 miss the full attack chain; the integration correlates them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.18 — Implement Threat Intelligence Director (Objective 4.3)
 
@@ -555,7 +555,7 @@ acted on inline — automated blocking from external intelligence.
 **Negative test:** a TID source with no action publishes indicators but blocks
 nothing; bind an action to the feed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.19 — Describe SecureX for investigations (Objective 4.4)
 
@@ -571,7 +571,7 @@ a cross-product investigation — one console across the Cisco security stack.
 **Negative test:** investigating in each product silo misses the correlated
 timeline SecureX/XDR assembles.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.20 — Describe FMC pxGrid integration (Objective 4.5)
 
@@ -587,7 +587,7 @@ with FMC — identity-aware firewall policy.
 **Negative test:** without pxGrid, FMC policy cannot match on ISE SGT/user;
 the integration supplies that context.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.21 — Describe Rapid Threat Containment (Objective 4.6)
 
@@ -604,7 +604,7 @@ pxGrid) to quarantine the endpoint — automated containment.
 **Negative test:** manual containment lags an active threat; RTC closes the
 loop automatically.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.22 — Describe Security Analytics and Logging (Objective 4.7)
 
@@ -620,7 +620,7 @@ or on-prem/SNA) — long-term event storage and analytics.
 **Negative test:** local-only event storage rolls over quickly under load;
 SAL provides retention and search.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.23 — Build and troubleshoot a Secure Firewall access policy (integrative)
 
@@ -663,7 +663,7 @@ volume's *Practicing* section. No production firewall.
 - Direct experience of a shadowing rule and a NAT-address mismatch, the
   two most common policy defects.
 
-**Cleanup**
+**Rollback**
 
 7. In dCloud, simply end the session. In an eval environment, remove the
    test policy or revert to a saved baseline so the next chapter starts

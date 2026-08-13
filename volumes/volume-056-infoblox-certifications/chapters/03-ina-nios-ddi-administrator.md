@@ -64,7 +64,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/member:dns?_return_fiel
 **Negative test:** assume every member serves DNS; **check service assignment** — roles
 vary per member.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Advanced DHCP: failover
 
@@ -81,7 +81,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/dhcpfailover" \
 **Negative test:** run a single DHCP server; **failover** keeps leasing alive if one
 member fails — configure it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Advanced DNS: DDNS/DNSSEC
 
@@ -97,7 +97,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/zone_auth?fqdn=lab.exam
 **Negative test:** allow open dynamic updates; scope **`allow_update`** (TSIG/ACL) — don't
 accept updates from anywhere.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Discovery
 
@@ -114,7 +114,7 @@ IPAM).
 **Negative test:** enter IPAM data by hand; **Discovery** reconciles actual network state
 — run it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Access control (admin groups)
 
@@ -129,7 +129,7 @@ curl -sS -k -u admin:infoblox "https://<grid>/wapi/v2.13/admingroup?_return_fiel
 
 **Negative test:** give all admins superuser; build **scoped admin groups** per duty.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.6 — Remote authentication
 
@@ -146,7 +146,7 @@ the remote-auth topic.
 **Negative test:** manage local admin accounts only; **integrate the directory** so
 access follows corporate identity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

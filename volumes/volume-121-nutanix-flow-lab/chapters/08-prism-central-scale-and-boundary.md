@@ -25,7 +25,7 @@ grep -c "" /tmp/flow-policy-export.nft
 
 **Negative test.** Delete the export and the posture exists in exactly one place — the situation the DR runbook must never allow.
 
-**Cleanup.** Keep `/tmp/flow-policy-export.nft` for Chapter 09's restore drill.
+**Rollback.** Keep `/tmp/flow-policy-export.nft` for Chapter 09's restore drill.
 
 ### Exercise 8.2 — Categories carry the scale
 
@@ -53,7 +53,7 @@ Four more "web servers" joined the policy; the ruleset did not grow by one line.
 
 **Negative test.** List the set (`sudo nft list set bridge flow apptier_web`) — membership grew from two to six; the *sets* absorb the scale so the *rules* never do.
 
-**Cleanup.** `sudo nft delete element bridge flow apptier_web '{ 10.150.0.50, 10.150.0.51, 10.150.0.52, 10.150.0.53 }'` and the same for `env_corp` — the placeholder addresses have no VMs.
+**Rollback.** `sudo nft delete element bridge flow apptier_web '{ 10.150.0.50, 10.150.0.51, 10.150.0.52, 10.150.0.53 }'` and the same for `env_corp` — the placeholder addresses have no VMs.
 
 ### Exercise 8.3 — The honest boundary
 
@@ -80,7 +80,7 @@ The loopback connection succeeded and **no counter moved** — the virtual switc
 
 **Negative test.** Any flow between two VMs *does* move a counter — the boundary is precisely the virtual switch, no wider and no narrower.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

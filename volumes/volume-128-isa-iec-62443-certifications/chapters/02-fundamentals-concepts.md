@@ -68,7 +68,7 @@ sudo ip netns exec plc ip addr show plc-e | grep inet
 
 **Negative test:** Attach the PLC directly to the enterprise bridge — you've collapsed the levels and given corporate IT a direct path to control; the layered model exists precisely to prevent that flat topology.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 2.2 — The IT/OT boundary is the crown jewel
 
@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Assuming a firewall at the perimeter is enough — once inside L4, a flat OT network gives an attacker the plant; 62443 requires boundaries *inside* the OT network too (zones/conduits), not just at the edge.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 2.3 — The priority inversion in practice
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Applying an IT playbook (aggressive patching, inline blocking, forced reboots) to an IACS — you risk the very availability/safety the plant exists to protect; the inversion is the exam's central theme.
 
-**Cleanup:** `for ns in erp historian hmi plc; do sudo ip netns del $ns 2>/dev/null; done; for lvl in L4-enterprise L3-site L2-supervisory L1-control; do sudo ip link del "$lvl" 2>/dev/null; done`.
+**Rollback:** `for ns in erp historian hmi plc; do sudo ip netns del $ns 2>/dev/null; done; for lvl in L4-enterprise L3-site L2-supervisory L1-control; do sudo ip link del "$lvl" 2>/dev/null; done`.
 
 ## Summary and Completion Checklist
 

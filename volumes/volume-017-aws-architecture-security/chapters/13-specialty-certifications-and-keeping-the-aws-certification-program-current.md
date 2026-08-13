@@ -326,7 +326,7 @@ a `DomainName` like `d111111abcdef8.cloudfront.net`.
 returns `403`/`404` from the edge, not a connection error, proving the edge
 answered.
 
-**Cleanup:** `aws cloudfront delete-distribution` (after disabling and
+**Rollback:** `aws cloudfront delete-distribution` (after disabling and
 waiting for `Deployed`), then `aws s3 rb "s3://$B" --force`. CloudFront is
 billed per request and data-out; delete promptly.
 
@@ -351,7 +351,7 @@ associated with the VPC.
 `dig @8.8.8.8 db.internal.ans +short` returns nothing, proving the zone is
 private to the VPC.
 
-**Cleanup:** `aws route53 delete-hosted-zone --id "$ZID"`; delete the VPC.
+**Rollback:** `aws route53 delete-hosted-zone --id "$ZID"`; delete the VPC.
 
 ### Lab 13.3 — Design load balancing for high availability, scalability, and security
 
@@ -374,7 +374,7 @@ Zones — the minimum for an HA ALB.
 `... --subnets $SUBNET_A` fails with
 `At least two subnets in two different Availability Zones must be specified`.
 
-**Cleanup:** `aws elbv2 delete-load-balancer --load-balancer-arn "$ALB"`.
+**Rollback:** `aws elbv2 delete-load-balancer --load-balancer-arn "$ALB"`.
 
 ### Lab 13.4 — Define logging and monitoring across AWS and hybrid networks
 
@@ -397,7 +397,7 @@ records with `srcaddr`/`dstaddr`/`action`.
 becomes `ACTIVE` but no events ever arrive, the classic silent-failure the
 task tests for.
 
-**Cleanup:** delete the flow log and the log group.
+**Rollback:** delete the flow log and the log group.
 
 ### Lab 13.5 — Design routing and connectivity between on-premises and AWS
 
@@ -420,7 +420,7 @@ that attaches to the VPC (`State: attached`).
 `--options StaticRoutesOnly=false` but no BGP on the customer side; the
 tunnels stay `DOWN`, proving dynamic routing needs a BGP speaker.
 
-**Cleanup:** detach and delete the VPN gateway and customer gateway (VPN
+**Rollback:** detach and delete the VPN gateway and customer gateway (VPN
 gateways are billed hourly).
 
 ### Lab 13.6 — Design multi-account, multi-Region, multi-VPC connectivity
@@ -443,7 +443,7 @@ aws ec2 create-transit-gateway-vpc-attachment \
 route in the TGW route table is rejected as a blackhole, demonstrating why
 non-overlapping CIDRs are a design constraint.
 
-**Cleanup:** delete the attachment, then the Transit Gateway. Attachments
+**Rollback:** delete the attachment, then the Transit Gateway. Attachments
 bill hourly.
 
 ### Lab 13.7 — Implement routing and connectivity between on-premises and AWS
@@ -463,7 +463,7 @@ on-premises routes populate the table automatically.
 `PropagatingVgws` is empty and on-prem prefixes are absent, so traffic to
 them is dropped.
 
-**Cleanup:** `aws ec2 disable-vgw-route-propagation`.
+**Rollback:** `aws ec2 disable-vgw-route-propagation`.
 
 ### Lab 13.8 — Implement multi-account/Region/VPC routing patterns
 
@@ -487,7 +487,7 @@ aws ec2 search-transit-gateway-routes --transit-gateway-route-table-id "$TGW_RTB
 **Negative test:** point the route at a detached attachment; its state
 shows `blackhole` and traffic to the CIDR is silently dropped.
 
-**Cleanup:** `aws ec2 delete-transit-gateway-route`.
+**Rollback:** `aws ec2 delete-transit-gateway-route`.
 
 ### Lab 13.9 — Implement complex hybrid and multi-account DNS
 
@@ -512,7 +512,7 @@ FORWARD rule sending `corp.example.com` queries to the on-prem resolver.
 **Negative test:** forward a domain with no reachable target IP; queries
 `SERVFAIL`, showing the rule forwards but the target must answer.
 
-**Cleanup:** delete the resolver rule and endpoint (endpoints bill per ENI
+**Rollback:** delete the resolver rule and endpoint (endpoints bill per ENI
 per hour).
 
 ### Lab 13.10 — Automate and configure network infrastructure
@@ -538,7 +538,7 @@ reports `IN_SYNC` immediately after deployment.
 `detect-stack-drift`; the stack now reports `DRIFTED`, the signal that a
 manual change bypassed the pipeline.
 
-**Cleanup:** `aws cloudformation delete-stack --stack-name ans-net`.
+**Rollback:** `aws cloudformation delete-stack --stack-name ans-net`.
 
 ### Lab 13.11 — Maintain routing and connectivity on AWS and hybrid networks
 
@@ -557,7 +557,7 @@ gateway and internal prefixes point to the TGW or VGW, each `State: active`.
 **Negative test:** delete the IGW route and re-run; `0.0.0.0/0` disappears
 and instances lose internet egress — a maintenance error made visible.
 
-**Cleanup:** restore the default route
+**Rollback:** restore the default route
 (`aws ec2 create-route --destination-cidr-block 0.0.0.0/0 ...`).
 
 ### Lab 13.12 — Monitor and analyze network traffic to troubleshoot connectivity
@@ -583,7 +583,7 @@ route allow 443 to the ENI.
 returns `false` and names the blocking security group in
 `ExplanationCode`, pinpointing the fault.
 
-**Cleanup:** delete the analysis and the insights path.
+**Rollback:** delete the analysis and the insights path.
 
 ### Lab 13.13 — Optimize AWS networks for performance, reliability, and cost
 
@@ -606,7 +606,7 @@ to S3 appears in the route table — S3 traffic now bypasses the NAT gateway.
 and no NAT; the request times out, showing the endpoint (not the internet
 path) is what restored — and cheapened — access.
 
-**Cleanup:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids ...`.
+**Rollback:** `aws ec2 delete-vpc-endpoints --vpc-endpoint-ids ...`.
 
 ### Lab 13.14 — Implement network features for security and compliance
 
@@ -630,7 +630,7 @@ evaluated before the default allow.
 at 100; because NACLs evaluate in order, Telnet is now permitted —
 demonstrating rule-order sensitivity.
 
-**Cleanup:** `aws ec2 delete-network-acl-entry --rule-number 90 --ingress`.
+**Rollback:** `aws ec2 delete-network-acl-entry --rule-number 90 --ingress`.
 
 ### Lab 13.15 — Validate and audit security via network monitoring and logging
 
@@ -649,7 +649,7 @@ each showing the source that was denied — evidence for a security audit.
 subnet with no traffic; zero records return, confirming the filter, not
 absence of logging, is what selects rejects.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ### Lab 13.16 — Implement and maintain confidentiality of data and communications
 
@@ -671,7 +671,7 @@ policy — traffic to the ALB is now encrypted in transit.
 `curl -sI http://<alb-dns>/` returns `301` to `https://`, proving plaintext
 is refused rather than served.
 
-**Cleanup:** delete the listener; the certificate remains in ACM for reuse.
+**Rollback:** delete the listener; the certificate remains in ACM for reuse.
 
 ### Lab 13.17 — Program currency check (integrative)
 
@@ -731,7 +731,7 @@ creates no resources.
    **Expected result:** three artifacts in agreement, or logged
    inconsistencies.
 
-7. **Cleanup:** file the drift log with the repository. There is no
+7. **Rollback:** file the drift log with the repository. There is no
    infrastructure to tear down and no spend to check.
 
 ## Lab Verification

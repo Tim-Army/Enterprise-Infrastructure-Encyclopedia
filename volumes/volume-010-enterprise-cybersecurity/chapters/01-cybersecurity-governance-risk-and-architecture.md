@@ -429,7 +429,7 @@ Availability) and to risk, so quantifying risk is how you prioritize finite secu
 low-impact issues while a high-risk one waits — risk scoring is what directs effort to what
 matters most.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Threat modeling with STRIDE (Topic: Threat modeling)
 
@@ -457,7 +457,7 @@ component can be attacked *before* it ships, so controls are designed in, not bo
 (e.g. repudiation) that a structured model would have caught — modeling up front is cheaper than
 retrofitting.
 
-**Cleanup:** `rm -f ~/sec/threat-model.md`.
+**Rollback:** `rm -f ~/sec/threat-model.md`.
 
 ### Lab 1.3 — Map controls to a framework (Topic: Frameworks and controls)
 
@@ -484,7 +484,7 @@ checklist so you can see, and report, where controls are missing.
 **Negative test:** claim "we're secure" with no framework mapping; you cannot prove coverage or
 find the Recover gap — the framework is what turns a vague claim into an auditable posture.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.4 — Defense in depth (Topic: Security architecture)
 
@@ -510,7 +510,7 @@ identity, data) mean one breach does not equal total compromise.
 bypassed there is nothing behind it — layering is what prevents one failure from becoming a
 full breach.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -218,7 +218,7 @@ collectives do not stall on drops.
 incast the switch drops frames, RoCEv2 retransmits, and job completion time
 spikes — the no-drop class is mandatory for AI, not optional tuning.
 
-**Cleanup:** none (read-only); `clear counters interface ethernet 1/5` if
+**Rollback:** none (read-only); `clear counters interface ethernet 1/5` if
 desired.
 
 ### Lab 7.2 — Describe AI/ML workload types (DCAI Objective 1.1)
@@ -241,7 +241,7 @@ differently.
 bandwidth and you overspend; size a training fabric for inference latency and
 collectives stall — matching workload type to design is the objective.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Describe the AI lifecycle (DCAI Objective 1.2)
 
@@ -260,7 +260,7 @@ Dashboard/Intersight (monitor); each stage has an infrastructure owner.
 **Negative test:** treat training infrastructure as static; without a
 monitor→retrain loop the model drifts — the lifecycle is a cycle, not a line.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.4 — Describe AI use cases (DCAI Objective 1.3)
 
@@ -278,7 +278,7 @@ vector-store I/O profile. The GPU inventory anchors the use case to hardware.
 **Negative test:** run an LLM training job on a single small-memory GPU; it OOMs
 — the use case dictates the memory/interconnect the infrastructure must provide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.5 — Describe the types of AI infrastructure (DCAI Objective 1.4)
 
@@ -297,7 +297,7 @@ long-run cost at scale), **cloud** (elastic, opex, fastest to start), or
 **Negative test:** run continuous large-scale training in the cloud on-demand;
 cost dwarfs an owned cluster — the type must match the utilization pattern.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.6 — Describe the components used for AI environments (DCAI Objective 1.5)
 
@@ -317,7 +317,7 @@ storage, and the front-end management network.
 bottlenecks the collective and GPUs idle — component balance (GPU-to-network) is
 the design point.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.7 — Describe Cisco AI solutions (DCAI Objective 1.6)
 
@@ -336,7 +336,7 @@ back-end, **Nexus Dashboard** for assurance, **Intersight** for lifecycle, and
 you forfeit the tested QoS/RoCEv2 blueprint a CVD provides — the solutions exist
 to de-risk exactly that.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.8 — Evaluate network deployment for AI workloads (DCAI Objective 2.1)
 
@@ -358,7 +358,7 @@ scale (add leaves/rails), and segmentation of the AI pod.
 latency/lossless requirement under incast — every axis must be met, not just
 throughput.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.9 — Evaluate compute deployment for AI workloads (DCAI Objective 2.2)
 
@@ -378,7 +378,7 @@ is evaluated on GPU count and memory (model size), GPU interconnect
 starvation leaves GPUs idle — balanced compute, not just GPU count, is what the
 objective evaluates.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.10 — Evaluate storage deployment for AI workloads (DCAI Objective 2.3)
 
@@ -399,7 +399,7 @@ redundancy; checkpoint writes add a bursty write profile.
 data loader bottlenecks and GPUs wait — storage throughput must match GPU
 appetite.
 
-**Cleanup:** remove the `fio` test file.
+**Rollback:** remove the `fio` test file.
 
 ### Lab 7.11 — Evaluate power, efficiency, and sustainability (DCAI Objective 2.4)
 
@@ -419,7 +419,7 @@ sustainability (renewable sourcing, efficiency).
 throttle or trip — power and cooling are hard design constraints for GPU
 density, not afterthoughts.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.12 — Evaluate hybrid AI deployment with cloud integration (DCAI Objective 2.5)
 
@@ -440,7 +440,7 @@ synchronization (dataset/checkpoint replication), and workload mobility
 egress/latency dominates and the burst is slower than on-prem — data gravity
 governs hybrid design.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.13 — Configure high-performance networks for AI using Cisco Data Center (DCAI Objective 3.1)
 
@@ -470,7 +470,7 @@ AI-ready fabric.
 **Negative test:** omit `pause pfc-cos 3`; RoCEv2 traffic is best-effort and
 drops under load — PFC on the RoCE class is what makes it lossless.
 
-**Cleanup:** remove the service-policy and class/policy-maps.
+**Rollback:** remove the service-policy and class/policy-maps.
 
 ### Lab 7.14 — Configure high-performance compute and storage using Cisco UCS (DCAI Objective 3.2)
 
@@ -489,7 +489,7 @@ of an AI-ready pod.
 **Negative test:** a profile missing the GPU/BIOS policy leaves GPUs
 mis-tuned; performance drops — the profile must include the AI-specific policies.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.15 — Deploy AI-ready fabrics using Cisco orchestration tools (DCAI Objective 3.3)
 
@@ -508,7 +508,7 @@ tested QoS/underlay across every switch rather than hand-configuring each.
 **Negative test:** hand-build each leaf's QoS; one inconsistent switch creates a
 lossy path that stalls collectives — orchestration's consistency is the point.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.16 — Implement benchmarks to evaluate AI infrastructure performance (DCAI Objective 4.1)
 
@@ -526,7 +526,7 @@ bandwidth/latency GPU collectives need, the objective measure of an AI fabric.
 **Negative test:** a benchmark far below line rate points to a lossy path
 (missing PFC) or an oversubscribed rail — the number localizes the design flaw.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.17 — Implement monitoring with Nexus Dashboard and Intersight (DCAI Objective 4.2)
 
@@ -545,7 +545,7 @@ events) with GPU-node health, the two failure domains of an AI cluster.
 **Negative test:** monitor only the servers and miss a fabric PFC storm stalling
 collectives — AI monitoring must span fabric and compute together.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.18 — Monitor AI infrastructure using system messages and management tools (DCAI Objective 4.3)
 
@@ -564,7 +564,7 @@ system messages that signal an AI fabric under congestion; watched continuously
 **Negative test:** rely on interface up/down alone; a fabric can be "all up"
 while PFC storms stall collectives — the AI-specific counters are what reveal it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.19 — Troubleshoot AI infrastructure (DCAI Objective 4.4)
 
@@ -589,7 +589,7 @@ layer.
 **Negative test:** blame the GPUs when GPU utilization is low and pause frames
 are high; the fabric is starving them — read the fabric before the accelerators.
 
-**Cleanup:** none (read-only); `clear counters` after recording if desired.
+**Rollback:** none (read-only); `clear counters` after recording if desired.
 
 ## Lab Verification
 

@@ -46,7 +46,7 @@ Every VM carries an `AppTier` and an `Environment` category; the `quarantine` se
 
 **Negative test.** No behavior changes yet — categories alone enforce nothing, exactly as in Prism Central.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.2 — Write the policy in monitor mode
 
@@ -82,7 +82,7 @@ lateral STILL OPEN (monitor mode)
 
 Monitor mode never blocks — that is its purpose.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Read the flows before enforcing
 
@@ -109,7 +109,7 @@ ip protocol tcp counter packets 2 bytes 120
 
 **Negative test.** Reset and confirm a quiet estate counts nothing: `sudo nft reset counters table bridge flow >/dev/null` then re-list — counters return to zero until traffic flows again.
 
-**Cleanup.** None — the monitor chain stays until Chapter 05 applies the policy.
+**Rollback.** None — the monitor chain stays until Chapter 05 applies the policy.
 
 ## Summary and Completion Checklist
 

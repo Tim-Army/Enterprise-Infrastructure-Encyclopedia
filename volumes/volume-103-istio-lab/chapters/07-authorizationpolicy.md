@@ -42,7 +42,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Change the principal to `cluster.local/ns/ot/sa/sa-hmi` and the operator gets in while the app is denied — you authorized the wrong identity. Principals are exact; get them right. Revert to `sa-web`.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Lab 7.2 — Restrict the API to a method and path (L7, by principal)
 
@@ -76,7 +76,7 @@ kubectl exec -n dc deploy/web -c web -- curl -s -o /dev/null -w "GET /admin : %{
 
 **Negative test.** Delete this policy and re-run the POST; it returns `200`. Only the L7 rule distinguishes the read from the write; the L4 policy from Lab 7.1 cannot. Re-apply it.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Lab 7.3 — Validate the mesh segmentation end to end
 
@@ -104,7 +104,7 @@ Every allow and deny is by cryptographically-authenticated identity — the stro
 
 **Negative test.** Remove all AuthorizationPolicies and the mesh returns to permissive (all allowed). Istio authorizes only what you declare; mTLS alone encrypts but does not segment.
 
-**Cleanup.** Leave the policies for Chapter 08.
+**Rollback.** Leave the policies for Chapter 08.
 
 ## Summary and Completion Checklist
 

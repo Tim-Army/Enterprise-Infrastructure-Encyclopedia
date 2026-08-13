@@ -89,7 +89,7 @@ Host tags:
 
 **Negative test:** run the Agent with no host tags; you cannot group by env/team — add a **tag** strategy.
 
-**Cleanup:** none (tags are the desired state).
+**Rollback:** none (tags are the desired state).
 
 ### Lab 2.2 — Reason about metric types
 
@@ -112,7 +112,7 @@ PY
 **Negative test:** store latency as a **gauge** and average it; you lose percentiles — use a
 **histogram/distribution**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Apply unified service tagging
 
@@ -138,7 +138,7 @@ PY
 **Negative test:** tag metrics one way and traces another; use **unified service tagging** so they line
 up.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Send a custom metric with DogStatsD
 
@@ -165,7 +165,7 @@ Datadog.
 **Negative test:** POST every event to the HTTP API synchronously in the request path; use **DogStatsD**
 (fast, local, UDP) for high-frequency custom metrics.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Rebuilding the artifact from source in each environment. A rebuild can pull a different dependency or use a changed tool, so the production binary differs from the tested one — promotion moves the same immutable artifact instead.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

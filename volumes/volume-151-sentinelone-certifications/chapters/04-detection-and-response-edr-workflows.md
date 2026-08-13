@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Containing only the first endpoint that alerted. Scoping shows the attack spread to three hosts including a server — responding to one leaves the lateral movement active; the workflow requires scoping the full spread before containing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Proactive threat hunting
 
@@ -137,7 +137,7 @@ EOF
 
 **Negative test:** Waiting for automated detection to flag everything. A patient attacker living off the land (signed PowerShell, normal-looking connections) may never trigger an alert — only proactive hunting on a behavioral hypothesis surfaces them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

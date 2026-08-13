@@ -55,7 +55,7 @@ The string-built query lets `' OR '1'='1` return every row (injection); the para
 
 **Negative test:** "Sanitizing" by escaping quotes instead of parameterizing — brittle and bypassable (encoding tricks, second-order injection); parameterized queries are the correct, complete fix.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — IDOR / broken access control
 
@@ -79,7 +79,7 @@ EOF
 
 **Negative test:** Hiding other users' IDs in the UI but not enforcing authorization server-side — an attacker just changes the ID in the request; access control must be server-side, per object, every time.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Detecting web exploitation
 
@@ -111,7 +111,7 @@ EOF
 
 **Negative test:** Signature-only detection is evadable (encoding, obfuscation) — so pair it with secure coding (Labs 5.1–5.2) that removes the vulnerability regardless; detection and prevention are complementary, not either/or.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

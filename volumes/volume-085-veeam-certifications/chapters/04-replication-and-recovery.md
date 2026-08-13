@@ -79,7 +79,7 @@ Repl-App  Replication Success
 **Negative test:** keep a single replica restore point; a ransomware event replicates the damage — keep
 several so you can fail over to a clean point.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Remove-VBRJob -Job (Get-VBRJob -Name "Repl-App") -Confirm:$false
@@ -104,7 +104,7 @@ app-vm01_replica  Failover
 **Negative test:** use unplanned failover for a graceful migration; **planned** failover syncs final
 changes first — use it when the source is healthy.
 
-**Cleanup:** (see failback in Lab 4.3).
+**Rollback:** (see failback in Lab 4.3).
 
 ### Lab 4.3 — Fail back and commit
 
@@ -126,7 +126,7 @@ Ready
 **Negative test:** leave failover uncommitted indefinitely; the replica stays in a temporary state —
 commit failback (or the failover) to finalize.
 
-**Cleanup:** none (state returned to `Ready`).
+**Rollback:** none (state returned to `Ready`).
 
 ### Lab 4.4 — Instant Recovery from a backup
 
@@ -148,7 +148,7 @@ the full restore proceeds.
 **Negative test:** wait for a multi-hour full restore when minutes matter; use **Instant Recovery** to
 run from the backup immediately.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Stop-VBRInstantRecovery -InstantRecovery (Get-VBRInstantRecovery)

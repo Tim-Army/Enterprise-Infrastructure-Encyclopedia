@@ -355,7 +355,7 @@ curl -sk -H "Authorization: $CORTEX_TOKEN" "$CC/cspm/v1/accounts" \
 **Negative test:** an account onboarded with insufficient read permissions
 shows `partial`/`error`; CSPM needs the full read role to assess posture.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Read cloud misconfiguration findings (CSPM)
 
@@ -373,7 +373,7 @@ security group — posture policy evaluated against real cloud config.
 **Negative test:** scanning only at deploy time misses drift; continuous
 posture assessment is what catches a bucket made public after deploy.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.3 — Read identity entitlements (CIEM)
 
@@ -391,7 +391,7 @@ least-privilege gap CIEM quantifies.
 **Negative test:** posture scanning alone does not analyze effective identity
 permissions; CIEM's entitlement graph is what surfaces privilege creep.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.4 — Read workload/runtime protection (CWPP)
 
@@ -409,7 +409,7 @@ unexpected process) — CWPP protects the workload at runtime, beyond posture.
 **Negative test:** posture (CSPM) sees the container's *config* but not its
 *behavior*; a compromised-but-compliant container is caught only at runtime.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.5 — Read code and IaC security findings
 
@@ -427,7 +427,7 @@ the same policy enforced before deploy that CSPM enforces after.
 **Negative test:** relying on runtime detection alone lets a known-bad
 Terraform reach production; the code-security gate stops it pre-merge.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.6 — Checkov IaC scan with a CI/CD gate (integrative)
 
@@ -535,7 +535,7 @@ known-bad configuration before remediation.
    account in Cortex Cloud, and confirm the account appears with an
    initial CSPM finding count within the platform console.
 
-10. **Cleanup:** Remove the lab directory and any lab-only CI/CD workflow
+10. **Rollback:** Remove the lab directory and any lab-only CI/CD workflow
     file if not needed going forward:
 
     ```bash

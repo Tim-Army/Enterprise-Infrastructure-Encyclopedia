@@ -228,6 +228,8 @@ az ad group show --group grp-az104 --query '{name:displayName, id:id}' -o table
 rights; if denied, record that as the finding — user/group management is a
 directory permission, not a subscription one.)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.2 — Manage access to Azure resources with built-in roles
 
 ```bash
@@ -240,6 +242,8 @@ az role assignment list --scope "$SCOPE" --query "[?roleDefinitionName=='Reader'
 **Expected result:** the assignment appears. Reader is a built-in role —
 prefer built-in over custom, and assign to the group, not a user.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.3 — Interpret access assignments
 
 ```bash
@@ -250,6 +254,8 @@ az role assignment list --scope "$SCOPE" --include-inherited \
 **Expected result:** a table including assignments inherited from the
 subscription — the "interpret" skill is reading effective access, not just
 what was set here.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 3.4 — Implement and manage Azure Policy
 
@@ -262,6 +268,8 @@ az policy assignment list --scope "$SCOPE" --query "[].displayName" -o tsv
 **Expected result:** the assignment listed. This built-in policy denies
 public blob access — Policy governs *what may exist*, independent of RBAC.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.5 — Configure resource locks, groups, and management groups
 
 ```bash
@@ -272,6 +280,8 @@ az lock list --resource-group rg-az104-lab --query "[].{name:name, level:level}"
 
 **Expected result:** a `CanNotDelete` lock. It binds even Owners — the
 point of a lock. (Removed in cleanup before the group can be deleted.)
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.6 — Manage costs with budgets and Advisor
 
@@ -287,6 +297,8 @@ skill.
 
 ### Domain 2 — Implement and manage storage (15–20%)
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 3.7 — Create and configure a storage account with redundancy
 
 ```bash
@@ -300,6 +312,8 @@ az storage account show --name "$SA" \
 **Expected result:** `Standard_LRS TLS1_2 False`. LRS survives a disk;
 choose GRS when a stated requirement is region survival.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.8 — Configure storage firewalls and access
 
 ```bash
@@ -309,6 +323,8 @@ az storage account show --name "$SA" --query "networkRuleSet.defaultAction" -o t
 
 **Expected result:** `Deny`. Default-deny plus explicit allow rules is the
 examinable posture for storage network access.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.9 — SAS tokens and access keys
 
@@ -321,6 +337,8 @@ az storage account generate-sas --account-name "$SA" --services b --resource-typ
 **Expected result:** a SAS string (`sv=...&ss=b&...`). A short-lived,
 read-only, HTTPS-only SAS is least privilege for delegated access — prefer
 it over sharing account keys.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 3.10 — Azure Files and Blob: shares, containers, tiers, lifecycle
 
@@ -345,6 +363,8 @@ distinct from soft delete.
 
 ### Domain 3 — Deploy and manage Azure compute resources (20–25%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.11 — Interpret and deploy an ARM/Bicep template
 
 ```bash
@@ -363,6 +383,8 @@ az deployment group what-if --resource-group rg-az104-lab --template-file /tmp/s
 **Expected result:** `+ create` for one storage account. `what-if`
 previews the change without applying it — the habit AZ-104 rewards.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.12 — Create and configure a virtual machine
 
 ```bash
@@ -375,6 +397,8 @@ az vm show --name vm-az104 --show-details \
 **Expected result:** `Standard_B1s VM running` with an empty public IP —
 no public exposure by default.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.13 — Manage VM disks and sizes
 
 ```bash
@@ -384,6 +408,8 @@ az vm show --name vm-az104 --query "storageProfile.dataDisks[].{name:name, gb:di
 
 **Expected result:** an 8 GB data disk. Resizing and attaching disks is
 routine VM management; disks bill even when the VM is stopped.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.14 — Scale sets, App Service, and containers
 
@@ -396,6 +422,8 @@ az webapp list --query "[].{name:name, state:state}" -o table
 **Expected result:** a web app in `Running`. App Service is the PaaS
 compute option; scaling is a plan setting, exercised next.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.15 — Configure scaling for an App Service plan
 
 ```bash
@@ -407,6 +435,8 @@ az appservice plan show --name plan-az104 --query "sku.capacity" -o tsv
 plan, not the app.
 
 ### Domain 4 — Implement and manage virtual networking (15–20%)
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.16 — Create virtual networks, subnets, and peering
 
@@ -423,6 +453,8 @@ az network vnet peering show --name a-to-b --vnet-name vnet-a --query "peeringSt
 **Expected result:** `Connected`. Peering is per-direction and **not
 transitive** — the fact all Azure topology design turns on.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.17 — NSGs and application security groups
 
 ```bash
@@ -435,6 +467,8 @@ az network nsg rule list --nsg-name nsg-az104 --query "[].{name:name, access:acc
 
 **Expected result:** an explicit `Deny` on 3389. NSGs are stateful and
 priority-ordered; explicit rules make intent readable.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.18 — UDRs, service endpoints, and private endpoints
 
@@ -450,6 +484,8 @@ az network route-table route list --route-table-name rt-az104 \
 user-defined route overriding the default, the way traffic is forced
 through a firewall.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.19 — Azure DNS and load balancing
 
 ```bash
@@ -464,6 +500,8 @@ name-resolution-and-distribution skills of this domain.
 
 ### Domain 5 — Monitor and maintain Azure resources (10–15%)
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.20 — Interpret metrics and configure log settings
 
 ```bash
@@ -474,6 +512,8 @@ az monitor metrics list --resource "$(az vm show --name vm-az104 --query id -o t
 
 **Expected result:** a recent CPU data point. Azure Monitor metrics are
 the raw material; reading them is the examinable skill.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 3.21 — Alert rules and action groups
 
@@ -488,6 +528,8 @@ az monitor metrics alert list --query "[].{name:name, enabled:enabled}" -o table
 **Expected result:** an enabled alert. An alert wired to an action group
 is the monitoring-to-notification path.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.22 — Backup and recovery
 
 ```bash
@@ -497,6 +539,8 @@ az backup vault show --name rsv-az104 --query "{name:name, state:properties.prov
 
 **Expected result:** the Recovery Services vault `Succeeded`. A vault plus
 a backup policy is the recovery skill; Site Recovery covers replication.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 3.23 — Negative test: prove Policy denies a privileged principal
 
@@ -511,6 +555,8 @@ Lab 3.4 — even though you have Contributor/Owner rights. That is the
 RBAC-versus-Policy distinction proven: Policy blocks what RBAC would
 permit.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 3.24 — Cleanup
 
 ```bash
@@ -522,6 +568,8 @@ az group exists --name rg-az104-lab
 **Expected result:** `false` shortly after (deletion is async). The lock
 must be removed first, or the group delete is itself denied — a final
 reminder of what a lock does.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

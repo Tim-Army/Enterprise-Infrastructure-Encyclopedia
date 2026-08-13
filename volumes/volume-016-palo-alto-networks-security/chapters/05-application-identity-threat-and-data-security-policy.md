@@ -372,7 +372,7 @@ exist and are referenceable by name in policy.
 **Negative test:** reference an object name in a rule before creating it; the
 commit fails validation — objects must exist before policy binds them.
 
-**Cleanup:** delete the three objects, then `commit`.
+**Rollback:** delete the three objects, then `commit`.
 
 ### Lab 5.2 — Build an App-ID security policy rule (Domain 2: Policy)
 
@@ -391,7 +391,7 @@ rule matches on App-ID with `application-default` service.
 `application-default`; the rule does not match (the app is not on its
 default port) — App-ID plus application-default is stricter than a port rule.
 
-**Cleanup:** `delete rulebase security rules Allow-Web`, then `commit`.
+**Rollback:** `delete rulebase security rules Allow-Web`, then `commit`.
 
 ### Lab 5.3 — Attach security profiles (Threat Prevention)
 
@@ -411,7 +411,7 @@ traffic is now scanned for malware and exploits.
 **Negative test:** a rule with `action allow` but no profile group passes
 traffic uninspected; "allow" is not "inspect" — the profile does the scanning.
 
-**Cleanup:** remove the profile-setting and delete the group, then `commit`.
+**Rollback:** remove the profile-setting and delete the group, then `commit`.
 
 ### Lab 5.4 — Configure URL Filtering (Domain 2: Policy)
 
@@ -431,7 +431,7 @@ on social-networking — category-based web control.
 page, while an `alert` category is permitted but logged — the action per
 category is enforced.
 
-**Cleanup:** remove the URL profile from the rule and delete it, then `commit`.
+**Rollback:** remove the URL profile from the rule and delete it, then `commit`.
 
 ### Lab 5.5 — Configure WildFire and file blocking
 
@@ -452,7 +452,7 @@ executables are blocked inline — zero-day and file-type control.
 the same content renamed to `.txt` is still detected by true file-type — PAN-OS
 inspects content, not extension.
 
-**Cleanup:** remove both profiles from the rule and delete them, then `commit`.
+**Rollback:** remove both profiles from the rule and delete them, then `commit`.
 
 ### Lab 5.6 — Configure SSL Forward Proxy decryption (NGFW Domain 2)
 
@@ -471,7 +471,7 @@ financial/health categories — privacy-aware decryption.
 **Negative test:** decrypt without deploying the forward-trust CA to clients;
 every HTTPS site throws a certificate error — the trust chain is required.
 
-**Cleanup:** delete both decryption rules, then `commit`.
+**Rollback:** delete both decryption rules, then `commit`.
 
 ### Lab 5.7 — Configure User-ID (NGFW Domain 2: Identity)
 
@@ -491,7 +491,7 @@ a source-user instead of a source IP.
 untrusted external IPs to bogus users — User-ID belongs only on trusted
 internal zones.
 
-**Cleanup:** delete the user-id-agent and disable user-identification, then `commit`.
+**Rollback:** delete the user-id-agent and disable user-identification, then `commit`.
 
 ### Lab 5.8 — Configure dynamic address groups (tag-based automation)
 
@@ -511,7 +511,7 @@ commit.
 **Negative test:** a static address group requires a commit to change
 membership; the DAG updates live — the point of tag-based automation.
 
-**Cleanup:** delete the rule and address-group, then `commit`.
+**Rollback:** delete the rule and address-group, then `commit`.
 
 ### Lab 5.9 — Configure DoS and zone protection
 
@@ -530,7 +530,7 @@ rate — reconnaissance and flood protection at the perimeter.
 **Negative test:** a SYN flood on a zone with no protection profile reaches
 the data plane and consumes session capacity — the profile is what caps it.
 
-**Cleanup:** remove the profile from the zone and delete it, then `commit`.
+**Rollback:** remove the profile from the zone and delete it, then `commit`.
 
 ### Lab 5.10 — App-ID policy with profiles and decryption (integrative)
 
@@ -623,7 +623,7 @@ blocked.
    **not** decrypted (no certificate warning, and the decryption log shows
    `no-decrypt` as the reason).
 
-9. **Cleanup:** If this lab environment will be reused in later chapters,
+9. **Rollback:** If this lab environment will be reused in later chapters,
    leave the scoped rule, profile group, and decryption configuration in
    place; otherwise remove the lab-only decryption rules and CA trust from
    the test client:

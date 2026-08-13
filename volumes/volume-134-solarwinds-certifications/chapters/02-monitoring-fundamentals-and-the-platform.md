@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Adding polling engines to fix slow dashboards — if the bottleneck is database I/O, more collectors write more data to the same overloaded database and make it worse.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Choose a collection method per target
 
@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Standardizing on SNMPv2c because "v3 is fiddly to configure" — you have put a plaintext credential on every device and made monitoring traffic readable by anyone on the path.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Poll versus push, and the silence problem
 
@@ -145,7 +145,7 @@ EOF
 
 **Negative test:** Relying on syslog alone for availability — a device that loses power stops sending logs, which is indistinguishable from a device having a quiet afternoon.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

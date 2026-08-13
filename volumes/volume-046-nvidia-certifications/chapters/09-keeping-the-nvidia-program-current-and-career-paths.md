@@ -96,7 +96,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.nvidia.com/en-us/learn/certification/" \
 **Negative test:** trust a 2024 NVIDIA cert chart; the NCP tier and Multimodal
 associate are newer — confirm on nvidia.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan an Associate → Professional path (Topic: Career)
 
@@ -117,7 +117,7 @@ career mapping this volume supports.
 **Negative test:** attempt a Professional infra exam with no hands-on cluster
 experience; NVIDIA recommends **1–3 years** — build experience first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

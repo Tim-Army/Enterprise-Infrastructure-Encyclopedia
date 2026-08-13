@@ -25,7 +25,7 @@ kubectl get nodes
 
 **Negative test.** Disable the default CNI here and the node stays `NotReady`; Linkerd needs a working pod network beneath it. Leave the default CNI.
 
-**Cleanup.** None yet.
+**Rollback.** None yet.
 
 ### Lab 3.2 — Install the Linkerd control plane
 
@@ -44,7 +44,7 @@ linkerd check
 
 **Negative test.** Skip `linkerd install --crds` and the control-plane install fails for missing CRDs. Install the CRDs first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Install linkerd viz (observability)
 
@@ -61,7 +61,7 @@ linkerd viz check
 
 **Negative test.** Try `linkerd viz stat` before the extension is ready; it errors. Wait for `viz check`.
 
-**Cleanup.** Keep the cluster and Linkerd; Chapter 04 deploys the workloads.
+**Rollback.** Keep the cluster and Linkerd; Chapter 04 deploys the workloads.
 
 ## Summary and Completion Checklist
 

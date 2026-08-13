@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Building bots as standalone scripts on individual laptops with embedded passwords. There is no central governance, no shared credential vault, no audit, and no way to orchestrate at scale; the Control Room is what makes automation an enterprise-governed platform rather than scattered scripts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

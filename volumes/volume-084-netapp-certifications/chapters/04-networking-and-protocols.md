@@ -77,7 +77,7 @@ svm_app  data1  192.168.10.20  up           up          e0d
 **Negative test:** place the LIF on a port in the wrong broadcast domain; clients on the intended subnet
 cannot reach it — assign the correct home port/IPspace.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> network interface delete -vserver svm_app -lif data1
@@ -104,7 +104,7 @@ svm_app  default  1     192.168.10.0/24   sys     sys
 **Negative test:** export with `-clientmatch 0.0.0.0/0` and `-rwrule any`; that opens the volume to
 everyone — scope the rule to the client subnet.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> export-policy rule delete -vserver svm_app -policyname default -ruleindex 1
@@ -132,7 +132,7 @@ svm_app  /vol/vol_finance/lun0       host1   0
 **Negative test:** map the LUN to an igroup holding the wrong initiator IQN; the host sees nothing —
 map to the igroup containing the host's real IQN.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> lun unmap -vserver svm_app -path /vol/vol_finance/lun0 -igroup host1
@@ -161,7 +161,7 @@ svm_app  data-lake  50GB
 **Negative test:** hand out the S3 root/admin key to applications; issue scoped **S3 users/access keys**
 per application instead.
 
-**Cleanup:**
+**Rollback:**
 
 ```text
 cluster1::> vserver object-store-server bucket delete -vserver svm_app -bucket data-lake

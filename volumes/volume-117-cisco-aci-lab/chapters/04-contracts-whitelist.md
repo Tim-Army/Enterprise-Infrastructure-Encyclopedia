@@ -47,7 +47,7 @@ sudo nft list chain inet aci forward
 
 **Expected result.** The forward chain permits exactly the two contracted flows and denies everything else between EPGs.
 
-**Cleanup.** Keep the contracts.
+**Rollback.** Keep the contracts.
 
 ### Exercise 4.2 — The whitelist holds
 
@@ -73,7 +73,7 @@ The two contracted flows pass; `EPG-Mgmt → EPG-DB` (hmi → db) is denied beca
 
 **Negative test.** Remove the `web-db` accept rule and watch `web → db` break — proof it is the contract, not the routing, that permits the flow. Restore it.
 
-**Cleanup.** Keep the enforcement for the next chapters.
+**Rollback.** Keep the enforcement for the next chapters.
 
 ## Summary and Completion Checklist
 

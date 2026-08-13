@@ -182,7 +182,7 @@ unified methods policy targets methods by group.
 **Negative test:** target a group that does not exist; the update errors —
 the target must be a real group id.
 
-**Cleanup:** set state back to `disabled` for the group if lab-only.
+**Rollback:** set state back to `disabled` for the group if lab-only.
 
 ### Lab 3.2 — Create a report-only MFA policy (Topic: Conditional Access)
 
@@ -204,7 +204,7 @@ Get-MgIdentityConditionalAccessPolicy | Select-Object DisplayName, State
 break-glass; you risk locking out every admin — always exclude break-glass
 and stage first.
 
-**Cleanup:** `Remove-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId <id>`.
+**Rollback:** `Remove-MgIdentityConditionalAccessPolicy -ConditionalAccessPolicyId <id>`.
 
 ### Lab 3.3 — Block legacy authentication (Topic: Reduce attack surface)
 
@@ -225,7 +225,7 @@ blocking — legacy auth is a top attack vector because it bypasses MFA.
 **Negative test:** set `clientAppTypes=@("all")`; the policy would also catch
 modern auth and could block everything — target only the legacy client types.
 
-**Cleanup:** remove the policy after reviewing report-only impact.
+**Rollback:** remove the policy after reviewing report-only impact.
 
 ### Lab 3.4 — Read Conditional Access results from sign-in logs (Topic: Validate access)
 
@@ -244,7 +244,7 @@ authoritative record of access decisions.
 sign-ins predate it and show `notApplied` — evaluate against sign-ins after
 the policy existed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

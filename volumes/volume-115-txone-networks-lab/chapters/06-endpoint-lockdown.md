@@ -45,7 +45,7 @@ cat /etc/txone/allowlist
 
 **Negative test.** An allowlist that matches by *name* rather than *hash* would let malware named `hmi-tool` run; hashing the binary is what makes the lockdown meaningful.
 
-**Cleanup.** Keep the allowlist and launcher.
+**Rollback.** Keep the allowlist and launcher.
 
 ### Exercise 6.2 — Approved runs, malware is blocked
 
@@ -73,7 +73,7 @@ The approved tool runs; the malware is denied execution — the EWS cannot be us
 
 **Negative test.** Modify `hmi-tool` (changing its hash) and watch even it get blocked — proof the control is the exact approved binary, not its name or location. Re-approve it by re-recording its hash if you change it.
 
-**Cleanup.** Keep the lockdown for verification.
+**Rollback.** Keep the lockdown for verification.
 
 ## Summary and Completion Checklist
 

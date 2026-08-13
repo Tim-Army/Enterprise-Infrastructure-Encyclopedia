@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Applying one blanket policy to every device and deploying without caches, relays, or AD sync. Servers and users get inappropriate protection, updates saturate bandwidth, segmented networks can't reach Central, and policies don't map to real users; segmented policy and proper deployment components are the Architect-level operational design.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

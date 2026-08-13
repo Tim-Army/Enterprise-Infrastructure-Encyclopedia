@@ -427,7 +427,7 @@ each run into an auditable record of what changed, where, and whether it succeed
 **Negative test:** rely on scrollback in a terminal for what an automation run did; it is lost and
 impossible to query — structured, retained output is what lets you audit and troubleshoot past runs.
 
-**Cleanup:** `rm -f ~/ops/play.yml`.
+**Rollback:** `rm -f ~/ops/play.yml`.
 
 ### Lab 9.2 — Metrics and run telemetry (Topic: Telemetry)
 
@@ -450,7 +450,7 @@ rising failure rate or a slowing pipeline before it becomes an outage.
 unnoticed until a critical run fails — telemetry is what turns automation into an observable
 system.
 
-**Cleanup:** `rm -f ~/ops/run.prom ~/ops/play.yml`.
+**Rollback:** `rm -f ~/ops/run.prom ~/ops/play.yml`.
 
 ### Lab 9.3 — Reliability: retries and safe failure (Topic: Reliability)
 
@@ -485,7 +485,7 @@ change.
 a failed precondition; you get spurious failures or a half-configured system — retries and
 guarded failure are what make runs trustworthy.
 
-**Cleanup:** `rm -f ~/ops/retry.yml`.
+**Rollback:** `rm -f ~/ops/retry.yml`.
 
 ### Lab 9.4 — Design Exercise: an end-to-end automation platform (Topic: Synthesis)
 
@@ -519,7 +519,7 @@ and reversible, not merely on whether a script runs.
 review, CI, or drift detection; it works until an unreviewed change causes an outage no one can
 trace — the platform's gates and observability are its actual value.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

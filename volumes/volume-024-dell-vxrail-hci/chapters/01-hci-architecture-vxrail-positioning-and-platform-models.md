@@ -348,7 +348,7 @@ SAN and its own lifecycle, trading array features for operational simplicity and
 across nodes, there is no shared, resilient datastore — the software-defined storage layer is what
 makes it HCI, not the hardware alone.
 
-**Cleanup:** none (design exercise).
+**Rollback:** none (design exercise).
 
 ### Lab 1.2 — VxRail platform models (Topic: Platform models)
 
@@ -372,7 +372,7 @@ compute-only against external storage, breaking the usual "storage lives in the 
 database on a storage-dense node lacks cores — matching the series to the workload is a planning
 decision the Deploy exam expects.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Physical components and disk groups (Topic: Physical components)
 
@@ -393,7 +393,7 @@ performance planning.
 usable capacity is far less than raw — disk-group structure and vSAN slack space determine real
 usable space.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.4 — VxRail versus build-your-own vSAN (Topic: VxRail positioning)
 
@@ -414,7 +414,7 @@ lifecycle/support are what distinguish it from assembling your own vSAN cluster.
 you break the validated state and the supported LCM path — VxRail is updated as one bundle through
 its LCM (Chapter 06), not component-by-component.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

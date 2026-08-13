@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Assuming one general JFrog certification. There are three domain-specific Associate certs plus the flagship DevOps Engineer — you pick the Associate for your focus or the DevOps Engineer for the end-to-end credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Source code versus binaries: where JFrog fits
 
@@ -123,7 +123,7 @@ EOF
 
 **Negative test:** Treating a Git repository as sufficient for the whole delivery pipeline. Git manages source code, not the binaries, container images, and third-party packages that ship — those need a binary repository like Artifactory.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

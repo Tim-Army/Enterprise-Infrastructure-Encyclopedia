@@ -94,7 +94,7 @@ FETCH  FIRST 3 ROWS ONLY;
 **Negative test:** use `LIMIT 3`; Oracle uses **`FETCH FIRST n ROWS ONLY`** — know
 the dialect.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — SQL: joins and subqueries
 
@@ -113,7 +113,7 @@ joins + a scalar subquery, key SQL Associate skills.
 **Negative test:** join without an `ON`/`WHERE` condition (Cartesian product);
 always specify the join predicate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — SQL: DDL and constraints
 
@@ -134,7 +134,7 @@ CREATE TABLE projects (
 **Negative test:** enforce data rules only in the app; **constraints** enforce
 integrity in the database — define them.
 
-**Cleanup:** `DROP TABLE projects;`
+**Rollback:** `DROP TABLE projects;`
 
 ### Lab 7.4 — DBA: multitenant (CDB/PDB)
 
@@ -153,7 +153,7 @@ architecture central to the DBA exams.
 **Negative test:** treat a PDB as a standalone instance; a **PDB** is a pluggable
 database inside a **CDB** — understand the container model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.5 — DBA: users, privileges, and roles
 
@@ -173,7 +173,7 @@ least-privilege access management (a DBA topic).
 **Negative test:** `GRANT DBA TO analyst`; that is full privilege — grant a
 **scoped role** instead.
 
-**Cleanup:** `DROP USER analyst; DROP ROLE app_read;`
+**Rollback:** `DROP USER analyst; DROP ROLE app_read;`
 
 ### Lab 7.6 — DBA: backup and recovery (RMAN)
 
@@ -192,7 +192,7 @@ area of the DBA exams.
 **Negative test:** rely on OS file copies of an open database; use **RMAN** for
 consistent, recoverable backups — and test restores.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.7 — 23ai: AI Vector Search
 
@@ -212,7 +212,7 @@ FETCH  FIRST 5 ROWS ONLY;
 **Negative test:** export embeddings to a separate vector store when **23ai**
 stores and searches vectors natively; keep them with the data where it fits.
 
-**Cleanup:** `DROP TABLE kb;`
+**Rollback:** `DROP TABLE kb;`
 
 ### Lab 7.8 — Autonomous Database
 
@@ -230,7 +230,7 @@ DBA toil while remaining Oracle SQL.
 **Negative test:** hand-tune/patch an Autonomous Database; it **self-manages** —
 focus on data and design, not maintenance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

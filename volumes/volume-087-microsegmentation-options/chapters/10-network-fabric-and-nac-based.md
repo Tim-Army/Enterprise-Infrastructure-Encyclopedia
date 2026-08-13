@@ -138,7 +138,7 @@ for s in groups:
 **Negative test.** Add `("it-laptop", "plc"): "tcp/502"` and re-run. An IT laptop may now reach an
 industrial controller. Over-broad groups are how fabric policy quietly fails; remove it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.2 — Test the switch-support gate
 
@@ -158,7 +158,7 @@ print("SXP required for the remainder" if capable < total else "inline tagging e
 **Negative test.** Assume the 3850s and third-party switches carry tags anyway. Policy silently fails
 open on 24 switches, because an untagged frame matches no SGACL. Verify per model, never per vendor.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.3 — Size the SXP binding ceiling
 
@@ -177,7 +177,7 @@ print("WITHIN LIMIT" if sxp_bindings <= ISE_3595_SXP_MAX else "EXCEEDS - redesig
 **Negative test.** Set `inline_pct = 0.2`. Required bindings become 27,200 and the design exceeds the
 ceiling; the fix is more inline-capable hardware, not more licenses.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 10.4 — Score the fabric tier against the rubric
 
@@ -196,7 +196,7 @@ print(f"weighted score: {score:.2f} / 5.00")
 **Negative test.** Re-weight with `granularity` at 0.50 and the tier falls behind host-agent options.
 The rubric encodes your priorities; changing them changes the winner, which is the point.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -114,7 +114,7 @@ every access decision SSCP tests.
 **Negative test:** treat authentication and authorization as one step; proving
 *who* you are is separate from *what* you may do.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — SSCP: Access Controls (15%)
 
@@ -132,7 +132,7 @@ access-control entry beyond the base permission bits (fine-grained DAC).
 **Negative test:** rely on `chmod` alone for one extra user; base bits cannot
 grant a single named user access — that is what ACLs are for.
 
-**Cleanup:** `setfacl -b report.csv; rm -f report.csv`
+**Rollback:** `setfacl -b report.csv; rm -f report.csv`
 
 ### Lab 3.3 — SSCP: Risk Identification, Monitoring and Analysis (15%)
 
@@ -155,7 +155,7 @@ ranked for treatment, the analysis SSCP expects.
 **Negative test:** rank by likelihood alone; a low-likelihood, catastrophic-
 impact risk still demands attention — risk is the product.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — SSCP: Incident Response and Recovery (14%)
 
@@ -172,7 +172,7 @@ responder reviews to scope an incident and confirm recovery.
 **Negative test:** clear logs before investigating; you destroy the evidence and
 the audit trail — preserve first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — SSCP: Cryptography (9%)
 
@@ -193,7 +193,7 @@ integrity *and* authenticity, unlike an unkeyed hash an attacker could recompute
 **Negative test:** use a plain `sha256sum` for message authentication; anyone can
 recompute it after tampering — a MAC needs a secret key.
 
-**Cleanup:** `rm -f msg.txt`
+**Rollback:** `rm -f msg.txt`
 
 ### Lab 3.6 — SSCP: Network and Communications Security (16%)
 
@@ -210,7 +210,7 @@ practitioner reduces with firewalls, segmentation, and least-service hardening.
 **Negative test:** assume an internal service needs no firewall; east-west
 traffic is a primary lateral-movement path — segment internally too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.7 — SSCP: Systems and Application Security (15%)
 
@@ -228,7 +228,7 @@ findings SSCP covers.
 **Negative test:** ignore SUID binaries as "normal"; each one runs as its owner
 and is a hardening review item — enumerate and justify them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

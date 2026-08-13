@@ -93,7 +93,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.nokia.com/networks/training/src/exams/" 
 **Negative test:** assume NRS II is a single written exam; it also requires the **4A0-N01 lab** —
 confirm on nokia.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map credentials to exams
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** book only the composite written for NRS II; you also need the **practical lab**
 — schedule both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a path
 
@@ -137,7 +137,7 @@ PY
 
 **Negative test:** target SRA without NRS II; **NRS II is the prerequisite** — earn it first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

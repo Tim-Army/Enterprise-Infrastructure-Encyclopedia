@@ -68,7 +68,7 @@ print(rows[0]["intf"], rows[0]["ipaddr"])
 **Negative test:** hand-write a regex for every show command; **ntc-templates** already
 covers them — reuse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Netmiko with use_textfsm
 
@@ -87,7 +87,7 @@ step.
 **Negative test:** parse Netmiko's raw string by hand; pass **`use_textfsm=True`** to get
 data directly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — TTP custom template
 
@@ -106,7 +106,7 @@ print(parser.result()[0][0])
 **Negative test:** force ntc-templates onto a non-standard format; **TTP** handles custom
 layouts — use it there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Regex for a one-off
 
@@ -124,7 +124,7 @@ print(m.group(1))   # 17.09.04a
 **Negative test:** build a full parser for a single value; a **regex** suffices for
 one-offs — don't over-engineer.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

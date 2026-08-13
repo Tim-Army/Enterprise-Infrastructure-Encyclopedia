@@ -189,7 +189,7 @@ MPLS builds LSPs by distributing labels (LDP, or SR without a separate protocol)
 the LSP; `show mpls interfaces` omits it — every core link on the path must be
 label-enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Describe segment routing (SPCOR Objective 3.3)
 
@@ -209,7 +209,7 @@ switches by SID.
 **Negative test:** mismatched SRGB ranges between nodes cause label confusion; SR
 requires a consistent global block — the local-block/SRGB must align network-wide.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.3 — Troubleshoot MPLS (SPRI Objective 4.1)
 
@@ -229,7 +229,7 @@ localizes the hop.
 **Negative test:** blame the egress PE for a VPN outage that is really a core LSP
 break — the PE-PE LSP must be intact for any label VPN service to work.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Implement segment routing (SPRI Objective 4.2)
 
@@ -250,7 +250,7 @@ without LDP.
 mapping server or ti-lfa) is needed across the boundary — a partial SR domain
 without interworking breaks label continuity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Implement Segment Routing v6 / SRv6 (SPRI Objective 4.4)
 
@@ -270,7 +270,7 @@ plane itself carries source routing and service functions, no MPLS labels needed
 support; the SIDs do not install in hardware — SRv6 needs platform/ASIC support,
 unlike SR-MPLS on legacy label hardware.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

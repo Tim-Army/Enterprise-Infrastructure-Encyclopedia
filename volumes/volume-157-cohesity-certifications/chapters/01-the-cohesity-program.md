@@ -99,7 +99,7 @@ EOF
 
 **Negative test:** Assuming Cohesity certs are free online badges like some vendors. They are proctored, $200 exams validating hands-on platform skill — a different, competence-oriented model.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The exam rule set
 
@@ -132,7 +132,7 @@ EOF
 
 **Negative test:** Treating the exam as trivia to memorize. The domains require administering and monitoring the Data Cloud platform (reporting, replication, archival, file/object services); the proctored format and ~3-months-experience recommendation target hands-on operators.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

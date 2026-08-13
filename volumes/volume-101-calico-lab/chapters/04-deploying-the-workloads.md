@@ -26,7 +26,7 @@ kubectl get ns dc ot
 
 **Negative test.** Deploy a pod into the `default` namespace by forgetting `-n`; later namespace-scoped policy will not select it. Keep workloads in `dc`/`ot`.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Deploy the database and the PLC (the services)
 
@@ -96,7 +96,7 @@ EOF
 
 **Negative test.** Omit the `POSTGRES_PASSWORD` env and the postgres pod crash-loops; check `kubectl logs -n dc deploy/db`. Set the password.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Deploy the clients (web and hmi)
 
@@ -127,7 +127,7 @@ kubectl get pods -A -o wide | grep -E "web|hmi|db|plc"
 
 **Negative test.** Use an image without network tools (say `busybox`) for the clients and the `nc`-based tests in Chapter 05 fail for lack of tooling, not for lack of connectivity. `netshoot` has the tools; keep it.
 
-**Cleanup.** Keep the workloads; Chapter 05 attacks them.
+**Rollback.** Keep the workloads; Chapter 05 attacks them.
 
 ## Summary and Completion Checklist
 

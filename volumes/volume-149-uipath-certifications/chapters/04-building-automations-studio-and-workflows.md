@@ -70,7 +70,7 @@ EOF
 
 **Negative test:** Building selectors that depend on screen coordinates or an exact dynamic window title. They match in the demo and break the moment the window moves or the record changes — robust selectors key on stable identifiers.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Retry transient, route business exceptions
 
@@ -123,7 +123,7 @@ EOF
 
 **Negative test:** Treating every failure the same — retrying a genuinely invalid record forever, or crashing the whole batch on one bad item. Unattended reliability requires classifying failures and always continuing the batch past a routed business exception.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -152,7 +152,7 @@ an **IRB** (Integrated Routing and Bridging) interface, the L3 gateway for the V
 routing; frames bridge within the VLAN but cannot reach other VLANs — the IRB is the
 routed gateway.
 
-**Cleanup:** `configure; delete vlans SALES; delete interfaces irb unit 10; commit`.
+**Rollback:** `configure; delete vlans SALES; delete interfaces irb unit 10; commit`.
 
 ### Lab 2.2 — Spanning Tree (Objective: Spanning Tree)
 
@@ -176,7 +176,7 @@ agreement.
 adjusting `cost`/`priority` changes the topology — port role follows cost/priority,
 not cabling.
 
-**Cleanup:** `configure; delete protocols rstp; commit`.
+**Rollback:** `configure; delete protocols rstp; commit`.
 
 ### Lab 2.3 — Layer 2 Security (Objective: Layer 2 Security)
 
@@ -200,7 +200,7 @@ IP source guard), **MACsec**, and **storm control**.
 **Negative test:** a host port receiving BPDUs with `bpdu-block-on-edge` is disabled
 (BPDU-inconsistent) — the protection blocks a switch plugged into an access port.
 
-**Cleanup:** `configure; delete forwarding-options storm-control-profiles;
+**Rollback:** `configure; delete forwarding-options storm-control-profiles;
 delete protocols rstp bpdu-block-on-edge; commit`.
 
 ### Lab 2.4 — Protocol-Independent Routing (Objective: Protocol-Independent Routing)
@@ -226,7 +226,7 @@ protocol; the `per-packet` policy enables ECMP in the FIB (Junos hashes per flow
 not active; Junos suppresses it until a contributor exists — aggregates need a
 contributing route.
 
-**Cleanup:** `configure; delete routing-options aggregate; delete routing-options
+**Rollback:** `configure; delete routing-options aggregate; delete routing-options
 forwarding-table export; commit`.
 
 ### Lab 2.5 — OSPF (Objective: OSPF)
@@ -251,7 +251,7 @@ broadcast links, and computes SPF; Junos shows neighbor state, LSDB, and results
 `ExStart`/`Init`; `show ospf neighbor` reveals the non-Full state — parameters must
 match.
 
-**Cleanup:** `configure; delete protocols ospf; commit`.
+**Rollback:** `configure; delete protocols ospf; commit`.
 
 ### Lab 2.6 — IS-IS (Objective: IS-IS)
 
@@ -275,7 +275,7 @@ adjacencies, and floods LSPs; Junos requires the `iso` family and a NET on lo0.
 **Negative test:** omit the `iso` family/NET on lo0; IS-IS never forms an adjacency —
 the NET address is mandatory.
 
-**Cleanup:** `configure; delete protocols isis; delete interfaces lo0 unit 0 family
+**Rollback:** `configure; delete protocols isis; delete interfaces lo0 unit 0 family
 iso; commit`.
 
 ### Lab 2.7 — BGP (Objective: BGP)
@@ -300,7 +300,7 @@ next-hop and loop-prevention rules.
 **Negative test:** an IBGP peer with no `next-hop self` or IGP route to the next-hop
 leaves routes hidden — IBGP next-hop reachability must be resolved.
 
-**Cleanup:** `configure; delete protocols bgp; commit`.
+**Rollback:** `configure; delete protocols bgp; commit`.
 
 ### Lab 2.8 — IP Tunnels (Objective: IP Tunnels)
 
@@ -323,7 +323,7 @@ IP network; the tunnel needs a routable source/destination and a tunnel PIC/serv
 stays down; `show interfaces gr-0/0/0` shows no session — the underlay path to the
 tunnel endpoint is required.
 
-**Cleanup:** `configure; delete interfaces gr-0/0/0; commit`.
+**Rollback:** `configure; delete interfaces gr-0/0/0; commit`.
 
 ### Lab 2.9 — High Availability (Objective: High Availability)
 
@@ -349,7 +349,7 @@ ISSU for hitless upgrades.
 **Negative test:** a VRRP group with mismatched virtual-address or authentication
 between routers elects two masters (both active) — the group parameters must match.
 
-**Cleanup:** `configure; delete interfaces ae0; delete interfaces irb unit 10 family
+**Rollback:** `configure; delete interfaces ae0; delete interfaces irb unit 10 family
 inet address 10.10.10.2/24 vrrp-group 1; commit`.
 
 ## Lab Verification

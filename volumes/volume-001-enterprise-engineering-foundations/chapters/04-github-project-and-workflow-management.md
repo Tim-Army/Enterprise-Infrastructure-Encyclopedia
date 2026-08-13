@@ -357,7 +357,7 @@ prioritized rather than living in chat or someone's memory.
 **Negative test:** track work in ad-hoc chat messages; it is lost, unsearchable, and unlinked to the
 code that resolved it — issues give work a durable, referenceable home.
 
-**Cleanup:** `gh issue close <n>` for the lab issue.
+**Rollback:** `gh issue close <n>` for the lab issue.
 
 ### Lab 4.2 — Pull requests and review (Topic: Code review)
 
@@ -378,7 +378,7 @@ is the unit of review and discussion: it shows the diff, runs CI, collects appro
 **Negative test:** push straight to `main` with no PR; the change lands unreviewed, CI-gate skipped,
 and with no discussion record — the PR is the review and quality checkpoint.
 
-**Cleanup:** close the lab PR and delete the branch.
+**Rollback:** close the lab PR and delete the branch.
 
 ### Lab 4.3 — Branch protection (Topic: Governance)
 
@@ -399,7 +399,7 @@ rules*, so the process cannot be bypassed under deadline pressure.
 **Negative test:** rely on team discipline alone to always use PRs; under pressure someone pushes to
 `main` and breaks it — branch protection enforces the process mechanically.
 
-**Cleanup:** relax the protection rule if it was set only for the lab.
+**Rollback:** relax the protection rule if it was set only for the lab.
 
 ### Lab 4.4 — Project automation with gh (Topic: Workflow automation)
 
@@ -418,7 +418,7 @@ automation) — the `gh` CLI and API make project management programmable, so ro
 **Negative test:** manage a large backlog entirely by clicking the web UI; triage is slow and
 inconsistent — scripting routine operations with `gh` makes them fast and repeatable.
 
-**Cleanup:** none (read-only query).
+**Rollback:** none (read-only query).
 
 ## Lab Verification
 

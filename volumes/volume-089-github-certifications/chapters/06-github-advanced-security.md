@@ -96,7 +96,7 @@ gh api repos/octocat/repo/code-scanning/alerts --jq 'length'
 **Negative test:** run CodeQL but never look at the Security tab; **triage** the alerts and fix the
 high-severity ones.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 6.2 — Reason about secret scanning and push protection
 
@@ -126,7 +126,7 @@ secret lands (and must be rotated).
 **Negative test:** commit an API key with push protection off and assume it is fine; enable **push
 protection** and rotate any leaked secret.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Reason about Dependabot
 
@@ -156,7 +156,7 @@ supply-chain patching.
 **Negative test:** ignore Dependabot PRs for months; review and merge **security updates** promptly, and
 require **dependency review** on PRs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Require dependency review on PRs
 
@@ -186,7 +186,7 @@ blocked before merge.
 **Negative test:** allow any dependency to be added and scan only after release; **dependency review**
 catches it in the PR.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 git rm .github/workflows/codeql.yml .github/workflows/dep-review.yml && git commit -m "Remove demo GHAS workflows" && git push

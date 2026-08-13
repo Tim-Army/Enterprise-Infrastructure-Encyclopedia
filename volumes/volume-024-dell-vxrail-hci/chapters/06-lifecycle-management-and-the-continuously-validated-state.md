@@ -411,7 +411,7 @@ as one bundle, so "what version am I on" answers for the whole stack, not per co
 leaves the validated state and Dell support/LCM no longer guarantee compatibility — components move
 together, as a bundle, through LCM.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Check for updates (Topic: Update discovery)
 
@@ -436,7 +436,7 @@ plan a single stack upgrade rather than tracking dozens of component versions.
 "current" set; you recreate the compatibility problem VxRail solved — the composite bundle is the
 supported update unit.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Pre-upgrade health check (Topic: Upgrade readiness)
 
@@ -456,7 +456,7 @@ time, which requires healthy vSAN and enough slack capacity to evacuate each hos
 host cannot safely enter maintenance mode and the upgrade stalls or risks data — the precheck is the
 gate that prevents an unsafe upgrade.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Run an LCM upgrade (Topic: Lifecycle upgrade)
 
@@ -479,7 +479,7 @@ and vCenter.
 unsupported/untested combination and break LCM — the orchestrated bundle upgrade is what keeps the
 stack validated and supported.
 
-**Cleanup:** none (leave the cluster on the upgraded version).
+**Rollback:** none (leave the cluster on the upgraded version).
 
 ## Lab Verification
 

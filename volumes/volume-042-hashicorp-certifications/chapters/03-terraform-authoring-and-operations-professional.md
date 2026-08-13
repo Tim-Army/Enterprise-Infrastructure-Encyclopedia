@@ -105,7 +105,7 @@ replacement — lifecycle control (Objective 1).
 downtime; use **`create_before_destroy`** so the new resource exists before the
 old is removed.
 
-**Cleanup:** stay in `tf-pro`.
+**Rollback:** stay in `tf-pro`.
 
 ### Lab 3.2 — Objective 2: Develop and troubleshoot dynamic configuration
 
@@ -130,7 +130,7 @@ configuration (Objective 2).
 **Negative test:** use `count` with a list and then reorder it; indices shift and
 resources are destroyed/recreated — `for_each` keys are stable.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Objective 3: Develop collaborative Terraform workflows
 
@@ -149,7 +149,7 @@ pattern (Objective 3).
 **Negative test:** run dev and prod from one default workspace/state; a mistake in
 one affects the other — separate with **workspaces** or separate state.
 
-**Cleanup:** `terraform workspace select default`
+**Rollback:** `terraform workspace select default`
 
 ### Lab 3.4 — Objective 4: Create, maintain, and use Terraform modules
 
@@ -176,7 +176,7 @@ through the root — authoring, calling, and wiring module I/O (Objective 4).
 **Negative test:** duplicate the resource block in every config; a **module**
 encapsulates and versions it — call the module instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Objective 5: Configure and use Terraform providers
 
@@ -202,7 +202,7 @@ version pinning (Objective 5).
 **Negative test:** leave providers unpinned; a major-version bump can break the
 config — constrain versions with `~>`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.6 — Objective 6: Collaborate on IaC using HCP Terraform
 
@@ -226,7 +226,7 @@ collaboration, plus what HCP enforces (remote runs, RBAC, policy) — Objective 
 **Negative test:** share a local state file over a network drive; concurrent runs
 corrupt it — use **HCP Terraform** or a locking remote backend.
 
-**Cleanup:** `cd .. && rm -rf tf-pro`
+**Rollback:** `cd .. && rm -rf tf-pro`
 
 ## Lab Verification
 

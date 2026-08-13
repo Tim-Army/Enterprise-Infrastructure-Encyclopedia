@@ -24,7 +24,7 @@ FortiAnalyzer  <--(logs)--  fabric members  (central visibility)
 
 **Negative test (reasoning).** Assume the Security Fabric segments by itself. It does not — the fabric shares objects and visibility; the *policies* (Chapter 05) and *VDOMs* (Chapter 07) are what enforce. The fabric scales and coordinates them.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 8.2 — Reactive containment with an automation stitch
 
@@ -74,7 +74,7 @@ sudo nft delete element inet fgt quarantine '{ 10.30.3.10 }'
 
 **Negative test.** Placing the quarantine deny below a permit lets a contained host keep an allowed flow; the reactive deny must be first.
 
-**Cleanup.** Remove the test member.
+**Rollback.** Remove the test member.
 
 ### Exercise 8.3 — The boundary
 
@@ -94,7 +94,7 @@ sudo ip netns exec db bash -c 'nc -z -w2 10.30.2.11 5432 2>/dev/null || echo "in
 
 **Negative test.** Assume one flat segment with an intra-zone deny suffices — same-subnet traffic never reaches the ISFW, so the deny never applies. Segmentation design decides what the firewall can enforce.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

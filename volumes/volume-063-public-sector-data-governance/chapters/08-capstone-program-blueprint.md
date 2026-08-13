@@ -66,7 +66,7 @@ point for a roadmap.
 **Negative test:** declare the program "mature" with no assessment; maturity must be
 **measured** per area — score it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Roadmap from the baseline
 
@@ -87,7 +87,7 @@ incremental roadmap.
 **Negative test:** plan to fix everything at once; governance matures **incrementally** —
 sequence the weakest first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — End-to-end dataset trace
 
@@ -113,7 +113,7 @@ the design proven on a real record.
 **Negative test:** scale the program before tracing any dataset; validate the design on **one**
 first — trace before you scale.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Executive one-pager
 
@@ -139,7 +139,7 @@ roles, obligations, and next steps.
 **Negative test:** brief executives with a 40-page document; leadership needs a **one-pager** —
 summarize.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

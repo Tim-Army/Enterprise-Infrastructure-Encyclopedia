@@ -78,7 +78,7 @@ layered coverage.
 **Negative test:** rely on one control for all of CIA; **defense in depth** spreads coverage —
 map several layers.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Evaluate a Zero Trust decision
 
@@ -99,7 +99,7 @@ Zero Trust in action.
 **Negative test:** allow by network location ("inside the perimeter"); Zero Trust **verifies
 every access** regardless of location.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Map the portfolio to a problem
 
@@ -121,7 +121,7 @@ literacy.
 **Negative test:** try to fix a cloud misconfiguration with the firewall; use **Prisma/Cortex
 Cloud** — match the platform to the problem.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -39,7 +39,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Note the app is blocked too — deny-by-default denies the legitimate flow along with the attack, which is why the next step authorizes exactly the app identity.
 
-**Cleanup.** Keep the Server.
+**Rollback.** Keep the Server.
 
 ### Lab 7.2 — Authorize the app identity
 
@@ -76,7 +76,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Point the `MeshTLSAuthentication` at `sa-hmi...` and the operator gets in while the app is denied — you authorized the wrong identity. Revert to `sa-web`.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Lab 7.3 — Protect the API and validate end to end
 
@@ -116,7 +116,7 @@ Every allow and deny is by mTLS-verified identity. (For per-HTTP-route authoriza
 
 **Negative test.** Delete the `db` Server and the port returns to the namespace's default policy (allow), so `hmi → db` reaches again. The `Server` is what makes the port deny-by-default. Re-apply it.
 
-**Cleanup.** Leave the policies for Chapter 08.
+**Rollback.** Leave the policies for Chapter 08.
 
 ## Summary and Completion Checklist
 

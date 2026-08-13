@@ -30,7 +30,7 @@ wait
 
 **Negative test.** A closed port (`hmi->db:502`) never appears in the baseline because no connection succeeds — the baseline records conversations, so a failed probe does not pollute it, but a *successful* lateral movement does.
 
-**Cleanup.** Keep the capture.
+**Rollback.** Keep the capture.
 
 ### Exercise 4.2 — See the attack in the raw baseline
 
@@ -56,7 +56,7 @@ Enforcing this raw baseline would permit the very flow you want to stop.
 
 **Negative test.** Assume a learned baseline is automatically a safe policy. It is not — it is a record of what happened, attacks included. Blindly enforcing it is how observe-then-enforce goes wrong.
 
-**Cleanup.** Keep the raw baseline.
+**Rollback.** Keep the raw baseline.
 
 ### Exercise 4.3 — Curate the baseline
 
@@ -82,7 +82,7 @@ The curated baseline contains only the two intended flows — the same result as
 
 **Negative test.** Skipping the review and shipping `baseline-raw.txt` would encode the attack as policy. The human sanction step is not optional.
 
-**Cleanup.** Keep the curated `/tmp/baseline.txt`.
+**Rollback.** Keep the curated `/tmp/baseline.txt`.
 
 ## Summary and Completion Checklist
 

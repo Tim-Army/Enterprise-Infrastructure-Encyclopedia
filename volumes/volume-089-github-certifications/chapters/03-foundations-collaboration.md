@@ -74,7 +74,7 @@ gh issue list --json number,title,labels --jq '.[] | {number, title, labels: [.l
 **Negative test:** open a vague issue with no title/label; write a clear title and label so it can be
 triaged.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.2 — Link a PR to an issue
 
@@ -99,7 +99,7 @@ https://github.com/octocat/foundations-demo/pull/2
 **Negative test:** open a PR unlinked to its issue; use a **closing keyword** (`Closes #1`) so the issue
 resolves on merge.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.3 — Review and merge a pull request
 
@@ -124,7 +124,7 @@ review-and-merge flow.
 **Negative test:** merge your own PR with no review on a shared repo; require **review** (enforced by
 rulesets, Chapter 07).
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 3.4 — Organize work in a Project
 
@@ -144,7 +144,7 @@ gh project item-list 1 --owner octocat --format json --jq '.items | length'
 
 **Negative test:** track a cross-repo roadmap in a single repo's issues; use a **Project** to span repos.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 gh repo delete octocat/foundations-demo --yes

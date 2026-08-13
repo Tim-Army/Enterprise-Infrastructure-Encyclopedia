@@ -29,7 +29,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet8*" -AddressFamily IPv4 | Select-Object 
 
 **Negative test.** Changing the subnet after building VMs breaks egress until every guest is re-addressed. Fix it now.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Configure VMnet2 (host-only — Data Center)
 
@@ -49,7 +49,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet2*" -AddressFamily IPv4 | Select-Object 
 
 **Negative test.** DHCP on lets a lease renewal mask a blocked-flow result. Off is deliberate.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Configure VMnet4 (host-only — Database)
 
@@ -69,7 +69,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet4*" -AddressFamily IPv4 | Select-Object 
 
 **Negative test.** Put the database back on VMnet2 with the app and HMI, and `el-gw` (a router) no longer sees app→db or HMI→db — they become intra-segment L2 traffic. Every enforcement result in Chapters 07–08 would then be untestable on this router-only lab. Keep the database on its own segment.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Configure VMnet3 (host-only — OT Cell, fully isolated)
 
@@ -89,7 +89,7 @@ Get-NetIPAddress -InterfaceAlias "*VMnet3*" -AddressFamily IPv4 -ErrorAction Sil
 
 **Negative test.** Ticking the host adapter here gives a path that bypasses `el-gw`; enforcement results in Chapter 08 would be measured on the wrong path. Leave it unchecked.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

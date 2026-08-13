@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Trusting a Windows-first EDR ported to macOS to catch Apple-native techniques. TCC abuse and Gatekeeper bypass are not in its model; they pass as unremarkable while a Mac-aware sensor alerts.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Compliance monitoring against a benchmark
 
@@ -127,7 +127,7 @@ EOF
 
 **Negative test:** Treating compliance as a point-in-time audit. Devices drift the day after the report; only continuous monitoring catches the FileVault that got turned off last Tuesday before it becomes an incident.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

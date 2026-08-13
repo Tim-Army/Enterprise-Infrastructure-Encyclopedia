@@ -119,7 +119,7 @@ the current versions (003/002 are retired) from the authority.
 **Negative test:** study a "Terraform Associate 003" course; it targets the
 retired version — confirm the current code first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Verify the tooling (Topic: Prepare to practice)
 
@@ -136,7 +136,7 @@ lab in this volume uses.
 **Negative test:** study Terraform without the CLI installed; the exams are
 hands-on in spirit — install and use the tools.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Start a Vault dev server (Topic: Prepare the Vault labs)
 
@@ -154,7 +154,7 @@ Vault for the Vault Associate and Professional labs.
 **Negative test:** use a dev server in production; it is in-memory and unsealed
 for convenience — dev mode is for learning only.
 
-**Cleanup:** `pkill -f 'vault server -dev'` when finished with the Vault chapters.
+**Rollback:** `pkill -f 'vault server -dev'` when finished with the Vault chapters.
 
 ## Lab Verification
 

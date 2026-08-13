@@ -308,7 +308,7 @@ transport nodes listed — the prepared fabric an advanced deploy starts from.
 uplink profile; preparation fails on that host — profile dependencies are
 validated.
 
-**Cleanup:** none (read-only inspection of an existing prep).
+**Rollback:** none (read-only inspection of an existing prep).
 
 ### Lab 18.2 — Create and manage virtual networks (Objective 4.2)
 
@@ -330,7 +330,7 @@ the Tier-1 — a working multi-tier virtual network.
 **Negative test:** overlapping subnets on two segments of the same Tier-1
 are rejected at realization — the overlap constraint.
 
-**Cleanup:** delete the two segments.
+**Rollback:** delete the two segments.
 
 ### Lab 18.3 — Deploy and manage network services (Objective 4.3)
 
@@ -352,7 +352,7 @@ curl -sk -H "$H" "$NSX/policy/api/v1/infra/lb-virtual-servers/vs-web" | jq -r '.
 undersized/empty Edge cluster; it never reaches `UP` — Edge capacity gates
 LB deployment.
 
-**Cleanup:** delete the virtual server and LB service.
+**Rollback:** delete the virtual server and LB service.
 
 ### Lab 18.4 — Secure a virtual data center (Objective 4.4)
 
@@ -372,7 +372,7 @@ deny — a zero-trust micro-segment.
 **Negative test:** place the deny *above* the allow; legitimate web→app
 traffic is dropped — DFW evaluates top-down, so order is the control.
 
-**Cleanup:** delete the security policy.
+**Rollback:** delete the security policy.
 
 ### Lab 18.5 — Deploy central authentication (Objective 4.6)
 
@@ -390,7 +390,7 @@ delegates authentication to central SSO.
 integration; NSX rejects the OAuth handshake — the thumbprint must be
 trusted.
 
-**Cleanup:** none (read-only; do not disable a shared VIDM in a lab).
+**Rollback:** none (read-only; do not disable a shared VIDM in a lab).
 
 ### Lab 18.6 — Configure Enhanced Data Path (Objective 5.1)
 
@@ -408,7 +408,7 @@ the enhanced data path for high-throughput, latency-sensitive workloads.
 **Negative test:** run a DPDK-dependent workload on a `STANDARD` host switch;
 throughput falls short — the workload requires the enhanced data path mode.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.7 — Configure Quality of Service (Objective 5.2)
 
@@ -427,7 +427,7 @@ per-segment bandwidth control.
 **Negative test:** a noisy segment with no QoS profile starves its
 neighbors on a shared uplink; the profile is what bounds it.
 
-**Cleanup:** delete the QoS profile.
+**Rollback:** delete the QoS profile.
 
 ### Lab 18.8 — Perform advanced troubleshooting (Objective 6.1)
 
@@ -447,7 +447,7 @@ advanced fault isolation.
 **Negative test:** guessing from interface counters alone cannot say *which*
 DFW rule dropped a flow; the trace names it.
 
-**Cleanup:** none (diagnostic).
+**Rollback:** none (diagnostic).
 
 ### Lab 18.9 — Perform operational management (Objective 7.1)
 
@@ -465,7 +465,7 @@ the operational safety net for the control plane.
 `success: false`; operational management means verifying, not assuming, the
 backup.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 18.10 — Use API and CLI to manage a deployment (Objective 7.2)
 
@@ -483,7 +483,7 @@ the API surface that makes NSX auditable and automatable at scale.
 intent object looks fine confirms realization, not intent, is where a
 silent failure hides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 **VCAP-DCV Design (3V0-21.23) — Labs 18.11–18.24 (command-driven design walkthroughs)**
 
@@ -505,7 +505,7 @@ and model). Note where a physical constraint forces a logical change.
 the requirement is known — produces a design that cannot be justified from
 objectives.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.12 — Describe VMware Cloud Foundation architecture (Objective 2.1)
 
@@ -523,7 +523,7 @@ design must respect.
 **Negative test:** designing workloads onto the management domain violates
 VCF separation of concerns — the architecture constrains the design.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.13 — Describe VMware Validated Solutions architecture (Objective 2.2)
 
@@ -542,7 +542,7 @@ argued, not accidental.
 **Negative test:** a bespoke architecture that ignores the relevant
 Validated Solution carries risk the VVS already retired.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.14 — Gather and analyze requirements (Objective 3.1)
 
@@ -561,7 +561,7 @@ measurable acceptance test. **Negative test:** an unmeasurable requirement
 ("must be fast") cannot be designed to or validated — rewrite it as a number
 (p95 latency) before proceeding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.15 — Create a conceptual model (Objective 3.2)
 
@@ -576,7 +576,7 @@ management) and their relationships — no product names yet. **Negative
 test:** naming "vSAN" in the conceptual model prematurely binds a physical
 choice a requirement might not support.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.16 — Create a logical design (Objective 3.3)
 
@@ -592,7 +592,7 @@ Get-Cluster | Select Name, HAEnabled, DrsEnabled,
 requirement each element satisfies. **Negative test:** a logical element
 with no traceable requirement is scope creep — remove or justify it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.17 — Create a physical design (Objective 3.4)
 
@@ -609,7 +609,7 @@ sizing, each traced to a logical requirement. **Negative test:** a physical
 spec that cannot meet the logical N+1 (e.g. 2 hosts for a 3-host quorum) is
 an invalid design.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.18 — Design for manageability: capacity planning (Objective 3.5)
 
@@ -625,7 +625,7 @@ capacity buffer it implies. **Negative test:** designing to 100% utilization
 leaves no room for failover or growth — a capacity design must reserve
 headroom.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.19 — Design for manageability: scalability (Objective 3.6)
 
@@ -640,7 +640,7 @@ and the config maximum it approaches. **Negative test:** a design that
 scales only by resizing hosts (scale-up) hits a hard ceiling a scale-out
 unit avoids.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.20 — Design for manageability: lifecycle (Objective 3.7)
 
@@ -655,7 +655,7 @@ Get-Cluster | Select Name, @{N='Image';E={($_ | Get-LcmClusterImage).Version}} 2
 baseline) and the maintenance-window impact. **Negative test:** a design with
 no rollback path for firmware/driver updates risks an unrecoverable upgrade.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.21 — Design for availability (Objective 3.8)
 
@@ -671,7 +671,7 @@ policy that meet the stated RTO. **Negative test:** HA enabled but admission
 control disabled means a failover may find no capacity — availability on
 paper only.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.22 — Design for performance (Objective 3.9)
 
@@ -686,7 +686,7 @@ Get-Stat -Entity (Get-Cluster) -Stat 'disk.maxTotalLatency.latest' -Realtime -Ma
 (all-flash, storage policy, DRS) chosen to close any gap. **Negative test:**
 designing for average latency ignores a p99 that violates the SLA.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.23 — Design for security (Objective 3.10)
 
@@ -704,7 +704,7 @@ choices, traced to the security requirement. **Negative test:** a design that
 leaves lockdown `disabled` on hosts handling regulated data fails its own
 security objective.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.24 — Design for recoverability (Objective 3.11)
 
@@ -720,7 +720,7 @@ satisfies the RPO, and the restore-test cadence. **Negative test:** relying
 on snapshots as "backup" — they share the datastore's fate — fails
 recoverability; the design needs off-array copies.
 
-**Cleanup:** remove any lab snapshots created.
+**Rollback:** remove any lab snapshots created.
 
 ### Lab 18.25 — VCF 9.0 role-exam readiness (3V0-11.26 … 3V0-25.25)
 
@@ -746,7 +746,7 @@ healthy baseline — a per-role readiness signal.
 product understates the advanced tier's depth; re-check against the live
 guide once Broadcom publishes it ([[encyclopedia-cert-currency-check-cadence]]).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 18.26 — Two-format readiness artifact (integrative)
 
@@ -794,7 +794,7 @@ ready for.
    you can defend end to end points toward a Design exam and, beyond it,
    Chapter 19.
 
-5. **Cleanup:** tear down the NSX build to its clean baseline and archive
+5. **Rollback:** tear down the NSX build to its clean baseline and archive
    (do not discard) the design artifact — it is the seed of a Distinguished
    Expert design document.
 

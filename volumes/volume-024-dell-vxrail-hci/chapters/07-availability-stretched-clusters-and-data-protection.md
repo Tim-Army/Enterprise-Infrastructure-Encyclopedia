@@ -398,7 +398,7 @@ performance/small clusters, erasure coding (RAID-5/6) for capacity efficiency on
 **Negative test:** apply an FTT=2 RAID-6 policy on a 4-host cluster; objects are non-compliant
 because RAID-6 needs ≥6 hosts — the policy's resilience must fit the cluster's host count.
 
-**Cleanup:** revert the lab VM to the default policy.
+**Rollback:** revert the lab VM to the default policy.
 
 ### Lab 7.2 — Stretched cluster (Topic: Site resilience)
 
@@ -419,7 +419,7 @@ surviving site), and the witness at a third location is what arbitrates to avoid
 site loses both a copy and the witness, breaking arbitration — the witness must be at an independent
 third location.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — Data protection and replication (Topic: Data protection)
 
@@ -442,7 +442,7 @@ needed.
 faithfully mirrored to every FTT copy — resilience is not backup, so a separate point-in-time copy
 is required.
 
-**Cleanup:** remove the lab protection job if created only for the exercise.
+**Rollback:** remove the lab protection job if created only for the exercise.
 
 ### Lab 7.4 — Availability validation (Topic: Failure testing)
 
@@ -464,7 +464,7 @@ deliver the resilience the policies promise, rather than assuming it.
 admission-control or insufficient slack only reveals itself during a real outage — a controlled
 failure test proves it in advance.
 
-**Cleanup:** exit maintenance mode / restore the host; confirm health returns to green.
+**Rollback:** exit maintenance mode / restore the host; confirm health returns to green.
 
 ## Lab Verification
 

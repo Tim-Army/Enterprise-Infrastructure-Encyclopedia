@@ -342,7 +342,7 @@ before it can frame traffic to it; the neighbor table caches those mappings.
 **Negative test:** send to an IP with no resolvable MAC (host down); the frame cannot be built and
 traffic queues/fails at ARP — L2 delivery needs the destination MAC, which ARP provides.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — The Linux bridge as a switch (Topic: Switching)
 
@@ -363,7 +363,7 @@ on which port, flooding only unknown/broadcast frames, which is what makes switc
 **Negative test:** expect a bridge to forward between different IP subnets; it operates at L2 (MACs)
 only — inter-subnet forwarding is routing (L3, Chapter 04), not switching.
 
-**Cleanup:** `sudo ip link del veth0; sudo ip link del br0`.
+**Rollback:** `sudo ip link del veth0; sudo ip link del br0`.
 
 ### Lab 3.3 — VLANs (802.1Q) (Topic: VLANs)
 
@@ -384,7 +384,7 @@ multiple isolated broadcast domains, each a separate segment (and typically a se
 separate broadcast domains — inter-VLAN traffic requires L3 routing (a router-on-a-stick or L3
 switch).
 
-**Cleanup:** `sudo ip link del eth0.30`.
+**Rollback:** `sudo ip link del eth0.30`.
 
 ### Lab 3.4 — Layer-2 resilience: STP and link aggregation (Topic: L2 resilience)
 
@@ -404,7 +404,7 @@ loops, and **link aggregation** (LACP) to combine links for bandwidth and failov
 **Negative test:** connect redundant switch links with STP disabled; a bridging loop floods until the
 segment collapses (broadcast storm) — STP is what makes redundant L2 links safe.
 
-**Cleanup:** `sudo ip link del bond0 2>/dev/null; true`.
+**Rollback:** `sudo ip link del bond0 2>/dev/null; true`.
 
 ## Lab Verification
 

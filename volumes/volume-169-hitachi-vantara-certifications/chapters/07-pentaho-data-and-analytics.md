@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Reporting directly on the raw source without the PDI transformation. Cancelled orders and string amounts corrupt the totals; the ETL transformation (filter, type-convert, calculate) is what prepares clean, correct data for the analytics to present.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

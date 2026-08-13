@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** Set `AllowedIPs = 0.0.0.0/0` (full tunnel) when only cloud access is needed — you backhaul all the user's internet traffic through the cloud (latency, egress cost); split tunnel is the default for cloud-app access.
 
-**Cleanup:** `rm -f user.key user.pub gw.key gw.pub`.
+**Rollback:** `rm -f user.key user.pub gw.key gw.pub`.
 
 ### Lab 7.2 — Site2Cloud IPsec tunnel
 
@@ -70,7 +70,7 @@ sudo ip netns exec branch ping -c1 -W2 172.16.0.2 | grep -o "1 received"
 
 **Negative test:** Bring the tunnel up but forget to advertise the branch LAN route to the cloud side — cloud→branch fails though the tunnel is "up"; the exam tests that connectivity needs both the tunnel *and* the routes.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 7.3 — Overlapping CIDRs across the tunnel
 
@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Connecting two overlapping 10.20.0.0/16 networks without NAT — routing is ambiguous and breaks; the mapped CIDR is mandatory, not optional.
 
-**Cleanup:** `for ns in branch cloudgw; do sudo ip netns del $ns 2>/dev/null; done`.
+**Rollback:** `for ns in branch cloudgw; do sudo ip netns del $ns 2>/dev/null; done`.
 
 ### Lab 7.4 — Edge and backbone (design)
 
@@ -107,7 +107,7 @@ Secure Edge / Cloud Backbone: extend the Aviatrix overlay to on-prem/edge sites 
 
 **Negative test:** Treating edge sites as unmanaged tunnels — you lose the unified policy/visibility that is the overlay's whole point; the backbone extends the model, not just the reachability.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

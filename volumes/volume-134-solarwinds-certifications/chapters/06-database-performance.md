@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Responding to "the database is slow" by adding CPU or storage — with 68% of the time in lock waits, faster hardware makes the blocked sessions wait at exactly the same speed.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Rank queries by total impact
 
@@ -119,7 +119,7 @@ EOF
 
 **Negative test:** Tuning the query at the top of a "slowest queries" report — that report ranks by per-execution time, which systematically hides the high-frequency queries that dominate total load.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Blocking chains versus resource contention
 
@@ -156,7 +156,7 @@ EOF
 
 **Negative test:** Killing the session with the longest wait time — that is usually the session at the *end* of the chain, the biggest victim rather than the cause, and the blocking resumes immediately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

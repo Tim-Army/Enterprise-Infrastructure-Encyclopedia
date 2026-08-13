@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Automating the process people complain about most. The hated month-end report runs once a month, so automating it saves little; ROI-based prioritization surfaces the high-volume tasks that actually cost the most time.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

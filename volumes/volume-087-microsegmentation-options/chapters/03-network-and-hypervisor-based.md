@@ -106,7 +106,7 @@ membership updates automatically as VMs are tagged.
 **Negative test:** pin rules to VM IPs; a re-IP or new VM slips policy — use **tag-based** security
 groups.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Model a Cisco ACI contract
 
@@ -132,7 +132,7 @@ default.
 **Negative test:** put all workloads in one EPG for convenience; intra-EPG traffic is unrestricted —
 separate tiers into distinct EPGs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Compare the two enforcement points
 
@@ -155,7 +155,7 @@ PY
 **Negative test:** rely on NSX or ACI alone for a hybrid estate with cloud and OT; add a complementary
 model for those assets.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Reason about requirements and lock-in
 
@@ -179,7 +179,7 @@ enforcement.
 **Negative test:** plan NSX DFW without NSX licensing, or ACI without the fabric; both require their
 platform — budget it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -68,7 +68,7 @@ fleet.
 **Negative test:** manage nodes individually by hand; the **Leader** manages them centrally
 — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Organize a fleet
 
@@ -86,7 +86,7 @@ per-group overrides.
 **Negative test:** configure each node separately; **fleets + hierarchy** scale to
 thousands.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Configure collection
 
@@ -102,7 +102,7 @@ collection.
 **Negative test:** ship raw files off-host to be parsed centrally; **collect + light-process
 on Edge**, then forward.
 
-**Cleanup:** remove the source.
+**Rollback:** remove the source.
 
 ### Lab 5.4 — Forward to Stream
 
@@ -118,7 +118,7 @@ pattern.
 **Negative test:** do heavy processing on the Edge node; **forward to Stream** for the heavy
 lifting — keep Edge light.
 
-**Cleanup:** remove the destination.
+**Rollback:** remove the destination.
 
 ## Lab Verification
 

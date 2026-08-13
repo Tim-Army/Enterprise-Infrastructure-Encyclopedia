@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Debugging the pod when a PVC will not bind — the pod is a victim; the mode or class mismatch is visible only on the claim.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Replication factor and node failure
 
@@ -115,7 +115,7 @@ EOF
 
 **Negative test:** Setting replication factor 1 cluster-wide to save capacity — the first node failure destroys every stateful workload simultaneously.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Protecting stateful applications
 
@@ -154,7 +154,7 @@ EOF
 
 **Negative test:** Snapshotting each PVC on its own schedule — the data and write-ahead-log volumes drift apart, and recovery may fail in ways that only appear when you attempt it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** Assuming the Engineer tier is a multiple-choice exam. It is validated through hands-on lab challenges a live Delinea expert assesses (including break-fix troubleshooting) — a prove-you-can-do-it model, not recall.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Why an expert-assessed practical tier
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Judging PAM competence by a knowledge quiz alone. Operating a vault, session recording, and least-privilege policies is a hands-on skill; only a practical, assessed lab proves the candidate can configure and troubleshoot it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

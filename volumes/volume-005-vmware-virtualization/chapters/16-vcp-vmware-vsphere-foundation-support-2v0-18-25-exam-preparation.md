@@ -300,7 +300,7 @@ evidence a support engineer reads when a host will not join.
 points elsewhere (vCenter side); absence of host-side errors is itself a
 diagnostic that redirects the search.
 
-**Cleanup:** none (read-only log inspection).
+**Rollback:** none (read-only log inspection).
 
 ### Lab 16.2 — Troubleshoot a VVF upgrade (Objective 5.2)
 
@@ -319,7 +319,7 @@ still on the old build reveal exactly where the upgrade stopped.
 blocks cluster remediation; spotting that state is what unblocks the
 upgrade.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.3 — Troubleshoot a VVF cluster (Objective 5.3)
 
@@ -339,7 +339,7 @@ fault.
 host go `networkPartitionedFromMaster` — the split-brain condition HA
 heartbeat datastores exist to resolve.
 
-**Cleanup:** restore management network redundancy.
+**Rollback:** restore management network redundancy.
 
 ### Lab 16.4 — Troubleshoot license management (Objective 5.4)
 
@@ -359,7 +359,7 @@ committed license is visible as `Used ≥ Total` or an eval key.
 **Negative test:** let a host's evaluation license lapse; vMotion and other
 licensed features stop working — the outage a licensing audit prevents.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.5 — Troubleshoot compute (Objective 5.5)
 
@@ -378,7 +378,7 @@ contention, not a guest problem.
 CPU it was given, not being starved — the distinction that redirects the
 fix from the host to the app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.6 — Troubleshoot storage (Objective 5.6)
 
@@ -396,7 +396,7 @@ grep -iE 'APD|PDL|lost access' /var/log/vmkernel.log | tail -10
 `on` device status with no APD entries; conflating "full" with "unreachable"
 sends the fix in the wrong direction.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.7 — Troubleshoot networks (Objective 5.7)
 
@@ -415,7 +415,7 @@ VLAN, or gateway).
 **Negative test:** `vmkping` fails while the uplink shows `Up`; the link is
 physically fine but the VLAN/port-group tag is wrong — an L2, not L1, fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.8 — Troubleshoot VCF Operations (Objective 5.8)
 
@@ -435,7 +435,7 @@ Invoke-RestMethod -Uri "https://vcf-ops.lab/suite-api/api/adapters" `
 false / `DOWN` — the "no data" symptom traced to authentication, not to the
 metric pipeline.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.9 — Troubleshoot VCF Operations Orchestrator (Objective 5.9)
 
@@ -456,7 +456,7 @@ step broke.
 an unanswered user interaction, a different fix than a code error — the
 state tells you which.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 16.10 — Layered support-engineer diagnostic workflow (integrative)
 
@@ -516,7 +516,7 @@ licensing-recognition exercise, all under time pressure.
    its target as an indicator of which specific chapter needs additional
    review.
 
-7. **Cleanup:** restore `hostd` to normal operation if stopped
+7. **Rollback:** restore `hostd` to normal operation if stopped
    deliberately, correct the vSAN VMkernel MTU setting, correct the port
    group VLAN ID, and confirm the baseline health check from step 1
    passes again for all three layers.

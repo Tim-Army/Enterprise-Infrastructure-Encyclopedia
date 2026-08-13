@@ -162,7 +162,7 @@ it reach the LAN while the host retains management connectivity.
 installs but VMs will not start (`hypervisor not running`) — virtualization
 extensions are required.
 
-**Cleanup:** `Remove-VMSwitch "vSwitch-Ext" -Force`.
+**Rollback:** `Remove-VMSwitch "vSwitch-Ext" -Force`.
 
 ### Lab 8.2 — Create a Generation 2 VM with Dynamic Memory (Topic: Deploy VMs)
 
@@ -182,7 +182,7 @@ Gen 2 gives UEFI/Secure Boot and is required for shielding.
 **Negative test:** attach a legacy network adapter to a Gen 2 VM; it is not
 available — Gen 2 uses only synthetic devices.
 
-**Cleanup:** `Remove-VM APP01 -Force; Remove-Item E:\VMs\APP01 -Recurse -Force`.
+**Rollback:** `Remove-VM APP01 -Force; Remove-Item E:\VMs\APP01 -Recurse -Force`.
 
 ### Lab 8.3 — Take and merge a production checkpoint (Topic: Protect VM state)
 
@@ -203,7 +203,7 @@ production checkpoints are safe for server workloads.
 `E:\VMs` grow; the AVHDX chain consumes disk until merged — never hoard
 checkpoints on production VMs.
 
-**Cleanup:** ensure no snapshots remain (`Get-VMSnapshot`).
+**Rollback:** ensure no snapshots remain (`Get-VMSnapshot`).
 
 ### Lab 8.4 — Tag a VLAN on a VM adapter (Topic: VM networking)
 
@@ -220,7 +220,7 @@ is tagged so the physical switch places it on the correct segment.
 **Negative test:** set an access VLAN the physical switch trunk does not
 carry; the VM loses connectivity — the uplink trunk must carry the VLAN.
 
-**Cleanup:** `Set-VMNetworkAdapterVlan -VMName "APP01" -Untagged`.
+**Rollback:** `Set-VMNetworkAdapterVlan -VMName "APP01" -Untagged`.
 
 ## Lab Verification
 

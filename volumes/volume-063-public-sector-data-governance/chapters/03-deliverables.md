@@ -82,7 +82,7 @@ PY
 **Negative test:** publish a charter with no **authority** line; without stated authority the
 program cannot enforce policy — add the chartering body.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Write a data policy
 
@@ -108,7 +108,7 @@ enforceable standard.
 **Negative test:** issue a policy with no owner or review date; unowned policies rot — assign
 both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Catalog a dataset with metadata
 
@@ -134,7 +134,7 @@ retention, lineage**) — a governed inventory record.
 **Negative test:** catalog a dataset with only a name; without **owner and classification**
 it cannot be governed — populate the metadata.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Data-quality scorecard
 
@@ -157,7 +157,7 @@ SQL
 **Negative test:** assert "the data is good" with no metric; quality must be **measured**
 against dimensions and thresholds — compute the scorecard.
 
-**Cleanup:** none (in-memory database).
+**Rollback:** none (in-memory database).
 
 ### Lab 3.5 — Deliverables register
 
@@ -180,7 +180,7 @@ proof the program is operating.
 **Negative test:** keep deliverables in scattered documents with no register; a **central
 register** is what auditors and the exam expect.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

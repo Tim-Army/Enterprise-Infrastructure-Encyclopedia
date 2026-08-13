@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Expecting Qlik to work like a query tool that only returns matching rows. Qlik's associative engine tracks all relationships and shows excluded (gray) values too, so you see what is *not* related; query-based tools only show matches, missing the negative-space insight.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

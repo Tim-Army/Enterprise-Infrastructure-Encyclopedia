@@ -377,7 +377,7 @@ read-only S3, no matter what policies are later attached.
 call; it is denied — the boundary wins, proving least privilege is enforced
 structurally.
 
-**Cleanup:** `aws iam delete-role --role-name app-role`.
+**Rollback:** `aws iam delete-role --role-name app-role`.
 
 ### Lab 2.2 — Design and implement authentication strategies (SCS-C03 4.1)
 
@@ -397,7 +397,7 @@ enrolling MFA until they authenticate with it.
 **Negative test:** a member without an active MFA session calls
 `s3:ListBuckets`; it is denied, proving the authentication requirement bites.
 
-**Cleanup:** delete the group policy and the group.
+**Rollback:** delete the group policy and the group.
 
 ### Lab 2.3 — Design and implement authorization strategies (SCS-C03 4.2)
 
@@ -418,7 +418,7 @@ without per-resource rules.
 tagged `project=beta`; denied, proving the tag match is the authorization
 gate.
 
-**Cleanup:** `aws iam delete-policy --policy-arn <arn>`.
+**Rollback:** `aws iam delete-policy --policy-arn <arn>`.
 
 ### Lab 2.4 — Develop a strategy to centrally deploy and manage accounts (SCS-C03 6.1)
 
@@ -437,7 +437,7 @@ account count — the foundation for central governance.
 **Negative test:** an organization in `CONSOLIDATED_BILLING` mode cannot
 attach SCPs; the missing feature set blocks centralized control.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.5 — Implement a secure and consistent deployment strategy (SCS-C03 6.2)
 
@@ -457,7 +457,7 @@ own) that guarantee consistent, secure provisioning across accounts.
 **Negative test:** an account provisioned by hand outside the StackSet drifts
 from the baseline; the StackSet is what keeps deployment consistent.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.6 — Region-restriction SCP guardrail (integrative)
 
@@ -568,7 +568,7 @@ against an OU containing production accounts.
    explicit SCP-denial) error, confirming the guardrail blocks the
    out-of-Region call regardless of the account's own IAM policy.
 
-8. **Cleanup:**
+8. **Rollback:**
 
    ```bash
    aws organizations move-account \

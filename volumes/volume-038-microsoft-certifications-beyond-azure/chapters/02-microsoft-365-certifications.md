@@ -138,7 +138,7 @@ the cloud (SaaS) services M365 delivers.
 **Negative test:** try to "install" M365 on a server; it is SaaS — Microsoft
 operates the infrastructure.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — MS-900: Describe Microsoft 365 apps and services (45–50%)
 
@@ -154,7 +154,7 @@ operates the infrastructure.
 **Negative test:** assume every SKU includes Teams Phone; add-ons like Teams
 Phone are separate service plans.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — MS-900: Describe security, compliance, privacy, and trust in Microsoft 365 (25–30%)
 
@@ -171,7 +171,7 @@ for trust and security.
 **Negative test:** treat a high Secure Score as "fully compliant"; it measures
 configuration, not regulatory compliance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — MS-900: Describe Microsoft 365 pricing, licensing, and support (10–15%)
 
@@ -187,7 +187,7 @@ manage and pay for.
 **Negative test:** assign a plan that has a prerequisite service plan without
 it; the dependency blocks activation.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — MS-102: Deploy and manage a Microsoft 365 tenant (25–30%)
 
@@ -203,7 +203,7 @@ tenant configuration MS-102 manages.
 **Negative test:** try to rename the initial `*.onmicrosoft.com` domain; it is
 fixed — add a custom verified domain instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — MS-102: Implement and manage Microsoft Entra identity and access (25–30%)
 
@@ -222,7 +222,7 @@ provisioning.
 **Negative test:** omit the `PasswordProfile`; a cloud account cannot be created
 without it.
 
-**Cleanup:** `Remove-MgUser -UserId "labuser@$d"`.
+**Rollback:** `Remove-MgUser -UserId "labuser@$d"`.
 
 ### Lab 2.7 — MS-102: Manage security and threats by using Microsoft Defender XDR (30–35%)
 
@@ -239,7 +239,7 @@ admin works.
 **Negative test:** expect endpoint alerts with no Defender for Endpoint
 onboarding; unonboarded devices produce none.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.8 — MS-102: Manage compliance by using Microsoft Purview (10–15%)
 
@@ -256,7 +256,7 @@ controls MS-102 covers.
 **Negative test:** apply a delete-retention policy without review; retention
 actions can be irreversible.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.9 — MD-102: Prepare infrastructure for devices (20–25%)
 
@@ -273,7 +273,7 @@ infrastructure Intune prepares.
 **Negative test:** enroll a device with the MDM authority unset; enrollment
 fails until Intune is the MDM authority.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.10 — MD-102: Manage and maintain devices (25–30%)
 
@@ -290,7 +290,7 @@ estate.
 **Negative test:** expect a device to appear instantly after enrollment; sync
 latency delays inventory.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.11 — MD-102: Protect devices (15–20%)
 
@@ -306,7 +306,7 @@ device protection controls.
 **Negative test:** rely on a compliance policy with no Conditional Access;
 without CA, non-compliant devices still get access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.12 — MD-102: Manage and secure applications (15–20%)
 
@@ -322,7 +322,7 @@ management.
 **Negative test:** deploy a required app with no assignment group; unassigned
 apps never install.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.13 — MD-102: Optimize endpoint operations by using automation, monitoring, and reporting (10–15%)
 
@@ -338,7 +338,7 @@ that drives endpoint operations.
 **Negative test:** read one snapshot as a trend; endpoint reporting needs a
 time series.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.14 — MS-700: Configure and manage a Teams environment (40–45%)
 
@@ -355,7 +355,7 @@ org-wide environment settings.
 **Negative test:** enable Teams guest access while Entra external collaboration
 is off; both layers must allow it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.15 — MS-700: Manage teams, channels, chats, and apps (20–25%)
 
@@ -371,7 +371,7 @@ objects you manage.
 **Negative test:** delete a team to "archive" it; archiving preserves content,
 deletion removes it — use archive.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.16 — MS-700: Manage meetings and calling (15–20%)
 
@@ -387,7 +387,7 @@ governance.
 **Negative test:** expect recordings with cloud recording off; recording needs
 the policy on and OneDrive/SharePoint storage.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.17 — MS-700: Monitor, report on, and troubleshoot Teams (15–20%)
 
@@ -403,7 +403,7 @@ root cause when chats/calls route unexpectedly.
 **Negative test:** troubleshoot missing chats without checking coexistence mode;
 `Islands` splits activity across clients.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.18 — MS-721: Plan and design collaboration communications systems (20–25%)
 
@@ -419,7 +419,7 @@ Teams Phone.
 **Negative test:** design Direct Routing with an uncertified SBC; unsupported
 SBCs break call flows.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.19 — MS-721: Configure and manage Teams meetings, webinars, and town halls (15–20%)
 
@@ -435,7 +435,7 @@ large-scale meeting governance.
 **Negative test:** assume every license can host town halls; premium
 capabilities require the right license.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.20 — MS-721: Implement and configure Teams Phone (30–35%)
 
@@ -451,7 +451,7 @@ provisioning core to MS-721.
 **Negative test:** assign a Calling Plan number with no Calling Plan license;
 the assignment fails.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.21 — MS-721: Configure and manage Teams Rooms and devices (20–25%)
 
@@ -467,7 +467,7 @@ Get-CsOnlineUser -Filter "AccountType -eq 'ResourceAccount'" | Select-Object -Fi
 **Negative test:** manage a Teams Room with no Teams Rooms license on its
 resource account; features are license-gated.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

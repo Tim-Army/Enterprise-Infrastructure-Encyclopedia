@@ -71,7 +71,7 @@ from Okta.
 **Negative test:** trust a token without checking its **signature/issuer/audience**; a forged token
 would pass — always validate them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Map attributes into the assertion
 
@@ -92,7 +92,7 @@ PY
 **Negative test:** map every attribute including `employeeId`/PII the app doesn't need; that
 over-shares — map the **minimum**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Troubleshoot an SSO failure
 
@@ -115,7 +115,7 @@ PY
 **Negative test:** blame the user's password for an SSO failure; SSO issues are usually **config**
 (audience/ACS/cert) — check the assertion and System Log.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Choose the right integration method
 
@@ -134,7 +134,7 @@ PY
 **Negative test:** force SWA credential replay where **OIDC** is supported; that's less secure — use
 federation when available.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

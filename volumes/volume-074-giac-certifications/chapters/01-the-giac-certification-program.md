@@ -98,7 +98,7 @@ PY
 **Negative test:** try to list them from memory of a single vendor; GIAC spans **defense, offense,
 forensics, cloud, ICS, leadership, and AI** — use the focus-area structure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map credentials to focus areas
 
@@ -123,7 +123,7 @@ PY
 **Negative test:** guess a code's meaning from letters alone (e.g., GX-* are **experienced**
 practical exams); confirm each on giac.org.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a certification path
 
@@ -145,7 +145,7 @@ PY
 **Negative test:** start at an **experienced/expert** exam (GXPN, GX-*) with no foundation; build up
 from **GSEC/GFACT** — climb the path.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -66,7 +66,7 @@ curl -sS -H "X-Auth-Token: $TOKEN" "$LNMS/api/v0/devices" \
 **Negative test:** scrape the web UI for inventory; the **API** returns structured JSON —
 use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.2 — Add a device programmatically
 
@@ -84,7 +84,7 @@ curl -sS -H "X-Auth-Token: $TOKEN" -H "Content-Type: application/json" \
 **Negative test:** add devices by hand in the UI at scale; **script from the source of
 truth** for consistency.
 
-**Cleanup:** `DELETE /api/v0/devices/192.0.2.10`.
+**Rollback:** `DELETE /api/v0/devices/192.0.2.10`.
 
 ### Lab 6.3 — Query active alerts
 
@@ -100,7 +100,7 @@ automation.
 
 **Negative test:** poll the UI for alert state; the **API** exposes it for scripting.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.4 — Ansible against the API
 
@@ -124,7 +124,7 @@ automation.
 **Negative test:** manage monitoring by clicking; **codify** it in Ansible for
 repeatability and review.
 
-**Cleanup:** remove the device via the API.
+**Rollback:** remove the device via the API.
 
 ## Lab Verification
 

@@ -95,7 +95,7 @@ cat my-everpure-plan.md
 
 **Negative test:** Skipping the Associate to go straight to a Professional — you forgo a $200 credential that would then have maintained itself for free, and you sit the higher exam without the foundation it assumes.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam scopes
 
@@ -137,7 +137,7 @@ EOF
 
 **Negative test:** Studying all seven technical chapters evenly for the Portworx exam — its scope is essentially one chapter, and the rest earns nothing toward that credential.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

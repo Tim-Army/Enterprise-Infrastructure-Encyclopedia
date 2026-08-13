@@ -350,7 +350,7 @@ distinguished name; the structure is what delegation, group policy, and search s
 **Negative test:** manage identity as flat local accounts per server; there is no central structure,
 delegation, or policy — a directory provides the hierarchy that makes enterprise identity manageable.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.2 — Active Directory administration (Topic: AD administration)
 
@@ -370,7 +370,7 @@ domain-joined system and access is granted by group membership, not per-server a
 **Negative test:** create the same person as separate local accounts on ten servers; a password change
 or offboarding means editing all ten — a single directory account is managed and revoked once.
 
-**Cleanup:** `Remove-ADUser opsuser`.
+**Rollback:** `Remove-ADUser opsuser`.
 
 ### Lab 4.3 — Linux domain integration (Topic: Cross-platform identity)
 
@@ -391,7 +391,7 @@ Linux, giving one identity source across a mixed estate.
 people; you double the account management and lose single sign-on — directory integration unifies
 identity across platforms.
 
-**Cleanup:** `sudo realm leave lab.example.com` if joined only for the lab.
+**Rollback:** `sudo realm leave lab.example.com` if joined only for the lab.
 
 ### Lab 4.4 — Kerberos and single sign-on (Topic: Authentication/SSO)
 
@@ -411,7 +411,7 @@ get per-service tickets without re-entering the password, which is what makes do
 credentials constantly and passwords traverse more systems — Kerberos SSO authenticates once and
 issues tickets, reducing both friction and credential exposure.
 
-**Cleanup:** `kdestroy` to clear the ticket cache.
+**Rollback:** `kdestroy` to clear the ticket cache.
 
 ## Lab Verification
 

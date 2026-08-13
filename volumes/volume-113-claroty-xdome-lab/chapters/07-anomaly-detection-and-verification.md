@@ -29,7 +29,7 @@ sudo dmesg | grep -o 'XDOME-DENY.*SRC=10.70.3.30.*DST=10.70.2.20.*DPT=5432' | ta
 
 **Negative test.** A *sanctioned* flow (`web → db`) produces no deviation — it matches the baseline, so it neither blocks nor alerts. Only departures from normal are flagged.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.2 — A new asset appears (unbaselined)
 
@@ -51,7 +51,7 @@ sudo dmesg | grep -o 'XDOME-DENY.*SRC=10.70.3.31.*DPT=502' | tail -1
 sudo ip netns exec hmi ip addr del 10.70.3.31/24 dev hmi-e 2>/dev/null
 ```
 
-**Cleanup.** Extra address removed above.
+**Rollback.** Extra address removed above.
 
 ### Exercise 7.3 — Confirm the enforced policy matches the intent
 
@@ -66,7 +66,7 @@ echo "== enforced rules =="; sudo nft list chain inet xdome forward | grep -E "t
 
 **Expected result.** The enforced accept rules correspond one-to-one with the derived zone policy, plus the default drop — enforcement matches intent, which is exactly what Claroty continuously checks against drift.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

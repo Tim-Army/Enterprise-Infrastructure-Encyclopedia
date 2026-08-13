@@ -363,7 +363,7 @@ concepts name.
 instead of `enable secret` (hashed) is a vulnerability an attacker exploits
 from a config backup.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — Configure device access control with local passwords (CCNA 5.3, 5.4, ENCOR 5.1)
 
@@ -384,7 +384,7 @@ passwords, and a 10-character minimum — the local-password policy elements.
 encoding; rely on it alone and a leaked config is trivially decoded — use
 `secret` (type 8/9) for anything that matters.
 
-**Cleanup:** restore prior credentials (keep the hardened defaults).
+**Rollback:** restore prior credentials (keep the hardened defaults).
 
 ### Lab 7.3 — Configure and verify access control lists (CCNA 5.6)
 
@@ -404,7 +404,7 @@ traffic passes; `show access-lists` shows per-line hit counts.
 **Negative test:** place `permit ip any any` above the deny; the deny is
 never reached (implicit order) — ACL order is the control.
 
-**Cleanup:** remove the access-group and the ACL.
+**Rollback:** remove the access-group and the ACL.
 
 ### Lab 7.4 — Configure Layer 2 security features (CCNA 5.7, ENCOR 5.2)
 
@@ -426,7 +426,7 @@ validates ARP against the snooping binding table — L2 spoofing defenses.
 offers are dropped and clients get no address — the server port must be
 trusted.
 
-**Cleanup:** `no ip dhcp snooping` and `no ip arp inspection vlan 20`.
+**Rollback:** `no ip dhcp snooping` and `no ip arp inspection vlan 20`.
 
 ### Lab 7.5 — Configure AAA with TACACS+/RADIUS (CCNA 5.8, ENARSI 3.1)
 
@@ -448,7 +448,7 @@ down, the `local` method authenticates — centralized AAA with a break-glass.
 `local` fallback locks out all admins when ISE is unreachable — always keep
 a local method.
 
-**Cleanup:** remove the TACACS server and revert AAA (keep a local login).
+**Rollback:** remove the TACACS server and revert AAA (keep a local login).
 
 ### Lab 7.6 — Configure control plane policing (ENARSI 3.3)
 
@@ -472,7 +472,7 @@ dropped before it reaches the CPU — control-plane protection.
 **Negative test:** a CoPP policy that polices *all* traffic including
 routing protocol hellos can break adjacencies — scope the classes carefully.
 
-**Cleanup:** remove the control-plane service-policy and the policy/class/ACL.
+**Rollback:** remove the control-plane service-policy and the policy/class/ACL.
 
 ### Lab 7.7 — Troubleshoot router security features (ENARSI 3.2)
 
@@ -490,7 +490,7 @@ R1# show login
 **Negative test:** VTY lines with no `access-class` accept management
 connections from anywhere; restrict with an ACL bound to the line.
 
-**Cleanup:** `no login block-for`.
+**Rollback:** `no login block-for`.
 
 ### Lab 7.8 — Describe IPv6 first-hop security (ENARSI 3.4)
 
@@ -509,7 +509,7 @@ malicious host cannot become the default gateway.
 **Negative test:** apply `device-role router` to a host port; rogue RAs are
 permitted and hosts can be redirected — the role must match the port.
 
-**Cleanup:** remove the RA Guard policy from the interface.
+**Rollback:** remove the RA Guard policy from the interface.
 
 ### Lab 7.9 — Describe REST API security (ENCOR 5.3)
 
@@ -527,7 +527,7 @@ processes running — API access is authenticated (AAA) and encrypted (TLS).
 **Negative test:** enabling `ip http server` (plain HTTP) for the API exposes
 credentials and tokens in cleartext; require `secure-server` (HTTPS) only.
 
-**Cleanup:** `no ip http server` (keep secure-server).
+**Rollback:** `no ip http server` (keep secure-server).
 
 ### Lab 7.10 — Describe network security design components (ENCOR 5.4)
 
@@ -546,7 +546,7 @@ design composes.
 **Negative test:** relying on ACLs alone at scale becomes unmanageable;
 identity-based segmentation (SGT/VRF) is what the design uses to scale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.11 — 802.1X with MAB fallback and dynamic authorization (integrative)
 
@@ -621,7 +621,7 @@ server, and validate CLI administrator access uses TACACS+.
 
 7. Restore RADIUS reachability and confirm normal authentication resumes.
 
-**Cleanup**
+**Rollback**
 
 - Remove the lab-only 802.1X/MAB interface configuration if the switch is
   shared:

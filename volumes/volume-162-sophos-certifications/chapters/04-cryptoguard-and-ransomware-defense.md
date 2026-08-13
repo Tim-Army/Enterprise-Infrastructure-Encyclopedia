@@ -85,7 +85,7 @@ EOF
 
 **Negative test:** Relying on signatures to block each ransomware variant. New variants have no signature and encrypt before they're recognized; CryptoGuard's behavior detection plus rollback stops novel ransomware and reverses damage already done.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

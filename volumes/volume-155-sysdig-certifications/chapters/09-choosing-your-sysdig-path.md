@@ -89,7 +89,7 @@ EOF
 
 **Negative test:** Skipping Falco to jump straight to Sysdig product accreditation. Falco is the free, open-source engine Sysdig Secure is built on; learning it first grounds the runtime concepts the product assumes — and it costs nothing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Sysdig in the cloud-native-security career
 
@@ -131,7 +131,7 @@ EOF
 
 **Negative test:** Treating runtime security as covered by endpoint or network tools. Container runtime security is a distinct discipline (ephemeral workloads, eBPF, Falco, drift) — isolating Sysdig/Falco from the Kubernetes and cloud-security stack undersells both the specialty and the career.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

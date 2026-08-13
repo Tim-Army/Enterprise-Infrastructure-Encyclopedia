@@ -34,7 +34,7 @@ Each workload reaches only its sanctioned target; every lateral flow is denied a
 
 **Negative test.** Change `dpu-web`'s permit to target the PLC and watch `web → plc` open while `web → db` closes — proof the decision is the DPU policy, enforced per workload. Restore it.
 
-**Cleanup.** Restore any changed DPU rule.
+**Rollback.** Restore any changed DPU rule.
 
 ### Exercise 7.2 — Read the DPU deny logs
 
@@ -50,7 +50,7 @@ sudo dmesg | grep -oE 'DPU-(WEB|HMI)-DENY.*DPT=[0-9]+' | tail -2
 
 **Expected result.** `DPU-WEB-DENY ... DPT=502` and `DPU-HMI-DENY ... DPT=5432` — each DPU logs its own workload's blocked lateral attempts, giving per-server visibility.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — Out-of-band holds under load
 
@@ -65,7 +65,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.140.0.40 502 && echo "web->plc OPEN
 
 **Expected result.** `web->plc STILL BLOCKED` — even after the workload flushes its own rules again, the DPU policy denies the lateral flow. The property from Chapter 05 is not a one-off.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

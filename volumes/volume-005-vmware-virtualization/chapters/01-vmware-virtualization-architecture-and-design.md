@@ -567,7 +567,7 @@ disks, and NICs to guests, giving strong isolation and near-native performance v
 abstractions the scheduler maps to physical resources and can exceed (overcommit) them — the
 abstraction is what enables consolidation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Resource abstraction and consolidation (Topic: Resource model)
 
@@ -586,7 +586,7 @@ memory (with reclamation), raising utilization far above bare-metal one-app-per-
 **Negative test:** provision every VM with maximal vCPUs "to be safe"; excessive vCPU overcommit causes
 CPU-ready contention that slows all VMs — right-sizing beats over-provisioning.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.3 — Design planning (Topic: Architecture design)
 
@@ -606,7 +606,7 @@ and performance headroom, so a host failure is survivable and contention is boun
 **Negative test:** size a cluster with no spare (N+0) capacity; a single host failure cannot restart
 its VMs elsewhere — N+1 (or more) is what makes HA (Chapter 07) actually able to recover.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

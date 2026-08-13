@@ -26,7 +26,7 @@ sudo ip netns exec hmi bash -c 'printf "op-hmi TOKEN-HMI-NEW01\n" | nc -w2 10.60
 
 **Negative test.** If access were granted by IP, rotating a credential would do nothing to stop a stolen host — identity brokering is what makes rotation meaningful.
 
-**Cleanup.** Leave the new token in place.
+**Rollback.** Leave the new token in place.
 
 ### Exercise 8.2 — Scale and remote access (design)
 
@@ -36,7 +36,7 @@ sudo ip netns exec hmi bash -c 'printf "op-hmi TOKEN-HMI-NEW01\n" | nc -w2 10.60
 
 **Expected result (on paper).** A design note: nodes per cell, one fabric, identities and policy replicated, MFA and session recording for humans, JIT grants for vendors — brokered access everywhere, no flat remote path.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 8.3 — The boundary
 
@@ -57,7 +57,7 @@ echo "If plc had a second NIC on a flat VLAN, the broker would be bypassed."
 
 **Negative test.** Assume the broker alone secures the PLC. If isolation is incomplete — any second path into the OT cell — the broker is bypassed. Brokering and isolation are one control, not two.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

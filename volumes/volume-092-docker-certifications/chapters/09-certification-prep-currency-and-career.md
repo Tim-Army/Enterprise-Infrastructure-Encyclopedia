@@ -78,7 +78,7 @@ PY
 
 **Negative test:** study only reading material; the exam rewards **hands-on** CLI fluency — practice.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Model the DOMC format
 
@@ -102,7 +102,7 @@ PY
 **Negative test:** rely on eliminating wrong options like standard multiple-choice; **DOMC** judges each
 statement on its own.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Map a Docker career and renewal
 
@@ -127,7 +127,7 @@ two-year renewal.
 **Negative test:** let the credential lapse past two years as tooling changes; **re-certify** on the
 current exam.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

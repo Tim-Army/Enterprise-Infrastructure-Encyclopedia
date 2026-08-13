@@ -90,7 +90,7 @@ dcgmi dmon -e 203,252,155,150 2>/dev/null | head \
 **Negative test:** watch only utilization; **thermal/power/ECC/Xid** errors
 predict failures — monitor them too.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Monitoring: fleet dashboards and alerting
 
@@ -109,7 +109,7 @@ fleet monitoring for AI operations.
 **Negative test:** monitor node-by-node manually; a **fleet dashboard** with
 alerts scales — centralize.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Troubleshooting: a systematic method
 
@@ -131,7 +131,7 @@ method NCP-AIO tests.
 **Negative test:** blame the model first; check **infrastructure** (GPU/driver/
 fabric) systematically before assuming a code bug.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Troubleshooting: Xid and ECC errors
 
@@ -149,7 +149,7 @@ hardware-fault troubleshooting of NCP-AIO.
 **Negative test:** keep scheduling on a GPU with uncorrectable ECC/Xid errors; it
 corrupts results — **drain** and remediate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Optimization: MIG vs time-slicing
 
@@ -169,7 +169,7 @@ optimization NCP-AIO covers.
 **Negative test:** time-slice a GPU across untrusted tenants expecting isolation;
 only **MIG** isolates — use it for multi-tenant SLAs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — Optimization: performance and capacity
 
@@ -188,7 +188,7 @@ optimization/capacity domain of NCP-AIO.
 **Negative test:** add GPUs when utilization is low but throughput is poor; the
 bottleneck may be the **data pipeline** — profile before scaling.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

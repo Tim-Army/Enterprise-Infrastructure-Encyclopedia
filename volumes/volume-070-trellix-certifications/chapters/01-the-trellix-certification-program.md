@@ -96,7 +96,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.trellix.com/services/education/" \
 **Negative test:** rely on old **McAfee** branding/codes; the program is **Trellix** now, with
 codes in transition — confirm on trellix.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map products to certifications
 
@@ -117,7 +117,7 @@ PY
 **Negative test:** assume one Trellix exam; certifications are **per product** — pick the products
 for your role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a Trellix path
 
@@ -137,7 +137,7 @@ endpoint-managed products).
 **Negative test:** deploy ENS/EDR with no **ePO**; most Trellix endpoint products manage through
 **ePO** — start there.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -47,7 +47,7 @@ EOF
 
 **Negative test:** Eradicating (wiping the box) before containing and preserving evidence — you destroy the forensic trail and may miss persistence elsewhere; the phase order exists for a reason, and rushing it is a classic IR error.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — A threat-hunting hypothesis
 
@@ -76,7 +76,7 @@ EOF
 
 **Negative test:** Waiting for an alert instead of hunting — undetected persistence lets the attacker return after you "recover"; hunting proactively finds what the alerts, by definition, didn't.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Forensic evidence handling
 
@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Analyzing the original evidence directly (altering timestamps) or skipping the hash — the evidence is now tainted and inadmissible; forensic discipline exists to keep findings provable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

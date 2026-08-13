@@ -358,7 +358,7 @@ the safety-driven *why* (never disrupt the process) governs every choice.
 response"; an errant block could stop a physical process — the expert design confines
 enforcement to the IT/OT boundary.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ### Lab 9.2 — Asset curation (Topic: Asset curation)
 
@@ -381,7 +381,7 @@ alerts.
 mislabels; every benign change looks anomalous and analysts drown in false positives —
 curation is the prerequisite for meaningful detection.
 
-**Cleanup:** none (keep the curation; it is the intended state).
+**Rollback:** none (keep the curation; it is the intended state).
 
 ### Lab 9.3 — OT threat detection (Topic: Threat detection)
 
@@ -404,7 +404,7 @@ than IT.
 makes IT-tuned rules either miss subtle control-plane attacks or flood on benign polling —
 detection must be tuned to the OT baseline.
 
-**Cleanup:** revert lab-only checks; keep production baselines.
+**Rollback:** revert lab-only checks; keep production baselines.
 
 ### Lab 9.4 — Staged path to OT control (Topic: OT control)
 
@@ -428,7 +428,7 @@ conservative because availability and safety outrank containment.
 IT; a false positive can halt production or trip a safety system — the staged, boundary-only
 approach is the OT-appropriate control model.
 
-**Cleanup:** none (design/staging artifact; no process-network control configured).
+**Rollback:** none (design/staging artifact; no process-network control configured).
 
 ## Lab Verification
 

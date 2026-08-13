@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Expecting Group-Policy-style total control over a Mac. Apple's framework does not offer it; management is what Apple's commands and profiles permit, no more.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Why ADE (zero-touch) beats manual enrollment
 
@@ -129,7 +129,7 @@ EOF
 
 **Negative test:** Manually enrolling a large fleet because "that's how we've always done it." At 2000 devices it is a five-figure labor cost ADE eliminates, plus every device routing through IT instead of straight to the user.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Imperative MDM versus declarative (DDM)
 
@@ -166,7 +166,7 @@ EOF
 
 **Negative test:** Assuming polling frequency can be raised to catch offline devices sooner. It multiplies server load without helping — the offline device is unreachable regardless; DDM sidesteps the problem by moving enforcement to the device.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

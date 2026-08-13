@@ -284,7 +284,7 @@ it can be rebuilt identically after a mistake, which is what makes destructive e
 **Negative test:** build the reference environment by hand with no code/topology record; a mistake
 means rebuilding from memory — a code-defined environment can be rebuilt on demand.
 
-**Cleanup:** none (this repo is the environment's source of truth).
+**Rollback:** none (this repo is the environment's source of truth).
 
 ### Lab 1.2 — Safe experimentation with snapshots (Topic: Safety)
 
@@ -304,7 +304,7 @@ experiment aggressively and recover in seconds rather than fearing every change.
 **Negative test:** make a risky change to the shared environment with no snapshot/backup; a mistake
 cascades across the integrated services and recovery is slow — the snapshot is the undo button.
 
-**Cleanup:** delete pre-change snapshots once a change is confirmed good.
+**Rollback:** delete pre-change snapshots once a change is confirmed good.
 
 ### Lab 1.3 — Evidence capture (Topic: Evidence)
 
@@ -324,7 +324,7 @@ record you (or an assessor) can confirm was actually completed, not just claimed
 **Negative test:** claim a lab "worked" with no captured output/evidence; there is nothing to verify or
 troubleshoot against later — evidence capture is what makes the `Lab verified by` sign-off meaningful.
 
-**Cleanup:** none (retain evidence).
+**Rollback:** none (retain evidence).
 
 ### Lab 1.4 — The teardown and rebuild loop (Topic: Lifecycle discipline)
 
@@ -346,7 +346,7 @@ return to a known-good state.
 the first real failure finds the rebuild path untested — practicing the loop is what makes recovery
 reliable.
 
-**Cleanup:** none (the loop is the intended practice).
+**Rollback:** none (the loop is the intended practice).
 
 ## Lab Verification
 

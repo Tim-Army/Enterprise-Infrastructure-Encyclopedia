@@ -38,7 +38,7 @@ kubectl get servicedefaults api -o jsonpath='{.spec.protocol}{"\n"}'
 
 **Negative test.** "Fix" a denied flow by deleting the `deny-all`. You removed default-deny for the whole mesh. Add the specific allowing intention instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Safe rollback
 
@@ -67,7 +67,7 @@ EOF
 
 **Negative test.** Delete every intention including `deny-all`; the mesh returns to flat. Keep `deny-all` plus the specific allows.
 
-**Cleanup.** Ensure the intended intentions are back.
+**Rollback.** Ensure the intended intentions are back.
 
 ### Lab 9.3 — Teardown
 
@@ -87,7 +87,7 @@ Optionally remove the `kind`, `kubectl`, `helm`, and `consul` binaries.
 
 **Negative test.** Deleting the kind containers by hand leaves metadata behind; a later recreate may conflict. Use `kind delete cluster`.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

@@ -148,7 +148,7 @@ per-branch firewall rules.
 **Negative test:** rely on the SWG alone to stop non-web threats; it governs
 web traffic — non-web ports and applications need the cloud firewall.
 
-**Cleanup:** disable the lab rule.
+**Rollback:** disable the lab rule.
 
 ### Lab 3.2 — Malware/sandbox protection with EICAR (Topic: Threat prevention)
 
@@ -168,7 +168,7 @@ industry-standard way to confirm protection without real malware.
 the harmless EICAR file downloads — the engines can only act on inspected
 traffic.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — DNS control (Topic: DNS security)
 
@@ -186,7 +186,7 @@ chokepoint: stopping resolution stops the attack before a session exists.
 **Negative test:** allow clients to use their own DoH resolver; DNS Control is
 bypassed — resolution must be forced through Zscaler for the control to hold.
 
-**Cleanup:** revert lab DNS policy.
+**Rollback:** revert lab DNS policy.
 
 ## Lab Verification
 

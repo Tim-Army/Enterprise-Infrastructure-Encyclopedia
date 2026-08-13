@@ -95,7 +95,7 @@ EOF
 
 **Negative test:** Requiring hardware keys and managed posture on the lunch-menu wiki. Security indistinguishable from obstruction trains users to route around the system that is supposed to protect the finance app.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Blast radius: VPN versus per-app access
 
@@ -140,7 +140,7 @@ EOF
 
 **Negative test:** Declaring zero trust achieved because Access fronts six apps while the VPN still routes to everything. The attacker reads the same architecture diagram you do and takes the old road.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Service tokens without human-path holes
 
@@ -183,7 +183,7 @@ EOF
 
 **Negative test:** Solving automation access by IP-allowlisting the CI runner around Access entirely. That is an unauthenticated hole with a comment saying it is temporary, and it will outlive everyone who remembers why.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

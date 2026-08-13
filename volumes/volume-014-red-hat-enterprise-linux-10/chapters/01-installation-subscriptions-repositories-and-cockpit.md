@@ -433,7 +433,7 @@ Current`, and repositories become listable — registration is what entitles the
 **Negative test:** run `dnf install` on an unregistered system with no local repo; it errors
 with no available repositories — entitlement (this lab) precedes software management.
 
-**Cleanup:** `sudo subscription-manager unregister` if the system was registered only for the
+**Rollback:** `sudo subscription-manager unregister` if the system was registered only for the
 lab.
 
 ### Lab 1.2 — Configure repositories (Topic: Software sources)
@@ -460,7 +460,7 @@ files in `/etc/yum.repos.d/`; RHCSA expects you to configure a repo from a given
 **Negative test:** point a repo `baseurl` at a path with no repodata; `dnf repolist` reports
 it as failed/unavailable — a repo needs valid metadata, not just a reachable URL.
 
-**Cleanup:** `sudo rm -f /etc/yum.repos.d/local.repo`.
+**Rollback:** `sudo rm -f /etc/yum.repos.d/local.repo`.
 
 ### Lab 1.3 — Manage software with dnf (Topic: Manage software)
 
@@ -484,7 +484,7 @@ is the RHCSA software-management toolkit.
 dependency to stay; `dnf` removes or refuses per dependencies and records it in history —
 `dnf history undo` is the safe reversal, not manual file deletion.
 
-**Cleanup:** `sudo dnf remove -y tree` if still installed.
+**Rollback:** `sudo dnf remove -y tree` if still installed.
 
 ### Lab 1.4 — Cockpit web console (Topic: System management)
 
@@ -505,7 +505,7 @@ storage, networking, and logs, useful for tasks and for confirming CLI changes.
 unreachable from other hosts — the service *and* the firewall rule are both required for
 remote access.
 
-**Cleanup:** `sudo systemctl disable --now cockpit.socket` and remove the firewall service if
+**Rollback:** `sudo systemctl disable --now cockpit.socket` and remove the firewall service if
 lab-only.
 
 ## Lab Verification

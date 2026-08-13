@@ -323,7 +323,7 @@ dissection overhead.
 dissection/UI load can cause drops that `dumpcap` alone would not — capture with `dumpcap`,
 analyze afterward.
 
-**Cleanup:** `rm /tmp/cap.pcapng`.
+**Rollback:** `rm /tmp/cap.pcapng`.
 
 ### Lab 2.2 — Ring-buffer capture for long runs (Topic: Continuous capture)
 
@@ -344,7 +344,7 @@ capture running for days waiting for an intermittent fault without filling the d
 fills the disk or you stop it before the event — a ring buffer is what keeps a bounded,
 always-recent window for rare events.
 
-**Cleanup:** `rm /tmp/ring_*.pcapng`.
+**Rollback:** `rm /tmp/ring_*.pcapng`.
 
 ### Lab 2.3 — Capture filters (BPF) at capture time (Topic: Capture filtering)
 
@@ -363,7 +363,7 @@ on busy links where capturing everything is impractical.
 is enormous and may drop packets under load — capture filtering at the source is what keeps
 the file tractable, at the cost of discarding what you did not pre-select.
 
-**Cleanup:** `rm /tmp/https.pcapng`.
+**Rollback:** `rm /tmp/https.pcapng`.
 
 ### Lab 2.4 — Capture placement: TAP vs SPAN (Topic: Capture points)
 
@@ -385,7 +385,7 @@ your file, which is the first question to ask of any capture.
 neither server's traffic — the capture point must sit where the traffic of interest actually
 flows.
 
-**Cleanup:** `rm /tmp/host.pcapng`.
+**Rollback:** `rm /tmp/host.pcapng`.
 
 ## Lab Verification
 

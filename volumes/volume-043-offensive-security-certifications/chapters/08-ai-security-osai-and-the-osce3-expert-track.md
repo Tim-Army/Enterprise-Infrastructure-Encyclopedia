@@ -103,7 +103,7 @@ defenses — the core OSAI concept, framed for defense.
 **Negative test:** rely on a keyword content filter; injection hides in encodings
 and phrasing — the fix is **not trusting** retrieved content as instructions.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — OSAI: adversarial machine learning (concept)
 
@@ -125,7 +125,7 @@ attack surface, oriented to controls.
 **Negative test:** assume model accuracy equals security; a robust model still
 needs **data provenance, rate limits, and privacy** controls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — OSAI: the AI supply chain (concept)
 
@@ -147,7 +147,7 @@ software supply-chain security.
 **Negative test:** load a model from an unverified source; unsafe weight formats
 can execute code — verify provenance and use safe formats.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — OSAI: an AI red-team test plan (methodology)
 
@@ -169,7 +169,7 @@ test → report) — the OSAI engagement structure, authorization-first.
 **Negative test:** probe a third-party AI service without authorization; AI red
 teaming needs explicit permission like any test.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### OSCE³ — Expert Track
 
@@ -193,7 +193,7 @@ combining into OSCE³ — the expert-track roadmap.
 **Negative test:** expect a single OSCE³ exam; it is an **umbrella** earned by the
 three separate credentials — plan them as a set.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

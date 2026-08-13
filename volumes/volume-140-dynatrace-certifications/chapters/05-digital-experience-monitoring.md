@@ -100,7 +100,7 @@ EOF
 
 **Negative test:** Dropping synthetics because "we have real user data now." The 4 a.m. outage and the expired certificate both go undetected until morning.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — User action naming and cardinality
 
@@ -158,7 +158,7 @@ EOF
 
 **Negative test:** Solving the cardinality problem by dropping the identifier entirely. You fix the statistics and lose the ability to answer "what happened to *this* order?"
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Session Replay masking
 
@@ -217,7 +217,7 @@ EOF
 
 **Negative test:** Enabling Session Replay with input masking on a healthcare or payments application and assuming compliance. The diagnosis notes and the card summary were both page content.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

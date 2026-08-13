@@ -74,7 +74,7 @@ switch# show vlan
 **Negative test:** allow all VLANs on the trunk by default; restrict with **`vlan trunk
 allowed`** to only the needed VLANs.
 
-**Cleanup:** `configure terminal; no vlan 10,20`.
+**Rollback:** `configure terminal; no vlan 10,20`.
 
 ### Lab 3.2 — Inter-VLAN routing (SVIs)
 
@@ -93,7 +93,7 @@ switch# show ip interface brief
 **Negative test:** expect hosts in different VLANs to talk with no SVI/gateway; inter-VLAN
 traffic needs **routing** — add the SVIs.
 
-**Cleanup:** `configure terminal; no interface vlan 10; no interface vlan 20`.
+**Rollback:** `configure terminal; no interface vlan 10; no interface vlan 20`.
 
 ### Lab 3.3 — VSX redundancy
 
@@ -113,7 +113,7 @@ aggregation to downstream switches — active-active, dual control plane.
 **Negative test:** assume VSX merges the control planes like a stack; **each switch keeps its
 own** — VSX synchronizes state, it does not stack.
 
-**Cleanup:** `configure terminal; no vsx`.
+**Rollback:** `configure terminal; no vsx`.
 
 ### Lab 3.4 — Read state via the AOS-CX REST API
 
@@ -131,7 +131,7 @@ curl -sk -H "Cookie: $AOSCX_COOKIE" \
 **Negative test:** parse `show vlan` text for automation; **AOS-CX REST** returns structured
 JSON — use the API.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — VSF stacking concept
 
@@ -148,7 +148,7 @@ JSON — use the API.
 **Negative test:** manage ten access switches individually; **VSF** collapses them into one
 logical unit — stack them.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

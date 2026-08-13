@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Running endpoint and firewall as unconnected products. The firewall never learns the endpoint is compromised, so the threat moves laterally unhindered; Synchronized Security's heartbeat shares that state and triggers automatic containment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

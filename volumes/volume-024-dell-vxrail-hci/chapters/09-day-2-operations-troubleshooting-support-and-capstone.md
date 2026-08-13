@@ -383,7 +383,7 @@ analytics (CloudIQ) together, so a degradation shows up wherever you look and is
 predictive disk failure or a vSAN network warning is invisible there — the platform health surfaces
 are where hardware/storage degradation appears.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Troubleshooting and log collection (Topic: Troubleshooting)
 
@@ -405,7 +405,7 @@ guessing.
 LCM logs; you repeat the same failure — the log bundle names the blocker (e.g. a vSAN health issue
 or expired cert) that a retry will not fix.
 
-**Cleanup:** remove the lab log bundle if generated only for the exercise.
+**Rollback:** remove the lab log bundle if generated only for the exercise.
 
 ### Lab 9.3 — Support and telemetry (Topic: Support)
 
@@ -427,7 +427,7 @@ before they become outages.
 and you react only after noticing it — the support connection is what makes support proactive rather
 than reactive.
 
-**Cleanup:** none (keep support connected).
+**Rollback:** none (keep support connected).
 
 ### Lab 9.4 — Capstone Design Exercise: a VxRail estate (Topic: Synthesis)
 
@@ -463,7 +463,7 @@ stretched cluster or witness, FTT treated as backup, and no support connectivity
 validated state, site resilience, real recoverability, and proactive support — VxRail's LCM,
 stretched-cluster, data-protection, and support model are its actual value.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

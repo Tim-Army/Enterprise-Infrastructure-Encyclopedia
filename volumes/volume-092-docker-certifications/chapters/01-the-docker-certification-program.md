@@ -80,7 +80,7 @@ overlay2 / 2
 **Negative test:** study only with an online playground and never run `docker` locally; the exam is
 **hands-on knowledge** — practice with the CLI.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Run a first container
 
@@ -103,7 +103,7 @@ miniature.
 **Negative test:** install nginx directly on the host to "test containers"; **run it as a container**
 from an image.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f web
@@ -128,7 +128,7 @@ PY
 **Negative test:** spend equal time on storage (10%) and orchestration (25%); weight study by **exam
 weight**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

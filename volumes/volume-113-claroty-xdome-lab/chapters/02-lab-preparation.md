@@ -28,7 +28,7 @@ xdome> Integrations > add fw-1 (firewall)  /  ise-1 (NAC)
 
 **Expected result (design).** A collector feeding xDome and at least one enforcer integration. Track 2 builds both roles on one host.
 
-**Cleanup.** None (design).
+**Rollback.** None (design).
 
 ### Exercise 2.2 — Track 2: build zones, a collector, and an enforcer
 
@@ -65,7 +65,7 @@ Every zone reaches every other through the host — the flat, unsegmented starti
 
 **Negative test.** A packet between two zones must pass the host; there is no other path, which is what lets the host observe and later enforce.
 
-**Cleanup.** Namespaces persist for the lab.
+**Rollback.** Namespaces persist for the lab.
 
 ### Exercise 2.3 — Start services
 
@@ -92,7 +92,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.70.2.20 502 || echo DB-502-CLOSED'
 DB-502-CLOSED
 ```
 
-**Cleanup.** Leave services running.
+**Rollback.** Leave services running.
 
 ## Summary and Completion Checklist
 

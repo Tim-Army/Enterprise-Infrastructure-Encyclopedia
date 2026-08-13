@@ -25,7 +25,7 @@ sudo ip netns exec web bash -c 'nc -z -w2 10.150.0.40 502  && echo "web->plc OPE
 
 **Negative test.** There is nothing to test negatively yet: no control exists.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.2 — Walk the attacker's path
 
@@ -42,7 +42,7 @@ exfil path exists
 
 **Negative test.** None — this is the problem statement the rest of the volume fixes.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 3.3 — Confirm the guests are agentless
 
@@ -58,7 +58,7 @@ for vm in web db hmi plc; do echo "== $vm =="; sudo ip netns exec $vm nft list r
 
 **Negative test.** Contrast with the host-agent volumes (XCIII–C): there, each workload enforced its own ruleset — protection an attacker with root in the guest could flush. Here the guest has nothing to flush.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

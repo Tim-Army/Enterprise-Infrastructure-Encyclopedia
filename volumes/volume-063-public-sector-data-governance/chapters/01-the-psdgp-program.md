@@ -102,7 +102,7 @@ Responsibilities, Legal and Regulatory** — the spine of the exam.
 **Negative test:** study a commercial DAMA-DMBOK outline instead; PSDGP is scoped to the
 **public sector** — confirm the four areas on ther2c.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Check your eligibility
 
@@ -125,7 +125,7 @@ degree-plus-experience path qualifies; a core ICCP cert (DGSP) is the alternate.
 **Negative test:** assume anyone may sit; PSDGP has an **education + experience** gate (or a
 core-cert alternate) — check before registering.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Model the exam and recert
 
@@ -147,7 +147,7 @@ PY
 **Negative test:** plan to recertify by re-exam or CEUs; PSDGP renews through **CPD** — track
 professional-development activity.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

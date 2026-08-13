@@ -46,7 +46,7 @@ sudo tail -2 /var/log/squid/access.log 2>/dev/null || echo "access log = the vis
 
 **Negative test:** Traffic that isn't steered (direct, bypassing the proxy) is invisible and uncontrolled — the NCCSA lesson that **coverage depends on steering**; unsteered traffic is a blind spot.
 
-**Cleanup:** `sudo systemctl stop squid 2>/dev/null`.
+**Rollback:** `sudo systemctl stop squid 2>/dev/null`.
 
 ### Lab 3.2 — Steering configuration: what to send, what to bypass
 
@@ -68,7 +68,7 @@ echo "steering decides Netskope's scope: too little = blind spots; too much = ne
 
 **Negative test:** Bypassing a category "to fix a breakage" without understanding why — you may open a data-exfiltration path; bypasses are security decisions, and the exam treats them as such.
 
-**Cleanup:** `rm steering.conf`.
+**Rollback:** `rm steering.conf`.
 
 ### Lab 3.3 — Inline vs API protection
 
@@ -92,7 +92,7 @@ EOF
 
 **Negative test:** Relying on API-only protection and expecting real-time blocking — API is retroactive; it can't stop the upload as it happens. The exam tests knowing which mode does which.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — The admin console and monitoring
 
@@ -112,7 +112,7 @@ Monitoring/troubleshooting = Skope IT + client status; the exam tests reading th
 
 **Negative test:** Looking for blocked events in the wrong view — Skope IT's event types (application, page, alert) must be matched to what you're troubleshooting; the exam tests console fluency.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

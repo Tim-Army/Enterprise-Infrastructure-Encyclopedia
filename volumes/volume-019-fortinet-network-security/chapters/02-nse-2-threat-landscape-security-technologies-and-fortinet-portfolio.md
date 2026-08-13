@@ -301,7 +301,7 @@ as stages a layered defense interrupts.
 intrusion is a sequence — blocking any stage disrupts it, which is why defense is
 layered.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Security technologies (Topic: Security Technologies)
 
@@ -320,7 +320,7 @@ integrated functions, not point products.
 **Negative test:** assume separate appliances for each function; the FortiGate
 consolidates many into one NGFW — the consolidation is the platform's premise.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.3 — The Fortinet Security Fabric portfolio (Topic: Fortinet Portfolio)
 
@@ -340,7 +340,7 @@ driven by FortiGuard threat intelligence.
 **Negative test:** deploy point products from many vendors and lose the Fabric's
 shared telemetry and coordinated response — integration is the portfolio's value.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

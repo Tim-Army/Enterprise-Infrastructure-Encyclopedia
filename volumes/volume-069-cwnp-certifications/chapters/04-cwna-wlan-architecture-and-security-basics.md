@@ -74,7 +74,7 @@ big campuses.
 **Negative test:** deploy autonomous APs across 50 sites; that doesn't scale operationally — use
 **cloud/controller** management.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Roaming requirements
 
@@ -95,7 +95,7 @@ roaming**; a 5% overlap fails — roaming needs overlap.
 **Negative test:** expect seamless voice roaming with cell-edge-only coverage; add **overlap and
 802.11r/k/v**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — WPA2 vs WPA3 model
 
@@ -115,7 +115,7 @@ SAE for guest, isolated WPA2 for legacy.
 **Negative test:** put corporate users on **WPA2-PSK**; use **Enterprise 802.1X** for per-user
 security.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — WMM QoS
 
@@ -133,7 +133,7 @@ QoS.
 
 **Negative test:** treat voice as best-effort; enable **WMM** so voice/video get priority.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

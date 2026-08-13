@@ -77,7 +77,7 @@ persists.
 **Negative test:** write the file to the container's own filesystem (no volume) and `--rm` it; the data is
 **lost** — use a named volume.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker volume rm appdata
@@ -103,7 +103,7 @@ inside.
 **Negative test:** bake the site into the image and rebuild on every edit during development; a **bind
 mount** gives live updates.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 docker rm -f devweb && rm -rf /tmp/site
@@ -126,7 +126,7 @@ docker run --rm --tmpfs /scratch:size=16m busybox sh -c 'echo secret > /scratch/
 **Negative test:** write short-lived secrets to a normal volume/disk; use **tmpfs** so they are not
 persisted.
 
-**Cleanup:** none (tmpfs is gone with the container).
+**Rollback:** none (tmpfs is gone with the container).
 
 ### Lab 5.4 — Inspect the storage driver
 
@@ -148,7 +148,7 @@ container shares.
 **Negative test:** expect each container to copy the whole image; **copy-on-write** shares read-only
 layers and writes only diffs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

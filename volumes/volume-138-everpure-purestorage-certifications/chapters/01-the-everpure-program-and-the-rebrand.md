@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Assuming you need array access to study — you cannot practice the console, but the concepts the exams probe are reasoning you can build locally.
 
-**Cleanup:** `rm -rf ~/everpure-study` when finished.
+**Rollback:** `rm -rf ~/everpure-study` when finished.
 
 ### Lab 1.2 — Choose a level and plan recertification
 
@@ -166,7 +166,7 @@ EOF
 
 **Negative test:** Assuming CEE credits will renew any certification — they apply to *selected FlashArray exams* only, so a Portworx or Cyber Resilience holder planning on them will find themselves retaking the exam.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

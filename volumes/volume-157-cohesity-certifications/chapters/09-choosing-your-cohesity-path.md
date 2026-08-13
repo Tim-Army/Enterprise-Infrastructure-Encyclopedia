@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Jumping to the Security Specialist without the platform foundation. The specialist depth assumes you know the Data Cloud; start with Protection Associate — DataProtect, then build to the security specialization.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Cohesity in the data-security career
 
@@ -118,7 +118,7 @@ EOF
 
 **Negative test:** Treating backup as separate from security. Since ransomware, recovery *is* a security function — the last line of defense — and Cohesity skills belong alongside endpoint prevention and detection in an integrated ransomware-defense strategy.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

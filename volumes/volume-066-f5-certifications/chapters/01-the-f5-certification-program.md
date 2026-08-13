@@ -97,7 +97,7 @@ curl -sSL -A "Mozilla/5.0" "https://education.f5.com/learning-path/view/9" \
 **Negative test:** study a pre-2025 "101/201" outline; the Administrator path is now **five
 exams** — confirm on education.f5.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map exams to credentials
 
@@ -119,7 +119,7 @@ PY
 **Negative test:** register for a retired 201 exam; confirm the **current** F5CAB exams on the
 portal.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Plan a specialization path
 
@@ -139,7 +139,7 @@ PY
 
 **Negative test:** attempt a CTS first; earn the **F5-CA** foundation before any specialization.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

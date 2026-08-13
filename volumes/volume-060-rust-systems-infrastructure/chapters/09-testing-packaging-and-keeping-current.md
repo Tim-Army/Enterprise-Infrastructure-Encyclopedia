@@ -76,7 +76,7 @@ cargo test
 
 **Negative test:** ship logic with no test; a regression **breaks silently** — test it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Lint with clippy
 
@@ -91,7 +91,7 @@ cargo clippy 2>&1 | tail -5
 **Negative test:** rely on review for idiom/bug lints; **clippy** catches them
 mechanically — gate CI on it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Format check
 
@@ -106,7 +106,7 @@ style.
 
 **Negative test:** argue about brace style in review; **rustfmt** is canonical — run it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.4 — Check the version
 
@@ -121,7 +121,7 @@ rustc --version
 **Negative test:** run a long-outdated toolchain; Rust's **6-week cadence** ships fixes —
 update with `rustup update`.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

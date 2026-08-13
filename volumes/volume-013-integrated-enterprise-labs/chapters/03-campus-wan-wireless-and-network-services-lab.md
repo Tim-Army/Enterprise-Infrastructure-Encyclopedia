@@ -283,7 +283,7 @@ policy between classes, the network foundation the security labs (Chapter 07) bu
 everything and the security labs have no segmentation to enforce — segmented VLANs are the substrate
 for policy.
 
-**Cleanup:** `sudo ip link del eth0.10; sudo ip link del eth0.20`.
+**Rollback:** `sudo ip link del eth0.10; sudo ip link del eth0.20`.
 
 ### Lab 3.2 — Inter-segment routing (Topic: Routing)
 
@@ -303,7 +303,7 @@ inter-VLAN routing connects the environment while the L3 boundary is where secur
 **Negative test:** route all segments openly with no policy; segmentation provides no security benefit
 — the routed boundary must carry policy, or the VLANs are just cosmetic.
 
-**Cleanup:** `sudo sysctl -w net.ipv4.ip_forward=0` if lab-only.
+**Rollback:** `sudo sysctl -w net.ipv4.ip_forward=0` if lab-only.
 
 ### Lab 3.3 — Wireless access integrated with identity (Topic: Wireless)
 
@@ -324,7 +324,7 @@ wired segmentation — integrated wireless is not a separate island: it uses the
 environment's identity and segmentation model — integrated 802.1X + role-based VLAN keeps wireless
 consistent with the rest.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Network services validation (Topic: Integration validation)
 
@@ -345,7 +345,7 @@ virtualization, cloud, and application labs that follow.
 **Negative test:** assume the fabric works because links are up; a missing route, wrong VLAN, or DNS
 gap breaks end-to-end reachability — the integrated validation (name → route → reach) proves it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

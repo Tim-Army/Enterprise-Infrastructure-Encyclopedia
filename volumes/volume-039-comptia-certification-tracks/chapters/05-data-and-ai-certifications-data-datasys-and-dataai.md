@@ -152,7 +152,7 @@ structured data types across environments.
 **Negative test:** treat a CSV of `1,2,3` as integers automatically; parsed
 fields are strings until cast.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Data+: Data acquisition and preparation (22%)
 
@@ -175,7 +175,7 @@ the essence of data preparation.
 **Negative test:** analyze before cleaning; the blank and duplicate skew every
 aggregate.
 
-**Cleanup:** `rm -f /tmp/raw.csv`.
+**Rollback:** `rm -f /tmp/raw.csv`.
 
 ### Lab 5.3 — Data+: Data analysis (24%)
 
@@ -191,7 +191,7 @@ dispersion, core data analysis.
 **Negative test:** report the mean alone for skewed data; the median tells a
 different story.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Data+: Visualization and reporting (20%)
 
@@ -210,7 +210,7 @@ visualization for a report.
 **Negative test:** use a 3-D exploded pie for three values; it obscures rather
 than communicates — avoid deceptive charts.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Data+: Data governance (14%)
 
@@ -226,7 +226,7 @@ control.
 **Negative test:** store full SSNs in a shared report; governance requires
 minimization and masking.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — DataSys+: Database fundamentals (24%)
 
@@ -244,7 +244,7 @@ query.
 **Negative test:** `ROLLBACK` instead of `COMMIT`; the change is discarded — the
 A in ACID.
 
-**Cleanup:** `rm -f /tmp/ds.db`.
+**Rollback:** `rm -f /tmp/ds.db`.
 
 ### Lab 5.7 — DataSys+: Database deployment (16%)
 
@@ -261,7 +261,7 @@ a deployed, validated design.
 **Negative test:** insert `total=-5`; the CHECK constraint rejects it — schema
 validation in action.
 
-**Cleanup:** `rm -f /tmp/dep.db`.
+**Rollback:** `rm -f /tmp/dep.db`.
 
 ### Lab 5.8 — DataSys+: Database management and maintenance (25%)
 
@@ -278,7 +278,7 @@ performance tuning.
 **Negative test:** add indexes to every column; write-heavy tables slow down —
 maintenance is a trade-off.
 
-**Cleanup:** `rm -f /tmp/m.db`.
+**Rollback:** `rm -f /tmp/m.db`.
 
 ### Lab 5.9 — DataSys+: Data and database security (23%)
 
@@ -295,7 +295,7 @@ least-privilege file control.
 **Negative test:** ship the plaintext `.dump`; database exports carry the same
 PII as the live DB.
 
-**Cleanup:** `rm -f /tmp/s.db /tmp/dump.enc`.
+**Rollback:** `rm -f /tmp/s.db /tmp/dump.enc`.
 
 ### Lab 5.10 — DataSys+: Business continuity (12%)
 
@@ -312,7 +312,7 @@ removed — a validated recovery, the heart of business continuity.
 **Negative test:** assume a backup file proves recoverability; only a test
 restore does.
 
-**Cleanup:** `rm -f /tmp/bc.db /tmp/bc.bak`.
+**Rollback:** `rm -f /tmp/bc.db /tmp/bc.bak`.
 
 ### Lab 5.11 — DataAI: Mathematics and statistics (17%)
 
@@ -328,7 +328,7 @@ statistic DataAI expects you to interpret.
 **Negative test:** read correlation as causation; correlation alone proves
 neither direction nor cause.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.12 — DataAI: Modeling, analysis, and outcomes (24%)
 
@@ -349,7 +349,7 @@ underlying relationship (modeling and outcomes).
 **Negative test:** fit a line to non-linear data and trust it; evaluate fit
 before relying on a model.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.13 — DataAI: Machine learning (24%)
 
@@ -370,7 +370,7 @@ nearest labeled point, a foundational supervised-learning method.
 **Negative test:** skip feature scaling with mixed units; distance-based models
 are dominated by the larger-scale feature.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.14 — DataAI: Operations and processes (22%)
 
@@ -387,7 +387,7 @@ reproducibility, core to MLOps operations.
 **Negative test:** deploy an unversioned model; you cannot roll back or reproduce
 it — an MLOps failure.
 
-**Cleanup:** `rm -rf "$d"`.
+**Rollback:** `rm -rf "$d"`.
 
 ### Lab 5.15 — DataAI: Specialized applications of data science (13%)
 
@@ -407,7 +407,7 @@ NLP building block behind TF-IDF and topic modeling.
 **Negative test:** treat "Data" and "data" as different tokens; normalize case
 before counting.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

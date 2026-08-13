@@ -74,7 +74,7 @@ Get-Cluster Cluster1 | Select Name, DrsEnabled, HAEnabled
 **Negative test:** add hosts with no cluster; a **cluster** enables the platform features — create
 it first.
 
-**Cleanup:** `Remove-Cluster Cluster1 -Confirm:$false; Remove-Datacenter DC1 -Confirm:$false`.
+**Rollback:** `Remove-Cluster Cluster1 -Confirm:$false; Remove-Datacenter DC1 -Confirm:$false`.
 
 ### Lab 3.2 — Identity federation concept
 
@@ -91,7 +91,7 @@ it first.
 **Negative test:** handle passwords directly by joining vCenter to AD for a new deployment; prefer
 **federation** for stronger, centralized auth.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Assign a least-privilege role
 
@@ -107,7 +107,7 @@ Get-VIPermission -Entity (Get-Cluster Cluster1)
 
 **Negative test:** grant Administrator at the root; assign a **scoped, least-privilege** role.
 
-**Cleanup:** remove the permission.
+**Rollback:** remove the permission.
 
 ### Lab 3.4 — Query vCenter 8 via the REST API
 
@@ -125,7 +125,7 @@ management (same API family as 7, updated).
 
 **Negative test:** script the GUI; the **REST API** returns JSON — use it (or PowerCLI/govc).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

@@ -70,7 +70,7 @@ underlay.
 **Negative test:** build VXLAN before the underlay carries loopbacks; **VTEPs can't reach
 each other** — underlay first.
 
-**Cleanup:** `no router bgp 65101`.
+**Rollback:** `no router bgp 65101`.
 
 ### Lab 4.2 — Configure a VXLAN VTEP
 
@@ -89,7 +89,7 @@ leaf1# show interfaces Vxlan1
 **Negative test:** map inconsistent VLAN↔VNI across leaves; **keep the mapping consistent**
 fabric-wide.
 
-**Cleanup:** `no interface Vxlan1`.
+**Rollback:** `no interface Vxlan1`.
 
 ### Lab 4.3 — Enable BGP EVPN
 
@@ -109,7 +109,7 @@ remote MAC/IP.
 **Negative test:** rely on flood-and-learn; **EVPN** advertises endpoints without flooding
 — enable it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Verify EVPN routes
 
@@ -126,7 +126,7 @@ overlay reachability via EVPN.
 **Negative test:** assume connectivity without checking EVPN routes; **verify type-2/5** are
 present.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Anycast gateway (tenant routing)
 
@@ -145,7 +145,7 @@ tenant routing.
 **Negative test:** centralize the gateway on one leaf; an **anycast gateway** routes locally
 on each leaf — avoid tromboning.
 
-**Cleanup:** `no interface Vlan100`.
+**Rollback:** `no interface Vlan100`.
 
 ## Lab Verification
 

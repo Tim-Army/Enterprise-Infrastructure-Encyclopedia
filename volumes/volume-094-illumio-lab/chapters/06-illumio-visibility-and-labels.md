@@ -57,7 +57,7 @@ Illumio's method is **model, then enforce**: label every workload, watch real tr
 
 **Negative test.** Plan to install the VEN on `il-ot01`. It cannot run one — a real PLC has no general-purpose OS to host an agent. Forcing the agent model onto OT is the classic segmentation design error; Illumio's answer is the unmanaged-workload model, not an agent. Reassign it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Pair the VENs (or stand up the native layer)
 
@@ -177,7 +177,7 @@ Get-NetFirewallProfile | Format-Table Name, Enabled, DefaultInboundAction, LogBl
 
 **Negative test.** On Windows, apply a Group Policy that forces the firewall to a conflicting state, then observe (Track 1) the workload failing to apply policy, or (Track 2) your `Set-NetFirewallProfile` changes being reverted on the next GPO refresh. A single controller of the native firewall is a documented Illumio Windows prerequisite; here it is made tangible.
 
-**Cleanup.** Leave the Visibility-Only layer in place; the rest of the lab builds on it.
+**Rollback.** Leave the Visibility-Only layer in place; the rest of the lab builds on it.
 
 ### Lab 6.3 — Label the workloads
 
@@ -213,7 +213,7 @@ sudo nft list table inet illumio
 
 **Negative test.** Label `il-win01` with Role **Web** "because it is on the same segment." Later, a rule permitting Web→Database would silently authorize the HMI to reach the database — the exact lateral movement you are stopping. Labels are policy; get them wrong and the policy is wrong. Correct it to **HMI**.
 
-**Cleanup.** Keep the labels/sets; Chapter 07 uses them.
+**Rollback.** Keep the labels/sets; Chapter 07 uses them.
 
 ### Lab 6.4 — Discover traffic in Illumination (build the flow map)
 
@@ -263,7 +263,7 @@ You now know exactly where the boundary must sit.
 
 **Negative test.** Try to design policy from the topology alone, without the map. You will either forget the legitimate app→db flow (and break the app in Chapter 07) or miss an unwanted flow (and leave a hole). Discovery-before-policy is not ceremony; skipping it is how real rollouts cause outages.
 
-**Cleanup.** None — keep the map as your policy specification.
+**Rollback.** None — keep the map as your policy specification.
 
 ## Summary and Completion Checklist
 

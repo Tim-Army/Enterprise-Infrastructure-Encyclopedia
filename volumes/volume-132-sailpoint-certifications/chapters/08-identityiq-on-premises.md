@@ -81,7 +81,7 @@ EOF
 
 **Negative test:** Assuming the products are unrelated and re-learning governance from scratch — the concepts transfer almost entirely, which is why SailPoint's own training paths mirror each other across both product lines.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Model the build-and-deploy pipeline
 
@@ -113,7 +113,7 @@ EOF
 
 **Negative test:** Treating IdentityIQ as a UI-configured appliance — with no source control you cannot reproduce an environment, diff a change, or roll back a bad one.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Debug a failing aggregation task
 
@@ -145,7 +145,7 @@ EOF
 
 **Negative test:** Re-running the failed task hoping it passes — a heap exhaustion or a bad rule reproduces every time, and you have spent an hour confirming the failure rather than reading the log.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

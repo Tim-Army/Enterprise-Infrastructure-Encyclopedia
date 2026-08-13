@@ -212,7 +212,7 @@ methods) without changing core call control.
 malformed or unsupported header drops the call — the script is what reconciles
 the dialects.
 
-**Cleanup:** unbind the test script from the trunk.
+**Rollback:** unbind the test script from the trunk.
 
 ### Lab 4.2 — Describe call recording options (CLACC Objective 3.2)
 
@@ -233,7 +233,7 @@ line.
 built-in bridge off; no media is forked — both the line profile and the BiB (or
 gateway) must be enabled.
 
-**Cleanup:** disable recording on the test line.
+**Rollback:** disable recording on the test line.
 
 ### Lab 4.3 — Troubleshoot globalized call routing elements (CLACC Objective 3.3)
 
@@ -252,7 +252,7 @@ calling-party globalization on ingress or a missing localization on egress.
 "incoming called/calling party settings" prefixing `+`; callback from the log
 fails — the ingress globalization transform is the fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.4 — Describe certificate management in Cisco UCM (CLACC Objective 4.1)
 
@@ -273,7 +273,7 @@ dependent service.
 cannot enroll, while already-enrolled phones keep working — the partial symptom
 points to CAPF specifically.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.5 — Configure supplementary functions (CLACC Objective 4.2)
 
@@ -294,7 +294,7 @@ user's CSS.
 is unusable — supplementary features obey the same partition/CSS reachability as
 routing.
 
-**Cleanup:** remove the test park slot / line group.
+**Rollback:** remove the test park slot / line group.
 
 ### Lab 4.6 — Troubleshoot Cisco UCM Mobility (CLACC Objective 4.3)
 
@@ -314,7 +314,7 @@ CSS reaching the PSTN.
 **Negative test:** an EM user profile whose CSS lacks the PSTN partition can log
 in but cannot dial out — the device-profile CSS, not the login, is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 4.7 — Configure ILS, URI synchronization, and GDPR (CLACC Objective 4.4)
 
@@ -335,7 +335,7 @@ routing without static patterns.
 URIs; URI dialing fails intercluster — ILS/GDPR is the replication that makes it
 work.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

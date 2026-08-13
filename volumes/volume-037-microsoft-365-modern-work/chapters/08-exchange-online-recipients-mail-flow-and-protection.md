@@ -166,7 +166,7 @@ Full Access — shared mailboxes need no license under the size limit.
 open the mailbox; they can send as it but not read it — the two rights are
 separate.
 
-**Cleanup:** `Remove-Mailbox "support@contoso.com" -Confirm:$false`.
+**Rollback:** `Remove-Mailbox "support@contoso.com" -Confirm:$false`.
 
 ### Lab 8.2 — Enable DKIM signing (Topic: Email authentication)
 
@@ -185,7 +185,7 @@ unaltered.
 status shows the records are missing and signing does not fully activate —
 DNS records are the prerequisite.
 
-**Cleanup:** `Set-DkimSigningConfig -Identity "contoso.com" -Enabled $false`.
+**Rollback:** `Set-DkimSigningConfig -Identity "contoso.com" -Enabled $false`.
 
 ### Lab 8.3 — Create a mail flow rule (Topic: Mail flow)
 
@@ -204,7 +204,7 @@ rules act on messages in transit.
 address; you have built an exfiltration/loop risk — review rule scope and
 actions carefully.
 
-**Cleanup:** `Remove-TransportRule "External disclaimer" -Confirm:$false`.
+**Rollback:** `Remove-TransportRule "External disclaimer" -Confirm:$false`.
 
 ### Lab 8.4 — Trace a message (Topic: Troubleshoot delivery)
 
@@ -222,7 +222,7 @@ the sender's Sent Items.
 **Negative test:** search a time window before the message was sent; it does
 not appear — trace within the correct window (extended trace for older mail).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

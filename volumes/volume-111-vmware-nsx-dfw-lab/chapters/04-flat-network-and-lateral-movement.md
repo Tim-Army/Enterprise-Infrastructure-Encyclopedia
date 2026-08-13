@@ -38,7 +38,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.40 502  && echo "hmi->plc REAC
 
 **Negative test.** A flow to a closed port (`hmi->db:502`) fails because nothing listens, not because of policy. Distinguish "no service" from "denied."
 
-**Cleanup.** None — the default is left Allow until Chapter 05, where the default becomes Drop.
+**Rollback.** None — the default is left Allow until Chapter 05, where the default becomes Drop.
 
 ### Exercise 4.2 — Name the legitimate flows
 
@@ -57,7 +57,7 @@ Everything else east-west — most importantly `Operators -> Database` (hmi -> d
 
 **Negative test.** Write the Web→Database rule against the db IP and note it breaks if db is redeployed with a new address; a rule against the `Database` group (resolved by tag) survives redeploys — the point of dynamic groups.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 4.3 — Reproduce the lateral movement
 
@@ -73,7 +73,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.50.1.20 5432 && echo "PIVOT: hmi op
 
 **Negative test.** Re-run `web->db`; it also succeeds. Until the DFW distinguishes the sources, the workloads are mutually reachable.
 
-**Cleanup.** None — Chapter 05 authors the DFW rulebase.
+**Rollback.** None — Chapter 05 authors the DFW rulebase.
 
 ## Summary and Completion Checklist
 

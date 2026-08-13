@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Patching by CVSS severity. The 9.8 is in a dormant, never-called function with no known exploit, while a reachable, actively-exploited medium waits — severity ranks the flaw, not the risk to your application.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Gate on prioritized risk, not on noise
 
@@ -131,7 +131,7 @@ EOF
 
 **Negative test:** Gating the build on any high/critical CVSS finding. It blocks constantly on dormant, unexploitable issues, so developers mark the check non-blocking — and then it stops nothing; gating on prioritized risk keeps the gate credible and enabled.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

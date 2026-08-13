@@ -51,7 +51,7 @@ sudo nft list set inet jsec quarantine
 
 **Expected result.** An empty `quarantine` set and a first-match drop rule referencing it.
 
-**Cleanup.** Keep the group and rule.
+**Rollback.** Keep the group and rule.
 
 ### Exercise 6.2 — Quarantine a compromised host
 
@@ -87,7 +87,7 @@ sudo ip netns exec hmi bash -c 'nc -z -w2 10.20.4.10 502 && echo "hmi->plc OPEN"
 
 `hmi->plc OPEN` again — membership, not the rule, decided containment. That reversibility is the point: policy stays fixed while the response is dynamic.
 
-**Cleanup.** Leave `hmi` out of quarantine for the remaining chapters.
+**Rollback.** Leave `hmi` out of quarantine for the remaining chapters.
 
 ## Summary and Completion Checklist
 

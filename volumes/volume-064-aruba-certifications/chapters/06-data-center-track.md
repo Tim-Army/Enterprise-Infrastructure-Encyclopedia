@@ -75,7 +75,7 @@ switch# show interface vxlan 1
 **Negative test:** source the VXLAN from a physical port IP; use a **loopback** so the VTEP
 survives link failures.
 
-**Cleanup:** `configure terminal; no interface vxlan 1`.
+**Rollback:** `configure terminal; no interface vxlan 1`.
 
 ### Lab 6.2 — EVPN control plane
 
@@ -95,7 +95,7 @@ overlay.
 **Negative test:** rely on flood-and-learn with no EVPN; **BGP EVPN** distributes reachability —
 enable the address family.
 
-**Cleanup:** `configure terminal; no router bgp 65001`.
+**Rollback:** `configure terminal; no router bgp 65001`.
 
 ### Lab 6.3 — VSX for redundant leaves
 
@@ -114,7 +114,7 @@ hosts — no single point of failure at the leaf.
 
 **Negative test:** single-home servers to one leaf; dual-home to a **VSX** pair for redundancy.
 
-**Cleanup:** `configure terminal; no vsx`.
+**Rollback:** `configure terminal; no vsx`.
 
 ### Lab 6.4 — CX 10000 in-switch services
 
@@ -132,7 +132,7 @@ central choke point.
 **Negative test:** route all east-west traffic to a central firewall; **CX 10000** enforces it
 in-fabric at line rate — distribute it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

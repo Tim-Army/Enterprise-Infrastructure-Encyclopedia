@@ -68,7 +68,7 @@ Collectors.
 **Negative test:** create an `OpenTelemetryCollector` CR before the operator is ready;
 the CR is **unhandled** — install the operator first.
 
-**Cleanup:** delete the operator manifest.
+**Rollback:** delete the operator manifest.
 
 ### Lab 8.2 — Deploy a gateway Collector
 
@@ -93,7 +93,7 @@ central tier.
 **Negative test:** set `mode: daemonset` for the central gateway; a **deployment** scales
 horizontally — daemonset is for agents.
 
-**Cleanup:** `kubectl delete opentelemetrycollector gateway`.
+**Rollback:** `kubectl delete opentelemetrycollector gateway`.
 
 ### Lab 8.3 — Auto-instrumentation injection
 
@@ -113,7 +113,7 @@ Operator injection.
 **Negative test:** rebuild every image to add the SDK; **annotation-based injection**
 avoids that — use the Operator.
 
-**Cleanup:** delete the Instrumentation CR and annotation.
+**Rollback:** delete the Instrumentation CR and annotation.
 
 ### Lab 8.4 — Scale the gateway
 
@@ -130,7 +130,7 @@ tier.
 **Negative test:** vertically scale one gateway forever; **scale out** replicas for
 throughput and resilience.
 
-**Cleanup:** `kubectl scale deployment gateway-collector --replicas=1`.
+**Rollback:** `kubectl scale deployment gateway-collector --replicas=1`.
 
 ## Lab Verification
 

@@ -68,7 +68,7 @@ rpm -q redhat-release 2>/dev/null || rpm -q almalinux-release rocky-release 2>/d
 
 **Negative test:** Studying EX200 on RHEL 8 — several tools (network, package, SELinux defaults) differ enough to cost points; version parity is not optional on a performance exam.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Prove your lab is exam-representative
 
@@ -85,7 +85,7 @@ command -v dnf && command -v podman   # package + container tooling
 
 **Negative test:** `setenforce 0` (permissive) and treat SELinux tasks as passing — the real exam runs Enforcing; practicing in permissive teaches the wrong habits.
 
-**Cleanup:** Restore `setenforce 1` if you changed it.
+**Rollback:** Restore `setenforce 1` if you changed it.
 
 ## Summary and Completion Checklist
 

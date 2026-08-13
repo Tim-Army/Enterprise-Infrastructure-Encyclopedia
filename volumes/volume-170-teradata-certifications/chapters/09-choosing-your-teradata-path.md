@@ -88,7 +88,7 @@ EOF
 
 **Expected result:** A planner turning roles into sequenced paths — every role starts with the Associate VantageCloud Lake, then branches (data engineer → Data Engineering, DBA → Administration, data scientist → ClearScape/ML). The lesson is to start with the no-prerequisite Associate VantageCloud Lake foundation, then add role-based depth, preferring current VantageCloud Lake certifications over retired legacy exams.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Capstone: the Teradata analytics lifecycle
 
@@ -129,7 +129,7 @@ EOF
 
 **Expected result:** A capstone distributing data evenly by primary index, designing with PPI, querying in parallel with the optimizer, administering workload and space, and running in-database analytics. The lesson synthesizes the volume: Teradata is enterprise analytics on a shared-nothing MPP engine — distribute (primary index), design (indexes/PPI), query (parallel SQL + optimizer), operate (workload/space), and analyze (ClearScape in-database) — which the Associate-then-specialize certification path prepares you to do.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -90,7 +90,7 @@ gh run list --workflow=ci.yml --json name,conclusion --jq '.[0]'
 **Negative test:** trigger on **every** branch's every event when you only need `main`; scope `on` to the
 events you want.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.2 — Fan out with a matrix
 
@@ -120,7 +120,7 @@ matrix.
 
 **Negative test:** copy-paste three near-identical jobs for three versions; use a **matrix** instead.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.3 — Use a marketplace action pinned to a version
 
@@ -144,7 +144,7 @@ matrix.
 **Negative test:** reference `actions/upload-artifact@main`; a mutable ref can change under you — pin to
 `@v4` (or a SHA).
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 4.4 — Inspect a run
 
@@ -165,7 +165,7 @@ Building on Linux
 **Negative test:** assume a workflow ran because the file exists; check `gh run list`/`view` — a syntax
 error or wrong trigger means it never ran.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 git rm .github/workflows/ci.yml && git commit -m "Remove demo workflow" && git push

@@ -67,7 +67,7 @@ print(type(r.json()))   # <class 'dict'>
 **Negative test:** call without `timeout`; a hung server **blocks forever** — always set
 a timeout.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Authenticated session
 
@@ -86,7 +86,7 @@ print("sent auth:", "Authorization" in r.json()["headers"])
 **Negative test:** set auth per-request by hand each time; a **Session** applies defaults
 consistently — use it.
 
-**Cleanup:** `s.close()`.
+**Rollback:** `s.close()`.
 
 ### Lab 5.3 — Paginate results
 
@@ -109,7 +109,7 @@ def all_items(session, url):
 **Negative test:** return only the first page's `results`; you **miss data** — page until
 `next` is null.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Retries with backoff
 
@@ -130,7 +130,7 @@ print("retries configured:", s.get_adapter("https://").max_retries.total)   # 3
 **Negative test:** fail the whole run on one transient 503; **retry with backoff** rides
 out blips.
 
-**Cleanup:** `s.close()`.
+**Rollback:** `s.close()`.
 
 ## Lab Verification
 

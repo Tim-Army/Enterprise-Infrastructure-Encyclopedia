@@ -451,7 +451,7 @@ explicitly permitted, which is the foundation of network defense at host and per
 to block is exposed — default-deny means a forgotten service is closed, not open, which is the
 safer failure mode.
 
-**Cleanup:** `sudo nft delete table inet filter`.
+**Rollback:** `sudo nft delete table inet filter`.
 
 ### Lab 4.2 — Reconnaissance and attack-surface enumeration (Topic: Network analysis)
 
@@ -470,7 +470,7 @@ defender's attack-surface check; you cannot defend a service you did not know wa
 daemon is listening — scanning reveals the *actual* attack surface, which usually exceeds the
 intended one.
 
-**Cleanup:** none (read-only scan of your own host).
+**Rollback:** none (read-only scan of your own host).
 
 ### Lab 4.3 — Intrusion detection with Suricata (Topic: IDS/IPS)
 
@@ -493,7 +493,7 @@ an IDS/IPS inspects traffic against signatures and behavioral rules (Suricata/Sn
 ports but cannot see a malicious payload riding an allowed port — the IDS inspects *content*,
 which port filtering does not.
 
-**Cleanup:** `rm -f ~/local.rules; sudo rm -rf /tmp/suri`.
+**Rollback:** `rm -f ~/local.rules; sudo rm -rf /tmp/suri`.
 
 ### Lab 4.4 — Intrusion traffic analysis (Topic: Network intrusion analysis)
 
@@ -515,7 +515,7 @@ not reveal, which is the SOC's network-side detection skill.
 **Negative test:** judge intrusion from a single packet; a scan or beacon is a *pattern* across
 many packets — aggregating by source/destination/port over time is what exposes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

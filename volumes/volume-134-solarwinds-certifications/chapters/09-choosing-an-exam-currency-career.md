@@ -92,7 +92,7 @@ cat my-scp-plan.md
 
 **Negative test:** Preparing from a practice-question dump — beyond the ethical and contractual problem, much of that material targets exams that no longer exist under the rebranded portfolio.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ### Lab 9.2 — Self-assess against the exam domains
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Studying the whole volume evenly for a single product exam — the exams are product-scoped, so half the material may be out of scope while your weak in-scope domain stays weak.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

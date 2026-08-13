@@ -138,7 +138,7 @@ the four notational systems and a binary storage unit.
 
 **Negative test:** treat 1 GB (10^9) and 1 GiB (2^30) as identical; they differ.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Tech+: Infrastructure (24%)
 
@@ -155,7 +155,7 @@ internal components and storage.
 **Negative test:** expect `lsblk` to list network shares; it shows local block
 devices only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Tech+: Applications and software (18%)
 
@@ -172,7 +172,7 @@ and an application path — operating systems and software.
 **Negative test:** assume every distro uses the same file system; `findmnt`
 shows it varies (ext4/xfs/btrfs).
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Tech+: Software development concepts (13%)
 
@@ -190,7 +190,7 @@ branching, and a data type.
 
 **Negative test:** compare `"5" == 5`; a string and an int are not equal.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — Tech+: Data and database fundamentals (13%)
 
@@ -206,7 +206,7 @@ INSERT INTO assets(name) VALUES('router'),('switch'); SELECT count(*) FROM asset
 **Negative test:** insert a second row with `id=1`; the PRIMARY KEY rejects the
 duplicate.
 
-**Cleanup:** `rm -f /tmp/tech.db`.
+**Rollback:** `rm -f /tmp/tech.db`.
 
 ### Lab 2.6 — Tech+: Security (19%)
 
@@ -223,7 +223,7 @@ openssl enc -aes-256-cbc -pbkdf2 -pass pass:Demo2026 -in /tmp/f.txt -out /tmp/f.
 **Negative test:** `cat /tmp/f.enc`; the ciphertext is unreadable without the
 passphrase.
 
-**Cleanup:** `rm -f /tmp/f.txt /tmp/f.enc`.
+**Rollback:** `rm -f /tmp/f.txt /tmp/f.enc`.
 
 ### Lab 2.7 — A+ Core 1: Mobile devices (13%)
 
@@ -238,7 +238,7 @@ absence note) — accessory interfaces.
 
 **Negative test:** assume `lsusb` shows cellular signal; it enumerates USB only.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.8 — A+ Core 1: Networking (23%)
 
@@ -254,7 +254,7 @@ ip -brief addr; ip route | grep default
 **Negative test:** treat a 169.254.x.x (APIPA) address as healthy DHCP; APIPA
 signals DHCP failure.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.9 — A+ Core 1: Hardware (25%)
 
@@ -271,7 +271,7 @@ lsblk -d -o NAME,SIZE,ROTA
 **Negative test:** assume ROTA=0 means NVMe specifically; it means
 non-rotational — check the transport.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.10 — A+ Core 1: Virtualization and cloud computing (11%)
 
@@ -288,7 +288,7 @@ the IaaS/PaaS/SaaS model note.
 **Negative test:** assume `none` proves it is not a cloud VM; hardened guests can
 hide the hypervisor.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.11 — A+ Core 1: Hardware and network troubleshooting (28%)
 
@@ -303,7 +303,7 @@ layer-1/2 from higher layers.
 
 **Negative test:** treat a DOWN interface as a DNS problem; link-down is physical.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.12 — A+ Core 2: Operating systems (28%)
 
@@ -319,7 +319,7 @@ file-system basics.
 **Negative test:** assume `uname` reveals the distro; it shows the kernel — use
 /etc/os-release.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.13 — A+ Core 2: Security (28%)
 
@@ -335,7 +335,7 @@ least-privilege control.
 **Negative test:** `chmod 777 /tmp/acl.txt`; world-writable is insecure for
 sensitive files.
 
-**Cleanup:** `rm -f /tmp/acl.txt`.
+**Rollback:** `rm -f /tmp/acl.txt`.
 
 ### Lab 2.14 — A+ Core 2: Software troubleshooting (23%)
 
@@ -351,7 +351,7 @@ ps -e --sort=-%mem | head -3
 **Negative test:** kill a random PID to "fix" memory; identify the offending
 process first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.15 — A+ Core 2: Operational procedures (21%)
 
@@ -368,7 +368,7 @@ backup.
 **Negative test:** assume creating the archive proves recoverability; always
 verify with `-t`.
 
-**Cleanup:** `rm -rf /tmp/src /tmp/backup.tgz`.
+**Rollback:** `rm -rf /tmp/src /tmp/backup.tgz`.
 
 ### Lab 2.16 — Network+: Networking concepts (23%)
 
@@ -385,7 +385,7 @@ ports/protocols and IPv4 subnetting.
 **Negative test:** claim /26 gives 64 usable hosts; network + broadcast are
 reserved, so 62.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.17 — Network+: Network implementation (20%)
 
@@ -402,7 +402,7 @@ routing implementation task.
 **Negative test:** add the route to a non-existent interface; the kernel rejects
 it.
 
-**Cleanup:** `sudo ip route del 203.0.113.0/24 dev lo 2>/dev/null || true`.
+**Rollback:** `sudo ip route del 203.0.113.0/24 dev lo 2>/dev/null || true`.
 
 ### Lab 2.18 — Network+: Network operations (19%)
 
@@ -418,7 +418,7 @@ baselines.
 **Negative test:** treat one reading as a baseline; a baseline needs samples
 over time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.19 — Network+: Network security (14%)
 
@@ -433,7 +433,7 @@ sudo iptables -L INPUT -n --line-numbers 2>/dev/null | head || echo "try: sudo n
 **Negative test:** assume an empty rule set is "secure"; a default-ACCEPT empty
 policy permits everything.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.20 — Network+: Network troubleshooting (24%)
 
@@ -450,7 +450,7 @@ domain.
 **Negative test:** conclude "internet down" when only DNS fails; L3 can be up
 while DNS is broken.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.21 — Security+: General security concepts (12%)
 
@@ -467,7 +467,7 @@ hashing and PKI.
 **Negative test:** publish `/tmp/k.pem` as the "public" key; the private key must
 stay secret — share `k.pub` only.
 
-**Cleanup:** `rm -f /tmp/k.pem /tmp/k.pub`.
+**Rollback:** `rm -f /tmp/k.pem /tmp/k.pub`.
 
 ### Lab 2.22 — Security+: Threats, vulnerabilities, and mitigations (22%)
 
@@ -483,7 +483,7 @@ echo "Mitigation: mask unused services -> systemctl disable --now <svc>"
 **Negative test:** disable sshd on a box you reach remotely; hardening must not
 sever required access.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.23 — Security+: Security architecture (18%)
 
@@ -500,7 +500,7 @@ and recovery.
 **Negative test:** store the passphrase beside the ciphertext; key and data must
 be separated.
 
-**Cleanup:** `rm -f /tmp/d.txt /tmp/d.enc /tmp/d.enc.bak`.
+**Rollback:** `rm -f /tmp/d.txt /tmp/d.enc /tmp/d.enc.bak`.
 
 ### Lab 2.24 — Security+: Security operations (28%)
 
@@ -517,7 +517,7 @@ response.
 **Negative test:** treat one failed login as a breach; correlate volume/pattern
 first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.25 — Security+: Security program management and oversight (20%)
 
@@ -533,7 +533,7 @@ owner.
 
 **Negative test:** track risks without an owner; unowned risks are not managed.
 
-**Cleanup:** `rm -f /tmp/risk.csv`.
+**Rollback:** `rm -f /tmp/risk.csv`.
 
 ## Lab Verification
 

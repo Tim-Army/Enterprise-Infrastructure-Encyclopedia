@@ -48,7 +48,7 @@ EOF
 
 **Negative test:** Specifying "install MFA and EDR agent on the safety PLC" — the device may not support it, and forcing it risks the safety function; the compensating control (protect *around* the asset) is the 62443-correct answer.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Virtual patching as a compensating control
 
@@ -78,7 +78,7 @@ sudo ip netns exec cdgw nft list chain ip vpatch f | grep 20000
 
 **Negative test:** Insisting on patching the EOL controller — the vendor ships no fix and a firmware attempt could brick a running asset; the conduit-level virtual patch is the viable control.
 
-**Cleanup:** `for ns in plc-old cdgw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del vp`.
+**Rollback:** `for ns in plc-old cdgw; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del vp`.
 
 ### Lab 7.3 — Verify SL-Achieved against the CRS
 
@@ -104,7 +104,7 @@ EOF
 
 **Negative test:** Declaring the design done with FR1 still SHORT — the zone doesn't achieve its target protection; SL-A ≥ SL-T on **every** FR is the bar, not most of them.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

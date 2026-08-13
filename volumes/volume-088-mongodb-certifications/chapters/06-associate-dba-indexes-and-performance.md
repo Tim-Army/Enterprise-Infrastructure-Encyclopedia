@@ -80,7 +80,7 @@ the index.
 **Negative test:** query `age` with no index on a large collection; it scans everything — create an
 index.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 6.2 — Read an explain plan
 
@@ -100,7 +100,7 @@ IXSCAN
 **Negative test:** assume an index is used because it exists; a query on a different field still
 `COLLSCAN`s — verify with **`explain`**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Apply the ESR rule
 
@@ -124,7 +124,7 @@ IXSCAN
 **Negative test:** build `{age:1, city:1}` for an equality-on-city query; the equality field should come
 **first** — follow **ESR**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — Confirm a covered query
 
@@ -146,7 +146,7 @@ document fetch.
 **Negative test:** project a non-indexed field (e.g., `name`); MongoDB must fetch documents, so the query
 is no longer covered — index (or omit) the projected fields.
 
-**Cleanup:**
+**Rollback:**
 
 ```javascript
 // mongosh

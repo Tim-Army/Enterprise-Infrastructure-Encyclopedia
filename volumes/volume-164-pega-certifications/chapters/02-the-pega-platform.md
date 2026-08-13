@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Building a Pega app with heavy custom Java and hardcoded values. Guardrail compliance drops, and the app becomes brittle and hard to upgrade; staying model-driven and in the guardrails keeps the application maintainable and upgradeable.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

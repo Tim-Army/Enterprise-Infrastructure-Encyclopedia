@@ -450,7 +450,7 @@ loss risk of a careless failback.
    requires an explicit diff/reconciliation step before any bulk copy, as
    shown in the runbook example.
 
-**Cleanup**
+**Rollback**
 
 8. Stop both web services and remove the lab data and timeline log:
 

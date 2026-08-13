@@ -87,7 +87,7 @@ The zones, VDOM split, and addresses are identical either way — only the inter
 | `FGT #` | FortiOS CLI (orientation only; type the command shown) |
 | `bash` block | Bare commands; output follows on the next line |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough** (per track), **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

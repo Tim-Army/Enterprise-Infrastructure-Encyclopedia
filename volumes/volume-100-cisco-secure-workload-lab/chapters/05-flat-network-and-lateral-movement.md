@@ -43,7 +43,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Nothing is blocked to find — the finding is that any host can reach any service.
 
-**Cleanup.** Keep `~/reach.sh` as your regression test.
+**Rollback.** Keep `~/reach.sh` as your regression test.
 
 ### Lab 5.2 — Identify the legitimate flows
 
@@ -63,7 +63,7 @@ chmod +x ~/reach.sh
 
 **Negative test.** Try to justify flow 3. The HMI's only job is polling the PLC; discovery run over traffic that includes the attack would learn flow 3 as normal. Keep flow 3 a "no" and review what discovery proposes.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Reproduce lateral movement
 
@@ -88,7 +88,7 @@ $env:PGPASSWORD='LabAppPassw0rd!'
 
 **Negative test.** Re-run the app's own query from `cw-app01` (`~/checkdb.sh` → 3); it works too. On a flat network nothing distinguishes the app from the attacker. Discovered, telemetry-driven policy supplies the difference.
 
-**Cleanup.** `Remove-Item Env:\PGPASSWORD`.
+**Rollback.** `Remove-Item Env:\PGPASSWORD`.
 
 ## Summary and Completion Checklist
 

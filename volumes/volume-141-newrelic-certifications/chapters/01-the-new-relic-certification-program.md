@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Booking a Professional exam at six months of experience because the fee is affordable. The experience bands describe what the exam assumes, not what the checkout page enforces.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Record what is published and what is not
 
@@ -120,7 +120,7 @@ cat my-newrelic-plan.md && rm my-newrelic-plan.md
 
 **Negative test:** Copying a question count from a practice-exam site. New Relic put it behind a sign-in; a third party quoting it either registered (and is republishing gated material) or guessed.
 
-**Cleanup:** The plan file is removed at the end of the script; keep a copy if you want it.
+**Rollback:** The plan file is removed at the end of the script; keep a copy if you want it.
 
 ## Summary and Completion Checklist
 

@@ -48,7 +48,7 @@ z/OS> address spaces (jobs), JCL (job control language) submits batch work, JES2
 
 **Negative test:** Bringing Linux `systemd`/`cron` mental models to z/OS batch — the concepts (started tasks, JCL jobs, JES initiators) map differently; conflating them is the trap.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.2 — AIX/LVM (AIX Administrator Specialty)
 
@@ -64,7 +64,7 @@ echo "commands: lspv, lsvg, lslv, mklv, crfs, mount ; ODM stores device config"
 
 **Negative test:** Assuming Linux `lvcreate`/`/etc/fstab` on AIX — the commands and the ODM-based config differ; the Specialty exam tests the AIX specifics.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.3 — IBM i (IBM i Developer)
 
@@ -79,7 +79,7 @@ IBM i (7.x)> integrated OS+DB (Db2 for i built in), objects & libraries (not fil
 
 **Negative test:** Treating IBM i like AIX (it is not UNIX) — object/library vs file/directory is the fundamental difference the exam probes.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.4 — WebSphere topology (WebSphere ND Administrator)
 
@@ -94,7 +94,7 @@ websphere nd (v9.0.5)> cell -> deployment manager (dmgr) -> node agents -> manag
 
 **Negative test:** Confusing a base (standalone) WAS profile with an ND cell — clustering and central administration are ND's point, and the exam distinguishes them.
 
-**Cleanup:** None (design).
+**Rollback:** None (design).
 
 ### Lab 8.5 — Maximo modular work management (Maximo Associate)
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Skipping approval (`WAPPR → INPRG`) where the workflow requires it — Maximo's status flow and approvals are configurable controls the exam tests.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.6 — The retiring Engineering pair
 
@@ -129,7 +129,7 @@ retiring> DOORS Next v7.x (requirements management) Specialty and Engineering Te
 
 **Negative test:** Building a certification roadmap around a retiring credential — the catalog's "Retiring soon" flag is the signal to redirect.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

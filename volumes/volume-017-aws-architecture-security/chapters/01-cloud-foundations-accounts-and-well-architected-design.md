@@ -435,7 +435,7 @@ leaving unused artifacts in the account.
    Budgets API rejects malformed input rather than creating a
    partially-configured guardrail.
 
-7. **Cleanup:**
+7. **Rollback:**
 
    ```bash
    aws budgets delete-budget \

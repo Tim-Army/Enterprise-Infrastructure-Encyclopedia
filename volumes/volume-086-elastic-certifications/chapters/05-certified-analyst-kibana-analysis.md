@@ -73,7 +73,7 @@ Result: only server-error requests to checkout URLs are shown
 **Negative test:** run the KQL against a data view that does not include the `response` field; it returns
 nothing — select the correct data view.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Model a Lens visualization
 
@@ -98,7 +98,7 @@ visualization's data.
 **Negative test:** build a Lens chart on a high-cardinality `text` field; aggregate on its `keyword`
 sub-field instead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Assemble a dashboard
 
@@ -119,7 +119,7 @@ analysis.
 **Negative test:** build one giant visualization instead of a filtered dashboard; a **dashboard** lets
 viewers slice all panels at once.
 
-**Cleanup:** delete the practice dashboard if not needed.
+**Rollback:** delete the practice dashboard if not needed.
 
 ### Lab 5.4 — Define a runtime field
 
@@ -142,7 +142,7 @@ reindex needed.
 **Negative test:** reindex the whole dataset just to add a derived flag; a **runtime field** computes it
 on the fly.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -k -u elastic:$PW -X PUT "https://localhost:9200/kibana_sample_data_logs/_mapping" -H 'Content-Type: application/json' -d'{ "runtime": { "is_error": null } }'

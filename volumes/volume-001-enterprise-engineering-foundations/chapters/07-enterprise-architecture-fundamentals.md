@@ -441,7 +441,7 @@ capabilities.
 application context; you build infrastructure with no traceable purpose — the domains keep technology
 aligned to what the business actually needs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Design principles (Topic: Design principles)
 
@@ -465,7 +465,7 @@ outweighs it, not dogmatically.
 modularity to a tiny system adds needless complexity — a principle is a tool with trade-offs, applied
 where it pays off.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — From requirements to architecture (Topic: Requirements)
 
@@ -488,7 +488,7 @@ the same discipline the CCDE (Volume XXX) formalizes.
 traceability; you cannot justify the design or tell whether it meets the needs — requirements drive
 architecture, not the reverse.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.4 — Design Exercise: a small enterprise platform architecture (Topic: Synthesis)
 
@@ -513,7 +513,7 @@ other volume assumes.
 docs, unjustified infra); it works briefly then fragments as the company grows — the architecture and
 practices are what let the platform scale coherently.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

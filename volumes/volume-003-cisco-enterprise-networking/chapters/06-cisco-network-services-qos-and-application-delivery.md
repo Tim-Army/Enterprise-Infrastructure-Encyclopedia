@@ -389,7 +389,7 @@ unique port — `show ip nat translations` lists the mappings.
 never triggers and translations stay empty — the interface roles are
 required.
 
-**Cleanup:** remove the NAT statement, ACL, and interface `ip nat` roles.
+**Rollback:** remove the NAT statement, ACL, and interface `ip nat` roles.
 
 ### Lab 6.2 — Configure and verify NTP (CCNA 4.2)
 
@@ -408,7 +408,7 @@ accurate time for logs, certificates, and Kerberos.
 threshold; the client never syncs (`unsynchronized`) — time skew breaks
 TLS/log correlation.
 
-**Cleanup:** `no ntp server 10.0.0.10`.
+**Rollback:** `no ntp server 10.0.0.10`.
 
 ### Lab 6.3 — Configure and verify DHCP client and relay (CCNA 4.3, 4.6)
 
@@ -426,7 +426,7 @@ server; the relay forwards DISCOVER/OFFER across the subnet boundary.
 **Negative test:** omit `ip helper-address`; broadcasts do not cross the
 router and clients get no lease — the relay is what bridges the subnets.
 
-**Cleanup:** `no ip helper-address 10.0.0.50`; `undebug all`.
+**Rollback:** `no ip helper-address 10.0.0.50`; `undebug all`.
 
 ### Lab 6.4 — Configure and troubleshoot SNMP (CCNA 4.4, ENARSI 4.2)
 
@@ -445,7 +445,7 @@ polling, no cleartext community strings.
 **Negative test:** an NMS configured for `authNoPriv` cannot read from an
 `authPriv`-only user; the security level must match end to end.
 
-**Cleanup:** remove the SNMP user and group.
+**Rollback:** remove the SNMP user and group.
 
 ### Lab 6.5 — Configure and troubleshoot syslog (CCNA 4.5, ENARSI 4.3)
 
@@ -465,7 +465,7 @@ millisecond timestamps.
 interface flaps (severity 3–5) are never sent — the trap level gates what
 forwards.
 
-**Cleanup:** `no logging host 10.0.0.60`.
+**Rollback:** `no logging host 10.0.0.60`.
 
 ### Lab 6.6 — Configure QoS classification and marking (CCNA 4.7, ENCOR 1.4)
 
@@ -488,7 +488,7 @@ policy-map interface` shows matches and any drops per class.
 bulk traffic EF steals the priority queue — mark at a trust boundary, do not
 blindly trust.
 
-**Cleanup:** remove the service-policy, policy-map, and class-map.
+**Rollback:** remove the service-policy, policy-map, and class-map.
 
 ### Lab 6.7 — Configure remote access using SSH (CCNA 4.8)
 
@@ -506,7 +506,7 @@ R1# show ip ssh
 **Negative test:** `transport input all` re-permits Telnet; a port scan
 finds TCP/23 open — restrict to SSH.
 
-**Cleanup:** keep SSH (secure default).
+**Rollback:** keep SSH (secure default).
 
 ### Lab 6.8 — Use TFTP/FTP for file transfer (CCNA 4.9)
 
@@ -525,7 +525,7 @@ archive tracks versions — off-box configuration backup.
 **Negative test:** TFTP to an unreachable/read-only server fails with a
 timeout/permission error — verify server reachability and write permission.
 
-**Cleanup:** remove the archive path.
+**Rollback:** remove the archive path.
 
 ### Lab 6.9 — Configure and verify IP SLA with tracking (ENARSI 4.5)
 
@@ -547,7 +547,7 @@ the target answers — the hook for a tracked static route or PBR.
 `Down`, and any tracked object (route, HSRP priority) reacts — the
 automation IP SLA enables.
 
-**Cleanup:** `no ip sla 10` and `no track 1`.
+**Rollback:** `no ip sla 10` and `no track 1`.
 
 ### Lab 6.10 — Configure and troubleshoot Flexible NetFlow (ENARSI 4.6)
 
@@ -570,7 +570,7 @@ the top-talkers view for troubleshooting and capacity.
 aggregates everything into one flow and loses the per-source detail — the
 key fields define the granularity.
 
-**Cleanup:** remove the flow monitor, record, and interface binding.
+**Rollback:** remove the flow monitor, record, and interface binding.
 
 ### Lab 6.11 — Troubleshoot IPv4/IPv6 DHCP (ENARSI 4.4)
 
@@ -590,7 +590,7 @@ complaint.
 leases; the conflict/pool output shows why, not the client — check the
 server first.
 
-**Cleanup:** none (read-only diagnostics).
+**Rollback:** none (read-only diagnostics).
 
 ### Lab 6.12 — Troubleshoot device management (ENARSI 4.1)
 
@@ -609,7 +609,7 @@ current sessions — the baseline a management-plane fault is measured against.
 timestamps and certificate checks; management troubleshooting starts with
 time.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 6.13 — End-to-end QoS from access trust boundary to WAN edge (integrative)
 
@@ -682,7 +682,7 @@ class is throttled under congestion while the priority class is protected.
 
 7. Re-apply `service-policy output WAN-EDGE-OUT` to restore protection.
 
-**Cleanup**
+**Rollback**
 
 - Remove the lab-only class-maps and policy-map if the WAN-edge device is
   shared:

@@ -108,7 +108,7 @@ CKA tests.
 **Negative test:** bind a `ClusterRole` cluster-wide when only namespace access
 is needed; that over-grants — scope the RoleBinding to the namespace.
 
-**Cleanup:** `kubectl delete namespace dev`
+**Rollback:** `kubectl delete namespace dev`
 
 ### Lab 3.2 — CKA: Workloads & Scheduling (15%)
 
@@ -128,7 +128,7 @@ request — the scheduling constraints (selectors, requests) of Domain 2.
 **Negative test:** request more CPU than any node has; the pod stays `Pending`
 with a `FailedScheduling` event — requests must fit a node.
 
-**Cleanup:** `kubectl delete deploy sched`
+**Rollback:** `kubectl delete deploy sched`
 
 ### Lab 3.3 — CKA: Storage (10%)
 
@@ -153,7 +153,7 @@ tests.
 **Negative test:** request a StorageClass that does not exist; the PVC stays
 `Pending` — the class must exist or a default must be set.
 
-**Cleanup:** `kubectl delete pvc data`
+**Rollback:** `kubectl delete pvc data`
 
 ### Lab 3.4 — CKA: Services & Networking (20%)
 
@@ -172,7 +172,7 @@ Service's ClusterIP — Service discovery via CoreDNS, central to Domain 4.
 **Negative test:** curl a pod IP directly and rely on it; pod IPs are ephemeral
 — use the stable Service name/ClusterIP.
 
-**Cleanup:** `kubectl delete deploy web svc web`
+**Rollback:** `kubectl delete deploy web svc web`
 
 ### Lab 3.5 — CKA: Troubleshooting (30%)
 
@@ -192,7 +192,7 @@ largest CKA domain.
 **Negative test:** delete and recreate the pod hoping it fixes itself; the image
 tag is wrong — read the events and fix the root cause.
 
-**Cleanup:** `kubectl delete pod bad`
+**Rollback:** `kubectl delete pod bad`
 
 ## Lab Verification
 

@@ -319,7 +319,7 @@ errors — the authoritative record of why bring-up or a domain task stopped.
 error usually lives in a component (vCenter/NSX) below SDDC Manager; the
 clean SDDC log redirects the search.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.2 — Troubleshoot VCF workload domains (Objective 5.3)
 
@@ -337,7 +337,7 @@ curl -sk -H "Authorization: Bearer $token" "https://sddc-manager.lab/v1/domains"
 disconnected still degrades capacity — cross-check host state, not just
 domain status.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.3 — Troubleshoot the VCF Operations fleet (Objective 5.4)
 
@@ -355,7 +355,7 @@ fleet-wide gap in metrics and alerting.
 **Negative test:** dashboards render but a collector is `DOWN` — stale data
 displayed as current, the trap a collector-state check catches.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.4 — Troubleshoot license management (Objective 5.5)
 
@@ -373,7 +373,7 @@ Get-View LicenseManager | Select -ExpandProperty Licenses |
 realization while vSphere keeps running — a partial outage a fleet license
 audit surfaces early.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.5 — Troubleshoot VCF compute (Objective 5.6)
 
@@ -392,7 +392,7 @@ where compute troubleshooting starts.
 **Negative test:** low cluster-average CPU can still hide one host at 100%;
 average masks per-host contention, so drill to host stats.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.6 — Troubleshoot VCF storage (Objective 5.7)
 
@@ -410,7 +410,7 @@ fault.
 **Negative test:** a datastore that is full is not a vSAN *health* failure;
 health can be green while capacity is the real problem — different fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.7 — Troubleshoot networking (Objective 5.8)
 
@@ -430,7 +430,7 @@ the overlay break localized to a specific host or Edge.
 overlay fails; same-host success hides the tunnel fault a status check
 exposes.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.8 — Troubleshoot VCF Operations (Objective 5.9)
 
@@ -449,7 +449,7 @@ the queue a support engineer works first.
 recommendation lets it re-fire; the alert detail, not just its presence, is
 the fix.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.9 — Troubleshoot VCF identity (Objective 5.10)
 
@@ -467,7 +467,7 @@ Test-NetConnection -ComputerName ad.lab.example -Port 636
 **Negative test:** correct identity-source config but a blocked 636 port
 still fails every login; reachability, not configuration, is the fault.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 13.10 — Troubleshoot workload mobility (Objective 5.11)
 
@@ -487,7 +487,7 @@ is attempted.
 destination host cannot migrate; the missing port group, not CPU, blocks
 mobility.
 
-**Cleanup:** none (`-WhatIf` performs no migration).
+**Rollback:** none (`-WhatIf` performs no migration).
 
 ### Lab 13.11 — Layered VCF-support diagnostic workflow (integrative)
 
@@ -551,7 +551,7 @@ introduced faults diagnosed without reference material.
    reasonable readiness signal for the support exam's troubleshooting
    domains.
 
-7. **Cleanup:** restore all three faults to their known-good baseline
+7. **Rollback:** restore all three faults to their known-good baseline
    configuration (renew/replace the certificate or correct the
    credential, correct the DFW rule scope, restore vSAN network/datastore
    connectivity), and confirm the baseline health check from step 1

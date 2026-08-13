@@ -98,7 +98,7 @@ User** and the **Cybersecurity Defense** trio — confirming what an old map mis
 **Negative test:** trust a pre-2024 chart; the security track and Advanced Power
 User are newer — confirm on splunk.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a renewal (Topic: Maintain the credential)
 
@@ -120,7 +120,7 @@ advance) — Splunk's exam-based currency model.
 **Negative test:** expect CE credits to renew it; Splunk renews **by exam** —
 plan to re-test or advance.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

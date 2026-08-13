@@ -26,7 +26,7 @@ sudo grep -cE "VIRTUAL-PATCH|UNTRUSTED" /tmp/edgeips.log           # inline bloc
 
 **Expected result.** Inline inspector up, signatures/filters present, trust list in place, allowlist current, blocks recorded.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.2 — Troubleshooting playbook
 
@@ -47,7 +47,7 @@ sudo grep -cE "VIRTUAL-PATCH|UNTRUSTED" /tmp/edgeips.log           # inline bloc
 
 **Negative test.** The classic inline failure is a **bypass path**: a second route to the cell that skips the device. A perfect signature protects nothing on a path the device is not on. Verify placement covers every route first.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 9.3 — Teardown
 
@@ -70,7 +70,7 @@ echo "teardown complete"
 
 **Negative test.** Leaving the DNAT/redirect table (`ip txone`) behind keeps intercepting traffic on the host; remove the table too.
 
-**Cleanup.** This is the cleanup.
+**Rollback.** This is the cleanup.
 
 ## Operational lessons for production
 

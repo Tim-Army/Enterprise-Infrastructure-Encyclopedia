@@ -83,7 +83,7 @@ EOF
 
 **Negative test:** Reporting availability without stating the polling interval — the number's precision implies a measurement resolution you may not have.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Utilization versus errors
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Alerting only on utilization thresholds — Gi0/2's degrading cable stays invisible until it fails completely, at which point the outage is unexplained.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Topology-aware root cause
 
@@ -154,7 +154,7 @@ EOF
 
 **Negative test:** Flat alerting with no topology — a single distribution-switch failure pages on every device behind it, and the responder spends the first ten minutes working out which alert is the cause rather than fixing it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

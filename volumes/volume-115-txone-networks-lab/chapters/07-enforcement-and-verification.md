@@ -38,7 +38,7 @@ Only the legitimate operator read succeeds; the exploit, the untrusted source, t
 
 **Negative test.** Disable one control (e.g., clear the trust-list rule) and confirm the *others* still hold — a clean read from the attacker would now pass the source check but an `EXPLOIT` still hits the virtual patch. Layered controls fail independently, not all at once. Restore the rule after.
 
-**Cleanup.** Restore any disabled control.
+**Rollback.** Restore any disabled control.
 
 ### Exercise 7.2 — One picture from inline and endpoint logs
 
@@ -55,7 +55,7 @@ echo "== endpoint (StellarProtect) =="; journalctl -t stellar --no-pager | tail 
 
 **Negative test.** Relying on the network log alone would miss the blocked malware on the EWS; relying on the endpoint alone would miss the exploit on the wire. Both logs are needed for the full story.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.3 — The PLC stayed unpatched throughout
 
@@ -70,7 +70,7 @@ echo "(the one from Chapter 02, before protection — none since)"
 
 **Expected result.** Only the pre-protection compromise from Chapter 02 is recorded; none since the virtual patch — the vulnerable device was protected **without ever being modified**, the entire point of the approach.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

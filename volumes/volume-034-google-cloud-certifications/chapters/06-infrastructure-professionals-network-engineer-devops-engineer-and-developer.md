@@ -260,6 +260,8 @@ gcloud compute networks describe vpc-net --format='value(name, routingConfig.rou
 architect's default — it means subnets are created deliberately, not one
 per region automatically.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.2 — Designing VPC networks *(NE 1.2)*
 
 ```bash
@@ -274,6 +276,8 @@ gcloud compute networks subnets list --network=vpc-net \
 **Expected result:** two subnets, two regions, one network — the global
 VPC. No peering is needed between them.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.3 — Designing hybrid and multi-cloud networking *(NE 1.3)*
 
 ```bash
@@ -285,6 +289,8 @@ gcloud compute routers describe rtr-net --region=us-central1 \
 
 **Expected result:** `rtr-net 64512`. Cloud Router with a BGP ASN is the
 hybrid-connectivity anchor — VPN and Interconnect both attach to it.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.4 — Designing for GKE networking *(NE 1.4)*
 
@@ -299,6 +305,8 @@ gcloud compute networks subnets describe snet-gke --region=us-central1 \
 **Expected result:** `pods;services`. VPC-native GKE needs secondary
 ranges for pods and services — designing them up front is topic 1.4.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.5 — Configuring VPCs *(NE 2.1)*
 
 ```bash
@@ -310,6 +318,8 @@ gcloud compute firewall-rules list --filter="network:vpc-net" \
 
 **Expected result:** one INGRESS rule for `10.60.0.0/16`. Ingress is
 denied by default, so this rule is what makes the subnets usable.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.6 — Configuring VPC routing *(NE 2.2)*
 
@@ -325,6 +335,8 @@ gcloud compute routes list --filter="network:vpc-net" \
 Route selection is longest-prefix then priority — the exam tests that
 order.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.7 — Configuring Network Connectivity Center *(NE 2.3, 4.4)*
 
 ```bash
@@ -335,6 +347,8 @@ gcloud network-connectivity hubs list --format='value(name, state)' 2>&1 | head 
 **Expected result:** a hub in `ACTIVE` state, or an enable-API prompt.
 NCC is Google's managed transitive-connectivity fabric — the alternative
 to hand-built topologies.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.8 — Configuring and maintaining GKE clusters *(NE 2.4)*
 
@@ -349,6 +363,8 @@ gcloud container clusters describe gke-net --region=us-central1 \
 **Expected result:** `RUNNING`. This binds the cluster to the secondary
 ranges from Lab 6.4 — proof the network design and the cluster agree.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.9 — Configuring load balancing *(NE 3.1)*
 
 ```bash
@@ -362,6 +378,8 @@ gcloud compute backend-services describe bes-net --global \
 **Expected result:** `bes-net EXTERNAL_MANAGED HTTP`. A global external
 HTTP(S) load balancer fronts backends in many regions from one anycast IP.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.10 — Configuring Cloud CDN *(NE 3.2)*
 
 ```bash
@@ -371,6 +389,8 @@ gcloud compute backend-services describe bes-net --global --format='value(enable
 
 **Expected result:** `True`. CDN is a flag on the backend service — the
 design decision is *which* backend caches, not a separate product.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.11 — Configuring Cloud DNS *(NE 3.3)*
 
@@ -382,6 +402,8 @@ gcloud dns managed-zones describe zone-net --format='value(name, visibility)'
 
 **Expected result:** `zone-net private`. A private zone resolves only
 inside the attached VPC — the split-horizon design DNS questions turn on.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.12 — Configuring Cloud Interconnect and VPN *(NE 4.1, 4.2, 4.3)*
 
@@ -395,6 +417,8 @@ gcloud compute vpn-gateways describe vgw-net --region=us-central1 \
 dual-interface by design). Interconnect and VPN both terminate on
 constructs like this and route via the Cloud Router from Lab 6.3.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.13 — Logging and monitoring network operations *(NE 5.1)*
 
 ```bash
@@ -407,6 +431,8 @@ gcloud compute networks subnets describe snet-us --region=us-central1 \
 **Expected result:** `True`. VPC Flow Logs are the raw material for
 network monitoring and are off by default — enabling them is a deliberate,
 billable choice.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.14 — Troubleshooting connectivity *(NE 5.2)*
 
@@ -422,6 +448,8 @@ gcloud network-management connectivity-tests create test-net \
 Tests give Google's own reachability verdict — the answer to "is it
 firewall, route, or destination?"
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.15 — Cloud Armor and firewall policies *(NE 6.1, 6.2)*
 
 ```bash
@@ -436,6 +464,8 @@ gcloud compute security-policies describe armor-net \
 Armor is edge WAF/DDoS policy, distinct from VPC firewall rules that act
 at the instance.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.16 — Packet Mirroring and network appliances *(NE 6.4)*
 
 ```bash
@@ -446,6 +476,8 @@ gcloud compute packet-mirrorings list --region=us-central1 \
 **Expected result:** an empty list (or enable prompt) on a fresh project.
 Packet Mirroring copies traffic to a collector for inspection — the design
 hook for a network virtual appliance.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 6.17 — Bootstrapping and managing the organization *(DevOps 1.1–1.5)*
 
@@ -458,6 +490,8 @@ gcloud resource-manager org-policies list --project="$PROJECT_ID" \
 codifying its hierarchy and guardrails — organization policy is where that
 becomes real.
 
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
+
 ### Lab 6.18 — CI/CD pipelines and secrets *(DevOps 2.1–2.4)*
 
 ```bash
@@ -467,6 +501,8 @@ gcloud secrets versions access latest --secret=lab-secret
 
 **Expected result:** `s3cr3t`. Secret Manager, not pipeline variables, is
 where deployment secrets live — securing the pipeline (topic 2.4) is this.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.19 — SRE practices and error budgets *(DevOps 3.1–3.3)*
 
@@ -479,6 +515,8 @@ SLO 99.9% over 28 days
 
 **Expected result:** 40.3 minutes. Spend it deliberately on releases;
 when exhausted, stop shipping. This is DevOps section 3 in one figure.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ### Lab 6.20 — Observability and troubleshooting *(DevOps 4.1–4.5)*
 
@@ -494,6 +532,8 @@ gcloud logging read 'resource.type="cloud_run_revision"' --limit=3 \
 logs, metrics, and traces are the four observability topics — logs are the
 one on by default.
 
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
+
 ### Lab 6.21 — Optimizing performance and cost / FinOps *(DevOps 5.1, 5.2)*
 
 ```bash
@@ -504,6 +544,8 @@ gcloud run services describe svc-obs --region=us-central1 \
 
 **Expected result:** `2`. Capping max instances is the simplest FinOps
 control — it bounds the cost of a traffic spike.
+
+**Rollback:** delete the resources this lab creates (`az … delete` / `gcloud … delete`), or run this chapter's Cleanup lab, which deletes the resource group / project and every resource created in the chapter.
 
 ### Lab 6.22 — Negative test and cleanup
 
@@ -528,6 +570,8 @@ gcloud projects describe "$PROJECT_ID" --format='value(lifecycleState)'
 
 **Expected result:** `DELETE_REQUESTED` — the cluster, load balancer,
 VPN gateway, Cloud Run service, and network are removed together.
+
+**Rollback:** None additional — this lab performs the chapter teardown itself, deleting the resource group / project and every resource created in the chapter, so there is nothing left to revert.
 
 ## Lab Verification
 

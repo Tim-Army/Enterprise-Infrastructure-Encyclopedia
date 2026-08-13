@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Securing each data tool separately with its own access model. Policies drift, gaps appear at the seams, and lineage is lost; SDX enforces one Ranger/Atlas model across every service and deployment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

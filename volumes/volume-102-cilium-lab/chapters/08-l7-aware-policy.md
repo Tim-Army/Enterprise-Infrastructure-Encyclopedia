@@ -48,7 +48,7 @@ hubble observe --to-pod dc/api --protocol http | tail -5
 
 **Negative test.** Delete the L7 policy and re-run the POST; it returns `200` again. Only the L7 rule distinguishes the read from the write — no L3/L4 control can. Re-apply it.
 
-**Cleanup.** Keep the L7 policy.
+**Rollback.** Keep the L7 policy.
 
 ### Lab 8.2 — Restrict egress by DNS name (FQDN policy)
 
@@ -92,7 +92,7 @@ kubectl exec -n dc web -- curl -s -o /dev/null -w "cloudflare  : %{http_code}\n"
 
 **Negative test.** Remove the DNS `toEndpoints` rule; now even `example.com` fails, because the pod cannot resolve it. DNS visibility is the prerequisite for name-based egress. Restore it.
 
-**Cleanup.** Keep the egress policy, or delete it if you have no outbound internet from the pod.
+**Rollback.** Keep the egress policy, or delete it if you have no outbound internet from the pod.
 
 ### Lab 8.3 — Validate the whole segmentation
 
@@ -122,7 +122,7 @@ Both L4 flows are correct; the API is restricted to a single method and path at 
 
 **Negative test.** Remove every policy and re-run; the cluster returns to flat and the POST abuse returns. Cilium enforces only what you declare. Re-apply.
 
-**Cleanup.** Leave the policies for Chapter 09.
+**Rollback.** Leave the policies for Chapter 09.
 
 ## Summary and Completion Checklist
 

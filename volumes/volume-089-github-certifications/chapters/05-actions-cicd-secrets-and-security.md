@@ -91,7 +91,7 @@ environment.
 **Negative test:** run deploy in parallel with build (no `needs`); it may deploy an unbuilt artifact —
 add **`needs: build`**.
 
-**Cleanup:** none yet.
+**Rollback:** none yet.
 
 ### Lab 5.2 — Use a secret safely
 
@@ -119,7 +119,7 @@ masked in logs.
 **Negative test:** hardcode the token in the workflow YAML; store it as a **secret** and reference
 `secrets.API_TOKEN`.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 gh secret delete API_TOKEN
@@ -151,7 +151,7 @@ least privilege.
 **Negative test:** leave the default broad permissions; a compromised step could push code or create
 releases — set **minimal `permissions`**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Reason about OIDC for cloud deploys
 
@@ -174,7 +174,7 @@ stored secrets.
 **Negative test:** store permanent cloud admin keys as secrets for deploys; use **OIDC** federation for
 short-lived, scoped credentials.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

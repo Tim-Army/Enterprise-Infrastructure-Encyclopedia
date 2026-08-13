@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Sizing on raw ingest without the replication multiplier — you provision a third of the storage you need, and the cluster fills silently until retention starts deleting data early.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Alert on the metrics that predict trouble
 
@@ -133,7 +133,7 @@ EOF
 
 **Negative test:** Monitoring only disk and CPU — under-replicated partitions can sit above zero for days on a cluster that looks resource-comfortable, silently running without the redundancy you believe you have.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — ACLs and the consumer-group permission trap
 
@@ -172,7 +172,7 @@ EOF
 
 **Negative test:** Granting wildcard ACLs to resolve the confusion quickly — the immediate problem disappears and every principal gains cluster-wide access, which is exactly what the authorizer exists to prevent.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -116,7 +116,7 @@ EOF
 
 **Negative test:** Loading the raw data straight to the warehouse. Reports double-count `NY`/`New York`, mail bounces on the blank name and bad email, and a negative amount corrupts totals; profiling and quality rules catch these before they reach decisions.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

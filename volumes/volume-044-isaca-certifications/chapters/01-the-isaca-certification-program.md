@@ -125,7 +125,7 @@ one view.
 **Negative test:** rely on an old chart that lists only CISA/CISM/CRISC/CGEIT/
 CDPSE; it misses **CCOA** and the AI family — use the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map a credential to its function (Topic: Plan the path)
 
@@ -146,7 +146,7 @@ map that guides an ISACA path.
 **Negative test:** treat CISA and CISM as interchangeable; audit (CISA) and
 security management (CISM) are distinct disciplines — match the cert to the role.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Confirm a current exam content outline (Topic: Verify currency)
 
@@ -164,7 +164,7 @@ proof of the current structure, not the retired three-domain version.
 **Negative test:** study a three-domain CDPSE guide; the outline changed in 2025
 — confirm the current domains first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

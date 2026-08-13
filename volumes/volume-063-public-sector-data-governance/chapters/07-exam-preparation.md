@@ -71,7 +71,7 @@ Regulatory) — where to study next.
 **Negative test:** study only your strongest area; the exam spans **all four** — target the
 weakest.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Exam pacing plan
 
@@ -92,7 +92,7 @@ PY
 **Negative test:** spend five minutes on one hard question; at **0.9 min/question** that costs
 five others — flag and return.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Scenario drill
 
@@ -114,7 +114,7 @@ Privacy** tension resolved by redaction — the reasoning the exam rewards.
 **Negative test:** answer "just release it"; PII triggers the **Privacy Act** — redact before
 disclosing.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -91,7 +91,7 @@ EOF
 
 **Negative test:** Hard-coding the identity journey in custom application code. Every policy change (move the MFA step, add a fraud check) becomes a development cycle, and the logic is invisible and brittle — a no-code flow makes the journey editable and visible.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

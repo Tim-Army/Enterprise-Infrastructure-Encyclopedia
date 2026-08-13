@@ -44,7 +44,7 @@ EOF
 
 **Negative test:** A shell script that appends a line every run (not idempotent) vs the converging function above — non-idempotent automation is the anti-pattern 701 exists to correct.
 
-**Cleanup:** `rm compose.snippet`.
+**Rollback:** `rm compose.snippet`.
 
 ### Lab 9.2 — BSD Specialist orientation (702)
 
@@ -66,7 +66,7 @@ echo "same Unix concepts (users, permissions, shells, SSH) — different tooling
 
 **Negative test:** Bringing `systemctl`/`apt` to a BSD exam — wrong OS family; recognizing the tooling swap is most of 702.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Your cross-program plan
 
@@ -90,7 +90,7 @@ cat my-linux-cert-plan.md
 
 **Negative test:** Let LPIC-1 lapse while holding LPIC-2 — the ladder's prerequisite goes inactive; recertify the base to keep the chain valid.
 
-**Cleanup:** Keep the plan.
+**Rollback:** Keep the plan.
 
 ## Currency
 

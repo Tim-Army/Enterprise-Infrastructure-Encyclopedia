@@ -77,7 +77,7 @@ PY
 **Negative test:** pick BLE for a 5 km sensor; that range needs **LoRaWAN/cellular** — match range
 to protocol.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Choose a protocol by requirements
 
@@ -100,7 +100,7 @@ connectivity.
 **Negative test:** use Wi-Fi for multi-year battery sensors; **BLE/Zigbee/LoRa** fit low-power —
 choose by constraints.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — IoT security posture
 
@@ -122,7 +122,7 @@ hardened, not trusted.
 **Negative test:** deploy IoT flat and unencrypted; **segment, encrypt, authenticate, monitor** —
 treat IoT as hostile-adjacent.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

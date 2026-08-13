@@ -80,7 +80,7 @@ CEH recon done defensively.
 **Negative test:** footprint a third party "to practice"; recon is **authorized-only** — assess only
 what you own.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Scan a host you own, then firewall
 
@@ -98,7 +98,7 @@ scanning done defensively.
 **Negative test:** scan an address outside your authorization/scope; that is prohibited — scan only
 **in-scope, owned** systems.
 
-**Cleanup:** none (read-only scan of localhost).
+**Rollback:** none (read-only scan of localhost).
 
 ### Lab 3.3 — Enumeration with hardening
 
@@ -119,7 +119,7 @@ enumeration done defensively.
 **Negative test:** rely on a hidden banner for security; **suppress** it and patch — obscurity is not
 a control.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Vulnerability analysis and prioritization
 
@@ -142,7 +142,7 @@ feeding defense.
 **Negative test:** stop at "found vulnerabilities"; CEH's value is **prioritized remediation** —
 finish with fixes.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.5 — Map techniques to ATT&CK for defenders
 
@@ -164,7 +164,7 @@ defensive.
 **Negative test:** keep offensive knowledge separate from defense; CEH's purpose is **better
 defense** — map it to detections.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

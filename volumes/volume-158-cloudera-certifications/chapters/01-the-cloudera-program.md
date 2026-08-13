@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Studying for the old CCA/CCP or CDH/HDP exams. Those are retired; the current program is role-based on CDP, so target the role certification that matches your job.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — The online-proctored model
 
@@ -120,7 +120,7 @@ EOF
 
 **Negative test:** Expecting a hands-on lab exam or a test-center appointment. The current program is question-based and online-only via Questionmark; prepare for role-knowledge questions taken under remote webcam proctoring.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

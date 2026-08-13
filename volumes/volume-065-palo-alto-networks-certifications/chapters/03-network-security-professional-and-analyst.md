@@ -78,7 +78,7 @@ admin@fw# commit
 **Negative test:** write `service tcp/443 action allow` with no App-ID; that trusts the port —
 use **App-ID** so only the real application is allowed.
 
-**Cleanup:** `delete rulebase security rules Allow-Web` then `commit`.
+**Rollback:** `delete rulebase security rules Allow-Web` then `commit`.
 
 ### Lab 3.2 — Attach a threat-prevention profile
 
@@ -97,7 +97,7 @@ WildFire** inspection — threat prevention on permitted traffic.
 **Negative test:** allow traffic with no profile group; permitted traffic is **uninspected** —
 attach profiles to every allow.
 
-**Cleanup:** remove the profile-setting from the rule and `commit`.
+**Rollback:** remove the profile-setting from the rule and `commit`.
 
 ### Lab 3.3 — Read policy via the PAN-OS API
 
@@ -115,7 +115,7 @@ firewall is programmable for automation and audit.
 **Negative test:** screen-scrape the GUI to audit rules; the **API** returns structured output —
 use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Query traffic logs by application
 
@@ -133,7 +133,7 @@ firewall saw.
 **Negative test:** analyze by destination port alone; **App-ID** identifies the real
 application — query by app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — pan-os-python automation
 
@@ -156,7 +156,7 @@ repeatable firewall administration.
 **Negative test:** paste CLI over SSH for bulk changes; the **SDK/API** is structured and
 idempotent — use it.
 
-**Cleanup:** `rule.delete()`.
+**Rollback:** `rule.delete()`.
 
 ## Lab Verification
 

@@ -96,7 +96,7 @@ curl -s -k -u elastic:$PW https://localhost:9200 | python3 -m json.tool
 **Negative test:** prepare on a very old 7.x cluster; APIs and topics differ — practice on the exam's
 current major version.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 1.2 — Map the certification ladder
 
@@ -121,7 +121,7 @@ PY
 **Negative test:** expect the **SIEM Analyst** to be hands-on like the others; it is a **cognitive** MCQ
 exam — prepare accordingly.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Check cluster health before you begin
 
@@ -145,7 +145,7 @@ curl -s -k -u elastic:$PW "https://localhost:9200/_cluster/health?pretty"
 **Negative test:** practice on a `red` cluster with unassigned shards; fix health first
 (`_cluster/allocation/explain`) — a broken cluster blocks the labs.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

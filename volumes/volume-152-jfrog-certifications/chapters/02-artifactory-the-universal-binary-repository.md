@@ -66,7 +66,7 @@ EOF
 
 **Negative test:** Running a separate repository product per language ecosystem. It multiplies operational burden and fragments security — a universal repository consolidates all package types into one controlled system.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

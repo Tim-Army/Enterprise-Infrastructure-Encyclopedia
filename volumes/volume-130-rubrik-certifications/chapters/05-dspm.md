@@ -50,7 +50,7 @@ EOF
 
 **Negative test:** Assuming sensitive data lives only in the "database" — the leaked AWS key in a config file and PHI in loose HR notes show it spreads everywhere; DSPM's estate-wide discovery is what catches the copies.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Score data risk (sensitivity × exposure × access)
 
@@ -85,7 +85,7 @@ Risk = sensitivity × exposure × access breadth, so the internet-exposed, all-s
 
 **Negative test:** Prioritizing by data *volume* (protect the biggest datasets first) — a huge low-sensitivity log matters less than a small internet-exposed PII file; risk scoring, not size, sets priority.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — DSPM meets recovery
 
@@ -105,7 +105,7 @@ EOF
 
 **Negative test:** Running DSPM and backup as disconnected tools — you know what's sensitive but can't easily act on it in recovery/notification; the integration is the value.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

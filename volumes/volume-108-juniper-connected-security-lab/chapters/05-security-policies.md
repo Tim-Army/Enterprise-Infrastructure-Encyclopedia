@@ -55,7 +55,7 @@ sudo nft add rule inet jsec forward ip saddr 10.20.3.10 ip daddr 10.20.4.10 tcp 
 
 **Expected result.** Two accept rules — the exact legitimate flows.
 
-**Cleanup.** Keep the permits.
+**Rollback.** Keep the permits.
 
 ### Exercise 5.2 — Remove permit-any and confirm default deny
 
@@ -102,7 +102,7 @@ sudo nft list chain inet jsec forward
 
 **Expected result.** The forward chain permits the two flows, logs-and-drops MGMT→DB, and drops all other inter-zone traffic.
 
-**Cleanup.** Keep the ruleset; Chapter 07 verifies enforcement.
+**Rollback.** Keep the ruleset; Chapter 07 verifies enforcement.
 
 ## Summary and Completion Checklist
 

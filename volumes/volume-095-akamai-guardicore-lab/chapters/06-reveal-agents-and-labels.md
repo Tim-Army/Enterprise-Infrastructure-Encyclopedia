@@ -41,7 +41,7 @@ Guardicore's method is **see, then segment**: label workloads, watch real flows 
 
 **Negative test.** Plan to install the agent on `gc-ot01`. A real PLC has no OS to host it; forcing an agent onto OT is the classic error. Reassign it.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Deploy the agent (or stand up the native layer)
 
@@ -140,7 +140,7 @@ Get-NetFirewallProfile | Format-Table Name, Enabled, DefaultInboundAction, LogBl
 
 **Negative test.** On Windows, force the firewall to a conflicting state via GPO and watch policy fail to apply (Track 1) or your profile changes revert (Track 2). A single controller of the native firewall is a prerequisite made tangible.
 
-**Cleanup.** Leave the alert-only layer in place.
+**Rollback.** Leave the alert-only layer in place.
 
 ### Lab 6.3 — Read the Reveal map (with process context)
 
@@ -181,7 +181,7 @@ sudo ss -tnp state established '( dport = :5432 )'
 
 **Negative test.** Design policy from the topology alone, ignoring process context; you will write a rule that permits "anything on gc-app01 → gc-db01:5432" and miss that a *different* process on gc-app01 (a webshell) could then abuse the same allow. Process context is why Guardicore rules can be tighter than an ACL.
 
-**Cleanup.** Keep the map as your specification.
+**Rollback.** Keep the map as your specification.
 
 ### Lab 6.4 — Label the workloads
 
@@ -213,7 +213,7 @@ sudo nft list table inet guardicore
 
 **Negative test.** Mislabel `gc-win01` as `Role: Web`; a later Web→Database allow would then authorize the HMI to reach the database — the exact movement you are stopping. Labels are policy. Correct it.
 
-**Cleanup.** Keep the labels/sets for Chapter 07.
+**Rollback.** Keep the labels/sets for Chapter 07.
 
 ## Summary and Completion Checklist
 

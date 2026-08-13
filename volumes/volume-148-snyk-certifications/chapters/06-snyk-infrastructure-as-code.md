@@ -69,7 +69,7 @@ EOF
 
 **Negative test:** Fixing a misconfiguration in the cloud console while the Terraform still declares it insecure. The next `apply` reverts your fix — only changing the IaC source makes the fix durable, and policy-as-code makes the rule fail the PR automatically.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

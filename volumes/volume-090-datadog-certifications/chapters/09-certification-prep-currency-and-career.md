@@ -78,7 +78,7 @@ PY
 **Negative test:** study slides only with no live account; the exams assume **hands-on** — use the trial
 and labs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Model the exam and retake policy
 
@@ -98,7 +98,7 @@ deliberately.
 
 **Negative test:** retake immediately without studying and exhaust attempts; **prepare** between tries.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.3 — Map a Datadog career
 
@@ -122,7 +122,7 @@ PY
 
 **Negative test:** stop at a lapsed credential as the platform changes; keep skills **current**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

@@ -46,7 +46,7 @@ EOF
 
 **Negative test:** Listing vulnerabilities alone (a scanner dump) and calling it a risk assessment — 62443 requires the threat and the consequence too; a CVE with no reachable threat path and no consequence is not top-priority.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Determine SL-T from tolerable risk
 
@@ -72,7 +72,7 @@ EOF
 
 **Negative test:** Setting SL-T to SL4 everywhere "to be safe" — SL4 is for nation-state-resistant zones and is expensive/operationally heavy; over-specifying SL-T wastes resources and can hurt availability. SL-T must match the risk, not exceed it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Gap analysis and residual risk
 
@@ -97,7 +97,7 @@ EOF
 
 **Negative test:** Declaring the zone "assessed" without residual-risk re-scoring after countermeasures — you don't know if the design actually brings risk to tolerable; the loop closes only when residual risk is acceptable (or formally accepted).
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -316,7 +316,7 @@ plus `http.time` tell you whether the server answered, how, and how quickly.
 main document returned 200; reading each request/response pair (not just counting errors)
 distinguishes a real failure from benign noise.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.2 — TLS handshake analysis (Topic: TLS)
 
@@ -337,7 +337,7 @@ negotiated, which is central to both analysis and security triage.
 handshake metadata is visible — the payload stays encrypted, so SNI/version/cipher is what you
 analyze until you have decryption (Lab 7.3).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 7.3 — TLS decryption with a key-log file (Topic: TLS decryption)
 
@@ -358,7 +358,7 @@ the ephemeral session keys from a client you control; without them the same capt
 you cannot — TLS decryption requires either the session keys (key-log) or the server's private
 key (RSA only, non-PFS), by design.
 
-**Cleanup:** `rm /tmp/keys.log` (session keys are sensitive — do not retain).
+**Rollback:** `rm /tmp/keys.log` (session keys are sensitive — do not retain).
 
 ### Lab 7.4 — Service response time (Topic: Application troubleshooting)
 
@@ -378,7 +378,7 @@ application, the key troubleshooting split.
 server taking seconds to respond while TCP RTT is a millisecond; the capture assigns the delay
 to the server, not the network — measuring both halves prevents mis-routing the ticket.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 

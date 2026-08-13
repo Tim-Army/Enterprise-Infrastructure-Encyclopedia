@@ -98,7 +98,7 @@ EOF
 
 **Negative test:** Prioritizing by severity count alone. Both VMs show a "critical CVE," so a list treats them equally and you may fix the harmless one first — the graph shows only one is on a path to the crown jewels.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Agentless coverage versus agent gaps
 
@@ -141,7 +141,7 @@ EOF
 
 **Negative test:** Trusting agent-based coverage numbers. "78% covered" hides that the 22% without agents — often shadow IT and short-lived workloads — are invisible, and a critical vulnerability on any of them is simply never seen.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

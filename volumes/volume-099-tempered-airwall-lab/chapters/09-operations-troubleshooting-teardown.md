@@ -33,7 +33,7 @@ sudo nft list chain inet airwall forward
 
 **Negative test.** "Fix" a tunnel that will not form by disabling cloaking entirely (`policy accept`). The tunnel forms, but you have un-cloaked the host and reopened the underlay. Permit only the WireGuard port instead.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Break-glass rollback
 
@@ -66,7 +66,7 @@ sudo systemctl restart wg-quick@wg0            # re-join the overlay
 
 **Negative test.** Remove the `10.10.20.1` break-glass allow from the cloaking rules, then lock yourself out with a bad overlay change. Recovery now requires the snapshot. Keep the break-glass allow.
 
-**Cleanup.** Ensure `aw-db01` is cloaked and on the overlay again.
+**Rollback.** Ensure `aw-db01` is cloaked and on the overlay again.
 
 ### Lab 9.3 — Teardown and host restoration
 
@@ -92,7 +92,7 @@ Then turn Core isolation back on and reboot.
 
 **Negative test.** Leaving a real agent provisioned means the Conductor still counts and manages that identity after the lab. Deprovision it.
 
-**Cleanup.** Host restored.
+**Rollback.** Host restored.
 
 ## Summary and Completion Checklist
 

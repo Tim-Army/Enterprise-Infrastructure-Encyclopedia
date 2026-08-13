@@ -101,7 +101,7 @@ level — the scoped search + `table` that Core User certifies.
 **Negative test:** search with no `index=` or time range; unscoped searches are
 slow and may time out — always scope.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Power User: Transforming Commands for Visualizations (5%)
 
@@ -117,7 +117,7 @@ transforming command that feeds a chart.
 **Negative test:** use `stats count by _time`; `timechart` handles time bucketing
 correctly for visualizations — use it for time series.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Power User: Filtering and Formatting Results (10%)
 
@@ -134,7 +134,7 @@ index=_internal | eval level=upper(log_level)
 **Negative test:** filter with `search level=ERROR` after `eval`; use `where` for
 eval-derived fields — `search` filters raw/indexed fields.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Power User: Correlating Events (15%)
 
@@ -150,7 +150,7 @@ correlation, Power User's heaviest topic.
 **Negative test:** reach for `transaction` first; `stats` is faster and scales —
 use `transaction` only when event boundaries/ordering matter.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.5 — Power User: Creating and Managing Fields (10%)
 
@@ -166,7 +166,7 @@ extraction with `rex` (the Field Extractor does this in the UI).
 **Negative test:** assume all fields are pre-extracted; many need **search-time
 extraction** — use `rex` or the Field Extractor.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.6 — Power User: Field Aliases and Calculated Fields (10%)
 
@@ -183,7 +183,7 @@ index=_internal | eval size_kb=round(len(_raw)/1024, 2)
 **Negative test:** hard-code the calculation in every search; a **calculated
 field** (props.conf) computes it automatically — define it once.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.7 — Power User: Knowledge Objects — Tags, Event Types, Macros, Workflow Actions (40%)
 
@@ -202,7 +202,7 @@ the Power User exam combined.
 **Negative test:** copy-paste the same search everywhere; **macros/event types**
 centralize it — change once, apply everywhere.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.8 — Power User: Data Models and CIM (20%)
 
@@ -219,7 +219,7 @@ normalization (20% of the exam combined).
 **Negative test:** run raw searches across every sourcetype for security data; the
 **CIM** normalizes fields so one search works across sources — use it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

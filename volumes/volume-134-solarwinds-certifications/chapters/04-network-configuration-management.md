@@ -82,7 +82,7 @@ EOF
 
 **Negative test:** Comparing only against the last backup rather than an approved baseline — if the bad change was captured in last night's backup, it becomes the new "normal" and the diff is clean.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Compliance assessment at scale
 
@@ -122,7 +122,7 @@ EOF
 
 **Negative test:** Assessing compliance only before an audit — you learn about violations in the week you can least afford to remediate them, and you have no evidence the controls operated over the period under review.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Controlled change with rollback
 
@@ -160,7 +160,7 @@ EOF
 
 **Negative test:** Pushing a VTY or ACL change to every device at once — a mistake in that change locks you out of the entire estate simultaneously, and the fix requires physical console access to hundreds of devices.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

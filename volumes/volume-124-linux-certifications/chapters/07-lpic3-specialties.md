@@ -39,7 +39,7 @@ EOF
 
 **Negative test:** Treating exam 300 as "advanced Chapter 6 file sharing" — the share is the smallest part; identity integration is the exam.
 
-**Cleanup:** `sudo apt-get remove -y samba winbind`.
+**Rollback:** `sudo apt-get remove -y samba winbind`.
 
 ### Lab 7.2 — Security: MAC and integrity (303)
 
@@ -56,7 +56,7 @@ echo "303 scope: X.509/PKI, disk crypto (LUKS), SELinux/AppArmor, scanning (nmap
 
 **Negative test:** MAC in permissive/complain mode treated as protection — it only logs; enforcing mode is the control, and the distinction is a certain exam item.
 
-**Cleanup:** `sudo apt-get remove -y aide`.
+**Rollback:** `sudo apt-get remove -y aide`.
 
 ### Lab 7.3 — Virtualization: a real VM via libvirt (305)
 
@@ -74,7 +74,7 @@ echo "305 scope: KVM/QEMU/libvirt (domains, networks, storage pools), Xen awaren
 
 **Negative test:** `qemu-img info` on a raw image reports no snapshot support — format choice is capability choice; qcow2 vs raw trade-offs are exam material.
 
-**Cleanup:** `rm lab.qcow2`.
+**Rollback:** `rm lab.qcow2`.
 
 ### Lab 7.4 — High availability: the cluster shape (306)
 
@@ -97,7 +97,7 @@ echo "306 stack: Pacemaker (resources/constraints) + Corosync (membership/quorum
 
 **Negative test:** A two-node cluster without special quorum handling — one failure kills the majority; why two-node clusters need qdevice/fencing tweaks is a guaranteed exam topic.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

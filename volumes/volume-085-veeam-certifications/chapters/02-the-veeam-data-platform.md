@@ -79,7 +79,7 @@ localhost  13.0.0    P20260401
 **Negative test:** run backups directly against production with no dedicated proxy or repository plan;
 design the three roles deliberately instead.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 2.2 — Add a backup repository
 
@@ -100,7 +100,7 @@ Repo-01 WinLocal  E:\Backups
 **Negative test:** target backups at the same disk as production; a failure loses both — use separate
 (ideally hardened/immutable) storage.
 
-**Cleanup:**
+**Rollback:**
 
 ```powershell
 PS> Remove-VBRBackupRepository -Repository (Get-VBRBackupRepository -Name "Repo-01")
@@ -125,7 +125,7 @@ localhost  4             Auto
 **Negative test:** set proxy `MaxTasks` far above the host's CPU/RAM; jobs contend and slow — size to
 the hardware.
 
-**Cleanup:** none (the default proxy is left in place).
+**Rollback:** none (the default proxy is left in place).
 
 ### Lab 2.4 — Reason about editions
 
@@ -150,7 +150,7 @@ PY
 **Negative test:** promise orchestrated DR on a Community edition; upgrade to **Premium** for
 Recovery Orchestrator and the full security set.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

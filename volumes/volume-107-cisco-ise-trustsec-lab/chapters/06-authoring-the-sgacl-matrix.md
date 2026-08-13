@@ -55,7 +55,7 @@ echo 'HMI-to-PLC: tcp dport 502  accept ; drop'
 
 **Expected result.** Two named intents that Exercise 6.2 wires into the tag matrix.
 
-**Cleanup.** Keep the SGACLs.
+**Rollback.** Keep the SGACLs.
 
 ### Exercise 6.2 — Place them in the matrix and set default deny
 
@@ -101,7 +101,7 @@ sudo nft list chain inet cts forward
 
 **Expected result.** The forward chain permits exactly the two flows and drops all other intra-fabric traffic — the Track 2 default-deny matrix.
 
-**Cleanup.** Keep the ruleset; Chapter 07 verifies enforcement, Chapter 09 tears it down.
+**Rollback.** Keep the ruleset; Chapter 07 verifies enforcement, Chapter 09 tears it down.
 
 ## Summary and Completion Checklist
 

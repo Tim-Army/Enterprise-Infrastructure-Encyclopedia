@@ -63,7 +63,7 @@ sudo ip netns exec conduit nft list chain ip conduit fwd | grep -c drop
 
 **Negative test:** Set the conduit chain policy to `accept` "to get things working" — you've dissolved the zone boundary; the sanctioned-conduit-only rule is the control, and a default-permit conduit fails FR5.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 3.2 — Prove the conduit enforces
 
@@ -87,7 +87,7 @@ The Modbus flow crosses the conduit; an SSH attempt to the control asset is deni
 
 **Negative test:** An engineering-workstation flow you forgot to enumerate is also denied — which is correct for FR5, and the reason conduit design (Chapter 06) must capture every legitimate flow up front.
 
-**Cleanup:** Keep for the next lab.
+**Rollback:** Keep for the next lab.
 
 ### Lab 3.3 — Score a security level vector
 
@@ -123,7 +123,7 @@ The SL is a **per-FR vector**, and the gaps (IAC and UC below target) are the de
 
 **Negative test:** Reporting a single scalar "this zone is SL2" without the vector — hides which FR is weak; 62443 requires the per-FR breakdown, and the exam tests the vector, not a scalar.
 
-**Cleanup:** `for ns in conduit scada histn; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del zbr`.
+**Rollback:** `for ns in conduit scada histn; do sudo ip netns del $ns 2>/dev/null; done; sudo ip link del zbr`.
 
 ## Summary and Completion Checklist
 

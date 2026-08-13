@@ -77,7 +77,7 @@ EOF
 
 **Negative test:** Reporting request-hit-ratio to finance as "offload." The bill disagrees, and the disagreement is the byte weighting.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — The RUM steering loop
 
@@ -117,7 +117,7 @@ EOF
 
 **Negative test:** Shipping an optimization without re-measuring the target segment. If APAC's p75 did not move, the fix did not fix — regardless of how the aggregate wiggled.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Web metrics versus media metrics
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Adding the stream to the web SLO "for coverage." It contributes nothing but false confidence; every media failure mode passes it.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

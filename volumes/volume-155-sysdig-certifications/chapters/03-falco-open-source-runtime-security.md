@@ -97,7 +97,7 @@ EOF
 
 **Negative test:** Trying to detect runtime attacks with static signatures of known malware. Attackers use novel tools and living-off-the-land techniques; Falco's behavioral rules ("a shell spawned in a container") catch the *actions* regardless of the specific tool.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

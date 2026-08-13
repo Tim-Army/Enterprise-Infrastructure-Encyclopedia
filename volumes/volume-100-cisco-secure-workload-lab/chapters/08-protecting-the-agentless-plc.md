@@ -31,7 +31,7 @@ Ensure `cw-win01`'s outbound is default-deny with only the Modbus allow from Lab
 
 **Negative test.** From `cw-app01`, `nc -vz 10.10.30.50 502` is blocked and logged; a temporary permit makes it succeed, proving the deny stops it. Remove the permit.
 
-**Cleanup.** Keep the enforcement.
+**Rollback.** Keep the enforcement.
 
 ### Lab 8.2 — Enforce the path on the router
 
@@ -54,7 +54,7 @@ sudo iptables -C FORWARD -j CW-FWD 2>/dev/null || sudo iptables -A FORWARD -j CW
 
 **Negative test.** From `cw-app01`, `nc -vz 10.10.30.50 502` is blocked at the router even if `cw-app01`'s own deny were removed. The choke point makes the control complete.
 
-**Cleanup.** Keep the forward chain.
+**Rollback.** Keep the forward chain.
 
 ### Lab 8.3 — Validate the containment end to end
 
@@ -85,7 +85,7 @@ Both legitimate flows work; every lateral-movement path from Chapter 05 is denie
 
 **Negative test.** Flush the enforcement (`sudo iptables -F CW-SEG`) and re-run the HMI→db probe; it reaches again. Discovery and analysis inform; only enforcement blocks. Re-enforce.
 
-**Cleanup.** Leave the enforced estate for Chapter 09.
+**Rollback.** Leave the enforced estate for Chapter 09.
 
 ## Summary and Completion Checklist
 

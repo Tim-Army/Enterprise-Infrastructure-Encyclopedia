@@ -497,7 +497,7 @@ it requires no cloud account or credentials.
    addresses; a production-grade check would also need to detect partial
    overlap between differently sized blocks.
 
-**Cleanup**
+**Rollback**
 
 6. Remove the lab directory:
 

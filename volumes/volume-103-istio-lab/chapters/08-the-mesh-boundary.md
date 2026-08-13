@@ -35,7 +35,7 @@ kubectl exec -n dc deploy/web -c web -- nc -z -w2 plc.ot 502 && echo "web STILL 
 
 **Negative test.** Assume adding the mesh protected every workload. It protected only the meshed ones; the PLC was never in the mesh. Delete the ineffective policy: `kubectl delete authorizationpolicy -n ot try-protect-plc`.
 
-**Cleanup.** Deleted above.
+**Rollback.** Deleted above.
 
 ### Lab 8.2 — Confine the compromised client's egress with a Sidecar resource
 
@@ -69,7 +69,7 @@ kubectl exec -n ot deploy/hmi -c hmi -- nc -z -w2 db.dc 5432 || echo "hmi -> db 
 
 **Negative test.** Widen the egress `hosts` to `"*/*"` and the HMI can again route to the database (where the AuthorizationPolicy then denies it). The Sidecar resource is the egress half of the control; keep it tight.
 
-**Cleanup.** Keep the Sidecar resource.
+**Rollback.** Keep the Sidecar resource.
 
 ### Lab 8.3 — Pair the mesh with a CNI NetworkPolicy (defense in depth)
 
@@ -97,7 +97,7 @@ This protects the PLC at the network layer regardless of the mesh, because the C
 
 **Negative test.** Argue the mesh alone is sufficient. It is not, for anything that cannot join the mesh — which in real estates includes OT, appliances, and legacy systems.
 
-**Cleanup.** No NetworkPolicy applied here (the CNI beneath kind may not enforce it); the exercise is the deliverable.
+**Rollback.** No NetworkPolicy applied here (the CNI beneath kind may not enforce it); the exercise is the deliverable.
 
 ## Summary and Completion Checklist
 

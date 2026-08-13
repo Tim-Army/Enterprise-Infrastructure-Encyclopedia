@@ -252,7 +252,7 @@ versus the provider's — the shared-responsibility split by service model.
 **Negative test:** assuming the provider secures your configuration; a public
 bucket is the customer's fault, not the provider's.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Select cloud security capabilities and frameworks (Objective 3.2)
 
@@ -268,7 +268,7 @@ service model and framework — choosing controls by cloud model.
 **Negative test:** a network-firewall mindset does not secure a SaaS app; SaaS
 needs CASB, not a firewall.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Select security solutions for cloud environments (Objective 3.3)
 
@@ -284,7 +284,7 @@ hybrid, SaaS) — one size does not fit all clouds.
 **Negative test:** deploying an on-prem firewall model in a serverless
 environment leaves the workload unprotected; use cloud-native controls.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Describe network, application, and data security in cloud (Objective 3.4)
 
@@ -300,7 +300,7 @@ aws ec2 describe-security-groups --query 'SecurityGroups[0].IpPermissions' 2>/de
 **Negative test:** an open `0.0.0.0/0` security group exposes the workload;
 scope ingress.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Configure Splunk to ingest cloud logs (Objective 3.5)
 
@@ -316,7 +316,7 @@ into Splunk for monitoring/correlation — cloud visibility in the SIEM.
 **Negative test:** cloud logs not forwarded leave the SIEM blind to cloud
 activity; configure the log source.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.6 — Describe application and workload security (Objective 3.6)
 
@@ -332,7 +332,7 @@ syscalls/behavior — workload protection beyond image scanning.
 **Negative test:** image scanning alone misses a runtime compromise; eBPF
 observes behavior at execution.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.7 — Describe DevSecOps (Objective 3.7)
 
@@ -348,7 +348,7 @@ shifted left, blocking misconfiguration before deploy.
 **Negative test:** scanning only in production is too late; the pipeline gate
 stops bad IaC pre-merge.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.8 — Describe SSE and SASE (Objective 4.1)
 
@@ -364,7 +364,7 @@ the cloud — SASE = SSE + SD-WAN networking.
 **Negative test:** stitching point products is not SASE; SSE converges them in
 one cloud service.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.9 — Configure Secure Internet Access (Objective 4.2)
 
@@ -380,7 +380,7 @@ users going to the internet — cloud-delivered SWG.
 **Negative test:** DNS-layer enforcement off lets malware resolve C2 domains;
 DNS security blocks them before connection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.10 — Configure Secure Private Access (Objective 4.3)
 
@@ -396,7 +396,7 @@ private apps without network access — VPN's successor (Chapter 08).
 **Negative test:** granting subnet access instead of app access over-exposes;
 ZTNA scopes to the app.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.11 — Configure DLP and AI guardrails (Objective 4.4)
 
@@ -412,7 +412,7 @@ curl -sk -H "Authorization: Bearer $ST" "$SSE/policies/v2/rules" | jq -r '.[] | 
 **Negative test:** unrestricted uploads to a public LLM leak sensitive data;
 AI guardrails inspect and control it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.12 — Interpret Secure Access Investigate scores (Objective 4.5)
 
@@ -428,7 +428,7 @@ threat intelligence to decide block/allow.
 **Negative test:** allowing a high-risk domain because it currently resolves
 misses the intelligence; the score flags it pre-incident.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.13 — Prove a cloud-delivered control is in-path (integrative)
 
@@ -471,7 +471,7 @@ real systems to real threats.
 - Visibility of your own lookups in the activity log.
 - Direct demonstration that a bypassed resolver defeats the control.
 
-**Cleanup**
+**Rollback**
 
 7. Restore the client's original DNS settings and end the evaluation
    session; retain the SSE-to-threat mapping for Chapter 08.

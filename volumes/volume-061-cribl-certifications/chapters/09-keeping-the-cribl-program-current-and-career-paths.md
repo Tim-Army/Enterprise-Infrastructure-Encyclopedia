@@ -81,7 +81,7 @@ confirming scope.
 **Negative test:** trust a cached list; Cribl adds product certs — confirm on
 cribl.io/university.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a path
 
@@ -102,7 +102,7 @@ PY
 **Negative test:** attempt CC Engineer first; it **requires the Admin certs** — build up the
 ladder.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

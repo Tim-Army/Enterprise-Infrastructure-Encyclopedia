@@ -40,7 +40,7 @@ sudo nft list chain inet mss forward
 
 **Negative test.** A permit with no L4 match (any port) would open every port between the groups — scope each group permit to its ports.
 
-**Cleanup.** Keep the policy.
+**Rollback.** Keep the policy.
 
 ### Exercise 5.2 — The group policy holds
 
@@ -66,7 +66,7 @@ The two group flows pass; `SG-Mgmt → SG-DB` (hmi → db) is denied by default 
 
 **Negative test.** Because the permit matches the `sg_web` set, adding a new web server to `sg_web` grants it the policy automatically — group membership, not an IP list, decides.
 
-**Cleanup.** Keep the policy for the macro-segmentation chapter.
+**Rollback.** Keep the policy for the macro-segmentation chapter.
 
 ## Summary and Completion Checklist
 

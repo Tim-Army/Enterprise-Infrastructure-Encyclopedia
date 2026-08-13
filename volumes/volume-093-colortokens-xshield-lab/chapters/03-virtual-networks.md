@@ -66,7 +66,7 @@ colliding with `ct-gw`’s static address, and you will get intermittent,
 maddening connectivity loss. Duplicate-address bugs are the classic lab
 time sink — set the pool correctly and move on.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.2 — Create VMnet2 as the Data Center segment
 
@@ -131,7 +131,7 @@ address as well as the static one — producing a host that is reachable
 on an address absent from every policy you write. Genuinely confusing.
 Leave DHCP off.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.3 — Create VMnet3 as the isolated OT cell
 
@@ -183,7 +183,7 @@ it is exactly the real-world failure of deploying a Gatekeeper without
 removing the alternate paths around it. If a device has two routes and
 you police one, you have policed nothing. Uncheck it, and remember why.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 3.4 — Add a host route to the OT cell
 
@@ -231,7 +231,7 @@ unreachable”. The host has no other way in. Re-add the route before
 continuing; you need the attack path to exist so that blocking it means
 something.
 
-**Cleanup.**
+**Rollback.**
 
 ```powershell
 Remove-NetRoute -DestinationPrefix "10.10.30.0/24" -Confirm:$false -PolicyStore PersistentStore

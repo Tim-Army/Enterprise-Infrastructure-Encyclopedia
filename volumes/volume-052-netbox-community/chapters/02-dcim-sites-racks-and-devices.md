@@ -68,7 +68,7 @@ physical hierarchy.
 **Negative test:** create two sites with the same **slug**; slugs are unique — NetBox
 rejects the duplicate.
 
-**Cleanup:** `nb.dcim.sites.get(site.id).delete()`.
+**Rollback:** `nb.dcim.sites.get(site.id).delete()`.
 
 ### Lab 2.2 — Add a rack
 
@@ -84,7 +84,7 @@ print("rack:", rack.name, "height:", rack.u_height)
 **Negative test:** mount a device beyond U42; NetBox rejects positions outside the
 rack height.
 
-**Cleanup:** `rack.delete()`.
+**Rollback:** `rack.delete()`.
 
 ### Lab 2.3 — Define a device type
 
@@ -101,7 +101,7 @@ print("device type:", dt.model, "1U from", mfr.name)
 **Negative test:** create devices without a device type; you lose the **component
 templates** (interfaces/ports) — model the type first.
 
-**Cleanup:** `dt.delete(); mfr.delete()`.
+**Rollback:** `dt.delete(); mfr.delete()`.
 
 ### Lab 2.4 — Install a device in the rack
 
@@ -120,7 +120,7 @@ model.
 **Negative test:** place a second device at U1; the position is occupied — NetBox
 prevents the overlap.
 
-**Cleanup:** `dev.delete(); role.delete()`.
+**Rollback:** `dev.delete(); role.delete()`.
 
 ## Lab Verification
 

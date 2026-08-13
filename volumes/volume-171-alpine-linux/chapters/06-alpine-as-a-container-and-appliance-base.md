@@ -147,7 +147,7 @@ docker run --rm demo:alpine            # uid is appuser, not 0
 **Negative test:** remove the `USER` line and rebuild; the process runs as root —
 a small base does not make root acceptable.
 
-**Cleanup:** `docker rmi demo:alpine`.
+**Rollback:** `docker rmi demo:alpine`.
 
 ### Lab 6.2 — Multi-stage build
 
@@ -169,7 +169,7 @@ runtime image is `alpine` plus one binary.
 the runtime image; it fails to run (missing dynamic dependency) — static (`CGO_ENABLED=0`)
 is what makes the tiny runtime image work.
 
-**Cleanup:** `docker rmi demo:multi` and prune dangling build layers.
+**Rollback:** `docker rmi demo:multi` and prune dangling build layers.
 
 ## Lab Verification
 

@@ -81,7 +81,7 @@ dashboard id: abc-def-ghi
 **Negative test:** build a screenboard for incident correlation; a **timeboard** shares the time range —
 use it for troubleshooting.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 curl -s -X DELETE "https://api.datadoghq.com/api/v1/dashboard/abc-def-ghi" \
@@ -106,7 +106,7 @@ scopes.
 
 **Negative test:** clone the dashboard for prod and staging; use a **`$env` template variable** instead.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Choose the right widget
 
@@ -129,7 +129,7 @@ PY
 
 **Negative test:** show a ranking as a timeseries with 50 lines; use a **top list** for "which is worst."
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Reason about screenboard vs timeboard
 
@@ -150,7 +150,7 @@ PY
 **Negative test:** use a free-form screenboard to correlate a spike across metrics; a **timeboard**
 synchronizes time.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

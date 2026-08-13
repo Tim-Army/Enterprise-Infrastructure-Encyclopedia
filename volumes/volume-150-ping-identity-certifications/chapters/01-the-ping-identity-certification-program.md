@@ -94,7 +94,7 @@ EOF
 
 **Negative test:** Expecting one general "Ping Identity certification." The program is product-specific — PingFederate, PingAccess, PingOne, and PingAM are separate exams, and you pick the ones matching the products you operate.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Map the merged portfolio to identity functions
 
@@ -136,7 +136,7 @@ EOF
 
 **Negative test:** Treating Ping as a single-product SSO vendor. Post-merger it spans federation, access management, directory, cloud IAM, orchestration, governance, and threat protection — the breadth is the point, and the certifications reflect it product by product.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

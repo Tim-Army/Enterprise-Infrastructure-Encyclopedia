@@ -87,7 +87,7 @@ curl -sSL -A "Mozilla/5.0" "https://www.paloaltonetworks.com/services/education/
 **Negative test:** rely on a pre-2025 PCNSE-era list; the program was **rebuilt** — verify on
 paloaltonetworks.com.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Plan a certification path
 
@@ -108,7 +108,7 @@ PY
 **Negative test:** target a Specialist exam with no Foundational base; climb the **levels** in
 order.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

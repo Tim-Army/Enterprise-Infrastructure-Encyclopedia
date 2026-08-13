@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Working findings individually. Fixing 180 log4j instances one container at a time is hopeless and misses that they share one base image — grouping fixes the cause once and clears all 180.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Democratization beats the central bottleneck
 
@@ -115,7 +115,7 @@ EOF
 
 **Negative test:** Scaling security by making the central team the mandatory reviewer of every deploy. At 400 deploys/day against 10 reviewers, the queue only grows — security becomes the bottleneck teams route around, the opposite of the goal.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

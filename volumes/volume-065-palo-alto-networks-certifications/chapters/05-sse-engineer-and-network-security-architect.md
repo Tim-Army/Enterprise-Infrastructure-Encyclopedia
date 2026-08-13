@@ -76,7 +76,7 @@ chain — SSE from the cloud edge.
 **Negative test:** backhaul the user to HQ for inspection; **SSE** delivers it near the user —
 avoid the hairpin.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — ZTNA access decision
 
@@ -97,7 +97,7 @@ access.
 **Negative test:** drop the user onto the corporate network (VPN-style); **ZTNA** grants
 per-app access only — scope it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Architecture from requirements
 
@@ -122,7 +122,7 @@ with one policy — the architect deliverable.
 **Negative test:** design product-first with no requirements; architect **requirement-first** and
 justify trade-offs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Failure and consistency check
 
@@ -143,7 +143,7 @@ consistent architecture.
 **Negative test:** run separate, divergent policies on-prem and in the cloud; keep **one policy
 source** — consistency prevents gaps.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

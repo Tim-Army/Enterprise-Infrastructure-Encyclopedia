@@ -450,7 +450,7 @@ Prometheus for history/alerting) is what turns a running cluster into an observa
 **Negative test:** run `kubectl top` with no metrics-server installed; it errors with "Metrics
 API not available" — `top` and the HPA both depend on the metrics pipeline being present.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 9.2 — Logs and events for troubleshooting (Topic: Observability)
 
@@ -471,7 +471,7 @@ status are the three sources you correlate to explain any workload failure; cent
 **Negative test:** judge a crash from Pod status alone; `Error` does not say *why* — the
 container `logs` and the `Events` are where the cause is, so always read both.
 
-**Cleanup:** `kubectl delete pod bad`.
+**Rollback:** `kubectl delete pod bad`.
 
 ### Lab 9.3 — Reliability: disruption budgets (Topic: Reliability)
 
@@ -497,7 +497,7 @@ anti-affinity.
 once and the service goes down mid-maintenance — the PDB is what bounds concurrent voluntary
 disruption.
 
-**Cleanup:** `kubectl delete deployment web; kubectl delete pdb web-pdb -n lab`.
+**Rollback:** `kubectl delete deployment web; kubectl delete pdb web-pdb -n lab`.
 
 ### Lab 9.4 — Design Exercise: a platform product across a fleet (Topic: Synthesis)
 
@@ -530,7 +530,7 @@ observable, and cost-aware by default, which is what platform engineering is jud
 GitOps; it works briefly, then drifts into an unsecured, unobservable, unbounded mess — the
 guardrails (tenancy, policy, GitOps, observability) are the platform's actual value.
 
-**Cleanup:** none (design artifact).
+**Rollback:** none (design artifact).
 
 ## Lab Verification
 

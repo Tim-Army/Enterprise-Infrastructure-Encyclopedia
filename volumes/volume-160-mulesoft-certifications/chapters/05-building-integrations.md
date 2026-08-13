@@ -84,7 +84,7 @@ EOF
 
 **Negative test:** Building only the happy path with no error handling. Backends fail (timeouts, bad data, outages), and an unhandled error crashes the integration; production-ready Mule flows catch errors and respond gracefully, which the Developer certifications require.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

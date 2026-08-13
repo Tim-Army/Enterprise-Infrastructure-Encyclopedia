@@ -37,7 +37,7 @@ The only two working paths are the granted identity→asset pairs, both brokered
 
 **Negative test.** Present `op-hmi`'s identity from the **web** namespace to the plc broker — it still works, because the grant is to the identity, not the host. That is intended: identity is portable and is exactly what should authorize access (in production the identity is bound to strong credentials/MFA, not a copyable token).
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Exercise 7.2 — Read the access log
 
@@ -59,7 +59,7 @@ journalctl -t xbroker --no-pager | tail -2
 
 **Negative test.** Without the broker, a direct connection to the PLC would leave no identity in any log — the broker is what creates the audit trail.
 
-**Cleanup.** Keep logging for Chapter 09.
+**Rollback.** Keep logging for Chapter 09.
 
 ### Exercise 7.3 — The decision follows the identity, not the IP
 
@@ -76,7 +76,7 @@ sudo ip netns exec hmi bash -c 'printf "op-hmi WRONGTOKEN\n"    | nc -w2 10.60.1
 
 **Expected result.** The same source IP is allowed with a valid identity and denied without one — proof the control is identity, not address.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -149,7 +149,7 @@ starting point of an analyst investigation.
 **Negative test:** triaging by the incident title alone misses a low-severity
 alert that is the true entry point; the alert breakdown is the investigation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.2 — Read an alert's causality chain (Analyst)
 
@@ -169,7 +169,7 @@ it did.
 **Negative test:** an alert with no causality context forces manual host
 forensics; the causality chain is what makes triage fast.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.3 — Take an endpoint response action (Analyst)
 
@@ -187,7 +187,7 @@ network containment while forensics proceed.
 **Negative test:** powering off the host instead destroys volatile memory
 evidence; isolation contains while preserving forensic state.
 
-**Cleanup:** `unisolate` the endpoint after the exercise.
+**Rollback:** `unisolate` the endpoint after the exercise.
 
 ### Lab 11.4 — Configure a data source and parser (Engineer)
 
@@ -205,7 +205,7 @@ backlog) — an engineer's job is complete, parsed ingestion.
 **Negative test:** an ingested-but-unparsed source is invisible to detection
 rules that reference model fields; ingestion without parsing is not coverage.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.5 — Build a correlation/BIOC detection rule (Engineer)
 
@@ -223,7 +223,7 @@ engineer authors detections as XQL that promote events to alerts.
 **Negative test:** a rule with too-broad XQL floods analysts with false
 positives; detection engineering is tuning precision, not just writing logic.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.6 — Tune alert exclusions (Engineer)
 
@@ -242,7 +242,7 @@ with exclusions/suppression — the ongoing noise-reduction work.
 **Negative test:** an exclusion that is too broad suppresses a real attack;
 tuning trades noise against coverage, and must be reviewed.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 11.7 — Analyst investigation and engineer detection (integrative)
 
@@ -253,6 +253,8 @@ action — and write the case narrative; as Engineer, onboard one data
 source, validate its normalization with an XQL query, and author one
 BIOC/correlation rule with a stated precision target and a test that
 exercises it.
+
+**Rollback:** None — read-only; this lab only inspects state and makes no changes, so there is nothing to revert.
 
 ## Lab Verification
 

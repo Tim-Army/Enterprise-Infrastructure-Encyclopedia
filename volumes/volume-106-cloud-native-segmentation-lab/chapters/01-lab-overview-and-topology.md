@@ -80,7 +80,7 @@ Budget an evening per cloud.
 | **AWS / Azure / GCP** | The cloud a step applies to |
 | **Cost note** | A step that may incur charges |
 
-Every exercise follows the same shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Cleanup**.
+Every exercise follows the same shape: **Objective**, **Walkthrough**, **Expected result**, **Negative test**, **Rollback**.
 
 ## Summary and Completion Checklist
 

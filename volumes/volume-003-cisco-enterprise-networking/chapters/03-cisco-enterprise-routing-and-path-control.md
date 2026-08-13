@@ -381,7 +381,7 @@ specific longest-match entry CEF will use to forward to `10.1.1.1`.
 the lower administrative distance wins regardless of metric; confirm with
 `show ip route <prefix>`.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Configure and verify IPv4/IPv6 static routing (CCNA 3.3)
 
@@ -401,7 +401,7 @@ resort set to `192.0.2.2`.
 connected subnet; it stays out of the table (`show ip route` omits it) until
 recursion resolves — the connected-next-hop rule.
 
-**Cleanup:** `no ip route 10.2.2.0 255.255.255.0 192.0.2.2` (and the others).
+**Rollback:** `no ip route 10.2.2.0 255.255.255.0 192.0.2.2` (and the others).
 
 ### Lab 3.3 — Configure and verify OSPFv2 (CCNA 3.4, ENCOR 3.2, ENARSI 1.10)
 
@@ -422,7 +422,7 @@ router-IDs — a converged area 0.
 the adjacency stalls in `EXSTART`/`INIT` — a classic OSPF troubleshooting
 case.
 
-**Cleanup:** `no router ospf 1`.
+**Rollback:** `no router ospf 1`.
 
 ### Lab 3.4 — Configure and troubleshoot EIGRP (ENCOR 3.2, ENARSI 1.9)
 
@@ -442,7 +442,7 @@ successors in the topology table.
 **Negative test:** mismatch the AS number between neighbors; no adjacency
 forms — EIGRP AS must match, unlike OSPF process IDs.
 
-**Cleanup:** `no router eigrp CORP`.
+**Rollback:** `no router eigrp CORP`.
 
 ### Lab 3.5 — Configure and troubleshoot BGP (ENCOR 3.2, ENARSI 1.11)
 
@@ -463,7 +463,7 @@ advertised/received.
 `ebgp-multihop`; the session never establishes — the TTL check the option
 relaxes.
 
-**Cleanup:** `no router bgp 65001`.
+**Rollback:** `no router bgp 65001`.
 
 ### Lab 3.6 — Configure a first-hop redundancy protocol (CCNA 3.5)
 
@@ -482,7 +482,7 @@ R1# show standby brief
 **Negative test:** omit `preempt`; a recovered higher-priority router stays
 `Standby` — preempt is required to reclaim the active role.
 
-**Cleanup:** `no standby 1` on the interface.
+**Rollback:** `no standby 1` on the interface.
 
 ### Lab 3.7 — Troubleshoot administrative distance (ENARSI 1.1)
 
@@ -500,7 +500,7 @@ EIGRP path to `10.2.2.0` now wins — AD, not metric, decided.
 **Negative test:** setting AD above 255 is rejected; 255 means "unusable"
 and drops the route entirely — the AD ceiling.
 
-**Cleanup:** `no distance 130` under the OSPF process.
+**Rollback:** `no distance 130` under the OSPF process.
 
 ### Lab 3.8 — Configure and verify route maps (ENARSI 1.2)
 
@@ -521,7 +521,7 @@ route <prefix>` shows the tag) — the hook for loop-prevention filtering.
 `permit` catch-all denies everything (implicit deny) — order and the final
 permit matter.
 
-**Cleanup:** remove the redistribute and `no route-map TAG-BRANCH`.
+**Rollback:** remove the redistribute and `no route-map TAG-BRANCH`.
 
 ### Lab 3.9 — Troubleshoot redistribution and loop prevention (ENARSI 1.3, 1.4)
 
@@ -544,7 +544,7 @@ redistributed back into EIGRP — the tag-based loop prevention holds.
 feedback loop; a route re-enters its origin protocol with a better AD,
 causing a routing loop — exactly what the tag filter stops.
 
-**Cleanup:** remove the redistribute and route map.
+**Rollback:** remove the redistribute and route map.
 
 ### Lab 3.10 — Configure summarization (ENARSI 1.5)
 
@@ -563,7 +563,7 @@ instead of the component /16s, and a Null0 discard route appears locally.
 the aggregate's real coverage via the Null0 route — size the summary to the
 actual prefixes.
 
-**Cleanup:** `no ip summary-address eigrp 100 10.8.0.0 255.252.0.0`.
+**Rollback:** `no ip summary-address eigrp 100 10.8.0.0 255.252.0.0`.
 
 ### Lab 3.11 — Configure and verify policy-based routing (ENARSI 1.6)
 
@@ -586,7 +586,7 @@ destination routing.
 routing (unless `set interface`/`default` forces a drop) — verify the next
 hop is live.
 
-**Cleanup:** `no ip policy route-map PBR-GUEST` and remove the route map/ACL.
+**Rollback:** `no ip policy route-map PBR-GUEST` and remove the route map/ACL.
 
 ### Lab 3.12 — Configure and verify VRF-Lite (ENARSI 1.7)
 
@@ -606,7 +606,7 @@ the global table — traffic isolation without separate hardware.
 **Negative test:** ping a global-table host from the GUEST VRF without route
 leaking; it fails — VRFs are isolated by default.
 
-**Cleanup:** `no vrf definition GUEST` (removes interface bindings).
+**Rollback:** `no vrf definition GUEST` (removes interface bindings).
 
 ### Lab 3.13 — Configure Bidirectional Forwarding Detection (ENARSI 1.8)
 
@@ -625,7 +625,7 @@ detected in ~900 ms instead of the OSPF dead interval.
 **Negative test:** enable BFD on only one side; the session stays `Down` and
 provides no faster detection — BFD must be bidirectional.
 
-**Cleanup:** `no bfd all-interfaces` under OSPF and remove the interface
+**Rollback:** `no bfd all-interfaces` under OSPF and remove the interface
 BFD timers.
 
 ### Lab 3.14 — Multi-area OSPF with EIGRP redistribution and PBR (integrative)
@@ -710,7 +710,7 @@ VRF.
    matched by the PBR route map falls back to normal destination-based
    routing instead of being policy-routed to an unreachable next hop.
 
-**Cleanup**
+**Rollback**
 
 - Remove the PBR route map from the SVI, then remove the route map, ACL,
   IP SLA operation, and tracked object.

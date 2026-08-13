@@ -73,7 +73,7 @@ EOF
 
 **Negative test:** Migrating everything to Akamai Cloud for "edge benefits." The workloads tied to hyperscaler data pay a distance tax for a proximity they do not use.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Pipeline promotion across environments
 
@@ -114,7 +114,7 @@ EOF
 
 **Negative test:** Configuring dev, staging, and prod independently in the UI. Within a quarter their caching rules differ in ways nobody tracked, and a staging pass no longer means anything about production.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Config-as-code because config is enforcement
 
@@ -167,7 +167,7 @@ EOF
 
 **Negative test:** Auditing the Akamai estate by clicking through the UI quarterly. The evaluate-mode WAF looks fully configured; only the diff reveals it stopped enforcing.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

@@ -102,7 +102,7 @@ EOF
 
 **Negative test:** Skipping the DATA step and computing profit ad hoc inside each PROC. Logic is duplicated and inconsistent, and missing values are mishandled; deriving analysis variables once in a DATA step, then summarizing with PROCs, is the correct, testable structure.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

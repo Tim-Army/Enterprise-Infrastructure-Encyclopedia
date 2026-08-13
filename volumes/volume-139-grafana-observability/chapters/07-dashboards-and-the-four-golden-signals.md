@@ -88,7 +88,7 @@ EOF
 
 **Negative test:** Alerting on overall p99 latency alone — a service failing fast can hold latency flat or even improve it while serving errors to most users.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.2 — Design for the audience
 
@@ -125,7 +125,7 @@ EOF
 
 **Negative test:** Building one dashboard for everyone — it is too detailed for executives, too shallow for owners, and too cluttered for on-call at 3 a.m.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 7.3 — Axes and thresholds that do not mislead
 
@@ -168,7 +168,7 @@ EOF
 
 **Negative test:** Leaving auto-scaling on a traffic panel and treating every visual dip as an incident — you will investigate noise repeatedly and eventually stop trusting the panel.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

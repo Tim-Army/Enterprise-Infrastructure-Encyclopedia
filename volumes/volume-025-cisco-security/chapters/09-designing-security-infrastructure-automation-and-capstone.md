@@ -301,7 +301,7 @@ where the exam's weight and the role's value both sit.
 - A named, owned residual risk and an assurance story.
 - A working shift-left scan that gates a deployment on security.
 
-**Cleanup**
+**Rollback**
 
 9. This capstone produces design artifacts and a scan pipeline; retain
    them. They are the deliverable, and together they demonstrate the whole

@@ -107,7 +107,7 @@ EOF
 
 **Negative test:** Letting each system keep its own customer copy and syncing them peer-to-peer. Conflicting edits spread and no version is authoritative; a central hub with match rules and contribute-and-publish gives one golden record that all systems stay consistent with.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

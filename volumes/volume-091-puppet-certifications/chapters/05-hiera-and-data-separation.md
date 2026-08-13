@@ -92,7 +92,7 @@ echo "---" && cat /tmp/hdemo/hiera.yaml | grep -A1 "name:"
 **Negative test:** list `common` first; its values would win over per-node overrides — order **specific
 first**.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -rf /tmp/hdemo
@@ -123,7 +123,7 @@ puppet lookup ntp::server --hiera_config /tmp/hdemo/hiera.yaml \
 **Negative test:** expect `common.yaml` to win when an OS-specific file exists; the **more specific**
 match wins.
 
-**Cleanup:**
+**Rollback:**
 
 ```bash
 rm -rf /tmp/hdemo
@@ -148,7 +148,7 @@ generic.
 **Negative test:** hardcode the server in the class or pass it in every manifest; use **automatic
 parameter lookup** from Hiera.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Reason about encrypted secrets
 
@@ -169,7 +169,7 @@ hiera-eyaml.
 
 **Negative test:** store a database password as plain YAML in the repo; use **hiera-eyaml** encryption.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

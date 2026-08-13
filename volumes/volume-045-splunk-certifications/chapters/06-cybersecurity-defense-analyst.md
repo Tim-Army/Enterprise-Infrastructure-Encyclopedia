@@ -86,7 +86,7 @@ chain (endpoint, network, auth, cloud) to know what visibility exists.
 **Negative test:** assume full visibility; identify **coverage gaps** (missing
 data sources) — you cannot detect what you do not collect.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.2 — Understanding threats and attacks (detection over CIM)
 
@@ -104,7 +104,7 @@ CIM-normalized brute-force detection (works across auth sources).
 **Negative test:** write this against one raw sourcetype; the **CIM** normalizes
 `action`/`src`/`user` across sources — detect once.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.3 — Security operations: notable triage
 
@@ -120,7 +120,7 @@ queue ES produces for the analyst.
 **Negative test:** work notables in arrival order; triage by **urgency/risk**, not
 time — prioritize impact.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.4 — MITRE ATT&CK mapping
 
@@ -137,7 +137,7 @@ tells the analyst *what* the adversary is attempting.
 **Negative test:** track only indicators (hashes/IPs); **ATT&CK** techniques catch
 variants — map to TTPs.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.5 — Risk-based alerting (RBA)
 
@@ -154,7 +154,7 @@ with accumulated risk instead of firing on every event.
 **Negative test:** alert on every single risk event; **RBA** aggregates risk so
 analysts focus on the highest-risk objects — reduce noise.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 6.6 — Investigation and response
 
@@ -171,7 +171,7 @@ investigation pivot the analyst performs after a notable.
 **Negative test:** investigate a single sourcetype; pivot across **all** relevant
 data for the entity to reconstruct the incident.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

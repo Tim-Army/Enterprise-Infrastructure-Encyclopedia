@@ -386,7 +386,7 @@ fundamentals (channels, non-overlapping 2.4 GHz, DFS on 5 GHz).
 **Negative test:** two nearby APs on the same 2.4 GHz channel co-channel
 interfere; the principle is why RRM assigns non-overlapping channels.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Describe wireless architectures and AP modes (CCNA 2.6)
 
@@ -403,7 +403,7 @@ vs FlexConnect (locally switched at the branch), the two dominant models.
 **Negative test:** expecting local-mode APs to keep serving clients if the
 WLC/WAN is down; they cannot — that is FlexConnect's job.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Describe WLAN physical connections (CCNA 2.7)
 
@@ -420,7 +420,7 @@ join — the physical connection between AP, switch, and WLC.
 **Negative test:** an AP on a switchport delivering insufficient PoE runs in
 reduced mode (radios disabled); check the power budget.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.4 — Interpret the wireless LAN GUI configuration (CCNA 2.9)
 
@@ -437,7 +437,7 @@ the config the Web UI's WLAN wizard produces.
 **Negative test:** a WLAN with no policy profile mapped to a policy tag never
 broadcasts; the 9800's tag model requires the binding.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.5 — Describe wireless security protocols (CCNA 5.9)
 
@@ -453,7 +453,7 @@ the protocol protecting the air.
 **Negative test:** an open or WEP WLAN is trivially intercepted; WPA2/WPA3 is
 the baseline.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — Configure a WLAN with WPA2 PSK (CCNA 5.10)
 
@@ -472,7 +472,7 @@ passphrase associates.
 **Negative test:** a PSK under 8 characters is rejected; WPA2-PSK enforces a
 minimum key length.
 
-**Cleanup:** `no wlan LAB-PSK`.
+**Rollback:** `no wlan LAB-PSK`.
 
 ### Lab 5.7 — Deploy FlexConnect switching and operating modes (ENWLSI 1.1)
 
@@ -490,7 +490,7 @@ traffic stays local instead of tunneling to the WLC.
 **Negative test:** a locally switched WLAN with no local VLAN mapping drops
 client traffic; the flex profile must map the SSID to a branch VLAN.
 
-**Cleanup:** `ap name AP1 mode local`.
+**Rollback:** `ap name AP1 mode local`.
 
 ### Lab 5.8 — Deploy FlexConnect capabilities (ENWLSI 1.2)
 
@@ -508,7 +508,7 @@ authenticating at the branch if the WLC/WAN is unreachable.
 **Negative test:** central auth only; a WAN outage blocks all new
 associations at the branch — local auth is the survivability feature.
 
-**Cleanup:** remove local-auth from the flex profile.
+**Rollback:** remove local-auth from the flex profile.
 
 ### Lab 5.9 — Implement OfficeExtend (ENWLSI 1.3)
 
@@ -526,7 +526,7 @@ tunnel from the home to the WLC, delivering corporate SSIDs remotely.
 **Negative test:** an OEAP without the split-tunnel/local-split ACL sends all
 home traffic over the tunnel; scope the split.
 
-**Cleanup:** remove office-extend from the AP.
+**Rollback:** remove office-extend from the AP.
 
 ### Lab 5.10 — Implement wired-to-wireless QoS (ENWLSI 2.1)
 
@@ -544,7 +544,7 @@ voice keeps its marking across the wired/wireless boundary.
 **Negative test:** trusting client-marked UP without a trust boundary lets a
 client mark bulk as voice; mark/trust at the WLC.
 
-**Cleanup:** remove the service-policy.
+**Rollback:** remove the service-policy.
 
 ### Lab 5.11 — Implement QoS for wireless clients (ENWLSI 2.2)
 
@@ -561,7 +561,7 @@ on the WLAN.
 **Negative test:** no per-client limit lets one client saturate the AP;
 rate-limiting bounds it.
 
-**Cleanup:** remove the client service-policy.
+**Rollback:** remove the client service-policy.
 
 ### Lab 5.12 — Implement AVC and Fastlane (ENWLSI 2.3)
 
@@ -580,7 +580,7 @@ wireless QoS.
 **Negative test:** AVC without NBAR protocol packs cannot classify newer
 apps; keep the protocol pack current.
 
-**Cleanup:** remove the flow monitor from the policy profile.
+**Rollback:** remove the flow monitor from the policy profile.
 
 ### Lab 5.13 — Implement multicast components (ENWLSI 3.1)
 
@@ -598,7 +598,7 @@ efficient AP delivery of multicast streams.
 **Negative test:** unicast multicast delivery replicates a stream per client
 and overloads the WLC; multicast-multicast mode scales it.
 
-**Cleanup:** `no wireless multicast`.
+**Rollback:** `no wireless multicast`.
 
 ### Lab 5.14 — Describe multicast's effect on wireless (ENWLSI 3.2)
 
@@ -614,7 +614,7 @@ the lowest mandatory rate, consuming disproportionate airtime.
 **Negative test:** a low mandatory rate (e.g. 6 Mbps) makes multicast crush
 airtime; raise the basic rate to speed multicast (at coverage cost).
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.15 — Implement multicast on a WLAN (ENWLSI 3.3)
 
@@ -631,7 +631,7 @@ carry multicast streams to clients.
 **Negative test:** multicast enabled globally but not on the policy profile
 still blocks it on that WLAN; both scopes matter.
 
-**Cleanup:** `no multicast` on the policy profile.
+**Rollback:** `no multicast` on the policy profile.
 
 ### Lab 5.16 — Implement mDNS (ENWLSI 3.4)
 
@@ -649,7 +649,7 @@ WLC# show mdns-sd summary
 **Negative test:** mDNS flooded across all VLANs (no gateway) is both a
 scaling and a security problem; the gateway scopes it.
 
-**Cleanup:** `no mdns-sd gateway`.
+**Rollback:** `no mdns-sd gateway`.
 
 ### Lab 5.17 — Implement Multicast Direct (ENWLSI 3.5)
 
@@ -667,7 +667,7 @@ for reliable video — better reliability for streaming.
 **Negative test:** enabling Multicast Direct without admission control can
 exhaust AP resources under many streams; pair with call admission control.
 
-**Cleanup:** disable media-stream on the policy and globally.
+**Rollback:** disable media-stream on the policy and globally.
 
 ### Lab 5.18 — Deploy CMX and Cisco Spaces (ENWLSI 4.1)
 
@@ -684,7 +684,7 @@ streaming client location/analytics data to the location engine.
 **Negative test:** NMSP down means no location data reaches CMX/Spaces;
 maps/analytics go stale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.19 — Implement location services (ENWLSI 4.2)
 
@@ -700,7 +700,7 @@ input CMX/Spaces uses to place a client on a map.
 **Negative test:** a client heard by only one AP cannot be triangulated;
 location needs 3+ APs above the RSSI cutoff.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.20 — Implement CMX/Cisco Spaces components (ENWLSI 5.1)
 
@@ -717,7 +717,7 @@ WLC# show wireless location summary
 **Negative test:** APs not placed on a floor map produce location data with
 no spatial context; the map hierarchy is required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.21 — Implement location-aware guest services (ENWLSI 5.2)
 
@@ -735,7 +735,7 @@ onboarding.
 **Negative test:** a webauth parameter-map pointing at an unreachable portal
 leaves guests stuck at redirect; verify the portal URL.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.22 — Troubleshoot location accuracy with Hyperlocation (ENWLSI 5.3)
 
@@ -751,7 +751,7 @@ tightens accuracy to ~1 m versus RSSI's several meters.
 **Negative test:** expecting 1 m accuracy from RSSI multilateration alone;
 Hyperlocation hardware is required for that precision.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.23 — Troubleshoot CMX high availability (ENWLSI 5.4)
 
@@ -767,7 +767,7 @@ secondary CMX ensures analytics continuity on failover.
 **Negative test:** a single CMX node is a single point of failure for
 location; HA pairs the engines.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.24 — Implement wIPS using Cisco DNA Center (ENWLSI 5.5)
 
@@ -784,7 +784,7 @@ adaptive wireless IPS surface (managed via Catalyst Center).
 **Negative test:** wIPS in detect-only mode alerts but does not contain; rogue
 containment must be explicitly enabled.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.25 — Configure client profiling on WLC and ISE (ENWLSI 6.1)
 
@@ -802,7 +802,7 @@ device type to ISE — profiling that drives differentiated policy.
 **Negative test:** without TLV caching, ISE cannot profile the endpoint and
 falls back to a generic policy.
 
-**Cleanup:** remove the TLV-caching options.
+**Rollback:** remove the TLV-caching options.
 
 ### Lab 5.26 — Implement BYOD and guest (ENWLSI 6.2)
 
@@ -820,7 +820,7 @@ access.
 **Negative test:** a single open SSID with no onboarding grants full access to
 unmanaged devices; BYOD separates provisioning from production access.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.27 — Implement 802.1X and AAA across architectures (ENWLSI 6.3)
 
@@ -838,7 +838,7 @@ enterprise authentication on local, FlexConnect, and fabric architectures.
 **Negative test:** a FlexConnect AP with central auth loses 802.1X on a WAN
 outage unless local EAP is configured; architecture changes the auth path.
 
-**Cleanup:** `no wlan CORP`.
+**Rollback:** `no wlan CORP`.
 
 ### Lab 5.28 — Implement Identity-Based Networking (ENWLSI 6.4)
 
@@ -854,7 +854,7 @@ identity, not SSID, drives the access policy.
 **Negative test:** a static WLAN-to-VLAN mapping ignores identity; IBNS lets
 one SSID serve many policies by user.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.29 — Utilize reports on Prime/Catalyst Center (ENWLSI 7.1)
 
@@ -871,7 +871,7 @@ Infrastructure / Catalyst Center reports aggregate.
 **Negative test:** reading a single WLC misses a multi-controller estate;
 Prime/Catalyst Center aggregate across controllers.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.30 — Manage alarms and rogues (ENWLSI 7.2)
 
@@ -888,7 +888,7 @@ alarm history — the queue a wireless operator works.
 **Negative test:** auto-containing an unclassified rogue that is a neighbor's
 legitimate AP is a legal/operational risk; classify before containing.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.31 — Manage RF interferers (ENWLSI 7.3)
 
@@ -905,7 +905,7 @@ WLC# show ap dot11 5ghz cleanair device type all
 **Negative test:** blaming Wi-Fi contention for a problem CleanAir shows is a
 microwave oven; the spectrum view finds non-Wi-Fi sources.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.32 — Troubleshoot client connectivity (ENWLSI 7.4)
 
@@ -922,7 +922,7 @@ RUN) and where it stalled — the exact failure phase.
 **Negative test:** blaming RF for a client stuck at 802.1X (a RADIUS/cert
 problem); the state machine localizes it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.33 — Implement device access controls (ENWLSI 8.1)
 
@@ -941,7 +941,7 @@ fallback — centralized management-plane access control.
 **Negative test:** external AAA with no local method locks admins out when
 ISE is down; keep a local account.
 
-**Cleanup:** revert to prior VTY auth (keep a local login).
+**Rollback:** revert to prior VTY auth (keep a local login).
 
 ### Lab 5.34 — Implement access point authentication (ENWLSI 8.2)
 
@@ -958,7 +958,7 @@ only trusted APs join the network.
 **Negative test:** an AP on an open switchport with no 802.1X can be swapped
 for a rogue; AP 802.1X binds the AP to the port.
 
-**Cleanup:** remove the AP dot1x credentials.
+**Rollback:** remove the AP dot1x credentials.
 
 ### Lab 5.35 — Implement control-plane ACLs on the controller (ENWLSI 8.3)
 
@@ -978,7 +978,7 @@ the control plane — CPU-protecting the WLC.
 **Negative test:** an unrestricted management interface accepts connections
 from anywhere; the control-plane ACL scopes it.
 
-**Cleanup:** remove the control-plane host management restriction and ACL.
+**Rollback:** remove the control-plane host management restriction and ACL.
 
 ### Lab 5.36 — Catalyst 9800 WLAN with 802.1X and fast roaming (integrative)
 
@@ -1054,7 +1054,7 @@ enabled, and validate client association.
    failed-authentication event is logged, confirming invalid credentials
    are rejected rather than silently admitted.
 
-**Cleanup**
+**Rollback**
 
 - Remove the test WLAN, policy profile, and policy tag if this is a
   shared lab controller:

@@ -93,7 +93,7 @@ EOF
 
 **Negative test:** Setting an SLO and never checking budget burn. An SLO nobody checks is a documentation exercise.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Site Reliability Guardian as a release gate
 
@@ -159,7 +159,7 @@ EOF
 
 **Negative test:** Loading a guardian with all fifty objectives because they are available. Every marginal objective is another chance to block a good release on something nobody would actually stop for.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — Graded automation
 
@@ -204,7 +204,7 @@ EOF
 
 **Negative test:** Automating remediation for anything Davis raises a problem for. Chapter 04 showed root-cause attribution degrades into a *confident* wrong answer when topology is incomplete — automation then executes that wrong answer immediately.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

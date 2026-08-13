@@ -90,7 +90,7 @@ PY
 **Negative test:** run backups on the same domain/admin as production; a domain compromise reaches the
 backups — segment and apply least privilege.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — Verify repository immutability
 
@@ -110,7 +110,7 @@ blocked.
 **Negative test:** store the only backup on a mutable share an admin can delete; ransomware or an
 insider erases it — use a **hardened/immutable** repository.
 
-**Cleanup:** none (immutability is the protected state).
+**Rollback:** none (immutability is the protected state).
 
 ### Lab 8.3 — Detect malware and read the Threat Center
 
@@ -135,7 +135,7 @@ at the last clean point.
 **Negative test:** restore blindly from the newest backup after an attack; it may be encrypted —
 recover from the last **clean** point the detection identifies.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — Run the Security and Compliance Analyzer
 
@@ -162,7 +162,7 @@ hardened.
 **Negative test:** allow a single admin to delete backups unchecked; enable **four-eyes authorization**
 so destructive actions need a second approver.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

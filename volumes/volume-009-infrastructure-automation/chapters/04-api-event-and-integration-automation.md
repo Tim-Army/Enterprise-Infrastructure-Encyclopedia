@@ -504,7 +504,7 @@ the body; reading status codes and parsing the JSON response is the core API-aut
 mishandle or reject it — the header tells the server how to interpret the body, and omitting it is
 a common integration bug.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.2 — Authentication (Topic: API authentication)
 
@@ -525,7 +525,7 @@ secret handling).
 **Negative test:** call a protected endpoint with no/invalid `Authorization` header; it returns
 401 Unauthorized — authentication is per request, and the credential must be present and valid.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.3 — Pagination and error handling (Topic: Robust API code)
 
@@ -554,7 +554,7 @@ transient failures with backoff, and iterate pages/`next` links until the data i
 **Negative test:** assume one request returns all results and ignore pagination; you silently
 process only the first page — respecting pagination is what makes the automation complete.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 4.4 — Webhooks and event-driven integration (Topic: Webhooks)
 
@@ -576,7 +576,7 @@ timer; the receiver validates and dispatches the payload to the right action.
 webhook; you add latency and load — event-driven (webhook) integration reacts immediately and
 scales better than polling.
 
-**Cleanup:** `rm -f event.json`.
+**Rollback:** `rm -f event.json`.
 
 ## Lab Verification
 

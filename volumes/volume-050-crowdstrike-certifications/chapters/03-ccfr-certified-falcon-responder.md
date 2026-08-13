@@ -82,7 +82,7 @@ ATT&CK Frameworks domain.
 **Negative test:** triage on severity alone; the **ATT&CK mapping** tells you what
 the adversary was doing — use it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Detection Analysis (process tree)
 
@@ -100,7 +100,7 @@ Detection Analysis domain (the process tree).
 **Negative test:** act on the leaf process only; check the **parent chain** — the
 root cause is often upstream.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.3 — Event Search
 
@@ -119,7 +119,7 @@ the Event Search domain (pivoting across telemetry).
 **Negative test:** rely only on the detection; **event search** surfaces related
 activity the detection didn't flag.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.4 — Event Investigation (host timeline)
 
@@ -139,7 +139,7 @@ print("host:", dev[0]["hostname"], "last seen:", dev[0]["last_seen"]) if dev els
 **Negative test:** investigate a hostname in isolation; anchor on the **AID** —
 hostnames are reused, AIDs are unique.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.5 — Search Tools
 
@@ -158,7 +158,7 @@ Tools domain (hash/domain/IP lookups).
 **Negative test:** grep raw logs for a hash; the **IOC/search tools** index
 indicators across the estate — use them.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.6 — Real Time Response (RTR)
 
@@ -179,7 +179,7 @@ the Real Time Response domain (live investigation/remediation).
 **Negative test:** run destructive RTR commands unscoped; start **read-only**
 (`ps`, `ls`, `netstat`) and audit every action.
 
-**Cleanup:** `rtr.delete_session(session_id=sid)`.
+**Rollback:** `rtr.delete_session(session_id=sid)`.
 
 ## Lab Verification
 

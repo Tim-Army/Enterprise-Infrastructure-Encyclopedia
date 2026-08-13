@@ -80,7 +80,7 @@ EOF
 
 **Negative test:** Running an automation as a standalone script on a developer's machine. It has no central scheduling, credential management, monitoring, or governance — Orchestrator is what turns a built automation into a reliable, governed enterprise operation.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

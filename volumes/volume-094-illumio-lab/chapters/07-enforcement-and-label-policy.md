@@ -77,7 +77,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432   # expect TcpTestSuccee
 
 **Negative test.** Add `10.10.20.21` to `role_web` "to be safe", reload, and re-run the attack — it succeeds again. An over-broad group re-authorizes the exact movement you set out to stop. Remove it.
 
-**Cleanup.** Keep the enforced ruleset.
+**Rollback.** Keep the enforced ruleset.
 
 ### Lab 7.2 — Prove label-based policy scales
 
@@ -105,7 +105,7 @@ sudo nft delete element inet illumio role_web '{ 10.10.20.13 }'
 
 **Negative test.** Rewrite the rule to name the address `10.10.20.11` directly instead of the `role_web` set. It works today, but the day the app is rebuilt with a new address, the rule silently fails open or closed. Address-based rules are the technical debt label-based policy exists to retire. Revert to the set.
 
-**Cleanup.** Ensure `role_web` contains only `10.10.20.11`.
+**Rollback.** Ensure `role_web` contains only `10.10.20.11`.
 
 ### Lab 7.3 — Enforce on Windows through the Windows Filtering Platform
 
@@ -142,7 +142,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # expect False (blocked
 
 **Negative test.** Remove the inbound management RDP allow and the `10.10.20.1` break-glass rule, then reboot; you may lock yourself out of the HMI. This is why Lab 9.2 rehearses break-glass. Re-add the management rule before continuing.
 
-**Cleanup.** Keep the enforced Windows posture.
+**Rollback.** Keep the enforced Windows posture.
 
 ### Lab 7.4 — Draft, provision, and selective enforcement (Design Exercise)
 
@@ -162,7 +162,7 @@ Test-NetConnection -ComputerName 10.10.20.12 -Port 5432  # expect False (blocked
 
 **Negative test.** Argue that provisioning is needless overhead and Track 2's immediacy is superior. In a lab of five hosts it feels that way; at enterprise scale, an ungated change that default-denies the wrong label is an outage. The overhead is the safety.
 
-**Cleanup.** None.
+**Rollback.** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

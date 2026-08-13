@@ -78,7 +78,7 @@ control.
 **Negative test:** assume the provider secures your config; the **customer** owns it — enforce
 guardrails.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.2 — ECDE: scan the pipeline
 
@@ -99,7 +99,7 @@ guardrails (ECDE).
 **Negative test:** merge without scanning; the hardcoded secret ships — **scan the pipeline** and
 fail the build.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.3 — CASE: apply a secure-coding check
 
@@ -124,7 +124,7 @@ CASE secure coding.
 **Negative test:** build the query with string concatenation; injection succeeds — **validate and
 parameterize**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 8.4 — ECES: apply cryptography correctly
 
@@ -143,7 +143,7 @@ applied crypto (ECES).
 **Negative test:** encrypt with ECB mode or no salt/KDF; patterns leak and it's weak — use **CBC/GCM
 with salt and a KDF**.
 
-**Cleanup:** `rm -f secret.txt secret.enc`.
+**Rollback:** `rm -f secret.txt secret.enc`.
 
 ## Lab Verification
 

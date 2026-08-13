@@ -74,7 +74,7 @@ EOF
 
 **Negative test:** Capturing requirements in a Word document handed to developers to build later. The document drifts from the app, gets misinterpreted, and surfaces problems late; DCO captures objectives directly as executable artifacts in Pega, keeping requirements real, aligned, and validated early.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

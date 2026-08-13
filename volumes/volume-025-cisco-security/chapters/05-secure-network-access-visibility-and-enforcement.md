@@ -271,7 +271,7 @@ authorization result — access decided by identity, not port.
 **Negative test:** open ports with no identity grant anyone access; 802.1X/MAB
 ties access to identity.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.2 — Describe device compliance and application control (Objective 6.2)
 
@@ -287,7 +287,7 @@ SW# show authentication sessions interface gig1/0/5 details | include Compliance
 **Negative test:** granting full access before compliance is confirmed lets an
 unpatched device on; gate on Compliant.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.3 — Configure 802.1X and MAB (Objective 6.3)
 
@@ -308,7 +308,7 @@ capable device does 802.1X; a printer falls back to MAB.
 **Negative test:** MAB before 802.1X (wrong priority) authenticates a
 spoofable MAC when a supplicant was available; 802.1X should be preferred.
 
-**Cleanup:** reset the interface to default.
+**Rollback:** reset the interface to default.
 
 ### Lab 5.4 — Configure Change of Authorization (Objective 6.4)
 
@@ -326,7 +326,7 @@ authorize or bounce a live session (e.g. after profiling or a threat signal).
 **Negative test:** without `dynamic-author`, ISE's CoA is ignored and policy
 changes do not apply to live sessions until reconnect.
 
-**Cleanup:** `no aaa server radius dynamic-author`.
+**Rollback:** `no aaa server radius dynamic-author`.
 
 ### Lab 5.5 — Explain exfiltration techniques (Objective 6.5)
 
@@ -343,7 +343,7 @@ the signature of DNS tunneling exfiltration.
 **Negative test:** allowing all DNS outbound enables tunneling; DNS-layer
 security (Umbrella/Secure Access) and flow analytics catch it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.6 — Describe network visibility and enforcement (Objective 6.6)
 
@@ -360,7 +360,7 @@ behavioral detection — visibility that turns into enforcement (via ISE ANC).
 **Negative test:** enforcement without visibility is blind; the telemetry is
 what detects the anomaly to enforce against.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.7 — Describe Cisco Duo in zero trust (Objective 6.7)
 
@@ -376,7 +376,7 @@ access decision — the identity pillar of zero trust (Chapter 08).
 **Negative test:** MFA without device trust admits a valid credential on a
 compromised device; both are checked.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.8 — Describe security orchestration and automation (Objective 6.8)
 
@@ -393,7 +393,7 @@ response.
 **Negative test:** manual containment lags the attack; automation closes the
 detect-to-contain loop.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 5.9 — 802.1X with MAB fallback in monitor mode (integrative)
 
@@ -436,7 +436,7 @@ self-hosted route). A test endpoint. No production access network.
 - A demonstrated, understood fail-open-or-closed behavior when the
   authentication server is unreachable.
 
-**Cleanup**
+**Rollback**
 
 7. Return the switch port to its original configuration and end the lab
    session; the ISE policy detail carries into Chapter 06.

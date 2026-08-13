@@ -72,7 +72,7 @@ PY
 **Negative test:** assign an app to each user directly; onboarding/offboarding becomes manual —
 assign to **groups**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.2 — Assign an application to a group
 
@@ -92,7 +92,7 @@ membership.
 **Negative test:** grant the app to individuals; a new hire has no access until manually added — use
 **group assignment**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.3 — Apply a baseline MFA enrollment policy
 
@@ -111,7 +111,7 @@ PY
 
 **Negative test:** rely on passwords alone; credential theft = account takeover — require **MFA**.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 2.4 — Verify a user's effective access
 
@@ -132,7 +132,7 @@ traceability.
 
 **Negative test:** guess access from memory; **group→app** mapping is the source of truth — trace it.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

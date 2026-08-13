@@ -276,7 +276,7 @@ the interoperability prerequisite for the implementation.
 **Negative test:** an ESXi build newer than vCenter is unsupported; vCenter
 refuses to manage it until upgraded — the version-skew rule.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.2 — vCenter architecture and topology (Objective 1.2)
 
@@ -293,7 +293,7 @@ the single-appliance vpxd/PSC-embedded topology of vSphere 8.
 **Negative test:** expecting an external Platform Services Controller;
 vSphere 8 has none (embedded only) — a topology change from 6.x.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.3 — vSphere Lifecycle Manager concepts (Objective 1.6)
 
@@ -311,7 +311,7 @@ image is the vSphere 8 direction, replacing per-component baselines.
 **Negative test:** mixing baseline and image management on one cluster is
 not allowed; a cluster is one model or the other.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.4 — Use cases for VMware Tools (Objective 1.12)
 
@@ -330,7 +330,7 @@ objective tests.
 **Negative test:** a VM with Tools `notRunning` cannot be gracefully shut
 down or quiesced — the features that depend on Tools stop working.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.5 — vSphere in the Software-Defined Data Center (Objective 2.1)
 
@@ -348,7 +348,7 @@ SDDC's compute pillar, with vSAN (storage) and NSX (network) layered on.
 **Negative test:** treating vSphere as the whole SDDC ignores the network/
 security virtualization NSX provides — vSphere is one pillar, not all three.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.6 — Use cases for vCenter Converter (Objective 2.3)
 
@@ -368,7 +368,7 @@ against the source.
 **Negative test:** Converter cannot hot-clone a running physical host with
 an unsupported OS; the use case has OS/version boundaries.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.7 — Configure Virtual Standard Switch advanced options (Objective 4.3)
 
@@ -387,7 +387,7 @@ rejected, and the teaming policy shown — the hardened VSS baseline.
 **Negative test:** leaving `AllowPromiscuous` true lets any VM sniff the
 port group — the exposure the secure baseline closes.
 
-**Cleanup:** restore prior security policy if changed.
+**Rollback:** restore prior security policy if changed.
 
 ### Lab 17.8 — Deploy and configure the vCenter Server Appliance (Objective 4.5)
 
@@ -405,7 +405,7 @@ SSO, appliance size) is correct for an unattended deploy.
 password fails complexity is rejected at `--verify-only`, before any
 deployment.
 
-**Cleanup:** none (verify only; nothing deployed).
+**Rollback:** none (verify only; nothing deployed).
 
 ### Lab 17.9 — Deploy and configure vCenter High Availability (Objective 4.7)
 
@@ -423,7 +423,7 @@ three nodes — vCenter survives an appliance failure.
 purpose; anti-affinity must separate them — a single host failure would take
 both.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.10 — Configure vCenter file-based backup (Objective 4.11)
 
@@ -444,7 +444,7 @@ the supported vCenter backup method (no VM-level snapshot needed).
 **Negative test:** backing up vCenter by snapshotting its VM instead risks
 an inconsistent quiesce; file-based backup is the supported path.
 
-**Cleanup:** delete the `daily` schedule.
+**Rollback:** delete the `daily` schedule.
 
 ### Lab 17.11 — Configure vSphere Trust Authority (Objective 4.12)
 
@@ -461,7 +461,7 @@ Authority verifies host integrity before releasing encryption keys.
 **Negative test:** a host that fails attestation is denied encryption keys;
 its encrypted VMs will not power on — the guarantee Trust Authority enforces.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.12 — Configure vSphere Lifecycle Manager (Objective 4.14)
 
@@ -481,7 +481,7 @@ against its desired-state image — the drift vLCM remediates.
 hardware-compatibility (vSAN HCL) first can fail mid-rollout — check
 compliance and HCL before remediation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.13 — Configure different network stacks (Objective 4.15)
 
@@ -500,7 +500,7 @@ its own gateway — traffic-type isolation at the routing level.
 **Negative test:** running vMotion on the default stack forces it to share
 the management gateway; a dedicated stack gives vMotion its own route.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.14 — Configure host profiles (Objective 4.16)
 
@@ -519,7 +519,7 @@ the template for consistent host configuration.
 NICs raises compliance failures on the NIC mappings — profiles encode
 host-specific bindings that must be customized.
 
-**Cleanup:** `Remove-VMHostProfile -Profile (Get-VMHostProfile dcv-profile) -Confirm:$false`.
+**Rollback:** `Remove-VMHostProfile -Profile (Get-VMHostProfile dcv-profile) -Confirm:$false`.
 
 ### Lab 17.15 — Monitor VCSA and vSphere resources (Objective 5.2)
 
@@ -536,7 +536,7 @@ signal to act on before contention hits guests.
 **Negative test:** monitoring guest metrics only misses VCSA appliance
 exhaustion, which degrades the whole management plane.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.16 — Identify and use resource monitoring tools (Objective 5.3)
 
@@ -553,7 +553,7 @@ wait) — the authoritative host tool alongside vCenter performance charts.
 a sub-20-second contention spike is visible in `esxtop` but averaged away in
 charts — pick the tool for the timescale.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.17 — Configure Network I/O Control (Objective 5.4)
 
@@ -572,7 +572,7 @@ control that keeps vMotion from starving vSAN on a shared uplink.
 **Negative test:** without NIOC, a vMotion burst saturates the uplink and
 delays vSAN I/O — the contention NIOC bounds.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.18 — Configure Storage I/O Control (Objective 5.5)
 
@@ -590,7 +590,7 @@ I/O by shares when latency crosses the threshold.
 **Negative test:** without SIOC, a single VM's I/O storm inflates latency for
 every VM on the datastore — the "noisy neighbor" SIOC arbitrates.
 
-**Cleanup:** `$ds | Set-Datastore -StorageIOControlEnabled $false`.
+**Rollback:** `$ds | Set-Datastore -StorageIOControlEnabled $false`.
 
 ### Lab 17.19 — Offload a VM port group to a DPU (Objective 5.6)
 
@@ -608,7 +608,7 @@ offloaded from host CPU to the SmartNIC, freeing cores for workloads.
 **Negative test:** enabling DPU-backed networking on a host with no DPU has
 no effect; the hardware must be present and in the switch's offload config.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.20 — Performance impact of VM snapshots (Objective 5.7)
 
@@ -626,7 +626,7 @@ lived snapshots inflate I/O and consume datastore space.
 **Negative test:** treating snapshots as backups leaves them for weeks; the
 delta chain slows the VM and risks datastore-full — snapshots are short-term.
 
-**Cleanup:** `$vm | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
+**Rollback:** `$vm | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
 
 ### Lab 17.21 — Use Update Planner (Objective 5.8)
 
@@ -645,7 +645,7 @@ Planner then reports interop and pre-checks for the chosen target release.
 can strand an incompatible external product (e.g. an old SRM) — the check
 prevents it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.22 — Use performance charts (Objective 5.10)
 
@@ -662,7 +662,7 @@ contention over time, not just an instant.
 **Negative test:** reading a single sample hides a periodic spike a chart's
 series exposes — trends need multiple samples.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.23 — Proactive management with Skyline (Objective 5.11)
 
@@ -680,7 +680,7 @@ signals before a problem becomes an outage.
 **Negative test:** waiting for an alarm is reactive; Skyline flags a known
 issue (e.g. a risky driver) before it triggers — proactive vs reactive.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.24 — Update vCenter via the management interface (Objective 5.12)
 
@@ -697,7 +697,7 @@ patch path (VAMI on 5480), not an in-guest package manager.
 **Negative test:** patching the VCSA's underlying Photon OS with `tdnf`
 directly is unsupported and can break the appliance — use VAMI.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.25 — Enable vCLS retreat mode (Objective 6.1)
 
@@ -717,7 +717,7 @@ maintenance.
 **Negative test:** deleting vCLS VMs by hand without retreat mode; vCenter
 recreates them immediately — retreat mode is the only supported removal.
 
-**Cleanup:** set the value back to `$true` to restore vCLS.
+**Rollback:** set the value back to `$true` to restore vCLS.
 
 ### Lab 17.26 — Generate a log bundle (Objective 6.3)
 
@@ -734,7 +734,7 @@ deep troubleshooting require.
 **Negative test:** collecting only `/var/log` misses configuration and state
 that `vm-support` bundles — the full bundle is what's actionable.
 
-**Cleanup:** delete the support bundle after use.
+**Rollback:** delete the support bundle after use.
 
 ### Lab 17.27 — Create and manage VM snapshots (Objective 7.1)
 
@@ -753,7 +753,7 @@ point-in-time rollback for a risky change.
 **Negative test:** a snapshot taken with memory on a heavily loaded VM can
 stun it during quiesce; know when to exclude memory.
 
-**Cleanup:** `$vm | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
+**Rollback:** `$vm | Get-Snapshot | Remove-Snapshot -Confirm:$false`.
 
 ### Lab 17.28 — Create DRS affinity and anti-affinity rules (Objective 7.5)
 
@@ -772,7 +772,7 @@ hosts — HA for a clustered app pair.
 **Negative test:** an anti-affinity rule for 3 VMs on a 2-host cluster cannot
 be satisfied; DRS reports a rule violation — rule needs enough hosts.
 
-**Cleanup:** `Get-DrsRule -Cluster $cl -Name keep-apart | Remove-DrsRule -Confirm:$false`.
+**Rollback:** `Get-DrsRule -Cluster $cl -Name keep-apart | Remove-DrsRule -Confirm:$false`.
 
 ### Lab 17.29 — Configure role-based access control (Objective 7.7)
 
@@ -791,7 +791,7 @@ privilege by role and scope.
 **Negative test:** a `dcv-operator` principal tries to reconfigure a VM's
 hardware; denied — the role grants power control only.
 
-**Cleanup:** remove the permission and role.
+**Rollback:** remove the permission and role.
 
 ### Lab 17.30 — Manage host profiles (Objective 7.8)
 
@@ -809,7 +809,7 @@ names the drifted setting to remediate.
 **Negative test:** applying a profile without first placing the host in
 maintenance mode fails for settings that require it — order matters.
 
-**Cleanup:** none (read-only compliance check).
+**Rollback:** none (read-only compliance check).
 
 ### Lab 17.31 — Use predefined alarms (Objective 7.10)
 
@@ -826,7 +826,7 @@ event trigger — coverage that ships with vCenter.
 **Negative test:** assuming predefined alarms notify by default; most only
 change state — an action (email/SNMP) must be added to be alerted.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.32 — Create custom alarms (Objective 7.11)
 
@@ -845,7 +845,7 @@ to a workload's own threshold.
 **Negative test:** a threshold set at 100% never fires before saturation is
 already hurting; thresholds must leave reaction headroom.
 
-**Cleanup:** `Get-AlarmDefinition -Name high-vm-cpu | Remove-AlarmDefinition -Confirm:$false`.
+**Rollback:** `Get-AlarmDefinition -Name high-vm-cpu | Remove-AlarmDefinition -Confirm:$false`.
 
 **VCP-VCF Architect (2V0-13.25, design) — Labs 17.33–17.40**
 
@@ -865,7 +865,7 @@ RTO 0"). **Negative test:** a technical requirement with no business driver
 is unjustifiable scope; a business objective with no technical requirement
 is not buildable — each needs its pair.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.34 — Differentiate conceptual, logical, and physical design (Objective 1.2)
 
@@ -881,7 +881,7 @@ the physical instantiation for one requirement. **Negative test:** naming a
 product in the conceptual model prematurely binds a physical choice the
 requirements may not support.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.35 — Differentiate requirements, assumptions, constraints, risks (Objective 1.3)
 
@@ -897,7 +897,7 @@ host cap) / assumption / risk, each with a measurable test. **Negative
 test:** an unstated assumption ("the network is 25 GbE") becomes an
 undocumented risk if wrong — surface it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.36 — Develop a risk mitigation strategy (Objective 1.5)
 
@@ -913,7 +913,7 @@ failover capacity), the mitigation (add a host / enable admission control)
 and its cost. **Negative test:** logging a risk with no mitigation and no
 owner is not risk management — each risk needs a response.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.37 — Document design decisions (Objective 1.6)
 
@@ -930,7 +930,7 @@ disk cost (impact)." **Negative test:** a decision with no recorded
 alternative cannot be defended in a design review — the rejected option is
 the argument.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.38 — Develop a design validation strategy (Objective 1.7)
 
@@ -945,7 +945,7 @@ off a host; confirm VMs restart within RTO). **Negative test:** a design
 signed off without a validation test can fail its first real failover — the
 test is the proof.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.39 — Gather and analyze business objectives (Objective 3.1)
 
@@ -959,7 +959,7 @@ Get-Datastore | Select Name, @{N='FreeGB';E={[math]::Round($_.FreeSpaceGB)}}, @{
 RPO, RTO) the design will be measured by. **Negative test:** "improve
 performance" without a metric cannot be designed to or validated.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.40 — Create a conceptual model (Objective 3.2)
 
@@ -974,7 +974,7 @@ Get-Cluster | Select Name, @{N='Capabilities';E={'availability, performance, man
 to the objectives from 3.1. **Negative test:** a conceptual model that
 already names vSAN/NSX has skipped to physical — keep it product-neutral.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 **VCP-AVI (6V0-22.25) — Labs 17.41–17.61 (NSX Advanced Load Balancer / Avi)**
 
@@ -993,7 +993,7 @@ distributed across SEs, not a single appliance.
 **Negative test:** a single SE is a single point of failure; a distributed
 data plane needs an SE group with more than one member.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.42 — Service Engine tasks (Objective 1.3)
 
@@ -1009,7 +1009,7 @@ terminates client connections, load-balances to pools, and runs policies.
 **Negative test:** placing every virtual service on one SE overloads it;
 placement across the SE group is what scales.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.43 — L4 load-balancing characteristics (Objective 1.4)
 
@@ -1025,7 +1025,7 @@ transport-layer load balancing with no HTTP awareness.
 **Negative test:** expecting content-based routing on an L4 VS fails; L4 has
 no visibility into HTTP headers/URLs — that needs L7.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.44 — L7 load-balancing characteristics (Objective 1.5)
 
@@ -1041,7 +1041,7 @@ headers/URLs for content switching, redirects, and WAF.
 **Negative test:** an L7 VS without SSL termination cannot inspect encrypted
 payloads; HTTPS content rules require TLS termination at the VS.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.45 — High-availability modes (Objective 1.7)
 
@@ -1058,7 +1058,7 @@ model.
 **Negative test:** Active/Active needs enough SE capacity to absorb a peer's
 load on failure; undersizing defeats the HA mode.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.46 — Service Engine Groups (Objective 1.8)
 
@@ -1074,7 +1074,7 @@ the unit of SE scaling and tenancy isolation.
 **Negative test:** two tenants sharing one SE group share fate and capacity;
 isolation requires separate groups.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.47 — Elastic scale-out use case (Objective 1.9)
 
@@ -1090,7 +1090,7 @@ a VS out under load without a config change.
 **Negative test:** a VS pinned to one SE cannot scale out; elastic scale-out
 requires the SE group to permit it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.48 — Virtual service, pool, and VIP interaction (Objective 1.10)
 
@@ -1106,7 +1106,7 @@ curl -sk -H "$AH" "$AVI/api/virtualservice" | jq -r '.results[0] | "\(.name)\tVI
 **Negative test:** a VS with no pool has nowhere to send traffic; the VIP
 answers but every request fails — all three objects are required.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.49 — Features inside an application profile (Objective 1.11)
 
@@ -1122,7 +1122,7 @@ whose type sets features — caching, compression, X-Forwarded-For, WAF.
 **Negative test:** applying an L4 profile to a service needing HTTP caching
 disables the L7 features caching depends on.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.50 — Functions of the policy engine (Objective 1.12)
 
@@ -1138,7 +1138,7 @@ policies — the policy engine rewrites, redirects, and blocks in-flight.
 **Negative test:** rules evaluated in the wrong index order shadow later
 rules; policy order is the control, as with any rule engine.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.51 — Certificate management (Objective 1.13)
 
@@ -1154,7 +1154,7 @@ terminates TLS at the VS using these, and can auto-renew.
 **Negative test:** a VS referencing an expired certificate serves TLS errors
 to every client; certificate lifecycle is a load-balancer responsibility.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.52 — Turn a WAF on and off (Objective 1.14)
 
@@ -1170,7 +1170,7 @@ attaching/detaching `waf_policy_ref` turns WAF on/off per VS.
 **Negative test:** enabling WAF in blocking mode without a learning period
 blocks legitimate traffic; start in detection mode.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.53 — Capacity impact of WAF (Objective 1.15)
 
@@ -1186,7 +1186,7 @@ CPU per request, so WAF-enabled services need more SE headroom.
 **Negative test:** enabling WAF on an SE group sized for L4 throughput
 overloads it; capacity must be re-sized for inspection.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.54 — Service Engine capacity limits (Objective 5.1)
 
@@ -1202,7 +1202,7 @@ memory — the hard limits a capacity plan must respect.
 **Negative test:** provisioning virtual services beyond `max_vs_per_se`
 forces scale-out or placement failures — the ceiling is real.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.55 — Impact of elastic scale-out (Objective 5.2)
 
@@ -1218,7 +1218,7 @@ throughput rises with SE count, at the cost of more SE resource.
 **Negative test:** scale-out with no spare SE capacity in the group cannot
 add an SE; the VS stays capacity-bound.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.56 — Performance limits of analytics and logs (Objective 5.3)
 
@@ -1234,7 +1234,7 @@ non-significant logging at high request rates costs SE CPU and storage.
 **Negative test:** enabling full logging for every request on a high-traffic
 VS degrades SE performance; throttling protects the data plane.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.57 — Significant vs non-significant logging (Objective 6.1)
 
@@ -1251,7 +1251,7 @@ opt-in.
 **Negative test:** relying on non-significant logs for a rare error wastes
 storage; significant logs already capture the anomaly.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.58 — Enable real-time analytics (Objective 6.3)
 
@@ -1267,7 +1267,7 @@ metric granularity for live troubleshooting.
 **Negative test:** with real-time analytics off, the UI shows only rolled-up
 metrics; a live spike is invisible until aggregation.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.59 — Diagnose a real-time analytics problem (Objective 6.4)
 
@@ -1284,7 +1284,7 @@ low score with high back-end RTT points at the pool, not the client.
 **Negative test:** blaming the client for slowness while server RTT is high
 misdirects the fix — the metric names the layer.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.60 — Interpret a health score (Objective 6.5)
 
@@ -1301,7 +1301,7 @@ number.
 **Negative test:** a high score with an active security penalty still hides
 an attack in progress; read the reason, not just the number.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.61 — Log changes when WAF is enabled (Objective 6.6)
 
@@ -1317,7 +1317,7 @@ curl -sk -H "$AH" "$AVI/api/analytics/logs/virtualservice/<vs-uuid>?type=1&waf_l
 **Negative test:** looking for WAF fields with WAF disabled finds none; the
 enrichment appears only when WAF inspects.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 **VCP-PCS (6V0-21.25) — Labs 17.62–17.72 (NSX vDefend / Private Cloud Security)**
 
@@ -1335,7 +1335,7 @@ security baseline NSX enforces east-west and at the edge.
 **Negative test:** perimeter-only security leaves east-west traffic
 unguarded; private-cloud security is defined by internal segmentation too.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.63 — vDefend firewall architecture (Topic 02)
 
@@ -1352,7 +1352,7 @@ each vNIC in the hypervisor, not at a chokepoint appliance.
 **Negative test:** a chokepoint-firewall mindset (hairpin all east-west to an
 appliance) does not scale; the distributed model enforces inline.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.64 — vDefend firewall management (Topic 03)
 
@@ -1371,7 +1371,7 @@ hierarchy.
 Infrastructure-category deny is not reordered across categories — category
 order is fixed and part of the model.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.65 — Plan application segmentation (Topic 06)
 
@@ -1388,7 +1388,7 @@ curl -sk -H "$H" "$NSX/policy/api/v1/infra/domains/default/groups" \
 **Negative test:** static IP-based groups drift as workloads move; tag-based
 dynamic groups keep segmentation correct through vMotion.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.66 — Gateway Firewall (Topic 09)
 
@@ -1405,7 +1405,7 @@ control — distinct from the distributed east-west firewall.
 **Negative test:** relying on the gateway firewall for east-west traffic
 misses intra-segment flows it never sees; DFW handles those.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.67 — Security automation (Topic 10)
 
@@ -1423,7 +1423,7 @@ code, versionable and repeatable via CI.
 **Negative test:** click-driven rule creation is not reproducible across
 environments; the declarative API is what makes security automatable.
 
-**Cleanup:** delete the `auto-web` policy.
+**Rollback:** delete the `auto-web` policy.
 
 ### Lab 17.68 — Security operations (Topic 11)
 
@@ -1440,7 +1440,7 @@ capacity, rule-realization, or IDS/IPS events.
 **Negative test:** clearing an alarm without addressing its cause (e.g. DFW
 rule limit) lets it re-fire; operations reads the cause, not just the alarm.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.69 — Role-based access control (Topic 12)
 
@@ -1457,7 +1457,7 @@ curl -sk -H "$H" "$NSX/policy/api/v1/aaa/role-bindings" \
 **Negative test:** a `security_engineer` editing enforcement-point/system
 settings is denied; the role scopes to security objects only.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.70 — Troubleshooting (Topic 13)
 
@@ -1475,7 +1475,7 @@ zero hits is shadowed by an earlier rule — the ordering fault.
 **Negative test:** assuming a "deny" rule is the culprit when its hit count
 is zero misdirects the fix; the shadowing rule above it is the cause.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.71 — Advanced Threat Prevention (Topic 14)
 
@@ -1494,7 +1494,7 @@ signature-based threat detection inline in the data path.
 **Negative test:** IDS in detect-only mode logs but does not block; expecting
 prevention requires the policy action set to reject/drop.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.72 — Malware Prevention and Detection (Topic 16)
 
@@ -1512,7 +1512,7 @@ verdict source) — NSX extracts and scores files traversing the fabric.
 verdict source can only do local heuristics; the verdict pipeline must be
 connected.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 17.73 — Four-exam readiness drill (integrative)
 
@@ -1565,7 +1565,7 @@ running one scoped drill per exam against this volume's existing labs.
    ready; direct additional lab time there rather than re-reading a domain
    already strong.
 
-6. **Cleanup:** revert the VM, remove any test design notes, and return the
+6. **Rollback:** revert the VM, remove any test design notes, and return the
    DFW policy and Avi objects to their baseline state so the labs are ready
    for future runs.
 

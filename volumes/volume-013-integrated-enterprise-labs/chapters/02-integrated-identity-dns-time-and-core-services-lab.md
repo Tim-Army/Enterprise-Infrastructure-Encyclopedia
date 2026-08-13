@@ -273,7 +273,7 @@ whole stack.
 **Negative test:** give each service its own local accounts; access sprawls and offboarding misses
 systems — the shared directory is the single point of identity truth for the integration.
 
-**Cleanup:** revert lab-only joins.
+**Rollback:** revert lab-only joins.
 
 ### Lab 2.2 — Integrated DNS (Topic: Name resolution)
 
@@ -294,7 +294,7 @@ records let every component find every other by name, which every later chapter'
 certificates (name-based) break, and troubleshooting is opaque — integrated DNS is a hard dependency,
 not optional.
 
-**Cleanup:** none (DNS is foundational).
+**Rollback:** none (DNS is foundational).
 
 ### Lab 2.3 — Time synchronization (Topic: Time)
 
@@ -314,7 +314,7 @@ certificate validation; it is the quiet dependency behind identity, security, an
 validation breaks — synchronized time is a prerequisite for the integrated identity and observability
 labs.
 
-**Cleanup:** none (keep time sync).
+**Rollback:** none (keep time sync).
 
 ### Lab 2.4 — DHCP and dynamic host onboarding (Topic: Core services)
 
@@ -334,7 +334,7 @@ the environment.
 **Negative test:** address every host statically by hand; onboarding does not scale and errors creep
 in — DHCP with DNS registration automates host onboarding into the integrated services.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

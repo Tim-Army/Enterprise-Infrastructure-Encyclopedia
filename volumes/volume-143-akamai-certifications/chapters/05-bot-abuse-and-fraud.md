@@ -87,7 +87,7 @@ EOF
 
 **Negative test:** A single "block above 90" rule. It blocks Googlebot and the scalper alike, and misses the 85-score credential-stuffing attack entirely.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Credentialed but anomalous
 
@@ -135,7 +135,7 @@ EOF
 
 **Negative test:** Trusting any login with a valid password. Credential stuffing succeeds precisely because the passwords are valid — bought, breached, or reused.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Client-side script drift and PCI DSS v4
 
@@ -181,7 +181,7 @@ EOF
 
 **Negative test:** Approving the script list once and considering client-side protection "done." The skimmer arrives as a *change* to an already-approved script, weeks later.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

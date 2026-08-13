@@ -98,7 +98,7 @@ the Architect performs (add for search concurrency and replication).
 **Negative test:** size by storage alone; **search concurrency** and replication
 also drive indexer count — account for both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.2 — Indexer clustering (RF/SF)
 
@@ -119,7 +119,7 @@ clustering design of the Architect exam.
 **Negative test:** set RF=3 on 2 nodes; RF requires at least RF peer nodes — size
 the cluster to the factor.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.3 — Search head clustering
 
@@ -138,7 +138,7 @@ Architect topic.
 **Negative test:** run one search head and call it HA; a **cluster** provides
 resilience and shared knowledge — cluster for production.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.4 — Data tiering and SmartStore
 
@@ -159,7 +159,7 @@ design for scale.
 **Negative test:** keep all data on hot storage; **tiering/SmartStore** controls
 cost at scale — design tiers to retention and access patterns.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.5 — Monitoring and troubleshooting
 
@@ -181,7 +181,7 @@ troubleshooting an Architect performs (via the Monitoring Console).
 **Negative test:** troubleshoot from one node's logs; use the **Monitoring
 Console** for the whole-deployment view.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 5.6 — Consultant: multi-tier / multi-site design
 
@@ -200,7 +200,7 @@ design the Consultant certifies.
 **Negative test:** use single-site RF for a DR requirement; **site-aware** RF/SF
 ensures copies survive a site loss.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

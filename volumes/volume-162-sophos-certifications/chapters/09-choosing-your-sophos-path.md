@@ -78,7 +78,7 @@ EOF
 
 **Negative test:** Certifying on products you don't operate, or skipping to Architect without operating experience. Certify on what you run at the tier your role needs, building from Administrator/Engineer to Architect as you take on design and deployment.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 9.2 — Position Sophos in the defensive-security career
 
@@ -113,7 +113,7 @@ EOF
 
 **Negative test:** Treating endpoint, firewall, and detection as separate silos. Attacks move across the environment; Sophos's synchronized response and MDR combine the layers, and the defensive-security career rewards understanding how protection, network security, and detection-and-response work together.
 
-**Cleanup:** None.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Summary and Completion Checklist
 

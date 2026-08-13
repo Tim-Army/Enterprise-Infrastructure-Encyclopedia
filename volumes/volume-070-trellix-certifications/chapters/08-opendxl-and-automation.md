@@ -83,7 +83,7 @@ listening on the fabric.
 **Negative test:** poll each product's API on a timer for new intel; **DXL pub/sub** pushes it in
 real time — subscribe.
 
-**Cleanup:** disconnect (context manager handles it).
+**Rollback:** disconnect (context manager handles it).
 
 ### Lab 8.2 — Publish an indicator
 
@@ -105,7 +105,7 @@ print("published malicious-hash indicator to DXL -> subscribers block it")
 **Negative test:** email the hash to each product owner to block manually; **publish on DXL** for
 instant, automated propagation.
 
-**Cleanup:** none (event is transient).
+**Rollback:** none (event is transient).
 
 ### Lab 8.3 — Orchestrated response with approval
 
@@ -128,7 +128,7 @@ orchestrated, gated automation.
 **Negative test:** auto-execute containment fleet-wide with no approval; gate **consequential**
 actions on a human — then orchestrate.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

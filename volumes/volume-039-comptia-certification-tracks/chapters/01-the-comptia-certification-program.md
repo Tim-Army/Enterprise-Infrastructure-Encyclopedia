@@ -155,7 +155,7 @@ and Essentials (`/ai-essentials/`) — the whole restructured program in one vie
 series and the AI Essentials line, and may cite retired exam versions — use
 the live catalog.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.2 — Confirm a current exam code (Topic: Verify currency)
 
@@ -172,7 +172,7 @@ exam page is the authority for the version to study.
 **Negative test:** search for "SY0-601" study material; it targets the retired
 version — always confirm the current code first.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ### Lab 1.3 — Distinguish classic from Xpert (Topic: Understand the structure)
 
@@ -193,7 +193,7 @@ the newer hands-on "Pro" credential sit side by side.
 **Negative test:** assume "Linux+" and "Linux Pro" are the same exam; they are
 different credentials in different lines — check both.
 
-**Cleanup:** none.
+**Rollback:** None — read-only; this lab changes no persistent state, so there is nothing to revert.
 
 ## Lab Verification
 

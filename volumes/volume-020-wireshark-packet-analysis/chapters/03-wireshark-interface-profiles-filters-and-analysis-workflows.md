@@ -301,7 +301,7 @@ hosts/URIs — display filters use protocol.field syntax and never alter the und
 context; it is rejected as invalid syntax — capture filters (BPF) and display filters
 (protocol.field) are different languages for different stages.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ### Lab 3.2 — Capture filters versus display filters (Topic: Two filter languages)
 
@@ -323,7 +323,7 @@ available).
 filter; it is not in the file to show — once a capture filter drops traffic, no display
 filter can recover it.
 
-**Cleanup:** `rm /tmp/dns.pcapng`.
+**Rollback:** `rm /tmp/dns.pcapng`.
 
 ### Lab 3.3 — Profiles, columns, and coloring rules (Topic: Interface configuration)
 
@@ -344,7 +344,7 @@ layouts (TCP performance, security, VoIP) you switch between per task.
 past the anomalies that a task-specific profile would highlight — the interface is a diagnostic
 tool, and configuring it is Domain 4.0's point.
 
-**Cleanup:** delete the lab profile if created only for the exercise.
+**Rollback:** delete the lab profile if created only for the exercise.
 
 ### Lab 3.4 — Advanced filter expressions (Topic: Filter operators)
 
@@ -365,7 +365,7 @@ substring host matches, and regex domain matches — display filters support com
 **Negative test:** use `=` instead of `==` for equality; the filter fails to compile — the
 operator grammar is exact, and the expression bar flags an invalid filter before applying it.
 
-**Cleanup:** none (read-only).
+**Rollback:** none (read-only).
 
 ## Lab Verification
 
