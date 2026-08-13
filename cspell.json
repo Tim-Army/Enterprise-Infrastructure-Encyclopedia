@@ -4738,7 +4738,8 @@
     "modifyvm",
     "storageattach",
     "vmname",
-    "vrnetlab"
+    "vrnetlab",
+    "nextid"
   ],
   "ignorePaths": [
     "node_modules/**",

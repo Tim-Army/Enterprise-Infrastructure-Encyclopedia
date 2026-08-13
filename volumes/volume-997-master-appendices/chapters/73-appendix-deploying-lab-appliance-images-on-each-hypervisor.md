@@ -35,6 +35,44 @@ Adapter" on Hyper-V), and add a **serial console** for appliances that have no V
 (most network appliances). Take a **baseline snapshot** right after first boot so the lab's
 rollback can return to a clean appliance.
 
+## Determining a unique VM identifier
+
+Every hypervisor tracks a VM by a handle that must be unique on the host (or cluster). On
+Proxmox that handle is a **numeric VMID** — the `900` in `qm create 900`, reused by every later
+command for that VM (`qm importdisk 900`, `qm set 900`, `qm start 900`). Choose a free one
+*before* you create the VM.
+
+**Find a free identifier:**
+
+- *Proxmox VE* — a VMID in the range **100–999999999** (IDs below 100 are reserved). Ask the
+  cluster for the next free one, or list what is already in use:
+
+  ```text
+  pvesh get /cluster/nextid          # returns the lowest free VMID >= 100
+  qm list                            # VMs in use (their VMIDs)
+  pct list                           # containers share the SAME id namespace — check both
+  ```
+
+- *KVM/QEMU (libvirt)* — a unique **domain name** (libvirt also assigns a UUID): `virsh list --all`.
+- *VMware ESXi/vSphere* — a unique **VM name** in its folder (vCenter assigns an internal
+  MoRef/UUID as well): check the inventory before `ovftool --name=`.
+- *VMware Workstation/Fusion, VirtualBox* — a unique **VM name**: `VBoxManage list vms`.
+- *Hyper-V* — a unique **VM name**: `Get-VM`.
+
+**Why the identifier matters:**
+
+- *Every later command targets the VM by it.* The whole Proxmox create → import → set → start
+  sequence uses one VMID; aim it at an ID that already exists and you reconfigure or reboot the
+  wrong VM.
+- *Collisions overwrite or block.* Reusing a VMID can clobber another VM's config
+  (`/etc/pve/qemu-server/<id>.conf`) or disks (`vm-<id>-disk-N`); reusing a name makes creation
+  fail on most platforms.
+- *Downstream artifacts inherit it* — disk names, the config-file path, log lines, and the
+  serial-console target (`qm terminal <id>`). A wrong id sends your console, or your reboot, to a
+  machine you did not mean to touch.
+- *In a lab, reserve a block.* Give the lab its own id range and run `pvesh get /cluster/nextid`
+  (or `qm list`) before adding a VM, so a new one never lands on an id that is already serving.
+
 ---
 
 ## Proxmox VE
