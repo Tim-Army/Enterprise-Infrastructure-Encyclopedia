@@ -5940,7 +5940,7 @@ volumes:
     number: "CMXCVII"
     slug: volume-997-master-appendices
     title: "Master Appendices"
-    chapter_count: 72
+    chapter_count: 73
     build_eligible: true
     chapters:
       - id: 01
