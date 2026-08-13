@@ -330,13 +330,15 @@ to prevent exactly this; confirm the two are on distinct addresses.
 ## Hands-On Lab
 
 This chapter carries a topic-level walkthrough lab for **each VM-deployment step** — creating a VM,
-building a cloud-init template, cloning it into the fleet, the container alternative, and importing a
-vendor appliance image. Commands are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`**
+building a cloud-init template, cloning it into the fleet, the container alternative, importing a
+vendor appliance image, and copying an image from your workstation to the node and booting it end to
+end. Commands are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`**
 until a human runs it.
 
-**Shared prerequisites for Labs 8.1–8.5** — a Proxmox node with the `river` datastore, ISOs and a
+**Shared prerequisites for Labs 8.1–8.6** — a Proxmox node with the `river` datastore, ISOs and a
 cloud image in the library (Chapters 06–07), a VLAN-aware bridge (Chapter 05), and root SSH.
-Lab 8.5 additionally needs the vendor appliance disk image (a `qcow2`). **Cost:** none.
+Lab 8.5 additionally needs the vendor appliance disk image (a `qcow2`) already on the node; Lab 8.6
+starts one step earlier, with the image still on your workstation. **Cost:** none.
 
 ### Lab 8.1 — Create a VM from an ISO (Topic: VM creation)
 
@@ -478,6 +480,121 @@ imported disks).
 hardening for this FortiGate-VM are covered in [Volume XIX (Fortinet NSE
 Certification Program), Chapter 04, Lab 4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
+### Lab 8.6 — Copy an image to the node and boot it end to end (Topic: Image transfer and placement)
+
+**Objective:** Take a disk image that lives on your workstation (or a vendor
+download) all the way to a running VM — **transfer it to the node, place it on
+the right storage, import it, and power on** — the full journey Lab 8.5 joins
+in the middle.
+
+**Where the image goes, and why.** VM disk images belong on the **`river`**
+datastore (the RAID-5 array, mounted at `/river`), never on the boot mirror
+(`local`, the small BOSS device) — a multi-gigabyte image would crowd the OS
+off its boot device. Stage the incoming file in a scratch directory on `river`,
+kept separate from the ISO library (`/river/template/iso`) and the live VM
+disks (`/river/images`):
+
+```bash
+# On the node (management address 10.30.161.10): a staging dir on the river datastore
+ssh root@10.30.161.10 'mkdir -p /river/import'
+```
+
+**Step 1 — Copy the image from your workstation to the node** with `scp` over
+SSH; the destination is the staging directory you just made:
+
+```bash
+# From your workstation, where the image lives (for example ~/vm-images/):
+scp ~/vm-images/gns3-appliance.qcow2 root@10.30.161.10:/river/import/
+```
+
+Two alternatives to `scp`: upload through the Proxmox web UI
+(**Datacenter → river → Upload**, best for ISOs and container templates), or
+pull a download straight onto the node with
+`ssh root@10.30.161.10 'wget -O /river/import/gns3-appliance.qcow2 <url>'`.
+
+**Step 2 — Verify the transfer (size and checksum).** A truncated or corrupted
+copy makes a disk that will not boot, so confirm the bytes match before you
+import:
+
+```bash
+# On the node:
+ls -lh /river/import/gns3-appliance.qcow2
+sha256sum /river/import/gns3-appliance.qcow2
+# Compare that hash to the source on your workstation — they must be identical:
+#   sha256sum ~/vm-images/gns3-appliance.qcow2
+```
+
+**Step 3 — Create the diskless VM shell** on the next free VMID (see the
+unique-identifier note in Appendix 73 for why `nextid` matters):
+
+```bash
+ID=$(pvesh get /cluster/nextid)      # next free ID (>= 100)
+qm create "$ID" --name imported-vm --memory 4096 --cores 2 --ostype l26 \
+  --net0 virtio,bridge=vmbr0,tag=30 \
+  --scsihw virtio-scsi-single
+```
+
+**Step 4 — Import the copied disk into `river` and attach it as the boot disk:**
+
+```bash
+qm importdisk "$ID" /river/import/gns3-appliance.qcow2 river
+qm set "$ID" --scsi0 river:vm-"$ID"-disk-0 --boot order=scsi0
+```
+
+`qm importdisk` converts the staged `qcow2` and writes it into `river` as this
+VM's disk. For an appliance whose OS expects the **virtio** bus rather than
+SCSI, attach it with `--virtio0` instead (as the FortiGate does in Lab 8.5).
+
+**Where the disk actually lands.** On a **directory** storage like `river`,
+the imported disk is a real `.qcow2` file at
+`/river/images/<VMID>/vm-<VMID>-disk-0.qcow2` — VM disks live under
+`images/<vmid>/` beneath the storage's `path` (from `/etc/pve/storage.cfg`),
+next to `template/iso` for ISOs and `dump` for backups. The file left in
+`/river/import` is only the source copy, not the VM's disk. Resolve the real
+path rather than assume it:
+
+```bash
+pvesm path river:vm-"$ID"-disk-0            # prints the on-disk path
+qm config "$ID" | grep -E 'scsi0|virtio0'   # the storage:volume the VM uses
+```
+
+Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
+**LVM-thin, ZFS, and Ceph** store the disk as a block volume (LV / zvol / RBD)
+with no `.qcow2` to find; and `qm importdisk` writes in the storage's **default
+format**, which is qcow2 on `river` but a block volume on those others.
+
+**Step 5 — Power on and confirm it is running:**
+
+```bash
+qm start "$ID"
+qm status "$ID"      # -> status: running
+```
+
+**Step 6 — Remove the staging copy (optional).** The disk now lives in
+`river:images`; the file left in `/river/import` is a redundant second copy:
+
+```bash
+rm /river/import/gns3-appliance.qcow2
+```
+
+**Expected result:** the image travels workstation → `/river/import` → imported
+into `river` → attached → **`status: running`**, and the Proxmox **Console**
+shows it booting. Every VM disk ends up on the `river` array, and the transfer
+is checksum-verified before import.
+
+**Negative test:** `scp` the image into `/root` or `/var/lib/vz` on the boot
+mirror instead of `/river/import`; a multi-gigabyte image fills the small BOSS
+OS device and can wedge the node — staging on the `river` array is what keeps
+the boot device clear. (Equally, importing a copy whose checksum does not match
+the source yields an unbootable disk.)
+
+**Rollback:** `qm stop "$ID"; qm destroy "$ID" --purge; rm -f /river/import/gns3-appliance.qcow2`.
+
+**See also:** the same transfer-and-import flow for **every other hypervisor**
+the encyclopedia uses (ESXi/vSphere, Hyper-V, VirtualBox, Workstation, KVM,
+Nutanix AHV, XCP-ng/Xen, EVE-NG, GNS3, containerlab) is in
+[Appendix 73 — Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md).
+
 ## Lab Verification
 
 Complete this sign-off once the lab has been run end to end, including the
@@ -506,3 +623,4 @@ Chapter 05 trunk correction and careful tagging together prevent.
 - [ ] Each guest set to its fixed address, gateway, and hostname.
 - [ ] GNS3 and EVE-ng imported as appliances with nested virtualization.
 - [ ] Every address unique — Red Hat Server .88, Windows Server .89.
+- [ ] Can copy an image from a workstation to `/river/import`, import it into `river`, and boot it to `status: running` (Lab 8.6).
