@@ -217,6 +217,43 @@ sudo apt update && sudo apt install -y \
 Confirm NetBox answers on the guest at `https://10.30.10.62/` once its web
 front end is running.
 
+### 6. The Fortinet security lab and shared services (current additions)
+
+Beyond the baseline build above, the R640 has grown a Fortinet security-lab layer and its
+shared services on two more bridges. **`vmbr1`** carries a flat `10.30.99.0/24` *outside and
+management* segment — the FortiGates' `port1` and the TFTP/PXE box live here. **`vmbr2`** is a
+VLAN trunk carrying the lab's inside cells: VLANs **2001–2004** for the per-tier ISFW segments,
+and VLANs **200 / 202 / 3** for the client and FortiClient-EMS networks. The VMIDs below are the
+current live assignments on the host:
+
+| VMID | Name | Role | vCPU / RAM | Bridge / VLAN |
+| --- | --- | --- | --- | --- |
+| 100 | `gns3` | Network-emulation appliance (GNS3) | 12 / 8 GB | `vmbr0` |
+| 110 | `fortigate-fgt10` | FortiGate-VM, FortiOS 8.0 — firmware up/downgrade test unit | 1 / 2 GB | `vmbr1`; `vmbr2` |
+| 120 | `fortigate-7-6-2` | FortiGate-VM, FortiOS 7.6.2 | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 200, 202 |
+| 121 | `fortigate-fgt2` | FortiGate-VM 7.6.7 — **FGT-2**, HA secondary (freshly rebuilt) | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
+| 122 | `fortigate-fgt3` | FortiGate-VM 7.6.7 — **FGT-3**, ISFW / HA primary, `port1 = 10.30.99.122` | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
+| 130 | `ems-win` | FortiClient EMS on Windows Server | 4 / 8 GB | `vmbr2` VLAN 200 |
+| 131 | `ems-linux` | FortiClient EMS on Linux | 6 / 12 GB | `vmbr2` VLAN 200, 3 |
+| 140 | `tftp` | TFTP / PXE server (Alpine) at `10.30.99.50` — serves FortiGate firmware and configs over TFTP | 1 / 1 GB | `vmbr1` |
+| 200 | `test-vlan200` | VLAN 200 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 200 |
+| 202 | `test-vlan202` | VLAN 202 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 202 |
+| 210 | `ubuntu-ws` | Ubuntu workstation / lab client | 2 / 4 GB | `vmbr2` VLAN 200 |
+| 230 | `c109-web` | ISFW lab — web tier | 1 / 512 MB | `vmbr2` VLAN 2001 (protected) + `vmbr0` (mgmt) |
+| 231 | `c109-db` | ISFW lab — database tier | 1 / 512 MB | `vmbr2` VLAN 2002 + `vmbr0` |
+| 232 | `c109-hmi` | ISFW lab — HMI / operator workstation | 1 / 512 MB | `vmbr2` VLAN 2003 + `vmbr0` |
+| 233 | `c109-plc` | ISFW lab — agentless PLC / OT cell | 1 / 512 MB | `vmbr2` VLAN 2004 + `vmbr0` |
+
+The four **`c109-*`** guests are the per-tier cells of the Fortinet ISFW/VDOM lab
+([Volume CIX](../../volume-109-fortinet-isfw-vdom-lab/README.md)); each sits on its own VLAN
+behind **FGT-3** (VMID 122) with a second NIC on `vmbr0` for out-of-band management. The
+FortiGate units and the workflow behind them — first deployment, high availability, and the
+CLI-over-TFTP firmware procedure the `tftp` box serves — are covered in the Fortinet NSE volume
+([Volume XIX](../../volume-019-fortinet-network-security/README.md)). Create any of these with
+the per-hypervisor mechanics in the Master Appendices
+([Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md)),
+picking a free VMID with `pvesh get /cluster/nextid`.
+
 ## Validation and Troubleshooting
 
 ### Confirming each VM is placed and addressed correctly
