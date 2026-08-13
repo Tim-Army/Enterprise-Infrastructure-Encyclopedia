@@ -466,11 +466,22 @@ Run `scp` **on the workstation, not on the node**, and point it at the actual
 directory). It rides the same SSH you already use to reach the node, so if you
 can `ssh root@10.30.161.10`, the copy will work.
 
-Two ways to move the image instead of `scp`: upload through the Proxmox web UI
-(**Datacenter → river → Upload**, best for ISOs and container templates), or
-`wget` it **on the node** — but mind what `wget` actually does. `wget` fetches
-from an HTTP/FTP **server** at a **URL**; it cannot read your workstation's
-filesystem. Pointing it at a local path —
+Two other ways to move the image, instead of `scp`:
+
+**The web UI, with a built-in checksum.** Pick a storage that has the **Import**
+content type (Proxmox 8.4+/9.x), open its **Import → Upload** panel, and choose
+the file. The useful part is the **Hash algorithm / Checksum** field: set it to
+`MD5` or `SHA-256` and paste the digest from your workstation (`md5sum <file>`,
+or `md5 -q <file>` / `shasum -a 256 <file>` on macOS). Proxmox stages the upload
+under `/var/tmp/` (leave free space there — the dialog warns you), **verifies the
+checksum server-side** — the task log prints `checksum verified` — and copies it
+into the storage's import directory. That folds the transfer and Step 2's
+integrity check into one dialog; a raw disk image needs a storage with the
+**Import** content type, while ISOs go to an ISO-content storage the same way.
+
+**`wget` on the node — but mind what it does.** `wget` fetches from an HTTP/FTP
+**server** at a **URL**; it cannot read your workstation's filesystem. Pointing
+it at a local path —
 `wget http://10.30.12.172//Users/you/vm-images/appliance.qcow2` — just tries to
 reach a web server *on your workstation* that isn't running, and fails with
 *Connection refused*. Use `wget` only for a real download **URL** (a vendor's
