@@ -132,7 +132,8 @@ for the desktop machines.
 
 ### 2. Creating an imported-appliance VM
 
-For GNS3 and EVE-ng, import the appliance rather than booting an installer:
+For GNS3 and EVE-ng, import the appliance rather than booting an installer — copy its
+disk image onto the node first (Lab 8.5), then import:
 
 ```bash
 # Import an appliance disk (OVA/qcow2) into a new VM, on river, tagged to
@@ -330,15 +331,15 @@ to prevent exactly this; confirm the two are on distinct addresses.
 ## Hands-On Lab
 
 This chapter carries a topic-level walkthrough lab for **each VM-deployment step** — creating a VM,
-building a cloud-init template, cloning it into the fleet, the container alternative, importing a
-vendor appliance image, and copying an image from your workstation to the node and booting it end to
-end. Commands are runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`**
+building a cloud-init template, cloning it into the fleet, the container alternative, copying an image
+from your workstation to the node, and importing that staged image and booting it. Commands are
+runnable `qm`/`pct`. Each ends **`**Lab verified by:** *pending*`**
 until a human runs it.
 
 **Shared prerequisites for Labs 8.1–8.6** — a Proxmox node with the `river` datastore, ISOs and a
 cloud image in the library (Chapters 06–07), a VLAN-aware bridge (Chapter 05), and root SSH.
-Lab 8.5 additionally needs the vendor appliance disk image (a `qcow2`) already on the node; Lab 8.6
-starts one step earlier, with the image still on your workstation. **Cost:** none.
+Lab 8.5 starts with the image still on your workstation and copies it to the node; Lab 8.6 imports
+that staged image (its FortiGate example additionally needs the vendor package unpacked). **Cost:** none.
 
 ### Lab 8.1 — Create a VM from an ISO (Topic: VM creation)
 
@@ -434,58 +435,11 @@ for lightweight Linux services.
 
 **Rollback:** `pct stop 200; pct destroy 200`.
 
-### Lab 8.5 — Import a vendor appliance image (Topic: Appliance import)
+### Lab 8.5 — Copy an image to the node and place it (Topic: Image transfer)
 
-**Objective:** Turn a downloaded vendor appliance disk into a bootable Proxmox VM.
-Worked example: **FortiGate-VM 7.6.2** (`fortinet-FGT-v7.6.2.F-build3462.tgz`).
-
-**Extra prerequisite:** the appliance disk image on the node — here the EVE-NG
-package, which unpacks to a `virtioa.qcow2` (equivalently, `unzip` the KVM
-image `FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`).
-
-```bash
-# 1. Unpack the vendor package to get the qcow2 disk
-tar zxf fortinet-FGT-v7.6.2.F-build3462.tgz     # -> fortinet-FGT-.../virtioa.qcow2
-
-# 2. Create a diskless VM shell: 2 vCPU, 2 GB RAM, two NICs on the VLAN-aware bridge
-qm create 120 --name fortigate --memory 2048 --cores 2 --ostype l26 \
-  --net0 virtio,bridge=vmbr0,tag=3 \
-  --net1 virtio,bridge=vmbr0,tag=6 \
-  --scsihw virtio-scsi-single
-
-# 3. Import the appliance disk and attach it as the virtio boot disk
-qm importdisk 120 fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
-qm set 120 --virtio0 river:vm-120-disk-0 --boot order=virtio0
-
-# 4. Add a 30 GB disk FortiOS uses for logs and reports, then start
-qm set 120 --virtio1 river:30
-qm start 120 ; qm status 120
-```
-
-**Expected result:** VM 120 boots the appliance from its imported virtio disk to the
-FortiGate login prompt (open the Proxmox **Console**), port1 on VLAN 3 and port2 on
-VLAN 6 — `qm importdisk` is what turns a vendor qcow2 (rather than an installer ISO)
-into a bootable VM disk; the appliance ships its OS pre-installed on that disk.
-
-**Negative test:** attach the imported disk on a bus the appliance has no driver for
-(`--sata0` instead of `--virtio0`), or point the VM at the vendor's `.out` **upgrade**
-file instead of the full disk image; the VM comes up to *no bootable device* or a
-kernel panic — an imported appliance must sit on the bus it expects (virtio here) and
-use the full disk image, not the firmware-upgrade package.
-
-**Rollback:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
-imported disks).
-
-**Next:** first-boot console login, the evaluation-license state, and management
-hardening for this FortiGate-VM are covered in [Volume XIX (Fortinet NSE
-Certification Program), Chapter 04, Lab 4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
-
-### Lab 8.6 — Copy an image to the node and boot it end to end (Topic: Image transfer and placement)
-
-**Objective:** Take a disk image that lives on your workstation (or a vendor
-download) all the way to a running VM — **transfer it to the node, place it on
-the right storage, import it, and power on** — the full journey Lab 8.5 joins
-in the middle.
+**Objective:** Get a disk image that lives on your workstation (or a vendor
+download) onto the node and staged on the right storage — the first step,
+before you can import it into a VM (Lab 8.6).
 
 **Where the image goes, and why.** VM disk images belong on the **`river`**
 datastore (the RAID-5 array, mounted at `/river`), never on the boot mirror
@@ -524,38 +478,72 @@ sha256sum /river/import/gns3-appliance.qcow2
 #   sha256sum ~/vm-images/gns3-appliance.qcow2
 ```
 
-**Step 3 — Create the diskless VM shell** on the next free VMID (see the
-unique-identifier note in Appendix 73 for why `nextid` matters):
+**Expected result:** the image sits in `/river/import` on the node with a size
+and SHA-256 that match the source — staged on the `river` array (not the boot
+device) and integrity-checked, ready to import in Lab 8.6.
+
+**Negative test:** `scp` the image into `/root` or `/var/lib/vz` on the boot
+mirror instead of `/river/import`; a multi-gigabyte image fills the small BOSS
+OS device and can wedge the node — staging on the `river` array is what keeps
+the boot device clear. (Equally, a copy whose checksum does not match the
+source yields an unbootable disk once imported.)
+
+**Rollback:** `ssh root@10.30.161.10 'rm -f /river/import/gns3-appliance.qcow2'`
+(removes the staged copy; nothing else has been created yet).
+
+**See also:** the same transfer step for **every other hypervisor** the
+encyclopedia uses (ESXi/vSphere, Hyper-V, VirtualBox, Workstation, KVM,
+Nutanix AHV, XCP-ng/Xen, EVE-NG, GNS3, containerlab) is in
+[Appendix 73 — Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md).
+
+### Lab 8.6 — Import the staged image and boot it (Topic: Appliance import)
+
+**Objective:** Turn the image staged on the node in Lab 8.5 into a bootable
+Proxmox VM. Worked example: **FortiGate-VM 7.6.2**
+(`fortinet-FGT-v7.6.2.F-build3462.tgz`).
+
+**Prerequisite:** the appliance disk image already staged on the node (Lab 8.5),
+in `/river/import`. Here the EVE-NG package unpacks to a `virtioa.qcow2`
+(equivalently, `unzip` the KVM image
+`FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`); a plain `qcow2` such as
+the gns3 image copied in Lab 8.5 needs no unpacking.
 
 ```bash
-ID=$(pvesh get /cluster/nextid)      # next free ID (>= 100)
-qm create "$ID" --name imported-vm --memory 4096 --cores 2 --ostype l26 \
-  --net0 virtio,bridge=vmbr0,tag=30 \
+# 1. Unpack the vendor package to get the qcow2 disk (in the staging dir)
+cd /river/import
+tar zxf fortinet-FGT-v7.6.2.F-build3462.tgz     # -> fortinet-FGT-.../virtioa.qcow2
+
+# 2. Create a diskless VM shell: 2 vCPU, 2 GB RAM, two NICs on the VLAN-aware bridge
+qm create 120 --name fortigate --memory 2048 --cores 2 --ostype l26 \
+  --net0 virtio,bridge=vmbr0,tag=3 \
+  --net1 virtio,bridge=vmbr0,tag=6 \
   --scsihw virtio-scsi-single
+
+# 3. Import the staged appliance disk and attach it as the virtio boot disk
+qm importdisk 120 /river/import/fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
+qm set 120 --virtio0 river:vm-120-disk-0 --boot order=virtio0
+
+# 4. Add a 30 GB disk FortiOS uses for logs and reports, then start
+qm set 120 --virtio1 river:30
+qm start 120 ; qm status 120
 ```
 
-**Step 4 — Import the copied disk into `river` and attach it as the boot disk:**
+**Expected result:** VM 120 boots the appliance from its imported virtio disk to the
+FortiGate login prompt (open the Proxmox **Console**), port1 on VLAN 3 and port2 on
+VLAN 6 — `qm importdisk` is what turns a vendor qcow2 (rather than an installer ISO)
+into a bootable VM disk; the appliance ships its OS pre-installed on that disk.
 
-```bash
-qm importdisk "$ID" /river/import/gns3-appliance.qcow2 river
-qm set "$ID" --scsi0 river:vm-"$ID"-disk-0 --boot order=scsi0
-```
-
-`qm importdisk` converts the staged `qcow2` and writes it into `river` as this
-VM's disk. For an appliance whose OS expects the **virtio** bus rather than
-SCSI, attach it with `--virtio0` instead (as the FortiGate does in Lab 8.5).
-
-**Where the disk actually lands.** On a **directory** storage like `river`,
-the imported disk is a real `.qcow2` file at
+**Where the disk actually lands.** On a **directory** storage like `river`, the
+imported disk is a real `.qcow2` file at
 `/river/images/<VMID>/vm-<VMID>-disk-0.qcow2` — VM disks live under
-`images/<vmid>/` beneath the storage's `path` (from `/etc/pve/storage.cfg`),
-next to `template/iso` for ISOs and `dump` for backups. The file left in
-`/river/import` is only the source copy, not the VM's disk. Resolve the real
-path rather than assume it:
+`images/<vmid>/` beneath the storage's `path` (from `/etc/pve/storage.cfg`), next
+to `template/iso` for ISOs and `dump` for backups. The file left in
+`/river/import` is only the source copy, not the VM's disk. Resolve the real path
+rather than assume it:
 
 ```bash
-pvesm path river:vm-"$ID"-disk-0            # prints the on-disk path
-qm config "$ID" | grep -E 'scsi0|virtio0'   # the storage:volume the VM uses
+pvesm path river:vm-120-disk-0             # prints the on-disk path
+qm config 120 | grep -E 'scsi0|virtio0'    # the storage:volume the VM uses
 ```
 
 Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
@@ -563,37 +551,19 @@ Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
 with no `.qcow2` to find; and `qm importdisk` writes in the storage's **default
 format**, which is qcow2 on `river` but a block volume on those others.
 
-**Step 5 — Power on and confirm it is running:**
+**Negative test:** attach the imported disk on a bus the appliance has no driver for
+(`--sata0` instead of `--virtio0`), or point the VM at the vendor's `.out` **upgrade**
+file instead of the full disk image; the VM comes up to *no bootable device* or a
+kernel panic — an imported appliance must sit on the bus it expects (virtio here) and
+use the full disk image, not the firmware-upgrade package.
 
-```bash
-qm start "$ID"
-qm status "$ID"      # -> status: running
-```
+**Rollback:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
+imported disks); `rm -rf /river/import/fortinet-FGT-v7.6.2.F-build3462*` clears the
+staged files.
 
-**Step 6 — Remove the staging copy (optional).** The disk now lives in
-`river:images`; the file left in `/river/import` is a redundant second copy:
-
-```bash
-rm /river/import/gns3-appliance.qcow2
-```
-
-**Expected result:** the image travels workstation → `/river/import` → imported
-into `river` → attached → **`status: running`**, and the Proxmox **Console**
-shows it booting. Every VM disk ends up on the `river` array, and the transfer
-is checksum-verified before import.
-
-**Negative test:** `scp` the image into `/root` or `/var/lib/vz` on the boot
-mirror instead of `/river/import`; a multi-gigabyte image fills the small BOSS
-OS device and can wedge the node — staging on the `river` array is what keeps
-the boot device clear. (Equally, importing a copy whose checksum does not match
-the source yields an unbootable disk.)
-
-**Rollback:** `qm stop "$ID"; qm destroy "$ID" --purge; rm -f /river/import/gns3-appliance.qcow2`.
-
-**See also:** the same transfer-and-import flow for **every other hypervisor**
-the encyclopedia uses (ESXi/vSphere, Hyper-V, VirtualBox, Workstation, KVM,
-Nutanix AHV, XCP-ng/Xen, EVE-NG, GNS3, containerlab) is in
-[Appendix 73 — Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md).
+**Next:** first-boot console login, the evaluation-license state, and management
+hardening for this FortiGate-VM are covered in [Volume XIX (Fortinet NSE
+Certification Program), Chapter 04, Lab 4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
 ## Lab Verification
 
@@ -623,4 +593,4 @@ Chapter 05 trunk correction and careful tagging together prevent.
 - [ ] Each guest set to its fixed address, gateway, and hostname.
 - [ ] GNS3 and EVE-ng imported as appliances with nested virtualization.
 - [ ] Every address unique — Red Hat Server .88, Windows Server .89.
-- [ ] Can copy an image from a workstation to `/river/import`, import it into `river`, and boot it to `status: running` (Lab 8.6).
+- [ ] Can copy an image from a workstation to `/river/import` (Lab 8.5), then import it into `river` and boot it to `status: running` (Lab 8.6).
