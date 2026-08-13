@@ -403,7 +403,7 @@ Configuration*** — mapped in the volume README's coverage tables. Every comman
 real FortiOS 7.6 CLI action; each lab ends **`**Lab verified by:** *pending*`** until a
 human runs it.
 
-**Shared prerequisites for Labs 5.1–5.6** — a FortiGate on FortiOS 7.6 with at least
+**Shared prerequisites for Labs 5.1–5.8** — a FortiGate on FortiOS 7.6 with at least
 two data interfaces, a client host, and (for HA) a second identical FortiGate.
 **Cost:** none beyond the appliances/VMs.
 
@@ -605,7 +605,7 @@ end
 ```
 
 **Lessons from a live eval run.** Confirmed on an evaluation FortiGate-VM (12 August 2026),
-driving real traffic across the eval-fit two-segment topology of Labs 5.9–5.10:
+driving real traffic across the eval-fit two-segment topology of Labs 5.10–5.11:
 
 - *`diagnose firewall ippool list` is the wrong lens for an `overload` pool.* It prints an
   empty `list ippool info:(vf=root)` header even while sessions are actively translating.
@@ -746,7 +746,7 @@ config system global
 end
 ```
 
-### Lab 5.6 — High availability (Topic: HA)
+### Lab 5.6 — Active-passive HA (Topic: A-P HA)
 
 **Eval FortiGate — capable with a second eval unit.** HA needs a **second** FortiGate of matching model and *exact* firmware; a lone eval VM writes the config but has no peer to cluster with. Two eval VMs *do* form a working, config-synced, failover-capable cluster — with one real constraint (the eval's three-interface cap forces a shared-interface heartbeat), documented in the live-run note after the lab.
 
@@ -810,7 +810,7 @@ assumption this lab historically carried:
   whole HA lifecycle runs on evaluation licenses. HA is **not** license-gated; a *single* eval
   VM simply has no peer.
 - *The three-interface cap blocks a dedicated heartbeat.* A fourth vNIC is never instantiated
-  on an eval VM — the interface cap applies to physical ports, not just VLANs (Lab 5.8) — so
+  on an eval VM — the interface cap applies to physical ports, not just VLANs (Lab 5.9) — so
   there is no spare port for a dedicated heartbeat link. Set an existing data interface as the
   heartbeat device instead: `set hbdev "port2" 50 "port3" 50`. FGCP lets a data interface
   carry heartbeat traffic alongside data; a licensed unit lifts the cap and restores a
@@ -835,7 +835,7 @@ assumption this lab historically carried:
   its permitted service across the reboot with no reconfiguration — verified by an
   uninterrupted `web→db` path during a primary reboot.
 
-### Lab 5.7 — Active-active HA load-balancing (Topic: A-A HA)
+### Lab 5.7 — Active-active HA by converting an active-passive cluster (Topic: A-P to A-A)
 
 **Eval FortiGate — capable with a second eval unit.** This converts the two-eval-VM cluster from
 Lab 5.6, so the same "no dedicated heartbeat, shared `port2`/`port3` heartbeat" constraint
@@ -902,11 +902,34 @@ config system ha
 end
 ```
 
-### Lab 5.8 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
+### Lab 5.8 — Active-active HA formed directly (Topic: A-A HA)
+
+**Eval FortiGate — capable with a second eval unit.**
+
+**Objective:** Stand up a running active-active cluster and leave it in service. FGCP does not
+require staging through active-passive — `set mode a-a` can be applied at formation — but the
+build, verification, and load-distribution commands are exactly those of Lab 5.7. Rather than
+repeat them:
+
+**Perform Lab 5.7, but do not run its rollback.** The active-active cluster Lab 5.7 produces
+(`Mode: HA A-A`, both members carrying sessions) is the deliverable here — leave it running.
+Forming "directly" only means placing `set mode a-a` in the initial HA block on both units
+instead of forming active-passive first and converting; the resulting cluster is identical
+either way, which is why the procedure is not duplicated.
+
+**When to use which.** Convert from active-passive (Lab 5.7) when a cluster is already running in
+production and you are enabling load sharing live; form active-active directly (this lab) when
+you are building a new cluster you already know should share load.
+
+**Rollback:** none in this lab — it intentionally leaves the active-active cluster running. To
+tear it back down to standalone when finished, run Lab 5.6's rollback with two additions
+(`set schedule none` and `set load-balance-all disable`).
+
+### Lab 5.9 — The evaluation interface budget and the VLAN purge (Topic: Eval limitations)
 
 **Eval FortiGate — this lab *is* the limitation.** It reproduces the free evaluation
 FortiGate-VM's caps rather than working around them; the two labs that follow are shaped by
-what it shows. Labs 5.8–5.10 were validated live on a 7.6.7 evaluation VM on 12 August 2026.
+what it shows. Labs 5.9–5.11 were validated live on a 7.6.7 evaluation VM on 12 August 2026.
 
 **Objective:** Observe the evaluation FortiGate-VM's three-entry caps on interfaces, policies,
 and routes, and the boot-time purge of over-budget VLAN sub-interfaces.
@@ -958,7 +981,7 @@ the saved config can describe interfaces the license refuses to instantiate.
 
 **Rollback:** none — the next two labs rebuild the topology inside the budget.
 
-### Lab 5.9 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
+### Lab 5.10 — Segments on physical ports with hypervisor VLAN tagging (Topic: Eval-fit segmentation)
 
 **Eval FortiGate — capable.** This is the design that fits the evaluation budget: physical
 ports instead of VLAN sub-interfaces, so there is nothing for the license to purge.
@@ -968,7 +991,7 @@ giving the FortiGate one **physical port per segment** and letting the **hypervi
 VLAN tag — the remedy Chapter 04 names, carried out end to end.
 
 **The shift.** Lab 5.1 carries many segments as VLAN sub-interfaces of one trunk — correct on a
-licensed FortiGate, impossible on the eval (Lab 5.8). The eval-fit alternative moves the tagging
+licensed FortiGate, impossible on the eval (Lab 5.9). The eval-fit alternative moves the tagging
 **off** the FortiGate and **onto** the hypervisor: each segment is a separate vNIC presented as
 an access port, and the FortiGate addresses the physical `portN` directly. Two segments then
 cost `port1` (management) + `port2` + `port3` = three interfaces, exactly at budget, with
@@ -1043,12 +1066,12 @@ end
 ```
 
 **Negative test:** carry the same two segments as VLAN sub-interfaces of one trunk on the eval
-instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.8). Physical ports
+instead; the second sub-interface (or the next reboot) fails or purges (Lab 5.9). Physical ports
 are tied to real vNICs and are never purged — that is the whole point of the shift.
 
-**Rollback:** none — Lab 5.10 validates this topology.
+**Rollback:** none — Lab 5.11 validates this topology.
 
-### Lab 5.10 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
+### Lab 5.11 — Proving segmentation and reboot-survival (Topic: Eval-fit validation)
 
 **Eval FortiGate — capable.** Confirms the eval-fit topology both enforces segmentation and
 persists across the reboot that erased the VLAN design.
@@ -1092,7 +1115,7 @@ show firewall policy            # policy 1 web-to-db intact
 Re-run Step 1; the results are identical.
 
 **Expected result:** `port2`, `port3`, and the policy are **unchanged after the reboot**, and
-segmentation still holds. This is what the design shift buys: run Lab 5.8's four-VLAN topology
+segmentation still holds. This is what the design shift buys: run Lab 5.9's four-VLAN topology
 through the same reboot and the segment-A host's gateway ping goes to **100% loss**, because
 `10.30.1.1` no longer exists.
 
@@ -1118,7 +1141,7 @@ interfaces, static and policy routing, NAT via an IP pool and a
 destination-NAT VIP, VDOM segmentation connected through an inter-VDOM
 link, and a two-member FGCP high-availability cluster validated through a
 forced heartbeat-loss negative test, and closed with an eval-fit segmentation track
-(Labs 5.8–5.10) that meets the evaluation FortiGate-VM's three-interface budget by moving VLAN
+(Labs 5.9–5.11) that meets the evaluation FortiGate-VM's three-interface budget by moving VLAN
 tagging to the hypervisor and building segments on physical ports — a design that survives the
 reboot the VLAN approach does not. [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) builds firewall policy,
 authentication, and VPN configuration directly on top of this network and
