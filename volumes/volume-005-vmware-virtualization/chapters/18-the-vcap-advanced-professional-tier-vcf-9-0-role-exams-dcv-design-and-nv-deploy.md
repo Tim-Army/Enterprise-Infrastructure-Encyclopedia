@@ -68,23 +68,24 @@ Service) that Chapters 1–11 introduce but do not exhaust. Expect to
 supplement with Broadcom's advanced training and hands-on time on the
 specific product.
 
-### The two carried-over VCAP exams — both retiring 31 July 2026
+### The two carried-over VCAP exams — both retired 31 July 2026
 
-Alongside the VCF 9.0 series, two older-generation VCAP exams remain in
-the catalog, but **both are retiring on 31 July 2026** — Broadcom's own
-certification pages state no new exam registrations will be available
-after that date (verified 23 July 2026). Treat them as closing, not as
-options to plan a multi-month study path around:
+Alongside the VCF 9.0 series, two older-generation VCAP exams were carried
+over from the previous program, but **both retired on 31 July 2026** and
+are **no longer available to schedule** — confirmed absent from the Pearson
+VUE registration catalog on 13 August 2026, closing the retirement
+Broadcom's certification pages had announced (verified 23 July 2026). They
+are documented here for historical continuity and for anyone who already
+holds them; they can no longer be booked:
 
-- **VCAP-DCV Design (3V0-21.23) — retiring [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design).** Advanced
+- **VCAP-DCV Design (3V0-21.23) — retired [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design).** Advanced
   vSphere 8 design. It historically was the most direct on-ramp to the
   Distinguished Expert defense (Chapter 19) because it exercises the same
   conceptual→logical→physical design discipline and the same
   requirement/constraint/assumption/risk analysis a defense demands. With
   its retirement, **the current design on-ramp is the VCF Architect role
-  (3V0-12.26)** in the 9.0 series above — pursue that unless you can sit
-  3V0-21.23 before the retirement date.
-- **VCAP-NV Deploy (3V0-41.22) — retiring [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy).** Advanced NSX-T
+  (3V0-12.26)** in the 9.0 series above; 3V0-21.23 can no longer be booked.
+- **VCAP-NV Deploy (3V0-41.22) — retired [31 July 2026](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy).** Advanced NSX-T
   hands-on **deployment** — a live-build exam rather than a multiple-choice
   one. It pairs with [VCP-NV (Chapter 12)](12-vcp-network-virtualization-2v0-41-24-exam-preparation.md)
   and rewards the timed build-and-troubleshoot practice that chapter's lab
@@ -119,17 +120,20 @@ covers both.
   or two role exams matching your job (Administrator, Operations) suffice.
   If the goal is Distinguished Expert, a **Design** exam is the one that
   matters, because it rehearses the defense — and with VCAP-DCV Design
-  retiring 31 July 2026, that now means the **VCF Architect role
-  (3V0-12.26)** for anyone not already booked on 3V0-21.23.
+  retired as of 31 July 2026, that now means the **VCF Architect role
+  (3V0-12.26)**.
 - **This volume is a floor for the advanced tier.** Treat Chapters 1–11 as
   establishing the platform knowledge each advanced exam assumes coming in,
   then close the remaining gap with Broadcom's advanced courses and
   product-specific lab time. Do not expect this volume alone to carry an
   advanced exam the way it can carry a VCP.
 - **The advanced tier moves fastest — verify currency hardest.** The VCF
-  9.0 role series is new (`.25`/`.26` codes) and still settling; exam
-  availability, prerequisites, and even which roles exist may change. The
-  currency-check discipline in [Chapter 20](20-vmware-telco-cloud-and-keeping-the-certification-program-current.md)
+  9.0 role series is new (`.25`/`.26` codes) and still settling. As of
+  13 August 2026 only the five `.25` role exams (Automation, Operations,
+  Storage, VKS, Networking) are schedulable at Pearson VUE; the three
+  `.26` exams (Administrator, Architect, Support) are announced but not yet
+  bookable. Exam availability, prerequisites, and even which roles exist
+  may change. The currency-check discipline in [Chapter 20](20-vmware-telco-cloud-and-keeping-the-certification-program-current.md)
   applies most sharply here.
 - **Deploy exams demand a real lab; design exams demand a whiteboard.**
   Allocate lab hardware to the Deploy exams (VCAP-NV Deploy) where it is
@@ -150,7 +154,7 @@ Advanced exam (code)             | Format  | After VCP        | Rating
 ---------------------------------|---------|------------------|-------
 VCAP-DCV Design (3V0-21.23)*     | Design  | VCP-DCV          |
 VCAP-NV Deploy (3V0-41.22)*      | Deploy  | VCP-NV           |
-  * both retiring 31 July 2026 — no new registrations after that date
+  * both retired 31 July 2026 — no longer schedulable (kept for reference)
 VCF Administrator (3V0-11.26)    | Written | VCP-VCF Admin    |
 VCF Architect (3V0-12.26)        | Design  | VCP-VCF Architect|
 VCF Support (3V0-13.26)          | Written | VCP-VCF Support  |
@@ -852,7 +856,8 @@ series on one `3V0` generation — Administrator (3V0-11.26), Architect
 (3V0-12.26), Support (3V0-13.26), Automation (3V0-21.25), Operations
 (3V0-22.25), Storage (3V0-23.25), VKS (3V0-24.25), and Networking
 (3V0-25.25) — alongside two carried-over exams, VCAP-DCV Design (3V0-21.23)
-and VCAP-NV Deploy (3V0-41.22), **both retiring 31 July 2026**. Prepare by
+and VCAP-NV Deploy (3V0-41.22), **both retired 31 July 2026 and no longer
+schedulable**. Prepare by
 format, not by label: Design
 exams reward defensible architecture judgment, Deploy exams reward timed
 unaided builds. This volume is the foundation the tier assumes; close the

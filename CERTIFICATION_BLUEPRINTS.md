@@ -9,7 +9,7 @@ vendor source; it does not reproduce proprietary assessment content.
 | II — Network Engineering Foundations | CCST Networking (100-150) | Cisco Learning & Certifications |
 | III — Cisco Enterprise Networking | CCNA, CCNP Enterprise (ENCOR/ENARSI), CCNP Wireless: WLCOR core (350-101) + WLSD (300-110) or WLSI (300-120); WLCOR also qualifies CCIE Wireless | Cisco Learning & Certifications |
 | IV — Enterprise Systems Administration | CCST IT Support (100-140) | Cisco Learning & Certifications |
-| V — VMware Virtualization | The Broadcom/VMware program end to end. VCP: NV (2V0-41.24), VCF Support (2V0-15.25), VCF Administrator (2V0-17.25), VCF Architect (2V0-13.25), VVF Administrator (2V0-16.25), VVF Support (2V0-18.25), DCV (2V0-21.23), plus 6V0 specialists AVI (6V0-22.25) and PCS (6V0-21.25). VCAP: VCF 9.0 role series (Administrator 3V0-11.26, Architect 3V0-12.26, Support 3V0-13.26, Automation 3V0-21.25, Operations 3V0-22.25, Storage 3V0-23.25, VKS 3V0-24.25, Networking 3V0-25.25), plus DCV Design (3V0-21.23) and NV Deploy (3V0-41.22). Distinguished Expert (VCDX, no written code). Telco Cloud: Platform 5V0-36.22, NFV 5V0-37.22, Automation 5V0-44.21 | Broadcom/VMware Learning |
+| V — VMware Virtualization | The Broadcom/VMware program end to end. VCP: NV (2V0-41.24), VCF Support (2V0-15.25), VCF Administrator (2V0-17.25), VCF Architect (2V0-13.25), VVF Administrator (2V0-16.25), VVF Support (2V0-18.25), DCV (2V0-21.23), CO — Cloud Operations (2V0-32.24), plus 6V0 specialists AVI (6V0-22.25) and PCS (6V0-21.25). VCAP: VCF 9.0 role series (Administrator 3V0-11.26, Architect 3V0-12.26, Support 3V0-13.26, Automation 3V0-21.25, Operations 3V0-22.25, Storage 3V0-23.25, VKS 3V0-24.25, Networking 3V0-25.25), plus the now-retired DCV Design (3V0-21.23) and NV Deploy (3V0-41.22) (both closed 31 July 2026). Distinguished Expert (VCDX, no written code). Telco Cloud: Platform 5V0-36.22, NFV 5V0-37.22, Automation 5V0-44.21 | Broadcom/VMware Learning |
 | IX — Infrastructure Automation | CCNA Automation (200-901), CCNP/CCIE Automation core **350-901 v2.0 (AUTOCOR)** — *Designing, Deploying and Managing Network Automation Systems*, adds a 20% AI in Automation domain — plus one concentration for CCNP; CCIE Automation practical (v1.1) gains the AI DOO module at v1.2; rebranded from DevNet on 3 February 2026 | Cisco Learning & Certifications |
 | X — Enterprise Cybersecurity | CCST Cybersecurity (100-160), CCNA Cybersecurity (200-201), CCNP Cybersecurity: CBRCOR core (350-201) + CBRFIR (300-215) — rebranded from CyberOps on 3 February 2026 | Cisco Learning & Certifications |
 | XIV — Red Hat Enterprise Linux 10 | RHCSA (EX200) | Red Hat Training and Certification |
@@ -197,10 +197,14 @@ Security Engineer Associate) retires 31 August 2026** (successor SC-500).
 AWS **ANS-C01** (Advanced Networking – Specialty) still retires **25 August
 2026** with no successor. The Cisco SCOR `350-701` v1.1→v2.0 and SISE
 `300-715` v1.1→v1.2 transition (below) remains 26–27 August 2026. VMware
-**VCAP-DCV Design (3V0-21.23)** and **VCAP-NV Deploy (3V0-41.22)** still
-have live Broadcom certification pages — no vendor retirement is confirmed,
-so both stay listed pending a browser/getjson re-check. The full
-every-code re-verification remains scheduled for the 20 August cadence.
+**VCAP-DCV Design (3V0-21.23)** and **VCAP-NV Deploy (3V0-41.22)** are now
+**confirmed retired** — both are absent from the Pearson VUE registration
+catalog as of 13 August 2026, closing the 31 July 2026 retirement Broadcom
+had announced; the volume, appendix, and this document now mark them
+retired. Only the five `.25` VCF 9.0 role exams are currently schedulable;
+the three `.26` role exams (Administrator, Architect, Support) are announced
+but not yet bookable. The full every-code re-verification remains scheduled
+for the 20 August cadence.
 
 Every exam code in this table was verified against its vendor's own
 published exam description or exam-topics document on **21 July 2026**.
@@ -370,9 +374,8 @@ Architect 2V0-13.25, and the 6V0 specialists VCP-AVI 6V0-22.25 and
 VCP-PCS 6V0-21.25); the advanced VCAP tier (the eight-exam VCF 9.0 role
 series 3V0-11.26/12.26/13.26/21.25/22.25/23.25/24.25/25.25, plus the
 carried-over VCAP-DCV Design 3V0-21.23 and VCAP-NV Deploy 3V0-41.22, both
-of which Broadcom's pages state are **retiring 31 July 2026** — no new
-registrations after that date, captured in the appendix's Exam end date
-column); the Distinguished Expert (formerly VCDX — a peer-juried design defense
+of which **retired 31 July 2026** — confirmed absent from Pearson VUE on
+13 August 2026, captured in the appendix's Exam end date column); the Distinguished Expert (formerly VCDX — a peer-juried design defense
 with no written code); and the Telco Cloud specialist skills exams
 (5V0-36.22, 5V0-37.22, 5V0-44.21). The code prefixes are meaningful —
 2V0 professional, 6V0 specialist-professional, 3V0 advanced, 5V0

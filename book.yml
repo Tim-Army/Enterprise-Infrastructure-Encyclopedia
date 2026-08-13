@@ -199,7 +199,7 @@ volumes:
         title: "Chapter 16: VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation"
         path: volumes/volume-005-vmware-virtualization/chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md
       - id: 17
-        title: "Chapter 17: Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security"
+        title: "Chapter 17: Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, Private Cloud Security, and Cloud Operations"
         path: volumes/volume-005-vmware-virtualization/chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md
       - id: 18
         title: "Chapter 18: The VCAP Advanced Professional Tier — VCF 9.0 Role Exams, DCV Design, and NV Deploy"

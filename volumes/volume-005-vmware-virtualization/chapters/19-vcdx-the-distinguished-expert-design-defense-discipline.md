@@ -105,7 +105,7 @@ questioning.
 - **The Design certifications are the real on-ramp.** VCP-VCF Architect
   (Chapter 17) and the VCAP Architect role (3V0-12.26, Chapter 18) rehearse
   the exact discipline the defense tests. The older VCAP-DCV Design
-  (3V0-21.23) rehearses it too, but it **retires 31 July 2026** — so for
+  (3V0-21.23) rehearses it too, but it **retired 31 July 2026** — so for
   anyone starting now, the VCF Architect exams are the on-ramp to build on.
   Treat these not as boxes to tick toward a prerequisite but as graduated
   practice for the defense itself.

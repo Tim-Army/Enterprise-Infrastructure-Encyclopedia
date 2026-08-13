@@ -74,7 +74,7 @@ test, and cleanup instructions.
 14. [VCP VMware Cloud Foundation Administrator 2V0-17.25 Exam Preparation](chapters/14-vcp-vmware-cloud-foundation-administrator-2v0-17-25-exam-preparation.md) — administrator-role study material covering workload domain deployment, Cloud Builder versus SDDC Manager scope, fleet RBAC, licensing, and certificate lifecycle.
 15. [VCP VMware vSphere Foundation Administrator 2V0-16.25 Exam Preparation](chapters/15-vcp-vmware-vsphere-foundation-administrator-2v0-16-25-exam-preparation.md) — administrator-role study material mapped directly to Chapters 1–9's standalone vSphere/vSAN content.
 16. [VCP VMware vSphere Foundation Support 2V0-18.25 Exam Preparation](chapters/16-vcp-vmware-vsphere-foundation-support-2v0-18-25-exam-preparation.md) — support-role troubleshooting study material scoped to VVF's compute, storage, networking, and licensing failure domains.
-17. [Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md) — the four remaining professional-tier exams: VCP-DCV (2V0-21.23), VCP-VCF Architect (2V0-13.25), and the 6V0 specialist VCPs VCP-AVI (6V0-22.25) and VCP-PCS (6V0-21.25).
+17. [Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, Private Cloud Security, and Cloud Operations](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md) — the five remaining professional-tier exams: VCP-DCV (2V0-21.23), VCP-VCF Architect (2V0-13.25), the 6V0 specialist VCPs VCP-AVI (6V0-22.25) and VCP-PCS (6V0-21.25), and VCP-CO Cloud Operations (2V0-32.24).
 18. [The VCAP Advanced Professional Tier — VCF 9.0 Role Exams, DCV Design, and NV Deploy](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md) — the advanced tier: the eight-exam VCF 9.0 role series (3V0-11.26 through 3V0-25.25) plus VCAP-DCV Design (3V0-21.23) and VCAP-NV Deploy (3V0-41.22), prepared by format (Design vs Deploy).
 19. [VCDX — The Distinguished Expert Design-Defense Discipline](chapters/19-vcdx-the-distinguished-expert-design-defense-discipline.md) — the apex credential as a peer-juried design defense rather than a written exam: authoring, submitting, and defending a production-grade design with full requirement/constraint/assumption/risk traceability.
 20. [VMware Telco Cloud, and Keeping the Certification Program Current](chapters/20-vmware-telco-cloud-and-keeping-the-certification-program-current.md) — the Telco Cloud specialist skills exams (5V0-36.22, 5V0-37.22, 5V0-44.21) and a four-step, primary-source currency check that keeps this volume, the appendix, and the blueprint accurate as the program churns.
@@ -376,10 +376,12 @@ downloadable material, including 2V0-41.24's. Access depends on your
 organization's entitlement, which is worth checking before assuming a
 paid course is the only route.
 
-Note also that NSX continues past VCP. The same catalog carries exam
-guides for **3V0-42.23** (NSX 4.x Advanced Design) and **3V0-41.22**
-(Advanced Deploy NSX-T 3.x) at the VCAP level, which is where Chapters
-10–11's design material points if you continue beyond VCP-NV.
+Note also that NSX continues past VCP. The same catalog historically
+carried VCAP-level NSX exam guides — **3V0-42.23** (NSX Advanced Design)
+and **3V0-41.22** (Advanced Deploy NSX-T 3.x) — which Chapters 10–11's
+design material points toward; both are now legacy (3V0-41.22 retired
+31 July 2026), and in the VCF 9.0 program the advanced-NSX path is the VCF
+Networking role (3V0-25.25).
 
 Lab IDs rotate as the catalog is refreshed — the `HOL-25xx`, `HOL-26xx`,
 and `HOL-27xx` prefixes above reflect different catalog generations that
@@ -433,7 +435,7 @@ against Broadcom's own certification pages; confirm currency before
 scheduling, as this program churns faster than most.
 
 **The rest of the professional (VCP) tier — [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md).**
-Four more professional-level exams sit alongside the five above:
+Five more professional-level exams sit alongside the five above:
 
 | Exam | Code | Note |
 | --- | --- | --- |
@@ -441,10 +443,14 @@ Four more professional-level exams sit alongside the five above:
 | VCP-VCF Architect | 2V0-13.25 | design-role VCP; the on-ramp to VCAP Architect and VCDX |
 | VCP-AVI — Avi Load Balancer Administrator | 6V0-22.25 | 6V0 specialist code; application delivery |
 | VCP-PCS — Private Cloud Security Administrator | 6V0-21.25 | 6V0 specialist code; builds on Chapter 08 |
+| VCP-CO — Cloud Operations | 2V0-32.24 | mainstream 2V0 code; the Aria management stack (Operations / Logs / Suite Lifecycle) |
 
 **The advanced (VCAP) tier — [Chapter 18](chapters/18-the-vcap-advanced-professional-tier-vcf-9-0-role-exams-dcv-design-and-nv-deploy.md).**
 A current VCP is the entry gate. The VCF 9.0 role series is eight exams on
-one 3V0 generation, joined by two carried-over VCAP exams:
+one 3V0 generation, joined by two carried-over VCAP exams. As of 13 August
+2026 the five `.25` role exams are schedulable at Pearson VUE; the three
+`.26` exams (Administrator, Architect, Support) are announced but not yet
+bookable, and the two carried-over VCAPs have retired:
 
 | Exam | Code | Format |
 | --- | --- | --- |
@@ -456,8 +462,8 @@ one 3V0 generation, joined by two carried-over VCAP exams:
 | VCF Storage | 3V0-23.25 | written |
 | VCF VKS (Kubernetes) | 3V0-24.25 | written |
 | VCF Networking | 3V0-25.25 | written |
-| VCAP-DCV Design | 3V0-21.23 | design — **retiring 31 July 2026** |
-| VCAP-NV Deploy | 3V0-41.22 | deploy (live build) — **retiring 31 July 2026** |
+| VCAP-DCV Design | 3V0-21.23 | design — **retired 31 July 2026 (no longer schedulable)** |
+| VCAP-NV Deploy | 3V0-41.22 | deploy (live build) — **retired 31 July 2026 (no longer schedulable)** |
 
 **The Distinguished Expert (VCDX) — [Chapter 19](chapters/19-vcdx-the-distinguished-expert-design-defense-discipline.md).**
 The apex credential, earned not by an exam but by authoring a
@@ -676,6 +682,68 @@ Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-a
 | 13 Troubleshooting | Lab 17.70 |
 | 14 Advanced Threat Prevention | Lab 17.71 |
 | 16 Malware Prevention Detection | Lab 17.72 |
+
+### VCP-CO (2V0-32.24) — 55 objectives
+
+Labs in [Chapter 17](chapters/17-completing-the-vcp-tier-dcv-vcf-architect-avi-and-private-cloud-security.md#hands-on-lab). Section 5 (Performance-tuning) has no testable objectives.
+
+| Objective | Lab |
+| --- | --- |
+| 1.1 Differentiate VMware Cloud Management offerings (SaaS vs. On-Premises) | Lab 17.73 |
+| 1.2 Features and capabilities of vRealize Suite Lifecycle Manager | Lab 17.74 |
+| 1.3 Features and capabilities of vRealize Operations | Lab 17.75 |
+| 1.4 Features and capabilities of vRealize Log Insight | Lab 17.76 |
+| 2.1 Components and integrations within a VMware Cloud Management solution | Lab 17.77 |
+| 2.2 Role of the vRealize True Visibility Suite | Lab 17.78 |
+| 2.3 Use case for Skyline, Federated Analytics, and vRealize AI Cloud | Lab 17.79 |
+| 2.4 Use case for vRealize Suite Lifecycle Manager | Lab 17.80 |
+| 2.5 Use case for Remote Collectors, Cloud Proxies, and Collector Groups | Lab 17.81 |
+| 2.6 Use case for vRealize Log Insight and Log Insight Cloud | Lab 17.82 |
+| 3.1 Architectures for vRealize Operations (standalone, clustered, HA, CA) | Lab 17.83 |
+| 3.2 Architectures for vRealize Log Insight (standalone vs. clustered) | Lab 17.84 |
+| 3.3 Size a vRealize Log Insight deployment | Lab 17.85 |
+| 3.4 Size a vRealize Operations deployment | Lab 17.86 |
+| 3.5 Use case for Remote Collectors, Cloud Proxies, Collector Groups (design) | Lab 17.87 |
+| 4.1 Prerequisites for installation (DNS, NTP, service accounts) | Lab 17.88 |
+| 4.2 Steps for deploying vRealize Suite Lifecycle Manager | Lab 17.89 |
+| 4.3 Manual installation of vRealize Operations (standalone, cluster) | Lab 17.90 |
+| 4.4 Install vRealize Operations using vRealize Lifecycle Manager | Lab 17.91 |
+| 4.5 Manual installation of vRealize Log Insight (standalone, cluster) | Lab 17.92 |
+| 4.6 Install vRealize Log Insight using vRealize Lifecycle Manager | Lab 17.93 |
+| 4.7 Configure identity and access management (RBAC) across the suite | Lab 17.94 |
+| 4.8 Configure vRealize Suite Lifecycle Manager | Lab 17.95 |
+| 4.9 Configure data sources in vRealize Operations and Log Insight | Lab 17.96 |
+| 4.10 Install and configure management and content packs | Lab 17.97 |
+| 4.11 Set up content management in vRealize Suite Lifecycle Manager | Lab 17.98 |
+| 4.12 Integrate vRealize Operations and vRealize Log Insight | Lab 17.99 |
+| 6.1 Generate log bundles (Operations, Log Insight, Suite Lifecycle) | Lab 17.100 |
+| 6.2 Options for managing the vRealize Operations cluster | Lab 17.101 |
+| 6.3 Options for managing vROps/Log Insight admin and root passwords | Lab 17.102 |
+| 6.4 Change the authentication provider in vRealize Suite Lifecycle Manager | Lab 17.103 |
+| 6.5 Troubleshoot vRealize Log Insight cluster performance/configuration | Lab 17.104 |
+| 6.6 Troubleshoot vRealize Operations cluster performance/configuration | Lab 17.105 |
+| 6.7 Troubleshoot vRealize Suite Lifecycle Manager performance/configuration | Lab 17.106 |
+| 7.1 Administrative day-2 tasks within vRealize Suite Lifecycle Manager | Lab 17.107 |
+| 7.2 Operational day-2 environment tasks within Suite Lifecycle Manager | Lab 17.108 |
+| 7.3 Operational day-2 content tasks within Suite Lifecycle Manager | Lab 17.109 |
+| 7.4 Manage Authentication and User Access Control | Lab 17.110 |
+| 7.5 Manage vRealize Operations Licensing and Licensing Groups | Lab 17.111 |
+| 7.6 Configure vRealize Operations Event Log Forwarding | Lab 17.112 |
+| 7.7 Apply patches or upgrades to vRealize Operations without Suite Lifecycle | Lab 17.113 |
+| 7.8 Create and manage Custom Dashboards, Views, Reports, and Super Metrics | Lab 17.114 |
+| 7.9 Manage Alerts, Symptoms and Notifications | Lab 17.115 |
+| 7.10 Optimize the performance of a managed VMware Cloud environment | Lab 17.116 |
+| 7.11 Optimize the capacity of a managed VMware Cloud environment | Lab 17.117 |
+| 7.12 Plan a workload, infrastructure, or cloud migration | Lab 17.118 |
+| 7.13 Assess the cost of a managed VMware Cloud environment | Lab 17.119 |
+| 7.14 Monitor operating systems and applications | Lab 17.120 |
+| 7.15 Manage jobs with Automation Central | Lab 17.121 |
+| 7.16 Manage authentication and access in vRealize Log Insight | Lab 17.122 |
+| 7.17 Apply patches or upgrades to Log Insight without Suite Lifecycle | Lab 17.123 |
+| 7.18 Configure and manage vRealize Log Insight Agents | Lab 17.124 |
+| 7.19 Configure and manage log forwarding, masking, and filtering | Lab 17.125 |
+| 7.20 Configure and manage retention and archiving settings | Lab 17.126 |
+| 7.21 Configure and manage the system notifications for Log Insight | Lab 17.127 |
 
 ### VCAP-NV Deploy (3V0-41.22) — 10 objectives
 

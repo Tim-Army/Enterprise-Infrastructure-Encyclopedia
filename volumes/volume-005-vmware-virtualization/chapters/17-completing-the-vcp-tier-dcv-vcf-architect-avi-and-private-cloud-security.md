@@ -1,15 +1,15 @@
-# Chapter 17: Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, and Private Cloud Security
+# Chapter 17: Completing the VCP Tier — Data Center Virtualization, VCF Architect, Avi, Private Cloud Security, and Cloud Operations
 
-![The VMware Certified Professional tier shown complete: the five 2V0-generation exams already covered in Chapters 12–16 (VCP-NV 2V0-41.24, VCP-VCF Administrator 2V0-17.25, VCP-VCF Support 2V0-15.25, VCP-VVF Administrator 2V0-16.25, VCP-VVF Support 2V0-18.25) in one group, and the four professional-level exams this chapter adds in a second group — VCP-DCV Data Center Virtualization (2V0-21.23, on the older vSphere 8 generation), VCP-VCF Architect (2V0-13.25), and two specialist-code VCPs, VCP-AVI Avi Load Balancer Administrator (6V0-22.25) and VCP-PCS Private Cloud Security Administrator (6V0-21.25). All nine sit at the same professional tier and none is a prerequisite for another.](../../../diagrams/volume-005-vmware-virtualization/chapter-17-vcp-tier-landscape.svg)
+![The VMware Certified Professional tier shown complete: the five 2V0-generation exams already covered in Chapters 12–16 (VCP-NV 2V0-41.24, VCP-VCF Administrator 2V0-17.25, VCP-VCF Support 2V0-15.25, VCP-VVF Administrator 2V0-16.25, VCP-VVF Support 2V0-18.25) in one group, and the professional-level exams this chapter adds in a second group — VCP-DCV Data Center Virtualization (2V0-21.23, on the older vSphere 8 generation), VCP-VCF Architect (2V0-13.25), the two specialist-code VCPs VCP-AVI Avi Load Balancer Administrator (6V0-22.25) and VCP-PCS Private Cloud Security Administrator (6V0-21.25), and VCP-CO Cloud Operations (2V0-32.24). All ten sit at the same professional tier and none is a prerequisite for another.](../../../diagrams/volume-005-vmware-virtualization/chapter-17-vcp-tier-landscape.svg)
 
-*Figure 17-1. The complete VCP tier: the five exams mapped in Chapters 12–16, plus the four this chapter adds. Same tier throughout — sequence by the role you hold, not by exam number.*
+*Figure 17-1. The complete VCP tier: the five exams mapped in Chapters 12–16, plus the four shown here and VCP-CO Cloud Operations (2V0-32.24), added in this revision. Same tier throughout — sequence by the role you hold, not by exam number.*
 
 ## Learning Objectives
 
-- Place the four remaining professional-level VMware exams — VCP-DCV
-  (2V0-21.23), VCP-VCF Architect (2V0-13.25), VCP-AVI (6V0-22.25), and
-  VCP-PCS (6V0-21.25) — against the content already in this volume, and
-  identify which existing chapters prepare each.
+- Place the five remaining professional-level VMware exams — VCP-DCV
+  (2V0-21.23), VCP-VCF Architect (2V0-13.25), VCP-AVI (6V0-22.25), VCP-PCS
+  (6V0-21.25), and VCP-CO (2V0-32.24) — against the content already in this
+  volume, and identify which existing chapters prepare each.
 - Explain why VCP-DCV sits on the older vSphere 8 generation while the
   VVF/VCF exams target 9.0, and what that means for a candidate choosing
   between VCP-DCV and VCP-VVF Administrator.
@@ -19,14 +19,14 @@
 - Identify the VCP-VCF Architect exam as the design-role entry point that
   leads toward the VCAP Architect exam (Chapter 18) and, beyond it, the
   Distinguished Expert defense (Chapter 19).
-- Build a self-assessment plan for each of the four exams that reuses this
+- Build a self-assessment plan for each of the five exams that reuses this
   volume's existing labs rather than assuming a separate lab build.
 
 ## Theory and Architecture
 
 Chapters 12 through 16 mapped five VMware Certified Professional exams to
 this volume's content. They are not the whole professional tier. Broadcom's
-current VCP lineup includes four more exams that this volume's material
+current VCP lineup includes five more exams that this volume's material
 already substantially prepares a reader for, and this chapter organizes
 them the same way the earlier preparation chapters do: as blueprint-mapped
 self-assessment material, not as reproductions of proprietary exam content.
@@ -39,7 +39,7 @@ official exam guide before scheduling — the codes below were verified
 against Broadcom's certification pages, but blueprints and delivery details
 are revised independently of this repository's release cycle.
 
-### The four exams and what each is
+### The five exams and what each is
 
 - **VCP-DCV — Data Center Virtualization (2V0-21.23).** The long-running
   flagship VCP, and the one most people mean by "the VCP." Its code
@@ -78,13 +78,25 @@ are revised independently of this repository's release cycle.
   builds. Like VCP-AVI it carries a `6V0` specialist code and stands
   outside the administrator/support pairing.
 
+- **VCP-CO — Cloud Operations (2V0-32.24).** Covers operating a VMware
+  private cloud with the **Aria** management stack: **Aria Operations**
+  (vRealize Operations) for metric analytics, capacity, and cost; **Aria
+  Operations for Logs** (vRealize Log Insight) for log analytics; and
+  **Aria Suite Lifecycle** (vRealize Suite Lifecycle Manager) for deploy,
+  patch, and content management. Despite the operations focus it carries a
+  mainstream `2V0` code, and its subject matter sits alongside
+  [Chapter 9](09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)'s
+  observability and lifecycle material — though the Aria products themselves
+  need their own lab, as this volume is vSphere/NSX-centric.
+
 ### Reading the code families
 
 The exam number's prefix is a genuine signal, not decoration:
 
 - **`2V0-…`** is the mainstream professional (VCP) family — VCP-DCV,
   VCP-VCF Architect/Administrator/Support, VCP-VVF Administrator/Support,
-  VCP-NV. These are the broad, role-defining exams.
+  VCP-NV, and VCP-CO (Cloud Operations). These are the broad, role-defining
+  exams.
 - **`6V0-…`** is the specialist family — narrower single-product scope
   (Avi, Private Cloud Security here). A `6V0` still confers a VCP-branded
   credential, but its blueprint is scoped to one product area rather than a
@@ -117,10 +129,17 @@ one product.
   service configured; for PCS, a vDefend Distributed Firewall enforcing a
   real micro-segmentation policy as in [Chapter 8](08-vsphere-and-nsx-security-architecture.md).
 - **Currency cuts hardest on the older generation.** VCP-DCV's vSphere 8
-  blueprint is the most likely of the four to shift as a 9.0-generation DCV
+  blueprint is the most likely of the five to shift as a 9.0-generation DCV
   successor appears. Before committing study time, confirm on Broadcom's
   page that 2V0-21.23 is still the current DCV exam rather than assuming it
   from this chapter.
+- **VCP-CO stands apart — it tests the Aria stack, not vSphere.** Unlike the
+  other four, Cloud Operations targets Aria Operations, Aria Operations for
+  Logs, and Aria Suite Lifecycle, which this volume does not deploy. Treat
+  Chapters 1–9 as the platform context the exam assumes, and close the
+  product-specific gap with a real Aria lab and the recommended vRealize
+  Operations / Log Insight / Suite Lifecycle courses — reading alone will
+  not carry it.
 - **Ethical preparation boundary.** As with every exam in this volume,
   prepare only from authorized sources: Broadcom's documentation and exam
   guide, official training, and hands-on practice. Material claiming to
@@ -133,7 +152,7 @@ one product.
 ### Mapping each exam to existing chapters
 
 ```text
-# Reuse this volume's chapters as the study spine for all four exams.
+# Reuse this volume's chapters as the study spine for all five exams.
 # Rate each row 1–5; treat anything below 3 as needing lab time first.
 
 Exam (code)                         | Primary chapters      | Self-rating
@@ -142,6 +161,7 @@ VCP-DCV (2V0-21.23)                 | 1,2,3,4,5,6,7,8,9     |
 VCP-VCF Architect (2V0-13.25)       | 1,8,10,11 + design    |
 VCP-AVI (6V0-22.25)                 | 4,11 (app delivery)   |
 VCP-PCS (6V0-21.25)                 | 8,10,11 (vDefend)     |
+VCP-CO (2V0-32.24)                  | 9 + Aria stack lab    |
 ```
 
 ### An Avi controller inventory drill (self-generated design questions)
@@ -214,11 +234,16 @@ curl -k -s -u 'admin:<NSX_ADMIN_PASSWORD>' \
 **References**
 
 - [Broadcom Education Services — VMware certification](https://www.broadcom.com/support/education/vmware) —
-  the authoritative exam guides for 2V0-21.23, 2V0-13.25, 6V0-22.25, and
-  6V0-21.25 (current blueprint domains, item count, duration, price, and
-  registration requirements — verify directly before scheduling).
+  the authoritative exam guides for 2V0-21.23, 2V0-13.25, 6V0-22.25,
+  6V0-21.25, and 2V0-32.24 (current blueprint domains, item count, duration,
+  price, and registration requirements — verify directly before scheduling).
 - [VMware Avi Load Balancer documentation](https://techdocs.broadcom.com/us/en/vmware-security-load-balancing/avi-load-balancer.html) —
   product reference for VCP-AVI preparation.
+- [VMware Cloud Operations 8.x Professional exam guide (2V0-32.24)](https://docs.broadcom.com/docs/vmw-vcp-co-8-x-exam-guide) —
+  the authoritative VCP-CO blueprint (seven standardized sections, 55
+  objectives) that this chapter's Labs 17.73–17.127 map to.
+- [VMware Aria Operations, Operations for Logs, and Suite Lifecycle documentation](https://techdocs.broadcom.com/us/en/vmware-cis/aria.html) —
+  product reference for VCP-CO preparation.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   this repository's certification-to-volume mapping.
 - [Appendix — VMware and Broadcom Certifications and Course Access](../../volume-997-master-appendices/chapters/07-appendix-vmware-broadcom-certifications-and-course-access.md) —
@@ -244,11 +269,11 @@ reproductions of any Broadcom exam item)*
 
 ## Hands-On Lab
 
-This chapter carries topic-level walkthrough labs for the four professional
+This chapter carries topic-level walkthrough labs for the five professional
 exams it completes — **VCP-DCV (2V0-21.23)**, **VCP-VCF Architect
-(2V0-13.25, a design exam)**, **VCP-AVI (6V0-22.25)**, and **VCP-PCS
-(6V0-21.25)** — one lab per testable objective, mapped in the volume
-README's coverage tables. The Architect design objectives get command-driven
+(2V0-13.25, a design exam)**, **VCP-AVI (6V0-22.25)**, **VCP-PCS
+(6V0-21.25)**, and **VCP-CO (2V0-32.24)** — one lab per testable objective,
+mapped in the volume README's coverage tables. The Architect design objectives get command-driven
 design walkthroughs plus the Design Exercise below. Every lab ends
 **`**Lab verified by:** *pending*`** until a human runs it.
 
@@ -256,8 +281,10 @@ design walkthroughs plus the Design Exercise below. Every lab ends
 PowerCLI connected as administrator, SSH to hosts for `esxcli`; the AVI labs
 add an NSX Advanced Load Balancer (Avi) Controller reachable at `$AVI` with
 an `Authorization` header in `$AH`; the PCS labs add NSX with the vDefend
-(distributed firewall/IDS-IPS) feature set. **Cost:** none beyond lab
-hardware; each lab cleans up after itself.
+(distributed firewall/IDS-IPS) feature set; the VCP-CO labs use a separate
+**Aria** stack (Aria Operations, Aria Operations for Logs, Aria Suite
+Lifecycle) with its own prerequisites listed at Lab 17.73. **Cost:** none
+beyond lab hardware; each lab cleans up after itself.
 
 **VCP-DCV (2V0-21.23) — Labs 17.1–17.32**
 
@@ -1516,9 +1543,822 @@ connected.
 
 **Rollback:** none (read-only).
 
-### Lab 17.73 — Four-exam readiness drill (integrative)
+**VCP-CO (2V0-32.24) — Labs 17.73–17.127 (Aria Operations / Aria Operations for Logs / Aria Suite Lifecycle)**
 
-**Objective:** Confirm, without booking any exam, which of the four
+These labs cover **every objective** in the VMware Cloud Operations 8.x
+Professional blueprint (seven standardized sections; Section 5 has no
+testable objectives, so it has no labs). Each drives a product REST API
+against a lab deployment so the check is reproducible; the design and
+sizing objectives are evidence-gathering drills that read the real signal a
+judgment rests on. The exam's products are **Aria Operations** (vRealize
+Operations v8.6), **Aria Operations for Logs** (vRealize Log Insight v8.8),
+and **Aria Suite Lifecycle** (vRealize Suite Lifecycle Manager v8.8).
+
+**Shared prerequisites for Labs 17.73–17.127**
+
+- A lab Aria stack: an Aria Operations node at `$VROPS`, an Aria Operations
+  for Logs node at `$LI`, and an Aria Suite Lifecycle appliance at
+  `$VRSLCM`. Acquire API credentials and export them as headers: `VH` for
+  Aria Operations (`Authorization: vRealizeOpsToken <token>` from
+  `POST /suite-api/api/auth/token/acquire`), `LH` for Log Insight
+  (`Authorization: Bearer <sessionId>` from `POST /api/v2/sessions`), and
+  `LCH` for Suite Lifecycle (`Authorization: Bearer <token>`).
+- `curl` and `jq`. All read drills are non-destructive; the few that change
+  state name their rollback.
+- **Cost:** none beyond the lab appliances.
+
+### Lab 17.73 — SaaS versus on-premises cloud management (Objective 1.1)
+
+**Objective:** Confirm you are on an on-premises deployment by reading the appliance build the SaaS offering does not expose.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/versions/current" | jq -r '"\(.releaseName)\tbuild \(.buildNumber)"'
+```
+
+**Expected result:** a release name and build number — an on-premises node you install and patch yourself; the SaaS offering (Aria Operations Cloud) has no such appliance endpoint and is vendor-operated.
+
+**Negative test:** expecting to `ssh` into or patch a SaaS tenant fails — lifecycle there is Broadcom's, not yours.
+
+**Rollback:** none (read-only).
+
+### Lab 17.74 — Aria Suite Lifecycle capabilities (Objective 1.2)
+
+**Objective:** Read the Suite Lifecycle version — the product that installs, patches, and manages content for the rest of the suite.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcmversion" | jq -r '"\(.productName)\t\(.productVersion)"'
+```
+
+**Expected result:** the vRSLCM product name and version — a single control plane for deploy, upgrade, certificate, and content operations across the Aria products.
+
+**Negative test:** deploying each Aria product by hand loses the binary mapping, content pipelines, and one-click patching Lifecycle provides.
+
+**Rollback:** none (read-only).
+
+### Lab 17.75 — Aria Operations capabilities (Objective 1.3)
+
+**Objective:** Read the installed solutions (adapters) that give Aria Operations its monitoring reach.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/solutions" | jq -r '.solution[] | "\(.name)\t\(.adapterKindKeys|length) adapter(s)"'
+```
+
+**Expected result:** solutions such as `VMware vSphere` with one or more adapter kinds — Aria Operations is a metric/analytics engine whose reach is defined by the solutions installed.
+
+**Negative test:** no vSphere solution installed means no vCenter metrics; capability follows the solution set, not the appliance alone.
+
+**Rollback:** none (read-only).
+
+### Lab 17.76 — Aria Operations for Logs capabilities (Objective 1.4)
+
+**Objective:** Read the Log Insight version and confirm it is a syslog/ingest-and-query engine.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/version" | jq -r '.version'
+```
+
+**Expected result:** a Log Insight version string — a log aggregation, indexing, and interactive-analytics product distinct from the metric analytics of Aria Operations.
+
+**Negative test:** querying metrics (CPU%, capacity) in Log Insight returns nothing useful; logs and metrics are different stores with different tools.
+
+**Rollback:** none (read-only).
+
+### Lab 17.77 — Cloud Management components and integrations (Objective 2.1)
+
+**Objective:** Read the adapter kinds bound into Aria Operations — the integration points of the solution.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/adapterkinds" | jq -r '.["adapter-kind"][] | .key' | head
+```
+
+**Expected result:** adapter kinds (`VMWARE`, `LogInsightAdapter`, storage/network packs) — the components a Cloud Management solution stitches together around the vSphere source of truth.
+
+**Negative test:** treating Aria Operations as standalone ignores the vROps↔Log Insight↔Lifecycle integrations the exam expects you to name.
+
+**Rollback:** none (read-only).
+
+### Lab 17.78 — True Visibility Suite management packs (Objective 2.2)
+
+**Objective:** Read the third-party management packs (True Visibility Suite) that extend monitoring beyond VMware.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/solutions" | jq -r '.solution[] | select(.name|test("VMware")|not) | .name'
+```
+
+**Expected result:** non-VMware solutions (storage arrays, databases, applications) — the True Visibility Suite role is monitoring heterogeneous, non-VMware infrastructure through Aria Operations.
+
+**Negative test:** expecting native NetApp/SQL metrics without the matching TVS management pack installed returns nothing.
+
+**Rollback:** none (read-only).
+
+### Lab 17.79 — Skyline, Federated Analytics, and AI use cases (Objective 2.3)
+
+**Objective:** Read whether the node is registered to Broadcom's cloud services that power Skyline / Federated Analytics / AI recommendations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/config/globalsettings" | jq -r '.keyValues[] | select(.key|test("cloud|ceip|telemetry";"i")) | "\(.key)=\(.values[0])"'
+```
+
+**Expected result:** CEIP/cloud-connection settings — Skyline (proactive support findings), Federated Analytics, and vRealize AI Cloud all depend on cloud connectivity and telemetry being enabled.
+
+**Negative test:** with CEIP/cloud off, AI-driven recommendations and Skyline findings never populate; the use case requires the connection.
+
+**Rollback:** none (read-only).
+
+### Lab 17.80 — Suite Lifecycle use case (Objective 2.4)
+
+**Objective:** Read the environments Suite Lifecycle manages — its use case as the suite's deploy/patch control plane.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/environments" | jq -r '.[] | "\(.environmentName)\t\(.products|length) product(s)"'
+```
+
+**Expected result:** one or more environments each holding managed products — the use case is centralized lifecycle (install, upgrade, cert rotation) rather than per-product manual ops.
+
+**Negative test:** installing a product outside Lifecycle leaves it unmanaged — later patches and cert rotations must be done by hand.
+
+**Rollback:** none (read-only).
+
+### Lab 17.81 — Remote Collectors, Cloud Proxies, Collector Groups (Objective 2.5)
+
+**Objective:** Read the collectors and collector groups that gather data for Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/collectors" | jq -r '.collector[] | "\(.name)\t\(.state)"'
+curl -sk -H "$VH" "$VROPS/suite-api/api/collectorgroups" | jq -r '.collectorGroups[]?.name'
+```
+
+**Expected result:** collectors (`RUNNING`) and any collector groups — remote collectors/cloud proxies gather data at a remote site and forward it; collector groups give them HA and load sharing.
+
+**Negative test:** pointing every remote site's adapters at the analytics cluster directly floods the WAN; the collector's job is to localize collection.
+
+**Rollback:** none (read-only).
+
+### Lab 17.82 — Log Insight and Log Insight Cloud (Objective 2.6)
+
+**Objective:** Read Log Insight's forwarding configuration — the bridge to Log Insight Cloud or another cluster.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/forwarding" | jq -r '.forwarders[]? | "\(.name)\t\(.protocol)\t\(.host)"'
+```
+
+**Expected result:** any configured forwarders (to Log Insight Cloud or a peer) — on-prem Log Insight ingests locally and can forward to Log Insight Cloud for SaaS retention/analytics.
+
+**Negative test:** expecting Log Insight Cloud to see on-prem events with no forwarder configured — nothing arrives.
+
+**Rollback:** none (read-only).
+
+### Lab 17.83 — Aria Operations architecture modes (Objective 3.1)
+
+**Objective:** Read the Aria Operations node roles to identify the deployment mode (standalone, clustered, HA, or Continuous Availability).
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/node" | jq -r '.nodes[] | "\(.name)\t\(.role)\t\(.state)"'
+```
+
+**Expected result:** a single node (standalone) or a master + data/replica nodes (clustered/HA); a CA deployment shows a fault-domain split. The mode determines resilience and scale ceiling.
+
+**Negative test:** enabling HA on a two-node cluster without a witness/replica leaves no quorum — the design must place roles deliberately.
+
+**Rollback:** none (read-only).
+
+### Lab 17.84 — Log Insight architecture modes (Objective 3.2)
+
+**Objective:** Read the Log Insight cluster nodes to distinguish standalone from clustered.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/cluster/nodes" | jq -r '.nodes[] | "\(.id)\t\(.role)\t\(.status)"'
+```
+
+**Expected result:** one node (standalone) or a master plus workers behind an Integrated Load Balancer — a cluster scales ingest and adds resilience a standalone cannot.
+
+**Negative test:** pointing syslog sources at a worker's own address instead of the ILB VIP breaks failover; clustered design requires the VIP.
+
+**Rollback:** none (read-only).
+
+### Lab 17.85 — Size a Log Insight deployment (Objective 3.3)
+
+**Objective:** Read the current ingestion rate to size a Log Insight deployment for a scenario.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/events/count?timestamp>$(( ($(date +%s) - 86400) * 1000 ))" | jq -r '.count'
+```
+
+**Expected result:** the last 24 hours' event count — divide by day for events/second; Log Insight sizing (nodes, disk) follows ingest rate and required retention, not host count.
+
+**Negative test:** sizing on raw VM count ignores chatty sources; a few high-rate syslog senders can dominate ingest and change the node count.
+
+**Rollback:** none (read-only).
+
+### Lab 17.86 — Size an Aria Operations deployment (Objective 3.4)
+
+**Objective:** Read the monitored-object count to size an Aria Operations deployment.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?pageSize=1" | jq -r '.pageInfo.totalCount'
+```
+
+**Expected result:** the total resource (object) count — Aria Operations sizing (node count and profile: small/medium/large) is driven by object and metric counts, which map to the published sizing guidelines.
+
+**Negative test:** sizing to today's count with no headroom means a re-scale as soon as the estate grows; sizing plans for growth and collection interval.
+
+**Rollback:** none (read-only).
+
+### Lab 17.87 — Design collector-group placement (Objective 3.5)
+
+**Objective:** Read collector-group membership to reason about remote-site data collection placement.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/collectorgroups" | jq -r '.collectorGroups[] | "\(.name)\tmembers=\(.collectorId|length)"'
+```
+
+**Expected result:** groups with more than one collector — the design places a collector group per site/fault domain so remote collection survives a single collector loss and stays local to the source.
+
+**Negative test:** one collector per site with no group gives no failover; if it drops, that site goes dark until it returns.
+
+**Rollback:** none (read-only).
+
+### Lab 17.88 — Installation prerequisites: DNS and NTP (Objective 4.1)
+
+**Objective:** Verify forward/reverse DNS and time sync — the prerequisites an Aria install fails without.
+
+```bash
+host "$VROPS" && host "$(dig +short "$VROPS" | tail -1)"
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/config/ntp" | jq -r '.timeServers[]?'
+```
+
+**Expected result:** matching forward and reverse records and at least one NTP server — Aria nodes require resolvable FQDNs, reverse PTRs, synced time, and dedicated service accounts before deployment.
+
+**Negative test:** a missing PTR or drifting clock breaks certificate trust and cluster membership; the installer will not complete.
+
+**Rollback:** none (read-only).
+
+### Lab 17.89 — Deploy Aria Suite Lifecycle (Objective 4.2)
+
+**Objective:** Confirm Suite Lifecycle is deployed and reachable — the first appliance in a Lifecycle-driven build.
+
+```bash
+curl -sk -o /dev/null -w '%{http_code}\n' -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/environments"
+```
+
+**Expected result:** `200` — vRSLCM is deployed (from its OVA, sized per the guide, with DNS/NTP set) and its API answers; it is the platform every subsequent product install runs through.
+
+**Negative test:** a `401`/`000` means the token or appliance is wrong — no Lifecycle-driven install can proceed until vRSLCM itself is up.
+
+**Rollback:** none (read-only).
+
+### Lab 17.90 — Manual Aria Operations install shape (Objective 4.3)
+
+**Objective:** Read node roles to recognize a manual (OVA) standalone-or-cluster install.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/node" | jq -r '.nodes[] | "\(.role)"' | sort | uniq -c
+```
+
+**Expected result:** one `MASTER` (standalone) or a `MASTER` plus `DATA`/`REPLICA` roles (cluster) — a manual install deploys each OVA, runs initial setup on the master, then joins data nodes.
+
+**Negative test:** joining a data node before the master finishes initial setup fails; order matters in a manual cluster build.
+
+**Rollback:** none (read-only).
+
+### Lab 17.91 — Install Aria Operations via Suite Lifecycle (Objective 4.4)
+
+**Objective:** Read the environment holding Aria Operations to confirm a Lifecycle-driven install.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/environments" | jq -r '.[] | .products[] | select(.id=="vrops") | "\(.id)\t\(.version)\t\(.nodes|length) node(s)"'
+```
+
+**Expected result:** the `vrops` product with a version and node count — Lifecycle deploys the cluster from a mapped binary and records it as a managed product (standalone or multi-node).
+
+**Negative test:** a Lifecycle install with no binary mapped for the target version fails at the deploy step; the binary must be in the mapping first.
+
+**Rollback:** none (read-only).
+
+### Lab 17.92 — Manual Log Insight install shape (Objective 4.5)
+
+**Objective:** Read Log Insight cluster roles to recognize a manual standalone/cluster install.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/cluster/nodes" | jq -r '.nodes[] | .role' | sort | uniq -c
+```
+
+**Expected result:** a `MASTER` alone (standalone) or a `MASTER` plus `WORKER` nodes (cluster) — a manual install deploys each OVA and joins workers to the master, then fronts them with the Integrated Load Balancer.
+
+**Negative test:** adding a worker without configuring the ILB VIP means sources still hit one node; the manual cluster is not complete until the VIP is set.
+
+**Rollback:** none (read-only).
+
+### Lab 17.93 — Install Log Insight via Suite Lifecycle (Objective 4.6)
+
+**Objective:** Read the environment holding Log Insight to confirm a Lifecycle-driven install.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/environments" | jq -r '.[] | .products[] | select(.id=="vrli") | "\(.id)\t\(.version)\t\(.nodes|length) node(s)"'
+```
+
+**Expected result:** the `vrli` product with version and node count — Lifecycle deploys the Log Insight cluster from its mapped binary and manages it thereafter.
+
+**Negative test:** expecting Lifecycle to manage a Log Insight it did not deploy — an out-of-band install must be imported before Lifecycle can patch it.
+
+**Rollback:** none (read-only).
+
+### Lab 17.94 — Configure RBAC across the suite (Objective 4.7)
+
+**Objective:** Read the role definitions in Aria Operations and Log Insight to confirm least-privilege RBAC.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/auth/roles" | jq -r '.userRoles[] | .name'
+curl -sk -H "$LH" "$LI/api/v2/roles" | jq -r '.roles[]?.name'
+```
+
+**Expected result:** roles such as `Administrator`, `ReadOnly`, plus custom scoped roles — RBAC in Aria Operations, Log Insight, and Suite Lifecycle is configured per product and ideally backed by the same identity source.
+
+**Negative test:** granting everyone `Administrator` defeats separation of duties; the exam expects scoped roles mapped to job function.
+
+**Rollback:** none (read-only).
+
+### Lab 17.95 — Configure Suite Lifecycle settings (Objective 4.8)
+
+**Objective:** Read core Suite Lifecycle settings (DNS, NTP, binary mapping) that must be configured before product operations.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/settings/dns" | jq -r '.dnsServers[]?'
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/settings/ntp" | jq -r '.ntpServers[]?'
+```
+
+**Expected result:** configured DNS and NTP servers — Suite Lifecycle settings (storage extension, binary/product mapping, DNS, NTP, passwords, license store, identity, and environments) underpin every deploy and patch.
+
+**Negative test:** an empty binary mapping blocks installs and upgrades; settings are the platform every product action depends on.
+
+**Rollback:** none (read-only).
+
+### Lab 17.96 — Configure data sources (Objective 4.9)
+
+**Objective:** Read the adapter instances (data sources) feeding Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/adapters" | jq -r '.adapterInstancesInfoDto[] | "\(.resourceKey.name)\t\(.adapterKindKey)"'
+```
+
+**Expected result:** adapter instances such as a vCenter adapter — configuring data sources (vCenter for Aria Operations, vSphere integration for Log Insight) is what makes the products observe the environment.
+
+**Negative test:** a collecting adapter in a `DATA_RECEIVING=false` state produces empty dashboards; the data source must be connected and collecting.
+
+**Rollback:** none (read-only).
+
+### Lab 17.97 — Install management and content packs (Objective 4.10)
+
+**Objective:** Read installed content packs in Log Insight and management packs in Aria Operations.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/content/contentpack/list" | jq -r '.contentPackMetadataList[]? | .name'
+curl -sk -H "$VH" "$VROPS/suite-api/api/solutions" | jq -r '.solution[].name'
+```
+
+**Expected result:** content packs (vSphere, NSX, etc.) in Log Insight and solutions/management packs in Aria Operations — packs add dashboards, alerts, and parsing for a specific product.
+
+**Negative test:** parsing NSX logs without the NSX content pack yields unstructured events; the pack supplies the fields and queries.
+
+**Rollback:** none (read-only).
+
+### Lab 17.98 — Content management in Suite Lifecycle (Objective 4.11)
+
+**Objective:** Read the content Suite Lifecycle manages — dashboards, templates, and policies under version control.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/content" | jq -r '.[]? | "\(.contentName)\t\(.contentType)"' | head
+```
+
+**Expected result:** managed content items with types — Content Management in Suite Lifecycle captures, versions, and promotes content (dashboards, alerts, blueprints) across environments like source control.
+
+**Negative test:** editing a dashboard directly in production, outside Content Management, loses the version history and the promote-to-prod pipeline.
+
+**Rollback:** none (read-only).
+
+### Lab 17.99 — Integrate Aria Operations and Log Insight (Objective 4.12)
+
+**Objective:** Confirm the Log Insight ↔ Aria Operations integration that enables launch-in-context and metric-from-log alerts.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/vrops" | jq -r '"\(.host)\tenabled=\(.enabled)"'
+```
+
+**Expected result:** the Aria Operations host with `enabled=true` — the integration sends Log Insight alerts to Aria Operations and enables launch-in-context between logs and objects.
+
+**Negative test:** without the integration, an operator jumps between two consoles by hand instead of pivoting from an object's metric spike to its logs.
+
+**Rollback:** none (read-only).
+
+### Lab 17.100 — Generate support/log bundles (Objective 6.1)
+
+**Objective:** Read where each product exposes support-bundle generation for troubleshooting.
+
+```bash
+curl -sk -o /dev/null -w 'vrops-support-bundle-endpoint: %{http_code}\n' -H "$VH" "$VROPS/suite-api/api/deployment/logs"
+```
+
+**Expected result:** a `200`/`202` from the Aria Operations log/support endpoint — each product (Aria Operations, Log Insight, Suite Lifecycle) generates a support bundle from its admin UI or API for Broadcom support.
+
+**Negative test:** collecting only the master node's bundle in a cluster omits the failing data node's logs; a cluster bundle must span nodes.
+
+**Rollback:** delete any generated bundle after download.
+
+### Lab 17.101 — Manage the Aria Operations cluster (Objective 6.2)
+
+**Objective:** Read cluster node online/offline state via the CaSA admin API.
+
+```bash
+curl -sk -H "$VH" "$VROPS/casa/deployment/cluster/info" | jq -r '.nodes[] | "\(.node_name)\t\(.node_state)"'
+```
+
+**Expected result:** each node with a state (`RUNNING`/`OFFLINE`) — cluster management (take a node offline for maintenance, bring it online, rebalance) is done through the Cluster Administration (CaSA) interface.
+
+**Negative test:** powering off a data node instead of taking it offline gracefully risks sharded-data resync storms on return.
+
+**Rollback:** bring any node taken offline back online.
+
+### Lab 17.102 — Manage admin and root passwords (Objective 6.3)
+
+**Objective:** Read the admin-account state and confirm the password-management path for admin/root.
+
+```bash
+curl -sk -H "$VH" "$VROPS/casa/os/slice/user" | jq -r '.users[]? | "\(.username)\t\(.locked)"'
+```
+
+**Expected result:** the `admin`/`root` accounts and their lock state — the product `admin` password is changed in CaSA, and appliance `root` via the console/SSH `passwd`; both must be rotated and unlocked to operate.
+
+**Negative test:** a locked `root` with an expired `admin` password can strand you out of a node that otherwise runs; manage both proactively.
+
+**Rollback:** none (read-only — do not change live credentials in this drill).
+
+### Lab 17.103 — Change the Suite Lifecycle auth provider (Objective 6.4)
+
+**Objective:** Read the configured identity provider in Suite Lifecycle before changing it.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/authzn/api/idp" | jq -r '.[]? | "\(.name)\t\(.type)"'
+```
+
+**Expected result:** the current IdP (local, or an external vIDM/Workspace ONE Access) — changing the auth provider re-points Suite Lifecycle login at a new identity source.
+
+**Negative test:** switching the IdP without pre-creating admin mappings in the new source locks every administrator out; map roles first.
+
+**Rollback:** none (read-only).
+
+### Lab 17.104 — Troubleshoot Log Insight cluster health (Objective 6.5)
+
+**Objective:** Read per-node status and load to diagnose common Log Insight cluster issues.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/cluster/nodes" | jq -r '.nodes[] | "\(.role)\t\(.status)\tload=\(.currentLoad // "n/a")"'
+```
+
+**Expected result:** each node `CONNECTED` with balanced load — a `DISCONNECTED` worker or a skewed load points at the ILB, a network partition, or an over-subscribed node.
+
+**Negative test:** blaming ingest slowness on the master when a worker is `DISCONNECTED` misreads the cause; read node status before tuning.
+
+**Rollback:** none (read-only).
+
+### Lab 17.105 — Troubleshoot Aria Operations cluster health (Objective 6.6)
+
+**Objective:** Read node status and adapter data-receiving state to diagnose Aria Operations cluster problems.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/node/status" | jq -r '"cluster=\(.overallState)"'
+curl -sk -H "$VH" "$VROPS/suite-api/api/adapters" | jq -r '.adapterInstancesInfoDto[] | "\(.resourceKey.name)\t\(.dataReceiving)"'
+```
+
+**Expected result:** an overall cluster state plus each adapter's data-receiving flag — a degraded cluster or an adapter not receiving is the usual root of "missing metrics."
+
+**Negative test:** restarting the whole cluster for one stuck adapter is heavy-handed; the adapter state localizes the fault first.
+
+**Rollback:** none (read-only).
+
+### Lab 17.106 — Troubleshoot Suite Lifecycle health (Objective 6.7)
+
+**Objective:** Read recent Suite Lifecycle requests to find failed operations and their errors.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/request/api/v2/requests?status=FAILED" | jq -r '.[]? | "\(.requestName)\t\(.state)"' | head
+```
+
+**Expected result:** any failed requests (deploy, upgrade, cert) with state — Suite Lifecycle troubleshooting starts from the request log, where each step records its error.
+
+**Negative test:** re-running a failed upgrade without reading the request error repeats the same failure; the log names the precondition that was unmet.
+
+**Rollback:** none (read-only).
+
+### Lab 17.107 — Suite Lifecycle administrative day-2 tasks (Objective 7.1)
+
+**Objective:** Read the appliance-level (system) settings Suite Lifecycle exposes for day-2 administration.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/settings/product-support-pack" | jq -r '.[]? | "\(.name)\t\(.version)"' | head
+```
+
+**Expected result:** support/product packs available to apply — administrative day-2 tasks (support-pack updates, system patching, certificate replacement) are driven from Suite Lifecycle's settings, not each product.
+
+**Negative test:** patching products while skipping the Suite Lifecycle support pack can leave the manager behind its managed products' supported matrix.
+
+**Rollback:** none (read-only).
+
+### Lab 17.108 — Suite Lifecycle operational environment tasks (Objective 7.2)
+
+**Objective:** Read the day-2 environment actions Suite Lifecycle offers for a managed product.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/environments" | jq -r '.[] | "\(.environmentName): \(.products[].id)"'
+```
+
+**Expected result:** environments and their products, each of which exposes day-2 actions (add node, upgrade, trigger inventory sync, replace certificate) — operational environment tasks act on the deployed products as a unit.
+
+**Negative test:** scaling a product by deploying a node outside Lifecycle puts its inventory out of sync; day-2 scale should go through the environment.
+
+**Rollback:** none (read-only).
+
+### Lab 17.109 — Suite Lifecycle content day-2 tasks (Objective 7.3)
+
+**Objective:** Read the content pipelines Suite Lifecycle uses for capture/test/release day-2 content tasks.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/lcops/api/v2/content/pipelines" | jq -r '.[]? | "\(.pipelineName)\t\(.status)"' | head
+```
+
+**Expected result:** content pipelines with status — operational content tasks (capture from source, test, release to target) move dashboards/policies through environments under version control.
+
+**Negative test:** hand-copying content between environments skips the pipeline's test gate and version record.
+
+**Rollback:** none (read-only).
+
+### Lab 17.110 — Manage authentication and user access control (Objective 7.4)
+
+**Objective:** Read the Suite Lifecycle users and their role bindings.
+
+```bash
+curl -sk -H "$LCH" "$VRSLCM/lcm/authzn/api/users" | jq -r '.[]? | "\(.username)\t\(.role)"'
+```
+
+**Expected result:** users mapped to roles (`ADMIN`, `CONTENT_RELEASE_MANAGER`, `VIEWER`) — access control is managed centrally and should map to the same identity source as the products.
+
+**Negative test:** local-only accounts drift from the corporate directory; joining an external IdP keeps access lifecycle in one place.
+
+**Rollback:** none (read-only).
+
+### Lab 17.111 — Manage Aria Operations licensing and groups (Objective 7.5)
+
+**Objective:** Read the installed licenses and license groups in Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/licenses" | jq -r '.solutionLicenses[] | "\(.licenseKey[0:7])…\t\(.edition // "n/a")"'
+```
+
+**Expected result:** one or more license keys with editions — licensing groups assign specific objects to a license so mixed-edition estates are metered correctly.
+
+**Negative test:** letting objects auto-consume the wrong-edition license under-provisions features; license groups bind objects to the intended entitlement.
+
+**Rollback:** none (read-only).
+
+### Lab 17.112 — Configure Aria Operations event/log forwarding (Objective 7.6)
+
+**Objective:** Read the Aria Operations outbound (log/event) forwarding settings.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/deployment/config/loginsight" | jq -r '"host=\(.host)\tenabled=\(.enabled)"'
+```
+
+**Expected result:** the Log Insight/syslog target and enabled flag — Aria Operations forwards its own audit and alert events so they land in the log store alongside everything else.
+
+**Negative test:** relying on the UI alone for Aria Operations' own events loses them on appliance replacement; forwarding preserves them externally.
+
+**Rollback:** none (read-only).
+
+### Lab 17.113 — Patch Aria Operations without Suite Lifecycle (Objective 7.7)
+
+**Objective:** Read the CaSA upgrade/PAK status used to patch Aria Operations directly (no Suite Lifecycle).
+
+```bash
+curl -sk -H "$VH" "$VROPS/casa/upgrade/cluster/status" | jq -r '"phase=\(.upgrade_phase // "IDLE")\tready=\(.is_ready_for_upgrade // "n/a")"'
+```
+
+**Expected result:** an upgrade phase and readiness flag — without Suite Lifecycle you stage a PAK and drive the upgrade from CaSA, which reports each phase.
+
+**Negative test:** applying a PAK without taking a snapshot/backup first leaves no clean rollback if the upgrade fails mid-cluster.
+
+**Rollback:** none (read-only — do not start a live upgrade in this drill).
+
+### Lab 17.114 — Custom dashboards, views, reports, super metrics (Objective 7.8)
+
+**Objective:** Read the custom content — dashboards, views, reports, and super metrics — in Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/dashboards" | jq -r '.uiDashboards | length as $d | "dashboards=\($d)"'
+curl -sk -H "$VH" "$VROPS/suite-api/api/supermetrics" | jq -r '.superMetrics | length as $s | "supermetrics=\($s)"'
+```
+
+**Expected result:** counts of dashboards and super metrics — custom dashboards/views/reports present data for an audience, and super metrics derive new values (e.g. cluster headroom) from base metrics.
+
+**Negative test:** a super metric referencing a metric that stops collecting silently returns no data; custom content must be validated after adapter changes.
+
+**Rollback:** none (read-only).
+
+### Lab 17.115 — Manage alerts, symptoms, and notifications (Objective 7.9)
+
+**Objective:** Read alert definitions and their symptoms in Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/alertdefinitions?pageSize=1" | jq -r '.pageInfo.totalCount as $t | "alertDefinitions=\($t)"'
+curl -sk -H "$VH" "$VROPS/suite-api/api/symptomdefinitions?pageSize=1" | jq -r '.pageInfo.totalCount as $t | "symptomDefinitions=\($t)"'
+```
+
+**Expected result:** counts of alert and symptom definitions — an alert fires when its symptoms trigger, and notification rules route it (email, SNMP, Log Insight, webhook).
+
+**Negative test:** an alert with no notification rule fires silently in the UI; someone must be told for it to matter.
+
+**Rollback:** none (read-only).
+
+### Lab 17.116 — Optimize performance of a managed environment (Objective 7.10)
+
+**Objective:** Read Aria Operations' Workload Optimization signal for a compute cluster.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?resourceKind=ClusterComputeResource&pageSize=1" \
+  | jq -r '.resourceList[0].identifier as $id | "clusterId=\($id)"'
+```
+
+**Expected result:** a cluster resource id whose Workload Optimization score/recommendation Aria Operations computes — performance optimization rebalances workloads across hosts/clusters to relieve contention.
+
+**Negative test:** acting on optimization without a defined operational-intent policy (balance vs consolidate) can fight DRS; set intent first.
+
+**Rollback:** none (read-only).
+
+### Lab 17.117 — Optimize capacity of a managed environment (Objective 7.11)
+
+**Objective:** Read remaining-capacity/time-remaining analytics for a cluster.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?resourceKind=ClusterComputeResource&pageSize=1" \
+  | jq -r '.resourceList[0].identifier' \
+  | xargs -I{} curl -sk -H "$VH" "$VROPS/suite-api/api/resources/{}/stats?statKey=capacity|timeRemaining&maxSamples=1" \
+  | jq -r '.values[]?.["stat-list"].stat[]? | "\(.statKey.key)=\(.data[0])"'
+```
+
+**Expected result:** a time-remaining value in days — capacity optimization reclaims idle/oversized/powered-off VMs and forecasts when a cluster runs out, driving right-sizing and reclamation.
+
+**Negative test:** reclaiming on utilization alone without time-remaining forecasting can starve a cluster that is about to spike; capacity uses the forecast, not the instant.
+
+**Rollback:** none (read-only).
+
+### Lab 17.118 — Plan a workload or cloud migration (Objective 7.12)
+
+**Objective:** Read the resource inventory that a What-If/migration plan is built from.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?resourceKind=VirtualMachine&pageSize=1" | jq -r '.pageInfo.totalCount as $t | "vmCount=\($t)"'
+```
+
+**Expected result:** the VM count feeding a migration plan — Aria Operations' What-If scenarios model adding/removing workloads or moving them to another cluster or public cloud and report the capacity impact.
+
+**Negative test:** planning a migration on host counts without the per-VM demand profile under-sizes the target; the plan needs measured demand.
+
+**Rollback:** none (read-only).
+
+### Lab 17.119 — Assess the cost of a managed environment (Objective 7.13)
+
+**Objective:** Read a cost metric Aria Operations computes for the environment.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?resourceKind=ClusterComputeResource&pageSize=1" \
+  | jq -r '.resourceList[0].identifier' \
+  | xargs -I{} curl -sk -H "$VH" "$VROPS/suite-api/api/resources/{}/stats?statKey=cost|totalCost&maxSamples=1" \
+  | jq -r '.values[]?.["stat-list"].stat[]? | "\(.statKey.key)=\(.data[0])"'
+```
+
+**Expected result:** a total-cost value for the cluster — cost analytics attribute infrastructure spend to clusters, VMs, and business groups so showback/chargeback and reclamation savings can be reported.
+
+**Negative test:** cost figures with no cost drivers configured fall back to defaults that misstate spend; the cost model must be set for your prices.
+
+**Rollback:** none (read-only).
+
+### Lab 17.120 — Monitor operating systems and applications (Objective 7.14)
+
+**Objective:** Read whether Application/OS monitoring (Telegraf agents) is reporting into Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/resources?adapterKind=ApplicationDiscoveryAdapter&pageSize=1" \
+  | jq -r '.pageInfo.totalCount as $t | "appObjects=\($t)"'
+```
+
+**Expected result:** application/OS objects discovered — Aria Operations monitors in-guest OS and application services via agents (Telegraf), extending visibility below the VM into the workload.
+
+**Negative test:** expecting service-level (MySQL, IIS) metrics without the agent deployed returns only VM-level counters.
+
+**Rollback:** none (read-only).
+
+### Lab 17.121 — Manage jobs with Automation Central (Objective 7.15)
+
+**Objective:** Read scheduled Automation Central jobs (reclamation, right-sizing) in Aria Operations.
+
+```bash
+curl -sk -H "$VH" "$VROPS/suite-api/api/schedules" | jq -r '.schedules[]? | "\(.name)\t\(.actionType // .type)"' | head
+```
+
+**Expected result:** scheduled jobs with their action type — Automation Central centralizes recurring operational jobs (power-off idle VMs, reclaim snapshots, right-size) with schedules and approvals.
+
+**Negative test:** an unattended reclamation job with no approval step can delete a VM someone still needs; Automation Central adds the approval gate.
+
+**Rollback:** none (read-only).
+
+### Lab 17.122 — Manage authentication and access in Log Insight (Objective 7.16)
+
+**Objective:** Read Log Insight's authentication providers and roles.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/auth-providers" | jq -r '.providers[]? | "\(.type)\t\(.enabled)"'
+curl -sk -H "$LH" "$LI/api/v2/roles" | jq -r '.roles[]?.name'
+```
+
+**Expected result:** the enabled providers (Local, Active Directory/vIDM) and role list — Log Insight access is managed with roles and dataset-scoped permissions, backed by the chosen identity source.
+
+**Negative test:** granting broad roles without dataset restrictions lets a team read another tenant's logs; scope datasets to the role.
+
+**Rollback:** none (read-only).
+
+### Lab 17.123 — Patch Log Insight without Suite Lifecycle (Objective 7.17)
+
+**Objective:** Read the Log Insight version and cluster readiness used when patching directly (no Suite Lifecycle).
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/version" | jq -r '.version'
+curl -sk -H "$LH" "$LI/api/v2/cluster/nodes" | jq -r '[.nodes[]|select(.status=="CONNECTED")]|length as $n | "connectedNodes=\($n)"'
+```
+
+**Expected result:** current version and count of connected nodes — a direct upgrade uploads a PAK in the admin UI and applies it rolling across the cluster, which must be fully connected first.
+
+**Negative test:** starting a rolling upgrade with a disconnected worker can strand that node on the old build; the cluster should be healthy before patching.
+
+**Rollback:** none (read-only — do not start a live upgrade in this drill).
+
+### Lab 17.124 — Configure and manage Log Insight agents (Objective 7.18)
+
+**Objective:** Read the Log Insight agents and their configuration groups.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/agents" | jq -r '.agents[]? | "\(.hostname)\t\(.status)"' | head
+```
+
+**Expected result:** agents with a status (`Active`) — Log Insight agents collect logs and events from OSes/apps and are configured centrally through agent groups (which files, what parsing, where to send).
+
+**Negative test:** an agent with no group falls back to defaults and may not collect the intended files; agent groups drive what each agent does.
+
+**Rollback:** none (read-only).
+
+### Lab 17.125 — Log forwarding, masking, and filtering (Objective 7.19)
+
+**Objective:** Read the forwarding destinations and any masking/filtering rules in Log Insight.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/forwarding" | jq -r '.forwarders[]? | "\(.name)\tfilter=\(.filter // "none")"'
+```
+
+**Expected result:** forwarders each with an optional filter — forwarding relays events to another cluster or Log Insight Cloud, filtering limits which events go, and masking redacts sensitive fields before they leave.
+
+**Negative test:** forwarding raw events without masking can leak secrets/PII downstream; masking must be applied before the forward.
+
+**Rollback:** none (read-only).
+
+### Lab 17.126 — Retention and archiving settings (Objective 7.20)
+
+**Objective:** Read Log Insight's retention and archiving configuration.
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/retention" | jq -r '"retentionDays=\(.retentionDays // .dataArchiveRetentionDays // "n/a")"'
+curl -sk -H "$LH" "$LI/api/v2/archive" | jq -r '"archiveEnabled=\(.enabled)\tpath=\(.path // "n/a")"'
+```
+
+**Expected result:** a retention window and archive path — retention bounds searchable storage; archiving writes older buckets to NFS so they can be restored for compliance without occupying live index.
+
+**Negative test:** a long retention with no archive fills the index disk and stops ingest; retention and archiving are sized together.
+
+**Rollback:** none (read-only).
+
+### Lab 17.127 — System notifications for Log Insight (Objective 7.21)
+
+**Objective:** Read Log Insight's system-notification configuration (health and capacity alerts about the appliance itself).
+
+```bash
+curl -sk -H "$LH" "$LI/api/v2/notification/system" | jq -r '"email=\(.emailEnabled)\tsnmp=\(.snmpEnabled)"'
+```
+
+**Expected result:** the enabled system-notification channels — system notifications warn on Log Insight's own health (disk, node down, ingest backpressure), distinct from user-defined content alerts on ingested data.
+
+**Negative test:** relying only on content alarms misses the appliance running out of disk; system notifications watch the platform itself.
+
+**Rollback:** none (read-only).
+
+### Lab 17.128 — Five-exam readiness drill (integrative)
+
+**Objective:** Confirm, without booking any exam, which of the five
 professional-level exams in this chapter you are closest to ready for, by
 running one scoped drill per exam against this volume's existing labs.
 
@@ -1526,7 +2366,8 @@ running one scoped drill per exam against this volume's existing labs.
 
 - The lab environments from earlier chapters: a vSphere cluster (Chapters
   1–9), NSX with a vDefend DFW policy (Chapters 8, 10–11), and — if
-  available — a lab Avi Controller with one virtual service.
+  available — a lab Avi Controller with one virtual service and an Aria
+  stack (Aria Operations, Aria Operations for Logs, Aria Suite Lifecycle).
 - The domain-mapped tracker from the Implementation section above.
 - No reference material open during each timed drill.
 
@@ -1562,12 +2403,20 @@ running one scoped drill per exam against this volume's existing labs.
    **Expected result:** the policy enforces, and you can name the tool
    (Traceflow, DFW hit counters) that distinguishes the two causes.
 
-5. **Score and target.** Rank the four drills by how far over time or how
+5. **VCP-CO drill (target 15 minutes).** If an Aria lab exists, read an Aria
+   Operations cluster's node roles and one cluster's capacity time-remaining,
+   and pull the Aria Operations for Logs cluster node list, then explain the
+   deployment mode and one sizing driver without opening documentation. If no
+   Aria lab exists, record this as a lab gap to close before scheduling.
+
+   **Expected result:** an unaided explanation, or an identified gap.
+
+6. **Score and target.** Rank the five drills by how far over time or how
    reference-dependent each was. The weakest is the exam furthest from
    ready; direct additional lab time there rather than re-reading a domain
    already strong.
 
-6. **Rollback:** revert the VM, remove any test design notes, and return the
+7. **Rollback:** revert the VM, remove any test design notes, and return the
    DFW policy and Avi objects to their baseline state so the labs are ready
    for future runs.
 
@@ -1608,7 +2457,7 @@ artifact; it is the seed of a VCDX submission
 
 ## Lab Verification
 
-Complete this sign-off once the four drills have been run end to end. Until
+Complete this sign-off once the five drills have been run end to end. Until
 then, the lab is unverified.
 
 - **Lab verified by:** *pending*
@@ -1622,12 +2471,14 @@ flagship that this volume's Chapters 1–9 already cover; VCP-VCF Architect
 (2V0-13.25) opens the design path that runs through VCAP Architect and the
 Distinguished Expert defense; and VCP-AVI (6V0-22.25) and VCP-PCS
 (6V0-21.25) are `6V0` specialist exams scoped to the Avi Load Balancer and
-vDefend private-cloud security respectively. Read the code family to gauge
-breadth, pick DCV versus VVF by product generation rather than prestige,
-and prepare the specialist exams against a running product, not
-documentation.
+vDefend private-cloud security respectively, while VCP-CO (2V0-32.24) is
+the mainstream Cloud Operations exam over the Aria management stack (Aria
+Operations, Aria Operations for Logs, Aria Suite Lifecycle). Read the code
+family to gauge breadth, pick DCV versus VVF by product generation rather
+than prestige, and prepare the specialist and operations exams against a
+running product, not documentation.
 
-- [ ] Can place all four exams against specific chapters in this volume.
+- [ ] Can place all five exams against specific chapters in this volume.
 - [ ] Can choose between VCP-DCV and VCP-VVF Administrator by product
       generation.
 - [ ] Can read what a `2V0` versus `6V0` code signals about exam breadth.

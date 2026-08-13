@@ -27,8 +27,9 @@ or a written exam.
 > **Currency.** This is the fastest-churning program in this
 > encyclopedia — the Broadcom acquisition renamed VCDX and restructured
 > VCP around VVF/VCF, and VMware Cloud Foundation 9.0 introduced an
-> entire new advanced (VCAP) role series. **Two exams are retiring on 31
-> July 2026** (see the Exam end date column). Confirm each exam's code,
+> entire new advanced (VCAP) role series. **Two carried-over exams retired
+> on 31 July 2026** (see the Exam end date column) and are no longer
+> schedulable at Pearson VUE (confirmed 13 August 2026). Confirm each exam's code,
 > its recommended course, and its availability on the certification's
 > Broadcom page before registering or purchasing. Volume V, Chapter 20
 > defines the recurring currency check that keeps this table honest.
@@ -64,12 +65,16 @@ or a written exam.
 | [VCP-VVF Support](https://www.broadcom.com/support/education/vmware/certification/vcp-vvf-support) | 2V0-18.25 | — | VMware Cloud Foundation: Troubleshooting [V9.0] (paid) |
 | [VCP-AVI — Avi Load Balancer Administrator](https://www.broadcom.com/support/education/vmware/certification/vcp-avi) | 6V0-22.25 | — | Learning@Broadcom (paid); see cert page for current course |
 | [VCP-PCS — Private Cloud Security Administrator](https://www.broadcom.com/support/education/vmware/certification/vcp-pcs) | 6V0-21.25 | — | VMware vDefend Security for VCF 5.x Administrator (paid) |
+| [VCP-CO — Cloud Operations](https://www.broadcom.com/support/education/vmware/certification/vcp-co) | 2V0-32.24 | — | vRealize Operations: Install, Configure, Manage [V8.6]; Log Insight: Deploy and Manage [V8.4]; Suite Lifecycle Manager: Install, Configure, Manage [V8.0] (paid) |
 
 ## The advanced tier (VCAP)
 
 The eight-exam VMware Cloud Foundation 9.0 role series (one `3V0`
 generation), plus two carried-over VCAP exams. A current VCP is the
-entry prerequisite for this tier.
+entry prerequisite for this tier. As of 13 August 2026 the five `.25`
+role exams are live at Pearson VUE; the three `.26` exams (Administrator,
+Architect, Support) are announced but not yet bookable, and the two
+carried-over VCAPs have retired (see the Exam end date column).
 
 | Certification | Exam code | Exam end date | Recommended training (access) |
 | --- | --- | --- | --- |
@@ -81,8 +86,8 @@ entry prerequisite for this tier.
 | [VCAP — VCF 9.0 Storage](https://www.broadcom.com/support/education/vmware/certification/storage-9.0) | 3V0-23.25 | — | Advanced VMware Cloud Foundation Storage (paid) |
 | [VCAP — VCF 9.0 VKS (Kubernetes)](https://www.broadcom.com/support/education/vmware/certification/VKS-9.0) | 3V0-24.25 | — | Advanced VMware Cloud Foundation VKS (paid) |
 | [VCAP — VCF 9.0 Networking](https://www.broadcom.com/support/education/vmware/certification/networking9.0) | 3V0-25.25 | — | Advanced VMware Cloud Foundation Networking (paid) |
-| [VCAP-DCV Design](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | 3V0-21.23 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | vSphere design (paid); **retiring — no new registrations after 31 July 2026** |
-| [VCAP-NV Deploy](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | 3V0-41.22 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | Advanced Deploy VMware NSX-T Data Center 3.x (paid); **retiring — no new registrations after 31 July 2026** |
+| [VCAP-DCV Design](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | 3V0-21.23 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-dcv-design) | vSphere design (paid); **retired 31 July 2026 — no longer schedulable** |
+| [VCAP-NV Deploy](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | 3V0-41.22 | [**31 July 2026**](https://www.broadcom.com/support/education/vmware/certification/vcap-nv-deploy) | Advanced Deploy VMware NSX-T Data Center 3.x (paid); **retired 31 July 2026 — no longer schedulable** |
 
 ## The expert tier (Distinguished Expert / VCDX)
 
