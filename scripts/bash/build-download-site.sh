@@ -24,7 +24,18 @@ if [[ ! -d output/html || ! -d output/epub ]]; then
   exit 1
 fi
 
-rm -rf "$output"
+# macOS Finder/Spotlight recreate .DS_Store files asynchronously, which can
+# make a plain `rm -rf` race and abort under `set -e` with "Directory not
+# empty". Strip them from the sources we are about to copy, then retry the
+# removal of any prior portal directory so the build is deterministic.
+find output publishing -name '.DS_Store' -type f -delete 2>/dev/null || true
+for _ in 1 2 3 4 5; do
+  if [[ -e "$output" ]]; then
+    find "$output" -name '.DS_Store' -type f -delete 2>/dev/null || true
+  fi
+  rm -rf "$output" 2>/dev/null && break
+  sleep 1
+done
 mkdir -p "$output"
 cp publishing/web.css "$output/web.css"
 cp -R output/html "$output/html"
@@ -139,5 +150,8 @@ if [[ "$broken" -ne 0 ]]; then
   echo "build-download-site.sh: FAILED — portal has broken links" >&2
   exit 1
 fi
+
+# Final sweep: no .DS_Store may reach the portal (and thus the offline zip).
+find "$output" -name '.DS_Store' -type f -delete 2>/dev/null || true
 
 echo "build-download-site.sh: wrote portal to $output/ (all catalog links verified)"
