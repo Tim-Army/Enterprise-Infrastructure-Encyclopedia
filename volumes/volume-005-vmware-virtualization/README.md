@@ -237,6 +237,42 @@ worse instrument than published weights, and it is the best available
 one — build it in week 6 rather than week 8, so it has time to redirect
 you.
 
+### VCP-CO study plan (2V0-32.24)
+
+VCP-CO is the exception in this volume: its subject is the **Aria**
+management stack (Aria Operations, Aria Operations for Logs, Aria Suite
+Lifecycle), not vSphere, so it does **not** reuse the weeks 1–5 core above.
+Plan on **six weeks at eight to ten hours a week** for a candidate with
+solid vSphere administration but new to the Aria products; a candidate
+already operating vRealize Operations and Log Insight day to day (the
+blueprint's minimally acceptable candidate) can compress it to three or
+four. Because this volume is vSphere/NSX-centric, the plan assumes a **lab
+Aria stack** — an Aria Operations node, a Log Insight node, and a Suite
+Lifecycle appliance — since the Chapter 17 labs (17.73–17.127) drive their
+real APIs; [Chapter 9](chapters/09-vsphere-lifecycle-automation-observability-and-troubleshooting.md)
+supplies the observability and lifecycle context the exam assumes coming in.
+
+| Week | Blueprint section(s) | Focus | Labs |
+| --- | --- | --- | --- |
+| 1 | S1 Architecture, S2 Products | SaaS vs. on-premises, the three Aria products' capabilities and integrations, True Visibility Suite, Skyline / Federated Analytics / AI, collectors and cloud proxies | 17.73–17.82 |
+| 2 | S3 Planning and Designing | Aria Operations vs. Log Insight architectures (standalone, clustered, HA, Continuous Availability), sizing each from a scenario, collector-group placement | 17.83–17.87 |
+| 3 | S4 Installing, Configuring (part 1) | Prerequisites (DNS, NTP, service accounts), deploy Suite Lifecycle, install Aria Operations and Log Insight both manually and via Suite Lifecycle | 17.88–17.93 |
+| 4 | S4 Installing, Configuring (part 2) | RBAC across the suite, Suite Lifecycle settings, data sources, management/content packs, content management, Operations↔Logs integration | 17.94–17.99 |
+| 5 | S6 Troubleshooting and Repairing | Log bundles, cluster management, admin/root passwords, auth-provider change, and cluster performance/config triage across all three products | 17.100–17.106 |
+| 6 | S7 Administrative and Operational Tasks | Suite Lifecycle day-2; Operations dashboards, alerts, optimization, capacity, cost, monitoring, Automation Central; Log Insight agents, forwarding/masking, retention, notifications | 17.107–17.127 |
+
+**The heavy weeks are 3–4 and 6.** Installing and configuring the stack
+(Section 4, twelve objectives) and the administrative/operational tasks
+(Section 7, twenty-one objectives — the largest section by far) are
+together three-fifths of the blueprint, so they take three of the six
+weeks; Section 5 (Performance-tuning) has **no testable objectives** and is
+skipped. As with every exam here Broadcom publishes no domain weights, so
+build the per-section confidence tracker in week 1 and let your weakest
+section — most often Section 7's breadth across all three products — pull
+time toward it. Confirm the current blueprint and the 2V0-32.24 code on the
+[exam guide](https://docs.broadcom.com/docs/vmw-vcp-co-8-x-exam-guide)
+before scheduling.
+
 ### Study materials
 
 | Role | Resource | Why |
