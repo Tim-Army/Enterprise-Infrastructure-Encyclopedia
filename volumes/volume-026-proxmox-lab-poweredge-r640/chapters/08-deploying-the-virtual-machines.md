@@ -461,10 +461,30 @@ SSH; the destination is the staging directory you just made:
 scp ~/vm-images/gns3-appliance.qcow2 root@10.30.161.10:/river/import/
 ```
 
-Two alternatives to `scp`: upload through the Proxmox web UI
+Run `scp` **on the workstation, not on the node**, and point it at the actual
+`.qcow2` **file** — not the folder that holds it (use `scp -r` for a whole
+directory). It rides the same SSH you already use to reach the node, so if you
+can `ssh root@10.30.161.10`, the copy will work.
+
+Two ways to move the image instead of `scp`: upload through the Proxmox web UI
 (**Datacenter → river → Upload**, best for ISOs and container templates), or
-pull a download straight onto the node with
-`ssh root@10.30.161.10 'wget -O /river/import/gns3-appliance.qcow2 <url>'`.
+`wget` it **on the node** — but mind what `wget` actually does. `wget` fetches
+from an HTTP/FTP **server** at a **URL**; it cannot read your workstation's
+filesystem. Pointing it at a local path —
+`wget http://10.30.12.172//Users/you/vm-images/appliance.qcow2` — just tries to
+reach a web server *on your workstation* that isn't running, and fails with
+*Connection refused*. Use `wget` only for a real download **URL** (a vendor's
+download site):
+
+```bash
+ssh root@10.30.161.10 'wget -O /river/import/appliance.qcow2 https://vendor.example/appliance.qcow2'
+```
+
+To pull a file that only lives on your workstation, you must first serve it —
+`cd ~/vm-images && python3 -m http.server 8000` on the workstation, then
+`wget -O /river/import/appliance.qcow2 http://<workstation-ip>:8000/appliance.qcow2`
+on the node. That is two moving parts; the `scp` **push** above is one step and
+needs no server, so prefer it for local files.
 
 **Step 2 — Verify the transfer (size and checksum).** A truncated or corrupted
 copy makes a disk that will not boot, so confirm the bytes match before you
