@@ -242,6 +242,8 @@ ovftool \
   vi://administrator@vsphere.local@vcenter.acme.local/Datacenter1/host/Cluster1
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 Attach the bootstrap ISO as the instance's CD-ROM device (or, for cloud
 platforms, associate the bootstrap bucket/blob via instance metadata or
 user-data) before first power-on, then power on the VM.

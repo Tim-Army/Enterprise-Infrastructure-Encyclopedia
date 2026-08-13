@@ -226,6 +226,8 @@ ovftool --acceptAllEulas --skipManifestCheck \
   nsx-manager.ova vi://root:<ESXI_ROOT_PASSWORD>@esxi01.corp.example
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 ### Forming the NSX Manager cluster and configuring the VIP
 
 ```bash

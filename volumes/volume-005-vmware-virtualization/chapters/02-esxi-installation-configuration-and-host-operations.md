@@ -205,6 +205,8 @@ $profile = Get-VMHostProfile -Name "profile-cluster-a-standard"
 Test-VMHostProfileCompliance -VMHost (Get-VMHost -Name "esxi02.corp.example") -Profile $profile
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 ## Design Considerations
 
 - **Boot media versus ESX-OSData placement.** Do not conflate "supports

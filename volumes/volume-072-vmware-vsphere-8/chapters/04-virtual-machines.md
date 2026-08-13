@@ -69,6 +69,8 @@ Set-VM -VM $vm -HardwareVersion "vmx-20" -Confirm:$false
 Get-VM app01 | Select Name, NumCpu, MemoryGB, HardwareVersion
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 **Expected result:** a VM at **hardware version 20** — a vSphere 8 VM with current features.
 
 **Negative test:** set **vmx-21** on a host that only supports v20; match the hardware version to

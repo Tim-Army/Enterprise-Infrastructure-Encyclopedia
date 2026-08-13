@@ -43,6 +43,8 @@ VMware Tools = guest drivers/services. Disks: thin/thick. NIC: VMXNET3. Template
 Snapshots = short-term rollback, NOT backups; consolidate/delete to avoid growth.
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 Common pitfalls: leaving **snapshots** for weeks (disk bloat, performance); and not installing
 **VMware Tools**.
 

@@ -103,6 +103,8 @@ $profile = New-VMHostProfile -Name "gold" -ReferenceHost (Get-VMHost)[0]
 Test-VMHostProfileCompliance -VMHost (Get-VMHost) -Profile $profile
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 **Expected result:** a **host profile** capturing a reference config and a **compliance check**
 across hosts — configuration drift caught.
 

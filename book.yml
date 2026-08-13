@@ -6159,6 +6159,9 @@ volumes:
       - id: 72
         title: "Chapter 72: Appendix — Everpure (formerly Pure Storage) Certifications and Course Access"
         path: volumes/volume-997-master-appendices/chapters/72-appendix-everpure-purestorage-certifications-and-course-access.md
+      - id: 73
+        title: "Chapter 73: Appendix — Deploying Lab Appliance Images on Each Hypervisor"
+        path: volumes/volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md
   - id: volume-998
     number: "CMXCVIII"
     slug: volume-998-acronyms

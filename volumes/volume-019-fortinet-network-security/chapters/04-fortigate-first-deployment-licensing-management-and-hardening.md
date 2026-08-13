@@ -804,34 +804,38 @@ first-boot console login, reach the GUI on the default management address, and
 confirm the evaluation-license state — the appliance that Labs 4.1–4.6 assume
 is already running.
 
-**Prerequisites (this lab only):** a hypervisor — EVE-NG, KVM/QEMU (libvirt),
-Proxmox VE, or GNS3 — and a FortiGate-VM image such as
+**Prerequisites (this lab only):** any hypervisor the encyclopedia covers (Step 1 and the deployment
+appendix list them) and a FortiGate-VM image such as
 `fortinet-FGT-v7.6.2.F-build3462.tgz` (the EVE-NG package: FortiOS 7.6.2, build
 3462) or the equivalent `FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`
 (the KVM qcow2 disk). **Cost:** none — FortiGate-VM boots in evaluation mode
 with no purchased license.
 
-**Step 1 — Place the image where the hypervisor can find it.** On EVE-NG the
-qemu image *directory name is the version string* and the disk must be
-`virtioa.qcow2`:
+**Step 1 — Deploy the FortiGate-VM on your hypervisor.** Fortinet ships a per-platform image:
+the KVM `qcow2` (`FGT_VM64_KVM-*.out.kvm.zip` — used by Proxmox, KVM/QEMU, EVE-NG, GNS3, and
+containerlab), the VMware OVF (`FGT_VM64-*.out.ovf.zip` — ESXi/vSphere, Workstation/Fusion,
+VirtualBox), the Hyper-V VHD (`FGT_VM64_HV-*.out.hyperv.zip`), the Xen image
+(`FGT_VM64_XEN-*`), and a Nutanix AHV `qcow2`. Import the form factor your hypervisor uses and
+create the VM with **≥ 1 vCPU and ≥ 2 GB RAM** (the FortiOS 7.6 minimum) and at least the
+interfaces your topology needs — the evaluation instantiates up to three. The per-hypervisor
+create/import/NIC mechanics are the same for every appliance and are collected once in the
+Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md).
+
+For example, on **Proxmox VE**:
 
 ```text
-mkdir -p /opt/unetlab/addons/qemu/fortinet-FGT-v7.6.2.F-build3462
-cd /opt/unetlab/addons/qemu/fortinet-FGT-v7.6.2.F-build3462
-tar zxf /root/fortinet-FGT-v7.6.2.F-build3462.tgz --strip-components=1
-ls -1                       # expect: virtioa.qcow2
-/opt/unetlab/wrappers/unl_wrapper -a fixpermissions
-```
-
-On KVM or Proxmox, unzip the `.out.kvm.zip` and import the qcow2 as the VM's
-disk instead:
-
-```text
-unzip FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip   # -> fortios.qcow2
-# Proxmox: create a diskless VM (id 900), then attach the imported disk:
+unzip FGT_VM64_KVM-*.out.kvm.zip                 # -> fortios.qcow2
+qm create 900 --name fgt --cores 1 --memory 2048 --scsihw virtio-scsi-pci \
+  --serial0 socket --net0 virtio,bridge=vmbr0
 qm importdisk 900 fortios.qcow2 local-lvm
-qm set 900 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-900-disk-0
+qm set 900 --virtio0 local-lvm:vm-900-disk-0 --boot order=virtio0
+qm start 900
 ```
+
+On **EVE-NG** the qemu image *directory name is the version string* and the disk must be
+`virtioa.qcow2` — `tar zxf fortinet-FGT-*.tgz --strip-components=1` into
+`/opt/unetlab/addons/qemu/fortinet-FGT-<version>/`, then `unl_wrapper -a fixpermissions`, and add
+the node to the canvas.
 
 **Step 2 — First-boot console login.** Boot the VM and open its console.
 FortiGate-VM ships with username `admin` and an **empty** password; FortiOS 7.6

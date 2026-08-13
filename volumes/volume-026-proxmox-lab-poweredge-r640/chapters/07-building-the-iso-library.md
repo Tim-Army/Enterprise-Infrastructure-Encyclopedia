@@ -140,6 +140,8 @@ and note it for import in Chapter 08 rather than treating it as an installer:
 ls -lh /mnt/river/template/iso/ /mnt/river/images/ 2>/dev/null
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 ## Validation and Troubleshooting
 
 ### Confirming the library is complete and sound

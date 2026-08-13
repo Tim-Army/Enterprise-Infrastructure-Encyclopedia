@@ -147,6 +147,8 @@ New-VM -Name "app-web-03" `
   -Datastore (Get-Datastore -Name "vsan-datastore-01")
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 This pattern is the foundation most enterprises build on before layering a
 full infrastructure-as-code tool (Terraform's vSphere provider, or
 Packer-built templates feeding Ansible) on top — the customization spec

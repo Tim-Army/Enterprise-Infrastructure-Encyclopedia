@@ -229,6 +229,8 @@ Import-VApp -Source "C:\images\OME-4.7.x.ova" `
 Start-VM -VM "ome-prod-01"
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 Equivalent deployments are performed with `govc import.ova` for
 vSphere/vCenter via the CLI, `New-VHD` plus `New-VM` for Hyper-V, or
 `virt-install` referencing the QCOW2 image for KVM.

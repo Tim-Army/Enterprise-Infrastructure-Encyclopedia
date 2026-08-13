@@ -148,6 +148,8 @@ qm start 113
 # Set the appliance's address to 10.30.10.86/24, gateway 10.30.10.1.
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 ### 3. Setting addresses and hostnames in the guests
 
 Each guest gets its fixed address, gateway, and hostname set *inside* the OS —

@@ -70,6 +70,8 @@ qemu-img create -f qcow2 lab.qcow2 1G && qemu-img info lab.qcow2 | head -4
 echo "305 scope: KVM/QEMU/libvirt (domains, networks, storage pools), Xen awareness, LXC, Docker, image formats"
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 **Expected result:** libvirt answering (`virsh version`), the default NAT network listed, and a qcow2 image created and inspected — 305's stack from hypervisor (KVM) through management (libvirt/virsh) to image formats (qcow2 features: snapshots, thin provisioning), plus the container side already drilled in [Volume XCII](../../volume-092-docker-certifications/README.md).
 
 **Negative test:** `qemu-img info` on a raw image reports no snapshot support — format choice is capability choice; qcow2 vs raw trade-offs are exam material.

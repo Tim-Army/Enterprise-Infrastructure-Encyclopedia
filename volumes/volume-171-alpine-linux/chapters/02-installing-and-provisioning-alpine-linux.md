@@ -107,6 +107,8 @@ qm resize 140 scsi0 100G          # grow the virtual disk (filesystem grown in C
 qm start 140
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 Cloud-init applies the hostname, the static IP, and the credentials on first boot.
 **The one thing to check every time:** Alpine's cloud-init commonly sets the IP
 address but **not** a DNS resolver, so `/etc/resolv.conf` is empty and `apk` cannot

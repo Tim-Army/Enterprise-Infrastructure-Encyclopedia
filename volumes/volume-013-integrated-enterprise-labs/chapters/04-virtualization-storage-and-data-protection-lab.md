@@ -134,6 +134,8 @@ govc export.ovf -vm "$VM" "/backup/${VM}/$(date -u +%Y%m%dT%H%M%SZ)"
 govc snapshot.remove -vm "$VM" "backup-*"
 ```
 
+**Host setup — deploying this image on your hypervisor.** The create/import and interface-mapping steps are the same for every appliance and are collected once in the Master Appendices: [Deploying Lab Appliance Images on Each Hypervisor](../../volume-997-master-appendices/chapters/73-appendix-deploying-lab-appliance-images-on-each-hypervisor.md) — Proxmox, KVM, ESXi/vSphere, Workstation/Fusion, VirtualBox, Hyper-V, EVE-NG, GNS3, containerlab, Nutanix AHV, and Xen.
+
 Configure vSphere Replication from `dc02` at HQ to `esxi-br101`:
 
 ```powershell
