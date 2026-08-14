@@ -246,7 +246,7 @@ three interfaces / policies / routes each, and no FortiCare support. Run
 account-id by execute vm-license-options account-id.` A **FortiFlex** entitlement
 instead supplies a token — `execute vm-license <FortiFlex-token>`.
 
-**After either path**, confirm the unit is licensed and pull current FortiGuard DBs:
+**After either path**, confirm the unit is licensed, then force a FortiGuard update:
 
 ```text
 FGT-LAB-01 # get system status | grep -i license
@@ -256,11 +256,18 @@ FGT-LAB-01 # execute update-now
 FGT-LAB-01 # diagnose autoupdate versions
 ```
 
-`License Status` flips `Invalid → Valid`, the resource cap rises to the licensed
-CPU/RAM, and the AV/IPS databases advance from their stale factory versions. FortiOS's
-built-in `grep` is limited — a **single** pattern with options `-i -n -v -f -c -A -B -C`,
-no `-E`/alternation (`grep -iE "License|Serial"` returns `grep: invalid option -- 'E'`),
-and no piping to `head`/`awk`/`sed` — so grep one term per line, as above.
+`License Status` flips `Invalid → Valid` and the resource cap rises to the licensed
+CPU/RAM. **A free evaluation stops there for signatures.** It carries no FortiGuard
+subscription — every entry in `diagnose autoupdate versions` reads `Contract Expiry
+Date: n/a` — so even with full internet reachability (`execute ping 208.67.222.222`
+and `execute ping google.com` both succeed) `execute update-now` returns `Result:
+Connectivity failure`, the `FDS Address` stays empty (a unit without a subscription is
+assigned no FortiGuard Distribution Server), and the AV/IPS/AppCtrl databases remain frozen at their
+factory versions (Virus-DB 2018, IPS/AppCtrl 2015). Current signatures require a **paid
+FortiGuard contract**, not just a valid license. FortiOS's built-in `grep` is limited —
+a **single** pattern with options `-i -n -v -f -c -A -B -C`, no `-E`/alternation
+(`grep -iE "License|Serial"` returns `grep: invalid option -- 'E'`), and no piping to
+`head`/`awk`/`sed` — so grep one term per line, as above.
 
 ### Registering with FortiCare and licensing
 
@@ -571,9 +578,14 @@ execute update-now
 diagnose autoupdate versions
 ```
 
-**Expected result:** a registered serial, contracts with future expiry, and current
-AV/IPS DB versions after `execute update-now` — FortiGuard licensing is what feeds
-antivirus, IPS, web-filter, and application-control signatures.
+**Expected result:** the license and serial confirmed. On a **contracted** unit,
+`execute update-now` pulls current signatures and `diagnose autoupdate versions` shows
+contracts with future expiry — FortiGuard licensing is what feeds antivirus, IPS,
+web-filter, and application-control signatures. On a **free evaluation** there is no
+FortiGuard subscription: every entry reads `Contract Expiry Date: n/a`, `execute
+update-now` returns `Result: Connectivity failure` even when the box has working
+internet, and the DBs stay frozen at their factory versions. Signature currency needs a
+paid contract, not just a valid license.
 
 **Negative test:** run security profiles with an expired FortiGuard contract; signature
 DBs stop updating and new threats pass — the license state (this lab) governs
