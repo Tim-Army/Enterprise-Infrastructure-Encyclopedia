@@ -171,13 +171,12 @@ of baseline hardening.
 
 A FortiGate-VM boots unlicensed — `get system status` reads
 `License Status: Invalid` — and takes its VM license one of two ways from the CLI.
-Both require the appliance to already have working DNS, a default route, and TLS 1.2
-reachability to Fortinet's servers, so complete the interface, route, and DNS/NTP
-steps above first.
+Both need working DNS, a default route, and TLS 1.2 reachability to Fortinet's
+servers, so complete the interface, route, and DNS/NTP steps above first.
 
-**Path A — restore a license *file*.** A purchased VM license, and the free trial's
-license once you have downloaded its `.lic`, is a file you stage on a TFTP (or FTP)
-server and restore. FortiOS validates it and **reboots licensed**:
+**Path A — restore a purchased license *file* (`.lic`).** A purchased VM license is
+delivered as a `.lic` file. Stage it on a TFTP (or FTP) server and restore it; FortiOS
+validates the file and **reboots licensed**:
 
 ```text
 FGT-LAB-01 # execute restore vmlicense tftp <serial>.lic 10.0.0.50
@@ -186,33 +185,64 @@ Do you want to continue? (y/n) y
 ```
 
 `execute restore vmlicense ftp <file> <server> [<user> <password>]` and a local
-`usb` path are the other sources. After the reboot, `get system status` reports
-`License Status: Valid` and the resource cap rises to the licensed CPU/RAM.
+`usb` path are the other sources.
 
-**Path B — activate the free evaluation by serial.** The free FGVMEV evaluation has
-no file to restore: associate the VM's serial (it begins `FGVMEV`) with a FortiCare
-account on the support portal, then let the appliance pull its entitlement and force
-the check from the CLI:
+**Path B — download the license from FortiCare with `execute vm-license`.** This is how
+the **free evaluation** activates — a trial has **no `.lic` file and no token**.
+Register the serial (it begins `FGVMEV`) with your FortiCloud/FortiCare account, stage
+that same account's credentials on the FortiGate, then have it download and apply the
+entitlement:
 
 ```text
-FGT-LAB-01 # execute update-now
+FGT-LAB-01 # execute vm-license-options account-id <account-id>
+FGT-LAB-01 # execute vm-license-options account-password <account-password>
+FGT-LAB-01 # execute vm-license
+This VM is using the evaluation license. This license does not expire.
+Limitations of the Evaluation VM license include:
+  1.Support for low encryption operation only
+  2.Maximum of 1 CPU and 2GiB of memory
+  3.Maximum of three interfaces, firewall policies, and routes each
+  4.No FortiCare Support
+This operation will reboot the system !
+Do you want to continue? (y/n) y
+```
+
+`execute vm-license` is *Download VM license from FortiCare* — it authenticates with the
+staged credentials, pulls the license bound to your registered serial, and **reboots
+licensed**. For a trial it prints the evaluation banner shown above and confirms *this
+license does not expire* — the free eval is now permanent, not the old 15-day term. Its
+four printed limits are exactly the gotchas the rest of this chapter runs into:
+low-encryption only (no strong crypto), 1 CPU / 2 GB, three interfaces / policies /
+routes each, and no FortiCare support. Run `execute vm-license` bare with no account-id
+staged and it replies `Please input account-id by execute vm-license-options
+account-id.` A **FortiFlex** entitlement instead supplies a token —
+`execute vm-license <FortiFlex-token>`, or stage it with
+`execute vm-license-options token <token>`.
+
+The `execute vm-license-options` tree also carries `proxy`, `government`, `show`
+(review what is staged), `reset`, and the download `count <n>` (0 = infinite) and
+`interval <sec>` (1-3600, default 60). `execute vm-license-options show` lists every
+staged value **including the account password in clear text**, so run
+`execute vm-license-options reset` once the license downloads — especially on a shared
+or session-logged box.
+
+**After either path**, confirm the unit is licensed and pull current FortiGuard DBs:
+
+```text
 FGT-LAB-01 # get system status | grep -i license
+License Status: Valid
 FGT-LAB-01 # get system status | grep -i serial
+FGT-LAB-01 # execute update-now
 FGT-LAB-01 # diagnose autoupdate versions
 ```
 
-Serial registration itself is a web step — there is no CLI command that binds a fresh
-serial to a FortiCare account; the CLI only forces the entitlement pull and confirms
-the result. Note FortiOS's built-in `grep` is a limited implementation: it takes a
-**single** pattern and supports only `-i -n -v -f -c -A -B -C`, with **no `-E` or
-alternation** and no piping to `head`/`awk`/`sed`. `grep -iE "License|Serial"` returns
-`grep: invalid option -- 'E'` — grep one term per line instead, as above.
+`License Status` flips `Invalid → Valid`, the resource cap rises to the licensed
+CPU/RAM, and the AV/IPS databases advance from their stale factory versions. FortiOS's
+built-in `grep` is limited — a **single** pattern with options `-i -n -v -f -c -A -B -C`,
+no `-E`/alternation (`grep -iE "License|Serial"` returns `grep: invalid option -- 'E'`),
+and no piping to `head`/`awk`/`sed` — so grep one term per line, as above.
 
 ### Registering with FortiCare and licensing
-
-```text
-FGT-LAB-01 # execute update-now
-```
 
 Device registration itself is normally completed through the GUI's
 **Dashboard > Licenses** widget (or the FortiCare portal directly), where
