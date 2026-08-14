@@ -218,7 +218,7 @@ stated scope (the Azure AI service surface, Foundry, and agent building)
 against what is verifiable today. **Re-check each exam guide before relying
 on this**, and treat generative-AI content as the fastest-moving in the
 program. Mapping is in the
-[volume README](../README.md#lab-coverage--the-ai-centric-associate-tier).
+[volume README](../README.md#lab-coverage-the-ai-centric-associate-tier-ai-103-ai-200-ab-620).
 
 **Cost note:** these labs are availability checks and one small Azure AI
 resource. Azure OpenAI / AI inference bills per token — Lab 6.9 deletes

@@ -140,6 +140,26 @@ rewrite_and_demote() {
   printf '%s' "$demoted"
 }
 
+# Single-page variants (lib/singlepage_rewrite.py): for the combined
+# whole-volume page, rewrite cross-chapter/README links to in-page anchors and
+# inject per-chapter namespaced heading ids (#cNN-...) so every reference
+# resolves on the one page. Writes to the same $link_tmp/<src> location as
+# rewrite_file so "../../../diagrams/..." still resolves.
+rewrite_single() {
+  local src="$1" vol="$2" dest
+  dest="$link_tmp/$src"
+  mkdir -p "$(dirname "$dest")"
+  python3 "$repo_root/scripts/bash/lib/singlepage_rewrite.py" "$src" "$vol" > "$dest"
+  printf '%s' "$dest"
+}
+rewrite_single_and_demote() {
+  local rewritten demoted
+  rewritten="$(rewrite_single "$@")"
+  demoted="${rewritten}.demoted.md"
+  python3 "$repo_root/scripts/bash/lib/demote_headings.py" "$rewritten" > "$demoted"
+  printf '%s' "$demoted"
+}
+
 first_line_title() {
   head -1 "$1" | sed -E 's/^# (Chapter [0-9]+: )?//'
 }
@@ -313,12 +333,12 @@ build_volume_html() {
   volume_slug="$(basename "$volume_dir")"
   title="$(first_line_title "$volume_dir/README.md")"
   mkdir -p "output/html/$volume_slug"
-  rewritten_readme="$(rewrite_file "$volume_dir/README.md" html-flat "$volume_slug")"
+  rewritten_readme="$(rewrite_single "$volume_dir/README.md" "$volume_slug")"
   chapters=()
   while IFS= read -r f; do chapters+=("$f"); done < <(find "$volume_dir/chapters" -name "*.md" | sort)
   rewritten_chapters=()
   for ch in "${chapters[@]}"; do
-    rewritten_chapters+=("$(rewrite_and_demote "$ch" html-flat "$volume_slug")")
+    rewritten_chapters+=("$(rewrite_single_and_demote "$ch" "$volume_slug")")
   done
   rewritten_title_page="$(volume_title_page_for "$title")"
   # toc-depth 3: with chapters demoted, the volume is H1, chapters are H2, and
@@ -407,18 +427,12 @@ elif [[ -n "$volume" ]]; then
     exit 1
   fi
   echo "build-book.sh: building volume $volume"
-  for ch in "$volume_dir"/chapters/*.md; do
-    [[ "$want_html" -eq 1 ]] && build_chapter_html "$ch" "$volume"
-  done
   [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
 else
   volume_count="$(find volumes -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
   echo "build-book.sh: building all $volume_count volumes and the complete series"
   for volume_dir in volumes/*/; do
     volume_slug="$(basename "${volume_dir%/}")"
-    for ch in "$volume_dir"chapters/*.md; do
-      [[ "$want_html" -eq 1 ]] && build_chapter_html "$ch" "$volume_slug"
-    done
     [[ "$want_html" -eq 1 ]] && build_volume_html "$volume_dir"
     echo "build-book.sh: built $volume_slug"
   done

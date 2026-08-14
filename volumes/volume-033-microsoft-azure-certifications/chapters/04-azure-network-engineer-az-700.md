@@ -217,7 +217,7 @@ These labs cover the **AZ-700 "Skills measured" outline** (Network
 Engineer), domain by domain at Microsoft's weights. Each is a walkthrough:
 run the `az network` command and compare against the stated result.
 Mapping is in the
-[volume README](../README.md#lab-coverage--az-700-network-engineer).
+[volume README](../README.md#lab-coverage-az-700-network-engineer).
 
 **Cost note:** VNets, subnets, peerings, NSGs, and route tables are free.
 A Standard load balancer and a private DNS zone are negligible. A VPN

@@ -199,7 +199,7 @@ reproductions of any Microsoft exam item)*
 These labs cover the **AZ-104 "Skills measured" outline**, domain by
 domain, at its published weights. Each is a walkthrough: run the `az` CLI
 command and compare against the stated result. Mapping is in the
-[volume README](../README.md#lab-coverage--az-104-azure-administrator).
+[volume README](../README.md#lab-coverage-az-104-azure-administrator).
 
 **Cost note:** a storage account, a small VM, a VNet, and a Recovery
 Services vault are minimal but **not free**. Lab 3.24 deletes the whole

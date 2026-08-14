@@ -207,7 +207,7 @@ Workspace Administrator** is administered in the Admin console and Admin
 SDK, **not** `gcloud` — so its labs are console-and-API walkthroughs with
 the exact navigation and the observable result, since a Google Cloud
 project cannot stand in for a Workspace tenant. Mapping is in the
-[volume README](../README.md#lab-coverage--associate-workspace-administrator-and-data-practitioner).
+[volume README](../README.md#lab-coverage-associate-workspace-administrator-and-data-practitioner).
 
 **Cost note:** BigQuery dry runs and public-dataset reads are free.
 Workspace labs need a Workspace tenant (a trial tenant, never production).

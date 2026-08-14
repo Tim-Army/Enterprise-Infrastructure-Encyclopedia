@@ -198,7 +198,7 @@ labs read the platform facts the exam asks about (there is no build to
 perform). **Generative AI Leader** is exercised against its published
 guide sections (fundamentals, Google Cloud's offerings, techniques,
 business strategy). Mapping is in the
-[volume README](../README.md#lab-coverage--foundational).
+[volume README](../README.md#lab-coverage-foundational).
 
 **Cost note:** every command here is a read or an API-availability check.
 Nothing billable is created; there is nothing to clean up beyond the

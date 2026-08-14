@@ -92,7 +92,7 @@ volume_title() {
   if [[ -f "$output/interactive/cisco-u-learning-paths.html" ]]; then
     echo "<h2>Interactive companions</h2>"
     echo "<ul>"
-    echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-997-master-appendices/01-appendix-cisco-u-learning-paths-and-continuing-education-credits.html\">Master Appendices, Chapter 01</a>)</li>"
+    echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-997-master-appendices/Enterprise-Infrastructure-Encyclopedia.html#c01\">Master Appendices, Chapter 01</a>)</li>"
     echo "</ul>"
   fi
   echo "<h2>Volumes</h2>"
@@ -123,8 +123,9 @@ for volume_dir in volumes/*/; do
     echo "<ul>"
     for chapter in "$volume_dir"chapters/*.md; do
       base="$(basename "$chapter" .md)"
+      num="${base%%-*}"
       chtitle="$(head -1 "$chapter" | sed -E 's/^# //')"
-      echo "<li><a href=\"$base.html\">$chtitle</a></li>"
+      echo "<li><a href=\"Enterprise-Infrastructure-Encyclopedia.html#c$num\">$chtitle</a></li>"
     done
     echo "</ul>"
     page_tail

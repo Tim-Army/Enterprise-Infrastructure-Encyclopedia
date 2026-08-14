@@ -225,7 +225,7 @@ reproductions of any Google exam item)*
 These labs cover **every topic in the Professional Cloud Security Engineer
 exam guide**, section by section, and touch the Security Operations
 Engineer surface (detection and response) where it adjoins. Mapping is in
-the [volume README](../README.md#lab-coverage--security-professionals).
+the [volume README](../README.md#lab-coverage-security-professionals).
 
 **Cost note:** IAM, org policy, and audit-log reads are free. One KMS key
 (a small monthly per-version charge) and one bucket are the only billable

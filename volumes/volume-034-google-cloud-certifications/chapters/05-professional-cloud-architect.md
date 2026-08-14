@@ -261,7 +261,7 @@ several labs produce the *evidence* a design decision rests on and then
 record the decision — that is the skill under test, and it is still a
 walkthrough: run the command, compare the stated result, write the
 conclusion. Mapping is in the
-[volume README](../README.md#lab-coverage--professional-cloud-architect).
+[volume README](../README.md#lab-coverage-professional-cloud-architect).
 
 **Cost note:** these labs are almost entirely read operations and design
 artifacts. The only billable resource is the Lab 5.9 bucket. Lab 5.19

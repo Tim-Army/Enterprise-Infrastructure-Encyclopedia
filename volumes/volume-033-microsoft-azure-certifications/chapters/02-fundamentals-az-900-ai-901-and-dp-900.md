@@ -194,7 +194,7 @@ non-relational; analytics). Fundamentals are knowledge credentials, so
 these read the platform facts each exam asks about rather than building
 production systems — each remains a walkthrough with the command and the
 expected result. Mapping is in the
-[volume README](../README.md#lab-coverage--fundamentals).
+[volume README](../README.md#lab-coverage-fundamentals).
 
 **Cost note:** every command here is a read or an availability check.
 Nothing billable is created.

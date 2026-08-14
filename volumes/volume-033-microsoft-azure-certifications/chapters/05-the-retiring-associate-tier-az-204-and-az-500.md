@@ -229,7 +229,7 @@ certifications: **AZ-500** (Security Engineer) domain by domain, and
 current, so these labs are worth doing as professional development even
 after the credentials close. Each is a walkthrough with the runnable
 command and expected result. Mapping is in the
-[volume README](../README.md#lab-coverage--the-retiring-associate-tier).
+[volume README](../README.md#lab-coverage-the-retiring-associate-tier-az-204-az-500).
 
 **Cost note:** a Key Vault, a storage account, and a Function App
 (consumption plan) are the billable items — all minimal. Lab 5.15 deletes

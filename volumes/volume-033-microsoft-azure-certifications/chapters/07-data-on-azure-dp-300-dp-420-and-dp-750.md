@@ -218,7 +218,7 @@ These labs cover the exam-guide domains for the data track: **DP-300**
 by domain, and the newer **DP-750** (Databricks Data Engineer) at section
 level. Each is a walkthrough with the runnable command and the expected
 result. Mapping is in the
-[volume README](../README.md#lab-coverage--data-on-azure).
+[volume README](../README.md#lab-coverage-data-on-azure-dp-300-dp-420-dp-750).
 
 **Cost note:** an Azure SQL Database (Basic tier) and a Cosmos DB
 serverless account are the billable items — both minimal. Lab 7.16 deletes

@@ -234,7 +234,7 @@ professional certifications: **Network Engineer** and **DevOps Engineer**
 topic by topic, and **Developer** at section level (its surface is the
 same Cloud Run / GKE / integration ground the other two exercise).
 Mapping is in the
-[volume README](../README.md#lab-coverage--infrastructure-professionals).
+[volume README](../README.md#lab-coverage-infrastructure-professionals).
 
 **Cost note:** VPC, subnets, routes, and firewall rules are free. Two
 `e2-micro` instances and one Cloud Run service are minimal. Lab 6.22

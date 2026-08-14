@@ -98,6 +98,17 @@ def rewrite(content: str, source_file: str, mode: str, current_volume: str) -> s
         target = resolve_chapter_target(source_file, target_path)
         if target is not None:
             target_volume, target_chapter = target
+            # The site is now one page per volume, so cross-chapter references
+            # resolve to a namespaced in-page anchor (#cNN[-frag]) on that
+            # volume's combined page — see lib/singlepage_rewrite.py.
+            if mode == "epub-absolute":
+                num = target_chapter.split("-", 1)[0]
+                frag = fragment[1:] if fragment.startswith("#") else ""
+                anchor = f"#c{num}-{frag}" if frag else f"#c{num}"
+                return (
+                    f"]({PORTAL_BASE_URL}/html/{target_volume}/"
+                    f"Enterprise-Infrastructure-Encyclopedia.html{anchor})"
+                )
             if mode == "html-flat":
                 if target_volume == current_volume:
                     new_target = f"{target_chapter}.html"
@@ -105,14 +116,19 @@ def rewrite(content: str, source_file: str, mode: str, current_volume: str) -> s
                     new_target = f"../{target_volume}/{target_chapter}.html"
             elif mode == "html-root":
                 new_target = f"{target_volume}/{target_chapter}.html"
-            elif mode == "epub-absolute":
-                new_target = f"{PORTAL_BASE_URL}/html/{target_volume}/{target_chapter}.html"
             else:
                 raise ValueError(f"unknown mode: {mode}")
             return f"]({new_target}{fragment})"
 
         volume_target = resolve_volume_readme_target(source_file, target_path)
         if volume_target is not None:
+            if mode == "epub-absolute":
+                frag = fragment[1:] if fragment.startswith("#") else ""
+                tail = f"#readme-{frag}" if frag else ""
+                return (
+                    f"]({PORTAL_BASE_URL}/html/{volume_target}/"
+                    f"Enterprise-Infrastructure-Encyclopedia.html{tail})"
+                )
             if mode == "html-flat":
                 if volume_target == current_volume:
                     new_target = "Enterprise-Infrastructure-Encyclopedia.html"

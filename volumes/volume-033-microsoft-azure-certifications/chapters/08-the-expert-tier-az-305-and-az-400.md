@@ -267,7 +267,7 @@ most labs read the evidence a design decision rests on and then record the
 decision with its rejected alternative — that is the skill under test, and
 it is still a walkthrough: run the command, compare the result, write the
 conclusion. Mapping is in the
-[volume README](../README.md#lab-coverage--az-305-solutions-architect).
+[volume README](../README.md#lab-coverage-az-305-solutions-architect).
 
 **Cost note:** these labs are almost entirely read operations and `what-if`
 previews. The only billable resource is the Lab 8.7 storage account.

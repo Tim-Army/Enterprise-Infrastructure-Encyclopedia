@@ -223,7 +223,7 @@ this chapter. **Professional Data Engineer** is covered topic by topic
 (its guide publishes 19 sub-topics); **Cloud Database Engineer** and
 **Machine Learning Engineer** are covered at section level with their
 published weights. Mapping is in the
-[volume README](../README.md#lab-coverage--data-and-ml-professionals).
+[volume README](../README.md#lab-coverage-data-and-ml-professionals).
 
 **Cost note:** BigQuery dry runs are free and used throughout. The public
 datasets cost nothing to query at these sizes. Lab 8.20 deletes

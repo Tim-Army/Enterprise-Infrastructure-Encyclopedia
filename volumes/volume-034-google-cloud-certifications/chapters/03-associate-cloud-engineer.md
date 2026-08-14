@@ -219,7 +219,7 @@ reproductions of any Google exam item)*
 These labs cover **every topic in the Associate Cloud Engineer exam
 guide**, section by section. Each is a walkthrough: run the command shown
 and compare against the stated expected result. The topic-to-lab mapping
-is in the [volume README](../README.md#lab-coverage--associate-cloud-engineer).
+is in the [volume README](../README.md#lab-coverage-associate-cloud-engineer).
 
 **Cost note:** `e2-micro` instances, a small bucket, one Cloud SQL
 instance, and a single-node GKE Autopilot cluster are minimal but **not
