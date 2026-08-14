@@ -552,25 +552,39 @@ the gns3 image copied in Lab 8.5 needs no unpacking.
 cd /river/import
 tar zxf fortinet-FGT-v7.6.2.F-build3462.tgz     # -> fortinet-FGT-.../virtioa.qcow2
 
-# 2. Create a diskless VM shell: 2 vCPU, 2 GB RAM, two NICs on the VLAN-aware bridge
-qm create 120 --name fortigate --memory 2048 --cores 2 --ostype l26 \
-  --net0 virtio,bridge=vmbr0,tag=3 \
-  --net1 virtio,bridge=vmbr0,tag=6 \
-  --scsihw virtio-scsi-single
+# 2. Retrieve the first available VM ID: Proxmox returns the lowest unused ID
+#    >= 100 across the whole cluster. Capture it so every step below reuses it
+#    (hard-code your own ID instead if you prefer a fixed number).
+ID=$(pvesh get /cluster/nextid)                 # e.g. 123
+echo "using VMID $ID"
 
-# 3. Import the staged appliance disk and attach it as the virtio boot disk
-qm importdisk 120 /river/import/fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
-qm set 120 --virtio0 river:vm-120-disk-0 --boot order=virtio0
+# 3. Create the VM shell with virtual hardware identical to FGT-3 (VMID 122):
+#    1 vCPU pinned to the host CPU, 2 GB RAM, ostype "other" (FortiOS is
+#    FreeBSD-based), a virtio-scsi controller, a serial console, and THREE
+#    virtio NICs — port1 on the flat vmbr1 outside/management segment, port2
+#    and port3 on the vmbr2 trunk tagged to VLANs 2001 and 2002.
+qm create "$ID" --name fortigate \
+  --cores 1 --cpu host --memory 2048 --ostype other \
+  --scsihw virtio-scsi-single --serial0 socket --vga std \
+  --net0 virtio,bridge=vmbr1 \
+  --net1 virtio,bridge=vmbr2,tag=2001 \
+  --net2 virtio,bridge=vmbr2,tag=2002
 
-# 4. Add a 30 GB disk FortiOS uses for logs and reports, then start
-qm set 120 --virtio1 river:30
-qm start 120 ; qm status 120
+# 4. Import the staged appliance disk and attach it as the virtio boot disk
+qm importdisk "$ID" /river/import/fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
+qm set "$ID" --virtio0 river:vm-"$ID"-disk-0 --boot order=virtio0
+
+# 5. Add a 30 GB disk FortiOS uses for logs and reports, then start
+qm set "$ID" --virtio1 river:30
+qm start "$ID" ; qm status "$ID"
 ```
 
-**Expected result:** VM 120 boots the appliance from its imported virtio disk to the
-FortiGate login prompt (open the Proxmox **Console**), port1 on VLAN 3 and port2 on
-VLAN 6 — `qm importdisk` is what turns a vendor qcow2 (rather than an installer ISO)
-into a bootable VM disk; the appliance ships its OS pre-installed on that disk.
+**Expected result:** the VM boots the appliance from its imported virtio disk to the
+FortiGate login prompt (open the Proxmox **Console**) — port1 on the flat `vmbr1`
+outside/management segment, port2 on VLAN 2001 and port3 on VLAN 2002 of the `vmbr2`
+trunk, the same virtual hardware the live **FGT-3** (VMID 122) runs. `qm importdisk` is
+what turns a vendor qcow2 (rather than an installer ISO) into a bootable VM disk; the
+appliance ships its OS pre-installed on that disk.
 
 **Where the disk actually lands.** On a **directory** storage like `river`, the
 imported disk is a real `.qcow2` file at
@@ -581,8 +595,8 @@ to `template/iso` for ISOs and `dump` for backups. The file left in
 rather than assume it:
 
 ```bash
-pvesm path river:vm-120-disk-0             # prints the on-disk path
-qm config 120 | grep -E 'scsi0|virtio0'    # the storage:volume the VM uses
+pvesm path river:vm-"$ID"-disk-0           # prints the on-disk path
+qm config "$ID" | grep -E 'scsi0|virtio0'  # the storage:volume the VM uses
 ```
 
 Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
@@ -596,7 +610,7 @@ file instead of the full disk image; the VM comes up to *no bootable device* or 
 kernel panic — an imported appliance must sit on the bus it expects (virtio here) and
 use the full disk image, not the firmware-upgrade package.
 
-**Rollback:** `qm stop 120; qm destroy 120 --purge` (the `--purge` also removes the
+**Rollback:** `qm stop "$ID"; qm destroy "$ID" --purge` (the `--purge` also removes the
 imported disks); `rm -rf /river/import/fortinet-FGT-v7.6.2.F-build3462*` clears the
 staged files.
 

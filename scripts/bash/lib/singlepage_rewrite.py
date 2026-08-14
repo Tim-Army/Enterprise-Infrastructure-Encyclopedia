@@ -66,13 +66,27 @@ def namespace_for(source_file: str):
     return None
 
 
+FENCE_RE = re.compile(r"^\s*(```+|~~~+)")
+
+
 def inject_heading_ids(content: str, ns: str) -> str:
     """First heading -> {#ns}; each later heading -> {#ns-<slug>} with the
-    same per-file duplicate suffixing Pandoc applies."""
+    same per-file duplicate suffixing Pandoc applies. Lines inside a fenced
+    code block are skipped: a `# comment` there is code, not a heading, and
+    Pandoc does not id it (matching that keeps our per-file dedup aligned with
+    Pandoc's, and avoids injecting {#...} into rendered code)."""
     out = []
     seen = {}
     first = True
+    in_fence = False
     for line in content.split("\n"):
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            out.append(line)
+            continue
+        if in_fence:
+            out.append(line)
+            continue
         m = HEADING_RE.match(line)
         if not m:
             out.append(line)
