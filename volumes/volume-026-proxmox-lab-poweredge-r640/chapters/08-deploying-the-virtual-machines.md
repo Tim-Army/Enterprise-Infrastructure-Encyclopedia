@@ -661,10 +661,25 @@ reachable from any host on that segment:
 ```text
 FortiGate-VM64-KVM login: admin
 Password:                         # empty on a fresh unit — press Enter
+Verifying password...
+
 You are forced to change your password. Please input a new password.
-New Password:                     # set it (this lab: ISEisC00L123@2026)
+According to the password policy enforced on this device, please change your password!
+New password must conform to the following policy:
+minimum-length=12 upper-case-letter=1 lower-case-letter=1 number=1 non-alphanumeric=1
+
+New Password:                     # must satisfy the policy above
 Confirm Password:
+Verifying password...
+Welcome!
+
+FortiGate-VM64-KVM #              # logged in at the FortiOS CLI
 ```
+
+FortiOS enforces a first-login password policy: at least 12 characters with an
+upper-case letter, a lower-case letter, a digit, and a non-alphanumeric symbol. This
+lab's password, `ISEisC00L123@2026`, satisfies it (17 chars; `I/S/E/C/L`, `i/s`,
+digits, and `@`).
 
 ```bash
 # Give port1 a static management IP and open admin access on the mgmt segment.
@@ -686,17 +701,65 @@ config router static
 end
 ```
 
-Confirm firmware, serial, and evaluation-license state, then test reachability:
+On the console the prompt descends through each config context as you go —
+`FortiGate-VM64-KVM (interface) #`, then `FortiGate-VM64-KVM (port1) #` — so you can
+see where you are. Every field is assigned with `set`: typing a bare
+`ip 10.30.99.101/24` (no `set`) returns `Unknown action 0`. `next` saves the entry
+and steps back up a level; `end` leaves the config context. On the static route,
+`next` also prints `The destination is set to 0.0.0.0/0 which means all IP
+addresses` — leaving the destination unset is exactly what makes entry `1` the
+default route.
+
+Set the baseline system settings — hostname, time zone, DNS resolvers, and NTP:
 
 ```bash
-get system status
-# Version : FortiGate-VM64-KVM v7.6.7 build...
-# Serial-Number : FGVMEV...
-# License Status : Eval        (may read "Warning" until the license is activated)
+config system global
+    set hostname "FGT-101"
+    set timezone UTC
+end
 
-execute ping 10.30.99.1
-# 5 packets transmitted, 5 packets received, 0% packet loss
+config system dns
+    set primary 208.67.222.222        # OpenDNS; use your own resolvers
+    set secondary 208.67.220.220
+end
+
+config system ntp
+    set ntpsync enable
+    set type fortiguard               # sync to FortiGuard's NTP servers
+end
 ```
+
+Setting the hostname immediately changes the CLI prompt — `FortiGate-VM64-KVM #`
+becomes `FGT-101 #`. `set timezone ?` lists every IANA zone (tab-completable); this
+lab uses `UTC`. Accurate time matters: NTP keeps log timestamps and certificate-
+validity checks correct, so enable `ntpsync` even before the unit is licensed.
+
+Confirm firmware, serial, resource limits, and license state, then test reachability
+(only the notable lines of `get system status` are shown):
+
+```text
+FortiGate-VM64-KVM # get system status
+Version: FortiGate-VM64-KVM v7.6.7,build3704,260601 (GA.M)
+Serial-Number: FGVMEV...                              # your eval serial differs
+License Status: Invalid                              # fresh VM: unregistered (see below)
+VM Resources: 1 CPU/1 allowed, 1995 MB RAM/2048 MB allowed
+Log hard disk: Available                             # the 30 GB virtio1 disk
+Operation Mode: NAT
+Current HA mode: standalone
+
+FortiGate-VM64-KVM # execute ping 10.30.99.1
+PING 10.30.99.1 (10.30.99.1): 56 data bytes
+64 bytes from 10.30.99.1: icmp_seq=0 ttl=64 time=0.3 ms
+--- 10.30.99.1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+```
+
+Two things to read here. `VM Resources: 1 CPU/1 allowed ... 2048 MB allowed` is the
+evaluation license's hard cap — the reason this build (and FGT-3) is sized at 1 vCPU
+/ 2 GB; exceed it and FortiOS refuses to use the extra. `License Status: Invalid` is
+**expected on a brand-new VM** — the eval license is not yet registered, so features
+that need FortiGuard (AV/IPS updates, web filtering) stay inactive until you register
+the unit with FortiCare; basic routing, firewalling, and management all work meanwhile.
 
 From a host on the `vmbr1` segment, browse to `https://10.30.99.101` and sign in as
 `admin` with the password you just set — the FortiOS GUI confirms the appliance is up,
@@ -712,10 +775,14 @@ use the full disk image, not the firmware-upgrade package.
 imported disks); `rm -rf /river/import/import/fortinet-FGT-v7.6.2.F-build3462*` clears the
 staged files.
 
-**Next:** activating the evaluation license (FortiCloud registration), moving to a
-full production license, and hardening management access for this FortiGate-VM are
-covered in [Volume XIX (Fortinet NSE Certification Program), Chapter 04, Lab
-4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
+**Next:** activating the evaluation license (registering the `FGVMEV` serial with
+FortiCare) and hardening management access for this FortiGate-VM are covered in
+[Volume XIX (Fortinet NSE Certification Program), Chapter
+04](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md)
+— see its "FortiGuard licensing model" and "Registering with FortiCare and licensing"
+sections and **Lab 4.2 (Licensing and FortiGuard registration)**, then **Lab 4.3
+(Harden administrative access)**. That chapter also documents the eval gotchas — the
+3-interface budget and the GUI firmware-upgrade block on an evaluation VM.
 
 ## Lab Verification
 

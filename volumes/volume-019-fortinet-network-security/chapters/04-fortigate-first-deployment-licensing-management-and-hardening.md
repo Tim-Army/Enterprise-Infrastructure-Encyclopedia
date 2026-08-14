@@ -167,6 +167,43 @@ permitted on this interface; only `https`, `ssh`, and `ping` are enabled
 here — `http` (unencrypted) and `telnet` are deliberately omitted as part
 of baseline hardening.
 
+### Licensing a FortiGate-VM from the CLI
+
+A FortiGate-VM boots unlicensed — `get system status` reads
+`License Status: Invalid` — and takes its VM license one of two ways from the CLI.
+Both require the appliance to already have working DNS, a default route, and TLS 1.2
+reachability to Fortinet's servers, so complete the interface, route, and DNS/NTP
+steps above first.
+
+**Path A — restore a license *file*.** A purchased VM license, and the free trial's
+license once you have downloaded its `.lic`, is a file you stage on a TFTP (or FTP)
+server and restore. FortiOS validates it and **reboots licensed**:
+
+```text
+FGT-LAB-01 # execute restore vmlicense tftp <serial>.lic 10.0.0.50
+This operation will overwrite the current VM license and reboot the system!
+Do you want to continue? (y/n) y
+```
+
+`execute restore vmlicense ftp <file> <server> [<user> <password>]` and a local
+`usb` path are the other sources. After the reboot, `get system status` reports
+`License Status: Valid` and the resource cap rises to the licensed CPU/RAM.
+
+**Path B — activate the free evaluation by serial.** The free FGVMEV evaluation has
+no file to restore: associate the VM's serial (it begins `FGVMEV`) with a FortiCare
+account on the support portal, then let the appliance pull its entitlement and force
+the check from the CLI:
+
+```text
+FGT-LAB-01 # execute update-now
+FGT-LAB-01 # get system status | grep -iE "License|Serial"
+FGT-LAB-01 # diagnose autoupdate versions
+```
+
+Serial registration itself is a web step — there is no CLI command that binds a fresh
+serial to a FortiCare account; the CLI only forces the entitlement pull and confirms
+the result.
+
 ### Registering with FortiCare and licensing
 
 ```text
