@@ -308,8 +308,9 @@ layered.
 **Objective:** Read the security technologies a FortiGate integrates.
 
 ```text
-get system status | grep -iE "Virus-DB|IPS-DB|AppCtrl|version"
-diagnose autoupdate versions | head -30
+get system status | grep -i db
+get system status | grep -i version
+diagnose autoupdate versions
 ```
 
 **Expected result:** the AV, IPS, application-control, and web-filter engines/DBs
@@ -328,7 +329,7 @@ consolidates many into one NGFW — the consolidation is the platform's premise.
 
 ```text
 get system status | grep -i "Model"
-diagnose sys fortiguard-service status 2>/dev/null | head
+diagnose sys fortiguard-service status
 ```
 
 **Expected result:** the FortiGate model and its FortiGuard service linkage — the

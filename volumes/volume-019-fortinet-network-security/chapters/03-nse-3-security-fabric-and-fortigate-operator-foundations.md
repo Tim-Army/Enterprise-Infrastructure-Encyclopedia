@@ -331,7 +331,7 @@ config system csf
     set group-name "Lab-Fabric"
     set configuration-sync default
 end
-diagnose sys csf global | head -20
+diagnose sys csf global
 ```
 
 **Expected result:** the FortiGate becomes the Fabric root; `diagnose sys csf global`
@@ -362,7 +362,7 @@ config log memory setting
     set status enable
 end
 diagnose sys session stat
-get system session-info full 2>/dev/null | head -20
+get system session-info full
 ```
 
 **Expected result:** session statistics (setup rate, active session count) and, in the

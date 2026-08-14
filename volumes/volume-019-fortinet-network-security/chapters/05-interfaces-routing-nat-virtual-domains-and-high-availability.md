@@ -661,7 +661,7 @@ config firewall policy
         set service HTTPS
     next
 end
-diagnose firewall vip realservers list 2>/dev/null | head
+diagnose firewall vip realservers list
 ```
 
 **Expected result:** external `203.0.113.80:443` maps to `10.10.10.50:443`; a policy
@@ -706,8 +706,10 @@ publishing a PostgreSQL server through a VIP on the eval-fit two-segment box:
   real-server pool — that table populates only for `server-load-balance` VIPs. Do not read
   `alloc=0` as a fault.
 - *FortiOS `diagnose`/`get` are not a shell.* Appending `2>/dev/null` (or any stderr
-  redirection) throws `command parse error ... Return code -61`; FortiOS supports only its own
-  pipe targets (`| grep`, `| head`, `| grep -f`), not shell redirection.
+  redirection) throws `command parse error ... Return code -61`, and there is no
+  `| head`/`| tail`/`| awk`. The one pipe filter is FortiOS's built-in `grep` — a single
+  pattern with options `-i -n -v -f -c -A -B -C`, no `-E`/alternation (`grep -iE "a|b"`
+  returns `grep: invalid option -- 'E'`); grep one term per line.
 
 ### Lab 5.5 — Virtual domains (VDOMs) (Topic: VDOMs)
 

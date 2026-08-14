@@ -974,7 +974,7 @@ config firewall access-proxy
         end
     next
 end
-diagnose firewall access-proxy list 2>/dev/null | head
+diagnose firewall access-proxy list
 ```
 
 **Expected result:** the app is reached through the access proxy, which checks device

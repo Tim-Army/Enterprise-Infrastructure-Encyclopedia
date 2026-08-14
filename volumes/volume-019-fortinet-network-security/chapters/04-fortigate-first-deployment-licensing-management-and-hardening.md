@@ -196,13 +196,17 @@ the check from the CLI:
 
 ```text
 FGT-LAB-01 # execute update-now
-FGT-LAB-01 # get system status | grep -iE "License|Serial"
+FGT-LAB-01 # get system status | grep -i license
+FGT-LAB-01 # get system status | grep -i serial
 FGT-LAB-01 # diagnose autoupdate versions
 ```
 
 Serial registration itself is a web step — there is no CLI command that binds a fresh
 serial to a FortiCare account; the CLI only forces the entitlement pull and confirms
-the result.
+the result. Note FortiOS's built-in `grep` is a limited implementation: it takes a
+**single** pattern and supports only `-i -n -v -f -c -A -B -C`, with **no `-E` or
+alternation** and no piping to `head`/`awk`/`sed`. `grep -iE "License|Serial"` returns
+`grep: invalid option -- 'E'` — grep one term per line instead, as above.
 
 ### Registering with FortiCare and licensing
 
@@ -510,10 +514,11 @@ off-subnet.
 **Objective:** Verify FortiGuard entitlement and force an update.
 
 ```text
-get system status | grep -iE "License|Serial"
-diagnose fortiguard-service status 2>/dev/null | head
+get system status | grep -i license
+get system status | grep -i serial
+diagnose fortiguard-service status
 execute update-now
-diagnose autoupdate versions | grep -iE "AV|IPS|version|expire" | head
+diagnose autoupdate versions
 ```
 
 **Expected result:** a registered serial, contracts with future expiry, and current
@@ -752,8 +757,8 @@ rebuild a working rule.
 **Objective:** Read the firmware state and validate an upgrade path before applying.
 
 ```text
-get system status | grep -i Version
-diagnose sys firmware upgrade-paths 2>/dev/null | head
+get system status | grep -i version
+diagnose sys firmware upgrade-paths
 execute backup config flash pre-upgrade
 ```
 
@@ -776,9 +781,29 @@ corrupts the config — skipping the documented upgrade path is unsupported.
 get system settings | grep -i opmode
 config system global
     set hostname LAB-FGT-01
-    set timezone 04
+    set timezone America/New_York
 end
-get system global | grep -iE "hostname|timezone"
+get system global | grep -i hostname
+get system global | grep -i timezone
+```
+
+FortiOS 7.x names time zones by **IANA identifier**, not the legacy numeric index —
+`set timezone 04` is rejected on current builds. List the choices with `set timezone ?`
+inside the `config system global` context; it prints every zone (tab-completable):
+
+```text
+FGT-LAB-01 (global) # set timezone ?
+<string>             please input string value
+Africa/Cairo         timezone
+America/New_York     timezone
+America/Chicago      timezone
+America/Denver       timezone
+America/Los_Angeles  timezone
+Europe/London        timezone
+Asia/Tokyo           timezone
+Australia/Sydney     timezone
+UTC                  timezone
+...                  (several hundred more)
 ```
 
 **Expected result:** the mode reported as `nat` (routed, the default) — transparent

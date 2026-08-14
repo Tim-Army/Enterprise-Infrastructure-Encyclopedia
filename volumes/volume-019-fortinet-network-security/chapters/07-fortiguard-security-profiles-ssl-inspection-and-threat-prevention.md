@@ -407,7 +407,7 @@ config webfilter profile
         end
     next
 end
-diagnose test application urlfilter 3 2>/dev/null | head
+diagnose test application urlfilter 3
 ```
 
 **Expected result:** requests to sites FortiGuard rates as category 26 (Malicious
@@ -468,7 +468,7 @@ config application list
         end
     next
 end
-diagnose test application ipsmonitor 2>/dev/null | head
+diagnose test application ipsmonitor
 ```
 
 **Expected result:** applications FortiGuard classifies in category 6 (P2P) are blocked
@@ -527,7 +527,7 @@ config ips sensor
         end
     next
 end
-diagnose ips signature status 2>/dev/null | head
+diagnose ips signature status
 ```
 
 **Expected result:** the sensor blocks traffic matching high/critical FortiGuard IPS
@@ -558,7 +558,7 @@ config firewall policy
         set logtraffic all
     next
 end
-diagnose firewall iprope list 100004 2>/dev/null | head
+diagnose firewall iprope list 100004
 ```
 
 **Expected result:** one policy now applies SSL inspection, AV, web/DNS filtering,

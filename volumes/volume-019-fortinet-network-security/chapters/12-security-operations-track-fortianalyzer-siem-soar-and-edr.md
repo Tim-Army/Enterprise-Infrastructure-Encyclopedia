@@ -205,7 +205,7 @@ config system fortisandbox
     set status enable
     set server 10.0.0.243
 end
-diagnose test application quarantined-files 2>/dev/null | head
+diagnose test application quarantined-files
 ```
 
 **Expected result:** unknown files are submitted to FortiSandbox for detonation; a
@@ -225,7 +225,7 @@ behavior on the endpoint itself — layered detection across network and host.
 # Mirror traffic to FortiNDR (SPAN or FortiGate mirror), then on FortiNDR:
 #   Dashboard > confirm flows are being classified by the neural-network engine
 #   Review a detected anomaly (e.g. beaconing / lateral movement) with its evidence
-diagnose netdetector status 2>/dev/null | head
+diagnose netdetector status
 ```
 
 **Expected result:** FortiNDR classifies mirrored traffic and surfaces behavior-based

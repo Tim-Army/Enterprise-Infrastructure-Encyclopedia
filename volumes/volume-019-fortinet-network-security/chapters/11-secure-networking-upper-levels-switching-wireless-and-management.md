@@ -265,7 +265,7 @@ config router ospf
 end
 get router info ospf neighbor
 get router info routing-table ospf
-diagnose ip route list | head
+diagnose ip route list
 ```
 
 **Expected result:** an OSPF neighbor in `Full` state and OSPF-learned routes in the

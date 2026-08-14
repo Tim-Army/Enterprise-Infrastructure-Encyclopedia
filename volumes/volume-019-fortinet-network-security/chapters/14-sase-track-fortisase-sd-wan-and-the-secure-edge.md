@@ -156,7 +156,7 @@ protects it.
 #   to the site FortiGate, publish an internal app subnet, then from an enrolled endpoint:
 #   - reach the internal app by its private address
 #   - confirm the session traverses FortiSASE -> hub FortiGate -> app
-diagnose vpn tunnel list 2>/dev/null | head   # on the hub FortiGate: SASE tunnel up
+diagnose vpn tunnel list   # on the hub FortiGate: SASE tunnel up
 ```
 
 **Expected result:** remote users reach private applications through FortiSASE without a

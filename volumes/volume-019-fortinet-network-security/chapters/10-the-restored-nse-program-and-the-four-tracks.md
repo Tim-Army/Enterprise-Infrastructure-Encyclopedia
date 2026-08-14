@@ -157,7 +157,7 @@ single common associate exam that all four tracks build on.
 #   SASE               -> remote-access / edge / SD-WAN teams     (Chapter 14)
 # Then inventory what you can lab on:
 get system status | grep -i Model
-diagnose sys fortiguard-service status 2>/dev/null | head
+diagnose sys fortiguard-service status
 ```
 
 **Expected result:** a chosen track aligned to your daily work and a list of the

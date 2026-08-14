@@ -405,8 +405,8 @@ config system csf
     set status enable
     set group-name "Lab-Fabric"
 end
-diagnose sys csf global | head
-execute security-rating run 2>/dev/null || echo "run Security Rating from GUI: Security Fabric > Security Rating"
+diagnose sys csf global
+execute security-rating run
 ```
 
 **Expected result:** the Security Rating audits the Fabric against Fortinet and industry

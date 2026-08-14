@@ -131,7 +131,7 @@ protect, and a client. **Cost:** cloud-marketplace BYOL/PAYG charges apply only 
 
 ```text
 # On FortiWeb: create a Server Pool -> Virtual Server -> Server Policy, then verify:
-diagnose policy total-detail-list 2>/dev/null | head
+diagnose policy total-detail-list
 # From a client, send a benign request and an obvious SQLi probe:
 #   curl "http://<vip>/product?id=1"
 #   curl "http://<vip>/product?id=1' OR '1'='1"
@@ -154,7 +154,7 @@ enforce.
 ```text
 # On FortiMail (gateway mode): set the protected domain and an inbound recipient policy
 #   with antispam + antivirus profiles, then send a test message.
-diagnose system top 2>/dev/null | head
+diagnose system top
 # Send an EICAR attachment and a GTUBE spam-test message; confirm both are caught.
 ```
 
@@ -174,7 +174,7 @@ filtering applies — FortiMail must sit in the mail flow (MX/relay) to inspect.
 ```text
 # On FortiADC: create Real Servers -> Real Server Pool (with an HTTP health check)
 #   -> Virtual Server, then verify:
-diagnose load-balance real-server list 2>/dev/null | head
+diagnose load-balance real-server list
 # Stop one backend and confirm traffic shifts to the healthy member.
 ```
 
@@ -193,14 +193,15 @@ balancing resilient.
 **Objective:** Confirm a cloud-deployed FortiGate-VM's licensing and SDN connector.
 
 ```text
-get system status | grep -iE "License|VM"
+get system status | grep -i license
+get system status | grep -i vm
 config system sdn-connector
     edit aws-sdn
         set type aws
         set use-metadata-iam enable
     next
 end
-diagnose sys sdn-connector status 2>/dev/null | head
+diagnose sys sdn-connector status
 ```
 
 **Expected result:** the FortiGate-VM reports a valid cloud license (BYOL or PAYG) and the
@@ -222,7 +223,7 @@ the cloud changes.
 # FortiCNAPP (Lacework FortiCNAPP): review a compliance finding
 #   (e.g. a public S3 bucket / over-permissive IAM) and its remediation guidance.
 # FortiDDoS: confirm the appliance has learned a traffic baseline, then:
-diagnose ddos setting 2>/dev/null | head
+diagnose ddos setting
 ```
 
 **Expected result:** FortiCNAPP surfaces misconfigurations and risky IAM across cloud
