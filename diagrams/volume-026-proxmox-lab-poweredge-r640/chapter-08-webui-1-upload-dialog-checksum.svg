@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="420" viewBox="0 0 560 420" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="House-style line-art wireframe of the Proxmox VE 9.2.9 Upload dialog for storage 'import' on node proxmox-1. The dialog uploads fortios.qcow2 (File size 117.00 MiB); the Hash algorithm field is set to MD5 and the Checksum field holds the md5sum digest c4459f29cf13c6541dcb4bc44e4f9e4f, both highlighted. A warning notes uploads are stored temporarily in /var/tmp/. Abort and Upload buttons sit at the bottom.">
+  <title>Proxmox Upload dialog with server-side checksum verification</title>
+  <desc>House-style line-art wireframe of the Proxmox VE 9.2.9 Upload dialog on storage 'import', node proxmox-1: File fortios.qcow2, File size 117.00 MiB, Hash algorithm MD5 and the Checksum field filled with the md5sum digest (both highlighted in blue as the integrity-check feature), the /var/tmp temporary-storage warning, and the Abort / Upload buttons.</desc>
+  <rect x="0" y="0" width="560" height="420" fill="#ffffff"/>
+  <text x="30" y="28" text-anchor="start" font-size="13" font-weight="700" fill="#111827">Proxmox VE 9.2.9 — Storage 'import' on node 'proxmox-1' → Upload</text>
+  <rect x="40" y="44" width="480" height="352" rx="6" fill="#ffffff" stroke="#33415c" stroke-width="1.5"/>
+  <rect x="40" y="44" width="480" height="28" rx="6" fill="#f4f7fb" stroke="#33415c" stroke-width="1.5"/>
+  <text x="54" y="63" text-anchor="start" font-size="12" font-weight="700" fill="#1d4ed8">Upload</text>
+  <text x="502" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#6b7280">✕</text>
+  <text x="60" y="104" text-anchor="start" font-size="11" font-weight="700" fill="#374151">File:</text>
+  <rect x="150" y="92" width="256" height="20" rx="3" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+  <text x="158" y="106" text-anchor="start" font-size="10" fill="#6b7280">C:\fakepath\fortios.qcow2</text>
+  <rect x="414" y="92" width="92" height="20" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="460" y="106" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">Select File</text>
+  <text x="60" y="136" text-anchor="start" font-size="11" font-weight="700" fill="#374151">File name:</text>
+  <text x="150" y="136" text-anchor="start" font-size="11" font-weight="400" fill="#111827">fortios.qcow2</text>
+  <text x="60" y="164" text-anchor="start" font-size="11" font-weight="700" fill="#374151">File size:</text>
+  <text x="150" y="164" text-anchor="start" font-size="11" font-weight="400" fill="#111827">117.00 MiB</text>
+  <text x="60" y="192" text-anchor="start" font-size="11" font-weight="700" fill="#374151">MIME type:</text>
+  <text x="150" y="192" text-anchor="start" font-size="11" font-weight="400" fill="#111827">-</text>
+  <text x="60" y="222" text-anchor="start" font-size="11" font-weight="700" fill="#1d4ed8">Hash algorithm:</text>
+  <rect x="150" y="210" width="150" height="20" rx="3" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="158" y="224" text-anchor="start" font-size="10.5" font-weight="600" fill="#1d4ed8">MD5 ▾</text>
+  <text x="60" y="250" text-anchor="start" font-size="11" font-weight="700" fill="#1d4ed8">Checksum:</text>
+  <rect x="150" y="238" width="340" height="20" rx="3" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="158" y="252" text-anchor="start" font-size="10" font-weight="500" fill="#1d4ed8">c4459f29cf13c6541dcb4bc44e4f9e4f</text>
+  <rect x="54" y="272" width="452" height="42" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1.2"/>
+  <text x="66" y="290" text-anchor="start" font-size="10.5" font-weight="400" fill="#92400e">Uploads are stored temporarily in '/var/tmp/', make sure</text>
+  <text x="66" y="305" text-anchor="start" font-size="10.5" font-weight="400" fill="#92400e">there is enough free space.</text>
+  <rect x="336" y="356" width="70" height="24" rx="4" fill="#ffffff" stroke="#6b7280" stroke-width="1.4"/>
+  <text x="371" y="372" text-anchor="middle" font-size="11" font-weight="500" fill="#374151">Abort</text>
+  <rect x="416" y="356" width="90" height="24" rx="4" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="461" y="372" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Upload</text>
+</svg>

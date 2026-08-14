@@ -479,6 +479,14 @@ into the storage's import directory. That folds the transfer and Step 2's
 integrity check into one dialog; a raw disk image needs a storage with the
 **Import** content type, while ISOs go to an ISO-content storage the same way.
 
+![House-style wireframe of the Proxmox VE 9.2.9 Upload dialog on storage 'import', node proxmox-1: File fortios.qcow2, File size 117.00 MiB, Hash algorithm set to MD5, and the Checksum field filled with the md5sum digest (both highlighted); a warning that uploads stage in /var/tmp/, with Abort and Upload buttons.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-08-webui-1-upload-dialog-checksum.svg)
+
+*The Upload dialog: set **Hash algorithm** and paste the `md5sum` (or `shasum -a 256`) digest — Proxmox verifies it before the file is stored.*
+
+![House-style wireframe of the Proxmox Task viewer for the Copy data task, Output tab: the upload staged under /var/tmp/pveupload-, the highlighted line 'calculating checksum ... OK, checksum verified', target node proxmox-1, target file /blue/import/import/fortios.qcow2, the cp command, and a highlighted TASK OK result.](../../../diagrams/volume-026-proxmox-lab-poweredge-r640/chapter-08-webui-2-checksum-verified-task.svg)
+
+*The task log confirms it — `calculating checksum ... OK, checksum verified` — then copies the file into the storage's import directory.*
+
 **`wget` on the node — but mind what it does.** `wget` fetches from an HTTP/FTP
 **server** at a **URL**; it cannot read your workstation's filesystem. Pointing
 it at a local path —
