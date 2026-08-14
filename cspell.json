@@ -1487,6 +1487,7 @@
     "fkservice",
     "fksipnormalizationscript",
     "flagz",
+    "flatkc",
     "fleet",
     "FlexConnect",
     "flexgroup",
@@ -4500,6 +4501,7 @@
     "VMFS",
     "vmfs",
     "vmhba",
+    "vmgenid",
     "vmhost",
     "vmid",
     "vminterface",
@@ -4757,6 +4759,7 @@
     "ztp",
     "ZTSA",
     "zvol",
+    "zvols",
     "zypper"
   ],
   "ignorePaths": [

@@ -450,7 +450,7 @@ disks (`/river/images`):
 
 ```bash
 # On the node (management address 10.30.161.10): a staging dir on the river datastore
-ssh root@10.30.161.10 'mkdir -p /river/import'
+ssh root@10.30.161.10 'mkdir -p /river/import/import'
 ```
 
 **Step 1 — Copy the image from your workstation to the node** with `scp` over
@@ -458,7 +458,7 @@ SSH; the destination is the staging directory you just made:
 
 ```bash
 # From your workstation, where the image lives (for example ~/vm-images/):
-scp ~/vm-images/gns3-appliance.qcow2 root@10.30.161.10:/river/import/
+scp ~/vm-images/gns3-appliance.qcow2 root@10.30.161.10:/river/import/import/
 ```
 
 Run `scp` **on the workstation, not on the node**, and point it at the actual
@@ -496,12 +496,12 @@ reach a web server *on your workstation* that isn't running, and fails with
 download site):
 
 ```bash
-ssh root@10.30.161.10 'wget -O /river/import/appliance.qcow2 https://vendor.example/appliance.qcow2'
+ssh root@10.30.161.10 'wget -O /river/import/import/appliance.qcow2 https://vendor.example/appliance.qcow2'
 ```
 
 To pull a file that only lives on your workstation, you must first serve it —
 `cd ~/vm-images && python3 -m http.server 8000` on the workstation, then
-`wget -O /river/import/appliance.qcow2 http://<workstation-ip>:8000/appliance.qcow2`
+`wget -O /river/import/import/appliance.qcow2 http://<workstation-ip>:8000/appliance.qcow2`
 on the node. That is two moving parts; the `scp` **push** above is one step and
 needs no server, so prefer it for local files.
 
@@ -511,23 +511,23 @@ import:
 
 ```bash
 # On the node:
-ls -lh /river/import/gns3-appliance.qcow2
-sha256sum /river/import/gns3-appliance.qcow2
+ls -lh /river/import/import/gns3-appliance.qcow2
+sha256sum /river/import/import/gns3-appliance.qcow2
 # Compare that hash to the source on your workstation — they must be identical:
 #   sha256sum ~/vm-images/gns3-appliance.qcow2
 ```
 
-**Expected result:** the image sits in `/river/import` on the node with a size
+**Expected result:** the image sits in `/river/import/import` on the node with a size
 and SHA-256 that match the source — staged on the `river` array (not the boot
 device) and integrity-checked, ready to import in Lab 8.6.
 
 **Negative test:** `scp` the image into `/root` or `/var/lib/vz` on the boot
-mirror instead of `/river/import`; a multi-gigabyte image fills the small BOSS
+mirror instead of `/river/import/import`; a multi-gigabyte image fills the small BOSS
 OS device and can wedge the node — staging on the `river` array is what keeps
 the boot device clear. (Equally, a copy whose checksum does not match the
 source yields an unbootable disk once imported.)
 
-**Rollback:** `ssh root@10.30.161.10 'rm -f /river/import/gns3-appliance.qcow2'`
+**Rollback:** `ssh root@10.30.161.10 'rm -f /river/import/import/gns3-appliance.qcow2'`
 (removes the staged copy; nothing else has been created yet).
 
 **See also:** the same transfer step for **every other hypervisor** the
@@ -542,14 +542,14 @@ Proxmox VM. Worked example: **FortiGate-VM 7.6.2**
 (`fortinet-FGT-v7.6.2.F-build3462.tgz`).
 
 **Prerequisite:** the appliance disk image already staged on the node (Lab 8.5),
-in `/river/import`. Here the EVE-NG package unpacks to a `virtioa.qcow2`
+in `/river/import/import`. Here the EVE-NG package unpacks to a `virtioa.qcow2`
 (equivalently, `unzip` the KVM image
 `FGT_VM64_KVM-v7.6.2.F-build3462-FORTINET.out.kvm.zip`); a plain `qcow2` such as
 the gns3 image copied in Lab 8.5 needs no unpacking.
 
 ```bash
 # 1. Unpack the vendor package to get the qcow2 disk (in the staging dir)
-cd /river/import
+cd /river/import/import
 tar zxf fortinet-FGT-v7.6.2.F-build3462.tgz     # -> fortinet-FGT-.../virtioa.qcow2
 
 # 2. Retrieve the first available VM ID: Proxmox returns the lowest unused ID
@@ -571,7 +571,7 @@ qm create "$ID" --name fortigate \
   --net2 virtio,bridge=vmbr2,tag=2002
 
 # 4. Import the staged appliance disk and attach it as the virtio boot disk
-qm importdisk "$ID" /river/import/fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
+qm importdisk "$ID" /river/import/import/fortinet-FGT-v7.6.2.F-build3462/virtioa.qcow2 river
 qm set "$ID" --virtio0 river:vm-"$ID"-disk-0 --boot order=virtio0
 
 # 5. Add a 30 GB disk FortiOS uses for logs and reports, then start
@@ -591,7 +591,7 @@ imported disk is a real `.qcow2` file at
 `/river/images/<VMID>/vm-<VMID>-disk-0.qcow2` — VM disks live under
 `images/<vmid>/` beneath the storage's `path` (from `/etc/pve/storage.cfg`), next
 to `template/iso` for ISOs and `dump` for backups. The file left in
-`/river/import` is only the source copy, not the VM's disk. Resolve the real path
+`/river/import/import` is only the source copy, not the VM's disk. Resolve the real path
 rather than assume it:
 
 ```bash
@@ -604,6 +604,104 @@ Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
 with no `.qcow2` to find; and `qm importdisk` writes in the storage's **default
 format**, which is qcow2 on `river` but a block volume on those others.
 
+**Verify (validated on the live R640).** This exact build was confirmed end to end on
+the node. The lab teaches with the `river` directory datastore; this node's real VM
+datastore is a ZFS pool named `blue`, so its disks resolve to **zvols** — a live
+instance of the block-volume caveat just above. Each check is the real command and
+its real output.
+
+1. **Virtual hardware matches the reference build, FGT-3 (VMID 122).** Dump both
+   configs, mask the fields that are unique to every VM (name, NIC MACs, UUIDs, and
+   the datastore each disk sits on), and diff — an empty diff proves the hardware
+   shape is identical:
+
+   ```bash
+   norm() { grep -vE '^(name|meta|smbios1|vmgenid|parent):' \
+     | sed -E 's/=BC:[0-9A-F:]+//; s/(virtio[0-9]+: )[^,]+/\1DISK/' | sort ; }
+   diff <(qm config 122 | norm) <(qm config "$ID" | norm) && echo IDENTICAL
+   # -> IDENTICAL
+   ```
+
+2. **The imported disk resolves to real backing storage.** Because `blue` is a ZFS
+   pool, the disk is a zvol under `/dev/zvol`, not a `.qcow2` file:
+
+   ```bash
+   pvesm path blue:vm-"$ID"-disk-0
+   # -> /dev/zvol/blue/vm-101-disk-0
+   qm config "$ID" | grep -E 'boot|virtio'
+   # -> boot: order=virtio0
+   # -> virtio0: blue:vm-101-disk-0,size=2G
+   # -> virtio1: blue:vm-101-disk-1,size=30G
+   ```
+
+3. **A healthy first boot.** Open the Proxmox **Console**. FortiOS loads its kernel
+   from virtio0, claims an evaluation serial, then partitions and formats the 30 GB
+   virtio1 disk as its log volume — which forces one automatic reboot (let it finish;
+   do **not** `qm reset`). The second boot lands on the login prompt:
+
+   ```text
+   Loading flatkc... ok
+   Loading /rootfs.gz...ok
+   System is starting...
+   Serial number is FGVMEV...               # evaluation serial (yours differs)
+   Disk usage changed, please wait for reboot...
+   Partitioning and formatting /dev/vdb ... # the 30 GB log disk (virtio1)
+   ...
+   FortiGate-VM64-KVM login:                # ready
+   ```
+
+   Log in as `admin` with an empty password; FortiOS then forces you to set one.
+   Seeing `/dev/vdb` formatted confirms the second disk from step 5 is present and used.
+
+**Finish the bring-up — console login to a reachable GUI.** From the
+`FortiGate-VM64-KVM login:` prompt, log in and give `port1` a management address on
+the `vmbr1` outside/management segment (`10.30.99.0/24`) so the Web GUI and SSH are
+reachable from any host on that segment:
+
+```text
+FortiGate-VM64-KVM login: admin
+Password:                         # empty on a fresh unit — press Enter
+You are forced to change your password. Please input a new password.
+New Password:                     # set it (this lab: ISEisC00L123@2026)
+Confirm Password:
+```
+
+```bash
+# Give port1 a static management IP and open admin access on the mgmt segment.
+# Pick a free address on the segment (here 10.30.99.101, matching VMID 101).
+config system interface
+    edit port1
+        set mode static
+        set ip 10.30.99.101/24
+        set allowaccess ping https ssh
+    next
+end
+
+# Default route out the management segment (set the gateway to your network's).
+config router static
+    edit 1
+        set device port1
+        set gateway 10.30.99.1
+    next
+end
+```
+
+Confirm firmware, serial, and evaluation-license state, then test reachability:
+
+```bash
+get system status
+# Version : FortiGate-VM64-KVM v7.6.7 build...
+# Serial-Number : FGVMEV...
+# License Status : Eval        (may read "Warning" until the license is activated)
+
+execute ping 10.30.99.1
+# 5 packets transmitted, 5 packets received, 0% packet loss
+```
+
+From a host on the `vmbr1` segment, browse to `https://10.30.99.101` and sign in as
+`admin` with the password you just set — the FortiOS GUI confirms the appliance is up,
+reachable, and ready to configure.
+
 **Negative test:** attach the imported disk on a bus the appliance has no driver for
 (`--sata0` instead of `--virtio0`), or point the VM at the vendor's `.out` **upgrade**
 file instead of the full disk image; the VM comes up to *no bootable device* or a
@@ -611,12 +709,13 @@ kernel panic — an imported appliance must sit on the bus it expects (virtio he
 use the full disk image, not the firmware-upgrade package.
 
 **Rollback:** `qm stop "$ID"; qm destroy "$ID" --purge` (the `--purge` also removes the
-imported disks); `rm -rf /river/import/fortinet-FGT-v7.6.2.F-build3462*` clears the
+imported disks); `rm -rf /river/import/import/fortinet-FGT-v7.6.2.F-build3462*` clears the
 staged files.
 
-**Next:** first-boot console login, the evaluation-license state, and management
-hardening for this FortiGate-VM are covered in [Volume XIX (Fortinet NSE
-Certification Program), Chapter 04, Lab 4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
+**Next:** activating the evaluation license (FortiCloud registration), moving to a
+full production license, and hardening management access for this FortiGate-VM are
+covered in [Volume XIX (Fortinet NSE Certification Program), Chapter 04, Lab
+4.7](../../volume-019-fortinet-network-security/chapters/04-fortigate-first-deployment-licensing-management-and-hardening.md).
 
 ## Lab Verification
 
@@ -646,4 +745,4 @@ Chapter 05 trunk correction and careful tagging together prevent.
 - [ ] Each guest set to its fixed address, gateway, and hostname.
 - [ ] GNS3 and EVE-ng imported as appliances with nested virtualization.
 - [ ] Every address unique — Red Hat Server .88, Windows Server .89.
-- [ ] Can copy an image from a workstation to `/river/import` (Lab 8.5), then import it into `river` and boot it to `status: running` (Lab 8.6).
+- [ ] Can copy an image from a workstation to `/river/import/import` (Lab 8.5), then import it into `river` and boot it to `status: running` (Lab 8.6).
