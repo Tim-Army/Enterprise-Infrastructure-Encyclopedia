@@ -729,8 +729,10 @@ config system ntp
 end
 ```
 
-Setting the hostname does not change the prompt in your current session — log out and
-back in, and it reads `FGT-101 #` instead of `FortiGate-VM64-KVM #`. `set timezone ?`
+The new hostname appears in the prompt the moment you `end` out of the config context —
+`FortiGate-VM64-KVM #` becomes `FGT-101 #` in the same session, no re-login needed; it
+just stays `FortiGate-VM64-KVM (global) #` while you are still inside the config block.
+`set timezone ?`
 lists every IANA zone (tab-completable); this lab uses `UTC`. Accurate time matters:
 NTP keeps log timestamps and certificate-validity checks correct, so enable `ntpsync`
 even before the unit is licensed.
@@ -784,6 +786,136 @@ FortiCare) and hardening management access for this FortiGate-VM are covered in
 sections and **Lab 4.2 (Licensing and FortiGuard registration)**, then **Lab 4.3
 (Harden administrative access)**. That chapter also documents the eval gotchas — the
 3-interface budget and the GUI firmware-upgrade block on an evaluation VM.
+
+### Lab 8.7 — The FortiGate ISFW cells and the FGCP HA cluster (Topic: Live inter-segment-firewall build)
+
+**Objective:** Build the live inter-segment-firewall (ISFW) environment that backs
+[Volume XIX (Fortinet), Chapter
+05](../../volume-019-fortinet-network-security/chapters/05-interfaces-routing-nat-virtual-domains-and-high-availability.md)
+and the Fortinet ISFW/VDOM lab: one FortiGate-VM segmenting a set of Alpine endpoint
+cells on the VLAN-aware `vmbr2`, then a second FortiGate-VM clustered with it in FGCP
+high availability. Every credential here is a throwaway lab value and is printed in full.
+
+**Prerequisites:** two FortiGate-VM 7.6.7 (`build3704`) images deployed as in Lab 8.6,
+the R640 node, and `vmbr2` carrying VLANs 2001-2004 (added to its `bridge-vids`, trunked
+on the upstream Nexus).
+
+| Role | VMID | Serial | Mgmt (port1) | Login |
+|---|---|---|---|---|
+| FGT-3 — ISFW / HA primary | 122 | `FGVMEVTQVRI_JPFF` | `10.30.99.122` | `admin` / `ISEisC00L123@2026` |
+| FGT-2 — HA secondary | 121 | `FGVMEVSRNPUL6GEE` | via cluster | `admin` / `ISEisC00L123@2026` |
+
+Proxmox host: `claude@10.30.161.10` (key `~/.ssh/id_proxmox_claude`).
+
+**Part A — the ISFW box (FGT-3, VM 122).** `port1` is management on `vmbr1`
+(`10.30.99.122`, GUI/SSH); the data segments are VLANs on `vmbr2`. The intended design
+was four east-west segments (APP/DB/MGMT/OT on VLANs 2001-2004, gateways `10.30.1.1` /
+`10.30.2.1` / `10.30.3.1` / `10.30.4.1`), but two evaluation-license limits reshaped it:
+
+1. **An unlicensed FortiGate-VM forwards no transit traffic.** `get system status` reads
+   `License Status: Invalid`, and the platform drops forwarded packets *before* the
+   policy engine (a `diagnose debug flow` trace ends at `__vf_ip_route_input_rcu` with no
+   policy/forward line). Management and local ping work; nothing routes. License it from
+   the GUI's FortiCloud login — the free eval enables forwarding (it stays DES-only,
+   which is fine for plaintext L3/L4 segmentation).
+2. **The licensed free eval caps at 3 physical interfaces + 1 vCPU.** After licensing,
+   `get system interface physical` shows only `port1`/`port2`/`port3` — `port4`/`port5`
+   vanish. Only two data segments fit on physical ports.
+
+The tempting workaround — one trunk data port carrying FortiOS VLAN sub-interfaces — does
+**not** survive on the eval: FortiOS re-purges those sub-interfaces at every boot (on
+FortiOS 8.0, creating one even needs `set vdom root` in single-VDOM mode). The durable
+fix is to let the **hypervisor** tag the VLANs and give the FortiGate plain physical
+ports:
+
+```bash
+# On Proxmox: two access ports on vmbr2, tagged by the bridge (no FortiOS sub-interfaces).
+qm set 122 --net1 virtio,bridge=vmbr2,tag=2001    # -> port2 = APP 10.30.1.1/24
+qm set 122 --net2 virtio,bridge=vmbr2,tag=2002    # -> port3 = DB  10.30.2.1/24
+```
+
+`port2`/`port3` are then plain interfaces (`allowaccess ping`), and one policy permits
+`web→db` on PostgreSQL 5432 (ICMP denied). Nothing purges on reboot because there are no
+FortiOS VLAN sub-interfaces. This eval-fit rebuild authored Vol 19 Ch 05 Labs 5.7-5.9.
+
+**Part B — the endpoint cells (Alpine).** The four cells are `c109-web`/`db`/`hmi`/`plc`
+(VMIDs 230-233). They were first built from CirrOS and **abandoned**: on the DHCP-less
+lab segments CirrOS's `dhcpcd` falls back to IPv4LL zeroconf (`169.254.x.x` plus a
+link-scoped default route) and silently clobbers the static default route, breaking
+cross-segment forwarding — and its serial console is flaky. **Alpine 3.24.1** replaced
+all four, built from a cloud-init qcow2 with everything set at create time:
+
+```bash
+# import the cloud-init disk, then set identity + both NICs (c109-web shown):
+qm set 230 --ciuser root --cipassword ISEisC00L123@2026 \
+  --ipconfig0 ip=10.30.1.10/24,gw=10.30.1.1 \
+  --ipconfig1 ip=10.30.161.230/24 \
+  --sshkeys /var/tmp/claude_ep.pub
+# ipconfig0 = eth0 data on VLAN 2001, gateway = FGT-3's port2
+# ipconfig1 = eth1 mgmt on vmbr0, no gateway (host-reachable for SSH)
+```
+
+| Cell | VMID | Data (eth0, VLAN) | Mgmt (eth1, vmbr0) | Listener |
+|---|---|---|---|---|
+| c109-web | 230 | `10.30.1.10` (2001) | `10.30.161.230` | — |
+| c109-db | 231 | `10.30.2.10` (2002) | `10.30.161.231` | tcp/5432 |
+| c109-hmi | 232 | `10.30.3.10` (2003) | `10.30.161.232` | — |
+| c109-plc | 233 | `10.30.4.10` (2004) | `10.30.161.233` | tcp/502 |
+
+Two choices make the cells stable and drivable:
+
+- **A second NIC on `vmbr0` for out-of-band management.** The data segments have no SSH
+  path, so each cell also has a mgmt IP on `vmbr0` (`10.30.161.23x`), which shares the
+  Proxmox host's L2 — the host reaches them directly, no routing. Drive any cell over SSH
+  with the injected key (`claude_ep.pub`), from the Proxmox host:
+
+  ```bash
+  ssh -i ~/.ssh/id_ep root@10.30.161.230
+  ```
+
+  This replaced the slow, flaky serial console. No DHCP client runs, so nothing clobbers
+  the static route, and cloud-init re-applies the network on reboot.
+- **Persistent listeners via OpenRC.** `c109-db`/`plc` listen on 5432/502 through
+  `/etc/local.d/lab-listener.start` (busybox `nc -l -p <port>` in a `while` loop — the
+  loop's stdin **must** be `</dev/null` or a backgrounded session hangs), enabled with
+  `rc-update add local default`.
+
+**Part C — the FGCP HA cluster.** FGT-2 (VM 121) is a second eval FortiGate-VM aligned to
+the **same three NICs** as FGT-3 (`port1` mgmt on `vmbr1`, `port2`/`port3` on `vmbr2`
+tags 2001/2002). Two eval VMs **do** form a working, config-synced, failover-capable FGCP
+cluster — HA is **not** license-gated. Because the eval 3-interface cap also blocks a
+dedicated heartbeat link, the heartbeat rides the existing data interfaces:
+
+```text
+config system ha
+    set group-name LAB-HA
+    set mode a-p
+    set hbdev "port2" 50 "port3" 50
+    set session-pickup enable
+    set priority 200
+    set password ISEisC00L123@2026
+end
+```
+
+Run it on FGT-3 (primary) first, then FGT-2 with `set priority 100`; use `set mode a-a`
+for active-active. Firmware must match **exactly** (version + build, both
+`7.6.7,build3704`) or the cluster never forms. Full formation, active-active conversion,
+and the split-brain / out-of-sync / reboot-sync cautions are in Vol 19 Ch 05 Labs 5.6-5.8.
+
+**Expected result:** FGT-3 licensed and forwarding, `port2`/`port3` up as APP/DB
+gateways; the four Alpine cells reachable over mgmt SSH and pinging their gateways;
+`web→db:5432` permitted and ICMP denied by the ISFW policy; and `get system ha status` on
+FGT-3 showing `Primary`/`Secondary` both in-sync.
+
+**Negative test:** skip the FortiGate license and the identical topology forwards nothing
+(failsafe drop before policy) — always check `License Status` before debugging "no
+forwarding." Cluster two units on *different* builds and they never form (split-brain).
+
+**Rollback / safety — never hard-reset a FortiGate-VM.** Use `qm shutdown`, never
+`qm stop`/`qm reset`: a hard stop triggers a FortiOS filesystem-check warning and can
+loop the secondary on "failed to sync with primary" (recover with `execute disk list` +
+`execute disk scan <ref#>`). Reboot from inside with `execute reboot`. To dissolve the
+cluster, use Lab 5.6's teardown-to-standalone.
 
 ## Lab Verification
 
