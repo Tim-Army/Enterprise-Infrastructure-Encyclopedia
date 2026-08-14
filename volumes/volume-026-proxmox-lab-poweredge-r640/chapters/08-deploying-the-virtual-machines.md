@@ -582,20 +582,6 @@ Two caveats: only **directory / NFS / CIFS** storages keep `.qcow2` *files* —
 with no `.qcow2` to find; and `qm importdisk` writes in the storage's **default
 format**, which is qcow2 on `river` but a block volume on those others.
 
-**The GUI route (and its `Unused Disk` gotcha).** The web UI can do the same, but
-**not** from the **Create VM** wizard — its OS step only offers installer ISOs (a
-`.qcow2` is an installed disk, not install media) and its Disks step only makes
-*empty* disks. Instead: (1) **Create VM** with **"Do not use any media"** and
-delete the default disk, leaving an empty shell; (2) on the storage's **Import**
-panel select the uploaded image and click **Import Hard Disk**, choosing that
-shell as the **Target Guest** — the dialog *requires an existing VM*, it attaches
-the disk, it does not create one; (3) the disk arrives on the VM's **Hardware**
-tab as **`Unused Disk 0`**, attached but not bootable — select it and
-**Edit → Bus: VirtIO Block → Add**; (4) **Options → Boot Order**, tick the new
-`virtio0` and drag it to the top, then start. The `qm` commands above collapse
-steps 2–4 (`importdisk` + `qm set --virtio0 … --boot order=virtio0`) into two,
-which is why the CLI is the quicker route for an appliance.
-
 **Negative test:** attach the imported disk on a bus the appliance has no driver for
 (`--sata0` instead of `--virtio0`), or point the VM at the vendor's `.out` **upgrade**
 file instead of the full disk image; the VM comes up to *no bootable device* or a
