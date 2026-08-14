@@ -729,10 +729,11 @@ config system ntp
 end
 ```
 
-Setting the hostname immediately changes the CLI prompt — `FortiGate-VM64-KVM #`
-becomes `FGT-101 #`. `set timezone ?` lists every IANA zone (tab-completable); this
-lab uses `UTC`. Accurate time matters: NTP keeps log timestamps and certificate-
-validity checks correct, so enable `ntpsync` even before the unit is licensed.
+Setting the hostname does not change the prompt in your current session — log out and
+back in, and it reads `FGT-101 #` instead of `FortiGate-VM64-KVM #`. `set timezone ?`
+lists every IANA zone (tab-completable); this lab uses `UTC`. Accurate time matters:
+NTP keeps log timestamps and certificate-validity checks correct, so enable `ntpsync`
+even before the unit is licensed.
 
 Confirm firmware, serial, resource limits, and license state, then test reachability
 (only the notable lines of `get system status` are shown):

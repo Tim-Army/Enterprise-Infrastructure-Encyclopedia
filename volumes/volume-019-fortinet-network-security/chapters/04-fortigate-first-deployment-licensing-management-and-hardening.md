@@ -194,8 +194,37 @@ that same account's credentials on the FortiGate, then have it download and appl
 entitlement:
 
 ```text
+FGT-LAB-01 # execute vm-license-options
+account-id          Account ID.
+account-password    Account password.
+count               FortiFlex license download count (default=1, 0 means infinite).
+government          For government use <yes | no>.
+interval            FortiFlex license download interval (1-3600 sec, default=60).
+proxy               HTTP proxy URL.
+reset               Reset options.
+show                Show options.
+token               Token.
 FGT-LAB-01 # execute vm-license-options account-id <account-id>
 FGT-LAB-01 # execute vm-license-options account-password <account-password>
+FGT-LAB-01 # execute vm-license-options show
+VM license options:
+        Account ID: <account-id>
+        Account password: <account-password>
+        Government: no
+        Token: (null)
+        Proxy: (null)
+        Interval: 60
+        Count: 1
+```
+
+`execute vm-license-options` stages the FortiCloud account (`account-id` /
+`account-password`), an optional FortiFlex `token`, and download tuning (`count`,
+`interval`, `proxy`, `government`); `reset` clears them all. Note that `show` prints the
+`Account password` **in clear text** — run `execute vm-license-options reset` once the
+license downloads, especially on a shared or session-logged box. With the account
+staged, run the download:
+
+```text
 FGT-LAB-01 # execute vm-license
 This VM is using the evaluation license. This license does not expire.
 Limitations of the Evaluation VM license include:
@@ -209,22 +238,13 @@ Do you want to continue? (y/n) y
 
 `execute vm-license` is *Download VM license from FortiCare* — it authenticates with the
 staged credentials, pulls the license bound to your registered serial, and **reboots
-licensed**. For a trial it prints the evaluation banner shown above and confirms *this
-license does not expire* — the free eval is now permanent, not the old 15-day term. Its
-four printed limits are exactly the gotchas the rest of this chapter runs into:
-low-encryption only (no strong crypto), 1 CPU / 2 GB, three interfaces / policies /
-routes each, and no FortiCare support. Run `execute vm-license` bare with no account-id
-staged and it replies `Please input account-id by execute vm-license-options
-account-id.` A **FortiFlex** entitlement instead supplies a token —
-`execute vm-license <FortiFlex-token>`, or stage it with
-`execute vm-license-options token <token>`.
-
-The `execute vm-license-options` tree also carries `proxy`, `government`, `show`
-(review what is staged), `reset`, and the download `count <n>` (0 = infinite) and
-`interval <sec>` (1-3600, default 60). `execute vm-license-options show` lists every
-staged value **including the account password in clear text**, so run
-`execute vm-license-options reset` once the license downloads — especially on a shared
-or session-logged box.
+licensed**. For a trial it confirms *this license does not expire* (the free eval is now
+permanent, not the old 15-day term), and its four printed limits are exactly the gotchas
+the rest of this chapter hits: low-encryption only (no strong crypto), 1 CPU / 2 GB,
+three interfaces / policies / routes each, and no FortiCare support. Run
+`execute vm-license` bare with no account-id staged and it replies `Please input
+account-id by execute vm-license-options account-id.` A **FortiFlex** entitlement
+instead supplies a token — `execute vm-license <FortiFlex-token>`.
 
 **After either path**, confirm the unit is licensed and pull current FortiGuard DBs:
 
