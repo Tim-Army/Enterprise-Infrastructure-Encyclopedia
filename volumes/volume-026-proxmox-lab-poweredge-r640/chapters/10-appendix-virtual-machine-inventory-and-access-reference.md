@@ -29,8 +29,8 @@ routed by a FortiGate.
 
 | Bridge / VLAN | Subnet | Role and gateway |
 | --- | --- | --- |
-| `vmbr0` (untagged, VLAN 1611) | `10.30.161.0/24` | Host/out-of-band management — Proxmox `10.30.161.10`, iDRAC `10.30.161.25`, and each ISFW cell's second NIC; gateway `10.30.161.1` |
-| `vmbr1` (untagged, VLAN 99) | `10.30.99.0/24` | FortiGate `port1` (WAN/OOB), the TFTP/PXE box, and each ISFW cell's third (management) NIC (`10.30.99.23x`); also the Nexus `mgmt0` OOB |
+| `vmbr0` (untagged, VLAN 1611) | `10.30.161.0/24` | Host/out-of-band management — Proxmox `10.30.161.10`, iDRAC `10.30.161.25`; gateway `10.30.161.1` |
+| `vmbr1` (untagged, VLAN 99) | `10.30.99.0/24` | FortiGate `port1` (WAN/OOB), the TFTP/PXE box, and each ISFW cell's management NIC (`10.30.99.23x`); gateway `10.30.99.1`; also the Nexus `mgmt0` OOB |
 | `vmbr2` VLAN 2001 | `10.30.1.0/24` | ISFW **APP** segment; gateway `10.30.1.1` (FGT-3 `port2`) |
 | `vmbr2` VLAN 2002 | `10.30.2.0/24` | ISFW **DB** segment; gateway `10.30.2.1` (FGT-3 `port3`) |
 | `vmbr2` VLAN 2003 | `10.30.3.0/24` | ISFW **HMI** segment; gateway `10.30.3.1` (intended — see note) |
@@ -61,18 +61,19 @@ routed by a FortiGate.
 | 200 | `test-vlan200` | CirrOS — VLAN 200 reachability probe | `vmbr2` 200 | `10.200.0.0/24` host octet unconfirmed ‡ | `cirros` ‡ |
 | 202 | `test-vlan202` | CirrOS — VLAN 202 reachability probe | `vmbr2` 202 | `10.202.0.0/24` unconfirmed ‡ | `cirros` ‡ |
 | 210 | `ubuntu-ws` | Ubuntu — workstation / VLAN-200 jump host | `vmbr2` 200 | `10.200.0.20` | ‡ (Ubuntu login unconfirmed) |
-| 230 | `c109-web` | Alpine — ISFW APP tier | data `vmbr2` 2001; mgmt `vmbr0` + `vmbr1` | `10.30.1.10`; mgmt `10.30.161.230`, `10.30.99.230` | `root` |
-| 231 | `c109-db` | Alpine — ISFW DB tier (listens tcp/5432) | data `vmbr2` 2002; mgmt `vmbr0` + `vmbr1` | `10.30.2.10`; mgmt `10.30.161.231`, `10.30.99.231` | `root` |
-| 232 | `c109-hmi` | Alpine — ISFW HMI tier | data `vmbr2` 2003; mgmt `vmbr0` + `vmbr1` | `10.30.3.10`; mgmt `10.30.161.232`, `10.30.99.232` | `root` |
-| 233 | `c109-plc` | Alpine — ISFW PLC/OT cell (listens tcp/502) | data `vmbr2` 2004; mgmt `vmbr0` + `vmbr1` | `10.30.4.10`; mgmt `10.30.161.233`, `10.30.99.233` | `root` |
+| 230 | `c109-web` | Alpine — ISFW APP tier | data `vmbr2` 2001; mgmt `vmbr1` | `10.30.1.10`; mgmt `10.30.99.230` | `root` |
+| 231 | `c109-db` | Alpine — ISFW DB tier (listens tcp/5432) | data `vmbr2` 2002; mgmt `vmbr1` | `10.30.2.10`; mgmt `10.30.99.231` | `root` |
+| 232 | `c109-hmi` | Alpine — ISFW HMI tier | data `vmbr2` 2003; mgmt `vmbr1` | `10.30.3.10`; mgmt `10.30.99.232` | `root` |
+| 233 | `c109-plc` | Alpine — ISFW PLC/OT cell (listens tcp/502) | data `vmbr2` 2004; mgmt `vmbr1` | `10.30.4.10`; mgmt `10.30.99.233` | `root` |
 
 **How to reach a guest.** The five FortiGates answer HTTPS/SSH on their `port1`
 addresses (`10.30.99.x`); the FGT-2 secondary is reached from the primary with
 `execute ha manage 1 admin`. The four `c109-*` Alpine cells have no SSH path on
-their data VLANs, so each is driven over its `vmbr0` management NIC (`10.30.161.23x`),
-which shares the Proxmox host's L2 — `ssh root@10.30.161.23x` from the node. Each cell also
-carries a second management NIC on `vmbr1` (`10.30.99.23x`, gateway-less) that puts it on the
-FortiGate out-of-band segment, reachable from any host on `10.30.99.0/24`. The
+their data VLANs, so each is driven over its `vmbr1` management NIC (`10.30.99.23x`) — on the
+FortiGate out-of-band segment — with `ssh root@10.30.99.23x` from the node. The Proxmox host
+has no leg on `vmbr1`, so each cell carries a static route (`10.30.161.0/24 via 10.30.99.1`,
+added at boot from `/etc/local.d`) to answer the host while its default route stays on the
+data path. The
 client/EMS guests on VLANs 200/202 are reachable only through FGT-1 and from a
 peer on the same segment (for example the `ubuntu-ws` jump host), not from the
 management network.
