@@ -939,6 +939,20 @@ the transient cousin of the unlicensed-secondary blackhole above. Takeaway: a fa
 rejoin each briefly disturb transit, so schedule both; the authenticated sessions survive either
 one as long as `set session-pickup enable` is set.
 
+**Live A-A finding — a site-to-site IPsec tunnel survives failover *and* is immune to the rejoin
+blip (15 August 2026).** Standing up a route-based tunnel from the cluster to a third eval
+FortiGate (`FGT-101`, VM 101, `10.30.99.101`) — Vol 19 Ch06 Lab 6.4 — showed both HA layers again:
+the tunnel *definition* config-synced to FGT-2 (selector present, down) while it was still being
+built, and once up the live IPsec SA rode session-pickup to the secondary (`get vpn ipsec tunnel
+summary` there went to `selectors 1/1`, `rx/tx 0/0` — held but not forwarding). Pulling the primary
+dropped the `c109-web`→peer probe for ~4 s while FGT-2 promoted, sent a gratuitous ARP for the
+shared `port1`, and resumed on the *same* SA (no renegotiation). The rejoin, though, cost **zero** dropped probes —
+unlike the plaintext web→db path, an established tunnel is pinned to the SA-owning primary and is
+not load-balanced onto the cold returning member, so `leastconnection`'s warm-up never touches it.
+(Building the peer also surfaced the eval interface cap: it refuses a new *loopback* — `reached the
+maximum number of entries` — but not the tunnel interface, so the protected target was hosted on an
+existing `port3` instead.)
+
 **Expected result:** FGT-3 licensed and forwarding, `port2`/`port3` up as APP/DB
 gateways; the four Alpine cells reachable over mgmt SSH and pinging their gateways;
 `web→db:5432` permitted and ICMP denied by the ISFW policy; and `get system ha status` on

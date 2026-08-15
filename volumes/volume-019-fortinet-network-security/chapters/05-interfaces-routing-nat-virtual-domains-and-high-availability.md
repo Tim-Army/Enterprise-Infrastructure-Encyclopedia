@@ -937,7 +937,11 @@ the behaviors — resilience and failure modes alike — that active-active adds
   as the survivor took over, but powering a member back **on** dropped **three** consecutive probes
   (~20 seconds) as the returning unit warmed up. Bringing a unit back into an active-active cluster
   therefore disturbs transit much as losing one does — it is not seamless just because no failover
-  is occurring, so plan maintenance windows accordingly.
+  is occurring, so plan maintenance windows accordingly. The warm-up hits *load-balanced* transit
+  only, though: an established site-to-site IPsec tunnel is pinned to the primary that owns its SA
+  and is not offloaded to the joining member, so it rides the rejoin untouched — zero dropped probes,
+  measured in [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)'s Lab 6.4,
+  against the ~20-second blip the plaintext path takes here.
 - *An eval secondary cannot hold a licensed primary's richer config → permanent out-of-sync.* A
   full segmentation config (multiple VLAN interfaces, policies, routes) exceeds the eval
   three-interface / three-policy / three-route budget (Lab 5.9), so the secondary silently rejects

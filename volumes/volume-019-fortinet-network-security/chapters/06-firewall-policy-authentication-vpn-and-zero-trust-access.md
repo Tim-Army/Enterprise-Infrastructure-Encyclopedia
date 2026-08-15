@@ -1002,6 +1002,24 @@ limit, so DES matches automatically — which is exactly why a second
 FortiGate is a cleaner lab peer than a general-purpose IPsec stack that
 (rightly) deprecates single-DES.
 
+**The evaluation license also caps the interface count — and it bites the
+loopback, not the tunnel.** Building the peer end on an unlicensed eval, the
+loopback meant to host the protected address refuses to commit:
+
+```text
+FGT (lo-vpn) # next
+object set operator error, -4 discard the setting
+Command fail. Return code -4 (reached the maximum number of entries
+```
+
+The IPsec *tunnel* interface (the phase1-interface) is created without complaint —
+the cap hits new loopback/logical interfaces, not the tunnel. So do not add an
+interface at all: give the protected address to an existing, unused physical port
+(here `port3`) with `set allowaccess ping`. A ping to that address arrives over the
+tunnel as **local-in** traffic (answered by `allowaccess`) and its reply is
+local-out — neither is transit forwarding, so it works even on an unlicensed peer
+that cannot forward transit at all.
+
 **A route-based tunnel will not come up without a firewall policy that
 references the tunnel interface.** With everything else correct, IKE refuses
 to establish, and `diagnose debug application ike -1` shows the reason:
@@ -1014,6 +1032,19 @@ Add at least one policy with the tunnel interface as source or destination
 on each peer (for example `srcintf port3, dstintf to-fgt2`) and the SA
 establishes. This is the most common reason a freshly configured route-based
 tunnel stays down.
+
+**Two `edit 0` policies in one block create only *one* policy — and the
+references must already exist.** `edit 0` auto-assigns the next free id, but a
+second `edit 0` in the same `config firewall policy` block re-enters the entry
+just created instead of appending a new one, so you silently end up with a single
+policy; use explicit ids, or one `config firewall policy` block per policy. Two
+dependency traps compound it. The id must actually be free — on the ISFW primary,
+id 1 was the live `web-to-db` production policy, so an `edit 1` would have
+overwritten it in place (`show firewall policy | grep "edit "` first, and let
+`edit 0` skip past what is taken). And a policy's `srcintf`/`srcaddr` must exist
+when they are referenced (`node_check_object fail!` / `entry not found in
+datasource` otherwise), so apply the tunnel interface and the address objects
+*before* the policies that name them.
 
 **Bring it up with `auto-negotiate` — the static route is only active once
 the tunnel is.** A route pointing at a tunnel interface is installed only
@@ -1057,6 +1088,68 @@ selector exists but is down. Restore the matching key and a `diagnose vpn
 ike gateway clear` brings it back to `1/1`. The pre-shared key authenticates
 each peer's identity, so no amount of matching proposals, selectors, or
 routes compensates for a mismatched key.
+
+#### On an HA cluster, the tunnel rides config-sync then session-pickup — and survives failover
+
+Building the tunnel from the active-active cluster (FGT-3 primary / FGT-2 secondary)
+answers the payoff question the authentication lab asked of a login: does the tunnel
+survive a failover? Confirmed live on 15 August 2026, the answer separates into the same
+two mechanisms seen for firewall-auth in Lab 6.3.
+
+**Config-sync carries the tunnel *definition*.** Before the peer end was even configured —
+tunnel still down — the secondary already listed it, selector present but down, exactly as
+the policy table synchronized in Lab 6.1:
+
+```text
+FGT-2 (Secondary) # get vpn ipsec tunnel summary
+'to-fgt101' 10.30.99.101:500  selectors(total,up): 1/0  rx(pkt,err): 0/0  tx(pkt,err): 0/0
+```
+
+**Session-pickup carries the live SA.** Once the tunnel came up on the primary, the
+secondary's selector went *up* too — without the secondary ever running IKE:
+
+```text
+FGT-3 (Primary)   # get vpn ipsec tunnel summary
+'to-fgt101' 10.30.99.101:0    selectors(total,up): 1/1  rx(pkt,err): 97/0  tx(pkt,err): 97/2
+FGT-2 (Secondary) # get vpn ipsec tunnel summary
+'to-fgt101' 10.30.99.101:500  selectors(total,up): 1/1  rx(pkt,err): 0/0   tx(pkt,err): 0/0
+```
+
+The secondary holds the IPsec SA at `1/1` but forwards nothing (`rx/tx 0/0`) — the tunnel
+counterpart of the `flag(400): ha` firewall-auth entry: synchronized, standing by, not
+locally negotiated. That standby SA is what lets the tunnel survive a failover without
+renegotiating.
+
+**Proven by pulling the primary — a roughly four-second gap.** With a host behind the
+cluster pinging the peer's target (`10.99.99.1`) once a second, FGT-3 was powered off. The
+probe lost two requests and recovered:
+
+```text
+21:59:38     UP      <- last good
+21:59:39 >>> DOWN     <- FGT-3 loss detected
+21:59:41     DOWN
+21:59:43 >>> UP       <- FGT-2 forwarding
+```
+
+FGT-2, promoted to primary, did not renegotiate: it already held the SA, so takeover was
+just HA detection, a gratuitous ARP for the shared `port1` address (`10.30.99.122`, which
+follows the primary), and resuming forwarding. Its tunnel summary went from `rx/tx 0/0`
+(backup) to `rx/tx 20/20` — the *same* SA, now active. A route-based tunnel therefore rides
+an active-unit loss with a single-digit-second blip, exactly like the authenticated session
+in Lab 6.3.
+
+**The rejoin, though, does *not* blip the tunnel — and that is the instructive contrast.**
+When FGT-3 was powered back on it rejoined as secondary (`override disable`, so the promotion
+stood), cold — `get system ha status` showed `sessions=0` on it against the primary's 79. In
+Lab 6.3 and [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)
+that same cold-rejoin cost the *plaintext* web→db path about twenty seconds while
+`schedule leastconnection` steered new sessions onto the empty member. The IPsec tunnel felt
+none of it: the probe stayed **UP through the entire rejoin window**, not one dropped request.
+Encrypted tunnel traffic is anchored on the primary that owns the SA and is not load-balanced
+(offloaded) to the joining secondary, so the `leastconnection` warm-up that disturbs offloaded
+plaintext sessions never reaches it. The pairing with Chapter 05 is the lesson: an A-A rejoin
+blips *load-balanced* transit, but an established site-to-site tunnel — pinned to its SA
+owner — is immune.
 
 ### Lab 6.5 — SSL VPN for remote access (Topic: SSL/dial-up VPN)
 
