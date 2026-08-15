@@ -918,6 +918,20 @@ re-form. And verify HA membership from the **CLI** (`get system ha status` → `
 member:`), never the GUI's device dropdown or **System > Firmware & Registration** — those
 list *Security Fabric* members, a different feature, and a full HA peer can be absent there.
 
+**Live A-A finding — session-pickup carries live sessions through failover, but a rejoin
+blips (14 August 2026).** Once both members were licensed `Valid` and the cluster ran clean, a
+user authenticated through the captive portal (Vol 19 Ch06 Lab 6.3) had their firewall-auth
+session synchronized to the secondary — it showed in `diagnose firewall auth list` on *both*
+units, tagged `flag(400): ha` on the peer. A continuous three-second probe from `c109-web` then
+measured the real numbers across a power-cycle test: shutting the **primary** dropped a single
+probe (<10 s) as the secondary took over, the user stayed logged in, and the promoted entry kept
+its `flag(400): ha`; shutting the new primary back the other way behaved identically —
+session-pickup is bidirectional. Powering a member back **on**, however, dropped **three** probes
+(~20 s): `leastconnection` steers new sessions onto the just-joined unit before it can forward —
+the transient cousin of the unlicensed-secondary blackhole above. Takeaway: a failover *and* a
+rejoin each briefly disturb transit, so schedule both; the authenticated sessions survive either
+one as long as `set session-pickup enable` is set.
+
 **Expected result:** FGT-3 licensed and forwarding, `port2`/`port3` up as APP/DB
 gateways; the four Alpine cells reachable over mgmt SSH and pinging their gateways;
 `web→db:5432` permitted and ICMP denied by the ISFW policy; and `get system ha status` on

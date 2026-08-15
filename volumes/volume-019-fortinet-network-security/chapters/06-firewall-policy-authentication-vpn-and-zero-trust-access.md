@@ -463,6 +463,37 @@ end
 
 **Rollback:** remove the policy created here — `config firewall policy` then `delete 1` and `end` — returning the policy table to its prior order.
 
+#### On an HA cluster, the policy table is config-synced
+
+The firewall policy table is part of the synchronized configuration, so a policy
+added on the **primary** appears on the **secondary** automatically — unlike HA
+*priority*, which is configured per unit. Confirmed live on 14 August 2026
+against an active-active FGCP pair: a scratch policy (`edit 2`, added alongside
+an existing `edit 1`) was typed only on the primary, then the secondary's table
+was listed by hopping to it over the HA link:
+
+```text
+FGT-primary # execute ha manage 1 admin
+admin@169.254.0.2's password:
+FGT-secondary # show firewall policy | grep edit
+    edit 1
+    edit 2
+```
+
+`edit 2` is present on the secondary although it was never typed there. `exit`
+returns to the primary — make every configuration change on the primary, never
+on the secondary, which holds a read-only synchronized copy. The
+`diagnose firewall iprope lookup` output names the decision explicitly: the
+matched policy for a covered service, and the implicit deny (`policy id: 0`) for
+one it does not cover:
+
+```text
+FGT # diagnose firewall iprope lookup 10.30.1.222 5000 10.30.99.50 443 6 port2
+<src [10.30.1.222-5000] dst [10.30.99.50-443] proto 6 dev port2> matches policy id: 2
+FGT # diagnose firewall iprope lookup 10.30.1.222 5000 10.30.99.50 22 6 port2
+<src [10.30.1.222-5000] dst [10.30.99.50-22] proto 6 dev port2> matches policy id: 0
+```
+
 ### Lab 6.2 — Firewall objects: addresses, services, schedules (Topic: Firewall objects)
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
@@ -779,6 +810,137 @@ Both failure rows deny access, but only a *known* user with a bad password
 produces a `0102043009` record; an unknown username is dropped without a
 failed-authentication log — worth knowing when you are hunting for failed
 logins and an attempt seems to be missing.
+
+#### Completing the captive portal headlessly with `wget` (no browser)
+
+The GUI client above is the realistic user case, but the portal is a plain
+HTML form, so a **headless** host can complete it end to end — useful for
+automated, repeatable tests and the only option on a minimal appliance with no
+desktop. A BusyBox `wget` (as ships on Alpine) is enough; it supports
+`--post-data`. The exchange is three requests, and the order matters:
+
+```sh
+#!/bin/sh
+# Run on the client. Its source IP must match the auth policy's srcaddr.
+TRIGGER="http://10.30.99.50/"          # any HTTP IP that routes through the policy
+# 1) trigger interception -> capture the one-time magic + the portal host:port
+B=$(wget -q -O - "$TRIGGER")
+URL=$(printf '%s' "$B" | sed -n 's/.*location="\([^"]*\)".*/\1/p')
+MAGIC=$(printf '%s' "$URL" | sed -n 's/.*fgtauth?//p')
+HOSTPORT=$(printf '%s' "$URL" | sed -n 's#http://\([^/]*\)/.*#\1#p')
+# 2) GET the fgtauth form FIRST -- this arms the magic server-side
+wget -q -O /dev/null "$URL"
+# 3) POST the credentials (URL-encode reserved characters, e.g. '@' -> %40)
+wget -S -O /dev/null \
+  --post-data "4Tredir=${TRIGGER}&magic=${MAGIC}&username=alice&password=ISEisC00L123%402026" \
+  "http://${HOSTPORT}/"
+```
+
+> **Gotcha — GET `/fgtauth?<magic>` before you POST.** POSTing the magic taken
+> straight from the first redirect is silently rejected; the FortiGate only
+> accepts the login after the form has been fetched for that token. A browser
+> does this naturally — it follows the redirect and renders the form before you
+> submit — so a script must reproduce the GET explicitly.
+
+A successful login is a `303` back to the original URL — the same
+"authenticated, now proceed where you were headed" signal a browser acts on:
+
+```text
+Connecting to 10.30.1.1:1000 (10.30.1.1:1000)
+  HTTP/1.1 303 See Other
+  Location: http://10.30.99.50/
+Connecting to 10.30.99.50 (10.30.99.50:80)
+wget: can't connect to remote host (10.30.99.50): Connection refused
+```
+
+The trailing **"Connection refused"** is expected, and is itself the proof of
+success: once authenticated, the FortiGate stops intercepting and *forwards* the
+session to `10.30.99.50:80`, which runs no web server — so the refusal now comes
+from the real destination, not the portal. Re-running the bare trigger returns
+that same forward with no `fgtauth` redirect, confirming the source IP is
+authenticated.
+
+#### On an HA cluster, the firewall-auth session synchronizes to the peer
+
+Driving the authentication through an active-active cluster answers the payoff
+question: does the login survive a failover? Immediately after `alice`
+authenticates, `diagnose firewall auth list` shows her session on **both**
+members — confirmed live on 14 August 2026:
+
+```text
+FGT-3 (Primary) # diagnose firewall auth list
+10.30.1.10, alice
+        type: fw, id: 0, duration: 2, idled: 2
+        expire: 298, allow-idle: 300
+        server: alice
+        user_id: 16777218
+        group_id: 2
+        group_name: staff
+----- 1 listed, 0 filtered ------
+
+FGT-2 (Secondary) # diagnose firewall auth list
+10.30.1.10, alice
+        type: fw, id: 0, duration: 5, idled: 5
+        expire: 295, allow-idle: 300
+        flag(400): ha
+        server: alice
+        user_id: 16777218
+        group_id: 2
+        group_name: staff
+----- 1 listed, 0 filtered ------
+```
+
+The secondary's copy carries **`flag(400): ha`** — it was synchronized from the
+primary by HA session-pickup, not created locally (the primary's own entry has
+no such flag). Both units agree on `user_id`, `group_id`, and `group_name`.
+Because the authenticated session already lives on the secondary, a failover
+does **not** force the user to log in again: the promoted unit already holds the
+synchronized entry and traffic keeps flowing. This is the authentication
+counterpart to the policy-table config-sync of Lab 6.1 — configuration and live
+session state are synchronized by *different* mechanisms (config-sync vs.
+session-pickup), and firewall-auth sessions ride the latter.
+
+> **Gotcha — session-pickup must be enabled for auth state to sync.** The
+> `flag(400): ha` copy appears only because `set session-pickup enable` is
+> configured under `config system ha`. Without it the cluster still fails over,
+> but authenticated users (and other live sessions) are dropped and must
+> re-authenticate.
+
+**Proven by pulling the primary.** Confirmed live on 14 August 2026: with
+`alice` authenticated and the client probing the path every three seconds, the
+primary (FGT-3) was powered off. The secondary (FGT-2) was promoted —
+`get system ha status` then reported `number of member: 1` and
+`... is selected as the primary because it's the only member` — and `alice`'s
+session was still listed and passing traffic on the new primary, never returning
+to the captive portal. The data path dropped a **single probe** (well under ten
+seconds of interruption) during the takeover and then resumed. One detail worth
+recording: after promotion the surviving entry **still carries `flag(400): ha`**
+— the new primary keeps serving the synchronized session as-is rather than
+re-creating it as a locally owned entry. (With `set override disable`, FGT-3
+rejoins as the *secondary* when it powers back on, even though its priority is
+higher, so the promotion is not undone by its return.)
+
+The test was then run in reverse to confirm the sync is bidirectional. Powering
+off FGT-2 (the active unit by then) promoted FGT-3 again with `alice` still
+authenticated — another single-probe failover gap. Session-pickup therefore
+works both ways: a member that rejoins the cluster is handed the live
+authenticated sessions and can carry them through a *subsequent* failover in the
+opposite direction.
+
+**A rejoin is not free, though — watch the data path when a unit comes *back*.**
+When FGT-2 was powered on and rejoined as secondary, the continuous probe lost
+**three consecutive requests (about twenty seconds)** with no failover in
+progress. This is the active-active warm-up first seen in
+[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md):
+`schedule leastconnection` sees the freshly joined member holding zero sessions,
+immediately steers new sessions onto it, and those sessions time out for the few
+seconds it needs to finish syncing state and learn ARP/neighbors on its data
+interfaces before it can actually forward. The lesson is that *bringing a unit
+back* into an active-active cluster disturbs transit traffic much as losing one
+does — plan maintenance windows accordingly, and do not assume a rejoin is
+seamless just because no failover is occurring. Through all of it, though, the
+**authenticated session never dropped**: `alice` stayed authenticated across
+every failover and rejoin; only the data path blipped, never the auth state.
 
 ### Lab 6.4 — Site-to-site IPsec VPN (Topic: IPsec VPN)
 

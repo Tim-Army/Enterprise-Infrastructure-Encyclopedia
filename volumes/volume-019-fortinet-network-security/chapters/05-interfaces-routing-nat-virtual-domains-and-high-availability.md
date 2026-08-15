@@ -914,7 +914,7 @@ end
 
 **Lessons from a live active-active run.** Confirmed 14 August 2026 on the same two eval
 FortiGate-VMs from Lab 5.6 (FGT-3 primary / FGT-2 secondary, both `v7.6.7,build3704`). These are
-the failure modes active-active adds on top of active-passive:
+the behaviors — resilience and failure modes alike — that active-active adds on top of active-passive:
 
 - *A non-forwarding secondary blackholes the load-balanced path — 100%, not 50%.* Forwarding is
   license-gated; HA membership is not. So an **unlicensed** secondary joins the cluster, syncs,
@@ -928,6 +928,16 @@ the failure modes active-active adds on top of active-passive:
   fix *and* proof is to drop back to A-P (`set mode a-p`) — only the Valid primary forwards and
   the path recovers immediately — or license the secondary (each HA member needs its own
   forwarding license).
+- *Bringing a member into A-A — cold at boot, or rejoining after a reboot — briefly blackholes
+  transit for the same reason an unlicensed one does permanently.* `schedule leastconnection` hands
+  new sessions to whichever member holds the fewest, and a just-joined unit holds zero, so the
+  scheduler steers new sessions onto it while it is still syncing state and learning ARP/neighbors
+  and cannot yet forward. A live failover-and-rejoin cycle measured this against a client probing
+  every three seconds: losing the **active** unit dropped a *single* probe (well under ten seconds)
+  as the survivor took over, but powering a member back **on** dropped **three** consecutive probes
+  (~20 seconds) as the returning unit warmed up. Bringing a unit back into an active-active cluster
+  therefore disturbs transit much as losing one does — it is not seamless just because no failover
+  is occurring, so plan maintenance windows accordingly.
 - *An eval secondary cannot hold a licensed primary's richer config → permanent out-of-sync.* A
   full segmentation config (multiple VLAN interfaces, policies, routes) exceeds the eval
   three-interface / three-policy / three-route budget (Lab 5.9), so the secondary silently rejects
@@ -958,7 +968,19 @@ the failure modes active-active adds on top of active-passive:
   the manageable peers by index; `execute ha manage <index> admin` opens a secondary's CLI.
 - *A stale `HA Health Status: ERROR: <serial> is lost @ <date>` is cosmetic.* It is the cluster
   remembering a former member (for example a rebuilt secondary's previous serial); it does not
-  affect the current members and clears on its own.
+  affect the current members and clears on its own. Several stale entries can accumulate — a live
+  cluster showed one serial lost two days earlier alongside the one just powered off — and only the
+  most recent, matching a member you actually removed, reflects current state.
+- *The resilience payoff: with `set session-pickup enable`, live sessions survive failover —
+  firewall-auth sessions included.* The primary synchronizes its session table to the secondary,
+  which marks each synced entry `flag(400): ha`; on failover the promoted unit keeps serving those
+  sessions, so users are not forced to reconnect or re-authenticate (the promoted entry even keeps
+  its `flag(400): ha` marker rather than being re-created). Proven bidirectionally on the live pair
+  — fail the primary, let it rejoin, then fail the new primary back — with an authenticated user
+  staying logged in across both failovers. Without `session-pickup` the cluster still fails over but
+  drops every live session. See
+  [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) Lab 6.3 for the
+  firewall-authentication case captured in full.
 
 ### Lab 5.8 — Active-active HA formed directly (Topic: A-A HA)
 
