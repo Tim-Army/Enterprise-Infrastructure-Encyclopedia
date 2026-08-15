@@ -902,6 +902,22 @@ for active-active. Firmware must match **exactly** (version + build, both
 `7.6.7,build3704`) or the cluster never forms. Full formation, active-active conversion,
 and the split-brain / out-of-sync / reboot-sync cautions are in Vol 19 Ch 05 Labs 5.6-5.8.
 
+**Live A-A finding — license *both* members, or A-A blackholes the path (14 August 2026).**
+When this cluster was flipped to `set mode a-a` with only **FGT-3** (`FGVMEVTQVRI_JPFF`)
+licensed and **FGT-2** (`FGVMEVSRNPUL6GEE`) still `License Status: Invalid`, the permitted
+`web→db:5432` path dropped to **0/12** — a *total* blackhole, not the 50% loss you would
+expect from one dead unit. Forwarding is license-gated but HA membership is not, so FGT-2
+joined, synced, and kept a clean heartbeat while forwarding nothing; with `schedule
+leastconnection` its session count sat at 0 (sessions died on arrival), so it stayed
+"least-loaded" forever and the scheduler kept steering *new* sessions onto it. FGT-3 alone
+forwarded the same path fine when standalone. **Rebooting does not fix it** (license state
+persists). The fix is to drop to `set mode a-p` (only the Valid primary forwards, path
+recovers at once) or license FGT-2 standalone first — a secondary has no independent path to
+FortiCare, so remove it from the cluster, give `port1` a free `10.30.99.x`, license it, then
+re-form. And verify HA membership from the **CLI** (`get system ha status` → `number of
+member:`), never the GUI's device dropdown or **System > Firmware & Registration** — those
+list *Security Fabric* members, a different feature, and a full HA peer can be absent there.
+
 **Expected result:** FGT-3 licensed and forwarding, `port2`/`port3` up as APP/DB
 gateways; the four Alpine cells reachable over mgmt SSH and pinging their gateways;
 `web→db:5432` permitted and ICMP denied by the ISFW policy; and `get system ha status` on
@@ -909,7 +925,10 @@ FGT-3 showing `Primary`/`Secondary` both in-sync.
 
 **Negative test:** skip the FortiGate license and the identical topology forwards nothing
 (failsafe drop before policy) — always check `License Status` before debugging "no
-forwarding." Cluster two units on *different* builds and they never form (split-brain).
+forwarding." In **active-active**, an *unlicensed secondary* is worse than absent: it
+blackholes 100% of the load-balanced path (above), so confirm `License Status: Valid` on
+**every** member before running A-A. Cluster two units on *different* builds and they never
+form (split-brain).
 
 **Rollback / safety — never hard-reset a FortiGate-VM.** Use `qm shutdown`, never
 `qm stop`/`qm reset`: a hard stop triggers a FortiOS filesystem-check warning and can

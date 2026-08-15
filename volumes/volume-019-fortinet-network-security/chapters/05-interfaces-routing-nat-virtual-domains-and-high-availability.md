@@ -878,19 +878,27 @@ get system ha status
 **Expected result:** the header now reports **`Mode: HA A-A`** (was `A-P`), still two members,
 both **in-sync**, heartbeat flowing on `port2`/`port3`.
 
-**Step 3 — watch sessions distribute across both units.** Generate several concurrent sessions
-through the cluster (for example, a batch of `web→db` connections from a segment host), then read
-the per-unit load:
+**Step 3 — watch sessions distribute across both units.** A-A distributes **transit**
+(through-the-firewall) sessions only — local and management sessions (your console/SSH, the
+heartbeat itself) always stay on the primary — so you must push *transit* traffic to see the
+effect. Generate several concurrent sessions **through** the cluster (a batch of `web→db`
+connections from a segment host), then read the per-unit load:
 
 ```text
 diagnose sys ha status
-get system ha status | grep -A3 "System Usage"
+get system ha status | grep -A6 "System Usage"
 ```
+
+Use `-A6`, not `-A3`: three lines of context stop at the second member's header and hide its
+`sessions=` line, making the secondary look idle when it is not.
 
 **Expected result:** `diagnose sys ha status` shows **both** members carrying sessions — the
 schedule assigns each new session to the less-loaded unit, so the secondary is no longer idle.
 The per-unit `sessions=` counters in `get system ha status` both climb, rather than every session
-sitting on one unit as in active-passive.
+sitting on one unit as in active-passive. Read `traffic.local` against `traffic.total` in
+`diagnose sys ha status` first: when `traffic.local` is almost the whole of `traffic.total`, the
+cluster is carrying only local/management sessions and there is nothing to distribute yet —
+generate through-traffic before concluding the secondary is idle.
 
 **Negative test:** expect a single large transfer to run at twice a lone unit's throughput. It
 does not — A-A distributes *sessions*, not the packets of one flow, so one connection is pinned
@@ -903,6 +911,54 @@ config system ha
     set mode a-p
 end
 ```
+
+**Lessons from a live active-active run.** Confirmed 14 August 2026 on the same two eval
+FortiGate-VMs from Lab 5.6 (FGT-3 primary / FGT-2 secondary, both `v7.6.7,build3704`). These are
+the failure modes active-active adds on top of active-passive:
+
+- *A non-forwarding secondary blackholes the load-balanced path — 100%, not 50%.* Forwarding is
+  license-gated; HA membership is not. So an **unlicensed** secondary joins the cluster, syncs,
+  and shows a healthy heartbeat, yet cannot forward a single transit packet. With `schedule
+  leastconnection` the trap is total: every session the secondary is handed dies instantly, its
+  session count stays at zero, so it is *permanently* the least-loaded unit, so the scheduler
+  keeps steering **new** sessions to it. The permitted `web→db:5432` path measured **0/12**, not
+  the 6/12 a half-dead pair suggests — while the primary (`License Status: Valid`) forwarded that
+  same path perfectly when standalone. **Confirm both members are licensed before running A-A:**
+  on each unit, `get system status | grep -i license` must read `License Status: Valid`. The fast
+  fix *and* proof is to drop back to A-P (`set mode a-p`) — only the Valid primary forwards and
+  the path recovers immediately — or license the secondary (each HA member needs its own
+  forwarding license).
+- *An eval secondary cannot hold a licensed primary's richer config → permanent out-of-sync.* A
+  full segmentation config (multiple VLAN interfaces, policies, routes) exceeds the eval
+  three-interface / three-policy / three-route budget (Lab 5.9), so the secondary silently rejects
+  the objects it cannot create and its checksum never matches. `get system ha status` then reports
+  it `out-of-sync` with a differing `chksum dump`. The definitive diagnostic runs on the
+  **secondary**: `diagnose debug config-error-log read` lists exactly which synced objects it
+  refused, and why (interface / policy / route limit). An out-of-sync secondary in A-A is
+  dangerous — it is handed sessions it lacks the policy to process.
+- *Never reboot the primary while the cluster is out-of-sync.* While the primary is down the
+  leaner secondary becomes primary; when the original primary returns it rejoins as **secondary**
+  and syncs *from* the leaner unit — pulling the reduced config on top of its own good config, so
+  now **both** members carry the broken config. Fix the sync first (or restore the primary's
+  config from backup); do not reboot the primary to "clear" an out-of-sync state.
+- *Both units reporting `(Primary)` for a few seconds at formation is normal, not split-brain.*
+  FGCP takes several seconds to exchange heartbeats and elect; if you capture `get system ha
+  status` the instant you type `end`, each unit still lists only itself. Wait 30–60 s and
+  re-check — the lower-priority unit demotes to secondary. It is split-brain only if each unit
+  *keeps* listing a single member after negotiation settles (then chase the heartbeat interface or
+  a firmware-build mismatch, per Lab 5.6).
+- *`config system ha` is a single object — there is no `edit`/`next`.* Typing `next` inside it
+  returns `Unknown action 0`; use `set …` lines then `end`. (`edit`/`next` apply only inside a
+  table such as `config system interface`.)
+- *Verify HA membership from the CLI, not the GUI's fabric view.* The GUI device dropdown and
+  **System > Firmware & Registration** list **Security Fabric** members — a different feature — so
+  a cluster peer can be absent there while still fully in the HA cluster. The authoritative
+  membership is `get system ha status`: read `number of member:` and the per-member lines
+  (`FGT-3 …, HA cluster index = 0` / `FGT-2 …, HA cluster index = 1`). `execute ha manage ?` lists
+  the manageable peers by index; `execute ha manage <index> admin` opens a secondary's CLI.
+- *A stale `HA Health Status: ERROR: <serial> is lost @ <date>` is cosmetic.* It is the cluster
+  remembering a former member (for example a rebuilt secondary's previous serial); it does not
+  affect the current members and clears on its own.
 
 ### Lab 5.8 — Active-active HA formed directly (Topic: A-A HA)
 
