@@ -229,7 +229,8 @@ current live assignments on the host:
 
 | VMID | Name | Role | vCPU / RAM | Bridge / VLAN |
 | --- | --- | --- | --- | --- |
-| 100 | `gns3` | Network-emulation appliance (GNS3) | 12 / 8 GB | `vmbr0` |
+| 100 | `gns3` | Network-emulation appliance (GNS3) | 24 / 8 GB | `vmbr0` |
+| 101 | `FGT-101` | FortiGate-VM 7.6.7 — **FGT-101**, standalone site-to-site IPsec peer for the HA cluster, `port1 = 10.30.99.101` (built in Lab 8.6) | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
 | 110 | `fortigate-fgt10` | FortiGate-VM, FortiOS 8.0 — firmware up/downgrade test unit | 1 / 2 GB | `vmbr1`; `vmbr2` |
 | 120 | `fortigate-7-6-2` | FortiGate-VM, FortiOS 7.6.2 | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 200, 202 |
 | 121 | `fortigate-fgt2` | FortiGate-VM 7.6.7 — **FGT-2**, HA secondary (freshly rebuilt) | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
@@ -240,14 +241,15 @@ current live assignments on the host:
 | 200 | `test-vlan200` | VLAN 200 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 200 |
 | 202 | `test-vlan202` | VLAN 202 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 202 |
 | 210 | `ubuntu-ws` | Ubuntu workstation / lab client | 2 / 4 GB | `vmbr2` VLAN 200 |
-| 230 | `c109-web` | ISFW lab — web tier | 1 / 512 MB | `vmbr2` VLAN 2001 (protected) + `vmbr0` (mgmt) |
-| 231 | `c109-db` | ISFW lab — database tier | 1 / 512 MB | `vmbr2` VLAN 2002 + `vmbr0` |
-| 232 | `c109-hmi` | ISFW lab — HMI / operator workstation | 1 / 512 MB | `vmbr2` VLAN 2003 + `vmbr0` |
-| 233 | `c109-plc` | ISFW lab — agentless PLC / OT cell | 1 / 512 MB | `vmbr2` VLAN 2004 + `vmbr0` |
+| 230 | `c109-web` | ISFW lab — Alpine web tier | 1 / 512 MB | `vmbr2` VLAN 2001 (protected) + `vmbr0` (mgmt) |
+| 231 | `c109-db` | ISFW lab — Alpine database tier | 1 / 512 MB | `vmbr2` VLAN 2002 + `vmbr0` |
+| 232 | `c109-hmi` | ISFW lab — Alpine HMI / operator workstation | 1 / 512 MB | `vmbr2` VLAN 2003 + `vmbr0` |
+| 233 | `c109-plc` | ISFW lab — Alpine agentless PLC / OT cell | 1 / 512 MB | `vmbr2` VLAN 2004 + `vmbr0` |
 
-The four **`c109-*`** guests are the per-tier cells of the Fortinet ISFW/VDOM lab
-([Volume CIX](../../volume-109-fortinet-isfw-vdom-lab/README.md)); each sits on its own VLAN
-behind **FGT-3** (VMID 122) with a second NIC on `vmbr0` for out-of-band management. The
+The four **`c109-*`** guests are lightweight **Alpine Linux** per-tier cells of the Fortinet
+ISFW/VDOM lab ([Volume CIX](../../volume-109-fortinet-isfw-vdom-lab/README.md)); each sits on
+its own VLAN behind **FGT-3** (VMID 122) with a second NIC on `vmbr0` for out-of-band management.
+The `tftp` box is Alpine as well; the two `test-vlan*` probes are minimal CirrOS guests. The
 FortiGate units and the workflow behind them — first deployment, high availability, and the
 CLI-over-TFTP firmware procedure the `tftp` box serves — are covered in the Fortinet NSE volume
 ([Volume XIX](../../volume-019-fortinet-network-security/README.md)). Create any of these with
