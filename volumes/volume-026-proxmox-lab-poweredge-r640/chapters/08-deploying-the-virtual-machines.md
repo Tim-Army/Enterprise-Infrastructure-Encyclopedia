@@ -241,14 +241,15 @@ current live assignments on the host:
 | 200 | `test-vlan200` | VLAN 200 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 200 |
 | 202 | `test-vlan202` | VLAN 202 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 202 |
 | 210 | `ubuntu-ws` | Ubuntu workstation / lab client | 2 / 4 GB | `vmbr2` VLAN 200 |
-| 230 | `c109-web` | ISFW lab — Alpine web tier | 1 / 512 MB | `vmbr2` VLAN 2001 (protected) + `vmbr0` (mgmt) |
-| 231 | `c109-db` | ISFW lab — Alpine database tier | 1 / 512 MB | `vmbr2` VLAN 2002 + `vmbr0` |
-| 232 | `c109-hmi` | ISFW lab — Alpine HMI / operator workstation | 1 / 512 MB | `vmbr2` VLAN 2003 + `vmbr0` |
-| 233 | `c109-plc` | ISFW lab — Alpine agentless PLC / OT cell | 1 / 512 MB | `vmbr2` VLAN 2004 + `vmbr0` |
+| 230 | `c109-web` | ISFW lab — Alpine web tier | 1 / 512 MB | `vmbr2` VLAN 2001 (protected) + `vmbr0` + `vmbr1` (mgmt) |
+| 231 | `c109-db` | ISFW lab — Alpine database tier | 1 / 512 MB | `vmbr2` VLAN 2002 + `vmbr0` + `vmbr1` (mgmt) |
+| 232 | `c109-hmi` | ISFW lab — Alpine HMI / operator workstation | 1 / 512 MB | `vmbr2` VLAN 2003 + `vmbr0` + `vmbr1` (mgmt) |
+| 233 | `c109-plc` | ISFW lab — Alpine agentless PLC / OT cell | 1 / 512 MB | `vmbr2` VLAN 2004 + `vmbr0` + `vmbr1` (mgmt) |
 
 The four **`c109-*`** guests are lightweight **Alpine Linux** per-tier cells of the Fortinet
 ISFW/VDOM lab ([Volume CIX](../../volume-109-fortinet-isfw-vdom-lab/README.md)); each sits on
-its own VLAN behind **FGT-3** (VMID 122) with a second NIC on `vmbr0` for out-of-band management.
+its own VLAN behind **FGT-3** (VMID 122) with a second NIC on `vmbr0` and a third on `vmbr1`
+(`10.30.99.23x`) for out-of-band management.
 The `tftp` box is Alpine as well; the two `test-vlan*` probes are minimal CirrOS guests. The
 FortiGate units and the workflow behind them — first deployment, high availability, and the
 CLI-over-TFTP firmware procedure the `tftp` box serves — are covered in the Fortinet NSE volume
@@ -857,18 +858,20 @@ qm set 230 --ciuser root --cipassword ISEisC00L123@2026 \
 # ipconfig1 = eth1 mgmt on vmbr0, no gateway (host-reachable for SSH)
 ```
 
-| Cell | VMID | Data (eth0, VLAN) | Mgmt (eth1, vmbr0) | Listener |
-|---|---|---|---|---|
-| c109-web | 230 | `10.30.1.10` (2001) | `10.30.161.230` | — |
-| c109-db | 231 | `10.30.2.10` (2002) | `10.30.161.231` | tcp/5432 |
-| c109-hmi | 232 | `10.30.3.10` (2003) | `10.30.161.232` | — |
-| c109-plc | 233 | `10.30.4.10` (2004) | `10.30.161.233` | tcp/502 |
+| Cell | VMID | Data (eth0, VLAN) | Mgmt eth1 (vmbr0) | Mgmt eth2 (vmbr1) | Listener |
+|---|---|---|---|---|---|
+| c109-web | 230 | `10.30.1.10` (2001) | `10.30.161.230` | `10.30.99.230` | — |
+| c109-db | 231 | `10.30.2.10` (2002) | `10.30.161.231` | `10.30.99.231` | tcp/5432 |
+| c109-hmi | 232 | `10.30.3.10` (2003) | `10.30.161.232` | `10.30.99.232` | — |
+| c109-plc | 233 | `10.30.4.10` (2004) | `10.30.161.233` | `10.30.99.233` | tcp/502 |
 
 Two choices make the cells stable and drivable:
 
-- **A second NIC on `vmbr0` for out-of-band management.** The data segments have no SSH
+- **Out-of-band management NICs on `vmbr0` and `vmbr1`.** The data segments have no SSH
   path, so each cell also has a mgmt IP on `vmbr0` (`10.30.161.23x`), which shares the
-  Proxmox host's L2 — the host reaches them directly, no routing. Drive any cell over SSH
+  Proxmox host's L2 — the host reaches them directly, no routing. A third NIC on `vmbr1`
+  (`10.30.99.23x`, gateway-less) additionally places each cell on the FortiGate management
+  segment, reachable from any host on `10.30.99.0/24`. Drive any cell over SSH
   with the injected key (`claude_ep.pub`), from the Proxmox host:
 
   ```bash
