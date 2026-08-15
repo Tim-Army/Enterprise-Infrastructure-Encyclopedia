@@ -51,6 +51,8 @@ then the workloads:
 - **Chapter 09** validates the whole build end to end, troubleshoots the
   failures this kind of build most commonly produces, and closes with
   day-2 operational practice.
+- **Chapter 10** is an appendix: one as-built table of every virtual machine —
+  VMID, hostname, VLAN, IPv4 addresses, and login.
 
 Every chapter follows the same structure — learning objectives, theory and
 architecture, design considerations, implementation and automation,
@@ -135,6 +137,7 @@ See [Chapter 07](chapters/07-building-the-iso-library.md) and
 7. [Building the ISO Library](chapters/07-building-the-iso-library.md)
 8. [Deploying the Virtual Machines](chapters/08-deploying-the-virtual-machines.md)
 9. [Validation, Troubleshooting, and Operations](chapters/09-validation-troubleshooting-and-operations.md)
+10. [Appendix — Virtual Machine Inventory and Access Reference](chapters/10-appendix-virtual-machine-inventory-and-access-reference.md)
 
 ## Volume resources
 
@@ -208,4 +211,9 @@ scripts/bash/build-book.sh --format all \
 The build's address tables — **Appendix A: IPv4 Table** (as built) and
 **Appendix B: IPv6 Table** (template; the build is IPv4-only) — live in
 [Volume CMXCVII — Master Appendices](../volume-997-master-appendices/chapters/02-appendix-proxmox-lab-ipv4-and-ipv6-address-tables.md),
-the encyclopedia's single home for appendices.
+the encyclopedia's central home for appendices.
+
+This volume also carries its own live-inventory appendix,
+[Chapter 10 — Virtual Machine Inventory and Access Reference](chapters/10-appendix-virtual-machine-inventory-and-access-reference.md),
+consolidating every virtual machine's VMID, hostname, VLAN, IPv4 addresses, and
+login into a single as-built reference.

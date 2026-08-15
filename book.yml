@@ -936,7 +936,7 @@ volumes:
     number: "XXVI"
     slug: volume-026-proxmox-lab-poweredge-r640
     title: "Proxmox Virtualization Lab on Dell PowerEdge R640"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -966,6 +966,9 @@ volumes:
       - id: 09
         title: "Chapter 09: Validation, Troubleshooting, and Operations"
         path: volumes/volume-026-proxmox-lab-poweredge-r640/chapters/09-validation-troubleshooting-and-operations.md
+      - id: 10
+        title: "Chapter 10: Appendix — Virtual Machine Inventory and Access Reference"
+        path: volumes/volume-026-proxmox-lab-poweredge-r640/chapters/10-appendix-virtual-machine-inventory-and-access-reference.md
   - id: volume-027
     number: "XXVII"
     slug: volume-027-cisco-data-center

@@ -33,6 +33,7 @@ topic is introduced or covered in depth. See also the
 - **Subscription warning (Proxmox)** — [Chapter 04, Theory and Architecture](chapters/04-no-subscription-repository-updates-and-core-services.md)
 - **Target-disk selection (BOSS, not `river`)** — [Chapter 03, Theory and Architecture / Validation and Troubleshooting](chapters/03-installing-proxmox-ve.md)
 - **Virtual machine deployment** — [Chapter 08, Theory and Architecture / Implementation and Automation](chapters/08-deploying-the-virtual-machines.md)
+- **Virtual machine inventory and access reference (all VMs — IP, VLAN, hostname, login)** — [Chapter 10](chapters/10-appendix-virtual-machine-inventory-and-access-reference.md)
 - **Virtual media (iDRAC install)** — [Chapter 03, Implementation and Automation](chapters/03-installing-proxmox-ve.md)
 - **VLAN-aware bridge** — [Chapter 05, Theory and Architecture / Implementation and Automation](chapters/05-network-architecture-management-nic-vlan-trunk-and-bridges.md)
 - **VLAN tag on virtual NIC** — [Chapter 08, Theory and Architecture](chapters/08-deploying-the-virtual-machines.md)
