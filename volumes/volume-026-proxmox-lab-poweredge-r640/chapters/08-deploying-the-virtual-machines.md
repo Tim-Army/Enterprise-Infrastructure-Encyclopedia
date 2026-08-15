@@ -235,7 +235,7 @@ current live assignments on the host:
 | 120 | `fortigate-7-6-2` | FortiGate-VM, FortiOS 7.6.2 | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 200, 202 |
 | 121 | `fortigate-fgt2` | FortiGate-VM 7.6.7 — **FGT-2**, HA secondary (freshly rebuilt) | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
 | 122 | `fortigate-fgt3` | FortiGate-VM 7.6.7 — **FGT-3**, ISFW / HA primary, `port1 = 10.30.99.122` | 1 / 2 GB | `vmbr1`; `vmbr2` VLAN 2001, 2002 |
-| 130 | `ems-win` | FortiClient EMS on Windows Server | 4 / 8 GB | `vmbr2` VLAN 200 |
+| 130 | `ems-win` | FortiClient EMS on Windows 11 (25H2) | 4 / 8 GB | `vmbr2` VLAN 200 |
 | 131 | `ems-linux` | FortiClient EMS on Linux | 6 / 12 GB | `vmbr2` VLAN 200, 3 |
 | 140 | `tftp` | TFTP / PXE server (Alpine) at `10.30.99.50` — serves FortiGate firmware and configs over TFTP | 1 / 1 GB | `vmbr1` |
 | 200 | `test-vlan200` | VLAN 200 reachability test guest | 1 / 512 MB | `vmbr2` VLAN 200 |
