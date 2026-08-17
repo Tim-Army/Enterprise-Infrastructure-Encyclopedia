@@ -452,8 +452,8 @@ config webfilter profile
     edit block-malicious
         config ftgd-wf
             config filters
-                edit 1
-                    set category 26
+                edit 0
+                    set category 37
                     set action block
                 next
             end
@@ -462,6 +462,33 @@ config webfilter profile
 end
 diagnose test application urlfilter 3
 ```
+
+> **7.6 gotcha — a new profile's category table is already populated.** Do **not** write
+> `edit 1` / `set category 26`: on FortiOS 7.6 a fresh `webfilter profile` pre-populates its
+> `ftgd-wf` filters with every rated category, and the FortiGuard **Security Risk** group —
+> **26 Malicious Websites, 61 Phishing, 86 Spam URLs, 90 Newly Observed Domain, 91 Newly
+> Registered Domain** — already defaults to `action block`. So "block Malicious Websites" is
+> the out-of-box state; there is nothing to add. Trying `set category 26` on another row fails
+> with `Invalid category ID '26': Duplicate or Group 'Fortiguard' not included`, and `set
+> category ?` hides already-used categories (which makes the Security Risk group look
+> "missing"). To block a category that *isn't* blocked by default — e.g. Social Networking
+> (37) above — add it with `edit 0` (auto-assigned id); to change a default, edit that
+> category's existing row.
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** The profile builds without a cap
+(unlike the SSL-profile table in Lab 7.1), and the pre-populated table above already blocks the
+Security Risk categories. The gate is the subscription, and it is measured, not assumed:
+
+- `get system fortiguard` reports `webfilter-license: Unknown` and `webfilter-expiration: N/A`
+  (antispam and outbreak-prevention likewise) — no security-services contract on the eval.
+- `diagnose debug rating` shows the Web-filter service `Status: Disable`; the default SDNS
+  rating server (`208.91.112.220:53`) is configured but has no entitlement behind it.
+- `diagnose test application urlfilter 3` returns `Invalid daemon index (.pid file not found)` —
+  the urlfilter daemon is not even running, so no live category lookups occur.
+
+So on the eval the block is *configured* (indeed default) but never *enforced against live
+ratings*; a paid FortiGuard web-filter contract plus reachability to the rating service is what
+turns the pre-populated block actions into real verdicts.
 
 **Expected result:** requests to sites FortiGuard rates as category 26 (Malicious
 Websites) are blocked with a replacement page; the web filter enforces acceptable-use
