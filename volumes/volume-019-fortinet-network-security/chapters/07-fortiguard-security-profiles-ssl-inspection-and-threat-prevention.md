@@ -561,7 +561,11 @@ HTTP-only control — DNS filtering covers name resolution across all protocols.
 
 ### Lab 7.4 — Application control (Topic: Application control)
 
-**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+**Eval FortiGate — works offline.** Application control matches traffic against the **local**
+Application Definitions database (bundled with the firmware), not a live FortiGuard rating query — so
+it runs fully on the eval, unlike the web/DNS filters in Labs 7.2–7.3. A subscription only keeps the
+signature DB *current*; the eval's is from 2015 (Chapter 04), so it recognizes long-standing apps but
+misses anything added since. Confirmed with a live capture below.
 
 **Objective:** Block a peer-to-peer application category regardless of port.
 
@@ -578,6 +582,29 @@ config application list
 end
 diagnose test application ipsmonitor
 ```
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** Proven end to end with a captured
+app-control log. A client (`10.30.1.10`) fetched a plain-HTTP server on a peer (`10.30.2.10`)
+listening on **port 8080** — a non-web port — through a policy carrying an application-control list
+(with `set other-application-log enable`). The FortiGate identified it on the first request —
+retrieved with `execute log filter category utm-app-ctrl` then `execute log display` (note the CLI
+log category is `utm-app-ctrl`, not `app-ctrl`):
+
+```text
+type="utm" subtype="app-ctrl" eventtype="signature" appid=15893
+srcip=10.30.1.10 dstip=10.30.2.10 dstport=8080 proto=6 service="HTTP"
+policyid=1 applist="appctrl-lab" action="pass"
+appcat="Web.Client" app="HTTP.BROWSER" agent="Wget" httpmethod="GET" url="/"
+msg="Web.Client: HTTP.BROWSER" apprisk="medium"
+```
+
+- **Signature, not port.** HTTP on `dstport 8080` is still labelled `HTTP.BROWSER` — a port-based
+  control would never flag 8080 as web. App control even parsed the request internals (`GET /`, the
+  `Wget` agent), which is the whole point of the negative test below.
+- **Fully offline.** Every FortiGuard fetch fails on this box (Lab 7.3: `diagnose autoupdate versions`
+  → `Connectivity failure`), yet the classification is exact — it comes from the local Application
+  Definitions DB with no live rating. That is what separates application control (and antivirus and
+  IPS) from the connectivity-gated web and DNS filters in Labs 7.2–7.3.
 
 **Expected result:** applications FortiGuard classifies in category 6 (P2P) are blocked
 even when they hop ports or ride over 443 — application control identifies apps by
