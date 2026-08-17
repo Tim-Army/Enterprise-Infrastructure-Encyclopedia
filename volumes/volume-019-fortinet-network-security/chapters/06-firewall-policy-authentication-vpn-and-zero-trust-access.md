@@ -1163,11 +1163,44 @@ owner — is immune.
 > ZTNA, so a tunnel-mode walkthrough no longer applies to current firmware —
 > this lab has been replaced by the note below.
 
+**Confirmed live on the 7.6.7 cluster (15 August 2026).** `show vpn ssl web portal`
+returns a single portal whose *only* setting is `web-mode` — there is no
+`tunnel-mode`, `split-tunneling`, or `ip-pools` line to remove because those
+keywords are no longer in the schema:
+
+```text
+FGT (Primary) # show vpn ssl web portal
+config vpn ssl web portal
+    edit "web-access"
+        set web-mode enable
+    next
+end
+```
+
+`get vpn ssl settings` tells the same story from the settings side — no
+`tunnel-ip-pools`/`tunnel-ipv6-pools` attributes exist — and corrects two details
+worth knowing on current firmware:
+
+```text
+FGT (Primary) # get vpn ssl settings
+status          : enable
+ciphersuite     : TLS-AES-128-GCM-SHA256 TLS-AES-256-GCM-SHA384 TLS-CHACHA20-POLY1305-SHA256
+port            : 443
+...
+```
+
+- The cipher suite is **strong AES-GCM / CHACHA20**, not the low-encryption set —
+  because this cluster member is *licensed*, exactly the "licensed ⇒ strong suites"
+  split noted above; an unlicensed eval falls back to the weak ciphers.
+- The default listener is **port 443** on this build (older releases defaulted to
+  10443), so a client browses to `https://<wan-ip>` unless `port` is re-set.
+
 **What remains, and what to use instead:**
 
 - **Clientless (Agentless) web VPN** still exists for browser-based access
   to internal web, RDP, SSH, and SMB resources. A remote user browses to
-  `https://<wan-ip>:10443`, authenticates against a user group bound to the
+  `https://<wan-ip>` (the live default `port` is 443 on 7.6.7, above; older
+  builds used 10443), authenticates against a user group bound to the
   built-in `web-access` portal by an SSL-VPN authentication rule, and works
   through the portal; `diagnose vpn ssl list` shows the active web session.
   On an evaluation license the portal count is capped at one, so you modify
