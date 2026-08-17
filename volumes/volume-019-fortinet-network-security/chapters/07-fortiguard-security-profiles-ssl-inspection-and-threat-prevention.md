@@ -749,7 +749,25 @@ end
 diagnose firewall iprope list 100004
 ```
 
-**Expected result:** one policy now applies SSL inspection, AV, web/DNS filtering,
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** All six UTM profiles attach to one policy and
+take effect per-policy. Because the eval builds its profiles under different names than the walkthrough
+(Lab 7.1's `custom-deep-inspection` in place of `deep-lab`, plus the built-in `default` antivirus /
+web-filter / DNS-filter / application / IPS profiles), the live check stacked those:
+
+```text
+set ssl-ssh-profile deep-inspection
+set av-profile default
+set webfilter-profile default
+set dnsfilter-profile default
+set application-list default
+set ips-sensor default
+```
+
+`diagnose firewall iprope list 100004` then shows the kernel entry for this policy carrying the UTM flags
+— `flag (…): log redir nids_raw …`, `app_list=7d0`, `ips_view=1`, and an `av` group index — while its
+sibling policies (the site-to-site IPsec policies from [Lab 6.4](06-firewall-policy-authentication-vpn-and-zero-trust-access.md))
+show `app_list=0 ips_view=0`. That is the whole point of the lab: inspection depth is bound **per policy**,
+not globally, so one flow can be deep-inspected while another passes untouched.
 application control, and IPS to matching traffic — the UTM profile set is applied
 **per policy**, so different flows get different inspection depth.
 
