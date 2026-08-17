@@ -1237,6 +1237,30 @@ tunnel mode.
 > entitlement); the EMS server and FortiClient endpoint enrollment themselves run on any
 > license and are unaffected.
 
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** The ZTNA control plane was
+probed read-only on the cluster primary (FGT-2, `v7.6.7 build3704`): the schema was
+inspected inside a config session that was then `abort`ed, so nothing was committed —
+`show firewall vip ztna-probe` afterward returns *"entry is not found in table."*
+
+- **The access-proxy command tree parses on 7.6.7.** `config firewall vip` accepts
+  `set type access-proxy`, and its `set ?` schema exposes the ZTNA-specific fields used
+  below — `ssl-certificate`, `client-cert`, and `empty-cert-action`. `config firewall
+  access-proxy` edits cleanly, including the `vip` binding and the nested `config
+  api-gateway` → `config realservers` sub-tables shown in the walkthrough.
+- **The proxy VIP requires a server certificate.** An access-proxy VIP terminates TLS,
+  so `ssl-certificate` is mandatory; the illustrative block now sets it, and turns on the
+  FortiClient device-certificate check with `client-cert enable` / `empty-cert-action
+  block` — the per-request posture gate that is the whole point of ZTNA.
+- **There is no EMS control plane on this cluster.** `show full-configuration
+  endpoint-control fctems` lists seven connector slots, every one `set status disable`,
+  and `execute fctems verify 1` returns *"Please enable EMS configuration first before
+  verifying."* With no EMS enrolled there are no device-posture tags to evaluate: the
+  proxy could authenticate a client certificate but has no posture signal behind it.
+- **Both cluster members are evaluation VMs** (serials `FGVMEV…`), so the DES-only crypto
+  ceiling in the note above still applies: even after an EMS is deployed, an eval FortiGate
+  cannot complete the strong-TLS Security Fabric handshake to it. Running Lab 6.6 end to
+  end needs a licensed FortiGate **and** a reachable FortiClient EMS.
+
 ```text
 config firewall vip
     edit ztna-web
@@ -1245,6 +1269,9 @@ config firewall vip
         set extintf port1
         set server-type https
         set extport 443
+        set ssl-certificate "Fortinet_Factory"
+        set client-cert enable
+        set empty-cert-action block
     next
 end
 config firewall access-proxy
