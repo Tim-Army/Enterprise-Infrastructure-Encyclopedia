@@ -618,7 +618,11 @@ identifies them.
 
 ### Lab 7.5 — Antivirus (Topic: Antivirus)
 
-**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+**Eval FortiGate — works offline.** Antivirus scans the payload against the **local** virus-signature
+database and AV engine (both bundled with the firmware), not a live FortiGuard query — so it runs fully
+on the eval, like application control (Lab 7.4). A subscription only keeps signatures *current*; the
+eval's base set is from 2018 (Chapter 04) but still carries standard detections such as EICAR. Confirmed
+with a live block below.
 
 **Objective:** Scan traffic with antivirus and verify with EICAR.
 
@@ -627,13 +631,36 @@ config antivirus profile
     edit av-lab
         set feature-set flow
         config http
-            set av-scan enable
+            set av-scan block
         end
     next
 end
-# From a client behind an AV-enabled policy:
+# From a client behind an AV-enabled policy (or host EICAR on an internal server
+# if the segment has no internet):
 #   curl http://www.eicar.org/download/eicar.com.txt
 ```
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** Proven with a captured antivirus block. A
+client (`10.30.1.10`) fetched a locally-hosted EICAR test file — the isolated lab cannot reach
+`eicar.org` — from a peer (`10.30.2.10:8080`) through a policy carrying `av-lab`. The download was
+**blocked**: the first request reset mid-stream (`200 OK` headers, then `Connection reset by peer`, zero
+body bytes), the retry returned `HTTP/1.1 403 Forbidden`. The antivirus log (`execute log filter category
+utm-virus`) recorded it:
+
+```text
+type="utm" subtype="virus" eventtype="infected" action="blocked"
+virus="EICAR_TEST_FILE" virusid=2172 viruscat="Virus" crlevel="critical"
+filename="eicar.com.txt" service="HTTP" dstport=8080 policyid=1 profile="av-lab"
+srcip=10.30.1.10 dstip=10.30.2.10 dtype="av-engine"
+```
+
+- **The local AV engine did the detection** — `dtype="av-engine"` on the first hit (the cached retry
+  logs `dtype="cached"`, which is why the repeat got an instant 403). No cloud lookup.
+- **Fully offline** — every FortiGuard fetch fails on this box (Lab 7.3), yet AV scanned the HTTP payload
+  and blocked a known signature from the bundled 2018 virus definitions. Like application control,
+  antivirus is a *local-database* feature, not one of the connectivity-gated rating services.
+- **7.6 config note:** the HTTP scan action is `set av-scan block` (or `monitor`), used above — **not**
+  `enable`, which returns `command parse error`.
 
 **Expected result:** the EICAR test file (a harmless standard AV test string) is
 blocked with a virus replacement message; the antivirus engine scans HTTP/HTTPS/FTP/
