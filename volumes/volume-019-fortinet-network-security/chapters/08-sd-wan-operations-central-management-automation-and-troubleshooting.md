@@ -451,9 +451,13 @@ beyond lab resources.
 
 ### Lab 8.1 — SD-WAN zones and members (Topic: SD-WAN setup)
 
-**Eval FortiGate — capable.** SD-WAN needs two upstream members; on the eval's 3-interface budget, build the members as VLAN subinterfaces of one trunk.
+**Eval FortiGate — capable (three-interface build).** SD-WAN needs at least two members. The evaluation
+FortiGate-VM has three interfaces, so keep `port1` as the dedicated management/uplink and build the SD-WAN
+from the other two — `port2` and `port3`. The eval has no second internet circuit, so those two members
+front internal lab segments and the SLA probes (Lab 8.2) target reachable lab hosts; that is enough to
+exercise zones, members, SLA, and steering without real dual-WAN.
 
-**Objective:** Create an SD-WAN with two underlay members.
+**Objective:** Create an SD-WAN with two underlay members on the eval's spare interfaces.
 
 ```text
 config system sdwan
@@ -464,27 +468,31 @@ config system sdwan
     end
     config members
         edit 1
-            set interface port1
+            set interface port2
             set zone virtual-wan-link
-            set gateway 203.0.113.1
         next
         edit 2
-            set interface port4
+            set interface port3
             set zone virtual-wan-link
-            set gateway 198.51.100.1
         next
     end
 end
 diagnose sys sdwan member
 ```
 
-**Expected result:** `port1` and `port4` join the SD-WAN zone; `diagnose sys sdwan
-member` lists both as sequence members — SD-WAN abstracts multiple underlays into one
-logical egress the rules steer over.
+`virtual-wan-link` is the built-in default SD-WAN zone, so the `edit virtual-wan-link` here re-enters the
+existing zone rather than creating a new one. On a real dual-WAN box each member also takes `set gateway
+<upstream-next-hop>` (the upstream router on that circuit); the eval's members are directly-connected lab
+segments, so no member gateway is needed to probe a host on that member's own segment (Lab 8.2).
 
-**Negative test:** reference `port1` in a normal static route while it is an SD-WAN
-member; FortiOS steers via SD-WAN rules instead — membership changes how egress is
-selected.
+**Expected result:** `port2` and `port3` join the `virtual-wan-link` zone; `diagnose sys sdwan member`
+lists both as sequence members — SD-WAN abstracts multiple underlays into one logical egress the rules
+steer over, while `port1` stays out-of-band for management.
+
+**Negative test:** try to bind a normal static route to `port2` (`config router static … set device
+port2`) while it is an SD-WAN member; FortiOS **rejects** it — once an interface is an SD-WAN member you
+route to it only through the zone (`set sdwan-zone virtual-wan-link`), never the member interface directly.
+Membership changes how egress is expressed.
 
 **Rollback:** `set status disable` under `config system sdwan` after the later labs.
 
@@ -497,8 +505,8 @@ selected.
 ```text
 config system sdwan
     config health-check
-        edit fgd-ping
-            set server 208.91.112.53
+        edit lab-sla
+            set server 10.30.1.10
             set members 1 2
             set protocol ping
             config sla
@@ -514,8 +522,13 @@ diagnose sys sdwan health-check
 ```
 
 **Expected result:** each member reports live latency, jitter, and packet loss, and an
-`in-sla`/`out-of-sla` state — the SLA is the signal SD-WAN rules use to keep sessions on
-links that meet the application's requirements.
+`in-sla`/`out-of-sla` state. On the eval the probe host `10.30.1.10` sits on member 1's segment (`port2`),
+so member 1 measures a real path and reports `in-sla`. Crucially, SD-WAN health-check probes are **pinned
+to each member's egress interface** — they are not FIB-routed — so member 2's ping is forced out `port3`;
+`10.30.1.10` is off `port3`'s subnet (`10.30.2.0/24`) with no gateway to reach it, so member 2 hits 100%
+packet loss and shows `state: dead` (the extreme of failing SLA). That split is exactly the signal the
+steering rule in Lab 8.3 uses to keep traffic on the healthy member. On a real dual-WAN, point `server` at
+an internet host reachable over *both* circuits so each member is measured independently.
 
 **Negative test:** build steering rules with no health-check; SD-WAN cannot tell a
 brown-out link from a healthy one and keeps sending traffic into loss — the SLA probe is
@@ -529,6 +542,9 @@ what makes steering application-aware.
 
 **Objective:** Steer an application over the best-quality member.
 
+This rule binds to the `lab-sla` health-check from Lab 8.2 (`config sla / edit lab-sla`) — run 8.2 first,
+or the SLA reference resolves to nothing and the rule can never enter `sla` mode.
+
 ```text
 config system sdwan
     config service
@@ -537,7 +553,7 @@ config system sdwan
             set mode sla
             set dst all
             config sla
-                edit fgd-ping
+                edit lab-sla
                     set id 1
                 next
             end
@@ -548,9 +564,10 @@ end
 diagnose sys sdwan service
 ```
 
-**Expected result:** `critical-apps` traffic prefers the member meeting the SLA and
-fails over to the next when it degrades; `diagnose sys sdwan service` shows the chosen
-member and order — rules translate link health into per-application path selection.
+**Expected result:** `critical-apps` traffic prefers the member meeting the SLA and fails over to the next
+when it degrades; `diagnose sys sdwan service` shows the chosen member and order. On the eval, member 1
+(`port2`) is the `in-sla` member from Lab 8.2, so the rule selects it first — rules translate link health
+into per-application path selection.
 
 **Negative test:** set `mode manual` pinned to one member and pull that link; traffic
 is dropped instead of failing over — `mode sla` with priority members is what makes
