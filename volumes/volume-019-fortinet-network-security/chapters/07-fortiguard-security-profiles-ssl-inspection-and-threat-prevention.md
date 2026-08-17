@@ -673,7 +673,11 @@ sees the payload and it passes — AV inside TLS requires deep inspection (Lab 7
 
 ### Lab 7.6 — Intrusion prevention (Topic: IPS)
 
-**Eval FortiGate — subscription-gated.** The profile and policy build fine, but *live* FortiGuard verdicts need an active security-services subscription — the eval's time-limited contract works briefly, then verdicts silently degrade (Chapter 04).
+**Eval FortiGate — works offline.** IPS matches traffic against the **local** attack-signature database
+in the IPS engine (both bundled with the firmware), not a live FortiGuard query — so it runs fully on the
+eval, like application control (Lab 7.4) and antivirus (Lab 7.5). A subscription only keeps signatures
+*current*; the eval's base set is from 2015 (Chapter 04) but still carries long-standing exploit
+signatures such as Shellshock. Confirmed with a live block below.
 
 **Objective:** Attach an IPS sensor to block known exploits.
 
@@ -691,6 +695,28 @@ config ips sensor
 end
 diagnose ips signature status
 ```
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** Proven with a captured IPS drop. First,
+`diagnose ips signature status` reported the engine loaded with a full pattern set (~10,000 TCP
+signatures) — the database is present offline. Then a client (`10.30.1.10`) sent an HTTP request carrying
+a **Shellshock** `User-Agent` (`() { :; }; echo shellshock` — harmless to the target but a critical IPS
+signature since 2014) to a peer (`10.30.2.10:8080`) through a policy carrying `ips-lab`. The FortiGate
+dropped it — the client got no response — and the IPS log (`execute log filter category utm-ips`) named
+the signature:
+
+```text
+type="utm" subtype="ips" eventtype="signature" severity="critical" action="dropped"
+attack="Bash.Function.Definitions.Remote.Code.Execution" attackid=39294
+ref="http://www.fortinet.com/ids/VID39294" profile="ips-lab" policyid=1
+srcip=10.30.1.10 dstip=10.30.2.10 dstport=8080 service="HTTP"
+agent="() { :; }; echo shellshock"
+```
+
+- **Matched from the bundled DB, offline.** VID 39294 comes from the 2015 attack definitions; every
+  FortiGuard fetch on this box fails (Lab 7.3), yet the engine detected and dropped the exploit pattern.
+- **The offline-engine trio.** IPS joins application control (Lab 7.4) and antivirus (Lab 7.5) as
+  features that run on their *local* signature databases; only the web and DNS filters (Labs 7.2–7.3) are
+  gated by the live FortiGuard rating service and connectivity.
 
 **Expected result:** the sensor blocks traffic matching high/critical FortiGuard IPS
 signatures; `diagnose ips` shows the engine loaded — IPS detects and blocks exploit
