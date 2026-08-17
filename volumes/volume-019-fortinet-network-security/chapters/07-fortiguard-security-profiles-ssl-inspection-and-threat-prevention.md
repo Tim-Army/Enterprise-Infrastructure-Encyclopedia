@@ -522,6 +522,34 @@ config dnsfilter profile
 end
 ```
 
+> **7.6 notes — pre-populated table and `block-botnet` placement.** A new `dnsfilter profile`
+> pre-populates `ftgd-dns` with the DNS-relevant Security Risk categories — **26 Malicious
+> Websites, 61 Phishing, 86 Spam URLs, 88** — all `block` by default, with 26 already in row 1.
+> So `edit 1` / `set category 26` edits that existing row and succeeds (it does *not* hit the
+> webfilter duplicate trap from Lab 7.2, because dnsfilter's table is short and 26 is slot 1) —
+> though it is effectively redundant. And `set block-botnet enable` is a **profile-level**
+> command: issue it under `edit dns-guard` *after* the `config ftgd-dns ... end` block — running
+> it inside `config ftgd-dns` returns `parse error before 'block-botnet'`.
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).** The profile and `block-botnet` both
+build; the gate is the data behind them, measured with `diagnose autoupdate versions`:
+
+- **The Botnet Domain Database is empty and cannot update:** `Version: 0.00000`, `Contract Expiry
+  Date: n/a`, last updated `Mon Jan 1 00:00:00 2001` (i.e. never), and the most recent update
+  attempt ended in `Result: Connectivity failure`. So `set block-botnet enable` is enabled but has
+  **no domains to act on**.
+- **Every FortiGuard fetch fails the same way** — Botnet Domain, Internet-service DB, URL Allow
+  list, IP Geography, Certificate Bundle, AntiPhish, and Security Rating all report `Result:
+  Connectivity failure`, and every package shows `Contract Expiry Date: n/a`. The isolated lab has
+  no path to FortiGuard and no service is under contract.
+- The FortiGuard **DNS category rating** that the `ftgd-dns` filters depend on is the same live
+  rating service that `diagnose debug rating` reported as `Disable` in Lab 7.2 — so the category
+  blocks (26/61/86/88) likewise have no live verdict source.
+
+DNS filtering is therefore fully *configured* on the eval — categories pre-blocked, botnet blocking
+enabled — but resolves nothing against live intelligence: the botnet database is empty and the
+rating service is unreachable. A paid contract plus FortiGuard connectivity is what turns it on.
+
 **Expected result:** DNS lookups for malicious/botnet domains are redirected to a
 block IP before a connection is ever attempted — DNS filtering stops threats one layer
 earlier than web filtering and catches non-HTTP protocols.
