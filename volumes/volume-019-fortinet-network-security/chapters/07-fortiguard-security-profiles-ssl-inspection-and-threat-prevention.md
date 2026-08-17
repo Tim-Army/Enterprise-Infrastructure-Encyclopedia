@@ -356,7 +356,7 @@ attach profiles to. **Cost:** none beyond lab resources.
 
 ### Lab 7.1 — SSL/SSH deep inspection (Topic: SSL inspection)
 
-**Eval FortiGate — capable.** Certificate-based deep inspection needs no FortiGuard subscription — it runs on the eval as-is (and underpins the subscription-gated profiles that follow).
+**Eval FortiGate — config yes, re-sign no.** Deep inspection needs no FortiGuard subscription and its *configuration* is accepted on the eval — but a live test (below) shows the eval's low-encryption proxy cannot actually complete the re-signed TLS handshake for a modern flow. `certificate-inspection` (SNI/cert peek, no re-sign) works on the eval; full `deep-inspection` of a live session needs a licensed FortiGate. The profile still underpins the subscription-gated profiles that follow.
 
 **Objective:** Apply deep-inspection so encrypted flows can be scanned.
 
@@ -371,6 +371,55 @@ config firewall ssl-ssh-profile
     next
 end
 ```
+
+> **Eval adaptation — the profile table is capped, so reuse a built-in.** On the evaluation
+> FortiGate-VM the `firewall ssl-ssh-profile` table is already full at its four built-ins, so
+> creating a *new* `deep-lab` profile is refused: `edit deep-lab` returns `Command fail. Return
+> code -4 (reached the maximum number of entries)` — the same low-tier resource cap that blocks
+> an extra loopback in [Lab 6.6](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
+> Deep inspection itself is fully supported; you just cannot hold it in a new profile. Instead
+> **edit the built-in `custom-deep-inspection`** (its comment is literally *"Customizable deep
+> inspection profile"*) or attach the read-only **`deep-inspection`** profile directly to the
+> policy. On a licensed FortiGate `edit deep-lab` works normally.
+
+**Confirmed live on the 7.6.7 cluster (17 August 2026).**
+
+- **The re-sign trust anchor.** `get vpn certificate local details` shows `Fortinet_CA_SSL` is a
+  **self-signed CA** (Subject equals Issuer, CN = the FortiGate's own serial number, valid ten
+  years). Every server certificate the FortiGate intercepts is re-issued under this CA, so a
+  client behind deep inspection sees an issuer of *the FortiGate's serial*, not the site's real
+  CA. A second anchor, `Fortinet_CA_Untrusted`, re-signs sessions whose *original* server cert
+  failed validation — so the client still gets a browser warning instead of a silently-trusted
+  forgery.
+- **The built-in `deep-inspection` reference** (`show full-configuration firewall ssl-ssh-profile
+  deep-inspection`) is exactly what `custom-deep-inspection` inherits: `set server-cert-mode
+  re-sign`, `set caname "Fortinet_CA_SSL"`, `set untrusted-caname "Fortinet_CA_Untrusted"`, and
+  `config https` → `set status deep-inspection` on port 443 with `min-allowed-ssl-version tls-1.1`
+  and `quic inspect`. The eval carries the full *config* for a deep profile, strong-cipher settings
+  and all — whether it can actually re-sign a live session is a separate question, tested below.
+- **A 32-entry `ssl-exempt` allow-list ships enabled by default**, so deep inspection deliberately
+  does **not** decrypt FortiGuard categories **31 (Health)** and **33 (Finance and Banking)**, nor
+  a list of certificate-pinned application FQDNs (Apple, Microsoft, Google, Dropbox, Skype, …).
+  Deleting those exemptions is what breaks banking apps and pinned mobile clients — a classic
+  deep-inspection support call.
+- **Editing the built-in took and persisted:** `set comment "Lab 7.1 deep inspection"` on
+  `custom-deep-inspection` saved cleanly, confirming the built-in is the eval's usable
+  deep-inspection vehicle.
+- **Live re-sign test — the eval proxies but cannot complete the handshake.** With
+  `custom-deep-inspection` attached to the inter-segment policy (`utm-status enable`,
+  `service ALL`), a client (`10.30.1.10`) opening TLS to an internal HTTPS server
+  (`10.30.2.10`, a throwaway Python listener with a self-signed `CN=db.lab` cert) *through*
+  the FortiGate **failed**: TLS 1.3 returned `SSL: RECORD_LAYER_FAILURE` and TLS 1.2 returned
+  `SSL: BAD_SIGNATURE` — even with the client's OpenSSL security level dropped to `SECLEVEL=0`,
+  so it was not the client being strict. The listener's log showed the FortiGate proxy *did*
+  connect on the server side and then reset, so deep inspection was genuinely engaged — the
+  eval's low-encryption proxy simply could not produce a re-signed handshake a current client
+  accepts. Swapping the *same* policy to `certificate-inspection` (peek, no re-sign)
+  **succeeded** immediately: TLS 1.3 / AES-256-GCM, and the client received the origin's real
+  `CN=db.lab` certificate untouched. So on the eval, `certificate-inspection` is fully usable
+  but full `deep-inspection` of a live modern-TLS session needs a **licensed** FortiGate — the
+  strong crypto that completes the re-sign is the same ceiling that blocked the EMS leg in
+  [Lab 6.6](06-firewall-policy-authentication-vpn-and-zero-trust-access.md).
 
 **Expected result:** a deep-inspection profile that decrypts, inspects, and re-encrypts
 HTTPS — without it, AV/IPS/web-filter see only ciphertext. The FortiGate CA certificate
@@ -387,6 +436,10 @@ config firewall ssl-ssh-profile
     delete deep-lab
 end
 ```
+
+On the eval there is no `deep-lab` to delete — instead point the policy's `ssl-ssh-profile`
+back to the built-in `no-inspection` and, if you edited it, clear the `custom-deep-inspection`
+comment.
 
 ### Lab 7.2 — Web filtering (Topic: Web filter)
 
