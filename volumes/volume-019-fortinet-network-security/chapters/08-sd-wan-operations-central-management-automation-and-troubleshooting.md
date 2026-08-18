@@ -489,6 +489,48 @@ segments, so no member gateway is needed to probe a host on that member's own se
 lists both as sequence members — SD-WAN abstracts multiple underlays into one logical egress the rules
 steer over, while `port1` stays out-of-band for management.
 
+**Confirmed live on FortiOS 7.6.7 (licensed evaluation FortiGate-VM).** Verified on a dedicated
+three-interface build: `port1` as out-of-band management and the two members on genuinely routed segments
+behind an upstream firewall — the real dual-WAN form, so each member also carries `set gateway`:
+
+```text
+config members
+    edit 1
+        set interface port2
+        set gateway 10.30.162.1
+        set zone virtual-wan-link
+    next
+    edit 2
+        set interface port3
+        set gateway 10.30.163.1
+        set zone virtual-wan-link
+    next
+end
+```
+
+`diagnose sys sdwan member` and `diagnose sys sdwan zone` show both underlays live:
+
+```text
+Member(1): interface: port2, gateway: 10.30.162.1, source 10.30.162.124, priority: 1 1024, weight: 0
+Member(2): interface: port3, gateway: 10.30.163.1, source 10.30.163.124, priority: 1 1024, weight: 0
+Zone virtual-wan-link index=1
+     members(2): 4(port2) 5(port3)
+```
+
+**Routing reality worth internalizing:** giving each member a `set gateway` does **not** by itself add a
+default route. Immediately after this lab the forwarding table still held only the connected member subnets
+plus the management route — no `0.0.0.0/0` via the members. A member gateway feeds the SLA health-check
+probes (Lab 8.2) and the SD-WAN *service* rules (Lab 8.3); to actually forward user traffic over the SD-WAN
+you add a static route pointed at the **zone** (`set sdwan-zone virtual-wan-link`), never at a member
+interface — the same rule the negative test below proves from the other direction.
+
+**Out-of-band management, done correctly:** keep `port1` for management traffic only. Give it a **scoped**
+static route to the administrator's network (`set dst <admin-subnet> / set gateway <mgmt-gateway> / set
+device port1`) rather than a default route — a default route on the management interface would drag all
+egress through the management plane. Because management lives on `port1`, its reply traffic must also leave
+`port1`, so the scoped route keeps the path symmetric and passes the FortiGate's reverse-path-forwarding
+check; data and internet, when required, leave through the SD-WAN zone instead.
+
 **Negative test:** try to bind a normal static route to `port2` (`config router static … set device
 port2`) while it is an SD-WAN member; FortiOS **rejects** it — once an interface is an SD-WAN member you
 route to it only through the zone (`set sdwan-zone virtual-wan-link`), never the member interface directly.
