@@ -708,7 +708,11 @@ end
 config system automation-stitch
     edit login-alert
         set trigger admin-login-trigger
-        set action notify-admins
+        config actions
+            edit 1
+                set action notify-admins
+            next
+        end
     next
 end
 ```
@@ -716,6 +720,29 @@ end
 **Expected result:** the FortiGate is registerable to FortiManager for centralized
 policy, and the stitch fires an email whenever an admin logs in — automation turns Fabric
 events into responses without an operator watching logs.
+
+**Confirmed live on FortiOS 7.6.7 (licensed evaluation FortiGate-VM).** Three corrections and a proof, from a
+real run. (1) **FortiManager** — `set type fortimanager` takes, prompts for the FMG serial number (the identity
+handshake) and enters managed mode (it *pauses auto firmware upgrades* — "this FortiGate is now managed by
+FortiManager"), but stays **unregistered** with no appliance; released cleanly with `set type none`. (2) **A
+stitch binds actions through a `config actions` sub-table, not `set action`** — on 7.6 the stitch object has no
+`action` field, so `set action …` fails with `command parse error before 'action'`; use the sub-table form
+shown above. (3) A **webhook** action defaults its port to 80 when you `set protocol http`, so set it
+explicitly (`set port <n>`). Swapping the email for a webhook to a lab receiver, the stitch was fired by an
+admin login and the **event log proves it end-to-end**:
+
+```text
+logid=0100032001  "Admin login successful"        user=admin  ui=ssh(...)      <- trigger (logid 32001)
+logid=0100046600  "Automation stitch triggered"   stitch="login-alert"
+                  trigger="admin-login-trigger"    stitchaction="notify-webhook"
+                  msg="stitch:login-alert is triggered."
+```
+
+**Delivery is separate from firing.** The webhook itself never reached the receiver (a firewall in the path
+dropped it), yet `logid 0100046600` still recorded the fire. The lesson: an automation stitch *fires* whenever
+its trigger matches, independent of whether the action's target is reachable — so verify a stitch on the box
+via its `Automation stitch triggered` event (`logid 0100046600`), and remember the action endpoint must be
+reachable **and** permitted end-to-end for the action itself to succeed.
 
 **Negative test:** define a trigger with no action (or vice versa); nothing happens —
 the stitch must bind a trigger to an action to automate.
