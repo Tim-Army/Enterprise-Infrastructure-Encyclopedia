@@ -142,7 +142,7 @@ rather than existing only as undocumented, device-local state.
 
 ```text
 FGT-LAB-01 # execute backup config flash capstone-baseline
-FGT-LAB-01 # execute backup config tftp capstone-baseline.conf 10.10.10.20
+FGT-LAB-01 # execute backup config tftp capstone-baseline.conf 10.30.99.50
 ```
 
 The first form saves to the device's internal flash storage as a named
@@ -151,11 +151,15 @@ durable storage — production environments should always retain an
 off-device copy rather than relying on local flash alone.
 
 ```text
-FGT-LAB-01 # execute restore config flash capstone-baseline
+FGT-LAB-01 # execute revision list config
+FGT-LAB-01 # execute restore config flash <revision-id>
 ```
 
-`execute restore config` reverts the running configuration to the named
-backup; this is the recovery action a validated backup strategy exists to
+`execute restore config flash` reverts the running configuration to a
+**numbered** flash revision — the flash argument is the numeric revision id, not
+the backup comment, so list them first with `execute revision list config`; only
+the off-device `tftp` copy is addressable by filename. This is the recovery
+action a validated backup strategy exists to
 support and should itself be tested periodically, not assumed to work
 correctly the first time it is actually needed.
 
@@ -170,13 +174,17 @@ FGT-LAB-01 (automation-trigger) # end
 FGT-LAB-01 # config system automation-action
 FGT-LAB-01 (automation-action) # edit "Backup-Config-TFTP"
 FGT-LAB-01 (Backup-Config-TFTP) # set action-type cli-script
-FGT-LAB-01 (Backup-Config-TFTP) # set script "execute backup config tftp auto-backup.conf 10.10.10.20"
+FGT-LAB-01 (Backup-Config-TFTP) # set script "execute backup config tftp auto-backup.conf 10.30.99.50"
 FGT-LAB-01 (Backup-Config-TFTP) # next
 FGT-LAB-01 (automation-action) # end
 FGT-LAB-01 # config system automation-stitch
 FGT-LAB-01 (automation-stitch) # edit "Auto-Backup-On-Change"
 FGT-LAB-01 (Auto-Backup-On-Change) # set trigger "Config-Change"
-FGT-LAB-01 (Auto-Backup-On-Change) # set actions "Backup-Config-TFTP"
+FGT-LAB-01 (Auto-Backup-On-Change) # config actions
+FGT-LAB-01 (actions) # edit 1
+FGT-LAB-01 (1) # set action "Backup-Config-TFTP"
+FGT-LAB-01 (1) # next
+FGT-LAB-01 (actions) # end
 FGT-LAB-01 (Auto-Backup-On-Change) # next
 FGT-LAB-01 (automation-stitch) # end
 ```
@@ -185,7 +193,12 @@ This directly reuses the automation-trigger/action/stitch pattern
 introduced in [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md), applied here to configuration lifecycle
 management rather than threat response — demonstrating that the same
 automation primitives serve both security response and operational
-hygiene use cases.
+hygiene use cases. Two FortiOS 7.6 specifics matter here: the stitch binds its
+action through the **`config actions` sub-table** (`edit 1` / `set action …`),
+not a scalar `set action` on the stitch; and the fixed TFTP filename keeps only
+the *latest* config — for a real revision history, back up to flash instead
+(`execute backup config flash <comment>`, which FortiOS auto-numbers) or embed a
+per-run name in the TFTP target.
 
 ### End-to-end validation checklist (condensed CLI pass)
 
@@ -194,12 +207,12 @@ FGT-LAB-01 # get system status
 FGT-LAB-01 # get system ha status
 FGT-LAB-01 # diagnose sys ha status
 FGT-LAB-01 # get router info routing-table all
-FGT-LAB-01 # diagnose sys sdwan health-check status
-FGT-LAB-01 # diagnose sys sdwan service
+FGT-LAB-01 # diagnose sys sdwan health-check
+FGT-LAB-01 # diagnose sys sdwan service4
 FGT-LAB-01 # diagnose vpn tunnel list
 FGT-LAB-01 # get vpn ssl monitor
-FGT-LAB-01 # diagnose firewall iprope show
-FGT-LAB-01 # get system session list | wc -l
+FGT-LAB-01 # diagnose firewall iprope list 100004
+FGT-LAB-01 # diagnose sys session stat
 FGT-LAB-01 # diagnose sys top
 ```
 
@@ -225,14 +238,15 @@ the most "interesting" possible cause first:
    `diagnose sys vd list`)
 3. **Routing.** Does a route exist to the destination, and is it the
    route actually being selected? (`get router info routing-table all`,
-   `diagnose firewall proute list`, `diagnose sys sdwan service` if
+   `diagnose firewall proute list`, `diagnose sys sdwan service4` if
    SD-WAN is involved)
 4. **Firewall policy.** Does a policy exist that matches this traffic, in
    the correct order, before any broader policy or the implicit deny?
-   (`diagnose firewall iprope show`, `diagnose debug flow`)
+   (`diagnose firewall iprope list <policy-group>`, `diagnose debug flow`)
 5. **NAT.** If translation is involved, is the correct pool/VIP being
    applied, and does the policy actually reference it?
-   (`diagnose firewall vip list`, session table inspection)
+   (`diagnose firewall ippool-all list` for SNAT pools, `show firewall vip`
+   plus session-table inspection for DNAT/VIPs)
 6. **Security profile.** Is a security profile blocking traffic that
    policy/NAT/routing otherwise permit? (profile-specific logs,
    `diagnose debug flow` showing the specific profile that acted)
@@ -306,9 +320,9 @@ and working through layers in order avoids chasing the wrong control.
 
 - [Fortinet NSE Training Institute, *NSE 4: FortiGate Security* and
   *NSE 4: FortiGate Infrastructure* self-paced courses.](https://training.fortinet.com/local/staticpage/view.php?page=nse_4)
-- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/8.0.0) — configuration backup/restore
+- [Fortinet, *FortiOS Administration Guide*](https://docs.fortinet.com/product/fortigate/7.6.0) — configuration backup/restore
   and revision management.
-- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/8.0.0/cli-reference/84566/fortios-cli-reference) — `execute backup config`,
+- [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/7.6.0/cli-reference) — `execute backup config`,
   `execute restore config`, `diagnose sniffer packet`.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   current blueprint mapping guidance and caution against reproducing
@@ -349,14 +363,25 @@ none beyond lab resources.
 
 ```text
 # 1. Deployment: interfaces + default route (Objective: Deployment & System Config)
+#    port1 needs a WAN IP in the gateway's subnet FIRST, or FortiOS marks the
+#    static route inactive and it never appears in the routing table. Replace the
+#    <placeholders> with your real WAN addressing.
+config system interface
+    edit port1
+        set mode static
+        set ip <wan-ip> <wan-mask>
+    next
+end
 config router static
     edit 1
-        set gateway 203.0.113.1
+        set gateway <wan-gateway>
         set device port1
     next
 end
 # 2. Content Inspection: deep-inspection + AV + IPS + web filter (Objective: Content Inspection)
-#    (profiles deep-lab / av-lab / ips-lab / block-malicious from Chapter 07)
+#    (profiles av-lab / ips-lab / block-malicious from Chapter 07; for SSL use the
+#     built-in custom-deep-inspection — deep-lab can't be created on the eval, whose
+#     ssl-ssh-profile table is capped, per Chapter 07)
 # 3. Firewall policy with authentication (Objective: Firewall Policies & Auth)
 config firewall policy
     edit 1
@@ -367,11 +392,15 @@ config firewall policy
         set dstaddr all
         set action accept
         set schedule always
-        set service HTTP HTTPS DNS
+        set service HTTP HTTPS
+        # DNS is intentionally NOT in this group-restricted policy: captive-portal
+        # auth only triggers on HTTP/HTTPS, so a separate policy permitting DNS
+        # WITHOUT set groups must sit above this one, or pre-auth name resolution
+        # (and thus the portal redirect) is dropped.
         set groups staff
         set nat enable
         set utm-status enable
-        set ssl-ssh-profile deep-lab
+        set ssl-ssh-profile custom-deep-inspection
         set av-profile av-lab
         set ips-sensor ips-lab
         set webfilter-profile block-malicious
@@ -385,8 +414,11 @@ diagnose vpn tunnel list
 ```
 
 **Expected result:** authenticated LAN users egress with full UTM inspection, the
-routing table shows the default and any tunnel routes, and the IPsec tunnel is `up` —
-one policy path demonstrates all five objectives working together.
+routing table shows the default and any tunnel routes, and the IPsec tunnel **built in
+[Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)** shows `up`
+— this capstone *reuses* that tunnel, since Lab 9.1 configures no new VPN, so it must already
+be established (`diagnose vpn tunnel list` is empty otherwise). One policy path then
+demonstrates all five objectives working together.
 
 **Negative test:** enable `utm-status` but forget `set groups staff`; unauthenticated
 users match and bypass identity control — every objective's control must be present for
@@ -396,7 +428,10 @@ the edge to be genuinely secured.
 
 ### Lab 9.2 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
-**Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
+**Eval FortiGate — partial (FortiGuard-gated).** The CSF config and the manual
+`diagnose report-runner-v2 security-rating trigger` run on the eval, but a full Security
+Rating **score** requires the FortiGuard Security Rating entitlement — which the free eval
+lacks — so expect an empty or incomplete rating.
 
 **Objective:** Read the Security Rating to find configuration gaps.
 
@@ -406,7 +441,7 @@ config system csf
     set group-name "Lab-Fabric"
 end
 diagnose sys csf global
-execute security-rating run
+diagnose report-runner-v2 security-rating trigger
 ```
 
 **Expected result:** the Security Rating audits the Fabric against Fortinet and industry
@@ -426,11 +461,13 @@ surfaces them.
 **Objective:** Confirm your configuration touches every NSE 4 objective and weight.
 
 ```text
-get firewall policy | grep -c edit          # Firewall Policies & Auth (20–25%)
-get firewall ssl-ssh-profile | grep -c edit # Content Inspection (25–30%)
-get vpn ipsec phase1-interface | grep -c edit  # VPNs (10–15%)
-get router static | grep -c edit            # Routing (10–15%)
-get system interface | grep -c edit         # Deployment & System Config (20–25%)
+show firewall policy | grep edit          # Firewall Policies & Auth (20–25%)
+show firewall ssl-ssh-profile | grep edit # Content Inspection (25–30%)
+show vpn ipsec phase1-interface | grep edit  # VPNs (10–15%)
+show router static | grep edit            # Routing (10–15%)
+show system interface | grep edit         # Deployment & System Config (20–25%)
+# Use show (not get — get prints no "edit N" lines) and plain grep (FortiOS grep
+# has no -c count flag); each line above prints one "edit N" per object — count them.
 ```
 
 **Expected result:** a non-zero count in each category, proving you have built and can
