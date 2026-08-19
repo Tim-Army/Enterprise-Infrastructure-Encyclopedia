@@ -547,7 +547,7 @@ Membership changes how egress is expressed.
 ```text
 config system sdwan
     config health-check
-        edit lab-sla
+        edit lab_sla
             set server 10.30.1.10
             set members 1 2
             set protocol ping
@@ -572,6 +572,45 @@ packet loss and shows `state: dead` (the extreme of failing SLA). That split is 
 steering rule in Lab 8.3 uses to keep traffic on the healthy member. On a real dual-WAN, point `server` at
 an internet host reachable over *both* circuits so each member is measured independently.
 
+**Confirmed live on FortiOS 7.6.7 (licensed evaluation FortiGate-VM).** Two findings folded from a real run.
+First, a health-check **name cannot contain a hyphen** — `edit lab-sla` is rejected with `char(-) is
+reserved`, so the name uses an underscore, `lab_sla` (the factory `Default_*` checks all use underscores).
+Second, on a box whose two members have genuinely reachable gateways, *both* members report `in-sla` — the
+richer result the eval-only "member 2 is dead" scenario above cannot show. Point the probe at both member
+gateways at once:
+
+```text
+config system sdwan
+    config health-check
+        edit lab_sla
+            set server 10.30.162.1 10.30.163.1
+            set members 1 2
+            set protocol ping
+            config sla
+                edit 1
+                    set link-cost-factor latency jitter packet-loss
+                    set latency-threshold 150
+                    set jitter-threshold 30
+                    set packetloss-threshold 3
+                next
+            end
+        next
+    end
+end
+```
+
+`diagnose sys sdwan health-check` then reports both underlays healthy:
+
+```text
+Seq(1 port2): state(alive), packet-loss(0.000%), latency(0.314), jitter(0.054), mos(4.404), sla_map=0x1
+Seq(2 port3): state(alive), packet-loss(0.000%), latency(0.244), jitter(0.036), mos(4.404), sla_map=0x1
+```
+
+`sla_map=0x1` = SLA target 1 met, so both members are `in-sla`. A subtle bonus: because SD-WAN probes are
+**egress-pinned to each member's interface**, `port3` reaching `10.30.162.1` — the *other* member's gateway,
+on a different VLAN — at 0% loss proves the upstream router forwards between the two member segments; a member
+reaching only its own gateway would show ~50% loss against a two-server set.
+
 **Negative test:** build steering rules with no health-check; SD-WAN cannot tell a
 brown-out link from a healthy one and keeps sending traffic into loss — the SLA probe is
 what makes steering application-aware.
@@ -584,7 +623,7 @@ what makes steering application-aware.
 
 **Objective:** Steer an application over the best-quality member.
 
-This rule binds to the `lab-sla` health-check from Lab 8.2 (`config sla / edit lab-sla`) — run 8.2 first,
+This rule binds to the `lab_sla` health-check from Lab 8.2 (`config sla / edit lab_sla`) — run 8.2 first,
 or the SLA reference resolves to nothing and the rule can never enter `sla` mode.
 
 ```text
@@ -595,7 +634,7 @@ config system sdwan
             set mode sla
             set dst all
             config sla
-                edit lab-sla
+                edit lab_sla
                     set id 1
                 next
             end
@@ -603,13 +642,38 @@ config system sdwan
         next
     end
 end
-diagnose sys sdwan service
+diagnose sys sdwan service4
 ```
 
 **Expected result:** `critical-apps` traffic prefers the member meeting the SLA and fails over to the next
-when it degrades; `diagnose sys sdwan service` shows the chosen member and order. On the eval, member 1
-(`port2`) is the `in-sla` member from Lab 8.2, so the rule selects it first — rules translate link health
-into per-application path selection.
+when it degrades; `diagnose sys sdwan service4` shows the chosen member and order (plain `service` is
+ambiguous — use `service4` for the IPv4 rule table). On the eval, member 1 (`port2`) is the `in-sla` member
+from Lab 8.2, so the rule selects it first — rules translate link health into per-application path selection.
+
+**Confirmed live on FortiOS 7.6.7 (licensed evaluation FortiGate-VM).** With both members `in-sla`,
+`diagnose sys sdwan service4` shows the rule selecting `port2` first by config order, `port3` on standby:
+
+```text
+Service(1): ... Mode(sla), sla-compare-order
+  Members(2):
+    1: Seq_num(1 port2 virtual-wan-link), alive, sla(0x1), cfg_order(0), selected
+    2: Seq_num(2 port3 virtual-wan-link), alive, sla(0x1), cfg_order(1), selected
+```
+
+**Failover proven live.** Administratively downing the primary (`config system interface / edit port2 / set
+status down`) drops its health-check to `state(dead)` and the rule instantly re-sorts — `port3` becomes the
+selected member with no manual step:
+
+```text
+Health Check(lab_sla): Seq(1 port2): state(dead),  packet-loss(100.000%), sla_map=0x0
+                       Seq(2 port3): state(alive), packet-loss(0.000%),   sla_map=0x1
+Service(1): 1: Seq_num(2 port3 ...), alive, sla(0x1), selected   <- failed over
+            2: Seq_num(1 port2 ...), dead,  sla(0x0)
+```
+
+Bringing `port2` back up returns it to `state(alive)`, and after the health-check's recovery timer it reclaims
+primary (`cfg_order(0)`), pushing `port3` back to standby — a full failover-and-recovery cycle driven entirely
+by the SLA signal, with no operator intervention.
 
 **Negative test:** set `mode manual` pinned to one member and pull that link; traffic
 is dropped instead of failing over — `mode sla` with priority members is what makes
@@ -662,25 +726,102 @@ the stitch must bind a trigger to an action to automate.
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
-**Objective:** Trace a flow end-to-end with debug flow.
+**Objective:** Diagnose a real reachability failure the disciplined way — reproduce, look
+up the return route, check reverse-path forwarding, trace the flow — instead of guessing,
+then apply the minimal correct fix.
+
+**Scenario.** The FortiGate's out-of-band management interface (`port1`) answers ping and
+SSH fine from hosts on its own management segment, but an administrator on a *different*
+subnet — reached through an upstream router — suddenly cannot reach it, and nothing changed
+on the administrator's workstation. This is the most common "why can't I manage the box?"
+failure, and it is almost never the service; it is the return path.
+
+**Step 1 — reproduce and localize.** Confirm the split: management works from the local
+segment, fails from the remote subnet. A service that answers *some* clients and not others
+is a routing or anti-spoof problem, not a daemon problem — this rules out "SSH is down"
+before you waste time on it.
+
+**Step 2 — look up the return path.** The box can only answer a remote client if it has a
+route back to that client's subnet, out the correct interface:
+
+```text
+get router info routing-table all
+get router info routing-table details <admin-ip>
+```
+
+Look for two failure shapes: (a) *no* route to the administrator's subnet at all — the reply
+has nowhere to go; or (b) a **default route** on a data/WAN interface (or the SD-WAN zone)
+that carries the reply out the wrong interface.
+
+**Step 3 — confirm with a flow trace.** `diagnose debug flow` is the definitive tool — it
+shows the ingress interface, the reverse-path check, the matched policy, any NAT, the route
+lookup, and egress:
 
 ```text
 diagnose debug reset
-diagnose debug flow filter addr 10.10.10.20
+diagnose debug flow filter addr <admin-ip>
 diagnose debug flow show function-name enable
 diagnose debug flow trace start 20
 diagnose debug enable
-# generate traffic from 10.10.10.20, then:
+# administrator retries the ping/SSH, then:
 diagnose debug disable
+diagnose debug reset
 ```
 
-**Expected result:** a step-by-step trace showing the ingress interface, the matched
-policy, any NAT, the route lookup, and the egress interface — `diagnose debug flow` is
-the definitive tool for answering "why is this traffic allowed/denied/misrouted?"
+When the return route points out a *different* interface than the request arrived on, the
+trace ends in `reverse path check fail` and the packet is dropped — the FortiGate's anti-spoof
+(unicast RPF) refusing an asymmetric path. That one line separates an RPF problem from a
+policy problem, so you stop suspecting firewall rules.
 
-**Negative test:** guess at the cause by reading policies alone; `debug flow` shows the
-*actual* matched policy and route, which often differs from the assumed one — trace,
-don't guess.
+**Step 4 — the minimal correct fix.** Give the management interface a **scoped** static route
+to the administrator's subnet via the management gateway — not a default route — so the reply
+leaves the same interface the request arrived on and the path is symmetric:
+
+```text
+config router static
+    edit <n>
+        set dst <admin-subnet> <mask>
+        set gateway <mgmt-gateway>
+        set device port1
+    next
+end
+```
+
+**Expected result:** remote management is restored; a re-run flow trace shows the request
+accepted and the reply routed out `port1`. The method — reproduce, route lookup, flow trace,
+targeted fix — generalizes to any "allowed / denied / misrouted?" question on FortiOS.
+
+**Negative test:** "fix" it instead with a **default** route out `port1`. Management comes
+back, but now every egress rides the management plane — out-of-band isolation is gone, and on
+an SD-WAN box that default fights the data path the zone should own. The scoped route is the
+correct fix; the default route is the tempting wrong one.
+
+**Confirmed live on FortiOS 7.6.7 (licensed evaluation FortiGate-VM).** Reproduced exactly:
+from a host on a different subnet (one hop away through the upstream firewall), the FortiGate's
+own management address returned 100% packet loss while the gateway and other hosts *on the
+management segment* answered normally. That asymmetry is the RPF signature — the box was
+dropping the inbound request for lack of a symmetric return path, not because a service was
+down. A scoped route to the administrator's subnet fixed it:
+
+```text
+config router static
+    edit 1
+        set dst 10.30.12.0 255.255.255.0
+        set gateway 10.30.99.1
+        set device port1
+    next
+end
+```
+
+```text
+get router info routing-table all
+S    10.30.12.0/24 [10/0] via 10.30.99.1, port1
+C    10.30.99.0/24 is directly connected, port1
+```
+
+Remote SSH from the 10.30.12 administrator subnet returned immediately; a default route on
+`port1` was deliberately rejected as the wrong fix — it would have pulled all egress through
+the management plane.
 
 **Rollback:**
 
