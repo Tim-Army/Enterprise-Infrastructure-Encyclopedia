@@ -8,10 +8,16 @@
 
 - Map this volume's chapters to the NSE 4 FortiGate Security and FortiGate
   Infrastructure blueprint domains.
+- Deploy FortiGate-VMs from scratch on a hypervisor and activate the
+  evaluation license on each unit.
+- Build both FGCP high-availability modes side by side — an active-passive
+  cluster and an active-active cluster — and explain why HA membership is
+  free on the eval while packet forwarding requires a per-member license.
 - Describe a complete, redundant enterprise reference architecture
   combining VDOMs, HA, SD-WAN, VPN, and security profiles.
-- Configure FortiOS configuration backup and revision comparison as part
-  of a change-management discipline.
+- Back up and restore the FortiOS configuration by every supported
+  transport (flash revision, TFTP, FTP, SCP, USB, FortiManager) as part of
+  a change-management discipline.
 - Apply a structured, layered troubleshooting decision tree spanning
   physical connectivity through application-layer inspection.
 - Execute an end-to-end validation pass across a full FortiGate deployment
@@ -76,9 +82,12 @@ volume.
 This chapter's capstone architecture combines every subsystem from
 Chapters 04–08 into a single, coherent enterprise site design:
 
-- **A two-member FGCP HA pair** (FGT-LAB-01 / FGT-LAB-02) providing the
-  perimeter and internal segmentation enforcement point, eliminating a
-  single point of failure at the firewall layer ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
+- **Two FGCP HA clusters built from scratch** — an **active-passive** pair
+  (Cluster A: FGT-AP-1 / FGT-AP-2), the perimeter and internal-segmentation
+  enforcement point, and an **active-active** pair (Cluster B: FGT-AA-1 /
+  FGT-AA-2) that adds session-level inspection scaling — each eliminating
+  the firewall as a single point of failure ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)). The capstone
+  lab deploys and licenses all four VMs before clustering them.
 - **VDOM segmentation** separating corporate and DMZ traffic on the same
   physical HA pair, each with its own routing table and policy set
   ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)).
@@ -100,6 +109,46 @@ SD-WAN removes circuit-level single point of failure, and centralized
 management ensures configuration state is reviewable and recoverable
 rather than existing only as undocumented, device-local state.
 
+### Active-passive vs. active-active, and the eval-license reality
+
+The capstone builds **both** FGCP modes so their trade-off is concrete rather
+than theoretical ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) develops each in depth):
+
+- **Active-passive (A-P)** — one member forwards; the other is a hot standby
+  holding a synchronized configuration and (with `session-pickup`) synchronized
+  session state, so an established flow survives a device failure. This is the
+  default choice for a perimeter/segmentation firewall where deterministic
+  behavior and simple troubleshooting matter more than squeezing extra
+  inspection throughput out of the pair.
+- **Active-active (A-A)** — both members forward; the primary distributes
+  sessions to the secondary per a configurable `schedule`. A-A raises aggregate
+  inspection throughput across **many** sessions; it is **not** a bandwidth
+  multiplier for a single flow, since one connection is pinned to one member.
+
+Two facts about running either mode on evaluation-licensed FortiGate-VMs are
+easy to get wrong, so this chapter states them from the volume's own
+live-verified evidence rather than from the widely repeated myth that "the eval
+license blocks HA":
+
+- **HA membership is not license-gated; forwarding is.** Two eval VMs form a
+  fully working, config-synced, failover-capable cluster
+  ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Labs 5.6–5.7). But an **unlicensed** member joins, syncs,
+  and shows a healthy heartbeat while forwarding **zero** transit packets — in
+  active-active with a `leastconnection` schedule it silently blackholes its
+  entire share. Every member you intend to carry traffic must read
+  `License Status: Valid`.
+- **The three-interface cap forces a shared-interface heartbeat.** An eval VM
+  never instantiates a fourth vNIC, so there is no port to dedicate to
+  heartbeat; set an existing pair of data interfaces as heartbeat devices
+  (`set hbdev "port2" 50 "port3" 50`). A licensed unit lifts the cap and
+  restores a dedicated heartbeat link. Firmware build must match exactly
+  between members, and a hypervisor hard-reset corrupts the config partition —
+  reboot only with `execute reboot`.
+
+Because both clusters share one broadcast domain in the lab, they must carry
+**distinct HA group IDs** (`11` for Cluster A, `22` for Cluster B) or their
+heartbeats collide.
+
 ## Design Considerations
 
 - **Full reference architecture walk-through.** For a fictitious
@@ -118,6 +167,13 @@ rather than existing only as undocumented, device-local state.
   failure, dual heartbeat links for split-brain avoidance) rather than
   assuming redundancy exists because individual pieces were each
   configured correctly in isolation.
+- **Build order and per-member licensing.** Deploy and license every unit
+  *before* clustering, not after. HA membership forms on an unlicensed
+  member and looks healthy, but that member forwards nothing — so a
+  cluster that appears "up" can silently blackhole traffic until each
+  member is individually licensed. Establish `License Status: Valid`
+  on all four VMs as step one (Lab 9.1), then build the clusters
+  (Labs 9.2–9.3), then layer configuration on top (Labs 9.4–9.7).
 - **Change management and backup strategy.** Pair FortiManager's
   policy-package install workflow ([Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md)) with a scheduled
   configuration backup cadence independent of FortiManager (a periodic
@@ -138,11 +194,50 @@ rather than existing only as undocumented, device-local state.
 
 ## Implementation and Automation
 
+### Building the two-cluster capstone fabric from scratch
+
+The capstone platform is four FortiGate-VMs deployed from a blank hypervisor,
+licensed individually, and paired into two clusters — an active-passive Cluster A
+and an active-active Cluster B (the full walkthrough is Labs 9.1–9.3). The
+minimal provisioning skeleton, per member, is deploy → address OOB management →
+license → cluster:
+
+```text
+# after first-boot password change, on each VM:
+config system global
+    set hostname FGT-AP-1
+end
+config system interface
+    edit port1                       # OOB management only (10.30.99.0/24)
+        set mode static
+        set ip 10.30.99.121 255.255.255.0
+        set allowaccess ping https ssh
+    next
+end
+execute vm-license-options account-id <forticloud-email>
+execute vm-license-options account-password <forticloud-password>
+execute vm-license                   # reboots; confirm License Status: Valid
+config system ha
+    set group-name HA-AP             # HA-AA / group-id 22 on Cluster B
+    set group-id 11
+    set mode a-p                     # a-a on Cluster B
+    set password ISEisC00L123@2026
+    set hbdev "port2" 50 "port3" 50  # shared heartbeat — eval 3-interface cap
+    set session-pickup enable
+    set priority 200                 # 100 on the second member
+end
+```
+
+The two clusters use **distinct group IDs** (11 and 22) so their heartbeats do
+not collide on a shared broadcast domain, and every member is licensed before it
+is expected to forward — an unlicensed HA member joins and syncs but forwards
+nothing (the design note above).
+
 ### Configuration backup and restore
 
 ```text
-FGT-LAB-01 # execute backup config flash capstone-baseline
-FGT-LAB-01 # execute backup config tftp capstone-baseline.conf 10.30.99.50
+FGT-AP-1 # execute backup config flash capstone-baseline
+FGT-AP-1 # execute backup config tftp capstone-baseline.conf 10.30.99.50
 ```
 
 The first form saves to the device's internal flash storage as a named
@@ -151,8 +246,8 @@ durable storage — production environments should always retain an
 off-device copy rather than relying on local flash alone.
 
 ```text
-FGT-LAB-01 # execute revision list config
-FGT-LAB-01 # execute restore config flash <revision-id>
+FGT-AP-1 # execute revision list config
+FGT-AP-1 # execute restore config flash <revision-id>
 ```
 
 `execute restore config flash` reverts the running configuration to a
@@ -166,27 +261,27 @@ correctly the first time it is actually needed.
 ### Automated backup on configuration change
 
 ```text
-FGT-LAB-01 # config system automation-trigger
-FGT-LAB-01 (automation-trigger) # edit "Config-Change"
-FGT-LAB-01 (Config-Change) # set event-type config-change
-FGT-LAB-01 (Config-Change) # next
-FGT-LAB-01 (automation-trigger) # end
-FGT-LAB-01 # config system automation-action
-FGT-LAB-01 (automation-action) # edit "Backup-Config-TFTP"
-FGT-LAB-01 (Backup-Config-TFTP) # set action-type cli-script
-FGT-LAB-01 (Backup-Config-TFTP) # set script "execute backup config tftp auto-backup.conf 10.30.99.50"
-FGT-LAB-01 (Backup-Config-TFTP) # next
-FGT-LAB-01 (automation-action) # end
-FGT-LAB-01 # config system automation-stitch
-FGT-LAB-01 (automation-stitch) # edit "Auto-Backup-On-Change"
-FGT-LAB-01 (Auto-Backup-On-Change) # set trigger "Config-Change"
-FGT-LAB-01 (Auto-Backup-On-Change) # config actions
-FGT-LAB-01 (actions) # edit 1
-FGT-LAB-01 (1) # set action "Backup-Config-TFTP"
-FGT-LAB-01 (1) # next
-FGT-LAB-01 (actions) # end
-FGT-LAB-01 (Auto-Backup-On-Change) # next
-FGT-LAB-01 (automation-stitch) # end
+FGT-AP-1 # config system automation-trigger
+FGT-AP-1 (automation-trigger) # edit "Config-Change"
+FGT-AP-1 (Config-Change) # set event-type config-change
+FGT-AP-1 (Config-Change) # next
+FGT-AP-1 (automation-trigger) # end
+FGT-AP-1 # config system automation-action
+FGT-AP-1 (automation-action) # edit "Backup-Config-TFTP"
+FGT-AP-1 (Backup-Config-TFTP) # set action-type cli-script
+FGT-AP-1 (Backup-Config-TFTP) # set script "execute backup config tftp auto-backup.conf 10.30.99.50"
+FGT-AP-1 (Backup-Config-TFTP) # next
+FGT-AP-1 (automation-action) # end
+FGT-AP-1 # config system automation-stitch
+FGT-AP-1 (automation-stitch) # edit "Auto-Backup-On-Change"
+FGT-AP-1 (Auto-Backup-On-Change) # set trigger "Config-Change"
+FGT-AP-1 (Auto-Backup-On-Change) # config actions
+FGT-AP-1 (actions) # edit 1
+FGT-AP-1 (1) # set action "Backup-Config-TFTP"
+FGT-AP-1 (1) # next
+FGT-AP-1 (actions) # end
+FGT-AP-1 (Auto-Backup-On-Change) # next
+FGT-AP-1 (automation-stitch) # end
 ```
 
 This directly reuses the automation-trigger/action/stitch pattern
@@ -203,17 +298,17 @@ per-run name in the TFTP target.
 ### End-to-end validation checklist (condensed CLI pass)
 
 ```text
-FGT-LAB-01 # get system status
-FGT-LAB-01 # get system ha status
-FGT-LAB-01 # diagnose sys ha status
-FGT-LAB-01 # get router info routing-table all
-FGT-LAB-01 # diagnose sys sdwan health-check
-FGT-LAB-01 # diagnose sys sdwan service4
-FGT-LAB-01 # diagnose vpn tunnel list
-FGT-LAB-01 # get vpn ssl monitor
-FGT-LAB-01 # diagnose firewall iprope list 100004
-FGT-LAB-01 # diagnose sys session stat
-FGT-LAB-01 # diagnose sys top
+FGT-AP-1 # get system status
+FGT-AP-1 # get system ha status
+FGT-AP-1 # diagnose sys ha status
+FGT-AP-1 # get router info routing-table all
+FGT-AP-1 # diagnose sys sdwan health-check
+FGT-AP-1 # diagnose sys sdwan service4
+FGT-AP-1 # diagnose vpn tunnel list
+FGT-AP-1 # get vpn ssl monitor
+FGT-AP-1 # diagnose firewall iprope list 100004
+FGT-AP-1 # diagnose sys session stat
+FGT-AP-1 # diagnose sys top
 ```
 
 This condensed pass exercises licensing/status, HA health, routing,
@@ -324,6 +419,11 @@ and working through layers in order avoids chasing the wrong control.
   and revision management.
 - [Fortinet, *FortiOS CLI Reference*](https://docs.fortinet.com/document/fortigate/7.6.0/cli-reference) — `execute backup config`,
   `execute restore config`, `diagnose sniffer packet`.
+- [Fortinet, *FortiOS Administration Guide — High Availability*](https://docs.fortinet.com/document/fortigate/7.6.0/administration-guide/666376/high-availability) — FGCP
+  active-passive and active-active clustering, heartbeat, and load balancing.
+- [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md) — this
+  volume's live-verified FGCP labs (5.6 active-passive, 5.7 active-active), including the
+  eval-license findings this chapter's HA labs build on.
 - [CERTIFICATION_BLUEPRINTS.md](../../../CERTIFICATION_BLUEPRINTS.md) —
   current blueprint mapping guidance and caution against reproducing
   proprietary exam content.
@@ -342,40 +442,389 @@ and working through layers in order avoids chasing the wrong control.
    likely cause, and why?
 4. Why can an automation stitch that modifies device configuration
    directly cause a FortiManager-managed device to show as out of sync?
+5. Two evaluation FortiGate-VMs form an active-active cluster that shows
+   both members in-sync with a healthy heartbeat, yet a permitted path
+   through the pair drops every session the scheduler assigns to the
+   secondary. What is the most likely cause, and which single command
+   confirms it on each member?
+6. Why must two HA clusters that share the same broadcast domain be
+   configured with different HA group IDs?
 
 ## Hands-On Lab
 
-This chapter is the **NSE 4 (FortiOS 7.6 Administrator) capstone** — integrative
-walkthroughs that combine the five exam objectives (Deployment & System Config, Firewall
-Policies & Auth, Content Inspection, Routing, VPNs) into an end-to-end build, plus a
-self-check that maps your running configuration back to the published objectives. Each
-lab ends **`**Lab verified by:** *pending*`** until a human runs it.
+This chapter is the **NSE 4 (FortiOS 7.6 Administrator) capstone**. Unlike the earlier
+chapters, which layered features onto an already-deployed appliance, this capstone
+**starts from bare metal**: you deploy the FortiGate-VMs from scratch, license them,
+cluster them for high availability in **both** FGCP modes, prove you can back the
+configuration out by every supported transport, and only then layer the secured-edge
+build and Security Fabric on top. Every command in Labs 9.4–9.7 is meant to run **against
+the clusters you build in Labs 9.1–9.3**, so the capstone exercises a realistic
+operational lifecycle end to end: **deploy → license → cluster → back up → secure →
+validate**. The labs assume you (the learner) drive every FortiGate CLI/console step
+yourself — the hands-on repetition is the point NSE 4 evaluates. Each lab ends
+**`**Lab verified by:** *pending*`** until a human runs it.
 
-**Shared prerequisites for Labs 9.1–9.3** — a FortiGate on FortiOS 7.6 with WAN + LAN,
-a valid FortiGuard subscription, a client host, and a peer for the tunnel. **Cost:**
-none beyond lab resources.
+**Two clusters, two HA modes.** You build **four** FortiGate-VMs and pair them into
+**two** clusters, so both FGCP modes are exercised side by side and become the platform
+the remaining labs run on:
 
-### Lab 9.1 — End-to-end secured-edge build (Capstone: all five objectives)
+| Cluster | Members | HA mode | Group name / id | Role in this chapter |
+| --- | --- | --- | --- | --- |
+| **Cluster A** | FGT-AP-1 / FGT-AP-2 | **Active-passive (A-P)** | `HA-AP` / `11` | Primary enforcement point — Labs 9.4–9.7 run here |
+| **Cluster B** | FGT-AA-1 / FGT-AA-2 | **Active-active (A-A)** | `HA-AA` / `22` | Session-load-balancing comparison cluster |
 
-**Eval FortiGate — capable (with subscription caveats).** The end-to-end build runs on the eval; its threat-prevention steps return *live* verdicts only with active FortiGuard subscriptions (Chapter 07).
+**Shared prerequisites** — a hypervisor able to host four FortiGate-VMs (1 vCPU / 2 GB
+each), reachable management on the `10.30.99.0/24` VM-management network, a
+FortiCloud/FortiCare account to activate each evaluation license, a TFTP/FTP/SCP server
+(the lab uses `10.30.99.50`) for the backup lab, a client host on a data segment, and —
+for the secured-edge lab — the [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) IPsec peer and [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) security
+profiles. **Cost:** none beyond lab resources.
 
-**Objective:** Stand up a protected edge that exercises every NSE 4 objective at once.
+> **Eval-license reality — HA membership is free, but forwarding is licensed.** A common
+> myth holds that the free evaluation license blocks HA outright (because eval VMs of the
+> same FortiOS version can share a serial number). This volume's **live homelab run
+> disproves it** ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Labs 5.6–5.7, confirmed Aug 2026): two eval VMs
+> form a fully working, config-synced, failover-capable cluster — HA membership is **not**
+> license-gated. What **is** license-gated is **packet forwarding**: an unlicensed member
+> joins, syncs, and shows a healthy heartbeat yet blackholes every transit packet it is
+> handed. That is exactly why Lab 9.1 licenses **all four** VMs before any clustering.
+> The eval's one structural constraint is its **three-interface cap** — no spare port for
+> a dedicated heartbeat, so heartbeat shares the data interfaces (`set hbdev "port2" 50
+> "port3" 50`); firmware/build must match **exactly** between members; and you reboot only
+> with `execute reboot` (a hypervisor hard-reset corrupts the config partition).
+
+### Lab 9.1 — Deploy and license the four capstone FortiGate-VMs from scratch (Capstone: Deployment & System Config)
+
+**Eval FortiGate — capable (per unit).** Each VM deploys and licenses on the free
+evaluation license; the eval caps — 1 vCPU, 2 GB RAM, DES-only crypto, a three-interface
+budget, and frozen FortiGuard databases — apply to every unit exactly as in [Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md).
+Nothing here needs a paid license *yet*; Labs 9.2–9.3 explain the one place licensing
+becomes mandatory.
+
+**Objective:** From a blank hypervisor, stand up the four FortiGate-VMs the rest of this
+capstone runs on, bring each onto the out-of-band management network, and activate its
+evaluation license.
+
+**Step 1 — deploy four VMs (you do this on your hypervisor).** Import the FortiOS 7.6 VM
+image four times — `FGT-AP-1`, `FGT-AP-2`, `FGT-AA-1`, `FGT-AA-2` — each with 1 vCPU /
+2 GB RAM and **three** vNICs (the eval cap allows no more): `port1` on the
+`10.30.99.0/24` VM-management segment, `port2` and `port3` on the two data segments.
+Boot all four to the FortiOS login prompt. *(On Proxmox this is the `qm create …
+--net0/--net1/--net2` recipe; on ESXi/Hyper-V/KVM use the equivalent — the interface
+budget, not the hypervisor, is the constraint.)*
+
+**Step 2 — first-boot bring-up (per VM, at the console).** Default login is `admin` with
+no password; FortiOS forces a password change on first login. Then set the hostname and
+the OOB management interface:
 
 ```text
-# 1. Deployment: interfaces + default route (Objective: Deployment & System Config)
-#    port1 needs a WAN IP in the gateway's subnet FIRST, or FortiOS marks the
-#    static route inactive and it never appears in the routing table. Replace the
-#    <placeholders> with your real WAN addressing.
+config system global
+    set hostname FGT-AP-1
+end
 config system interface
     edit port1
         set mode static
-        set ip <wan-ip> <wan-mask>
+        set ip 10.30.99.121 255.255.255.0
+        set allowaccess ping https ssh
     next
 end
 config router static
     edit 1
-        set gateway <wan-gateway>
+        set dst 10.30.12.0 255.255.255.0
+        set gateway 10.30.99.1
         set device port1
+    next
+end
+```
+
+Repeat with `FGT-AP-2` / `10.30.99.122`, `FGT-AA-1` / `10.30.99.123`, `FGT-AA-2` /
+`10.30.99.124`. The management route is a **scoped** route to the admin subnet, not a
+default route — the management port carries management traffic only (the out-of-band
+design from [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md) and this volume's homelab).
+
+**Step 3 — license each unit (per VM).** The free evaluation license downloads from
+FortiCare against your FortiCloud account — no `.lic` file and no token (that path is
+[Chapter 04](04-fortigate-first-deployment-licensing-management-and-hardening.md)'s Lab 4.2):
+
+```text
+execute vm-license-options account-id <forticloud-email>
+execute vm-license-options account-password <forticloud-password>
+execute vm-license
+# the VM reboots to activate; after it returns:
+execute vm-license-options reset    # clear the clear-text account password
+```
+
+**Step 4 — verify (per VM):**
+
+```text
+get system status        # Version: v7.6.x build…, License Status: Valid, Serial-Number
+execute ping 10.30.99.1  # management gateway reachable
+```
+
+**Expected result:** four licensed FortiGate-VMs, each reachable at its `10.30.99.12x`
+management address, each reporting `License Status: Valid`. Record every unit's
+**firmware build** — Labs 9.2–9.3 require an *exact* build match between the two members
+of each cluster.
+
+**Negative test:** try to cluster two units in Lab 9.2 before licensing the second one.
+HA membership will still form (it is not license-gated), but the unlicensed member cannot
+forward traffic — the failure mode Lab 9.3 documents in detail. Confirm `License Status:
+Valid` on **all four** units here, before any clustering.
+
+**Rollback:** power off and delete the VMs at the hypervisor; a FortiGate-VM holds no
+shared external state.
+
+### Lab 9.2 — Cluster A: FGCP active-passive from scratch (Capstone: High Availability)
+
+**Eval FortiGate — capable (both units licensed).** Two eval VMs form a working,
+config-synced, failover-capable FGCP cluster — HA membership is **not** license-gated
+(proven live in [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.6). The eval's one real constraint is the
+three-interface cap: there is no spare port for a dedicated heartbeat, so heartbeat
+shares the data interfaces.
+
+**Objective:** Cluster `FGT-AP-1` + `FGT-AP-2` into an active-passive pair that presents
+one virtual firewall with stateful failover.
+
+**Prerequisites:** both units licensed (Lab 9.1) and on the **exact** same firmware
+build; `port2`/`port3` on shared data segments.
+
+**Step 1 — configure HA on both units (identical except priority).** Give `FGT-AP-1` the
+higher priority so it wins the election deterministically:
+
+```text
+config system ha
+    set group-name HA-AP
+    set group-id 11
+    set mode a-p
+    set password ISEisC00L123@2026
+    set hbdev "port2" 50 "port3" 50
+    set session-pickup enable
+    set override enable
+    set priority 200
+end
+```
+
+On `FGT-AP-2`, run the same block with `set priority 100` (lower). The heartbeat shares
+`port2`/`port3` because the eval cap leaves no dedicated port; a licensed unit would use a
+separate heartbeat link. Cluster A uses `group-id 11` — Cluster B must use a **different**
+id (Lab 9.3) or the two clusters' heartbeats collide on the shared broadcast domain.
+
+**Step 2 — verify the cluster forms:**
+
+```text
+get system ha status
+diagnose sys ha status
+diagnose sys ha checksum cluster
+```
+
+**Expected result:** `get system ha status` shows **`Mode: HA A-P`**, two members with
+`FGT-AP-1` primary and `FGT-AP-2` secondary, and matching checksums across members —
+configuration syncs automatically from primary to secondary. `set override enable` plus
+the higher priority makes `FGT-AP-1` reclaim primary whenever it is healthy.
+
+**Step 3 — prove stateful failover.** From a segment host, hold a session open through
+the cluster, then reboot the primary **gracefully** (`execute reboot` — never a hypervisor
+hard-reset, which corrupts the config partition and traps the secondary in a sync loop).
+The virtual MAC and interface IPs move to `FGT-AP-2`; the session survives because
+`session-pickup` synchronized it.
+
+**Negative test:** mismatch `group-name` or `group-id` between the two units — they never
+cluster and both stay primary (split-brain). Matching HA parameters and a working
+heartbeat are mandatory. (See [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.6, for the full split-brain
+walkthrough and live findings.)
+
+**Rollback:** tear the cluster down **secondary first** to standalone — `set mode
+standalone`, then clear `group-name`/`group-id`/`password`/`hbdev` (a bare `set mode
+standalone` leaves the HA parameters behind); re-address or shut down the second unit
+before returning it to a shared segment, since both hold identical synced IPs. Full
+sequence in [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.6.
+
+### Lab 9.3 — Cluster B: FGCP active-active from scratch (Capstone: High Availability)
+
+**Eval FortiGate — capable ONLY if both members are licensed.** This is the one place the
+evaluation license bites hard: HA membership is not license-gated, but **packet forwarding
+is**. An unlicensed A-A member joins, syncs, and shows a healthy heartbeat, yet
+**blackholes every transit session the scheduler hands it** — measured live at 0/12 on a
+permitted path ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.7). With `schedule leastconnection` the trap
+compounds: the dead member's session count stays at zero, so it is permanently "least
+loaded" and keeps being handed new sessions. **Confirm `License Status: Valid` on both
+members before running A-A.**
+
+**Objective:** Cluster `FGT-AA-1` + `FGT-AA-2` into an active-active pair where both units
+forward and the primary distributes sessions across them.
+
+**Prerequisites:** both units licensed (Lab 9.1), exact firmware match, and — critically —
+a **different HA group-id from Cluster A** so the two clusters' heartbeats do not collide
+on the shared broadcast domain.
+
+**Step 1 — configure A-A on both units:**
+
+```text
+config system ha
+    set group-name HA-AA
+    set group-id 22
+    set mode a-a
+    set password ISEisC00L123@2026
+    set hbdev "port2" 50 "port3" 50
+    set schedule leastconnection
+    set load-balance-all enable
+    set session-pickup enable
+    set priority 200
+end
+```
+
+Use `set priority 100` on `FGT-AA-2`. `set load-balance-all enable` extends distribution
+to *all* firewall sessions (by default A-A load-balances only proxy-based UTM sessions),
+which makes the effect visible in a lab that runs no UTM. `group-id 22` keeps this
+cluster's heartbeat distinct from Cluster A's `11`.
+
+**Step 2 — verify mode and membership:**
+
+```text
+get system ha status
+diagnose sys ha status
+```
+
+**Expected result:** `get system ha status` reports **`Mode: HA A-A`**, two in-sync
+members, heartbeat on `port2`/`port3`. Under transit load, `diagnose sys ha status` shows
+**both** members carrying sessions — the scheduler assigns each new session to the
+less-loaded unit.
+
+**Step 3 — watch sessions distribute.** A-A distributes **transit** sessions only;
+local/management sessions (your SSH, the heartbeat) stay on the primary. Push several
+concurrent through-cluster sessions from a segment host, then read the per-unit load:
+
+```text
+diagnose sys ha status
+get system ha status | grep -A6 "System Usage"
+```
+
+Use `-A6`, not `-A3` — three lines of context stop before the second member's `sessions=`
+line and make the secondary look idle when it is not.
+
+**Negative test:** run A-A with the secondary unlicensed (or freshly rebooted and still
+warming up). The `leastconnection` scheduler steers new sessions onto the zero-session
+member, which drops them — 100% loss on that share, not a graceful 50%. Both members must
+be `License Status: Valid`; a cold-joining member also blackholes briefly (~20 s) until it
+learns ARP/neighbors ([Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.7). Also note: A-A does **not** double
+single-flow throughput — it distributes *sessions*, not the packets of one flow.
+
+**Rollback:** `set mode a-p` (or all the way to standalone, secondary first, per
+[Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.6).
+
+### Lab 9.4 — Configuration backup and restore via every supported method (Capstone: change management)
+
+**Eval FortiGate — capable.** All backup transports run on the free/licensed evaluation
+FortiGate-VM. USB is the one exception on a VM — see Method 7 — because a VM has no USB
+controller by default.
+
+**Objective:** Prove you can export and re-import the running configuration by *every*
+transport FortiOS supports, so recovery never depends on a single mechanism, and validate
+a restore rather than assuming one. Run this against the Cluster A primary (`FGT-AP-1`);
+HA syncs the running config, so the cluster has one configuration to protect.
+
+**Method 1 — GUI.** *System → Configuration → Backup*. Choose **Local PC**, optionally
+tick **Encryption** and set a passphrase, and download the `.conf`. Restore is the mirror:
+*Restore → Local PC →* pick the file (supply the passphrase if it was encrypted).
+
+**Method 2 — CLI to internal flash (numbered revision history).**
+
+```text
+execute backup config flash capstone-baseline
+execute revision list config
+```
+
+Flash keeps a **numbered revision history** on the device — the fast, local rollback
+point. Note the revision id from `execute revision list config`; you restore by **id**,
+not by the comment.
+
+**Method 3 — CLI to TFTP (off-device).**
+
+```text
+execute backup config tftp capstone.conf 10.30.99.50
+```
+
+**Method 4 — CLI to FTP (off-device, authenticated).**
+
+```text
+execute backup config ftp capstone.conf 10.30.99.50 <ftp-user> <ftp-password>
+```
+
+**Method 5 — SCP pull (client-initiated).** Enable the SCP service, then pull the config
+from a client:
+
+```text
+config system global
+    set admin-scp enable
+end
+# from the backup host on the admin subnet:
+# scp admin@10.30.99.121:sys_config ./capstone-scp.conf
+```
+
+**Method 6 — FortiManager (central).** A FortiManager-managed unit backs up centrally
+through the management tunnel (`execute backup config management-station <comment>`),
+giving a fleet-wide revision store independent of any one device — the change-management
+workflow from [Chapter 08](08-sd-wan-operations-central-management-automation-and-troubleshooting.md).
+
+**Method 7 — USB (physical appliances only).** On a hardware FortiGate, `execute backup
+config usb capstone.conf` writes to an inserted USB drive. A FortiGate-**VM** has no USB
+controller by default, so this transport is unavailable in the VM lab — call it out so the
+"all methods" checklist is honest about the one path that does not apply here.
+
+**Restore-to-validate.** A backup that has never been restored is a documentation
+artifact, not a recovery capability. Prove one path end to end:
+
+```text
+execute restore config tftp capstone.conf 10.30.99.50
+# or, from a flash revision:
+execute revision list config
+execute restore config flash <revision-id>
+```
+
+The device reboots and returns on the restored configuration.
+
+**Automate it.** For high-change environments, back up automatically on every committed
+change with the config-change automation stitch shown earlier in this chapter's
+*Implementation* section (trigger `config-change` → action `execute backup config tftp …`),
+so no manual step is relied upon.
+
+**Expected result:** the same running configuration is retrievable through flash, TFTP,
+FTP, SCP, and (on hardware) USB or (when managed) FortiManager; and a test restore returns
+the device to the captured baseline — a recovery capability you have *verified*, not
+assumed.
+
+**Negative test:** back up only to internal flash and treat that as your DR plan. A
+chassis or VM loss takes the flash revisions with it — production always keeps an
+**off-device** copy (TFTP/FTP/SCP/FortiManager) as well.
+
+**Rollback:** delete the test backup files from the TFTP/FTP/SCP server, remove the flash
+test revision (`execute revision delete config <revision-id>`) if you do not want to
+retain it, and disable SCP (`set admin-scp disable`) if it was enabled only for the lab.
+
+### Lab 9.5 — End-to-end secured-edge build (Capstone: all five objectives)
+
+**Eval FortiGate — capable (with subscription caveats).** The end-to-end build runs on the eval; its threat-prevention steps return *live* verdicts only with active FortiGuard subscriptions (Chapter 07).
+
+**Objective:** On **Cluster A** (the active-passive pair from Lab 9.2; HA syncs the config to the standby), stand up a protected edge that exercises every NSE 4 objective at once.
+
+```text
+# 1. Deployment: default route out the WAN-facing data interface (Objective: Deployment & System Config)
+#    On the eval clusters port1 is management-only (Lab 9.1), so the edge egresses via a
+#    DATA interface — port3 here. port3 needs an IP in the gateway's subnet FIRST, or
+#    FortiOS marks the static route inactive and it never appears in the routing table.
+#    (In this volume's homelab port3 is 10.30.163.124/24 via 10.30.163.1; substitute your
+#    own WAN addressing.) edit 2 because edit 1 is the scoped management route from Lab 9.1.
+config system interface
+    edit port3
+        set mode static
+        set ip <wan-ip> <wan-mask>
+        set allowaccess ping
+    next
+end
+config router static
+    edit 2
+        set gateway <wan-gateway>
+        set device port3
     next
 end
 # 2. Content Inspection: deep-inspection + AV + IPS + web filter (Objective: Content Inspection)
@@ -387,7 +836,7 @@ config firewall policy
     edit 1
         set name secured-lan-egress
         set srcintf port2
-        set dstintf port1
+        set dstintf port3
         set srcaddr all
         set dstaddr all
         set action accept
@@ -416,7 +865,7 @@ diagnose vpn tunnel list
 **Expected result:** authenticated LAN users egress with full UTM inspection, the
 routing table shows the default and any tunnel routes, and the IPsec tunnel **built in
 [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)** shows `up`
-— this capstone *reuses* that tunnel, since Lab 9.1 configures no new VPN, so it must already
+— this capstone *reuses* that tunnel, since Lab 9.5 configures no new VPN, so it must already
 be established (`diagnose vpn tunnel list` is empty otherwise). One policy path then
 demonstrates all five objectives working together.
 
@@ -424,9 +873,9 @@ demonstrates all five objectives working together.
 users match and bypass identity control — every objective's control must be present for
 the edge to be genuinely secured.
 
-**Rollback:** delete policy 1 and revert lab routing/tunnels.
+**Rollback:** delete policy 1 and the port3 default route (`config router static / delete 2 / end`); the reused Chapter 06 tunnel stays as-is.
 
-### Lab 9.2 — Security Fabric and Security Rating (Capstone: Fabric integration)
+### Lab 9.6 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
 **Eval FortiGate — partial (FortiGuard-gated).** The CSF config and the manual
 `diagnose report-runner-v2 security-rating trigger` run on the eval, but a full Security
@@ -454,7 +903,7 @@ surfaces them.
 
 **Rollback:** `set status disable` under `config system csf` if lab-only.
 
-### Lab 9.3 — Exam-readiness self-check (Capstone: objective mapping)
+### Lab 9.7 — Exam-readiness self-check (Capstone: objective mapping)
 
 **Eval FortiGate — capable.** Runs on the free/licensed evaluation FortiGate-VM as-is.
 
@@ -491,25 +940,32 @@ negative test. Until then, the lab is unverified.
 
 This capstone chapter mapped every prior chapter in this volume to the
 NSE 4 FortiGate Security and FortiGate Infrastructure blueprint domains,
-assembled a complete redundant enterprise reference architecture combining
-HA, VDOMs, SD-WAN, VPN, security profiles, and centralized management, and
-added the configuration backup/restore and layered troubleshooting
-discipline needed to operate that architecture reliably in production.
-The hands-on lab exercised a full end-to-end validation pass, tested
-backup and restore as a genuine recovery capability rather than an
-assumed one, and used a deliberately introduced misconfiguration to
-practice the layered troubleshooting decision tree this chapter
-establishes as this volume's lasting operational reference. This
+then built the full deployment lifecycle from bare metal: four
+FortiGate-VMs deployed and individually licensed from scratch, paired into
+two clusters that exercise **both** FGCP modes (active-passive Cluster A and
+active-active Cluster B), configuration protected by backup and restore
+across **every** supported transport, and the secured-edge build, Security
+Fabric, and exam-readiness self-check layered on top of that clustered
+platform. Along the way it corrected a common misconception with the
+volume's own live evidence — HA membership is not license-gated, but packet
+forwarding is, so every cluster member must be individually licensed — and
+consolidated the configuration backup/restore and layered troubleshooting
+discipline needed to operate the architecture reliably in production. This
 completes Volume XIX's progression from NSE 1 awareness through NSE 4
 hands-on FortiOS administrator competency.
 
 - [ ] Can map each of this volume's technical chapters to its
       corresponding NSE 4 blueprint domain.
+- [ ] Can deploy a FortiGate-VM from scratch and activate its evaluation
+      license, and explain why every HA member must be licensed to forward.
+- [ ] Can build both an active-passive and an active-active FGCP cluster,
+      including the eval three-interface shared-heartbeat constraint and
+      distinct group IDs for co-located clusters.
 - [ ] Can describe a complete, redundant enterprise FortiGate reference
       architecture and identify the redundancy mechanism at each layer.
-- [ ] Can configure, schedule, and validate configuration backup and
-      restore.
+- [ ] Can back up and restore the configuration by every supported
+      transport and validate the restore, not just the backup.
 - [ ] Can apply the layered troubleshooting decision tree to diagnose a
       multi-subsystem fault without guessing.
-- [ ] Completed the hands-on lab, including the negative test, and
+- [ ] Completed the hands-on lab, including the negative tests, and
       performed appropriate environment cleanup or retention decisions.
