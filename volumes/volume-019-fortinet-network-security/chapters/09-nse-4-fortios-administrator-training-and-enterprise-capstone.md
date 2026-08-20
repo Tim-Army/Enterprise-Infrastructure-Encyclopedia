@@ -755,16 +755,24 @@ execute backup config tftp capstone.conf 10.30.99.50
 execute backup config ftp capstone.conf 10.30.99.50 <ftp-user> <ftp-password>
 ```
 
-**Method 5 — SCP pull (client-initiated).** Enable the SCP service, then pull the config
-from a client:
+**Method 5 — SCP pull (client-initiated).** Enable the SCP service, then pull the config from a
+Linux client — `sys_config` is the FortiOS keyword that returns the full backup:
 
 ```text
 config system global
     set admin-scp enable
 end
-# from the backup host on the admin subnet:
-# scp admin@10.30.99.121:sys_config ./capstone-scp.conf
 ```
+
+```bash
+# from a backup host on the admin subnet (prompts for the admin password):
+scp -O admin@10.30.99.121:sys_config ./capstone-scp.conf
+```
+
+The **`-O` flag is required on modern OpenSSH** (9.0+, e.g. current Ubuntu): `scp` now defaults to
+the SFTP protocol, which the FortiGate's SCP server does not implement — so without `-O` the pull
+fails with `subsystem request failed` / `Connection closed`. `-O` forces the legacy SCP protocol
+FortiOS expects.
 
 **Method 6 — FortiManager (central).** A FortiManager-managed unit backs up centrally
 through the management tunnel (`execute backup config management-station <comment>`),
