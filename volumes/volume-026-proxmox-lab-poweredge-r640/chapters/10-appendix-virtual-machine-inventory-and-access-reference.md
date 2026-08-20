@@ -78,6 +78,16 @@ client/EMS guests on VLANs 200/202 are reachable only through FGT-1 and from a
 peer on the same segment (for example the `ubuntu-ws` jump host), not from the
 management network.
 
+**Out-of-band: the serial console.** Every guest built with a serial device
+(`serial0: socket` — the [Chapter 08](08-deploying-the-virtual-machines.md) `qm create`
+recipes set it) is reachable from the node with **`qm terminal <vmid>`** regardless of its
+network state — the path used to bring up each FortiGate and cell before it had an address,
+and the recovery path when a guest's networking is broken or its VLAN is wrong. Press Enter
+for the login prompt; **`Ctrl+O` detaches** (it does not stop the VM, and is not `Ctrl+C`,
+which is passed to the guest). The same line is in the web UI at *VM → Console →* dropdown
+*→ Serial terminal 0*; only one serial client can attach at a time. Walkthrough:
+[Chapter 09, Lab 9.5](09-validation-troubleshooting-and-operations.md).
+
 ## Keeping this appendix current
 
 Regenerate the VLAN and NIC columns from the hypervisor with `qm config <vmid>`

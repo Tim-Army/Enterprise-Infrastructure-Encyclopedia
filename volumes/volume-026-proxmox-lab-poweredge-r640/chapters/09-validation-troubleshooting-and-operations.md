@@ -193,7 +193,7 @@ This chapter closes the build with **validation, troubleshooting, and day-2 oper
 capstone that confirms the whole R640→Proxmox→10-VM stack. Commands are runnable `qm`/`pvesm`/
 `vzdump`/journal. Each ends **`**Lab verified by:** *pending*`** until a human runs it.
 
-**Shared prerequisites for Labs 9.1–9.4** — the completed Proxmox node with the VM fleet deployed
+**Shared prerequisites for Labs 9.1–9.5** — the completed Proxmox node with the VM fleet deployed
 (Chapter 08), and root SSH. **Cost:** none.
 
 ### Lab 9.1 — Validate the fleet and node (Topic: Validation)
@@ -286,6 +286,42 @@ layer (hardware, platform, network, storage, fleet, backup), which is what "done
 
 **Rollback:** none — this is the finished lab; tear-down commands appear in the earlier chapters'
 cleanups.
+
+### Lab 9.5 — Reach a VM over the serial console (Topic: Out-of-band access)
+
+**Objective:** Get a console on a guest that has **no network path** — a freshly built VM before it
+has an IP, or one whose networking is broken — straight from the node, with no dependency on the
+guest's addressing.
+
+```bash
+# The VM must have a serial device (serial0: socket). The qm create recipes in
+# Chapter 08 set this; confirm it, then attach from the node's shell:
+qm config 124 | grep -E "serial0|vga"          # expect: serial0: socket
+qm terminal 124
+# -> starting serial terminal on interface serial0 (press Ctrl+O to exit)
+# Press Enter to wake the guest's login prompt, log in, and work as normal.
+# Leave the console with Ctrl+O — this DETACHES; it does NOT stop the VM.
+
+# If a VM was built without a serial port, add one live; it appears on next boot:
+qm set 124 --serial0 socket
+```
+
+**Expected result:** `qm terminal <vmid>` prints `starting serial terminal on interface serial0
+(press Ctrl+O to exit)`, and after Enter the guest's `login:` prompt appears — a working console with
+no dependency on the guest's network. The same serial line is in the web UI at *VM → Console →*
+dropdown *→ Serial terminal 0*. This is the path used to bootstrap every FortiGate-VM and Alpine cell
+in this lab *before* it had an address ([Chapter 08](08-deploying-the-virtual-machines.md)), and the
+recovery path whenever a guest's networking is misconfigured — the software analogue of
+[Chapter 01](01-idrac-out-of-band-access-and-first-configuration.md)'s iDRAC out-of-band console for
+the node itself.
+
+**Negative test:** open the serial terminal in the web UI *and* run `qm terminal` on the same VM at
+once — the serial socket takes a single reader, so the second attaches to a garbled, unresponsive
+line. Use one serial client per VM. (The web-UI *noVNC/VGA* console is a separate channel and does not
+conflict with `qm terminal`.) Likewise, do not press `Ctrl+C` to leave — it is delivered to the guest,
+not the terminal; only `Ctrl+O` detaches.
+
+**Rollback:** none — `Ctrl+O` detaches and leaves the VM running; do not confuse it with `qm stop`.
 
 ## Lab Verification
 
