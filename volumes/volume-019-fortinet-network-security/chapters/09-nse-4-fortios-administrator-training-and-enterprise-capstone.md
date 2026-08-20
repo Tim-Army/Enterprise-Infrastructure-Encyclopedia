@@ -723,9 +723,14 @@ transport FortiOS supports, so recovery never depends on a single mechanism, and
 a restore rather than assuming one. Run this against the Cluster A primary (`FGT-AP-1`);
 HA syncs the running config, so the cluster has one configuration to protect.
 
-**Method 1 — GUI.** *System → Configuration → Backup*. Choose **Local PC**, optionally
-tick **Encryption** and set a passphrase, and download the `.conf`. Restore is the mirror:
-*Restore → Local PC →* pick the file (supply the passphrase if it was encrypted).
+**Method 1 — GUI.** The backup/restore controls are in the **top-right admin menu** (click
+the admin name in the banner) → **Configuration → Backup** — *not* under System Settings on
+FortiOS 7.6. That same **Configuration** submenu also holds **Restore**, **Revisions** (the
+flash revision history from Method 2), **Scripts**, and **Transactions**. The **Backup System
+Configuration** dialog offers **Backup to** (*Local PC* or *USB Disk*), a **File format** choice
+of *FortiOS* (the native `.conf`) or *YAML*, a **Password mask** toggle (redacts secrets from the
+export), and an **Encryption** toggle (passphrase-protects the file); click **OK** to download.
+**Restore** is the mirror — pick the file and supply the passphrase if the backup was encrypted.
 
 **Method 2 — CLI to internal flash (numbered revision history).**
 
