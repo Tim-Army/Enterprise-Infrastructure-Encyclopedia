@@ -477,8 +477,9 @@ the remaining labs run on:
 each), reachable management on the `10.30.99.0/24` VM-management network, a
 FortiCloud/FortiCare account to activate each evaluation license, a TFTP/FTP/SCP server
 (the lab uses `10.30.99.50`) for the backup lab, a client host on a data segment, and —
-for the secured-edge lab — the [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md) IPsec peer and [Chapter 07](07-fortiguard-security-profiles-ssl-inspection-and-threat-prevention.md) security
-profiles. **Cost:** none beyond lab resources.
+for the secured-edge lab (Lab 9.5) — a second FortiGate to terminate the IPsec tunnel
+(Cluster B serves). Lab 9.5 builds the edge **from scratch** with built-in security
+profiles, so it needs no prior-chapter profile objects. **Cost:** none beyond lab resources.
 
 > **Eval-license reality — HA membership is free, but forwarding is licensed.** A common
 > myth holds that the free evaluation license blocks HA outright (because eval VMs of the
@@ -566,6 +567,13 @@ management address, each reporting `License Status: Valid`. Record every unit's
 **firmware build** — Labs 9.2–9.3 require an *exact* build match between the two members
 of each cluster.
 
+**Confirmed live (20 Aug 2026).** Four FortiGate-VMs (`fortigate-ap-1`/`-ap-2`,
+`fortigate-aa-1`/`-aa-2`) deployed from the FortiOS 7.6.7 image and eval-licensed against a
+FortiCloud account — all four `License Status: Valid` with **distinct** serial numbers. One
+note on the `execute vm-license-options reset` above: it clears the staged clear-text account
+credentials **without de-licensing** the box (`License Status` stays `Valid` afterward —
+verified live), so it is safe as the final step.
+
 **Negative test:** try to cluster two units in Lab 9.2 before licensing the second one.
 HA membership will still form (it is not license-gated), but the unlicensed member cannot
 forward traffic — the failure mode Lab 9.3 documents in detail. Confirm `License Status:
@@ -599,7 +607,7 @@ config system ha
     set password ISEisC00L123@2026
     set hbdev "port2" 50 "port3" 50
     set session-pickup enable
-    set override enable
+    set override disable
     set priority 200
 end
 ```
@@ -619,8 +627,19 @@ diagnose sys ha checksum cluster
 
 **Expected result:** `get system ha status` shows **`Mode: HA A-P`**, two members with
 `FGT-AP-1` primary and `FGT-AP-2` secondary, and matching checksums across members —
-configuration syncs automatically from primary to secondary. `set override enable` plus
-the higher priority makes `FGT-AP-1` reclaim primary whenever it is healthy.
+configuration syncs automatically from primary to secondary. Override is left **disabled**
+(the default, and the production-sane choice — [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md), Lab 5.6, uses the
+same); with the higher priority, `FGT-AP-1` wins the initial election.
+
+**Confirmed live (20 Aug 2026).** Built on the four from-scratch capstone VMs (Lab 9.1):
+`fortigate-ap-1` + `fortigate-ap-2` formed a healthy active-passive cluster — `Mode: HA A-P`,
+matching `all` checksums on both members, `fortigate-ap-1` primary by priority, heartbeat on
+the shared `port2`/`port3`. Each eval VM received a **unique** serial number, so the
+oft-repeated "same-version eval VMs share a serial and can't cluster" claim is doubly false.
+**A reserved HA management interface is not available on the 3-NIC eval:** `config
+ha-mgmt-interfaces` / `set interface port1` is refused (`node_check_object fail!` — only
+`port2`/`port3` are offered), so the secondary inherits the primary's management IP and is
+reached with `execute ha manage`.
 
 **Step 3 — prove stateful failover.** From a segment host, hold a session open through
 the cluster, then reboot the primary **gracefully** (`execute reboot` — never a hypervisor
@@ -689,6 +708,14 @@ diagnose sys ha status
 members, heartbeat on `port2`/`port3`. Under transit load, `diagnose sys ha status` shows
 **both** members carrying sessions — the scheduler assigns each new session to the
 less-loaded unit.
+
+**Confirmed live (20 Aug 2026).** `fortigate-aa-1` + `fortigate-aa-2` formed an active-active
+cluster — `Mode: HA A-A`, `schedule: Least connection`, both members forwarding. The A-A
+secondary reads **`out-of-sync` briefly right after forming, then settles** to matching
+checksums within about a minute — don't mistake the transient for a fault. Cluster A (A-P)
+and Cluster B (A-A) then ran side by side on the same `port2`/`port3` heartbeat VLANs with no
+collision, confirming that distinct group-ids (`11` vs `22`) are exactly what keep two
+co-located clusters apart.
 
 **Step 3 — watch sessions distribute.** A-A distributes **transit** sessions only;
 local/management sessions (your SSH, the heartbeat) stay on the primary. Push several
@@ -806,6 +833,13 @@ FTP, SCP, and (on hardware) USB or (when managed) FortiManager; and a test resto
 the device to the captured baseline — a recovery capability you have *verified*, not
 assumed.
 
+**Confirmed live (20 Aug 2026).** On `fortigate-ap-1`: `execute backup config flash
+capstone-baseline` created numbered flash revision 1, and `execute backup config tftp
+capstone.conf 10.30.99.50` was verified *for real* by pulling the file back from the TFTP
+server (`curl tftp://10.30.99.50/capstone.conf` from a host on the segment) — a 331 KB,
+11,408-line FortiOS config carrying the live HA settings, not merely a "command succeeded"
+message. Method 5 (SCP) and Method 1 (GUI) were confirmed the same day.
+
 **Negative test:** back up only to internal flash and treat that as your DR plan. A
 chassis or VM loss takes the flash revisions with it — production always keeps an
 **off-device** copy (TFTP/FTP/SCP/FortiManager) as well.
@@ -814,39 +848,96 @@ chassis or VM loss takes the flash revisions with it — production always keeps
 test revision (`execute revision delete config <revision-id>`) if you do not want to
 retain it, and disable SCP (`set admin-scp disable`) if it was enabled only for the lab.
 
-### Lab 9.5 — End-to-end secured-edge build (Capstone: all five objectives)
+### Lab 9.5 — Build the secured edge from scratch (Capstone: all five objectives)
 
-**Eval FortiGate — capable (with subscription caveats).** The end-to-end build runs on the eval; its threat-prevention steps return *live* verdicts only with active FortiGuard subscriptions (Chapter 07).
+**Eval FortiGate — capable; built and verified live.** Every step below ran on the
+from-scratch Cluster A (`fortigate-ap-1`) with real traffic. The eval's caps shape it —
+low-encryption **DES** for the tunnel, a **three-firewall-policy limit**, and a web filter
+that **fails closed** without FortiGuard — each called out inline.
 
-**Objective:** On **Cluster A** (the active-passive pair from Lab 9.2; HA syncs the config to the standby), stand up a protected edge that exercises every NSE 4 objective at once.
+**Objective:** On **Cluster A**, *construct* a protected edge that exercises all five NSE 4
+objectives in one path — **from a blank box**. Earlier revisions of this lab assumed the
+interfaces, policies, `staff` group, security profiles, and IPsec tunnel already existed
+from Chapters 05–07; the from-scratch capstone boxes (Labs 9.1–9.3) have **none** of that,
+so here we build each piece. Configuration is HA-synced to the standby, so you configure
+only the primary.
+
+**Step 1 — Deployment & Routing (objectives 1 + 4).** Address a LAN (`port2`) and a WAN
+(`port3`) data interface and set the default route out the WAN. `port1` stays
+management-only (Lab 9.1), so the edge egresses via a data interface; the WAN interface
+needs an IP in the gateway's subnet **first**, or FortiOS marks the static route inactive:
 
 ```text
-# 1. Deployment: default route out the WAN-facing data interface (Objective: Deployment & System Config)
-#    On the eval clusters port1 is management-only (Lab 9.1), so the edge egresses via a
-#    DATA interface — port3 here. port3 needs an IP in the gateway's subnet FIRST, or
-#    FortiOS marks the static route inactive and it never appears in the routing table.
-#    (In this volume's homelab port3 is 10.30.163.124/24 via 10.30.163.1; substitute your
-#    own WAN addressing.) edit 2 because edit 1 is the scoped management route from Lab 9.1.
 config system interface
+    edit port2
+        set alias LAN
+        set mode static
+        set ip <lan-ip> <lan-mask>
+        set allowaccess ping
+    next
     edit port3
+        set alias WAN
         set mode static
         set ip <wan-ip> <wan-mask>
         set allowaccess ping
     next
 end
 config router static
+    edit 1
+        set dst <admin-subnet> <mask>
+        set gateway <mgmt-gw>
+        set device port1
+    next
     edit 2
-        set gateway <wan-gateway>
+        set gateway <wan-gw>
         set device port3
     next
 end
-# 2. Content Inspection: deep-inspection + AV + IPS + web filter (Objective: Content Inspection)
-#    (profiles av-lab / ips-lab / block-malicious from Chapter 07; for SSL use the
-#     built-in custom-deep-inspection — deep-lab can't be created on the eval, whose
-#     ssl-ssh-profile table is capped, per Chapter 07)
-# 3. Firewall policy with authentication (Objective: Firewall Policies & Auth)
+```
+
+`edit 1` converts the temporary licensing default (Lab 9.1) into a **scoped** management
+route to the admin subnet — the management port carries management traffic only — and
+`edit 2` is the real WAN default via `port3`. (Homelab values: `port2` `10.30.162.131`,
+`port3` `10.30.163.131`, WAN gateway `10.30.163.1`.) Confirm with
+`get router info routing-table all` — the default shows as `S* 0.0.0.0/0 … port3`.
+
+**Step 2 — Authentication (objective 3).** A local user and group to gate egress — no
+LDAP/RADIUS needed:
+
+```text
+config user local
+    edit staff-user
+        set type password
+        set passwd ISEisC00L123@2026
+    next
+end
+config user group
+    edit staff
+        set member staff-user
+    next
+end
+```
+
+**Step 3 — Firewall policies (objectives 2 + 3).** Two policies: a pre-auth utility policy
+(so the client can resolve DNS and test connectivity before authenticating) and the
+secured, auth-gated egress with the full inspection stack. **Use the built-in profiles**
+(`default` AV/IPS, `monitor-all` web filter, `custom-deep-inspection` SSL) — the Chapter 07
+named profiles (`av-lab`, `ips-lab`, `block-malicious`) do not exist on a from-scratch box:
+
+```text
 config firewall policy
     edit 1
+        set name lan-utility-preauth
+        set srcintf port2
+        set dstintf port3
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service DNS PING
+        set nat enable
+    next
+    edit 2
         set name secured-lan-egress
         set srcintf port2
         set dstintf port3
@@ -855,38 +946,105 @@ config firewall policy
         set action accept
         set schedule always
         set service HTTP HTTPS
-        # DNS is intentionally NOT in this group-restricted policy: captive-portal
-        # auth only triggers on HTTP/HTTPS, so a separate policy permitting DNS
-        # WITHOUT set groups must sit above this one, or pre-auth name resolution
-        # (and thus the portal redirect) is dropped.
         set groups staff
         set nat enable
         set utm-status enable
         set ssl-ssh-profile custom-deep-inspection
-        set av-profile av-lab
-        set ips-sensor ips-lab
-        set webfilter-profile block-malicious
+        set av-profile default
+        set ips-sensor default
+        set webfilter-profile monitor-all
         set logtraffic all
     next
 end
-# 4. Routing verification (Objective: Routing)
-get router info routing-table all
-# 5. VPN reachability (Objective: VPNs)
+```
+
+DNS sits in the *pre-auth* policy, not the group-gated one: captive-portal auth triggers
+only on HTTP/HTTPS, so name resolution (and the portal redirect itself) must be permitted
+before authentication.
+
+> **Eval cap — three firewall policies.** The free eval refuses a fourth policy
+> (`edit 4` → `Command fail. Return code -4 (reached the maximum number of entries)`). The
+> enforcement box's three slots go to utility + secured-egress + one VPN policy (Step 4),
+> so a full bidirectional VPN policy pair has to live on the *peer* instead.
+
+**Step 4 — VPN (objective 5).** A route-based IPsec tunnel to a peer. On the eval,
+low-encryption means **DES** (`des-sha256`, per [Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)). Configure
+phase1 + phase2 on both ends (`set remote-gw` points at the other), then — **critically** —
+add a firewall policy that *references the tunnel interface*, or FortiOS refuses to bring
+the SA up:
+
+```text
+config vpn ipsec phase1-interface
+    edit capstone-vpn
+        set interface port2
+        set remote-gw <peer-ip>
+        set proposal des-sha256
+        set dhgrp 14
+        set psksecret ISEisC00L123@2026
+    next
+end
+config vpn ipsec phase2-interface
+    edit capstone-vpn-p2
+        set phase1name capstone-vpn
+        set proposal des-sha256
+    next
+end
+config firewall policy
+    edit 3
+        set name vpn-out
+        set srcintf port2
+        set dstintf capstone-vpn
+        set srcaddr all
+        set dstaddr all
+        set action accept
+        set schedule always
+        set service ALL
+    next
+end
+```
+
+Bring it up and verify — `diagnose vpn tunnel up` takes the **phase2** name, not the
+tunnel/phase1 name:
+
+```text
+diagnose vpn tunnel up capstone-vpn-p2
 diagnose vpn tunnel list
 ```
 
-**Expected result:** authenticated LAN users egress with full UTM inspection, the
-routing table shows the default and any tunnel routes, and the IPsec tunnel **built in
-[Chapter 06](06-firewall-policy-authentication-vpn-and-zero-trust-access.md)** shows `up`
-— this capstone *reuses* that tunnel, since Lab 9.5 configures no new VPN, so it must already
-be established (`diagnose vpn tunnel list` is empty otherwise). One policy path then
-demonstrates all five objectives working together.
+> **Gotcha — a route-based tunnel needs a policy to establish.** Without a firewall policy
+> using the tunnel interface, the IKE debug logs `ignoring request to establish IPsec SA,
+> no policy configured` and the tunnel stays `status=down`. The `vpn-out` policy above (each
+> side needs at least one) is what lets phase1/phase2 negotiate.
 
-**Negative test:** enable `utm-status` but forget `set groups staff`; unauthenticated
-users match and bypass identity control — every objective's control must be present for
-the edge to be genuinely secured.
+**Step 5 — verify all five, live:**
 
-**Rollback:** delete policy 1 and the port3 default route (`config router static / delete 2 / end`); the reused Chapter 06 tunnel stays as-is.
+```text
+get router info routing-table all          # 1 + 4: S* 0.0.0.0/0 via <wan-gw> port3 active
+show firewall policy                        # 2 + 3: secured-lan-egress carries UTM + groups staff
+diagnose vpn tunnel list                    # 5: capstone-vpn status=up, sa=1, esp=des
+```
+
+From a LAN client behind `port2`, ping out (utility policy → egress works, NATed), then an
+HTTP request (secured policy → captive-portal redirect to `http://<lan-ip>:1000/fgtauth?…`
+until you authenticate as `staff-user`; afterward it traverses the UTM stack).
+
+**Confirmed live (20 Aug 2026).** All five objectives exercised with real traffic from a LAN
+client (an Ubuntu host on the `port2` segment): egress **4/4** to `8.8.8.8` through the edge
+(reply TTL one lower than the FortiGate's own ping — the NATed extra hop); the captive portal
+intercepted unauthenticated HTTP and a `staff-user` login (POST → `303`) let it through; the
+web filter then returned its **"Web Page Blocked — all FortiGuard servers failed to respond"**
+page (the eval fails **closed** without a FortiGuard subscription — the UTM stack is inline and
+acting); and the DES IPsec tunnel came up `status=up`, `sa=1`, `esp=des ah=sha256`, confirmed
+from both endpoints. On an unlicensed edge, set the web filter to allow-on-rating-error (or use
+certificate-inspection) if you need web traffic to *pass* rather than fail closed.
+
+**Negative test:** attach `utm-status enable` but omit `set groups staff` — unauthenticated
+users match the policy and bypass identity control; every objective's control must be present
+for the edge to be genuinely secured.
+
+**Rollback:** delete the firewall policies and the `port3` default route; `config vpn ipsec
+phase1-interface / delete capstone-vpn` (and its phase2); return `port2`/`port3` to unaddressed
+to revert the box to its clustered baseline.
 
 ### Lab 9.6 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
