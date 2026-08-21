@@ -641,6 +641,24 @@ ha-mgmt-interfaces` / `set interface port1` is refused (`node_check_object fail!
 `port2`/`port3` are offered), so the secondary inherits the primary's management IP and is
 reached with `execute ha manage`.
 
+**Confirmed live — the `override` gotcha (per-unit, and the status masks it).** `override` is a
+**per-unit** setting FGCP does **not** synchronize (like `priority`), and it decides *how* the
+primary is chosen: with `override disable` on **every** member, selection is **uptime-first** (the
+running unit keeps primary — no preemption); with `override enable`, or **any mismatch between
+members**, selection is **priority-first** (the higher-priority unit preempts). The trap:
+`get system ha status` prints only the **primary's** `override`, so a secondary left on
+`override enable` is invisible. This capstone hit exactly that — the secondary silently carried
+`override enable` while the primary read `override disable`, so the priority-200 unit reclaimed
+primary after **every** outage (a quick `execute reboot` *and* a 6-minute power-off, even with a
+~21-hour HA-uptime lead on the peer), and the `Primary selected using` log read
+*"…because its **override priority is larger**."* Setting `override disable` on the secondary too
+fixed it instantly: FGCP re-elected on uptime — the log flipped to *"…because its **uptime is
+larger**,"* the higher-uptime unit took primary **with no reboot**, and the higher-priority unit sat
+as secondary without preempting. **Verify `override` on every member** — via
+`execute ha manage <id> admin` or a config-backup diff (which is what caught this), never the
+primary's status alone. (This reconciles [Chapter 05](05-interfaces-routing-nat-virtual-domains-and-high-availability.md)'s
+"uptime decides" — that cluster had override uniformly disabled — so nothing there needs changing.)
+
 **Step 3 — prove stateful failover.** From a segment host, hold a session open through
 the cluster, then reboot the primary **gracefully** (`execute reboot` — never a hypervisor
 hard-reset, which corrupts the config partition and traps the secondary in a sync loop).
