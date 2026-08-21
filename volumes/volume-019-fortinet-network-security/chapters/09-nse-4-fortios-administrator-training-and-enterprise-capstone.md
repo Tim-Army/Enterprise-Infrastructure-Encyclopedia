@@ -1048,12 +1048,30 @@ to revert the box to its clustered baseline.
 
 ### Lab 9.6 — Security Fabric and Security Rating (Capstone: Fabric integration)
 
-**Eval FortiGate — partial (FortiGuard-gated).** The CSF config and the manual
-`diagnose report-runner-v2 security-rating trigger` run on the eval, but a full Security
-Rating **score** requires the FortiGuard Security Rating entitlement — which the free eval
-lacks — so expect an empty or incomplete rating.
+**Eval FortiGate — Fabric root yes (with a prerequisite), Security Rating no.** The Security
+Fabric root **enables** on the eval — but only after a real-time logging backend is
+configured — while the Security **Rating** is **unavailable** on an evaluation-mode VM
+outright (not merely FortiGuard-gated). Both realities are built into the steps below.
 
-**Objective:** Read the Security Rating to find configuration gaps.
+**Objective:** Stand up the Security Fabric root and run the Security Rating against the
+config you built in Lab 9.5.
+
+**Step 1 — satisfy the logging prerequisite.** FortiOS 7.6 refuses to enable the Fabric root
+without a **real-time** logging backend (FortiAnalyzer, FortiAnalyzer Cloud, or FortiGate
+Cloud): a bare `config system csf / set status enable` fails with `Command fail. Return code
+-39`. On the eval, FortiGate Cloud logging is itself blocked (`Haven't set FortiCloud account
+id`, `-651`), so configure a FortiAnalyzer target (a real FAZ in production; a placeholder in
+the lab) **with `upload-option realtime`** — a non-real-time upload triggers the `-39` again:
+
+```text
+config log fortianalyzer setting
+    set status enable
+    set server <faz-ip>
+    set upload-option realtime
+end
+```
+
+**Step 2 — enable the Fabric root and verify:**
 
 ```text
 config system csf
@@ -1061,18 +1079,41 @@ config system csf
     set group-name "Lab-Fabric"
 end
 diagnose sys csf global
+```
+
+`diagnose sys csf global` returns the fabric vision — this box as root of `Lab-Fabric`, its
+serial and `fabric_uid`, and `subtree_members` (empty until you authorize a downstream unit).
+
+**Step 3 — trigger the Security Rating:**
+
+```text
 diagnose report-runner-v2 security-rating trigger
 ```
 
-**Expected result:** the Security Rating audits the Fabric against Fortinet and industry
-best practices (admin hardening, unused policies, missing inspection) and scores it —
-the operator's built-in gap analysis after a build.
+**Expected result:** the Fabric root comes up (once the logging prerequisite is met) and the
+trigger reports `Successfully triggered full Security Rating check suite`. But on an
+**evaluation-mode** VM the **result is unavailable** — the GUI (*Security Fabric → Security
+Rating*) states it plainly: *"Security Rating is unavailable when VM license is in evaluation
+mode or when HTTPS is unavailable."* There is no CLI result viewer either
+(`diagnose report-runner-v2 security-rating` offers only `clean` / `reset-trigger`), so the
+rating **score** needs a licensed box; on the eval you demonstrate the Fabric and the trigger,
+not a score.
 
-**Negative test:** treat a green policy list as "secure" without running the rating;
-gaps like clear-text admin or uninspected policies stay invisible — the rating is what
-surfaces them.
+**Confirmed live (20 Aug 2026).** On `fortigate-ap-1`, the bare CSF enable failed `-39`
+(logging backend required); FortiGate Cloud logging failed `-651` (no FortiCloud logging
+account on the eval); a FAZ target *without* real-time upload failed `-39` again — only a
+FortiAnalyzer target **with `upload-option realtime`** cleared it, after which the Fabric root
+came up (`diagnose sys csf global` returned the vision, `vm_license_status: vm_eval`,
+`firmware_license: false`). The rating trigger succeeded, but the GUI reported the rating
+**unavailable in evaluation mode**.
 
-**Rollback:** `set status disable` under `config system csf` if lab-only.
+**Negative test:** treat a green policy list as "secure" without running the rating; gaps like
+clear-text admin or uninspected policies stay invisible — the rating is what surfaces them
+(on a licensed box).
+
+**Rollback:** `set status disable` under `config system csf`, and disable the placeholder
+FortiAnalyzer target (`config log fortianalyzer setting / set status disable`) if it was
+lab-only.
 
 ### Lab 9.7 — Exam-readiness self-check (Capstone: objective mapping)
 
@@ -1087,12 +1128,24 @@ show vpn ipsec phase1-interface | grep edit  # VPNs (10–15%)
 show router static | grep edit            # Routing (10–15%)
 show system interface | grep edit         # Deployment & System Config (20–25%)
 # Use show (not get — get prints no "edit N" lines) and plain grep (FortiOS grep
-# has no -c count flag); each line above prints one "edit N" per object — count them.
+# has no -c count flag); each line prints one "edit N" per object — count them.
+# CAUTION on ssl-ssh-profile: its output includes each profile's nested
+# `config ssl-exempt` sub-table (edit 1..32 per profile), so `grep edit` wildly
+# OVERcounts. Count only the named profiles — the `edit "<name>"` lines
+# (deep-inspection / custom-deep-inspection / no-inspection / certificate-inspection
+# are built in and DO show). The other four buckets have no nested edits here.
 ```
 
 **Expected result:** a non-zero count in each category, proving you have built and can
 explain at least one artifact per objective — the exam samples across all five weighted
 areas, so hands-on coverage of each is the readiness bar.
+
+**Confirmed live (20 Aug 2026).** Run against the Lab 9.5 build on `fortigate-ap-1`, every
+bucket came back non-zero — Firewall Policies **3**, SSL profiles **4** (the built-ins, once
+the nested `ssl-exempt` edits are discounted), VPN phase1 **1** (`capstone-vpn`), static
+routes **2**, interfaces **9** (`port1`–`port3`, the `capstone-vpn` tunnel, plus system
+interfaces such as `ssl.root` and `fortilink`). Five for five — the from-scratch capstone
+touches every weighted objective.
 
 **Negative test:** study only Content Inspection because it is the largest slice; the
 other 70–75% of the exam is untouched — the weights guide emphasis, not exclusion.
