@@ -76,10 +76,11 @@ The evaluation VM's hard limits — no forwarding until licensed, a three-interf
 13. [Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud](chapters/13-cloud-security-track-fortiweb-cnapp-mail-and-public-cloud.md) — FortiWeb/FortiADC/FortiAppSec (NSE 5), FortiCNAPP/FortiMail/AWS-Azure-GCP (NSE 6), and the Public Cloud Security Architect (NSE 7).
 14. [SASE Track — FortiSASE, SD-WAN, and the Secure Edge](chapters/14-sase-track-fortisase-sd-wan-and-the-secure-edge.md) — FortiSASE and Secure SD-WAN, ZTNA via FortiClient EMS, and the NSE 7 FortiSASE exams.
 15. [NSE 8 Expert Practical and Certification Operations](chapters/15-nse-8-expert-practical-and-certification-operations.md) — the two-module NSE 8 (Core + Specialization), fabric readiness, and portfolio/recertification operations.
+16. [FortiGate 7.6 Operator Practice Exam and Self-Check](chapters/16-fortigate-7-6-operator-practice-exam-and-self-check.md) — an eight-domain map from the operator assessment back to this volume's chapters, an original 216-item practice bank with an answer key and an interactive offline companion, and seven operator GUI/CLI walkthrough labs.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all fifteen
+- [Index](INDEX.md) — alphabetized topical index across all sixteen
   chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this
   volume.
@@ -106,8 +107,10 @@ returned**, in an expanded eight-level form.
 This volume's NSE naming is current, and — since consolidating the full
 program — its coverage is complete: Chapters 01–09 carry NSE 1–4, and
 Chapters 10–15 carry NSE 5–8 across all four tracks, verified against
-the Fortinet Training Institute on 22 July 2026. The exam tables for the
-upper levels are below.
+the Fortinet Training Institute on 22 July 2026. Chapter 16 adds an
+operator-level practice-exam and self-check — an original, answer-keyed
+question bank with an interactive, offline companion. The exam tables for
+the upper levels are below.
 
 | Level | Structure after 15 July 2026 |
 | --- | --- |

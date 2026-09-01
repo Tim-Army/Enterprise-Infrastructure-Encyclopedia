@@ -292,6 +292,7 @@ table of contents for that volume.
 13. Cloud Security Track — FortiWeb, CNAPP, Mail, and Public Cloud
 14. SASE Track — FortiSASE, SD-WAN, and the Secure Edge
 15. NSE 8 Expert Practical and Certification Operations
+16. FortiGate 7.6 Operator Practice Exam and Self-Check
 
 ## Volume XX — Wireshark and Packet Analysis
 

@@ -680,7 +680,7 @@ volumes:
     number: "XIX"
     slug: volume-019-fortinet-network-security
     title: "Fortinet NSE Certification Program"
-    chapter_count: 15
+    chapter_count: 16
     build_eligible: true
     chapters:
       - id: 01
@@ -728,6 +728,9 @@ volumes:
       - id: 15
         title: "Chapter 15: NSE 8 Expert Practical and Certification Operations"
         path: volumes/volume-019-fortinet-network-security/chapters/15-nse-8-expert-practical-and-certification-operations.md
+      - id: 16
+        title: "Chapter 16: FortiGate 7.6 Operator Practice Exam and Self-Check"
+        path: volumes/volume-019-fortinet-network-security/chapters/16-fortigate-7-6-operator-practice-exam-and-self-check.md
   - id: volume-020
     number: "XX"
     slug: volume-020-wireshark-packet-analysis

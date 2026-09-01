@@ -55,6 +55,13 @@ EXEMPT = {
         "01-appendix-cisco-u-learning-paths-and-continuing-education-credits.md",
         "../../interactive/cisco-u-learning-paths.html",
     ),
+    # Same arrangement for the FortiGate Operator self-check companion, which
+    # lives at publishing/interactive/ and is served beside the volume pages.
+    (
+        "volumes/volume-019-fortinet-network-security/chapters/"
+        "16-fortigate-7-6-operator-practice-exam-and-self-check.md",
+        "../../interactive/fortigate-operator-quiz.html",
+    ),
 }
 
 FENCE = re.compile(r"^\s{0,3}(?:```|~~~)")

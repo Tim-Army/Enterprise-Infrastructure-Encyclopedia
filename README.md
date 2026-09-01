@@ -7,9 +7,9 @@
 ![Status](https://img.shields.io/badge/status-active%20development-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Markdown](https://img.shields.io/badge/documentation-Markdown-blue)
-![Release](https://img.shields.io/badge/release-v1.2.279-blue)
+![Release](https://img.shields.io/badge/release-v1.2.280-blue)
 
-**v1.2.279 — latest release.** 175 volumes, 1662 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.279) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
+**v1.2.280 — latest release.** 175 volumes, 1663 chapters, published. [Read online](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/) · [Release notes and EPUB download](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases/tag/v1.2.280) · [all releases](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/releases).
 
 ## Disclaimer
 
@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-175 volumes, 1662 chapters. Each volume has a dedicated
+175 volumes, 1663 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -48,7 +48,7 @@ The series combines architecture and theory with implementation guidance, automa
 | XVI | [Palo Alto Networks Security](volumes/volume-016-palo-alto-networks-security/README.md) | 12 |
 | XVII | [AWS Architecture and Security](volumes/volume-017-aws-architecture-security/README.md) | 13 |
 | XVIII | [Gigamon Network Visibility](volumes/volume-018-gigamon-network-visibility/README.md) | 9 |
-| XIX | [Fortinet NSE Certification Program](volumes/volume-019-fortinet-network-security/README.md) | 15 |
+| XIX | [Fortinet NSE Certification Program](volumes/volume-019-fortinet-network-security/README.md) | 16 |
 | XX | [Wireshark and Packet Analysis](volumes/volume-020-wireshark-packet-analysis/README.md) | 9 |
 | XXI | [Ubuntu Server and Cloud 26.04 LTS](volumes/volume-021-ubuntu-server-cloud-26-04-lts/README.md) | 9 |
 | XXII | [Dell OpenManage Enterprise](volumes/volume-022-dell-openmanage-enterprise/README.md) | 9 |

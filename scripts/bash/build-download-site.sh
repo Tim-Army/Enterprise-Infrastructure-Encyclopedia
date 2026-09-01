@@ -93,6 +93,9 @@ volume_title() {
     echo "<h2>Interactive companions</h2>"
     echo "<ul>"
     echo "<li><a href=\"interactive/cisco-u-learning-paths.html\">Cisco U. Learning Paths &mdash; searchable CE-credit &amp; access catalog</a> (companion to <a href=\"html/volume-997-master-appendices/Enterprise-Infrastructure-Encyclopedia.html#c01\">Master Appendices, Chapter 01</a>)</li>"
+    if [[ -f "$output/interactive/fortigate-operator-quiz.html" ]]; then
+      echo "<li><a href=\"interactive/fortigate-operator-quiz.html\">FortiGate 7.6 Operator Practice Exam &mdash; interactive self-check</a> (companion to <a href=\"html/volume-019-fortinet-network-security/Enterprise-Infrastructure-Encyclopedia.html#c16\">Fortinet NSE, Chapter 16</a>)</li>"
+    fi
     echo "</ul>"
   fi
   echo "<h2>Volumes</h2>"
