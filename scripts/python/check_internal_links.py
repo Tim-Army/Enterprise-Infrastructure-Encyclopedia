@@ -106,7 +106,7 @@ def main():
         for lineno, target in link_targets(os.path.join(root, relpath)):
             if SCHEME.match(target) or target.startswith("#"):
                 continue
-            if (relpath, target) in EXEMPT:
+            if (relpath.replace(os.sep, "/"), target) in EXEMPT:
                 continue
             checked += 1
             where = "%s:%d" % (relpath, lineno)
