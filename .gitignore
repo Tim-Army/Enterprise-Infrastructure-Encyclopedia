@@ -9,3 +9,5 @@ __pycache__/
 *.pyc
 dist/
 .cache/
+temp/
+imports/
