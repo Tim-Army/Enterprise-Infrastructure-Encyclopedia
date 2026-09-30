@@ -23,6 +23,7 @@ Paths used below:
   - `REPO\exports\<quiz-slug>` (tracked in git, for publishing)
   - `REPO\publishing\interactive` (where published quizzes live; the files are renamed `<quiz-slug>.html` / `<quiz-slug>-question-bank.md`)
   The user may type any other folder, but it must be inside the repo.
+- **Maximum questions**: 1000 for the whole quiz unless the user gives another number.
 - **Title / subject**: infer from the file names (e.g. "FortiGate 7.6 Administrator (NSE 4)"); ask in the same AskUserQuestion call only if they can't be inferred.
 - Run the rest without further questions.
 
@@ -44,7 +45,7 @@ Launch one `general-purpose` agent per lesson, all in one message, `run_in_backg
 - Only read and write inside REPO.
 - Read EVERY frame in numeric time order; read slide text AND any speaker-notes panel; ignore repeats, title and black frames.
 - Questions: exactly 4 options, one correct; plausible, topical distractors; grounded strictly in the frames (no outside knowledge); self-contained wording; mixed difficulty; favour concepts, behaviours, defaults, order of operations, CLI/GUI paths and troubleshooting over trivia.
-- Target about one question per distinct slide concept (roughly frames ÷ 2.8, minimum 10). No duplicates.
+- Write as many high-quality questions as the frames genuinely support, up to the lesson's cap: the quiz-wide maximum (default **1000**, or whatever the user sets) split across lessons in proportion to their frame counts. Never pad to reach the cap. No duplicates.
 - 3–6 sections, answer key balanced across A–D, 3–6 objectives, `source` = absolute path of the best supporting frame.
 - Output shape:
   `{"id":N,"name":"...","objectives":[...],"sections":[...],"questions":[{"num":1,"section":"...","topic":"...","question":"...","options":[4],"correct_index":0,"rationale":"...","source":"<abs path>","difficulty":"easy|medium|hard"}]}`
