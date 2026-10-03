@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FortiGate 7.6 Administrator (NSE 4) Study Quiz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,6 +94,9 @@ main{max-width:900px; margin:0 auto; padding:28px 20px 80px}
 .tog input:checked + .sw{background:var(--accent); border-color:var(--accent)}
 .tog input:checked + .sw::after{transform:translateX(16px)}
 .tog input:focus-visible + .sw{outline:2px solid var(--focus); outline-offset:2px}
+.cnt{display:flex; align-items:center; gap:9px; font-size:14px; color:var(--muted)}
+.cnt select{appearance:auto; font:inherit; font-size:14px; color:var(--ink); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:4px 8px; cursor:pointer}
+.cnt select:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
 .actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
 
 .btn{appearance:none; border:1px solid transparent; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:600; cursor:pointer; transition:.15s}
@@ -318,12 +323,16 @@ document.getElementById("themeBtn").addEventListener("click", ()=>{
   root.setAttribute("data-theme", dark ? "light" : "dark");
 });
 
-let S = { mode:"start", scope:"all", shuffleQ:true, shuffleOpts:true, order:[], optMap:{}, ptr:0, picked:null, checked:false, answers:{}, studyFilter:"all" };
+let S = { mode:"start", scope:"all", shuffleQ:true, shuffleOpts:true, count:0, order:[], optMap:{}, ptr:0, picked:null, checked:false, answers:{}, studyFilter:"all" };
 const app = document.getElementById("app");
 const readout = document.getElementById("readout");
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
 function esc(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function scopeIdx(scope){ return QUESTIONS.map((q,i)=>i).filter(i => scope==="all" || QUESTIONS[i].lesson===scope); }
+// Questions per test: 0 means all. Smaller counts draw a fresh random subset each run.
+const COUNT_CHOICES=[10,20,25,50,75,100,150,200,250,500].filter(n=>n<QUESTIONS.length);
+function testSize(pool){ return S.count>0 ? Math.min(S.count,pool) : pool; }
+function startAllLabel(){ const n=testSize(QUESTIONS.length); return n===QUESTIONS.length ? `Take the full exam (${n}) →` : `Take a ${n}-question exam →`; }
 
 function renderStart(){
   S.mode="start";
@@ -354,14 +363,21 @@ function renderStart(){
     <div class="toggles">
       <label class="tog"><input type="checkbox" id="tqo" ${S.shuffleQ?"checked":""}><span class="sw"></span>Shuffle question order</label>
       <label class="tog"><input type="checkbox" id="too" ${S.shuffleOpts?"checked":""}><span class="sw"></span>Shuffle answer choices</label>
+      <label class="cnt">Questions per test
+        <select id="tqc">
+          <option value="0" ${S.count===0?"selected":""}>All</option>
+          ${COUNT_CHOICES.map(n=>`<option value="${n}" ${S.count===n?"selected":""}>${n}</option>`).join("")}
+        </select>
+      </label>
     </div>
     <div class="actions">
-      <button class="btn btn-primary" id="startAll">Take the full exam (${QUESTIONS.length}) →</button>
+      <button class="btn btn-primary" id="startAll">${startAllLabel()}</button>
       <button class="btn btn-ghost" id="startStudy">Study mode — read all answers</button>
     </div>
   </div>`;
   document.getElementById("tqo").addEventListener("change",e=>S.shuffleQ=e.target.checked);
   document.getElementById("too").addEventListener("change",e=>S.shuffleOpts=e.target.checked);
+  document.getElementById("tqc").addEventListener("change",e=>{ S.count=+e.target.value; document.getElementById("startAll").textContent=startAllLabel(); });
   document.getElementById("startAll").addEventListener("click", ()=>beginQuiz("all"));
   document.getElementById("startStudy").addEventListener("click", ()=>renderStudy());
   [...document.querySelectorAll(".lesson-card button")].forEach(b=>b.addEventListener("click",()=>beginQuiz(+b.dataset.scope)));
@@ -371,7 +387,10 @@ function renderStart(){
 function beginQuiz(scope){
   S.scope=scope;
   const pool=scopeIdx(scope);
-  S.order = S.shuffleQ ? shuffle(pool) : pool;
+  const n=testSize(pool.length);
+  // A partial test samples randomly; with question shuffle off, the sample keeps lesson order.
+  const picked = n<pool.length ? shuffle(pool).slice(0,n) : pool;
+  S.order = S.shuffleQ ? shuffle(picked) : picked.slice().sort((a,b)=>a-b);
   S.optMap={};
   S.order.forEach(i=>{ const q=QUESTIONS[i]; const slots=q.opts.map((_,k)=>k); S.optMap[q.n]=S.shuffleOpts?shuffle(slots):slots; });
   S.ptr=0; S.answers={}; S.picked=null; S.checked=false; S.mode="quiz";
@@ -426,7 +445,8 @@ function renderEnd(){
   const correct=scoped.filter(q=>S.answers[q.n]&&S.answers[q.n].correct).length; const pct=Math.round(correct/total*100);
   const circ=2*Math.PI*66; const dash=circ*(pct/100); const col=pct>=80?"var(--ok)":pct>=60?"var(--accent)":"var(--bad)";
   const verdict=pct>=90?"Outstanding":pct>=80?"Strong pass":pct>=60?"Getting there":"Keep studying";
-  const scopeLabel=S.scope==="all"?"Full exam":("Lesson "+S.scope+" · "+lessonById(S.scope).short);
+  const partial=total<scopeIdx(S.scope).length;
+  const scopeLabel=(S.scope==="all"?(partial?`${total}-question exam`:"Full exam"):("Lesson "+S.scope+" · "+lessonById(S.scope).short))+(partial&&S.scope!=="all"?` (${total} questions)`:"");
   const lessonsInScope=S.scope==="all"?LESSONS:[lessonById(S.scope)];
   let tallyHtml="";
   lessonsInScope.forEach(L=>{
