@@ -26,7 +26,9 @@ SUBJ_SP     = (' ' + SUBJECT + ' ') if SUBJECT else ' '
 
 def lesson_color(i):
     return {1:'var(--accent)', 2:'#2E7DE9', 3:'#12A594', 4:'#D08018', 5:'#8B5CF6',
-            6:'#0EA5E9', 7:'#DB2777', 8:'#65A30D'}.get(i, '#6B7280')
+            6:'#0EA5E9', 7:'#DB2777', 8:'#65A30D', 9:'#C2410C', 10:'#4F46E5',
+            11:'#0F766E', 12:'#A16207', 13:'#9333EA', 14:'#0369A1', 15:'#BE185D',
+            16:'#4D7C0F'}.get(i, '#6B7280')
 
 lesson_css=[]
 for L in lessons:

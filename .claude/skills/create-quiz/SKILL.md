@@ -39,7 +39,8 @@ List media in the source folder (non-recursive): images (`.png/.jpg/.jpeg`) and 
 
 ## 3. Draft (one background agent per lesson)
 
-Launch one `general-purpose` agent per lesson, all in one message, `run_in_background: true`. Each prompt must be self-contained:
+Run ONE agent at a time: launch a `general-purpose` agent for a lesson, wait for its completion notification, then launch the next. Never launch agents in parallel, because parallel runs exhaust the usage limit, and failed image reads lead agents to write questions about frames they never saw. The per-lesson order is draft → verify → balance. Each prompt must be self-contained:
+- Read frames 2–3 per call and retry failed reads. Never write a question from a frame whose image wasn't actually seen.
 
 - Lesson id, name, frames folder, frame count, output file `WORK\lessons\L<NN>.json`.
 - Only read and write inside REPO.
@@ -53,12 +54,18 @@ Launch one `general-purpose` agent per lesson, all in one message, `run_in_backg
 
 ## 4. Verify (one background agent per lesson, after its draft lands)
 
-As each draft finishes, launch a separate `general-purpose` agent to check it adversarially. For every question it reads the `source` frame (and neighbouring frames if needed) and decides:
+When a lesson's draft finishes, launch (on its own) a separate `general-purpose` agent to check it adversarially. For every question it reads the `source` frame (and neighbouring frames if needed) and decides:
 - `confirmed`: the marked answer is clearly supported and no distractor is also true.
 - `refuted`: the marked answer is wrong or unsupported, or a distractor is also correct. It gives a fix.
 - `unclear`: the frames don't show enough to tell.
 
 It writes `WORK\verify\L<NN>.json` as `{"verdicts":[{"n":1,"verdict":"...","observed":"...","issue":"...","suggested_fix":"..."}]}` and fixes the lesson file in place: it applies fixes for `refuted` items where the frame supports a correct version, and drops the question otherwise. `unclear` items are dropped or rewritten to what the frame does show. It renumbers the questions and re-balances A–D afterwards. It replies with confirmed / fixed / dropped counts.
+
+## 4b. Balance answer lengths
+
+Drafters and checkers both tend to leave the correct option longer and more detailed than the distractors, which lets students guess by length. After a lesson passes its check, flag every question whose correct option is the longest AND more than 1.4× the average distractor length. Then launch a `general-purpose` agent to rebalance the flagged questions: trim the correct option (move detail into the rationale) and/or lengthen distractors with plausible detail that stays false per the frames. The meaning of the correct answer must not change. Aim for zero flags, with the correct option the single longest in roughly 20–30% of a lesson's questions AND the single shortest in roughly 20–30%. Don't overcorrect into the reverse cue, where the correct option is always the shortest.
+
+Also check answer POSITIONS: agents often "balance" A–D by cycling A-B-C-D in order, which makes the answer predictable in the markdown bank and whenever shuffling is off. Before building, re-randomize each lesson's correct_index with a seeded shuffle of a balanced position list, permuting options to match. Moving the correct option to a different position doesn't change any wording, so a script can do it.
 
 ## 5. Build
 
