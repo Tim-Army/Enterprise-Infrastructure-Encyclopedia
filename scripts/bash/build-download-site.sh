@@ -96,6 +96,9 @@ volume_title() {
     if [[ -f "$output/interactive/fortigate-operator-quiz.html" ]]; then
       echo "<li><a href=\"interactive/fortigate-operator-quiz.html\">FortiGate 7.6 Operator Practice Exam &mdash; interactive self-check</a> (companion to <a href=\"html/volume-019-fortinet-network-security/Enterprise-Infrastructure-Encyclopedia.html#c16\">Fortinet NSE, Chapter 16</a>)</li>"
     fi
+    if [[ -f "$output/interactive/fortigate-administrator-quiz.html" ]]; then
+      echo "<li><a href=\"interactive/fortigate-administrator-quiz.html\">FortiGate 7.6 Administrator (NSE 4) Study Quiz &mdash; interactive self-check</a> (companion to <a href=\"html/volume-019-fortinet-network-security/Enterprise-Infrastructure-Encyclopedia.html#c16\">Fortinet NSE, Chapter 16</a>)</li>"
+    fi
     echo "</ul>"
   fi
   echo "<h2>Volumes</h2>"

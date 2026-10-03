@@ -62,6 +62,12 @@ EXEMPT = {
         "16-fortigate-7-6-operator-practice-exam-and-self-check.md",
         "../../interactive/fortigate-operator-quiz.html",
     ),
+    # And for the FortiGate Administrator (NSE 4) study quiz beside it.
+    (
+        "volumes/volume-019-fortinet-network-security/chapters/"
+        "16-fortigate-7-6-operator-practice-exam-and-self-check.md",
+        "../../interactive/fortigate-administrator-quiz.html",
+    ),
 }
 
 FENCE = re.compile(r"^\s{0,3}(?:```|~~~)")

@@ -124,6 +124,15 @@ the same 216 items as the bank below, organized into the six practice
 sets, and is the recommended way to rehearse under answer-hidden
 conditions.
 
+For the next level up, the
+[FortiGate 7.6 Administrator (NSE 4) study quiz](../../interactive/fortigate-administrator-quiz.html)
+works the same way and also runs offline. Its 987 questions cover the
+16 lessons of Fortinet's free FortiGate 7.6 Administrator course, from
+system and network settings through IPsec VPN, SD-WAN, high
+availability, and FortiSASE. Each lesson has its own section, and each
+explanation gives the time in the course video that the question was
+written from.
+
 ### Practice question bank with answer key
 
 The full bank follows, grouped by practice set. Each item shows the
