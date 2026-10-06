@@ -100,6 +100,13 @@ A STIG's identity is its product, **version**, and **release**, written
 - The **benchmark date** in the release information marks when that release
   was published.
 
+DISA has started naming some *download packages* by date rather than by
+release. A package such as `U_FN_FortiGate_Firewall_Y26M10_STIG.zip` (year 2026,
+month 10) can bundle several STIGs, each still carrying its own
+`V<version>R<release>` inside: that one holds the FortiGate NDM STIG V1R6 and the
+FortiGate Firewall STIG V1R5. Record the release of each STIG, not just the
+package name.
+
 DISA publishes STIG updates on a quarterly cycle. The revision history document
 in each ZIP lists what changed, rule by rule. Read it before moving a system to
 a new release.

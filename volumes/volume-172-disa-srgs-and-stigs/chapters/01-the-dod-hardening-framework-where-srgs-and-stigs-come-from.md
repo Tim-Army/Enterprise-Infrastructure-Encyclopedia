@@ -129,13 +129,13 @@ configuration checklist. Chapter 08 places it alongside the technology STIGs.
 ## Implementation and Automation
 
 The content is distributed as ZIP files from the DoD Cyber Exchange STIG pages
-(historically `https://public.cyber.mil/stigs/`; confirm the current address,
-because DoD has moved this site before). Three downloads matter most:
+(`https://www.cyber.mil/stigs/downloads`; the files themselves are served from
+`dl.dod.cyber.mil`, and DoD has moved this site before, so confirm the address). Three downloads matter most:
 
 | Download | What it contains |
 | --- | --- |
 | **Individual STIG or SRG** | One product's ZIP: the XCCDF XML file, a PDF or text overview, and sometimes supplementary documents |
-| **STIG Library Compilation** | Every public STIG and SRG in one large ZIP, refreshed each quarterly release |
+| **STIG Library Compilation** | Every public STIG and SRG in one large ZIP (for example `U_SRG-STIG_Library_October_2026.zip`, about 375 MB), refreshed each quarterly release |
 | **SCAP benchmarks** | Automatable versions of selected STIGs for scanners such as the SCAP Compliance Checker (Chapter 04) |
 
 Unpacking a single STIG on a Linux workstation:
@@ -196,7 +196,7 @@ unzip -l <STIG_LIBRARY_COMPILATION>.zip | grep -i -E "windows|rhel|cisco" | head
 
 **References:**
 
-- DoD Cyber Exchange, STIGs and SRGs download pages (`public.cyber.mil/stigs`).
+- DoD Cyber Exchange, STIGs Document Library (`www.cyber.mil/stigs/downloads`).
 - DoDI 8500.01, *Cybersecurity*; DoDI 8510.01, *Risk Management Framework for
   DoD Systems*.
 - NIST SP 800-53 Rev. 5, *Security and Privacy Controls for Information Systems

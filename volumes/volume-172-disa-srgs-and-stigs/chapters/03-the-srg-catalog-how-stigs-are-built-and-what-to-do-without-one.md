@@ -13,25 +13,33 @@
 ## Theory and Architecture
 
 An SRG captures what DoD requires of a whole technology class. DISA maintains a
-set of them, and every product STIG is written against one or more. The exact
-list changes over time as DISA adds, merges, and retires SRGs, so treat the
-table below as orientation and confirm current names and releases in the SRG
-section of the DoD Cyber Exchange library.
+set of them, and every product STIG is written against one or more. The October
+2026 STIG Library Compilation contains these SRGs (DISA adds, merges, and retires
+SRGs over time, so confirm the current list in the library):
 
-| SRG (commonly used) | Governs | Example products with STIGs |
+| SRG | Governs | Example products |
 | --- | --- | --- |
 | **General Purpose Operating System (GPOS)** | Server and desktop operating systems | Windows, RHEL, Ubuntu, other Linux distributions |
 | **Network Device Management (NDM)** | The management plane of any network device | Routers, switches, firewalls, load balancers |
 | **Router** | Routing and forwarding functions | Router STIGs for major vendors |
+| **Layer 2 Switch** | Switching functions | Switch STIGs for major vendors |
 | **Firewall** | Traffic filtering functions | Firewall STIGs for major vendors |
 | **Application Layer Gateway (ALG)** | Proxies and application-aware inspection | Next-generation firewall and proxy STIGs |
 | **Intrusion Detection and Prevention Systems (IDPS)** | Network intrusion detection and prevention | IPS functions of security appliances |
-| **Virtual Private Network (VPN)** | VPN gateways and remote access | VPN STIGs for gateways and firewalls |
+| **Virtual Private Network (VPN)** | VPN gateways and remote access | VPN functions of gateways and firewalls |
+| **AAA Services** | Authentication, authorization, and accounting servers | RADIUS, TACACS+, and directory-backed authentication services |
+| **Central Log Server** | Systems that collect and protect logs centrally | Log management and SIEM platforms |
+| **Domain Name System (DNS)** | DNS servers | DNS server STIGs |
 | **Application Server** | Middleware that hosts applications | Java application servers, other middleware |
+| **Application Programming Interface (API)** | APIs exposed by applications and services | API gateways and service interfaces |
 | **Database** | Database management systems | Relational database STIGs |
 | **Web Server** | HTTP servers | Web server STIGs |
 | **Container Platform** | Container orchestration platforms | Kubernetes distribution STIGs |
-| **Cloud Computing** | Cloud service offerings and impact levels | Not configuration STIGs; see Chapter 08 |
+| **Virtual Machine Manager (VMM)** | Hypervisors | Hypervisor STIGs |
+| **Unified Endpoint Management (UEM)** | Endpoint management servers and their agents | Mobile and endpoint management products |
+| **Enterprise Voice, Video, and Messaging (EVVM)** | Session managers, endpoints, and policy for voice and video | Unified communications products |
+| **Mainframe Product** | Software running on mainframes | Mainframe product STIGs |
+| **Cloud Computing** | Mission owner networks and operating systems in DoD cloud | Not product STIGs; see Chapter 08 |
 
 Alongside the SRGs, DISA publishes a few **cross-cutting STIGs** that are not
 tied to a single product. The most important is the **Application Security and

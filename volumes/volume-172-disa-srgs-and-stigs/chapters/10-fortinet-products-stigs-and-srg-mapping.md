@@ -18,15 +18,20 @@ together as the **Security Fabric**. DISA STIG coverage is far narrower than the
 portfolio. At the time of writing, DISA has published STIGs for **FortiGate
 only**:
 
-| STIG | Latest release found | Rules | Covers |
+| STIG | Current release (October 2026) | Rules | Covers |
 | --- | --- | --- | --- |
-| **Fortinet FortiGate Firewall NDM STIG** | V1R5, November 2025 | 60 (9 CAT I, 51 CAT II, 0 CAT III) | The FortiGate management plane: administrators, authentication, cryptography, sessions, auditing, logging, and software currency |
-| **Fortinet FortiGate Firewall STIG** | V1R4, November 2025 | 29 (3 CAT I, 24 CAT II, 2 CAT III) | The FortiGate traffic-filtering function: policy filtering, DoS protection, traffic logging, and log protection |
+| **Fortinet FortiGate Firewall NDM STIG** | V1R6, benchmark date 30 Sep 2026 | 60 (9 CAT I, 51 CAT II, 0 CAT III) | The FortiGate management plane: administrators, authentication, cryptography, sessions, auditing, logging, and software currency |
+| **Fortinet FortiGate Firewall STIG** | V1R5, benchmark date 30 Sep 2026 | 29 (3 CAT I, 24 CAT II, 2 CAT III) | The FortiGate traffic-filtering function: policy filtering, DoS protection, traffic logging, and log protection |
 
-These figures come from the most recent releases indexed when this chapter was
-written. STIGs update quarterly, so confirm the current release, rule count, and
-rule text on the DoD Cyber Exchange before assessing. NDM rules use STIG IDs
-beginning `FGFW-ND-`.
+These figures come from the October 2026 STIG Library Compilation, in which DISA
+ships both STIGs in a single package, `U_FN_FortiGate_Firewall_Y26M10_STIG.zip`,
+together with an overview, a revision history, and the original release memo.
+NDM rules use STIG IDs beginning `FGFW-ND-`, and Firewall rules use IDs beginning
+`FNFG-FW-`. STIGs update quarterly, so confirm the current release, rule count,
+and rule text on the DoD Cyber Exchange before assessing. Recent releases also
+say "DoW" (Department of War) where earlier releases said "DoD," for example in
+the Standard Mandatory DoW Notice and Consent Banner; the requirement itself is
+unchanged.
 
 Every other Fortinet product (FortiManager, FortiAnalyzer, FortiSwitch, FortiAP,
 FortiWeb, FortiMail, FortiClient, and the rest) has **no published STIG**. As
@@ -59,6 +64,11 @@ privileged functions; logons; administrator session start and end times).
 ### What the FortiGate Firewall STIG requires
 
 The Firewall STIG implements the Firewall SRG for FortiOS. Its themes:
+
+Its three CAT I rules require filters that use packet headers and attributes
+(source and destination addresses and ports), protection of the traffic log from
+unauthorized deletion, and filters that prevent or limit the effects of
+commonly known denial-of-service attacks. The full set of themes:
 
 | Theme | Typical requirements |
 | --- | --- |
@@ -98,9 +108,9 @@ or hypervisor they run on.
 | --- | --- | --- |
 | **FortiGate** (hardware and VM) | Next-generation firewall | FortiGate NDM and Firewall STIGs; IDPS, VPN, ALG, and Router SRGs for enabled functions |
 | **FortiManager** | Central management of FortiGates and other devices | NDM SRG; it controls the configuration of every managed device, so treat its access control and auditing as high impact |
-| **FortiAnalyzer** | Log collection, analytics, and reporting | NDM SRG; it is the central log server the FortiGate STIGs depend on, so its log protection, retention, and access control matter |
-| **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | NDM SRG plus DISA's Layer 2 switch requirements, as implemented in vendor switch STIGs |
-| **FortiAP** | Wireless access points, usually managed by FortiGate | NDM SRG plus DISA's wireless (WLAN) requirements; check whether wireless is permitted in the environment at all |
+| **FortiAnalyzer** | Log collection, analytics, and reporting | Central Log Server SRG and NDM SRG; it is the central log server the FortiGate STIGs depend on, so its log protection, retention, and access control matter |
+| **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | Layer 2 Switch SRG and NDM SRG; when FortiGate manages the switch through FortiLink, collect the evidence on the FortiGate |
+| **FortiAP** | Wireless access points, usually managed by FortiGate | DISA's generic Network WLAN STIGs (controller management, controller platform, and access point) plus the NDM SRG; check whether wireless is permitted in the environment at all |
 | **FortiExtender** | Cellular WAN connectivity | NDM SRG; cellular WAN use is subject to local DoD connection approval |
 | **FortiWeb** | Web application firewall | ALG SRG and NDM SRG |
 | **FortiMail** | Email security gateway | ALG SRG and NDM SRG |
@@ -108,12 +118,13 @@ or hypervisor they run on.
 | **FortiADC** | Application delivery controller and load balancer | ALG SRG and NDM SRG, plus the VPN SRG if it terminates VPN or TLS for remote users |
 | **FortiDDoS** | DDoS mitigation | NDM SRG; its filtering role relates to the Firewall SRG's DoS requirements |
 | **FortiSandbox** | Malware detonation and analysis | NDM SRG; protect its threat data and integrations |
-| **FortiAuthenticator** | Authentication, RADIUS and LDAP services, SSO, certificates | NDM SRG; because other devices depend on it for administrator authentication, its availability and logging carry extra weight |
+| **FortiVoice** | Business phone system and unified communications | Enterprise Voice, Video, and Messaging (EVVM) SRGs (session management, endpoint, and policy) and the NDM SRG |
+| **FortiAuthenticator** | Authentication, RADIUS and LDAP services, SSO, certificates | AAA Services SRG and NDM SRG; because other devices depend on it for administrator authentication, its availability and logging carry extra weight |
 | **FortiToken** | Hardware and software MFA tokens | No separate SRG; assessed as part of the authentication design of the systems that use it |
 | **FortiPAM** | Privileged access management | NDM SRG and the Application Security and Development requirements that apply to the application |
 | **FortiNAC** | Network access control | NDM SRG plus the requirements for the network access function; DISA publishes STIGs for other NAC products that show the expected pattern |
-| **FortiSIEM** | Security information and event management | NDM SRG for the appliance interface, the operating system STIG or GPOS SRG for the underlying host, and the Application Server SRG where applicable |
-| **FortiClient** and **FortiClient EMS** | Endpoint VPN and protection agent; its management server | Remote Endpoint STIG and the host operating system STIG for endpoints; Windows Server and Application Server requirements for the EMS server |
+| **FortiSIEM** | Security information and event management | Central Log Server SRG, the NDM SRG for the appliance interface, and the operating system STIG or GPOS SRG for the underlying host |
+| **FortiClient** and **FortiClient EMS** | Endpoint VPN and protection agent; its management server | The host operating system STIG for endpoints, with the VPN SRG for the client's remote-access role; the Windows Server STIG for the EMS server, with the Unified Endpoint Management (UEM) Server and Agent SRGs as the closest match for central endpoint management |
 | **FortiEDR** | Endpoint detection and response | The host operating system STIG for agents; NDM and application requirements for the management console |
 | **FortiSASE** | Cloud-delivered security service | The Cloud Computing SRG; confirm the offering's authorization status and impact level before use (Chapter 08) |
 | **FortiGate VM in public cloud** | FortiGate on AWS, Azure, or another cloud | The FortiGate STIGs, plus the Cloud Computing SRG obligations of the hosting environment |
@@ -193,6 +204,7 @@ config user ldap
     edit "<LDAP_SERVER_NAME>"
         set server "<LDAP_SERVER_FQDN>"
         set secure ldaps
+        set ca-cert "<CA_CERTIFICATE_NAME>"
         set port 636
     next
 end
@@ -264,11 +276,11 @@ and the version listed for the device on the DoDIN APL.
 **References:**
 
 - DISA Fortinet FortiGate Firewall NDM STIG and Fortinet FortiGate Firewall
-  STIG (DoD Cyber Exchange). Third-party STIG viewers such as stigviewer.com and
-  cyber.trackr.live index the same releases, but the Cyber Exchange is the
-  authoritative source.
-- DISA Network Device Management, Firewall, IDPS, VPN, ALG, and Router SRGs;
-  the Remote Endpoint STIG; the Cloud Computing SRG.
+  STIG, distributed together as `U_FN_FortiGate_Firewall_Y26M10_STIG.zip` in the
+  October 2026 STIG Library Compilation (DoD Cyber Exchange).
+- DISA Network Device Management, Firewall, IDPS, VPN, ALG, Router, Layer 2
+  Switch, AAA Services, Central Log Server, UEM, and EVVM SRGs; the Network
+  WLAN STIGs; the Cloud Computing SRG.
 - DoD Information Network (DoDIN) Approved Products List.
 - Fortinet FortiOS documentation, including the CLI reference and FIPS-CC mode
   guidance, and Fortinet's product lifecycle information.
