@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -5957,6 +5957,9 @@ volumes:
       - id: 09
         title: "Chapter 09: Running a STIG Compliance Program"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/09-running-a-stig-compliance-program.md
+      - id: 10
+        title: "Chapter 10: Fortinet Products — STIGs and SRG Mapping"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/10-fortinet-products-stigs-and-srg-mapping.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear

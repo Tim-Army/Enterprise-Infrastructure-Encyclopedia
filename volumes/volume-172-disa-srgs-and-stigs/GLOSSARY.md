@@ -14,8 +14,10 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
 - **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
 - **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
+- **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.
 - **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
 - **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
+- **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
@@ -26,6 +28,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **OVAL (Open Vulnerability and Assessment Language)** — the SCAP language that expresses checks a scanner can execute.
 - **POA&M (Plan of Action and Milestones)** — the record of each unresolved weakness, its owner, resources, milestones, and scheduled completion date.
 - **PowerSTIG** — an open-source Microsoft project that applies and monitors STIG settings with PowerShell Desired State Configuration.
+- **PPSM CAL (Ports, Protocols, and Services Management Category Assurance List)** — the DoD list that assigns ports, protocols, and services to risk categories and governs which may cross DoD network boundaries.
 - **Release / version (V#R#)** — a STIG's maintenance update number and major revision number, written together as V2R1.
 - **Rule ID** — a rule's `SV-...r..._rule` identifier, whose revision suffix changes when the rule text changes.
 - **SCAP (Security Content Automation Protocol)** — the NIST suite of specifications, including XCCDF and OVAL, for automated security checks.

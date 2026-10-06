@@ -3,8 +3,9 @@
 > A practitioner's guide to **DISA Security Requirements Guides (SRGs)** and
 > **Security Technical Implementation Guides (STIGs)**: where they come from,
 > how the content is structured, how to assess and harden Linux, Windows,
-> network devices, applications, and containers against them, and how to run a
-> compliance program that keeps systems compliant as STIGs change every quarter.
+> network devices, applications, containers, and the Fortinet portfolio against
+> them, and how to run a compliance program that keeps systems compliant as STIGs
+> change every quarter.
 
 ## Overview
 
@@ -50,6 +51,9 @@ finally the program:
   containers, and the Cloud Computing SRG.
 - **Chapter 09** runs the program: RMF, finding dispositions, POA&Ms,
   continuous monitoring, metrics, and STIGs compared with CIS Benchmarks.
+- **Chapter 10** covers the Fortinet portfolio: the two FortiGate STIGs and
+  how to meet them on FortiOS, and the SRGs that apply to every other Fortinet
+  product.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -68,10 +72,11 @@ except that this volume has no hands-on labs (see
 7. [Network Device STIGs — Management, Routing, and Filtering](chapters/07-network-device-stigs-management-routing-and-filtering.md) — NDM and traffic-plane STIGs, common requirements, and manual assessment with evidence.
 8. [Applications, Databases, Web Servers, Containers, and Cloud](chapters/08-applications-databases-web-servers-containers-and-cloud.md) — the ASD STIG, instance and object STIGs, containers and Iron Bank, and Cloud Computing SRG impact levels.
 9. [Running a STIG Compliance Program](chapters/09-running-a-stig-compliance-program.md) — RMF, dispositions, POA&Ms, continuous monitoring, metrics, and STIGs versus CIS Benchmarks.
+10. [Fortinet Products — STIGs and SRG Mapping](chapters/10-fortinet-products-stigs-and-srg-mapping.md) — the FortiGate NDM and Firewall STIGs on FortiOS, uncovered FortiGate functions, and SRG mapping for every other Fortinet product.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all nine chapters.
+- [Index](INDEX.md) — alphabetized topical index across all ten chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

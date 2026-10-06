@@ -41,7 +41,9 @@ Firewall or ALG STIGs, and IDPS and VPN STIGs when those features are used.
 DISA and vendors publish this content for the major platforms, including Cisco
 IOS XE and NX-OS, Juniper Junos, Palo Alto Networks, Fortinet FortiGate, F5
 BIG-IP, and others. Check the library for the exact STIG names and releases for
-your platform and software version.
+your platform and software version. Chapter 10 covers the Fortinet portfolio in
+detail, including the FortiGate STIGs and the SRGs for Fortinet products that
+have no STIG.
 
 ### What nearly every NDM STIG requires
 
