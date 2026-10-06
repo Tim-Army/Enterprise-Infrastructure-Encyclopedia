@@ -1,0 +1,126 @@
+# Volume CLXXII — DISA SRGs and STIGs
+
+> A practitioner's guide to **DISA Security Requirements Guides (SRGs)** and
+> **Security Technical Implementation Guides (STIGs)**: where they come from,
+> how the content is structured, how to assess and harden Linux, Windows,
+> network devices, applications, and containers against them, and how to run a
+> compliance program that keeps systems compliant as STIGs change every quarter.
+
+## Overview
+
+Volume CLXXII is a **vendor-neutral standards volume** on the configuration
+baselines the U.S. Department of Defense requires for its systems. **SRGs**
+set requirements for a class of technology, such as general purpose operating
+systems or network device management. **STIGs** implement those requirements
+for specific products, with exact check and fix procedures. Both are published
+by the Defense Information Systems Agency (DISA), and DoD policy makes them
+mandatory. Outside DoD they are widely used as a detailed, auditable hardening
+reference.
+
+The volume's central idea is the **requirements chain**: every STIG rule traces
+back through an SRG requirement and a Control Correlation Identifier (CCI) to a
+NIST SP 800-53 control. That chain is what turns a configuration setting into
+evidence for a Risk Management Framework authorization, and it runs through
+every chapter.
+
+STIG material appears throughout the encyclopedia as hardening advice inside
+product volumes. This volume explains the framework itself, so those product
+chapters can be read in context.
+
+Chapters move from the framework to the content, the tools, the platforms, and
+finally the program:
+
+- **Chapter 01** explains what SRGs and STIGs are, the DoD policies behind
+  them, and the chain from 800-53 to STIG rule.
+- **Chapter 02** takes a STIG apart: XCCDF structure, the five rule
+  identifiers, CAT I/II/III severity, and versioning.
+- **Chapter 03** surveys the SRG catalog, explains how STIGs are produced
+  (including vendor-developed STIGs), and shows how to assess a product that
+  has no STIG.
+- **Chapter 04** covers the tools: STIG Viewer and checklists (CKL and CKLB),
+  the SCAP Compliance Checker, OpenSCAP, Evaluate-STIG, STIG Manager, and
+  eMASS.
+- **Chapter 05** hardens Linux to the STIG, with RHEL 9 as the main example and
+  the Ubuntu Security Guide for Ubuntu.
+- **Chapter 06** hardens Windows to the STIG with DISA's GPO package, LGPO,
+  PowerSTIG, and SCC.
+- **Chapter 07** covers network device STIGs: the NDM and traffic-plane split,
+  common requirements, and manual assessment.
+- **Chapter 08** moves up the stack to applications, databases, web servers,
+  containers, and the Cloud Computing SRG.
+- **Chapter 09** runs the program: RMF, finding dispositions, POA&Ms,
+  continuous monitoring, metrics, and STIGs compared with CIS Benchmarks.
+
+Every chapter follows the standard structure defined in
+[templates/chapter.md](../../templates/chapter.md) and enforced by
+[EDITORIAL_STANDARDS.md](../../EDITORIAL_STANDARDS.md), with knowledge checks,
+except that this volume has no hands-on labs (see
+[Lab coverage](#lab-coverage)).
+
+## Chapters
+
+1. [The DoD Hardening Framework — Where SRGs and STIGs Come From](chapters/01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md) — SRG versus STIG, DISA, DoD policy, the requirements chain, and the Cloud Computing SRG.
+2. [Anatomy of a STIG — XCCDF, Identifiers, Severity, and Versioning](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md) — XCCDF structure, Group/Rule/STIG/SRG IDs and CCIs, CAT I/II/III, releases, and manual versus SCAP content.
+3. [The SRG Catalog, How STIGs Are Built, and What to Do Without One](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md) — technology SRGs, multi-function devices, vendor STIGs, the quarterly cycle, and SRG-based assessment.
+4. [STIG Tooling — STIG Viewer, Checklists, and SCAP Scanning](chapters/04-stig-tooling-stig-viewer-checklists-and-scap-scanning.md) — finding statuses, CKL and CKLB, SCC, OpenSCAP, DISA versus ComplianceAsCode content, and tools at scale.
+5. [Hardening Linux to the STIG](chapters/05-hardening-linux-to-the-stig.md) — RHEL 9 STIG coverage, install-time hardening, Ansible remediation, and the Ubuntu Security Guide.
+6. [Hardening Windows to the STIG](chapters/06-hardening-windows-to-the-stig.md) — the Windows STIG family, STIG IDs, DISA GPOs with GPMC and LGPO, PowerSTIG, and SCC.
+7. [Network Device STIGs — Management, Routing, and Filtering](chapters/07-network-device-stigs-management-routing-and-filtering.md) — NDM and traffic-plane STIGs, common requirements, and manual assessment with evidence.
+8. [Applications, Databases, Web Servers, Containers, and Cloud](chapters/08-applications-databases-web-servers-containers-and-cloud.md) — the ASD STIG, instance and object STIGs, containers and Iron Bank, and Cloud Computing SRG impact levels.
+9. [Running a STIG Compliance Program](chapters/09-running-a-stig-compliance-program.md) — RMF, dispositions, POA&Ms, continuous monitoring, metrics, and STIGs versus CIS Benchmarks.
+
+## Volume resources
+
+- [Index](INDEX.md) — alphabetized topical index across all nine chapters.
+- [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
+
+## Related volumes
+
+This is a vendor-neutral standards volume, not a certification-tracks volume,
+and it is not mapped to a single exam blueprint. It connects to the product
+volumes where STIGs are applied:
+[Red Hat Enterprise Linux 10 (XIV)](../volume-014-red-hat-enterprise-linux-10/README.md),
+[Ubuntu Server and Cloud 26.04 LTS (XXI)](../volume-021-ubuntu-server-cloud-26-04-lts/README.md),
+[Windows Server 2025 and Active Directory (XXXVI)](../volume-036-windows-server-2025-active-directory/README.md),
+[Fortinet Network Security (XIX)](../volume-019-fortinet-network-security/README.md),
+[Palo Alto Networks Security (XVI)](../volume-016-palo-alto-networks-security/README.md),
+and [Containers and Platform Engineering (VIII)](../volume-008-containers-platform-engineering/README.md).
+For the wider security program, see
+[Enterprise Cybersecurity (X)](../volume-010-enterprise-cybersecurity/README.md)
+and [Public Sector Data Governance (LXIII)](../volume-063-public-sector-data-governance/README.md).
+
+## Lab coverage
+
+This volume has **no hands-on labs**, by design. It is a reference to the
+SRG and STIG framework, content, tools, and program. Each chapter keeps its
+implementation examples (commands, scripts, and configuration snippets) and its
+knowledge checks, but omits the Hands-On Lab and Lab Verification sections of
+the standard chapter template. For hands-on practice applying STIG settings,
+see the hardening labs in the product volumes listed under
+[Related volumes](#related-volumes).
+
+## Software and platform baseline
+
+This volume references the dated baseline recorded in
+[SOFTWARE_VERSIONS.md](../../SOFTWARE_VERSIONS.md): **DISA STIG and SRG content
+as of the 2026-10 quarterly release**, with STIG Viewer 3.x, the SCAP
+Compliance Checker 5.x, OpenSCAP 1.3 or later, and ComplianceAsCode content
+current in RHEL 9. STIGs change every quarter, and identifiers, values, and
+tool versions change with them. Confirm the current release of any STIG on the
+DoD Cyber Exchange before assessing against it, and update that file, not
+individual chapters, when the baseline changes.
+
+## Building and validating this volume
+
+From the repository root, after completing [SETUP.md](../../SETUP.md):
+
+```bash
+scripts/bash/validate.sh
+```
+
+```bash
+scripts/bash/build-book.sh --format all --volume volume-172-disa-srgs-and-stigs
+```
+
+See the root [README.md](../../README.md#validation) for the complete
+validation and multi-format build reference.

@@ -5923,6 +5923,40 @@ volumes:
       - id: 07
         title: "Chapter 07: Operating Alpine — Updates, Storage Growth, Hardening, and Keeping Current"
         path: volumes/volume-171-alpine-linux/chapters/07-operating-alpine-updates-storage-growth-hardening-and-keeping-current.md
+  - id: volume-172
+    number: "CLXXII"
+    slug: volume-172-disa-srgs-and-stigs
+    title: "DISA SRGs and STIGs"
+    chapter_count: 9
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The DoD Hardening Framework — Where SRGs and STIGs Come From"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md
+      - id: 02
+        title: "Chapter 02: Anatomy of a STIG — XCCDF, Identifiers, Severity, and Versioning"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md
+      - id: 03
+        title: "Chapter 03: The SRG Catalog, How STIGs Are Built, and What to Do Without One"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md
+      - id: 04
+        title: "Chapter 04: STIG Tooling — STIG Viewer, Checklists, and SCAP Scanning"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/04-stig-tooling-stig-viewer-checklists-and-scap-scanning.md
+      - id: 05
+        title: "Chapter 05: Hardening Linux to the STIG"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/05-hardening-linux-to-the-stig.md
+      - id: 06
+        title: "Chapter 06: Hardening Windows to the STIG"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/06-hardening-windows-to-the-stig.md
+      - id: 07
+        title: "Chapter 07: Network Device STIGs — Management, Routing, and Filtering"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/07-network-device-stigs-management-routing-and-filtering.md
+      - id: 08
+        title: "Chapter 08: Applications, Databases, Web Servers, Containers, and Cloud"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/08-applications-databases-web-servers-containers-and-cloud.md
+      - id: 09
+        title: "Chapter 09: Running a STIG Compliance Program"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/09-running-a-stig-compliance-program.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear

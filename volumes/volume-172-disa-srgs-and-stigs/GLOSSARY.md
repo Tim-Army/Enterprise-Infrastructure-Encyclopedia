@@ -1,0 +1,44 @@
+# Volume CLXXII Glossary
+
+Definitions for terms introduced in **Volume CLXXII — DISA SRGs and STIGs**.
+See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
+
+- **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
+- **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
+- **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
+- **CAT I / CAT II / CAT III** — DoD severity categories for STIG findings, equivalent to XCCDF severity high, medium, and low.
+- **CCI (Control Correlation Identifier)** — a DISA-maintained identifier for a single, testable statement derived from a NIST SP 800-53 control; links STIG rules to 800-53.
+- **Checklist** — a copy of one or more STIGs for a specific asset, recording a status, evidence, and comments for every rule.
+- **CKL / CKLB** — checklist file formats: CKL is XML (STIG Viewer 2.x), CKLB is JSON (STIG Viewer 3.x).
+- **Cloud Computing SRG** — the DISA SRG that sets requirements for cloud service offerings hosting DoD data and defines impact levels IL2, IL4, IL5, and IL6.
+- **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
+- **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
+- **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
+- **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
+- **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
+- **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
+- **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
+- **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
+- **LGPO** — Microsoft's Local Group Policy Object utility, used to apply GPO backups to the local policy of a standalone Windows system.
+- **NDM (Network Device Management)** — the SRG, and the matching vendor STIGs, covering the management plane of network devices.
+- **Not a Finding / Open / Not Applicable / Not Reviewed** — the four statuses of a rule in a STIG checklist.
+- **OpenSCAP (`oscap`)** — the open-source SCAP scanner shipped with RHEL and other Linux distributions.
+- **OVAL (Open Vulnerability and Assessment Language)** — the SCAP language that expresses checks a scanner can execute.
+- **POA&M (Plan of Action and Milestones)** — the record of each unresolved weakness, its owner, resources, milestones, and scheduled completion date.
+- **PowerSTIG** — an open-source Microsoft project that applies and monitors STIG settings with PowerShell Desired State Configuration.
+- **Release / version (V#R#)** — a STIG's maintenance update number and major revision number, written together as V2R1.
+- **Rule ID** — a rule's `SV-...r..._rule` identifier, whose revision suffix changes when the rule text changes.
+- **SCAP (Security Content Automation Protocol)** — the NIST suite of specifications, including XCCDF and OVAL, for automated security checks.
+- **SCAP benchmark** — the automatable version of a STIG, as a SCAP data stream with OVAL checks, covering only rules that can be automated.
+- **SCAP Compliance Checker (SCC)** — the NIWC Atlantic-developed scanner that runs DISA SCAP benchmarks.
+- **Severity override** — a change to a finding's severity on a specific asset, allowed only with a documented justification such as a mitigation.
+- **SRG (Security Requirements Guide)** — a DISA document of product-neutral security requirements for a class of technology.
+- **SRG ID** — the `SRG-...` identifier of the SRG requirement a STIG rule implements.
+- **STIG (Security Technical Implementation Guide)** — a DISA configuration standard for a specific product, with check and fix procedures for each rule.
+- **STIG ID** — a rule's human-readable product number (for example the `RHEL-09-` or `WN22-` forms), stored in the rule's `version` element.
+- **STIG Library Compilation** — a single ZIP of all public STIGs and SRGs, refreshed with each quarterly release.
+- **STIG Manager** — an open-source web application from NUWC Division Newport for managing STIG assessments across many assets.
+- **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
+- **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
+- **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
+- **XCCDF (Extensible Configuration Checklist Description Format)** — the NIST XML format in which STIGs and SCAP benchmarks are written.
