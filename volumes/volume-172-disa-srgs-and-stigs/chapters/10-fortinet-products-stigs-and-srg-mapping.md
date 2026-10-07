@@ -111,7 +111,7 @@ or hypervisor they run on.
 | **FortiAnalyzer** | Log collection, analytics, and reporting | Central Log Server SRG and NDM SRG; it is the central log server the FortiGate STIGs depend on, so its log protection, retention, and access control matter. Chapter 12 maps every FortiAnalyzer feature to its release, SRG requirement, and configuration command |
 | **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | Layer 2 Switch SRG and NDM SRG; when FortiGate manages the switch through FortiLink, collect the evidence on the FortiGate. Chapter 11 maps every FortiSwitch feature to its supported releases and SRG requirement |
 | **FortiAP** | Wireless access points, usually managed by FortiGate | DISA's generic Network WLAN STIGs (controller management, controller platform, and access point) plus the NDM SRG; check whether wireless is permitted in the environment at all. Chapter 14 maps every FortiAP feature to its release, WLAN STIG or SRG requirement, and configuration command |
-| **FortiExtender** | Cellular WAN connectivity | NDM SRG; cellular WAN use is subject to local DoD connection approval |
+| **FortiExtender** | Cellular WAN connectivity | NDM SRG; cellular WAN use is subject to local DoD connection approval. Chapter 15 maps every FortiExtender feature to its release, SRG requirement, and configuration command |
 | **FortiWeb** | Web application firewall | ALG SRG and NDM SRG |
 | **FortiMail** | Email security gateway | ALG SRG and NDM SRG |
 | **FortiProxy** | Secure web gateway | ALG SRG and NDM SRG |

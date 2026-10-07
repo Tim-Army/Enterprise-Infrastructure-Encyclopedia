@@ -4934,7 +4934,19 @@
     "SCEP",
     "USCYBERCOM",
     "WIDS",
-    "wlanfw"
+    "wlanfw",
+    "dataplan",
+    "FEXT",
+    "dhcpserver",
+    "VWAN",
+    "hmon",
+    "hchk",
+    "keylife",
+    "keylifeseconds",
+    "dhcprelay",
+    "lanext",
+    "NMEA",
+    "debuginfo"
   ],
   "ignorePaths": [
     "node_modules/**",

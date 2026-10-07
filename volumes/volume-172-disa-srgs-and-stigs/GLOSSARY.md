@@ -27,6 +27,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
+- **LAN extension** — a FortiExtender mode in which the unit builds IPsec tunnels back to its FortiGate and carries a remote LAN over VXLAN inside them, so the FortiGate secures the remote site.
 - **LGPO** — Microsoft's Local Group Policy Object utility, used to apply GPO backups to the local policy of a standalone Windows system.
 - **NDM (Network Device Management)** — the SRG, and the matching vendor STIGs, covering the management plane of network devices.
 - **Not a Finding / Open / Not Applicable / Not Reviewed** — the four statuses of a rule in a STIG checklist.
@@ -50,6 +51,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
+- **WAN extension** — a FortiExtender mode in which the unit acts as a cellular WAN interface of its FortiGate, so the FortiGate's firewall policies filter traffic on the cellular link.
 - **WIDS (Wireless Intrusion Detection System)** — FortiAP radio scanning, configured in FortiGate WIDS profiles, that detects rogue access points and wireless attacks.
 - **Workflow mode** — a FortiManager workspace mode in which configuration changes are made in sessions and must be approved before they are installed.
 - **XCCDF (Extensible Configuration Checklist Description Format)** — the NIST XML format in which STIGs and SCAP benchmarks are written.
