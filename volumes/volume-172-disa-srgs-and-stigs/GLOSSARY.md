@@ -8,6 +8,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
 - **CAT I / CAT II / CAT III** — DoD severity categories for STIG findings, equivalent to XCCDF severity high, medium, and low.
 - **CCI (Control Correlation Identifier)** — a DISA-maintained identifier for a single, testable statement derived from a NIST SP 800-53 control; links STIG rules to 800-53.
+- **Central Log Server SRG** — the DISA SRG for systems that aggregate, store, analyze, and report on log records from other devices; FortiAnalyzer, which has no STIG, is assessed against it.
 - **Checklist** — a copy of one or more STIGs for a specific asset, recording a status, evidence, and comments for every rule.
 - **CKL / CKLB** — checklist file formats: CKL is XML (STIG Viewer 2.x), CKLB is JSON (STIG Viewer 3.x).
 - **Cloud Computing SRG** — the DISA SRG that sets requirements for cloud service offerings hosting DoD data and defines impact levels IL2, IL4, IL5, and IL6.
@@ -18,6 +19,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
 - **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
+- **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.

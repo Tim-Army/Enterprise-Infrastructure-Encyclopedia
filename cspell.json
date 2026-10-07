@@ -4880,7 +4880,22 @@
     "automanager",
     "taildrop",
     "diskfull",
-    "ntpserver"
+    "ntpserver",
+    "CTAP",
+    "DRCC",
+    "IMDS",
+    "ISSM",
+    "OFTP",
+    "Sankey",
+    "attackcontext",
+    "crptpasswd",
+    "datamask",
+    "locallog",
+    "ntpv",
+    "profileid",
+    "ratelimits",
+    "socaas",
+    "unreg"
   ],
   "ignorePaths": [
     "node_modules/**",
