@@ -6,6 +6,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
+- **CAPWAP (Control and Provisioning of Wireless Access Points)** — the protocol between a FortiAP and its wireless controller; its control channel is always DTLS-encrypted, and its data channel can be clear text, DTLS, or IPsec.
 - **CAT I / CAT II / CAT III** — DoD severity categories for STIG findings, equivalent to XCCDF severity high, medium, and low.
 - **CCI (Control Correlation Identifier)** — a DISA-maintained identifier for a single, testable statement derived from a NIST SP 800-53 control; links STIG rules to 800-53.
 - **Central Log Server SRG** — the DISA SRG for systems that aggregate, store, analyze, and report on log records from other devices; FortiAnalyzer, which has no STIG, is assessed against it.
@@ -49,5 +50,6 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
+- **WIDS (Wireless Intrusion Detection System)** — FortiAP radio scanning, configured in FortiGate WIDS profiles, that detects rogue access points and wireless attacks.
 - **Workflow mode** — a FortiManager workspace mode in which configuration changes are made in sessions and must be approved before they are installed.
 - **XCCDF (Extensible Configuration Checklist Description Format)** — the NIST XML format in which STIGs and SCAP benchmarks are written.

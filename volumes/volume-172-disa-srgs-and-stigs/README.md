@@ -61,6 +61,9 @@ finally the program:
 - **Chapter 13** maps every FortiManager feature to its release, the NDM SRG
   requirement it meets, and the command that meets it, with emphasis on access
   control, auditing, and configuration-change control.
+- **Chapter 14** maps every FortiAP feature to its release, the Network WLAN
+  STIG or NDM SRG requirement it meets, and the FortiGate wireless-controller
+  or FortiAP command that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -83,10 +86,11 @@ except that this volume has no hands-on labs (see
 11. [FortiSwitch Feature, Version, and SRG Map](chapters/11-fortiswitch-feature-version-and-srg-map.md) — all 235 FortiSwitchOS 8.0.0 features with the releases that list them and the Layer 2 Switch, NDM, Router, or AAA Services SRG requirement each maps to.
 12. [FortiAnalyzer Feature, Version, and SRG Map](chapters/12-fortianalyzer-feature-version-and-srg-map.md) — 349 FortiAnalyzer features (53 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the Central Log Server or NDM SRG requirement it maps to, and the command that meets it.
 13. [FortiManager Feature, Version, and SRG Map](chapters/13-fortimanager-feature-version-and-srg-map.md) — 487 FortiManager features (52 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the NDM SRG requirement it maps to, and the command that meets it.
+14. [FortiAP Feature, Version, and SRG Map](chapters/14-fortiap-feature-version-and-srg-map.md) — 186 FortiAP features (39 core platform features and every feature in the FortiAP 7.0.0 to 8.0.0 release notes) with the release that introduced each, the Network WLAN STIG or NDM SRG requirement it maps to, and the FortiGate or FortiAP command that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all thirteen chapters.
+- [Index](INDEX.md) — alphabetized topical index across all fourteen chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes
