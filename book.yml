@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 10
+    chapter_count: 11
     build_eligible: true
     chapters:
       - id: 01
@@ -5960,6 +5960,9 @@ volumes:
       - id: 10
         title: "Chapter 10: Fortinet Products — STIGs and SRG Mapping"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/10-fortinet-products-stigs-and-srg-mapping.md
+      - id: 11
+        title: "Chapter 11: FortiSwitch Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

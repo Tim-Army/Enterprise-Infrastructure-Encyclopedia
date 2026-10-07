@@ -18,6 +18,8 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
 - **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
+- **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
+- **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.

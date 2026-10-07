@@ -109,7 +109,7 @@ or hypervisor they run on.
 | **FortiGate** (hardware and VM) | Next-generation firewall | FortiGate NDM and Firewall STIGs; IDPS, VPN, ALG, and Router SRGs for enabled functions |
 | **FortiManager** | Central management of FortiGates and other devices | NDM SRG; it controls the configuration of every managed device, so treat its access control and auditing as high impact |
 | **FortiAnalyzer** | Log collection, analytics, and reporting | Central Log Server SRG and NDM SRG; it is the central log server the FortiGate STIGs depend on, so its log protection, retention, and access control matter |
-| **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | Layer 2 Switch SRG and NDM SRG; when FortiGate manages the switch through FortiLink, collect the evidence on the FortiGate |
+| **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | Layer 2 Switch SRG and NDM SRG; when FortiGate manages the switch through FortiLink, collect the evidence on the FortiGate. Chapter 11 maps every FortiSwitch feature to its supported releases and SRG requirement |
 | **FortiAP** | Wireless access points, usually managed by FortiGate | DISA's generic Network WLAN STIGs (controller management, controller platform, and access point) plus the NDM SRG; check whether wireless is permitted in the environment at all |
 | **FortiExtender** | Cellular WAN connectivity | NDM SRG; cellular WAN use is subject to local DoD connection approval |
 | **FortiWeb** | Web application firewall | ALG SRG and NDM SRG |

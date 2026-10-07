@@ -54,6 +54,8 @@ finally the program:
 - **Chapter 10** covers the Fortinet portfolio: the two FortiGate STIGs and
   how to meet them on FortiOS, and the SRGs that apply to every other Fortinet
   product.
+- **Chapter 11** maps every FortiSwitch feature to the FortiSwitchOS releases
+  that support it and to the SRG requirement it implements or must meet.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -73,10 +75,11 @@ except that this volume has no hands-on labs (see
 8. [Applications, Databases, Web Servers, Containers, and Cloud](chapters/08-applications-databases-web-servers-containers-and-cloud.md) — the ASD STIG, instance and object STIGs, containers and Iron Bank, and Cloud Computing SRG impact levels.
 9. [Running a STIG Compliance Program](chapters/09-running-a-stig-compliance-program.md) — RMF, dispositions, POA&Ms, continuous monitoring, metrics, and STIGs versus CIS Benchmarks.
 10. [Fortinet Products — STIGs and SRG Mapping](chapters/10-fortinet-products-stigs-and-srg-mapping.md) — the FortiGate NDM and Firewall STIGs on FortiOS, uncovered FortiGate functions, and SRG mapping for every other Fortinet product.
+11. [FortiSwitch Feature, Version, and SRG Map](chapters/11-fortiswitch-feature-version-and-srg-map.md) — all 235 FortiSwitchOS 8.0.0 features with the releases that list them and the Layer 2 Switch, NDM, Router, or AAA Services SRG requirement each maps to.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all ten chapters.
+- [Index](INDEX.md) — alphabetized topical index across all eleven chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes
