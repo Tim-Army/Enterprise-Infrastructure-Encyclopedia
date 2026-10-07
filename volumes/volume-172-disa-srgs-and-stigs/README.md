@@ -67,6 +67,8 @@ finally the program:
 - **Chapter 15** maps every FortiExtender feature to its release, the NDM,
   Router, or VPN SRG requirement it meets, and the FortiGate or FortiExtender
   command that meets it.
+- **Chapter 16** maps every FortiWeb feature to its release, the ALG or NDM
+  SRG requirement it meets, and the FortiWeb command that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -91,10 +93,11 @@ except that this volume has no hands-on labs (see
 13. [FortiManager Feature, Version, and SRG Map](chapters/13-fortimanager-feature-version-and-srg-map.md) — 487 FortiManager features (52 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the NDM SRG requirement it maps to, and the command that meets it.
 14. [FortiAP Feature, Version, and SRG Map](chapters/14-fortiap-feature-version-and-srg-map.md) — 186 FortiAP features (39 core platform features and every feature in the FortiAP 7.0.0 to 8.0.0 release notes) with the release that introduced each, the Network WLAN STIG or NDM SRG requirement it maps to, and the FortiGate or FortiAP command that meets it.
 15. [FortiExtender Feature, Version, and SRG Map](chapters/15-fortiextender-feature-version-and-srg-map.md) — 154 FortiExtender features (43 core platform features and every feature in the FortiExtender 7.0.0 to 8.0.0 release notes) with the release that introduced each, the NDM, Router, or VPN SRG requirement it maps to, and the FortiGate or FortiExtender command that meets it.
+16. [FortiWeb Feature, Version, and SRG Map](chapters/16-fortiweb-feature-version-and-srg-map.md) — 480 FortiWeb features (76 core platform features and every feature in the FortiWeb 7.0.0 to 8.0.8 "What's new" lists) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiWeb CLI command that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all fifteen chapters.
+- [Index](INDEX.md) — alphabetized topical index across all sixteen chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

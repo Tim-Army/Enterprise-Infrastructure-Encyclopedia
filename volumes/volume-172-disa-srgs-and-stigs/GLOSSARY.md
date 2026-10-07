@@ -42,6 +42,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **SCAP benchmark** — the automatable version of a STIG, as a SCAP data stream with OVAL checks, covering only rules that can be automated.
 - **SCAP Compliance Checker (SCC)** — the NIWC Atlantic-developed scanner that runs DISA SCAP benchmarks.
 - **Severity override** — a change to a finding's severity on a specific asset, allowed only with a documented justification such as a mitigation.
+- **Site Publish** — the FortiWeb feature that authenticates users in front of a protected application (LDAP, RADIUS, SAML, OAuth, Kerberos, and others) and can provide single sign-on.
 - **SRG (Security Requirements Guide)** — a DISA document of product-neutral security requirements for a class of technology.
 - **SRG ID** — the `SRG-...` identifier of the SRG requirement a STIG rule implements.
 - **STIG (Security Technical Implementation Guide)** — a DISA configuration standard for a specific product, with check and fix procedures for each rule.
@@ -52,6 +53,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
 - **WAN extension** — a FortiExtender mode in which the unit acts as a cellular WAN interface of its FortiGate, so the FortiGate's firewall policies filter traffic on the cellular link.
+- **Web protection profile** — the FortiWeb object that names the protection modules (signatures, protocol constraints, IP reputation, DoS, bot, file, and input checks) a server policy applies to its web traffic.
 - **WIDS (Wireless Intrusion Detection System)** — FortiAP radio scanning, configured in FortiGate WIDS profiles, that detects rogue access points and wireless attacks.
 - **Workflow mode** — a FortiManager workspace mode in which configuration changes are made in sessions and must be approved before they are installed.
 - **XCCDF (Extensible Configuration Checklist Description Format)** — the NIST XML format in which STIGs and SCAP benchmarks are written.
