@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 16
+    chapter_count: 17
     build_eligible: true
     chapters:
       - id: 01
@@ -5978,6 +5978,9 @@ volumes:
       - id: 16
         title: "Chapter 16: FortiWeb Feature, Version, and SRG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/16-fortiweb-feature-version-and-srg-map.md
+      - id: 17
+        title: "Chapter 17: FortiMail Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/17-fortimail-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

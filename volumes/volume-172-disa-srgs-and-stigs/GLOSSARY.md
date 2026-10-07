@@ -25,6 +25,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
+- **Identity-based encryption (IBE)** — the FortiMail feature that encrypts email for external recipients, who read it on a FortiMail web portal after registering or authenticating.
 - **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
 - **LAN extension** — a FortiExtender mode in which the unit builds IPsec tunnels back to its FortiGate and carries a remote LAN over VXLAN inside them, so the FortiGate secures the remote site.
@@ -41,6 +42,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **SCAP (Security Content Automation Protocol)** — the NIST suite of specifications, including XCCDF and OVAL, for automated security checks.
 - **SCAP benchmark** — the automatable version of a STIG, as a SCAP data stream with OVAL checks, covering only rules that can be automated.
 - **SCAP Compliance Checker (SCC)** — the NIWC Atlantic-developed scanner that runs DISA SCAP benchmarks.
+- **Session profile** — the FortiMail object that sets SMTP protocol checks, connection and message limits, sender reputation, and DKIM signing for the SMTP sessions an IP-based policy matches.
 - **Severity override** — a change to a finding's severity on a specific asset, allowed only with a documented justification such as a mitigation.
 - **Site Publish** — the FortiWeb feature that authenticates users in front of a protected application (LDAP, RADIUS, SAML, OAuth, Kerberos, and others) and can provide single sign-on.
 - **SRG (Security Requirements Guide)** — a DISA document of product-neutral security requirements for a class of technology.
