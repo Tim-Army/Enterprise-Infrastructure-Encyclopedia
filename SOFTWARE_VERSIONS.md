@@ -9,6 +9,7 @@ rewritten against a newer release, and record the date of the change.
 | Red Hat Enterprise Linux | RHEL 10 | 2026-07 |
 | Ubuntu Server / Cloud | 26.04 LTS | 2026-07 |
 | Alpine Linux | 3.24 | 2026-08 |
+| Microsoft Project / Primavera P6 Professional / ProjectLibre | Current desktop releases; ProjectLibre 1.9.x | 2026-10 |
 | DISA STIG and SRG content | 2026-10 quarterly release; STIG Viewer 3.x, SCAP Compliance Checker 5.x, OpenSCAP 1.3+ | 2026-10 |
 | VMware vSphere / ESXi / vCenter | vSphere 9.x | 2026-07 |
 | VMware NSX | NSX 4.x | 2026-07 |

@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-176 volumes, 1673 chapters. Each volume has a dedicated
+177 volumes, 1683 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -202,6 +202,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CLXX | [Teradata Certification Tracks](volumes/volume-170-teradata-certifications/README.md) | 9 |
 | CLXXI | [Alpine Linux](volumes/volume-171-alpine-linux/README.md) | 7 |
 | CLXXII | [DISA SRGs and STIGs](volumes/volume-172-disa-srgs-and-stigs/README.md) | 10 |
+| CLXXIII | [Integrated Master Schedule (IMS)](volumes/volume-173-integrated-master-schedule/README.md) | 10 |
 | CM | [Tim's Lab Gear](volumes/volume-900-tims-lab-gear/README.md) | 3 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
@@ -322,6 +323,7 @@ ascending order.
 | Cloud | [VII Cloud Infrastructure](volumes/volume-007-cloud-infrastructure/README.md) → [XVII AWS Architecture and Security](volumes/volume-017-aws-architecture-security/README.md) |
 | Network source of truth and tooling | [LII NetBox Community Edition](volumes/volume-052-netbox-community/README.md) — the open-source network source of truth (DCIM, IPAM, virtualization, circuits, tenancy) and the REST/GraphQL automation built on it |
 | Programming and automation | [IX Infrastructure Automation](volumes/volume-009-infrastructure-automation/README.md) → [LVII Python for Infrastructure and Automation](volumes/volume-057-python-infrastructure-automation/README.md) → [LVIII Python for Network Engineers](volumes/volume-058-python-network-engineers/README.md) → [LIX Ansible](volumes/volume-059-ansible/README.md) → [LX Rust for Systems and Infrastructure](volumes/volume-060-rust-systems-infrastructure/README.md) — automation foundations, Python as the infrastructure engineer's toolkit, the network-automation stack, declarative configuration management with Ansible, and Rust for fast, reliable infrastructure binaries |
+| Program management and scheduling | [CLXXIII Integrated Master Schedule (IMS)](volumes/volume-173-integrated-master-schedule/README.md) — building and running an integrated master schedule the way U.S. government programs require: the IMP and WBS, network logic, durations and resources, the critical path, DCMA 14-point and GAO quality checks, baselining and earned value, statusing and change control, Monte Carlo schedule risk analysis, and IPMDAR reporting, with every lab worked in Microsoft Project, Primavera P6, and ProjectLibre |
 | Reference | [CMXCVII Master Appendices](volumes/volume-997-master-appendices/README.md), [CMXCVIII Acronyms](volumes/volume-998-acronyms/README.md), and [CMXCIX Reference Library](volumes/volume-999-reference-library/README.md) — appendices, the acronym dictionary, and cross-volume reference material, always last |
 
 ## Volume-first layout

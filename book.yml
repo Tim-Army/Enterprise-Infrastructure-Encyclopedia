@@ -5960,6 +5960,43 @@ volumes:
       - id: 10
         title: "Chapter 10: Fortinet Products — STIGs and SRG Mapping"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/10-fortinet-products-stigs-and-srg-mapping.md
+  - id: volume-173
+    number: "CLXXIII"
+    slug: volume-173-integrated-master-schedule
+    title: "Integrated Master Schedule (IMS)"
+    chapter_count: 10
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: IMS Fundamentals — What an Integrated Master Schedule Is"
+        path: volumes/volume-173-integrated-master-schedule/chapters/01-ims-fundamentals-what-an-integrated-master-schedule-is.md
+      - id: 02
+        title: "Chapter 02: The Integrated Master Plan and the Work Breakdown Structure"
+        path: volumes/volume-173-integrated-master-schedule/chapters/02-the-integrated-master-plan-and-the-work-breakdown-structure.md
+      - id: 03
+        title: "Chapter 03: Building the Network — Activities, Logic, and Relationships"
+        path: volumes/volume-173-integrated-master-schedule/chapters/03-building-the-network-activities-logic-and-relationships.md
+      - id: 04
+        title: "Chapter 04: Durations, Calendars, and Resource Loading"
+        path: volumes/volume-173-integrated-master-schedule/chapters/04-durations-calendars-and-resource-loading.md
+      - id: 05
+        title: "Chapter 05: The Critical Path, Float, and Schedule Margin"
+        path: volumes/volume-173-integrated-master-schedule/chapters/05-the-critical-path-float-and-schedule-margin.md
+      - id: 06
+        title: "Chapter 06: Schedule Quality — The DCMA 14-Point Assessment and GAO Best Practices"
+        path: volumes/volume-173-integrated-master-schedule/chapters/06-schedule-quality-the-dcma-14-point-assessment-and-gao-best-practices.md
+      - id: 07
+        title: "Chapter 07: Baselining and Integrating with Earned Value"
+        path: volumes/volume-173-integrated-master-schedule/chapters/07-baselining-and-integrating-with-earned-value.md
+      - id: 08
+        title: "Chapter 08: Statusing and Maintaining the IMS"
+        path: volumes/volume-173-integrated-master-schedule/chapters/08-statusing-and-maintaining-the-ims.md
+      - id: 09
+        title: "Chapter 09: Schedule Risk Analysis"
+        path: volumes/volume-173-integrated-master-schedule/chapters/09-schedule-risk-analysis.md
+      - id: 10
+        title: "Chapter 10: Reporting and Contract Deliverables"
+        path: volumes/volume-173-integrated-master-schedule/chapters/10-reporting-and-contract-deliverables.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
