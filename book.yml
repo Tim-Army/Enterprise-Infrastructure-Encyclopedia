@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 12
+    chapter_count: 13
     build_eligible: true
     chapters:
       - id: 01
@@ -5966,6 +5966,9 @@ volumes:
       - id: 12
         title: "Chapter 12: FortiAnalyzer Feature, Version, and SRG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/12-fortianalyzer-feature-version-and-srg-map.md
+      - id: 13
+        title: "Chapter 13: FortiManager Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/13-fortimanager-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

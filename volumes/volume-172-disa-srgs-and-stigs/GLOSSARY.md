@@ -18,6 +18,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.
 - **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
 - **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
+- **FGFM (FortiGate-to-FortiManager protocol)** — the TLS management tunnel between FortiManager and the devices it manages.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
@@ -48,4 +49,5 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
+- **Workflow mode** — a FortiManager workspace mode in which configuration changes are made in sessions and must be approved before they are installed.
 - **XCCDF (Extensible Configuration Checklist Description Format)** — the NIST XML format in which STIGs and SCAP benchmarks are written.

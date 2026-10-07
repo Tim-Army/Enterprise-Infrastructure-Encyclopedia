@@ -33,6 +33,8 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **FortiAnalyzer New Features Guides** — [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
 - **FortiGate Firewall NDM STIG and FortiGate Firewall STIG** — [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md), [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md)
 - **FortiLink-managed switch evidence** — [Chapter 11](chapters/11-fortiswitch-feature-version-and-srg-map.md)
+- **FortiManager configuration-change control (workflow, workspace, revisions)** — [Chapter 13](chapters/13-fortimanager-feature-version-and-srg-map.md)
+- **FortiManager feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 13](chapters/13-fortimanager-feature-version-and-srg-map.md)
 - **Fortinet product SRG mapping** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md)
 - **FortiSwitch feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 11](chapters/11-fortiswitch-feature-version-and-srg-map.md)
 - **FortiSwitchOS feature matrix** — [Chapter 11](chapters/11-fortiswitch-feature-version-and-srg-map.md)
