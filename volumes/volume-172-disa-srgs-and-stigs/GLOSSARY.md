@@ -29,6 +29,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Identity-based encryption (IBE)** — the FortiMail feature that encrypts email for external recipients, who read it on a FortiMail web portal after registering or authenticating.
+- **IDPS SRG** — the DISA Intrusion Detection and Prevention Systems SRG; its malicious-code detection, alerting, and update requirements apply to FortiSandbox's analysis features.
 - **Impact level (IL)** — the Cloud Computing SRG's classification of data sensitivity (IL2, IL4, IL5, IL6) that determines which cloud offerings may host it.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
 - **LAN extension** — a FortiExtender mode in which the unit builds IPsec tunnels back to its FortiGate and carries a remote LAN over VXLAN inside them, so the FortiGate secures the remote site.

@@ -78,6 +78,8 @@ finally the program:
 - **Chapter 20** maps every FortiDDoS-F feature to its release, the NDM SRG or
   Firewall SRG denial-of-service requirement it meets, and the command or web
   UI pane that meets it.
+- **Chapter 21** maps every FortiSandbox feature to its release, the NDM or
+  IDPS SRG requirement it meets, and the command or web UI pane that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -107,10 +109,11 @@ except that this volume has no hands-on labs (see
 18. [FortiProxy Feature, Version, and SRG Map](chapters/18-fortiproxy-feature-version-and-srg-map.md) — 425 FortiProxy features (89 core platform features and every feature in the FortiProxy 7.0.0 to 7.6.7 release notes "What's new" sections) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiProxy CLI command that meets it.
 19. [FortiADC Feature, Version, and SRG Map](chapters/19-fortiadc-feature-version-and-srg-map.md) — 327 FortiADC features (80 core platform features and every feature in the FortiADC 7.0.0 to 8.0.4 release notes and New Features guides) with the release that introduced each, the ALG, NDM, or VPN SRG requirement it maps to, and the FortiADC CLI command that meets it.
 20. [FortiDDoS Feature, Version, and SRG Map](chapters/20-fortiddos-feature-version-and-srg-map.md) — 292 FortiDDoS-F features (51 core platform features and every feature in the 6.1.0 to 8.0.1 release notes) with the release that introduced each, the NDM SRG or Firewall SRG denial-of-service, filtering, and logging requirement it maps to, and the command or web UI pane that meets it.
+21. [FortiSandbox Feature, Version, and SRG Map](chapters/21-fortisandbox-feature-version-and-srg-map.md) — 518 FortiSandbox features (62 core platform features and every feature in the 4.0.0 to 5.2.2 release notes) with the release that introduced each, the NDM or IDPS SRG requirement it maps to, and the CLI command or web UI pane that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty-one chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

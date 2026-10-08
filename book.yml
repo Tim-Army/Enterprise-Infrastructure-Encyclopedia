@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 20
+    chapter_count: 21
     build_eligible: true
     chapters:
       - id: 01
@@ -5990,6 +5990,9 @@ volumes:
       - id: 20
         title: "Chapter 20: FortiDDoS Feature, Version, and SRG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/20-fortiddos-feature-version-and-srg-map.md
+      - id: 21
+        title: "Chapter 21: FortiSandbox Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/21-fortisandbox-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule
