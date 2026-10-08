@@ -21,6 +21,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.
 - **eMASS (Enterprise Mission Assurance Support Service)** — DoD's system of record for RMF authorization packages, including STIG results.
 - **Evaluate-STIG** — a NAVSEA-developed tool, distributed to DoD users, that automates many manual STIG checks and produces checklists.
+- **EVVM (Enterprise Voice, Video, and Messaging)** — the DISA SRG family (session management, endpoint, and policy) for VoIP and unified communications systems.
 - **Explicit proxy** — a proxy that clients are configured to use, directly or through a PAC file, rather than one that intercepts routed traffic transparently.
 - **FGFM (FortiGate-to-FortiManager protocol)** — the TLS management tunnel between FortiManager and the devices it manages.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.

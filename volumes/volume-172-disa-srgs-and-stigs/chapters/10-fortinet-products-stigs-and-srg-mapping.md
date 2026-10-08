@@ -118,7 +118,7 @@ or hypervisor they run on.
 | **FortiADC** | Application delivery controller and load balancer | ALG SRG and NDM SRG, plus the VPN SRG if it terminates VPN or TLS for remote users. Chapter 19 maps every FortiADC feature to its release, SRG requirement, and configuration command |
 | **FortiDDoS** | DDoS mitigation | NDM SRG; its filtering role relates to the Firewall SRG's DoS requirements. Chapter 20 maps every FortiDDoS feature to its release, SRG requirement, and configuration command |
 | **FortiSandbox** | Malware detonation and analysis | NDM SRG; protect its threat data and integrations. Chapter 21 maps every FortiSandbox feature to its release, SRG requirement, and configuration command |
-| **FortiVoice** | Business phone system and unified communications | Enterprise Voice, Video, and Messaging (EVVM) SRGs (session management, endpoint, and policy) and the NDM SRG |
+| **FortiVoice** | Business phone system and unified communications | Enterprise Voice, Video, and Messaging (EVVM) SRGs (session management, endpoint, and policy) and the NDM SRG. Chapter 22 maps every FortiVoice feature to its release, SRG requirement, and configuration |
 | **FortiAuthenticator** | Authentication, RADIUS and LDAP services, SSO, certificates | AAA Services SRG and NDM SRG; because other devices depend on it for administrator authentication, its availability and logging carry extra weight |
 | **FortiToken** | Hardware and software MFA tokens | No separate SRG; assessed as part of the authentication design of the systems that use it |
 | **FortiPAM** | Privileged access management | NDM SRG and the Application Security and Development requirements that apply to the application |
