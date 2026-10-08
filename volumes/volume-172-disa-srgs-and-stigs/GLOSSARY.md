@@ -4,6 +4,8 @@ Definitions for terms introduced in **Volume CLXXII — DISA SRGs and STIGs**.
 See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
+- **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.
+- **Application delivery controller (ADC)** — a reverse-proxy appliance that load balances application traffic and adds SSL offloading, a WAF, and global server load balancing.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
 - **CAPWAP (Control and Provisioning of Wireless Access Points)** — the protocol between a FortiAP and its wireless controller; its control channel is always DTLS-encrypted, and its data channel can be clear text, DTLS, or IPsec.

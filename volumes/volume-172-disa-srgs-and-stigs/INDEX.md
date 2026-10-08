@@ -5,7 +5,9 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
 - **Account of last resort** — [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
+- **Agentless Application Gateway (AAG) and the VPN SRG** — [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
 - **Ansible remediation (ComplianceAsCode, Ansible Lockdown)** — [Chapter 05](chapters/05-hardening-linux-to-the-stig.md)
+- **Application delivery controller (ADC) assessment against the ALG SRG** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
 - **Application Layer Gateway (ALG) SRG** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **Application Security and Development (ASD) STIG** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 08](chapters/08-applications-databases-web-servers-containers-and-cloud.md)
 - **CAT I / CAT II / CAT III** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 09](chapters/09-running-a-stig-compliance-program.md)
@@ -30,6 +32,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Finding statuses (Open, Not a Finding, Not Applicable, Not Reviewed)** — [Chapter 04](chapters/04-stig-tooling-stig-viewer-checklists-and-scap-scanning.md)
 - **FIPS mode** — [Chapter 05](chapters/05-hardening-linux-to-the-stig.md)
 - **FIPS-CC mode (FortiOS, FortiAnalyzer)** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
+- **FortiADC feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
 - **FortiAnalyzer and FortiManager** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
 - **FortiAnalyzer feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
 - **FortiAnalyzer New Features Guides** — [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)

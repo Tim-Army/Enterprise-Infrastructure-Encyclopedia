@@ -5017,7 +5017,21 @@
     "wanopt",
     "webcache",
     "webproxy",
-    "XLSB"
+    "XLSB",
+    "TCPS",
+    "VMSS",
+    "VMUL",
+    "authnrequest",
+    "chapv",
+    "datadev",
+    "fnginx",
+    "fortiai",
+    "httponly",
+    "icapserver",
+    "ipreputation",
+    "sockopt",
+    "synflood",
+    "tcpssl"
   ],
   "ignorePaths": [
     "node_modules/**",
