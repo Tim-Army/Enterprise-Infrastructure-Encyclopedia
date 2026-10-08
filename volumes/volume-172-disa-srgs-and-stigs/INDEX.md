@@ -4,6 +4,7 @@ Alphabetized topical index for **Volume CLXXII — DISA SRGs and STIGs**.
 See also the [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
+- **AAA Services SRG applied to an authentication server** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 23](chapters/23-fortiauthenticator-feature-version-and-srg-map.md)
 - **Account of last resort** — [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **Agentless Application Gateway (AAG) and the VPN SRG** — [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
 - **Ansible remediation (ComplianceAsCode, Ansible Lockdown)** — [Chapter 05](chapters/05-hardening-linux-to-the-stig.md)
@@ -40,6 +41,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **FortiAnalyzer feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
 - **FortiAnalyzer New Features Guides** — [Chapter 12](chapters/12-fortianalyzer-feature-version-and-srg-map.md)
 - **FortiAP feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 14](chapters/14-fortiap-feature-version-and-srg-map.md)
+- **FortiAuthenticator feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 23](chapters/23-fortiauthenticator-feature-version-and-srg-map.md)
 - **FortiDDoS feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 20](chapters/20-fortiddos-feature-version-and-srg-map.md)
 - **FortiExtender feature, version, and SRG map** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 15](chapters/15-fortiextender-feature-version-and-srg-map.md)
 - **FortiGate as wireless controller (CAPWAP, FortiAP profiles, SSIDs, WIDS)** — [Chapter 14](chapters/14-fortiap-feature-version-and-srg-map.md)

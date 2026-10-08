@@ -82,6 +82,8 @@ finally the program:
   IDPS SRG requirement it meets, and the command or web UI pane that meets it.
 - **Chapter 22** maps every FortiVoice feature to its release, the EVVM or NDM
   SRG requirement it meets, and the web UI pane or command that meets it.
+- **Chapter 23** maps every FortiAuthenticator feature to its release, the AAA
+  Services or NDM SRG requirement it meets, and the web UI pane that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -113,10 +115,11 @@ except that this volume has no hands-on labs (see
 20. [FortiDDoS Feature, Version, and SRG Map](chapters/20-fortiddos-feature-version-and-srg-map.md) — 292 FortiDDoS-F features (51 core platform features and every feature in the 6.1.0 to 8.0.1 release notes) with the release that introduced each, the NDM SRG or Firewall SRG denial-of-service, filtering, and logging requirement it maps to, and the command or web UI pane that meets it.
 21. [FortiSandbox Feature, Version, and SRG Map](chapters/21-fortisandbox-feature-version-and-srg-map.md) — 518 FortiSandbox features (62 core platform features and every feature in the 4.0.0 to 5.2.2 release notes) with the release that introduced each, the NDM or IDPS SRG requirement it maps to, and the CLI command or web UI pane that meets it.
 22. [FortiVoice Feature, Version, and SRG Map](chapters/22-fortivoice-feature-version-and-srg-map.md) — 172 FortiVoice features (86 core platform features and every feature in the 7.0.0 to 8.0.1 release notes) with the release that introduced each, the EVVM Session Management, Endpoint, or Policy SRG or NDM SRG requirement it maps to, and the web UI pane or command that meets it.
+23. [FortiAuthenticator Feature, Version, and SRG Map](chapters/23-fortiauthenticator-feature-version-and-srg-map.md) — 198 FortiAuthenticator features (102 core platform features and every feature in the 6.6.0 to 8.0.3 release notes) with the release that introduced each, the AAA Services or NDM SRG requirement it maps to, and the web UI pane or command that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty-two chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty-three chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

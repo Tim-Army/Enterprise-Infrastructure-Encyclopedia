@@ -5081,7 +5081,9 @@
     "intrasite",
     "nonadmin",
     "nonblocking",
-    "softclients"
+    "softclients",
+    "TEAP",
+    "HOTP"
   ],
   "ignorePaths": [
     "node_modules/**",

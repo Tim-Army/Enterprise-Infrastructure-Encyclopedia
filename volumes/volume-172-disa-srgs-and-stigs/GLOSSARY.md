@@ -3,6 +3,7 @@
 Definitions for terms introduced in **Volume CLXXII — DISA SRGs and STIGs**.
 See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 
+- **AAA Services SRG** — the DISA Authentication, Authorization, and Accounting Services SRG; its account management, lockout, password, PKI, 802.1X, shared-secret, and audit requirements apply to authentication servers such as FortiAuthenticator.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.
 - **Application delivery controller (ADC)** — a reverse-proxy appliance that load balances application traffic and adds SSL offloading, a WAF, and global server load balancing.
@@ -42,6 +43,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **POA&M (Plan of Action and Milestones)** — the record of each unresolved weakness, its owner, resources, milestones, and scheduled completion date.
 - **PowerSTIG** — an open-source Microsoft project that applies and monitors STIG settings with PowerShell Desired State Configuration.
 - **PPSM CAL (Ports, Protocols, and Services Management Category Assurance List)** — the DoD list that assigns ports, protocols, and services to risk categories and governs which may cross DoD network boundaries.
+- **RADSEC** — RADIUS carried over TLS, which protects RADIUS authentication and accounting traffic with certificates instead of only a shared secret.
 - **Release / version (V#R#)** — a STIG's maintenance update number and major revision number, written together as V2R1.
 - **Rule ID** — a rule's `SV-...r..._rule` identifier, whose revision suffix changes when the rule text changes.
 - **SCAP (Security Content Automation Protocol)** — the NIST suite of specifications, including XCCDF and OVAL, for automated security checks.
