@@ -71,6 +71,8 @@ finally the program:
   SRG requirement it meets, and the FortiWeb command that meets it.
 - **Chapter 17** maps every FortiMail feature to its release, the ALG or NDM
   SRG requirement it meets, and the FortiMail command that meets it.
+- **Chapter 18** maps every FortiProxy feature to its release, the ALG or NDM
+  SRG requirement it meets, and the FortiProxy command that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -97,10 +99,11 @@ except that this volume has no hands-on labs (see
 15. [FortiExtender Feature, Version, and SRG Map](chapters/15-fortiextender-feature-version-and-srg-map.md) — 154 FortiExtender features (43 core platform features and every feature in the FortiExtender 7.0.0 to 8.0.0 release notes) with the release that introduced each, the NDM, Router, or VPN SRG requirement it maps to, and the FortiGate or FortiExtender command that meets it.
 16. [FortiWeb Feature, Version, and SRG Map](chapters/16-fortiweb-feature-version-and-srg-map.md) — 480 FortiWeb features (76 core platform features and every feature in the FortiWeb 7.0.0 to 8.0.8 "What's new" lists) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiWeb CLI command that meets it.
 17. [FortiMail Feature, Version, and SRG Map](chapters/17-fortimail-feature-version-and-srg-map.md) — 331 FortiMail features (84 core platform features and every feature in the FortiMail 7.0.0 to 8.0.2 release notes "What's new" tables) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiMail CLI command that meets it.
+18. [FortiProxy Feature, Version, and SRG Map](chapters/18-fortiproxy-feature-version-and-srg-map.md) — 425 FortiProxy features (89 core platform features and every feature in the FortiProxy 7.0.0 to 7.6.7 release notes "What's new" sections) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiProxy CLI command that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all seventeen chapters.
+- [Index](INDEX.md) — alphabetized topical index across all eighteen chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes
