@@ -135,6 +135,8 @@ Network Device Management SRG, **RTR** the Router SRG, and **AAA** the AAA
 Services SRG. The requirement titles are listed in the next table. The command
 column follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/11-fortiswitch-feature-version-and-srg-map-feature-map.csv) (235 rows).
+
 | Category | Feature | First listed (FortiSwitchOS) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Security Fabric | Centralized configuration | 7.0.0 or earlier | NDM `SRG-APP-000516-NDM-000340`; NDM `SRG-APP-000033-NDM-000212` | FortiGate: `config switch-controller managed-switch; edit <SWITCH_SN>; set fsw-wan1-admin enable; end` |
@@ -377,6 +379,8 @@ column follows the conventions in *Where the commands come from*.
 
 The SRG requirements used in the map, with their severity in the current SRG
 releases:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/11-fortiswitch-feature-version-and-srg-map-requirements.csv) (60 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

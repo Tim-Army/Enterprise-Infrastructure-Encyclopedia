@@ -1,0 +1,66 @@
+﻿SRG,Requirement,Severity,Requirement title
+CLS,SRG-APP-000026-AU-000580,CAT II,The Central Log Server must automatically audit account creation.
+CLS,SRG-APP-000033-AU-001610,CAT I,The Central Log Server must be configured to enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+CLS,SRG-APP-000065-AU-000240,CAT II,The Central Log Server must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.
+CLS,SRG-APP-000068-AU-000035,CAT III,The Central Log Server must display the Standard Mandatory DoW Notice and Consent Banner before granting access to the Central Log Server.
+CLS,SRG-APP-000080-AU-000010,CAT II,The Central Log Server must be configured to protect the data sent from hosts and devices from being altered in a way that may prevent the attribution of an action to an individual (or process acting on behalf of an individual).
+CLS,SRG-APP-000086-AU-000020,CAT III,The Central Log Server must be configured to aggregate log records from organization-defined devices and hosts within its scope of coverage.
+CLS,SRG-APP-000086-AU-000030,CAT III,"Time stamps recorded on the log records in the Central Log Server must be configured to synchronize to within one second of the host server or, if NTP is configured directly in the log server, the NTP time source must be the same as the host and devices within its scope of coverage."
+CLS,SRG-APP-000086-AU-000390,CAT II,"Where multiple log servers are installed in the enclave, each log server must be configured to aggregate log records to a central aggregation server or other consolidated events repository."
+CLS,SRG-APP-000089-AU-000400,CAT II,The Central Log Server must be configured to retain the DoW-defined attributes of the log records sent by the devices and hosts.
+CLS,SRG-APP-000090-AU-000070,CAT III,The Central Log Server must be configured to allow only the Information System Security Manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be retained.
+CLS,SRG-APP-000095-AU-000050,CAT III,"The System Administrator (SA) and Information System Security Manager (ISSM) must configure the retention of the log records based on criticality level, event type, and/or retention period, at a minimum."
+CLS,SRG-APP-000095-AU-000680,CAT III,The Central Log Server must produce audit records containing information to establish what type of events occurred.
+CLS,SRG-APP-000111-AU-000150,CAT III,The Central Log Server must be configured to perform analysis of log records across multiple devices and hosts in the enclave that can be reviewed by authorized individuals.
+CLS,SRG-APP-000115-AU-000160,CAT III,The Central Log Server must be configured to perform on-demand filtering of the log records for events of interest based on organization-defined criteria.
+CLS,SRG-APP-000118-AU-000100,CAT II,The Central Log Server must protect audit information from any type of unauthorized read access.
+CLS,SRG-APP-000119-AU-000110,CAT II,The Central Log Server must protect audit information from unauthorized modification.
+CLS,SRG-APP-000120-AU-000120,CAT II,The Central Log Server must protect audit information from unauthorized deletion.
+CLS,SRG-APP-000121-AU-000130,CAT II,The Central Log Server must protect audit tools from unauthorized access.
+CLS,SRG-APP-000125-AU-000300,CAT III,The Central Log Server must be configured to back up the log records repository at least every seven days onto a different system or system component other than the system or component being audited.
+CLS,SRG-APP-000141-AU-000090,CAT II,The Central Log Server must be configured to disable non-essential capabilities.
+CLS,SRG-APP-000148-AU-002270,CAT I,The Central Log Server must be configured to uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+CLS,SRG-APP-000149-AU-002280,CAT II,The Central Log Server must use multifactor authentication for network access to privileged user accounts.
+CLS,SRG-APP-000163-AU-002470,CAT II,"The Central Log Server must disable accounts (individuals, groups, roles, and devices) after 35 days of inactivity."
+CLS,SRG-APP-000164-AU-002480,CAT II,The Central Log Server must be configured to enforce a minimum 15-character password length.
+CLS,SRG-APP-000166-AU-002490,CAT III,The Central Log Server must be configured to enforce password complexity by requiring that at least one uppercase character be used.
+CLS,SRG-APP-000170-AU-002530,CAT III,The Central Log Server must be configured to require the change of at least eight of the total number of characters when passwords are changed.
+CLS,SRG-APP-000174-AU-002570,CAT III,The Central Log Server must be configured to enforce a 180-day maximum password lifetime restriction.
+CLS,SRG-APP-000175-AU-002630,CAT I,"The Central Log Server, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."
+CLS,SRG-APP-000295-AU-000190,CAT II,The Central Log Server must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect.
+CLS,SRG-APP-000345-AU-000400,CAT II,The Central Log Server must automatically lock the account until the locked account is released by an administrator when three unsuccessful login attempts in 15 minutes are exceeded.
+CLS,SRG-APP-000358-AU-000100,CAT II,The Central Log Server must be configured to off-load log records onto a different system or media than the system being audited.
+CLS,SRG-APP-000359-AU-000120,CAT III,The Central Log Server must be configured to send an immediate alert to the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when allocated log record storage volume reaches 75 percent of the repository maximum log record storage capacity.
+CLS,SRG-APP-000360-AU-000130,CAT III,"For the host and devices within its scope of coverage, the Central Log Server must be configured to send a real-time alert to the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) of all audit failure events, such as loss of communications with hosts and devices, or if log records are no longer being received."
+CLS,SRG-APP-000374-AU-000290,CAT III,"Upon receipt of the log record from hosts and devices, the Central Log Server must be configured to record time stamps of the time of receipt that can be mapped to Coordinated Universal Time (UTC)."
+CLS,SRG-APP-000391-AU-002290,CAT II,The Central Log Server must be configured to accept the DoW common access card (CAC) credential to support identity management and personal authentication.
+CLS,SRG-APP-000427-AU-000040,CAT II,The Central Log Server must only allow the use of DoW Public Key Infrastructure (PKI)-established certificate authorities for verification of the establishment of protected sessions.
+CLS,SRG-APP-000439-AU-004310,CAT I,The Central Log Server must be configured to protect the confidentiality and integrity of transmitted information.
+CLS,SRG-APP-000456-AU-000270,CAT I,"The Central Log Server must install security-relevant software updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+CLS,SRG-APP-000503-AU-000280,CAT II,The Central Log Server must generate audit records when successful/unsuccessful logon attempts occur.
+CLS,SRG-APP-000514-AU-002890,CAT I,The Central Log Server must implement NIST FIPS-validated cryptography for the following: to provision digital signatures; to generate cryptographic hashes; and/or to protect unclassified information requiring confidentiality and cryptographic protection.
+CLS,SRG-APP-000515-AU-000110,CAT III,"The Central Log Server must be configured to off-load interconnected systems in real time and off-load standalone systems weekly, at a minimum."
+CLS,SRG-APP-000516-AU-000330,CAT II,The Central Log Server must be configured to retain the identity of the original source host or device where the event occurred as part of the log record.
+CLS,SRG-APP-000516-AU-000340,CAT II,The Central Log Server that aggregates log records from hosts and devices must be configured to use TCP for transmission.
+CLS,SRG-APP-000516-AU-000350,CAT II,"The Central Log Server must be configured to notify the System Administrator (SA) and Information System Security Officer (ISSO), at a minimum, when an attack is detected on multiple devices and hosts within its scope of coverage."
+CLS,SRG-APP-000516-AU-000360,CAT II,The Central Log Server must be configured to automatically create trouble tickets for organization-defined threats and events of interest as they are detected in real time (within seconds).
+CLS,SRG-APP-000516-AU-000370,CAT II,"For devices and hosts within the scope of coverage, the Central Log Server must be configured to automatically aggregate events that indicate account actions."
+CLS,SRG-APP-000516-AU-000380,CAT II,The Central Log Server must be configured with the organization-defined severity or criticality levels of each event that is being sent from individual devices or hosts.
+CLS,SRG-APP-000516-AU-000410,CAT II,"Analysis, viewing, and indexing functions, services, and applications used as part of the Central Log Server must be configured to comply with DoW-trusted path and access requirements."
+CLS,SRG-APP-000610-AU-000050,CAT I,The Central Log Server must use FIPS-validated SHA-2 or higher hash function for digital signature generation and verification (non-legacy use).
+CLS,SRG-APP-000745-AU-000120,CAT II,The Central Log Server must implement the capability to centrally review and analyze audit records from multiple components within the system.
+CLS,SRG-APP-000750-AU-000130,CAT II,The Central Log Server must implement an audit reduction capability that supports on-demand audit review and analysis.
+CLS,SRG-APP-000770-AU-000170,CAT II,The Central Log Server must implement a report generation capability that supports on-demand reporting requirements.
+CLS,SRG-APP-000775-AU-000180,CAT II,The Central Log Server must implement a report generation capability that supports after-the-fact investigations of incidents.
+CLS,SRG-APP-000790-AU-000210,CAT II,"The Central Log Server must implement the capability to process, sort, and search audit records for events of interest based on organization-defined audit fields within audit records."
+CLS,SRG-APP-000810-AU-000250,CAT II,The Central Log Server must prevent the installation of organization-defined software and firmware components without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.
+CLS,SRG-APP-000815-AU-000260,CAT II,The Central Log Server must require users to be individually authenticated before granting access to the shared accounts or resources.
+CLS,SRG-APP-000910-AU-000390,CAT II,The Central Log Server must include only approved trust anchors in trust stores or certificate stores managed by the organization.
+CLS,SRG-APP-000915-AU-000400,CAT II,The Central Log Server must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store.
+CLS,SRG-APP-000920-AU-000410,CAT II,The Central Log Server must synchronize system clocks within and between systems or system components.
+CLS,SRG-APP-001035-AU-000430,CAT I,The Central Log Server must be a version supported by the vendor.
+NDM,SRG-APP-000395-NDM-000310,CAT II,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000516-NDM-000336,CAT I,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000350,CAT I,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."

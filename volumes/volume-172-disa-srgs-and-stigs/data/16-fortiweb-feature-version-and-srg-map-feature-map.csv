@@ -1,0 +1,481 @@
+﻿Category,Feature,Introduced (FortiWeb OS),SRG requirement(s),Command to satisfy the requirement
+Core: Management access,"Management access per interface (HTTPS, SSH, ping, SNMP, HTTP, Telnet)",7.0.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000172-NDM-000259,config system interface; edit <MGMT_PORT>; set allowaccess HTTPS ssh; next; end (management interface only; leave out HTTP and Telnet)
+Core: Management access,Web UI TLS versions and cipher suites,7.0.0 or earlier,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; NDM SRG-APP-000179-NDM-000265,config system global; set admin-tls-v10 disable; set admin-tls-v11 disable; set admin-tls-v12 enable; set admin-tls-v13 enable; end
+Core: Management access,Web UI server certificate,7.0.0 or earlier,NDM SRG-APP-000516-NDM-000344; NDM SRG-APP-000910-NDM-000300,config system global; set HTTPS-certificate <DOD_ISSUED_ADMIN_CERT>; end
+Core: Management access,Administrative HTTP and HTTPS ports,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Management access,Trusted hosts for each administrator,7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000038-NDM-000213,config system admin; edit <ADMIN>; set trusthosts <MGMT_SUBNET>; next; end
+Core: Management access,Console port,7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314,— (physical access control; the console requires an administrator login)
+Core: Management access,Idle timeout for web UI and CLI sessions,7.0.0 or earlier,NDM SRG-APP-000190-NDM-000267,config system global; set admintimeout 10; end
+Core: Management access,Pre-login disclaimer (login banner),7.0.0 or earlier,NDM SRG-APP-000068-NDM-000215,"config system global; set pre-login-banner enable; end (banner text under System > Config > Replacement Message, Disclaimer tab)"
+Core: Administrator accounts,Local administrator accounts,7.0.0 or earlier,NDM SRG-APP-000148-NDM-000346; NDM SRG-APP-000153-NDM-000249,config system admin; edit <ADMIN>; set type local-user; set access-profile <PROFILE>; set password <PASSWORD_15_CHARS_MIN>; next; end
+Core: Administrator accounts,"Access profiles (none, read, write, or read-write per permission group)",7.0.0 or earlier,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000380-NDM-000304,config system accprofile; edit <PROFILE>; set admingrp r; set sysgrp r; set loggrp r; next; end
+Core: Administrator accounts,Administrative domains (ADOMs),7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Administrator accounts,Password policy (length and character classes),7.0.0 or earlier,NDM SRG-APP-000164-NDM-000252; NDM SRG-APP-000166-NDM-000254; NDM SRG-APP-000167-NDM-000255; NDM SRG-APP-000168-NDM-000256; NDM SRG-APP-000169-NDM-000257,config system password-policy; set status enable; set min-length-option enable; set mini-length 15; set character-requirements enable; set min-upper-case-letter 1; set min-lower-case-letter 1; set mini-number 1; set min-non-alphanumeric 1; end
+Core: Administrator accounts,Administrator login lockout,7.0.0 or earlier,NDM SRG-APP-000065-NDM-000214,config system global; set admin-lockout-threshold 3; set admin-lockout-duration 900; end
+Core: Administrator accounts,Single administrator mode (one administrator logged in at a time),7.0.0 or earlier,NDM SRG-APP-000001-NDM-000200,config system password-policy; set single-admin-mode enable; end
+Core: Administrator accounts,"Remote administrator authentication (RADIUS, LDAP, TACACS+) through administrator groups",7.0.0 or earlier,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000148-NDM-000346,config user ldap-user; edit <LDAP>; set server <LDAP_SERVER>; set ssl-connection enable; set protocol ldaps; set ca-cert <CA_CERT>; next; end; config user admin-usergrp; edit <GROUP>; config members; edit 1; set type ldap; set ldap-name <LDAP>; next; end; next; end; config system admin; edit <ADMIN>; set type remote-user; set admin-usergroup <GROUP>; next; end
+Core: Administrator accounts,Certificate-based (PKI) web UI login for administrators,7.0.0 or earlier,NDM SRG-APP-000149-NDM-000247; NDM SRG-APP-000177-NDM-000263; NDM SRG-APP-000175-NDM-000262; NDM SRG-APP-000875-NDM-000280,config user pki-user; edit <PKI_USER>; set cacert <DOD_CA_CERT>; set subject <SUBJECT>; next; end; config user admin-usergrp; edit <GROUP>; config members; edit 1; set type pki; next; end; next; end; config system global; set admin-HTTPS-pki-required enable; end
+Core: Administrator accounts,Administrator two-factor authentication (token code),7.0.0 or earlier,NDM SRG-APP-000820-NDM-000170,config system global; set multi-factor-authentication mandatory; end
+Core: Logging,"Event log (administrator logins, configuration changes, system events)",7.0.0 or earlier,NDM SRG-APP-000095-NDM-000225; NDM SRG-APP-000503-NDM-000320; NDM SRG-APP-000026-NDM-000208; NDM SRG-APP-000505-NDM-000322; NDM SRG-APP-000380-NDM-000304,config log event-log; set status enable; end; config log disk; set status enable; set severity information; end
+Core: Logging,Event log of failed CLI commands,7.0.0 or earlier,NDM SRG-APP-000101-NDM-000231,config system global; set record-cli-fail-cmd enable; end
+Core: Logging,"Attack log (WAF detections with source, URL, policy, and action)",7.0.0 or earlier,ALG SRG-NET-000074-ALG-000043; ALG SRG-NET-000077-ALG-000046; ALG SRG-NET-000079-ALG-000048; ALG SRG-NET-000503-ALG-000038,config log attack-log; set status enable; end
+Core: Logging,Traffic log,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config log traffic-log; set status disable; end
+Core: Logging,"Remote syslog servers (syslog policies, TLS)",7.0.0 or earlier,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350; ALG SRG-NET-000334-ALG-000050; ALG SRG-NET-000511-ALG-000051,config log syslog-policy; edit <SYSLOG_POLICY>; config syslog-server-list; edit 1; set server <SYSLOG_SERVER>; set proto tls; next; end; next; end; config log syslogd; set status enable; set policy <SYSLOG_POLICY>; end
+Core: Logging,Logging to FortiAnalyzer,7.0.0 or earlier,NDM SRG-APP-000515-NDM-000325; ALG SRG-NET-000334-ALG-000050,config log forti-analyzer; set status enable; set fortianalyzer-policy <FAZ_POLICY>; end
+Core: Logging,Alert email,7.0.0 or earlier,NDM SRG-APP-000360-NDM-000295; ALG SRG-NET-000088-ALG-000054; ALG SRG-NET-000392-ALG-000141,config log alertMail; set status enable; set email-policy <EMAIL_POLICY>; end
+Core: Logging,Log disk usage threshold event,7.0.0 or earlier,NDM SRG-APP-000357-NDM-000293; NDM SRG-APP-000360-NDM-000295; ALG SRG-NET-000335-ALG-000053,config log event-log; set logdisk-high 80; end
+Core: Logging,Log access restricted by access profile (log permission group),7.0.0 or earlier,NDM SRG-APP-000231-NDM-000271; ALG SRG-NET-000098-ALG-000056,config system accprofile; edit <PROFILE>; set loggrp r; next; end
+Core: Time,System time and NTP synchronization,7.0.0 or earlier,NDM SRG-APP-000920-NDM-000320; NDM SRG-APP-000374-NDM-000299,config system ntp; set ntpsync enable; config ntp-server; edit 1; set server <NTP_SERVER>; next; end; end
+Core: SNMP,SNMP v1 and v2c communities,7.0.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000395-NDM-000310,config system snmp community; edit <ID>; set status disable; next; end
+Core: SNMP,SNMPv3 users and traps,7.0.0 or earlier,NDM SRG-APP-000395-NDM-000310,config system snmp user; edit <SNMP_USER>; set status enable; set security-level authpriv; set auth-proto sha256; set auth-pwd <AUTH_PASSWORD>; set priv-proto aes256; set priv-pwd <PRIV_PASSWORD>; next; end
+Core: Cryptography,FIPS-CC mode,7.0.0 or earlier,NDM SRG-APP-000179-NDM-000265; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000510-ALG-000025; ALG SRG-NET-000575-ALG-000020,config system fips-cc; set status enable; end
+Core: Firmware and configuration,"Firmware upgrade (web UI, TFTP, or FTP)",7.0.0 or earlier,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-001035-NDM-000340; NDM SRG-APP-000131-NDM-000243,execute restore image tftp <IMAGE> <TFTP_SERVER> (after checking the image checksum)
+Core: Firmware and configuration,"Configuration backup (manual and scheduled, encrypted)",7.0.0 or earlier,NDM SRG-APP-000516-NDM-000340,config system backup; edit <BACKUP>; set config-type full-config; set encryption enable; set encryption-passwd <PASSWORD>; set protocol-type sftp; set ftp-server <SERVER>; set schedule_type days; next; end
+Core: Firmware and configuration,"FortiGuard updates (attack signatures, IP reputation, antivirus, bots)",7.0.0 or earlier,ALG SRG-NET-000019-ALG-000019; ALG SRG-NET-000246-ALG-000132; NDM SRG-APP-000142-NDM-000245,config system autoupdate schedule; set status enable; set frequency every; end
+Core: Firmware and configuration,Configuration synchronization between FortiWeb appliances,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Certificates,Server and CA certificates (Server Objects > Certificates),7.0.0 or earlier,ALG SRG-NET-000750-ALG-000140; ALG SRG-NET-000755-ALG-000150,GUI: Server Objects > Certificates > Local
+Core: High availability,HA clusters (active-passive and active-active),7.0.0 or earlier,ALG SRG-NET-000365-ALG-000123; ALG SRG-NET-000362-ALG-000120,config system ha; set mode active-passive; set encryption enable; set key <HA_KEY>; end
+Core: High availability,Fail-open bypass ports (hardware models),7.0.0 or earlier,ALG SRG-NET-000235-ALG-000118; ALG SRG-NET-000365-ALG-000123,config system fail-open; set port3-port4 poweroff-cutoff; end
+Core: Deployment,"Operation modes (reverse proxy, transparent proxy, transparent inspection, offline protection, WCCP)",7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017; ALG SRG-NET-000019-ALG-000018,config system settings; set opmode reverse-proxy; end
+Core: Deployment,Integrated firewall (System > Firewall),7.0.0 or earlier,NDM SRG-APP-000038-NDM-000213; ALG SRG-NET-000202-ALG-000124,config system firewall firewall-policy; set default-action deny; end
+Core: Server policies,"Server policies, virtual servers, and server pools",7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017; ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000362-ALG-000120,config server-policy policy; edit <POLICY>; set vserver <VSERVER>; set server-pool <POOL>; set web-protection-profile <PROFILE>; set status enable; next; end
+Core: Server policies,Monitor mode (log without blocking),7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000202-ALG-000124,config server-policy policy; edit <POLICY>; set monitor-mode disable; next; end
+Core: Server policies,Protected host names,7.0.0 or earlier,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000202-ALG-000124,config server-policy allow-hosts; edit <HOSTS>; set default-action deny; config host-list; edit 1; set host <FQDN>; set action allow; next; end; next; end
+Core: Server policies,HTTPS offloading: TLS versions and cipher suites on the client side,7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000510-ALG-000111,config server-policy policy; edit <POLICY>; set ssl enable; set tls-v10 disable; set tls-v11 disable; set tls-v12 enable; set tls-v13 enable; set ssl-cipher high; next; end
+Core: Server policies,TLS to back-end servers and server certificate verification,7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000164-ALG-000100,config server-policy server-pool; edit <POOL>; config pserver-list; edit <ID>; set ssl enable; set server-certificate-verify enable; set server-certificate-verify-policy <VERIFIER>; next; end; next; end
+Core: Server policies,"Client certificate verification (CA, CRL, and OCSP)",7.0.0 or earlier,ALG SRG-NET-000164-ALG-000100; ALG SRG-NET-000166-ALG-000101; ALG SRG-NET-000355-ALG-000117; ALG SRG-NET-000345-ALG-000099,config system certificate verify; edit <VERIFIER>; set ca <DOD_CA_GROUP>; set crl <CRL_GROUP>; set strictly-need-cert enable; next; end; config server-policy policy; edit <POLICY>; set ssl-client-verify <VERIFIER>; next; end
+Core: Server policies,HTTP to HTTPS redirect and HSTS,7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000230-ALG-000113,config server-policy policy; edit <POLICY>; set HTTP-to-HTTPS enable; set hsts-header enable; next; end
+Core: Server policies,TCP SYN flood protection (SYN cookies),7.0.0 or earlier,ALG SRG-NET-000705-ALG-000110; ALG SRG-NET-000362-ALG-000112,config server-policy policy; edit <POLICY>; set syncookie enable; set half-open-threshold <PACKETS>; next; end
+Core: Server policies,Server health checks and load balancing,7.0.0 or earlier,ALG SRG-NET-000362-ALG-000120; ALG SRG-NET-000365-ALG-000123,config server-policy server-pool; edit <POOL>; set health <HEALTH_CHECK>; set lb-algo round-robin; next; end
+Core: Server policies,Replacement messages (block and error pages),7.0.0 or earlier,ALG SRG-NET-000273-ALG-000129; ALG SRG-NET-000402-ALG-000130,GUI: System > Config > Replacement Message
+Core: Web protection,Web protection profiles,7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017; ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000512-ALG-000062,config waf web-protection-profile inline-protection; edit <PROFILE>; set signature-rule <SIGNATURE_POLICY>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; set ip-intelligence enable; next; end
+Core: Web protection,"Attack signatures (SQL injection, XSS, generic attacks, known exploits, trojans, information disclosure)",7.0.0 or earlier,ALG SRG-NET-000318-ALG-000152; ALG SRG-NET-000319-ALG-000020; ALG SRG-NET-000318-ALG-000014; ALG SRG-NET-000319-ALG-000015; ALG SRG-NET-000318-ALG-000151; ALG SRG-NET-000319-ALG-000153,config waf signature; edit <SIGNATURE_POLICY>; config main_class_list; edit 010000000; set action alert_deny; next; end; next; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set signature-rule <SIGNATURE_POLICY>; next; end
+Core: Web protection,Custom signatures and custom policies,7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000018-ALG-000017,config waf web-protection-profile inline-protection; edit <PROFILE>; set custom-access-policy <CUSTOM_POLICY>; next; end
+Core: Web protection,HTTP protocol constraints,7.0.0 or earlier,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; next; end
+Core: Web protection,Allowed HTTP methods,7.0.0 or earlier,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000132-ALG-000087,config waf web-protection-profile inline-protection; edit <PROFILE>; set allow-method-policy <METHOD_POLICY>; next; end
+Core: Web protection,URL access rules,7.0.0 or earlier,ALG SRG-NET-000015-ALG-000016; ALG SRG-NET-000202-ALG-000124,config waf web-protection-profile inline-protection; edit <PROFILE>; set url-access-policy <URL_ACCESS_POLICY>; next; end
+Core: Web protection,Parameter validation (input rules) and hidden field protection,7.0.0 or earlier,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set parameter-validation-rule <INPUT_RULES>; set hidden-fields-protection <HIDDEN_FIELDS>; next; end
+Core: Web protection,XML and JSON protection,7.0.0 or earlier,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set xml-validation-policy <XML_POLICY>; set json-validation-policy <JSON_POLICY>; next; end
+Core: Web protection,"Cookie security (signing or encryption, Secure and HttpOnly flags)",7.0.0 or earlier,ALG SRG-NET-000230-ALG-000113; ALG SRG-NET-000233-ALG-000115,config waf cookie-security; edit <COOKIE_POLICY>; set cookie-value-security signed; set secure-cookie enable; set HTTP-only enable; set action alert_deny; next; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set cookie-security-policy <COOKIE_POLICY>; next; end
+Core: Web protection,Cross-site request forgery (CSRF) protection,7.0.0 or earlier,ALG SRG-NET-000230-ALG-000113,config waf web-protection-profile inline-protection; edit <PROFILE>; set csrf-protection <CSRF_RULE>; next; end
+Core: Web protection,Man-in-the-browser (MiTB) protection,7.0.0 or earlier,ALG SRG-NET-000230-ALG-000113; ALG SRG-NET-000228-ALG-000108,config waf web-protection-profile inline-protection; edit <PROFILE>; set mitb-protection <MITB_POLICY>; next; end
+Core: Web protection,Padding oracle protection,7.0.0 or earlier,ALG SRG-NET-000230-ALG-000113,config waf web-protection-profile inline-protection; edit <PROFILE>; set padding-oracle <PADDING_ORACLE_RULE>; next; end
+Core: Web protection,HTTP header security (security response headers),7.0.0 or earlier,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-header-security <HEADER_SECURITY_POLICY>; next; end
+Core: Web protection,"File upload restrictions, antivirus, and FortiSandbox",7.0.0 or earlier,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000249-ALG-000134; ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000249-ALG-000146,config waf file-upload-restriction-policy; edit <FILE_POLICY>; set av-scan enable; set trojan-detection enable; set action alert_deny; next; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set file-upload-policy <FILE_POLICY>; next; end
+Core: Access control,IP reputation (FortiGuard IP intelligence),7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000392-ALG-000142,config waf web-protection-profile inline-protection; edit <PROFILE>; set ip-intelligence enable; next; end
+Core: Access control,"IP lists (trusted, blocked, and allow-only addresses)",7.0.0 or earlier,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000202-ALG-000124,config waf web-protection-profile inline-protection; edit <PROFILE>; set ip-list-policy <IP_LIST>; next; end
+Core: Access control,Geo IP blocking,7.0.0 or earlier,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000019-ALG-000018,config waf web-protection-profile inline-protection; edit <PROFILE>; set geo-block-list-policy <GEO_POLICY>; next; end
+Core: DoS protection,Application-layer and network-layer DoS prevention,7.0.0 or earlier,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000362-ALG-000155; ALG SRG-NET-000705-ALG-000110; ALG SRG-NET-000392-ALG-000148,config waf web-protection-profile inline-protection; edit <PROFILE>; set application-layer-dos-prevention <DOS_POLICY>; next; end
+Core: Bot mitigation,"Bot mitigation (known bots, threshold-based, biometrics-based, and bot deception)",7.0.0 or earlier,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000390-ALG-000139,config waf web-protection-profile inline-protection; edit <PROFILE>; set bot-mitigate-policy <BOT_POLICY>; next; end
+Core: Machine learning,Machine-learning anomaly detection,7.0.0 or earlier,ALG SRG-NET-000319-ALG-000153; ALG SRG-NET-000390-ALG-000139,config waf machine-learning-policy; edit <ID>; set status enable; set action-anomaly alert_deny; next; end
+Core: Authentication,Site Publish (authentication offloading and single sign-on for users),7.0.0 or earlier,ALG SRG-NET-000138-ALG-000063; ALG SRG-NET-000138-ALG-000088; ALG SRG-NET-000400-ALG-000097; ALG SRG-NET-000339-ALG-000090,config waf web-protection-profile inline-protection; edit <PROFILE>; set site-publisher-helper <SITE_PUBLISH_POLICY>; next; end
+Core: Authentication,Site Publish login pages (replacement messages),7.0.0 or earlier,ALG SRG-NET-000041-ALG-000022,GUI: System > Config > Replacement Message
+Core: Authentication,User tracking (session and login monitoring),7.0.0 or earlier,ALG SRG-NET-000213-ALG-000107; ALG SRG-NET-000517-ALG-000006; ALG SRG-NET-000503-ALG-000038,config waf web-protection-profile inline-protection; edit <PROFILE>; set user-tracking-policy <USER_TRACKING_POLICY>; next; end
+Core: Access control,X-Forwarded-For and original client IP handling,7.0.0 or earlier,ALG SRG-NET-000077-ALG-000046; ALG SRG-NET-000735-ALG-000130,config waf x-forwarded-for; edit <XFF_RULE>; set block-based-on-original-ip enable; config ip-list; edit 1; set ip <TRUSTED_PROXY_IP>; next; end; next; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set x-forwarded-for-rule <XFF_RULE>; next; end
+Core: FTP security,FTP security (FTP command restriction and file checks),7.0.0 or earlier,ALG SRG-NET-000512-ALG-000065,config server-policy policy; edit <POLICY>; set ftp-protection-profile <FTP_PROFILE>; next; end
+Core: Application delivery,"Caching, compression, URL rewriting, and acceleration",7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Vulnerability scanning,Web vulnerability scanner,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config system feature-visibility; set wvs disable; end
+API protection,Machine-learning-based API discovery and protection,7.0.0 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000319-ALG-000153,config waf api-learning-policy; edit <ID>; set status enable; set action-mlapi alert_deny; next; end
+GUI,Dashboard widgets and FortiView enhancements (Monitor and FortiView tabs removed),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+WAF actions,Client ID Block Period action (block a client by its FortiWeb client ID instead of its source IP),7.0.0 and later,ALG SRG-NET-000019-ALG-000018,— (an action value offered by the WAF modules)
+Logging and monitoring,Blocking source IP addresses directly from FortiView,7.0.0 and later,ALG SRG-NET-000019-ALG-000018,— (an action in FortiView)
+Authentication,OAuth 2.0 front-end authentication in Site Publish,7.0.0 and later,ALG SRG-NET-000138-ALG-000063; ALG SRG-NET-000138-ALG-000088,config waf web-protection-profile inline-protection; edit <PROFILE>; set site-publisher-helper <SITE_PUBLISH_POLICY>; next; end
+Signatures,Personally identifiable information signature dictionary in custom rules,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Credential stuffing defense with the FortiGuard online database,7.0.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000392-ALG-000142,config waf user-tracking rule; edit <RULE>; set credential-stuffing-protection enable; next; end
+Signatures,Exceptions in syntax-based SQL injection and XSS detection and in bot mitigation,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Network,"Default route priorities (system, HA static, and DHCP routes)",7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Multiple wildcard administrator users,7.0.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249,config system admin; edit <ADMIN>; set type remote-user; set wildcard enable; set admin-usergroup <GROUP>; next; end
+Management access,Shell access over SSH,7.0.0 and later,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000408-NDM-000314,config system global; set shell-access disable; end
+Certificates and TLS,SafeNet Network HSM high-availability group,7.0.0 and later,ALG SRG-NET-000755-ALG-000150,—
+Authentication,LDAP server health check,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (no ldap-health option found in the 8.0.8 CLI Reference)
+Logging,Configuration change event logging enhancement,7.0.0 and later,NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000095-NDM-000225,config log event-log; set status enable; end
+Logging,Traffic logging off by default (generated only for server policies that enable it),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config log traffic-log; set status disable; end
+Licensing,VM16 license (up to 16 vCPUs),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,FortiWeb-VM on OpenStack license file import method,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,OpenStack Wallaby support,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,FortiWeb-VM in multiple shared back-end pools behind an Azure load balancer,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,"Geo IP, IP list, and IP reputation checks at the TCP layer, with Deny (no log) and Period Block actions",7.0.0 and later,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000019-ALG-000018,config waf web-protection-profile inline-protection; edit <PROFILE>; set ip-list-policy <IP_LIST>; set geo-block-list-policy <GEO_POLICY>; set ip-intelligence enable; next; end
+Web protection,Link cloaking,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,Parameter and value data type checks in URL access rules,7.0.1 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000015-ALG-000016,config waf url-access-rule; edit <RULE>; config match-condition; edit 1; set url-access-parameter <PARAMETER_RULE>; next; end; next; end
+Custom rules,"Custom rule enhancements: Basic Authorization header check, and request and response filters in one rule",7.0.1 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000018-ALG-000017,config waf web-protection-profile inline-protection; edit <PROFILE>; set custom-access-policy <CUSTOM_POLICY>; next; end
+Server objects,"Cloud connector filters for server pool members (private and public DNS name, instance type)",7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Input validation,"Bypassing obviously invalid content (very long parameter names, non-printable characters) in the parameter decoder",7.0.1 and later,ALG SRG-NET-000380-ALG-000128,GUI: System > Config > Advanced
+Machine learning,"Anomaly detection enhancements (HMM pre-screening options, NoSQL injection detection)",7.0.1 and later,ALG SRG-NET-000319-ALG-000153; ALG SRG-NET-000319-ALG-000015,config waf machine-learning-policy; edit <ID>; set status enable; set action-anomaly alert_deny; next; end
+XML protection,IP address or port override in WSDL,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,Allowed methods checked in method override headers and parameters,7.0.1 and later,ALG SRG-NET-000512-ALG-000066,config waf allow-method-policy; edit <METHOD_POLICY>; set override-header enable; set override-parameter enable; next; end
+Access control,Blocking IP addresses from unknown countries (Geo IP),7.0.1 and later,ALG SRG-NET-000364-ALG-000122,config waf web-protection-profile inline-protection; edit <PROFILE>; set geo-block-list-policy <GEO_POLICY>; next; end (with Unknown Country/Region in the list)
+Protocol constraints,"HTTP protocol constraint exceptions for malformed requests, exception priority, and detailed attack logs",7.0.1 and later,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; next; end
+Server policy,"HTTP content routing table status column, search, and priority",7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+XML protection,Chunk decoding in XML protection (requests),7.0.1 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set xml-validation-policy <XML_POLICY>; next; end
+GUI,Web cache statistics in the Throughput widget,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,Virtual server names of up to 192 characters,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,Active-passive HA cluster with unicast heartbeat on KVM,7.0.1 and later,ALG SRG-NET-000365-ALG-000123,config system ha; set mode active-passive; set encryption enable; set key <HA_KEY>; end
+Cloud and VM,Cloud-init for FortiWeb-VM on Google Cloud,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Licensing,Flex-VM licensing,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+ZTNA,"Zero Trust Network Access (client certificates, EMS tags, and ZTNA rules)",7.0.2 and later,ALG SRG-NET-000015-ALG-000016; ALG SRG-NET-000138-ALG-000063; ALG SRG-NET-000166-ALG-000101,config server-policy policy; edit <POLICY>; set ztna-profile <ZTNA_PROFILE>; next; end
+ZTNA,FortiClient EMS integration through a fabric connector,7.0.2 and later,ALG SRG-NET-000138-ALG-000088,config system endpoint-control fctems; edit <EMS>; set server <EMS_SERVER>; set server-verification enable; next; end
+Scripting,Lua scripting,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,Threat Analytics in FortiWeb Cloud,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (a cloud service outside the enclave; leave unconfigured unless authorized)
+GUI,"Machine learning menus moved under Web Protection, Bot Mitigation, and API Protection",7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Machine-learning API protection statistics,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+GUI,Domain usage statistics widget,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,X-Forwarded-For full scan against IP reputation,7.0.2 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000077-ALG-000046,GUI: Server Objects > X-Forwarded-For
+Authentication,Credential stuffing check against the local and online databases,7.0.2 and later,ALG SRG-NET-000019-ALG-000018,config waf user-tracking rule; edit <RULE>; set credential-stuffing-protection enable; next; end
+Signatures,Signature sensitivity levels L1 to L4 (CLI),7.0.2 and later,ALG SRG-NET-000318-ALG-000152; ALG SRG-NET-000318-ALG-000014; ALG SRG-NET-000318-ALG-000151,config waf signature; edit <SIGNATURE_POLICY>; set sensitivity-level <LEVEL>; next; end
+Access control,HTTP method and protocol checks in URL access rules,7.0.2 and later,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000015-ALG-000016,config waf url-access-rule; edit <RULE>; config match-condition; edit 1; set only-protocol https; next; end; next; end
+Server objects,Port and sub-domain matching in protected host names,7.0.2 and later,ALG SRG-NET-000364-ALG-000122,config server-policy allow-hosts; edit <HOSTS>; config host-list; edit 1; set host <FQDN>; set ignore-port disable; set include-subdomains disable; next; end; next; end
+Malware and files,File security: clearing cached ICAP scan results and custom file types,7.0.2 and later,ALG SRG-NET-000248-ALG-000133,config waf file-upload-restriction-policy; edit <FILE_POLICY>; set icap-server-check enable; next; end
+Access control,Allow list at the server policy level,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server policy,Chunked encoding of responses,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config server-policy policy; edit <POLICY>; set chunk-encoding disable; next; end
+Server policy,More x509 certificate subject match options in content routing,7.0.2 and later,ALG SRG-NET-000166-ALG-000101,—
+Server policy,Editing the server pool from an HTTP content routing policy,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,"SSL cipher groups, and most ciphers available with HTTP/2",7.0.2 and later,ALG SRG-NET-000062-ALG-000150,config server-policy policy; edit <POLICY>; set ssl-cipher custom; set ssl-custom-cipher <APPROVED_CIPHERS>; next; end
+Authentication,Lower CPU use for SAML authentication,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Intermediate CA (partial certificate chain) validation of client certificates,7.0.2 and later,ALG SRG-NET-000164-ALG-000100,config system certificate verify; edit <VERIFIER>; set partial-chain disable; next; end (validate the full path to the DoD root)
+Certificates and TLS,Let's Encrypt certificate renewal interval and multiple FQDNs,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Password change for users authenticated by a RADIUS server,7.0.2 and later,ALG SRG-NET-000138-ALG-000088,—
+Authentication,FortiAuthenticator authorization,7.0.2 and later,ALG SRG-NET-000138-ALG-000088; ALG SRG-NET-000140-ALG-000094,—
+Administrator accounts,More than one ADOM for an administrator,7.0.2 and later,NDM SRG-APP-000033-NDM-000212,config system admin; edit <ADMIN>; set domains <ADOM_NAME>; next; end
+Logging,Signature database version in the event log,7.0.2 and later,ALG SRG-NET-000019-ALG-000019,config log event-log; set status enable; end
+Logging,XML validation attack log details,7.0.2 and later,ALG SRG-NET-000074-ALG-000043,config log attack-log; set status enable; end
+Logging,OWASP API Top 10 attack log field,7.0.2 and later,ALG SRG-NET-000074-ALG-000043,config waf web-protection-profile inline-protection; edit <PROFILE>; set owasp_api_top10_log_field enable; next; end
+Diagnostics,Update history in diagnose system update,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,diagnose debug comlog command,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,Health probe port behind an Azure load balancer,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platforms,"Higher certificate maximums on VM16, 4000E, and 4000F",7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,Full configuration synchronization in HA on Google Cloud,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,Unicast HA heartbeat on VMware,7.0.2 and later,ALG SRG-NET-000365-ALG-000123,—
+Bot mitigation,ML-based bot detection against Challenge Collapsar (CC) attacks,7.0.3 and later,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000362-ALG-000155,config waf bot-detection-policy; edit <ID>; set model-status enable; set action alert_deny; next; end
+Server policy,100-continue header handling,7.0.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,HA failover when proxyd writes a core dump,7.0.4 and later,ALG SRG-NET-000365-ALG-000123,config server-policy setting; set enable-core-file enable; set corefile-ha-failover enable; end
+Certificates and TLS,TLS 1.2 signature algorithm compatibility setting,7.0.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config server-policy setting; set tls12-compatible-sigalg disable; end
+Diagnostics,"Core dumps enabled by default, with a limited generation rate",7.0.5 and later,ALG SRG-NET-000236-ALG-000119,config server-policy setting; set enable-core-file enable; end
+API protection,"API gateway: per-user rate limits, X-RateLimit headers, API key refresh, dynamic keys, and JWT",7.2.0 and later,ALG SRG-NET-000015-ALG-000016; ALG SRG-NET-000362-ALG-000112,config waf web-protection-profile inline-protection; edit <PROFILE>; set api-management-policy <API_POLICY>; next; end
+Input validation,"Parameter validation: scan location, maximum number of parameters, and JSON parameters",7.2.0 and later,ALG SRG-NET-000401-ALG-000127,config waf input-rule; edit <RULE>; set maximum-parameter-number <N>; set json-parameter-support enable; next; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set parameter-validation-rule <INPUT_RULES>; next; end
+Client management,"Client management: multiple threat score profiles, Alert and Alert & Deny actions, signature-only scoring, threat history",7.2.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000390-ALG-000139,config waf web-protection-profile inline-protection; edit <PROFILE>; set client-management enable; set threat-score-profile <THREAT_SCORE_PROFILE>; next; end
+Signatures,Signature sensitivity levels in the web UI,7.2.0 and later,ALG SRG-NET-000318-ALG-000152; ALG SRG-NET-000318-ALG-000014; ALG SRG-NET-000318-ALG-000151,GUI: Web Protection > Known Attacks > Signatures
+Authentication,FortiToken Mobile push notification through a FortiAuthenticator RADIUS server,7.2.0 and later,ALG SRG-NET-000140-ALG-000094; ALG SRG-NET-000339-ALG-000090,config user radius-user; edit <RADIUS>; set fac-push enable; next; end
+Server policy,Server policy tags,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Certificate and host name verification for LDAP over TLS,7.2.0 and later,ALG SRG-NET-000138-ALG-000088; ALG SRG-NET-000164-ALG-000100,config user ldap-user; edit <LDAP>; set ssl-connection enable; set protocol ldaps; set ca-cert <CA_CERT>; next; end
+Certificates and TLS,Let's Encrypt TLS-ALPN-01 and DNS-01 challenges,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,User tracking with JSON-format logins,7.2.0 and later,ALG SRG-NET-000503-ALG-000038,config waf web-protection-profile inline-protection; edit <PROFILE>; set user-tracking-policy <USER_TRACKING_POLICY>; next; end
+Scripting,Lua script update: predefined HTTP_REWRITE_BODY script,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Global Resources page (usage and maximum configuration values),7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,HA debug commands,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Debug file download for secondary HA members,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Real-time packet capture and flow debug logs,7.2.0 and later,NDM SRG-APP-000408-NDM-000314,GUI: Network > Packet Capture
+System,TCP buffer size of up to 3992 KB,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,ASAN executables in the debug symbol file,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Event log for JSON schema upload failures,7.2.0 and later,NDM SRG-APP-000095-NDM-000225,—
+Administrator accounts,Administrator password hash changed from SHA-1 to SHA-256,7.2.0 and later,NDM SRG-APP-000171-NDM-000258,— (applies when a password is set or changed)
+Management access,Disabling the configuration synchronization port (TCP 995),7.2.0 and later,NDM SRG-APP-000142-NDM-000245,GUI: System > Admin > Settings
+Administrator accounts,Global menu and global CLI commands hidden from ADOM administrators,7.2.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271,—
+Platforms,New platform: FortiWeb 1000F,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Licensing,Flex-VM license import through cloud-init on AWS,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Custom rules,"Custom rule enhancements: separate HTTP Methods filter (with WebDAV, RPC, and others) and parameter location",7.2.1 and later,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000019-ALG-000018,config waf web-protection-profile inline-protection; edit <PROFILE>; set custom-access-policy <CUSTOM_POLICY>; next; end
+Access control,Reverse DNS lookup timeout in URL access rules,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,IP groups,7.2.1 and later,ALG SRG-NET-000364-ALG-000122,config server-policy ip-group; edit <IP_GROUP>; config members; edit 1; set ip <ADDRESS_RANGE>; next; end; next; end
+Scripting,Lua script update: predefined SSL_COMMANDS script,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,JSON protection: schema version check and schema groups,7.2.1 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set json-validation-policy <JSON_POLICY>; next; end
+API protection,"OpenAPI ""format"" (email, uuid) for string types",7.2.1 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set openapi-validation-policy <OPENAPI_POLICY>; next; end
+Application delivery,Insertion of several HTTP headers in a URL rewrite rule,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Security Fabric,TLS host and peer verification for Fetch URL and Quarantine IP,7.2.1 and later,ALG SRG-NET-000164-ALG-000100,config system fortigate-integration; set server-verification enable; set ca-cert <CA_CERT>; end
+ZTNA,Server certificate validation for the FortiClient EMS connector,7.2.1 and later,ALG SRG-NET-000164-ALG-000100,config system endpoint-control fctems; edit <EMS>; set server-verification enable; set ca-cert <CA_CERT>; next; end
+Authentication,Strict TLS verification with a custom CA for OAuth authorization servers,7.2.1 and later,ALG SRG-NET-000164-ALG-000100,config user oauth-user request; edit <REQUEST>; set tls-check enable; set tls-ca <CA_CERT>; next; end
+Load balancing,Least response time and probabilistic weighted least response time algorithms,7.2.1 and later,ALG SRG-NET-000362-ALG-000120,config server-policy server-pool; edit <POOL>; set lb-algo least-response-time; next; end
+Server policy,"Request redirection: naked domain to www, and 301 for HTTP to HTTPS",7.2.1 and later,ALG SRG-NET-000062-ALG-000150,config server-policy policy; edit <POLICY>; set HTTP-to-HTTPS enable; next; end
+Load balancing,Health check result sharing across server pools,7.2.1 and later,ALG SRG-NET-000365-ALG-000123,config server-policy health; edit <HEALTH_CHECK>; set group-id <ID>; set role master; next; end
+Management access,Shell access enhancements: command history and trusted hosts,7.2.1 and later,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000142-NDM-000245,"config system global; set shell-access disable; end (if Fortinet support needs shell access, restrict it to trusted hosts)"
+Replacement messages,%%USERNAME%% and %%RAWNAME%% in replacement messages,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,"RFC 7919 FFDHE groups for inbound and outbound HTTPS (titled ""RFC-9719 Comply"" in the release notes)",7.2.1 and later,ALG SRG-NET-000062-ALG-000150,config server-policy policy; edit <POLICY>; set rfc7919-comply enable; next; end
+Certificates and TLS,"Let's Encrypt RSA keys of 2048, 3072, or 4096 bits",7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Attack and traffic packet logs to syslog in JSON over TCP or TLS (ELK),7.2.1 and later,ALG SRG-NET-000334-ALG-000050; ALG SRG-NET-000511-ALG-000051,config log syslog-policy; edit <SYSLOG_POLICY>; config syslog-server-list; edit 1; set server <SYSLOG_SERVER>; set proto tls; set format json; next; end; next; end
+Logging,"Host and URL in RBE, CAPTCHA, and reCAPTCHA attack logs",7.2.1 and later,ALG SRG-NET-000074-ALG-000043,—
+Bot mitigation,Editable Google reCAPTCHA service URL,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,ADOM administrators can only view the VIPs of their ADOM,7.2.1 and later,NDM SRG-APP-000033-NDM-000212,—
+Licensing,Threat Analytics 14-day evaluation license,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Management access,"Firewall admin policy (administrative access by interface, address, and service)",7.2.2 and later,NDM SRG-APP-000038-NDM-000213; NDM SRG-APP-000408-NDM-000314,config system firewall admin-policy; config firewall-admin-policy-match-list; edit 1; set in-interface <MGMT_PORT>; set src-address <MGMT_SUBNET>; set action accept; next; end; end
+Server objects,Uploading IP group members from a CSV file,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,IP groups in IP reputation exceptions,7.2.2 and later,ALG SRG-NET-000019-ALG-000018,—
+Authentication,Site Publish rule maximum raised from 216 to 512,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,TLS settings for ADFS proxy server pools,7.2.2 and later,ALG SRG-NET-000062-ALG-000150,GUI: Server Objects > Server > Server Pool
+Cloud and VM,FortiWeb-VM HA on Alibaba Cloud (including SCCC),7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,IMDSv2 for FortiWeb-VM on AWS,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Protocol constraints,HTTP/2 RST_STREAM check in HTTP protocol constraints,7.2.5+; 7.4.1+,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000512-ALG-000066,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; next; end
+Bot mitigation,Counter setting (keep occurrence count) in threshold-based detection,7.2.8+; 7.4.3+,ALG SRG-NET-000362-ALG-000112,config waf threshold-based-detection; edit <POLICY>; set keep-occurrence-count enable; next; end
+Access control,External IP address auto-retrieval (IP address connector),7.4.0 and later,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000019-ALG-000018,config system external-resource; edit <RESOURCE>; set status enable; set protocol HTTPS; set verify-host-cert enable; set ca <CA_CERT>; next; end
+API protection,Continuous learning in ML-based API protection,7.4.0 and later,ALG SRG-NET-000401-ALG-000127,config waf api-learning-policy; edit <ID>; set status enable; next; end
+Security Fabric,Automation (actions triggered by event logs),7.4.0 and later,NDM SRG-APP-000360-NDM-000295; ALG SRG-NET-000392-ALG-000141,config system automation-stitch; edit <STITCH>; set status enable; set trigger <TRIGGER>; next; end
+Logging and monitoring,OWASP Top 10 compliance dashboard,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud and VM,FortiWeb Kubernetes Ingress Controller,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,"gRPC protocol constraints (signature scanning, rate limiting, size limiting)",7.4.0 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000362-ALG-000112,config waf web-protection-profile inline-protection; edit <PROFILE>; set grpc-security-policy <GRPC_POLICY>; next; end
+Authentication,OpenID Connect (OIDC) authentication with OAuth,7.4.0 and later,ALG SRG-NET-000138-ALG-000063; ALG SRG-NET-000138-ALG-000088,config user oauth-user server; edit <OAUTH_SERVER>; set oidc enable; next; end
+Authentication,Okta OAuth request template,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Bot mitigation,Bot trait checking in biometrics-based detection,7.4.0 and later,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000390-ALG-000139,config waf biometrics-based-detection; edit <POLICY>; set bot-traits enable; next; end
+Logging and monitoring,FortiView Log Analysis,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Protocol constraints,"HTTP protocol constraint checks (Transfer-Encoding, body length, missing Host, range overlap, multipart)",7.4.0 and later,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; next; end
+Application delivery,"More flexible URL rewriting rules (methods, bodies, status codes, header removal and renaming)",7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,"X-Forwarded-For header enhancement (address position, deleting or merging earlier headers)",7.4.0 and later,ALG SRG-NET-000077-ALG-000046,GUI: Server Objects > X-Forwarded-For
+Bot mitigation,CAPTCHA challenge difficulty levels,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,Override headers in protected host names,7.4.0 and later,ALG SRG-NET-000364-ALG-000122,config server-policy allow-hosts; edit <HOSTS>; config host-list; edit 1; set host <FQDN>; set override-headers enable; next; end; next; end
+Authentication,Default domain prefix for the NTLM delegation method,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server policy,Multiple IP addresses and ranges in HTTP content routing rules,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Input validation,Cache mode in parameter validation,7.4.0 and later,ALG SRG-NET-000401-ALG-000127,config waf parameter-validation-rule; edit <RULE>; set cache-mode enable; next; end
+Application delivery,Web cache exceptions by HTTP return code,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Predefined allow list entry for Let's Encrypt challenge requests,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Firmware and configuration,Configuration and certificate restore from SFTP and FTP servers,7.4.0 and later,NDM SRG-APP-000516-NDM-000340,execute restore config sftp <FILE> <SERVER_IP> <PASSWORD>
+Load balancing,Session-based (per-transaction) persistence,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Use of a previously retrieved CRL when CRL retrieval fails,7.4.0 and later,ALG SRG-NET-000345-ALG-000099; ALG SRG-NET-000164-ALG-000100,"config system certificate verify; edit <VERIFIER>; set crl-allow-expired disable; next; end (enable only temporarily, as the Admin Guide advises)"
+Administrator accounts,Administrator login with FortiCloud accounts (SSO),7.4.0 and later,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000516-NDM-000336,config system global; set admin-forticloud-sso-login disable; end
+Management access,Remote access from FortiCloud,7.4.0 and later,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000408-NDM-000314,— (a cloud service outside the enclave; leave unconfigured)
+API protection,ML-based API protection: schema protection and threat protection,7.4.1 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000319-ALG-000153,config waf api-learning-policy; edit <ID>; set status enable; set action-mlapi alert_deny; next; end
+API protection,GraphQL protection,7.4.1 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000362-ALG-000112,GUI: API Protection > GraphQL Protection
+Application delivery,Waiting room,7.4.1 and later,ALG SRG-NET-000705-ALG-000110,config waf waiting-room-policy; edit <POLICY>; set total-active-users <N>; set new-users-per-min <N>; next; end
+Bot mitigation,FortiGuard Advanced Bot Protection (SaaS) policy,7.4.1 and later,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000390-ALG-000139,config system global; set advanced-bot-protection enable; end; config waf web-protection-profile inline-protection; edit <PROFILE>; set advanced-bot-protection <ABP_POLICY>; next; end (a cloud service; use only if authorized)
+XML protection,XML Signature Wrapping (XSW) detection,7.4.1 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000230-ALG-000113,config waf xml-validation rule; edit <RULE>; set xsw <XSW_RULE>; next; end
+XML protection,DTD validation for XML requests,7.4.1 and later,ALG SRG-NET-000401-ALG-000127,config waf xml-validation rule; edit <RULE>; set dtd-file <DTD_FILE>; next; end
+Signatures,"Signature enhancements: Hyperscan PII detection in response bodies, and category and sensitivity details",7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Bot mitigation,Biometrics-based bot detection accuracy and trait weighting,7.4.1 and later,ALG SRG-NET-000362-ALG-000112,—
+Bot mitigation,reCAPTCHA v3,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (a Google service outside the enclave)
+Client-side protection,Permissions-Policy header (replacing Feature-Policy) in HTTP header security,7.4.1 and later,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-header-security <HEADER_SECURITY_POLICY>; next; end
+Authentication,Multiple SAML servers in Site Publish,7.4.1 and later,ALG SRG-NET-000138-ALG-000088,—
+Application delivery,Search of cached items by URL,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,IP address conflict event,7.4.1 and later,NDM SRG-APP-000095-NDM-000225,—
+Logging,"Log type selection (attack, event, traffic) for local storage and log forwarding",7.4.1 and later,NDM SRG-APP-000515-NDM-000325; ALG SRG-NET-000334-ALG-000050,GUI: Log&Report > Log Config > Global Log Settings
+Logging,ZIP compression of alert email attachments,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server policy,HTTP/2 window size setting,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Data loss prevention,FortiGuard Data Loss Prevention service,7.4.2 and later,ALG SRG-NET-000391-ALG-000140,GUI: Web Protection > Data Loss Prevention
+Security Fabric,FortiGSLB connector,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,2023 OWASP API Security Top 10 categories in attack logs,7.4.2 and later,ALG SRG-NET-000074-ALG-000043,—
+Licensing,Enterprise bundle license,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Trust establishment with ADFS servers disabled by default,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+DoS protection,TCP flood prevention moved after the IP list in the scan sequence,7.4.2 and later,ALG SRG-NET-000705-ALG-000110,—
+Application delivery,Several URL rewriting actions on one request,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,Bypassing the AJAX check in MiTB protection,7.4.2 and later,ALG SRG-NET-000230-ALG-000113,config waf mitb-rule; edit <RULE>; set ajaxcheck enable; next; end
+Client management,Expiration time of the cookiesession1 cookie,7.4.2 and later,ALG SRG-NET-000213-ALG-000107,config waf web-protection-profile inline-protection; edit <PROFILE>; set http-session-cookie enable; set http-session-timeout <DAYS>; next; end
+Licensing,Flex-VM license auto-deployment in deployment templates,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platforms,New platform: FortiWeb 400F,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client management,Delete All and Restore All in the client management monitor,7.4.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Malware and files,application/octet-stream filename detection for logging,7.4.3 and later,ALG SRG-NET-000074-ALG-000043,—
+Logging,Traffic log priority (attack logs first when the log queue is nearly full),7.4.4 and later,ALG SRG-NET-000335-ALG-000053,config log traffic-log; set low-priority enable; end
+Logging,Configurable traffic packet payload size sent to log servers,7.4.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,"SSL error logs, globally and per server policy",7.4.4+; 7.6.0+,ALG SRG-NET-000074-ALG-000043,config log attack-log; set status enable; set no-ssl-error disable; end; config server-policy policy; edit <POLICY>; set no-ssl-error-log disable; next; end
+Access control,Geo IP filtering with Allow Mode (deny all regions not listed),7.4.8 and later,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000202-ALG-000124,— (no Allow Mode setting found in the 8.0.8 CLI Reference; configure it in the Geo IP policy in the web UI)
+Bot mitigation,Login status reporting to Advanced Bot Protection,7.4.8 and later,ALG SRG-NET-000362-ALG-000112,—
+Diagnostics,Diagnostics for TCP connection termination reasons,7.4.9 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Protocol constraints,"HTTP/2 and HTTP/3 protocol constraint hardening (header line count, initial window size range)",7.4.13+; 7.6.9+; 8.0.6+,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000362-ALG-000112,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-protocol-parameter-restriction <CONSTRAINTS>; next; end
+Protocol,HTTP/3 support,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Threat protection model update,7.6.0 and later,ALG SRG-NET-000319-ALG-000153,—
+Client-side protection,Built-in allowed domains in MiTB protection,7.6.0 and later,ALG SRG-NET-000230-ALG-000113,—
+Web protection,AJAX check for cross-site request forgery (CSRF) requests,7.6.0 and later,ALG SRG-NET-000230-ALG-000113,config waf web-protection-profile inline-protection; edit <PROFILE>; set csrf-protection <CSRF_RULE>; next; end
+DoS protection,DoS protection exception policy,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Obscuring sensitive data in gRPC API responses,7.6.0 and later,ALG SRG-NET-000391-ALG-000140,—
+Bot mitigation,Known good bots subcategories,7.6.0 and later,ALG SRG-NET-000362-ALG-000112,—
+Application delivery,URL rewrite enhancements,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Application delivery,"""deflate"" compression type",7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,Trusted IP addresses for X-Forwarded-For (XFF trust IPs),7.6.0 and later,ALG SRG-NET-000077-ALG-000046; ALG SRG-NET-000735-ALG-000130,config waf x-forwarded-for; edit <XFF_RULE>; config ip-list; edit 1; set ip <TRUSTED_PROXY_IP>; next; end; next; end
+Application delivery,Custom waiting room display page,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Security Fabric,Quarantine IP settings moved to Security Fabric > Fabric Connectors,7.6.0 and later,ALG SRG-NET-000019-ALG-000018,config waf web-protection-profile inline-protection; edit <PROFILE>; set fortigate-quarantined-ips enable; next; end
+Replacement messages,500 error page enhancement,7.6.0 and later,ALG SRG-NET-000273-ALG-000129,GUI: System > Config > Replacement Message
+Malware and files,Signature scan of uploaded files,7.6.0 and later,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000319-ALG-000015,config waf web-protection-profile inline-protection; edit <PROFILE>; set signature-extended-detection FileUpload; next; end
+Scripting,Lua scripts for content routing,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server policy,HTTP content routing table search,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Load balancing,Server inheriting the server pool health check in TTP mode,7.6.0 and later,ALG SRG-NET-000365-ALG-000123,config server-policy server-pool; edit <POOL>; config pserver-list; edit <ID>; set health-check-inherit enable; next; end; next; end
+Authentication,Password change with the PAP scheme through a RADIUS server,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Retrieving LDAP user attributes,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Automatic generation of SAML and OAuth login pages,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Administrator single sign-on with SAML,7.6.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000149-NDM-000247,config system saml; set status enable; set idp-entity-id <IDP_ENTITY_ID>; set idp-single-sign-on-url <IDP_SSO_URL>; set idp-single-logout-url <IDP_SLO_URL>; end; config system sso-admin; edit <ADMIN>; set access-profile <PROFILE>; next; end
+Network,Warning message on local port exhaustion,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,FortiWeb performance data in FortiAnalyzer,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Replacement messages,Replacement message enhancements,7.6.0 and later,ALG SRG-NET-000273-ALG-000129,GUI: System > Config > Replacement Message
+System,Release tags,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Debug command enhancements,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Traffic log enhancements,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,FortiView original source,7.6.0 and later,ALG SRG-NET-000077-ALG-000046,—
+Logging and monitoring,FortiView Log Analysis enhancement,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+GUI,Displaying configuration in its context,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,FortiWeb Hyper-V HA cluster with unicast heartbeat,7.6.0 and later,ALG SRG-NET-000365-ALG-000123,—
+High availability,Synchronizing health check status in HA mode,7.6.0 and later,ALG SRG-NET-000365-ALG-000123,config system ha; set hlck-sync enable; end
+Security Fabric,Security Fabric automation enhancements,7.6.0 and later,ALG SRG-NET-000392-ALG-000141,—
+Cloud and VM,Ingress Controller enhancements,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Scanning for sensitive data leakage in API endpoints,7.6.1 and later,ALG SRG-NET-000391-ALG-000140,—
+API protection,ML-based API protection user interface,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Signatures,Abnormal chunk size detection in the signature module,7.6.1 and later,ALG SRG-NET-000512-ALG-000066; ALG SRG-NET-000380-ALG-000128,config waf web-protection-profile inline-protection; edit <PROFILE>; set signature-rule <SIGNATURE_POLICY>; next; end
+Web protection,JavaScript event check for CSRF requests,7.6.1 and later,ALG SRG-NET-000230-ALG-000113,config waf web-protection-profile inline-protection; edit <PROFILE>; set csrf-protection <CSRF_RULE>; next; end
+Protocol,HTTP/3 traffic in more modules,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,OCSP-based client certificate verification,7.6.1 and later,ALG SRG-NET-000164-ALG-000100; ALG SRG-NET-000345-ALG-000099,config system certificate ocsp-responder; edit <OCSP>; set ocsp-url <DOD_OCSP_URL>; set caching enable; next; end
+Certificates and TLS,Wildcard domain names in Let's Encrypt certificates,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+FTP security,Client certificate verification in FTPS connections,7.6.1 and later,ALG SRG-NET-000164-ALG-000100,—
+Certificates and TLS,Certificate signing requests for administrator certificates,7.6.1 and later,NDM SRG-APP-000516-NDM-000344,GUI: System > Admin > Certificates
+Time,"Multiple NTP servers and NTP authentication (SHA-1, SHA-256, AES-128, AES-256)",7.6.1 and later,NDM SRG-APP-000395-NDM-000347; NDM SRG-APP-000920-NDM-000320,config system ntp; set ntpsync enable; config ntp-server; edit 1; set server <NTP_SERVER>; set authentication enable; set key-type sha256; set key-id <KEY_ID>; set key <KEY>; next; end; end
+System,Maximum value changes,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,FortiView bot analysis enhancements,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+SNMP,SNMPv3 SHA-2 authentication and AES-256 privacy,7.6.1 and later,NDM SRG-APP-000395-NDM-000310,config system snmp user; edit <SNMP_USER>; set security-level authpriv; set auth-proto sha256; set priv-proto aes256; next; end
+Diagnostics,Troubleshooting high-CPU-cost PCRE pattern matching,7.6.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,IPv6 syslog servers,7.6.1 and later,NDM SRG-APP-000515-NDM-000325,—
+High availability,High-volume active-active HA behind a load balancer,7.6.1 and later,ALG SRG-NET-000362-ALG-000120,—
+System,Disk expansion (data partition enlarged during the 7.6.2 upgrade),7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,SSL stripping detection in MiTB protection,7.6.3 and later,ALG SRG-NET-000230-ALG-000113; ALG SRG-NET-000062-ALG-000150,config waf web-protection-profile inline-protection; edit <PROFILE>; set mitb-protection <MITB_POLICY>; next; end
+Bot mitigation,Biometrics-based detection enhancements,7.6.3 and later,ALG SRG-NET-000362-ALG-000112,—
+Signatures,Syntax-based detection enhancements,7.6.3 and later,ALG SRG-NET-000318-ALG-000152; ALG SRG-NET-000319-ALG-000020; ALG SRG-NET-000318-ALG-000014,config waf web-protection-profile inline-protection; edit <PROFILE>; set syntax-based-attack-detection <SBD_POLICY>; next; end
+API protection,OpenAPI schema validation enhancement,7.6.3 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set openapi-validation-policy <OPENAPI_POLICY>; next; end
+Application delivery,Zstandard (zstd) compression support,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,gRPC over HTTP/1,7.6.3 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set grpc-security-policy <GRPC_POLICY>; next; end
+Client management,Threat weight configuration enhancements,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Microsoft Azure OAuth,7.6.3 and later,ALG SRG-NET-000138-ALG-000088,—
+Cloud and VM,MANA network on Azure,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Securosys Primus HSM,7.6.3 and later,ALG SRG-NET-000755-ALG-000150; ALG SRG-NET-000062-ALG-000092,config server-policy setting; set hsm enable; set hsm-manufacturer primus; end
+Malware and files,Region-based connectivity for FortiWeb Cloud Sandbox,7.6.3 and later,ALG SRG-NET-000248-ALG-000133,config system fortisandbox; set type cloud; set region <REGION>; end
+System,TPM-based encryption of configuration passwords and certificates,7.6.3 and later,ALG SRG-NET-000755-ALG-000150,config system encryption-method; set private-encryption-key enable; end
+API protection,API gateway configuration object limits,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+GUI,SOCaaS license status in the dashboard,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cryptography,Expanded cipher support (ECDHE-RSA AES-GCM) in FIPS-CC mode,7.6.3 and later,ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000062-ALG-000150,config system fips-cc; set status enable; end
+Logging,FortiAnalyzer Cloud,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (a cloud service outside the enclave; use an on-premises FortiAnalyzer)
+Logging,Logging of SNMPv3 authentication failures,7.6.3 and later,NDM SRG-APP-000395-NDM-000310; NDM SRG-APP-000503-NDM-000320,—
+Diagnostics,Object pool memory leak detection in proxyd,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,CPU and memory monitoring,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Data loss prevention,DLP exceptions for fine-grained bypass control,7.6.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Learning logic for ML-based API protection,7.6.4 and later,ALG SRG-NET-000401-ALG-000127,—
+Server objects,Wildcard matching in global cookie allow lists,7.6.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Restricting weak TLS signature algorithms (SHA-1 and SHA-224),7.6.4 and later,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000510-ALG-000025,— (the 7.6.4 Admin Guide documents restrict-weak-sign-algo under config server-policy setting; it is not in the 8.0.8 CLI Reference)
+Platforms,Higher configuration maximums for the 4000F platform,7.6.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Schema line numbers in OpenAPI validation attack logs,7.6.4 and later,ALG SRG-NET-000074-ALG-000043,—
+Security Fabric,STIX/TAXII support for the IP address connector,7.6.4 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000392-ALG-000142,—
+Server policy,Source IP allow list for bypassing monitor traffic in TTP mode,7.6.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Server latency event logging,7.6.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Custom certificate and key for SAML service provider (SP) metadata,7.6.8+; 8.0.3+,ALG SRG-NET-000230-ALG-000113,config user saml-user; edit <SAML_SERVER>; set select-custom-certificate enable; set custom-certificate <CERT>; next; end
+Certificates and TLS,Luna HSM enhancements,7.6.8+; 8.0.7+,ALG SRG-NET-000755-ALG-000150,GUI: System > Config > Luna HSM
+Custom rules,IP connector as a source IP filter in custom policy rules,7.6.10 and later,ALG SRG-NET-000364-ALG-000122,config waf web-protection-profile inline-protection; edit <PROFILE>; set custom-access-policy <CUSTOM_POLICY>; next; end
+Authentication,Custom port for SAML service provider URLs,7.6.10 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Configured threshold shown in DoS protection attack logs,7.6.10 and later,ALG SRG-NET-000074-ALG-000043; ALG SRG-NET-000392-ALG-000148,—
+FortiAI,FortiAI integration,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,Client-side security module (menu for client-side features),8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,Client-side protection (monitoring of third-party scripts and page content),8.0.0 and later,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109,config waf web-protection-profile inline-protection; edit <PROFILE>; set client-side-protection-policy <CSP_POLICY>; next; end
+Client-side protection,Subresource Integrity (SRI) check,8.0.0 and later,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109,config waf web-protection-profile inline-protection; edit <PROFILE>; set subresource-integrity-policy <SRI_POLICY>; next; end
+Client-side protection,Expanded HTTP header security support,8.0.0 and later,ALG SRG-NET-000228-ALG-000108,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-header-security <HEADER_SECURITY_POLICY>; next; end
+Signatures,Syntax-based detection for command injection,8.0.0 and later,ALG SRG-NET-000318-ALG-000014; ALG SRG-NET-000319-ALG-000015,config waf web-protection-profile inline-protection; edit <PROFILE>; set syntax-based-attack-detection <SBD_POLICY>; next; end
+Bot mitigation,Puzzle CAPTCHA bot confirmation,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Malware and files,File list module (MD5 and SHA-256 file hash matching),8.0.0 and later,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000249-ALG-000134,config waf web-protection-profile inline-protection; edit <PROFILE>; set file-list-policy <FILE_LIST>; next; end
+Scripting,Lua enhancements for fine-grained WAF control,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Mobile token verification in the web protection profile,8.0.0 and later,ALG SRG-NET-000230-ALG-000113,—
+Bot mitigation,Client ID-based occurrence tracking in threshold-based detection,8.0.0 and later,ALG SRG-NET-000362-ALG-000112,config waf threshold-based-detection; edit <POLICY>; set tracking-type client-id; next; end
+DoS protection,Slow header attack detection,8.0.0 and later,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000362-ALG-000155,config waf threshold-based-detection; edit <POLICY>; set slow-attack-detection enable; set slow-attack-action alert_deny; next; end
+Custom rules,Syntax-based detection in custom rules,8.0.0 and later,ALG SRG-NET-000319-ALG-000020,—
+API protection,Zombie API discovery,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Machine learning,URL clustering for machine learning,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Malware and files,File security for large file uploads,8.0.0 and later,ALG SRG-NET-000248-ALG-000133,—
+Server objects,Duplicating the XFF header to a custom header,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Custom rules,Updated label for authorization header validation in custom rules,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Application delivery,Interaction between web cache and WAF modules,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Replacement messages,Replacement messages per HTTP content routing policy,8.0.0 and later,ALG SRG-NET-000273-ALG-000129,—
+Scripting,Lua scripting with HTTP/3,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Application delivery,Image acceleration,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,UPN format in Kerberos constrained delegation,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Legacy authentication commands removed (Site Publish replaces them),8.0.0 and later,ALG SRG-NET-000138-ALG-000063,config waf web-protection-profile inline-protection; edit <PROFILE>; set site-publisher-helper <SITE_PUBLISH_POLICY>; next; end
+Certificates and TLS,Primus HSM certificates for administrator web UI access,8.0.0 and later,NDM SRG-APP-000516-NDM-000344,—
+Certificates and TLS,ACME challenge replication in clustered deployments,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,CPU resource allocation with daemon grouping,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,DNS resolution performance,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client management,Client management dashboard monitoring,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,"Flow trace filtering by content routing policy, and debug duration",8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Diagnostic command for shared signature instances,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Watchdog logging and recovery for worker thread failures,8.0.0 and later,ALG SRG-NET-000236-ALG-000119,—
+High availability,Manual HA failover trigger,8.0.0 and later,ALG SRG-NET-000365-ALG-000123,execute ha failover status
+FortiAI,Analysis of individual attack logs with FortiAI,8.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,MCP security for streamable HTTP and SSE,8.0.3 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set mcp-security-policy <MCP_POLICY>; next; end
+Client-side protection,Client-side protection dashboard,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,API discovery and protection enhancements,8.0.3 and later,ALG SRG-NET-000401-ALG-000127,—
+API protection,JWT verification and mobile token security,8.0.3 and later,ALG SRG-NET-000230-ALG-000113; ALG SRG-NET-000015-ALG-000016,config waf mobile-api-protection-rule; edit <RULE>; set jwt-signature-scan enable; next; end
+Signatures,False positive mitigation for signature-based protection,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Signatures,More detection targets (request body) for syntax-based detection,8.0.3 and later,ALG SRG-NET-000319-ALG-000020; ALG SRG-NET-000319-ALG-000015,config waf web-protection-profile inline-protection; edit <PROFILE>; set syntax-based-attack-detection <SBD_POLICY>; next; end
+Custom rules,Custom tracking occurrence matching in custom rules,8.0.3 and later,ALG SRG-NET-000019-ALG-000018,—
+Bot mitigation,Source IP control for ML-based bot detection,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,Optional URL access parameters,8.0.3 and later,ALG SRG-NET-000401-ALG-000127,—
+Malware and files,File name and host information in ICAP file scanning,8.0.3 and later,ALG SRG-NET-000248-ALG-000133,—
+Authentication,OPTIONS requests bypass authentication,8.0.3 and later,ALG SRG-NET-000138-ALG-000063,— (review: OPTIONS requests reach the server without authentication)
+Certificates and TLS,ACME External Account Binding (EAB) for third-party certificate providers,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server objects,Comments in IP list entries and HTTP content routing rules,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Post-quantum cryptography (ML-KEM key exchange groups),8.0.3 and later,ALG SRG-NET-000062-ALG-000150,config server-policy policy; edit <POLICY>; set tls-v13 enable; set tls-pqc-support enable; set tls-pqc-groups <ML_KEM_GROUPS>; next; end
+Scripting,Global key-value table for Lua scripts,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,Original URL match in URL filtering,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Custom user name source for SAML assertions,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,JWT OIDC ID token forwarding in Site Publish,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Access token scope enforcement in OAuth resource server mode,8.0.3 and later,ALG SRG-NET-000015-ALG-000016,—
+Malware and files,Improved antivirus scanning for WAF modules,8.0.3 and later,ALG SRG-NET-000248-ALG-000133,config system antivirus; set default-db extended; end
+Security Fabric,Automation rolling window,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Threat telemetry reporting to FortiGuard,8.0.3 and later,NDM SRG-APP-000142-NDM-000245; ALG SRG-NET-000131-ALG-000085,config system global; set fds-statistics disable; end
+Administrator accounts,Disabling the default admin account,8.0.3 and later,NDM SRG-APP-000148-NDM-000346,config system global; set default-admin disable; end
+Administrator accounts,PBKDF2 password hashing,8.0.3 and later,NDM SRG-APP-000171-NDM-000258,config system password-policy; set login-lockout-upon-downgrade enable; end
+Cloud and VM,OCI Dedicated Region Cloud@Customer (DRCC),8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cryptography,OpenSSL 3.5,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Security Fabric,SAML authentication request signing (Security Fabric single sign-on),8.0.3 and later,NDM SRG-APP-000516-NDM-000336,—
+Tracking,Custom tracking,8.0.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,Adding a source IP to an IP group from the attack logs,8.0.3 and later,ALG SRG-NET-000019-ALG-000018,—
+High availability,HA primary selection and traffic distribution enhancements,8.0.3 and later,ALG SRG-NET-000365-ALG-000123,—
+FortiAI,AI-powered site health and posture monitoring with FortiAI,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+FortiAI,AI-assisted Lua scripting with FortiAI,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Signatures,JA4 client fingerprinting,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,Cloud-based script insights for client-side protection,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,JavaScript obfuscation for client-side protection,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Client-side protection,Filtering for HTTP header security rules,8.0.5 and later,ALG SRG-NET-000228-ALG-000108,config waf web-protection-profile inline-protection; edit <PROFILE>; set HTTP-header-security <HEADER_SECURITY_POLICY>; next; end
+Bot mitigation,Cryptographic bot authentication and AI crawler detection,8.0.5 and later,ALG SRG-NET-000362-ALG-000112,—
+Scripting,JA4 fingerprint access in Lua scripts,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Custom rules,JA4 fingerprints in custom rules,8.0.5 and later,ALG SRG-NET-000019-ALG-000018,config waf web-protection-profile inline-protection; edit <PROFILE>; set custom-access-policy <CUSTOM_POLICY>; next; end
+Access control,URL encryption optimization,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Malware and files,Web shell detection for JSON content,8.0.5 and later,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000248-ALG-000133,config waf webshell-detection-policy; edit <POLICY>; set json-file-support enable; next; end
+API protection,gRPC IDL file upload enhancements,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,Multiple signing certificates per OCSP responder,8.0.5 and later,ALG SRG-NET-000164-ALG-000100,—
+Server objects,Global allow list expansion,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Server policy,Monitor mode per HTTP content routing entry,8.0.5 and later,ALG SRG-NET-000019-ALG-000018,—
+Scripting,XML parsing in Lua scripts,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,JWT locations for mobile identification,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Load balancing,Server pool member disable behavior,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Protocol,Non-standard HTTP traffic control,8.0.5 and later,ALG SRG-NET-000512-ALG-000066,config server-policy policy; edit <POLICY>; set allow-nonstd-http disable; next; end
+Authentication,RADSEC (RADIUS over TLS) authentication,8.0.5 and later,ALG SRG-NET-000138-ALG-000088; ALG SRG-NET-000400-ALG-000097,—
+Authentication,JWT access tokens for OAuth,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,OAuth PKCE for Site Publish,8.0.5 and later,ALG SRG-NET-000147-ALG-000095,—
+Authentication,SAML group membership extraction and header forwarding,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Network,QinQ in true transparent proxy mode,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Replacement messages,Custom headers in replacement messages,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Replacement messages,More content types for 503 Service Unavailable messages,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Software bill of materials (SBOM) and third-party licensing,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platforms,System specification adjustments for F-series platforms,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Security Fabric,More log fields for automation actions,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Attack log filtering for staged signatures,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Firmware and configuration,Critical vulnerability upgrade notifications,8.0.5 and later,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-001035-NDM-000340,GUI: System > Config > FortiGuard
+Logging,Custom client certificate for syslog over TLS,8.0.5 and later,NDM SRG-APP-000515-NDM-000325; ALG SRG-NET-000334-ALG-000050,config log syslog-policy; edit <SYSLOG_POLICY>; config syslog-server-list; edit 1; set proto tls; set local-cert <ADMIN_LOCAL_CERT>; next; end; next; end
+GUI,Dashboard interface modernization,8.0.5 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+GUI,Navigation menu reorganization,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+FortiAI,FortiAI enhancements: visual reports and native tokens,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+API protection,Expanded security inspection for gRPC traffic,8.0.7 and later,ALG SRG-NET-000401-ALG-000127,config waf web-protection-profile inline-protection; edit <PROFILE>; set grpc-security-policy <GRPC_POLICY>; next; end
+Client-side protection,Client-side protection visibility and enforcement (block mode for a client IP range),8.0.7 and later,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109,config waf web-protection-profile inline-protection; edit <PROFILE>; set client-side-protection-policy <CSP_POLICY>; next; end
+Malware and files,Antivirus scanning and verdict handling enhancements,8.0.7 and later,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000249-ALG-000134,config system antivirus; set default-db extended; end
+API protection,MCP validation and attack investigation enhancements,8.0.7 and later,ALG SRG-NET-000401-ALG-000127,—
+Malware and files,Protection against disguised and AI-generated file threats,8.0.7 and later,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000765-ALG-000170,config waf web-protection-profile inline-protection; edit <PROFILE>; set file-upload-policy <FILE_POLICY>; next; end
+Signatures,Centralized signature detection for structured and protocol traffic,8.0.7 and later,ALG SRG-NET-000318-ALG-000152; ALG SRG-NET-000318-ALG-000014; ALG SRG-NET-000318-ALG-000151,config waf web-protection-profile inline-protection; edit <PROFILE>; set signature-rule <SIGNATURE_POLICY>; next; end
+DoS protection,Resource-aware blocking capacity,8.0.7 and later,ALG SRG-NET-000705-ALG-000110,—
+Logging,OWASP Top 10 2025 alignment,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Sessions and cookies,Enhanced cookie replay protection,8.0.7 and later,ALG SRG-NET-000230-ALG-000113; ALG SRG-NET-000233-ALG-000115,config waf cookie-security; edit <COOKIE_POLICY>; set cookie-replay-protection-type IP; next; end
+Bot mitigation,CAPTCHA accessibility (audio CAPTCHA),8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Access control,Host name matching for URL access and URL encryption,8.0.7 and later,ALG SRG-NET-000015-ALG-000016,—
+API protection,MQTT-aware inspection for WebSocket traffic,8.0.7 and later,ALG SRG-NET-000401-ALG-000127,—
+API protection,Unicode safety scanning for JSON requests,8.0.7 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000380-ALG-000128,config waf json-validation rule; edit <RULE>; set unicode-safety-scan enable; next; end
+Logging,Detailed attack logs for JSON schema validation failures,8.0.7 and later,ALG SRG-NET-000074-ALG-000043,—
+Certificates and TLS,ML-DSA certificate support,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates and TLS,In-place updates of local certificates,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Input validation,Expanded decoding of encoded request content,8.0.7 and later,ALG SRG-NET-000401-ALG-000127; ALG SRG-NET-000380-ALG-000128,config server-policy policy; edit <POLICY>; set decoding enable; set decoding-depth <DEPTH>; next; end
+Client management,Client management scoring redesign,8.0.7 and later,ALG SRG-NET-000019-ALG-000018,—
+Server policy,TCP half-close timeouts for proxied connections,8.0.7 and later,ALG SRG-NET-000213-ALG-000107,config server-policy policy; edit <POLICY>; set tcp-client-fin-timeout <SECONDS>; set tcp-server-fin-timeout <SECONDS>; next; end
+Server policy,Preserving DSCP markings across proxied connections,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config server-policy policy; edit <POLICY>; set dscp-forward disable; next; end
+Authentication,Multiple domain mappings for Kerberos realms,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Application delivery,LRU eviction for the web cache,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Full log disk encryption (LUKS2),8.0.7 and later,ALG SRG-NET-000098-ALG-000056; NDM SRG-APP-000231-NDM-000271,execute formatlogdisk luks (erases the log disk and reboots; export logs first)
+Firmware and configuration,Automatic firmware patch upgrades,8.0.7 and later,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-000516-NDM-000335,config system fortiguard; set auto-firmware-upgrade disable; end (when patches are installed through change control within the required time)
+System,Encryption of stored configuration files,8.0.7 and later,NDM SRG-APP-000231-NDM-000271; ALG SRG-NET-000755-ALG-000150,config system global; set encrypt-cfgfile enable; end
+System,Periodic integrity monitoring of configuration files,8.0.7 and later,NDM SRG-APP-000380-NDM-000304; ALG SRG-NET-000700-ALG-000100,— (automatic; review the integrity events in the event log)
+System,Reserved huge-page memory for Intel QAT,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,FortiView bot analysis redesign,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,MCP traffic and security analytics dashboard,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging and monitoring,IP and client ID banning from FortiView,8.0.7 and later,ALG SRG-NET-000019-ALG-000018,—
+Tracking,JA4 fingerprints in custom tracking,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Diagnostics,Machine-learning Redis diagnostics and targeted cleanup,8.0.7 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—

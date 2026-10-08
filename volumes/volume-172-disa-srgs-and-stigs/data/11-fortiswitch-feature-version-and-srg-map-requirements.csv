@@ -1,0 +1,61 @@
+﻿SRG,Requirement,Severity,Requirement title
+L2S,SRG-NET-000057-L2S-000005,CAT II,The layer 2 switch must dynamically associate security attributes with organization-defined subjects in accordance with organization-defined security policies as information is created and combined.
+L2S,SRG-NET-000131-L2S-000014,CAT II,The layer 2 switch must be configured to disable non-essential capabilities.
+L2S,SRG-NET-000148-L2S-000015,CAT I,The layer 2 switch must uniquely identify all network-connected endpoint devices before establishing any connection.
+L2S,SRG-NET-000193-L2S-000020,CAT II,The layer 2 switch must manage excess bandwidth to limit the effects of packet flooding types of denial of service (DoS) attacks.
+L2S,SRG-NET-000235-L2S-000031,CAT II,The layer 2 switch must be configured to fail securely in the event of an operational failure.
+L2S,SRG-NET-000325-L2S-000041,CAT II,"The layer 2 switch must uniquely identify and authenticate source by organization, system, application, and/or individual for information transfer."
+L2S,SRG-NET-000343-L2S-000016,CAT II,The layer 2 switch must authenticate all network-connected endpoint devices before establishing any connection.
+L2S,SRG-NET-000362-L2S-000021,CAT III,The layer 2 switch must have Root Guard enabled on all switch ports connecting to access layer switches and hosts.
+L2S,SRG-NET-000362-L2S-000022,CAT II,The layer 2 switch must have BPDU Guard enabled on all user-facing or untrusted access switch ports.
+L2S,SRG-NET-000362-L2S-000023,CAT II,The layer 2 switch must have STP Loop Guard enabled on all non-designated STP switch ports.
+L2S,SRG-NET-000362-L2S-000025,CAT II,The layer 2 switch must have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources.
+L2S,SRG-NET-000362-L2S-000026,CAT II,The layer 2 switch must have IP Source Guard enabled on all user-facing or untrusted access switch ports.
+L2S,SRG-NET-000362-L2S-000027,CAT II,The layer 2 switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.
+L2S,SRG-NET-000512-L2S-000001,CAT III,The layer 2 switch must have Storm Control configured on all host-facing switch ports.
+L2S,SRG-NET-000512-L2S-000002,CAT III,The layer 2 switch must have IGMP or MLD Snooping configured on all VLANs
+L2S,SRG-NET-000512-L2S-000003,CAT II,The layer 2 switch must implement Rapid STP where VLANs span multiple switches with redundant links.
+L2S,SRG-NET-000512-L2S-000005,CAT II,The layer 2 switch must have all trunk links enabled statically.
+L2S,SRG-NET-000512-L2S-000009,CAT II,The layer 2 switch must have the default VLAN pruned from all trunk ports that do not require it.
+L2S,SRG-NET-000512-L2S-000011,CAT II,The layer 2 switch must have all user-facing or untrusted ports configured as access switch ports.
+L2S,SRG-NET-000512-L2S-000012,CAT II,The layer 2 switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links.
+L2S,SRG-NET-000512-L2S-000100,CAT II,"The layer 2 switch must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs."
+L2S,SRG-NET-000520-L2S-000105,CAT II,The layer 2 switch must dynamically associate security attributes with organization-defined objects in accordance with organization-defined security policies as information is created and combined.
+L2S,SRG-NET-000715-L2S-000120,CAT II,The layer 2 switch must implement physically or logically separate subnetworks to isolate organization-defined critical system components and functions.
+L2S,SRG-NET-000760-L2S-000160,CAT II,The layer 2 switch must establish organization-defined alternate communications paths for system operations organizational command and control.
+NDM,SRG-APP-000033-NDM-000212,CAT I,The network device must be configured to assign appropriate user roles or access levels to authenticated users.
+NDM,SRG-APP-000038-NDM-000213,CAT II,The network device must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.
+NDM,SRG-APP-000131-NDM-000243,CAT II,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000179-NDM-000265,CAT I,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000357-NDM-000293,CAT II,The network device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+NDM,SRG-APP-000374-NDM-000299,CAT II,The network device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+NDM,SRG-APP-000395-NDM-000310,CAT II,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000411-NDM-000330,CAT I,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000412-NDM-000331,CAT I,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions
+NDM,SRG-APP-000457-NDM-000352,CAT II,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000515-NDM-000325,CAT II,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000336,CAT I,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000350,CAT I,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000920-NDM-000320,CAT II,The network device must be configured to synchronize system clocks within and between systems or system components.
+NDM,SRG-APP-000925-NDM-000330,CAT II,The network device must be configured to compare the internal system clocks on an organization-defined frequency with organization-defined authoritative time source.
+NDM,SRG-APP-001035-NDM-000340,CAT I,The network device hardware and software must be a version supported by the vendor.
+RTR,SRG-NET-000018-RTR-000001,CAT II,The router must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.
+RTR,SRG-NET-000018-RTR-000002,CAT II,The BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.
+RTR,SRG-NET-000019-RTR-000003,CAT II,The multicast router must be configured to disable Protocol Independent Multicast (PIM) on all interfaces that are not required to support multicast routing.
+RTR,SRG-NET-000019-RTR-000004,CAT II,The multicast router must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.
+RTR,SRG-NET-000168-RTR-000078,CAT II,The router must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.
+RTR,SRG-NET-000205-RTR-000014,CAT I,The perimeter router must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field via egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).
+RTR,SRG-NET-000230-RTR-000001,CAT II,The router must be configured to implement message authentication for all control plane protocols.
+RTR,SRG-NET-000362-RTR-000110,CAT II,The router must be configured to protect against or limit the effects of denial-of-service (DoS) attacks by employing control plane protection.
+RTR,SRG-NET-000512-RTR-000005,CAT I,The PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.
+RTR,SRG-NET-000512-RTR-000014,CAT II,The perimeter router must be configured to suppress Router Advertisements on all external IPv6-enabled interfaces.
+AAA,SRG-APP-000023-AAA-000030,CAT II,AAA Services must be configured to provide automated account management functions.
+AAA,SRG-APP-000142-AAA-000020,CAT I,"AAA Services must be configured to use protocols that encrypt credentials when authenticating clients, as defined in the PPSM CAL and vulnerability assessments."
+AAA,SRG-APP-000158-AAA-000420,CAT II,AAA Services used for 802.1x must be configured to uniquely identify network endpoints (supplicants) before the authenticator establishes any connection.
+AAA,SRG-APP-000172-AAA-000520,CAT I,AAA Services must be configured to encrypt transmitted credentials using a FIPS-validated cryptographic module.
+AAA,SRG-APP-000394-AAA-000430,CAT II,AAA Services used for 802.1x must be configured to authenticate network endpoint devices (supplicants) before the authenticator establishes any connection.
+AAA,SRG-APP-000516-AAA-000440,CAT II,"AAA Services used for 802.1x must be configured to use secure Extensible Authentication Protocol (EAP), such as EAP-TLS, EAP-TTLS, and PEAP."
+AAA,SRG-APP-000516-AAA-000640,CAT II,"AAA Services must be configured to use a unique shared secret for communication (i.e. RADIUS, TACACS+) with clients requesting authentication services."

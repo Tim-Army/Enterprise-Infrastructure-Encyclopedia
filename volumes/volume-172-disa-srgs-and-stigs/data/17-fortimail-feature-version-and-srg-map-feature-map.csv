@@ -1,0 +1,332 @@
+﻿Category,Feature,Introduced (FortiMail),SRG requirement(s),Command to satisfy the requirement
+Core: Management access,"Administrative access per interface (HTTPS, SSH, ping, SNMP, HTTP, Telnet)",7.0.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000172-NDM-000259,config system interface; edit <MGMT_PORT>; set allowaccess https ssh; next; end (management interface only; leave out HTTP and Telnet)
+Core: Management access,"TLS versions and strong ciphers for HTTPS, SSH, and syslog over TLS",7.0.0 or earlier,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; NDM SRG-APP-000179-NDM-000265,config system global; set strong-crypto enable; set ssl-versions tls1_2 tls1_3; end; config system security crypto; edit http; set status enable; set ssl-versions tls1_2 tls1_3; set strong-crypto enable; next; end
+Core: Management access,Default local certificate for the web UI and secure connections,7.0.0 or earlier,NDM SRG-APP-000516-NDM-000344; NDM SRG-APP-000910-NDM-000300,config system global; set default-certificate <DOD_ISSUED_CERT>; end
+Core: Management access,"Administrative HTTP, HTTPS, SSH, and Telnet port numbers",7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Management access,Trusted hosts for each administrator,7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000038-NDM-000213,config system admin; edit <ADMIN>; set trusted-hosts <MGMT_SUBNET>; next; end
+Core: Management access,Console port,7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314,— (physical access control; the console requires an administrator login)
+Core: Management access,LCD panel PIN protection (models with an LCD panel),7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314,config system global; set lcd-protection enable; set lcd-pin <PIN>; end
+Core: Management access,Idle timeout for administrator sessions,7.0.0 or earlier,NDM SRG-APP-000190-NDM-000267,config system global; set admin-idle-timeout 5; end
+Core: Management access,Login disclaimer before administrator login (pre-login banner),7.0.0 or earlier,NDM SRG-APP-000068-NDM-000215,"config system global; set pre-login-banner admin; end (banner text under System > Configuration > Option, Login Disclaimer Setting)"
+Core: Management access,Maintainer account (console password recovery),7.0.0 or earlier,NDM SRG-APP-000148-NDM-000346; NDM SRG-APP-000142-NDM-000245,config system global; set admin-maintainer disable; end (only with a tested configuration and data backup for recovery)
+Core: Administrator accounts,Local administrator accounts,7.0.0 or earlier,NDM SRG-APP-000148-NDM-000346; NDM SRG-APP-000153-NDM-000249,config system admin; edit <ADMIN>; set auth-strategy local; set access-profile <PROFILE>; set password <PASSWORD_15_CHARS_MIN>; next; end
+Core: Administrator accounts,"Access profiles (none, read, read-update, read-write per functional area)",7.0.0 or earlier,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000380-NDM-000304,config system accprofile; edit <PROFILE>; config menuitem; edit system_grp; set permission read; next; edit log_grp; set permission read; next; end; next; end
+Core: Administrator accounts,"Administrator domain scope (system, domain, domain group)",7.0.0 or earlier,NDM SRG-APP-000033-NDM-000212; ALG SRG-NET-000015-ALG-000016,config system admin; edit <ADMIN>; set level domain; set domain <PROTECTED_DOMAIN>; next; end
+Core: Administrator accounts,"Administrator access methods (CLI, GUI, REST API)",7.0.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000142-NDM-000245,config system admin; edit <ADMIN>; set access cli gui; next; end
+Core: Administrator accounts,Password policy (length and character types),7.0.0 or earlier,NDM SRG-APP-000164-NDM-000252; NDM SRG-APP-000166-NDM-000254; NDM SRG-APP-000167-NDM-000255; NDM SRG-APP-000168-NDM-000256; NDM SRG-APP-000169-NDM-000257,config system password-policy; set status enable; set apply-to admin-user ibe-user local-mail-user; set allow-admin-empty-password disable; set minimum-length 15; set must-contain upper-case-letter lower-case-letter number non-alphanumeric; end
+Core: Administrator accounts,Administrator login lockout,7.0.0 or earlier,NDM SRG-APP-000065-NDM-000214,config system global; set admin-lockout-threshold 3; set admin-lockout-duration 15; end
+Core: Administrator accounts,Authentication reputation (block client IP addresses after failed logins),7.0.0 or earlier,NDM SRG-APP-000065-NDM-000214; NDM SRG-APP-000435-NDM-000315; ALG SRG-NET-000705-ALG-000110,config system security authserver; set status enable; set access-group cli mail web; set block-period 15; end
+Core: Administrator accounts,Remote administrator authentication with RADIUS,7.0.0 or earlier,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000148-NDM-000346,config profile authentication radius; edit <RADIUS>; set server <RADIUS_SERVER>; set secret <SECRET>; next; end; config system admin; edit <ADMIN>; set auth-strategy radius; set radius-profile <RADIUS>; next; end
+Core: Administrator accounts,Remote administrator authentication with LDAP,7.0.0 or earlier,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000172-NDM-000259,config profile ldap; edit <LDAP>; set server <LDAP_SERVER>; set secure ssl; set authstate enable; next; end; config system admin; edit <ADMIN>; set auth-strategy ldap; set ldap-profile <LDAP>; next; end
+Core: Administrator accounts,Certificate-based (PKI) administrator login,7.0.0 or earlier,NDM SRG-APP-000149-NDM-000247; NDM SRG-APP-000177-NDM-000263; NDM SRG-APP-000175-NDM-000262; NDM SRG-APP-000875-NDM-000280,config user pki; edit <PKI_USER>; set ca <DOD_CA_CERT>; set subject <SUBJECT>; set ocsp-check enable; set ocsp-URL <OCSP_URL>; set ocsp-ca <OCSP_CERT>; set ocsp-unavailable-action revoke; next; end; config system global; set pki-mode enable; set pki-certificate-req yes; end; config system admin; edit <ADMIN>; set auth-strategy pki; set pkiuser <PKI_USER>; next; end
+Core: Administrator accounts,SSH public key login for administrators,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Core: Logging,Local logging and log levels,7.0.0 or earlier,NDM SRG-APP-000095-NDM-000225; NDM SRG-APP-000357-NDM-000293; ALG SRG-NET-000074-ALG-000043,config log setting local; set status enable; set loglevel information; set event-log-status enable; set history-log-status enable; end
+Core: Logging,"Event log categories (administrator, configuration, HA, system, update)",7.0.0 or earlier,NDM SRG-APP-000026-NDM-000208; NDM SRG-APP-000503-NDM-000320; NDM SRG-APP-000505-NDM-000322; NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000343-NDM-000289; NDM SRG-APP-000095-NDM-000225,config log setting local; set syseventlog-category admin configuration configuration-user dns ha system update; end
+Core: Logging,"History log (one record per mail transaction, with sender, recipient, client, policy, and disposition)",7.0.0 or earlier,ALG SRG-NET-000074-ALG-000043; ALG SRG-NET-000075-ALG-000044; ALG SRG-NET-000077-ALG-000046; ALG SRG-NET-000079-ALG-000048; ALG SRG-NET-000078-ALG-000047,config log setting local; set history-log-status enable; end
+Core: Logging,"AntiVirus, AntiSpam, and encryption logs",7.0.0 or earlier,ALG SRG-NET-000074-ALG-000043; ALG SRG-NET-000249-ALG-000146; ALG SRG-NET-000370-ALG-000125,config log setting local; set antivirus-log-status enable; set antispam-log-status enable; set encryption-log-status enable; end
+Core: Logging,Remote syslog servers (TCP over TLS),7.0.0 or earlier,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350; ALG SRG-NET-000334-ALG-000050; ALG SRG-NET-000511-ALG-000051,config log setting remote; edit <SYSLOG>; set status enable; set server <SYSLOG_SERVER>; set protocol syslog; set syslog-mode tcp-tls; set loglevel information; set event-log-status enable; set history-log-status enable; set virus-log-status enable; set spam-log-status enable; next; end
+Core: Logging,Logging to FortiAnalyzer (OFTPS),7.0.0 or earlier,NDM SRG-APP-000515-NDM-000325; ALG SRG-NET-000334-ALG-000050,config log setting remote; edit <FAZ>; set status enable; set server <FAZ_IP>; set protocol oftps; next; end
+Core: Logging,Log access restricted by access profile (log functional area),7.0.0 or earlier,NDM SRG-APP-000231-NDM-000271; ALG SRG-NET-000098-ALG-000056; ALG SRG-NET-000099-ALG-000057; ALG SRG-NET-000100-ALG-000058,config system accprofile; edit <PROFILE>; config menuitem; edit log_grp; set permission read; next; end; next; end
+Core: Logging,"Alert email (disk full, HA, system, virus, remote storage failure)",7.0.0 or earlier,NDM SRG-APP-000360-NDM-000295; ALG SRG-NET-000088-ALG-000054; ALG SRG-NET-000335-ALG-000053; ALG SRG-NET-000249-ALG-000146; ALG SRG-NET-000392-ALG-000141,config log alertemail recipient; edit <ISSO_EMAIL>; next; end; config log alertemail setting; set categories diskfull ha remote-storage-failure system virus; end
+Core: Logging,Hard disk monitoring with alert email,7.0.0 or earlier,NDM SRG-APP-000360-NDM-000295; ALG SRG-NET-000335-ALG-000053,config system global; set disk-monitor enable; end
+Core: Time,System time and NTP synchronization,7.0.0 or earlier,NDM SRG-APP-000920-NDM-000320; NDM SRG-APP-000374-NDM-000299,config system time ntp; set ntpsync enable; set ntpserver <NTP_SERVER>; end
+Core: SNMP,SNMP v1 and v2c communities,7.0.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000395-NDM-000310,config system snmp community; edit <ID>; set status disable; next; end
+Core: SNMP,SNMPv3 users and traps,7.0.0 or earlier,NDM SRG-APP-000395-NDM-000310,config system snmp user; edit <SNMP_USER>; set status enable; set security-level authpriv; set auth-proto sha256; set auth-pwd <AUTH_PASSWORD>; set priv-proto aes256; set priv-pwd <PRIV_PASSWORD>; next; end
+Core: Cryptography,FIPS-CC mode,7.0.0 or earlier,NDM SRG-APP-000179-NDM-000265; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000510-ALG-000025; ALG SRG-NET-000575-ALG-000020,config system fips-cc; set status fips-ciphers; end
+Core: Cryptography,FIPS known-answer self-tests,7.0.0 or earlier,NDM SRG-APP-000179-NDM-000265; ALG SRG-NET-000235-ALG-000118,execute fips kat all
+Core: Firmware and configuration,"Firmware upgrade (web UI, FTP, SCP, or TFTP)",7.0.0 or earlier,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-001035-NDM-000340; NDM SRG-APP-000131-NDM-000243,execute restore image scp <IMAGE> <SERVER> (after checking the image hash against the Fortinet support site)
+Core: Firmware and configuration,Configuration backup (manual and scheduled),7.0.0 or earlier,NDM SRG-APP-000516-NDM-000340,execute backup full-config scp <FILE> <SERVER>; config system scheduled-backup; set destination remote; set remote-protocol sftp; set remote-host <SERVER>; set remote-username <USER>; set remote-password <PASSWORD>; set schedule daily; end
+Core: Firmware and configuration,FortiGuard antivirus updates,7.0.0 or earlier,ALG SRG-NET-000019-ALG-000019; ALG SRG-NET-000246-ALG-000132; ALG SRG-NET-000251-ALG-000131,config system fortiguard antivirus; set scheduled-update-status enable; set scheduled-update-frequency every; end; execute update now
+Core: Firmware and configuration,FortiGuard antispam service (real-time queries),7.0.0 or earlier,ALG SRG-NET-000393-ALG-000144; ALG SRG-NET-000019-ALG-000019,config system fortiguard antispam; set status enable; end
+Core: Certificates,Local certificates and certificate requests,7.0.0 or earlier,NDM SRG-APP-000516-NDM-000344; ALG SRG-NET-000755-ALG-000150,GUI: System > Certificate > Local Certificate
+Core: Certificates,CA certificates and certificate revocation lists,7.0.0 or earlier,NDM SRG-APP-000910-NDM-000300; ALG SRG-NET-000750-ALG-000140; ALG SRG-NET-000164-ALG-000100; NDM SRG-APP-000875-NDM-000280,GUI: System > Certificate > CA Certificate; GUI: System > Certificate > Certificate Revocation List
+Core: High availability,HA clusters (active-passive and active-active),7.0.0 or earlier,ALG SRG-NET-000365-ALG-000123; ALG SRG-NET-000236-ALG-000119,config system ha; set mode active-passive; set password <HA_PASSWORD>; end
+Core: High availability,RAID (hardware models),7.0.0 or earlier,ALG SRG-NET-000365-ALG-000123,—
+Core: Deployment,"Operation modes (gateway, transparent, server)",7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017; ALG SRG-NET-000019-ALG-000018,config system global; set operation-mode gateway; end
+Core: Deployment,Protected domains,7.0.0 or earlier,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000202-ALG-000124,GUI: Domain & User > Domain > Domain
+Core: Mail policies,Access control receive rules (relay control; unauthenticated mail to unprotected domains rejected by default),7.0.0 or earlier,ALG SRG-NET-000202-ALG-000124; ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000018-ALG-000017,config policy access-control receive; edit <RULE>; set status enable; set sender-ip-type ip-mask; set sender-ip-mask <INTERNAL_SUBNET>; set action relay; next; end
+Core: Mail policies,Access control delivery rules (TLS and encryption for outgoing mail),7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000510-ALG-000111,config policy access-control delivery; edit <RULE>; set status enable; set tls-profile <TLS_PROFILE>; next; end
+Core: Mail policies,IP-based policies,7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017; ALG SRG-NET-000364-ALG-000122,config policy ip; edit <ID>; set status enable; set source-ip <CLIENT_SUBNET>; set action scan; set profile-session <SESSION_PROFILE>; set profile-antispam <AS_PROFILE>; set profile-antivirus <AV_PROFILE>; set profile-content <CONTENT_PROFILE>; next; end
+Core: Mail policies,Recipient-based policies,7.0.0 or earlier,ALG SRG-NET-000018-ALG-000017,config policy recipient; edit <ID>; set status enable; set direction incoming; set profile-antispam <AS_PROFILE>; set profile-antivirus <AV_PROFILE>; set profile-content <CONTENT_PROFILE>; set profile-dlp <DLP_PROFILE>; next; end
+Core: Mail policies,Recipient address verification,7.0.0 or earlier,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000401-ALG-000127,GUI: Domain & User > Domain > Domain
+Core: Session profiles,SMTP protocol and command checks,7.0.0 or earlier,ALG SRG-NET-000512-ALG-000064; ALG SRG-NET-000380-ALG-000128; ALG SRG-NET-000401-ALG-000127,config profile session; edit <SESSION_PROFILE>; set session-command-checking enable; set session-helo-char-validation enable; set session-helo-domain-check enable; set session-sender-domain-check enable; set session-recipient-domain-check enable; set session-reject-empty-domain enable; set session-prevent-open-relay enable; next; end
+Core: Session profiles,"Connection and message limits (rate, concurrency, recipients, size)",7.0.0 or earlier,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000705-ALG-000110; ALG SRG-NET-000213-ALG-000107,config profile session; edit <SESSION_PROFILE>; set conn-rate-number <LIMIT>; set conn-concurrent <LIMIT>; set number-of-messages <LIMIT>; set number-of-recipients <LIMIT>; set conn-idle-timeout <SECONDS>; set limit-max-message-size <LIMIT>; next; end
+Core: Session profiles,Sender reputation,7.0.0 or earlier,ALG SRG-NET-000362-ALG-000112; ALG SRG-NET-000019-ALG-000018,config profile session; edit <SESSION_PROFILE>; set sender-reputation-status enable; next; end
+Core: Session profiles,Endpoint reputation (carrier networks),7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config profile session; edit <SESSION_PROFILE>; set endpoint-reputation disable; next; end
+Core: Session profiles,Session safe and block lists,7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018,config profile session; edit <SESSION_PROFILE>; set sender-blocklist-status enable; set recipient-blocklist-status enable; next; end
+Core: Session profiles,DKIM signing of outgoing mail,7.0.0 or earlier,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000510-ALG-000040,config profile session; edit <SESSION_PROFILE>; set dkim-signing enable; next; end
+Core: Antispam,"FortiGuard antispam, IP reputation, and spam outbreak protection",7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000390-ALG-000139; ALG SRG-NET-000393-ALG-000144,config profile antispam; edit <AS_PROFILE>; set fortiguard-antispam enable; set fortiguard-check-ip enable; set spam-outbreak-protection enable; next; end
+Core: Antispam,"SPF, DKIM, and DMARC checks",7.0.0 or earlier,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set spf-checking enable; set dkim-checking enable; set dmarc-checking enable; next; end
+Core: Antispam,Greylisting,7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000362-ALG-000112,config profile antispam; edit <AS_PROFILE>; set greylist enable; next; end
+Core: Antispam,"Heuristic, DNSBL, and SURBL scans",7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000390-ALG-000139,config profile antispam; edit <AS_PROFILE>; set heuristic enable; set dnsbl enable; set surbl enable; next; end
+Core: Antispam,Impersonation analysis,7.0.0 or earlier,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000019-ALG-000018,config profile antispam; edit <AS_PROFILE>; set impersonation-analysis enable; set impersonation <IMPERSONATION_PROFILE>; next; end
+Core: Antispam,Bounce address tag verification,7.0.0 or earlier,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000019-ALG-000018,config antispam settings; set bounce-verification-status enable; end
+Core: Antispam,System block and safe lists,7.0.0 or earlier,ALG SRG-NET-000019-ALG-000018,config antispam settings; set blocklist-action reject; end
+Core: Antivirus,"Antivirus scanning (signatures, heuristics, grayware)",7.0.0 or earlier,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000249-ALG-000134; ALG SRG-NET-000765-ALG-000170,config profile antivirus; edit <AV_PROFILE>; set scanner enable; set heuristic enable; set grayware-scan enable; set action-default predefined_av_reject; next; end
+Core: Antivirus,Antivirus action profiles (quarantine and notification),7.0.0 or earlier,ALG SRG-NET-000249-ALG-000145; ALG SRG-NET-000249-ALG-000146; ALG SRG-NET-000770-ALG-000180,config profile antivirus-action; edit <AV_ACTION>; set action system-quarantine; set notification-status enable; set notification-profile <NOTIFY_PROFILE>; next; end
+Core: Antivirus,Virus outbreak protection,7.0.0 or earlier,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000019-ALG-000019,config system fortiguard antivirus; set virus-outbreak enable-with-defer; end; config profile antivirus; edit <AV_PROFILE>; set malware-outbreak-protection enable; next; end
+Core: Antivirus,FortiSandbox inspection of attachments and URLs,7.0.0 or earlier,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000248-ALG-000133,config system fortisandbox; set status enable; set service-type appliance; set host <FSA_FQDN>; end; config profile antivirus; edit <AV_PROFILE>; set sandbox-analysis enable; next; end
+Core: Content,Attachment filtering by file type,7.0.0 or earlier,ALG SRG-NET-000228-ALG-000108; ALG SRG-NET-000288-ALG-000109; ALG SRG-NET-000289-ALG-000110; ALG SRG-NET-000249-ALG-000134,config profile content; edit <CONTENT_PROFILE>; config attachment-scan; edit 1; set status enable; set operator is; set patterns <FILE_TYPES>; set action <CONTENT_ACTION>; next; end; next; end
+Core: Content,"Archive and Microsoft Office file inspection (password-protected, embedded content)",7.0.0 or earlier,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000380-ALG-000128,config profile content; edit <CONTENT_PROFILE>; set detect-archive-status enable; set archive-scan-option detect-password-protected block-on-failure-to-decompress; set detect-office-status enable; set office-scan-option detect-password-protected detect-embedded-component; next; end
+Core: Content,Content disarm and reconstruction (HTML active content),7.0.0 or earlier,ALG SRG-NET-000288-ALG-000109; ALG SRG-NET-000228-ALG-000108,config profile content; edit <CONTENT_PROFILE>; set html-content-action modify-content; set html-active-content-action remove; next; end
+Core: Content,Data loss prevention profiles,7.0.0 or earlier,ALG SRG-NET-000391-ALG-000140,config profile dlp; edit <DLP_PROFILE>; set action-default SystemQuarantine; next; end
+Core: Encryption,TLS profiles for SMTP sessions,7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000510-ALG-000111,config profile tls; edit <TLS_PROFILE>; set level secure; set check-ssl-version enable; set min-ssl-version tls1_2; next; end
+Core: Encryption,"TLS versions and ciphers for mail protocols (SMTPS, STARTTLS, IMAPS, POP3S)",7.0.0 or earlier,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000510-ALG-000111,config system security crypto; edit mail; set status enable; set ssl-versions tls1_2 tls1_3; set strong-crypto enable; next; end
+Core: Encryption,Identity-based encryption (IBE) for external recipients,7.0.0 or earlier,ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000169-ALG-000102,config profile encryption; edit <ENC_PROFILE>; set protocol ibe; set encryption-algorithm aes256; next; end
+Core: Encryption,S/MIME encryption and signing,7.0.0 or earlier,ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000510-ALG-000040,config profile encryption; edit <ENC_PROFILE>; set protocol smime; set encryption-algorithm aes256; set action encryptandsign; next; end
+Core: Quarantine,System quarantine,7.0.0 or earlier,ALG SRG-NET-000249-ALG-000145,config mailsetting systemquarantine; config folders; edit <FOLDER>; set retention-period <DAYS>; next; end; end
+Core: Users,SMTP authentication of email users,7.0.0 or earlier,ALG SRG-NET-000138-ALG-000063; ALG SRG-NET-000138-ALG-000088; ALG SRG-NET-000400-ALG-000097,config profile authentication smtp; edit <AUTH_PROFILE>; set server <MAIL_SERVER>; set option ssl secure; next; end; config system mailserver; set smtp-auth-over-tls enable; end
+Core: Users,Webmail and quarantine access for users,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config profile resource; edit <RESOURCE_PROFILE>; set webmail-access disable; next; end
+Core: Users,Webmail idle timeout,7.0.0 or earlier,ALG SRG-NET-000213-ALG-000107,config profile resource; edit <RESOURCE_PROFILE>; set idle-timeout enable; next; end
+Core: Users,Login disclaimer after webmail and IBE login (post-login banner),7.0.0 or earlier,ALG SRG-NET-000041-ALG-000022,config system global; set post-login-banner admin ibe webmail; end
+Core: Mail server,POP3 and IMAP services (server mode),7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config system mailserver; set pop3-service disable; set imap-service disable; end
+Core: Mail server,Email archiving,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config archive account; edit <ARCHIVE>; set status disable; next; end
+Core: Mail server,Disclaimers in email,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config system disclaimer; set disclaimer-status disable; end
+Core: Mail server,Security Fabric connection,7.0.0 or earlier,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config system csf; set status disable; end
+Email continuity,Email continuity (users reach incoming mail while the protected mail server is down),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config mailsetting email-continuity; set status disable; end
+Users and directories,User account synchronization from LDAP and Microsoft 365,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,HA synchronization control (settings excluded from synchronization),7.0.0 and later,ALG SRG-NET-000365-ALG-000123,— (review the excluded settings with diagnose system ha show-sync-disable-cfg)
+High availability,HA synchronization status on the dashboard and HA pages,7.0.0 and later,ALG SRG-NET-000365-ALG-000123,—
+Antispam,Cousin domain detection,7.0.0 and later,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000019-ALG-000018,config profile antispam; edit <AS_PROFILE>; set cousin-domain enable; set cousin-domain-profile <COUSIN_PROFILE>; next; end
+Administrator accounts,More detailed controls in administrator access profiles,7.0.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271,config system accprofile; edit <PROFILE>; config menuitem; edit system_grp; set permission read; next; end; next; end
+Encryption,DANE support in TLS profiles,7.0.0 and later,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000164-ALG-000100,config profile tls; edit <TLS_PROFILE>; set dane-support opportunistic; next; end
+Mail delivery,Sender Rewriting Scheme (SRS) for forwarded mail,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config mailsetting sender-rewriting-scheme; set domain-for-rewrite none; end
+Platform,Larger maximum values (MSSP license),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Quarantine,Domain quarantine (MSSP license),7.0.0 and later,ALG SRG-NET-000249-ALG-000145,—
+Mail policies,TLS profile enforcement in access control receive rules,7.0.0 and later,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000202-ALG-000124,config policy access-control receive; edit <RULE>; set tls-profile <TLS_PROFILE>; next; end
+Disclaimers and messages,IP addresses in disclaimer exclusion lists,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,"Block and safe list enhancements (statistics; email, IP/netmask, and reverse DNS entries)",7.0.0 and later,ALG SRG-NET-000019-ALG-000018,—
+Antispam,"Safe list bypass control for SPF, DKIM, and DMARC failures",7.0.0 and later,ALG SRG-NET-000735-ALG-000130,config antispam settings; set safelist-bypass-sender-auth disable; end
+Encryption,TLS versions in TLS profiles,7.0.0 and later,ALG SRG-NET-000062-ALG-000150,config profile tls; edit <TLS_PROFILE>; set check-ssl-version enable; set min-ssl-version tls1_2; next; end
+Disclaimers and messages,Message-ID variable in disclaimer and attachment filtering messages,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Certificates,Trusted CA certificates downloaded from FortiGuard,7.0.0 and later,ALG SRG-NET-000750-ALG-000140; NDM SRG-APP-000910-NDM-000300,— (review System > Certificate > Trusted CA against the DoD trust anchors)
+Content,FortiSandbox and CDR workflow controls,7.0.0 and later,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000288-ALG-000109,config file content-disarm-reconstruct; set continue-sandbox-on-cdr enable; end
+Antivirus,"Archive of email deferred by spam outbreak, virus outbreak, and FortiSandbox",7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Monitoring,Deferred email statistics on the dashboard,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail server,Oldest email archive command for user mailboxes (server mode),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Log search criteria and background log search tasks,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Quarantine,Quarantine search criteria,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,DKIM failure action in antispam profiles,7.0.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set dkim-checking enable; set dkim-fail-status enable; set action-dkim-fail <ACTION_PROFILE>; next; end
+Session profiles,SMTP pipelining control,7.0.0 and later,ALG SRG-NET-000512-ALG-000064,config profile session; edit <SESSION_PROFILE>; set session-allow-pipelining no; next; end
+Platform,Oracle Cloud Infrastructure (OCI) support,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antivirus,FortiSandbox Cloud regions,7.0.0 and later,ALG SRG-NET-000765-ALG-000170,config system fortisandbox; set service-type cloud; set region <REGION>; end
+Monitoring,Queue history dashboard widget,7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Sender alignment check of Header From against Reply-To,7.0.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set sender-alignment-status enable; set action-sender-alignment <ACTION_PROFILE>; next; end
+Data loss prevention,Text file fingerprints in DLP,7.0.0 and later,ALG SRG-NET-000391-ALG-000140,—
+Platform,Subscription-based FortiMail VM (S-Series),7.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Spam submission plugin for Microsoft Outlook,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Monitoring,Status monitor of backend mail servers,7.0.1 and later,ALG SRG-NET-000365-ALG-000123,—
+Email continuity,Smart SMTP recipient verification (queue mail while the mail server is unreachable),7.0.1 and later,ALG SRG-NET-000365-ALG-000123,config mailsetting smtp-rcpt-verification; set mode fail-open; end
+Cryptography,FIPS mode for cloud VM platforms,7.0.1 and later,NDM SRG-APP-000179-NDM-000265; ALG SRG-NET-000510-ALG-000111; ALG SRG-NET-000575-ALG-000020,config system fips-cc; set status fips-ciphers; end
+Antispam,DMARC reports (system and domain level),7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config antispam dmarc-report-generation; set status disable; end
+Users and directories,"Authentication failover to the second server address (SMTP, IMAP, POP3, RADIUS)",7.0.1 and later,NDM SRG-APP-000516-NDM-000336; ALG SRG-NET-000138-ALG-000088,—
+Platform,FortiMail 2000F and 3000F,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Users and directories,User account import for recipient verification (Advanced Management license),7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Cloning system-level profiles to domain level,7.0.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),Microsoft 365 Graph API national cloud endpoints,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config cloud-api setting; set service-endpoint us-dod; end (when Microsoft 365 API mode is used in a DoD tenant)
+Encryption,Self-reactivation link in IBE account expiration email,7.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Extreme URI checking strictness,7.0.3 and later,ALG SRG-NET-000019-ALG-000018,config antispam settings; set url-checking <LEVEL>; end
+Mail delivery,DSN EHLO/HELO argument customization,7.0.3+; 7.2.0+,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail delivery,IP pool behavior control for internal-to-internal mail,7.0.3+; 7.2.0+,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antivirus,Microsoft OneNote virus detection,7.0.6+; 7.2.3+,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000765-ALG-000170,—
+Content,Disarmed attachments in deferred scan notifications,7.0.6+; 7.2.3+,ALG SRG-NET-000288-ALG-000109,—
+Antivirus,FortiNDR (formerly FortiAI) malware detection in antivirus profiles,7.2.0 and later,ALG SRG-NET-000765-ALG-000170,—
+Logging,FortiAnalyzer Cloud as a log destination,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config log setting cloud; set status disable; end
+Email continuity,"Email continuity enhancements (internal mail, BCC self, address book synchronization, authentication cache)",7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config mailsetting email-continuity; set auth-cache-status disable; end
+Mail delivery,"Mail queue search actions (send, delete, deliver to alternative host)",7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Quarantine,Control of quarantined attachment downloads by webmail users,7.2.0 and later,ALG SRG-NET-000289-ALG-000110,—
+Antispam,Authenticated Received Chain (ARC) validation and sealing,7.2.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set arc-status enable; set action-arc <ACTION_PROFILE>; next; end
+Content,Header removal in content and DLP action profiles,7.2.0 and later,ALG SRG-NET-000391-ALG-000140,config profile content-action; edit <CONTENT_ACTION>; set remove-header enable; next; end
+Administrator accounts,Configuration control (restrict domain administrators),7.2.0 and later,NDM SRG-APP-000380-NDM-000304; ALG SRG-NET-000700-ALG-000100,config system config-control; set domain-admin-restriction enable; end
+Antispam,Redirector URL resolution,7.2.0 and later,ALG SRG-NET-000019-ALG-000018,—
+Disclaimers and messages,Classifier variables in notification templates,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail delivery,Mail host relay type in mail routing,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,DMARC record policy actions,7.2.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set dmarc-checking enable; set dmarc-policy-reject-status enable; set dmarc-policy-quarantine-status enable; set action-dmarc-policy-reject <ACTION_PROFILE>; set action-dmarc-policy-quarantine <ACTION_PROFILE>; next; end
+Encryption,MTA-STS domain checking,7.2.0 and later,ALG SRG-NET-000062-ALG-000150; ALG SRG-NET-000164-ALG-000100,config system mailserver; set smtp-mtasts-status check-external-domain; end
+Platform,"MSSP advanced management (per-domain statistics, intra-domain protection)",7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Discard action for recipient verification failures,7.2.0 and later,ALG SRG-NET-000364-ALG-000122,—
+Content,Local categories in web filtering,7.2.0 and later,ALG SRG-NET-000019-ALG-000018,config system webfilter local-rating; edit <ID>; set status enable; set pattern-type wildcard; set url-pattern <URL_PATTERN>; set category <CATEGORY>; next; end
+Platform,Maturity and feature release tags for GA releases,7.2.0 and later,NDM SRG-APP-001035-NDM-000340,—
+Quarantine,New variables in quarantine summaries,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Incoming disclaimer for external email only,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Description and comment fields,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Management access,REST API rate limit,7.2.0 and later,NDM SRG-APP-000435-NDM-000315; ALG SRG-NET-000705-ALG-000110,config system web-service; set max-request-rate-restful <LIMIT>; end
+Administrator accounts,CLI privilege levels in administrator profiles,7.2.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000340-NDM-000288,config system accprofile; edit <PROFILE>; set privilege-level low; set system-diagnostics disable; next; end
+System,"Utility menu (.msg to .eml converter, regular expression validator)",7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,MAIL FROM customization for SMTP recipient address verification,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config mailsetting smtp-rcpt-verification; set mail-from-addr <SENDER_EMAIL>; end
+Antispam,Automatic aging and retention of block and safe list entries,7.2.0 and later,ALG SRG-NET-000019-ALG-000018,config antispam settings; set safe-block-list-tracking-status enable; end
+Disclaimers and messages,Separate replacement messages for body and attachments,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Content,URL neutralization action in CDR and content action profiles,7.2.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000288-ALG-000109,config profile content; edit <CONTENT_PROFILE>; set html-content-url-action neutralize; set text-content-action neutralize; next; end
+Antivirus,FortiSandbox exception for one-time URLs,7.2.0 and later,ALG SRG-NET-000765-ALG-000170,config system fortisandbox; set bypass-one-time-url disable; end
+Antispam,URL resolution before FortiGuard queries,7.2.0 and later,ALG SRG-NET-000019-ALG-000018,—
+Firmware and configuration,Factory reset that keeps network settings (execute factoryreset2),7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),"Microsoft 365 protection (IP reputation actions, sender and recipient filtering, logging on policy match)",7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config cloud-api setting; set realtime-scan-log all; end
+Platform,Load balancers on Microsoft Azure and Oracle Cloud,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,SSO workflow enhancements,7.2.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Business email compromise (BEC) check and action,7.2.1 and later,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000019-ALG-000018,config profile antispam; edit <AS_PROFILE>; set bec-scan-status enable; next; end
+Antispam,Separate actions for DMARC and DKIM results,7.2.1 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set dmarc-fail-status enable; set action-dmarc-fail <ACTION_PROFILE>; next; end
+Antispam,QR code URL scan in the message body,7.2.1 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000765-ALG-000170,config antispam settings; set qr-code-url-scan-status enable; end
+Content,Malformed HTML tag handling for URL click protection,7.2.1 and later,ALG SRG-NET-000380-ALG-000128,config system fortiguard url-protection; set malformed-html-tag-content-action remove; end
+Mail policies,Internet Service Database (ISDB) source in ACL rules,7.2.1 and later,ALG SRG-NET-000364-ALG-000122,—
+Antivirus,FortiSandbox Cloud EMEA region,7.2.1 and later,ALG SRG-NET-000765-ALG-000170,—
+Antispam,Combined DMARC record and antispam profile actions,7.2.1 and later,ALG SRG-NET-000735-ALG-000130,—
+Quarantine,Quarantine search by release status,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Archiving,Scan of incoming journaled email,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platform,AWS Snowball for FortiMail KVM,7.2.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Session profiles,FortiGuard IP reputation check granular control,7.2.2 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000138-ALG-000063,config profile session; edit <SESSION_PROFILE>; set fortiguard-ip-check-mode as-profile-no-auth; next; end
+Disclaimers and messages,Tag Subject option in disclaimer settings,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Management access,Repeat offender control for the web service (block IP addresses sending bad HTTP requests),7.2.2 and later,NDM SRG-APP-000435-NDM-000315; ALG SRG-NET-000705-ALG-000110,config system web-service; set repeat-offender-status enable; set repeat-offender-count <LIMIT>; set repeat-offender-period <MINUTES>; end
+Platform,AWS and Azure on-demand licenses,7.2.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Impersonation analysis levels,7.2.3 and later,ALG SRG-NET-000735-ALG-000130,config antispam settings; set impersonation-analysis-level strict; end
+Platform,AWS on-demand VM,7.2.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Content,"New FortiGuard web filter categories (AI technology, cryptocurrency)",7.2.5+; 7.4.1+,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,IP pool information in logs,7.2.5+; 7.4.1+,ALG SRG-NET-000077-ALG-000046,—
+Antispam,"BEC weighted analysis, intelligent analysis rule, and action keyword dictionaries",7.4.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set weighted-analysis-status enable; set weighted-analysis-profile <WEIGHTED_PROFILE>; next; end
+Antispam,QR code URL scan in attachments,7.4.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000765-ALG-000170,config antispam settings; set qr-code-url-scan-option attachment-image inline-image; end
+Antivirus,Candidate passwords sent to FortiSandbox for password-protected files,7.4.0 and later,ALG SRG-NET-000765-ALG-000170,—
+Cloud email (Microsoft 365 and Google),Google Workspace email scan and clawback,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,FortiGuard outbreak deferral as an antispam or content action,7.4.0 and later,ALG SRG-NET-000765-ALG-000170; ALG SRG-NET-000019-ALG-000018,config profile antispam-action; edit <ACTION_PROFILE>; set fortiguard-antispam-outbreak enable; next; end
+Antivirus,Zip bomb compression ratio limit,7.4.0 and later,ALG SRG-NET-000380-ALG-000128; ALG SRG-NET-000705-ALG-000110,config mailsetting mail-scan-option; set decompress-max-ratio <RATIO>; end
+Antispam,Cousin domain scan of outbound email and look-alike type,7.4.0 and later,ALG SRG-NET-000735-ALG-000130,—
+Cloud email (Microsoft 365 and Google),Microsoft 365 per-account scan control,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+High availability,"HA configuration enhancements (active-passive and active-active, service monitor)",7.4.0 and later,ALG SRG-NET-000365-ALG-000123,—
+High availability,Active-active HA primary backup and service monitor,7.4.0 and later,ALG SRG-NET-000365-ALG-000123; ALG SRG-NET-000362-ALG-000120,—
+Authentication,Multiple identity providers for SAML SSO,7.4.0 and later,NDM SRG-APP-000516-NDM-000336,—
+Mail policies,ISDB source type in IP-based policies,7.4.0 and later,ALG SRG-NET-000364-ALG-000122,config policy ip; edit <ID>; set source-type isdb; next; end
+Mail delivery,SMTPUTF8 support (RFC 6530 to 6533),7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",config system mailserver; set smtp-smtputf8 disable; end
+Encryption,Fallback to IBE when TLS fails,7.4.0 and later,ALG SRG-NET-000510-ALG-000111,config profile encryption; edit <ENC_PROFILE>; set protocol ibe-on-tls-failure; next; end
+Cloud email (Microsoft 365 and Google),Microsoft 365 system quarantine release enhancement,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),Azure AD group membership for Microsoft 365 users,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Customized messages in domain disclaimers,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail delivery,Customized bounce (DSN) email,7.4.0 and later,ALG SRG-NET-000273-ALG-000129,config system mailserver; set dsn-email-customization-status enable; end
+Firmware and configuration,Web proxy for FortiGuard antivirus updates and antispam queries,7.4.0 and later,ALG SRG-NET-000019-ALG-000019,config system fortiguard antivirus; set tunneling-status enable; set tunneling-address <PROXY>; set tunneling-port <PORT>; end
+Content,Web proxy for the shortened URL service,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platform,Alibaba Cloud,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Users and directories,Automatic removal of inactive accounts,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail server,Domain-level disk quota (server mode),7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Defer delivery action in antispam and content action profiles,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Read-update permission in administrator profiles,7.4.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000380-NDM-000304,config system accprofile; edit <PROFILE>; config menuitem; edit policy_grp; set permission read-update; next; end; next; end
+Certificates,Elliptic curve keys in certificate signing requests,7.4.0 and later,NDM SRG-APP-000516-NDM-000344,—
+Logging,Access control delivery rule ID in event logs,7.4.0 and later,ALG SRG-NET-000074-ALG-000043,—
+Administrator accounts,Certificate-based SSH key for administrators,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (no setting found in the 8.0.0 CLI Reference syntax for config system admin)
+Disclaimers and messages,Disclaimers in Outlook appointment email,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,DKIM signing of DSNs and system notifications,7.4.0 and later,ALG SRG-NET-000735-ALG-000130,—
+High availability,Block and safe list synchronization in active-active HA,7.4.0 and later,ALG SRG-NET-000365-ALG-000123,—
+Management access,Exempt IP list for web service repeat offender control,7.4.0 and later,NDM SRG-APP-000435-NDM-000315,—
+Users and directories,User preference enhancements,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Automatic FortiToken push after login credentials,7.4.0 and later,NDM SRG-APP-000820-NDM-000170,—
+Management access,New CLI console in the administrator GUI,7.4.0 and later,NDM SRG-APP-000408-NDM-000314,—
+Disclaimers and messages,Inline attachment replacement message,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Message-ID in notification email,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Recipient policy move action in all display modes,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Email address auto completion,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Address book search enhancement,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Display columns,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Email tags,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Mobile device view,7.4.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,"Outlook spam submission for macOS, OWA, and Microsoft 365",7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Archive files and QR code URLs embedded in images,7.4.1 and later,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000019-ALG-000018,—
+Logging,HA cluster log search for domain administrators,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,CLI command to retrieve default values (get default-value),7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),Read or unread status as a clawback condition,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),Microsoft 365 and Google Workspace information on the dashboard,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Attachment replacement message location,7.4.1 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Email and IP group import and export,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Users and directories,Client certificate authentication in LDAP profiles,7.4.2 and later,NDM SRG-APP-000516-NDM-000336; ALG SRG-NET-000138-ALG-000088,config profile ldap; edit <LDAP>; set secure ssl; set client-cert-auth enable; set client-cert <CLIENT_CERT>; next; end
+Antispam,Per-domain DMARC failure actions,7.4.2 and later,ALG SRG-NET-000735-ALG-000130,—
+Content,Image source exemption from URL neutralization,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Sender domain variable in disclaimers,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Sending from a webmail secondary account,7.4.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Authentication,Dynamic IP addresses within a SAML session,7.4.3+; 7.6.0+,ALG SRG-NET-000230-ALG-000113,config system saml; set dynamic-ip-status disable; end (unless clients change addresses during a session)
+Encryption,UAE local SMS gateway (Etisalat) for IBE two-factor authentication,7.4.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Logs of user mail moves in the Microsoft 365 and Google API views,7.4.4 and later,ALG SRG-NET-000079-ALG-000048,—
+Time,British Columbia permanent DST time zone,7.4.7 and later,NDM SRG-APP-000374-NDM-000299,—
+Time,Alberta and Manitoba permanent DST time zones,7.4.9 and later,NDM SRG-APP-000374-NDM-000299,—
+Cloud email (Microsoft 365 and Google),On-premises Microsoft Exchange email scan,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,FortiGuard sender and recipient relation (SRR) scoring for BEC,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Spam submissions visible per domain to domain administrators,7.6.0 and later,NDM SRG-APP-000033-NDM-000212,config system fortiguard antispam; set submission-per-domain enable; end
+Antispam,QR code URL scan in PDF attachments,7.6.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000765-ALG-000170,config antispam settings; set qr-code-url-scan-pdf enable; end
+Antispam,STIX/TAXII threat feeds,7.6.0 and later,ALG SRG-NET-000019-ALG-000019; ALG SRG-NET-000019-ALG-000018,config system threat-feed; edit <FEED>; set status enable; set server-identity-check full; next; end
+Quarantine,System and domain quarantine notifications with release requests,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,DMARC result overriding SPF and DKIM,7.6.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set dmarc-override-option override-dkim override-spf; next; end
+Antispam,Sender alignment bypass of Reply-To and display name checks,7.6.0 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set sender-alignment-option display-name reply-to; next; end (keep both checks selected)
+Antivirus,LZH and LHA archive scan,7.6.0 and later,ALG SRG-NET-000248-ALG-000133,—
+Antispam,DKIM signing of mail within the same protected domain,7.6.0 and later,ALG SRG-NET-000735-ALG-000130,—
+Content,"Exempt image URLs from rewriting, removal, and isolation",7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Delivery status of outgoing email in history logs,7.6.0 and later,ALG SRG-NET-000078-ALG-000047,config system mailserver; set delivery-tracking-status enable; end
+Mail policies,LDAP groups and IP groups in access control delivery rules,7.6.0 and later,ALG SRG-NET-000018-ALG-000017,—
+High availability,Group HA,7.6.0 and later,ALG SRG-NET-000365-ALG-000123,—
+Encryption,Per-domain IBE URL in IBE notifications,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Recipient exclusions in recipient policies,7.6.0 and later,ALG SRG-NET-000018-ALG-000017,—
+Firmware and configuration,Configuration download prompt before upgrading,7.6.0 and later,NDM SRG-APP-000516-NDM-000340,—
+Platform,HVM on XenServer,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Reverse DNS pattern in IP-based policies,7.6.0 and later,ALG SRG-NET-000364-ALG-000122,—
+Antispam,DMARC report collector and statistics,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Users and directories,Global editing of user preferences,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Quarantine,Web release page customization,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Syslog message delimiter option for TCP,7.6.0 and later,ALG SRG-NET-000334-ALG-000050,—
+Logging,Time zone in raw logs,7.6.0 and later,NDM SRG-APP-000374-NDM-000299; ALG SRG-NET-000075-ALG-000044,—
+Webmail,Calendar and CalDAV tasks,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Encryption,Dedicated IBE portal URL,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,LDAP display name for webmail users,7.6.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Platform,FortiFlex on VM platforms,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Monitoring,Click protection statistics in FortiView,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Session profiles,Bare line feed handling (SMTP smuggling),7.6.2 and later,ALG SRG-NET-000512-ALG-000064; ALG SRG-NET-000380-ALG-000128,config system mailserver; set smtp-eom-bare-lf-handling disallow; end
+Mail delivery,Mail queue delivery attempt controls,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Reliable logging to FortiAnalyzer,7.6.2 and later,NDM SRG-APP-000515-NDM-000325; ALG SRG-NET-000334-ALG-000050; ALG SRG-NET-000511-ALG-000051,config log setting remote; edit <FAZ>; set reliable enable; next; end
+Users and directories,Sender identity check for authenticated users against LDAP,7.6.2 and later,ALG SRG-NET-000735-ALG-000130; ALG SRG-NET-000138-ALG-000063,config policy recipient; edit <ID>; set smtp-diff-identity enable; set smtp-diff-identity-ldap enable; set smtp-diff-identity-ldap-profile <LDAP>; next; end
+Mail policies,Recipient policy search and display,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Firmware and configuration,FQDN for the FortiGuard HTTP proxy,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Log level filter in log search,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Email continuity,Per-domain recipient verification mode for email continuity recipients,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Encryption,IBE user password reset by administrators,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Member search in group profiles,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Webmail,Drag and drop attachment upload,7.6.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,LDAP source and forged IP check in receiving ACL rules,7.6.3 and later,ALG SRG-NET-000364-ALG-000122; ALG SRG-NET-000735-ALG-000130,config policy access-control receive; edit <RULE>; set forged-ip-check fail; next; end
+Mail delivery,Mail host port LDAP attribute in mail routing,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,Diagnose command reorganization (diagnose debug setting),7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Individual actions for each DMARC policy (p=) value,7.6.3 and later,ALG SRG-NET-000735-ALG-000130,config profile antispam; edit <AS_PROFILE>; set dmarc-policy-none-status enable; set action-dmarc-policy-none <ACTION_PROFILE>; next; end
+Content,XML attachment exemption from click protection URL rewrite,7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,"GUI enhancements (resizable windows, comment columns, LDAP browse search)",7.6.3 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail delivery,Enhanced queue runner,7.6.4 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Envelope From or Header From as the sender in recipient policies,7.6.4 and later,ALG SRG-NET-000735-ALG-000130,config system advanced-management; set recipient-policy-sender-option envelope-or-header-from; end
+Authentication,Separate SAML service providers for the administrator GUI and webmail,7.6.4+; 8.0.0+,NDM SRG-APP-000516-NDM-000336,config system saml; set second-sp-status enable; set second-sp-entity-id <ENTITY_ID>; set second-hostname <FQDN>; end
+SNMP,SNMPv3 SHA-2 authentication and AES-256 privacy,7.6.5+; 8.0.0+,NDM SRG-APP-000395-NDM-000310,config system snmp user; edit <SNMP_USER>; set security-level authpriv; set auth-proto sha256; set priv-proto aes256; next; end
+Cloud email (Microsoft 365 and Google),Microsoft 365 inline scan through Exchange Online connectors,8.0.0 and later,ALG SRG-NET-000018-ALG-000017,config mailsetting ms365-inline-setting; set cert <LOCAL_CERT>; set trusted-ip <IP_GROUP>; end
+Cloud email (Microsoft 365 and Google),Microsoft 365 shared mailbox scan,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Cloud email (Microsoft 365 and Google),Notifications sent by the FortiMail MTA in Microsoft and Google API mode,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Content,Password prompt for scanning password-protected attachments,8.0.0 and later,ALG SRG-NET-000248-ALG-000133,config profile content; edit <CONTENT_PROFILE>; set decrypt-password-method prompt-user-input; next; end
+Antispam,QR code URL scan in PDF archives,8.0.0 and later,ALG SRG-NET-000019-ALG-000018; ALG SRG-NET-000765-ALG-000170,—
+Quarantine,Rescan of email released from quarantine,8.0.0 and later,ALG SRG-NET-000248-ALG-000133; ALG SRG-NET-000765-ALG-000170,config mailsetting quarantine-release-rescan-setting; set status enable; set type antispam antivirus content dlp fortisandbox; end
+Content,Office file metadata and HTML hidden content handling,8.0.0 and later,ALG SRG-NET-000391-ALG-000140; ALG SRG-NET-000288-ALG-000109,config profile content; edit <CONTENT_PROFILE>; set cdr-office-metadata-action remove; set html-hidden-content-action remove; next; end
+Mail policies,"Sender match on envelope, header From, or both in access control receive rules",8.0.0 and later,ALG SRG-NET-000735-ALG-000130,config policy access-control receive; edit <RULE>; set sender-option envelope-or-header-from; next; end
+Antispam,Reply-To header in safe list checks,8.0.0 and later,ALG SRG-NET-000735-ALG-000130,config antispam settings; set safelist-check-header-reply-to enable; end
+Management access,New administrator GUI framework,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Administrator MFA with FortiIdentity Cloud,8.0.0 and later,NDM SRG-APP-000820-NDM-000170; NDM SRG-APP-000825-NDM-000180,config system global; set fortiidentity-cloud-status enable; end; config system admin; edit <ADMIN>; set tfa-status enable; set tfa-type fortiidentity-cloud; next; end
+Management access,Client IP address from an HTTP X-header,8.0.0 and later,NDM SRG-APP-000038-NDM-000213,config system web-service; set client-ip-x-header-status disable; end (unless a trusted proxy or load balancer sets the header)
+Monitoring,Released and unreleased quarantine counts,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Monitoring,Disk usage history widget,8.0.0 and later,NDM SRG-APP-000357-NDM-000293,—
+Monitoring,TLS connection statistics in FortiView,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antispam,Personal block and safe list size limit and tracking,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail policies,Sender exclusions in recipient policies,8.0.0 and later,ALG SRG-NET-000018-ALG-000017,—
+Administrator accounts,Secure (TLS) RADIUS,8.0.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000172-NDM-000259; ALG SRG-NET-000400-ALG-000097,config profile authentication radius; edit <RADIUS>; set transport-protocol tls; set ca-cert <CA_CERT>; next; end
+Cloud email (Microsoft 365 and Google),Archive action in Microsoft and Google API mode,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Disclaimers and messages,Disclaimer handling in mobile notification previews,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Session profiles,Regular expressions in session profile header manipulation,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Delivering status and failure reason in mail delivery status,8.0.0 and later,ALG SRG-NET-000078-ALG-000047,—
+Logging,Mail delivery status on FortiAnalyzer,8.0.0 and later,ALG SRG-NET-000334-ALG-000050,config system mailserver; set delivery-tracking-on-faz-status enable; end
+System,SED auto lock on FortiMail 900G,8.0.0 and later,ALG SRG-NET-000755-ALG-000150,—
+Archiving,Port numbers for remote email archive servers,8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Users and directories,FortiAuthenticator integration for user accounts (server mode),8.0.0 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Separate firmware upgrade permission in access profiles,8.0.0 and later,NDM SRG-APP-000378-NDM-000302; NDM SRG-APP-000033-NDM-000212,—
+Content,OCR scan of images (license),8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Mail delivery,Relay host in access control delivery rules,8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+System,DNS cache maximum TTL,8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",— (the cache-max-ttl option named in the 8.0.2 release notes is not in the 8.0.0 CLI Reference)
+Encryption,AES-GCM for S/MIME,8.0.2 and later,ALG SRG-NET-000510-ALG-000111,—
+Mail policies,Country exclusions in GeoIP groups,8.0.2 and later,ALG SRG-NET-000364-ALG-000122,—
+Archiving,Original email repackaged as an attachment in archive accounts,8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Antivirus,FortiSandbox report download from the history log,8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Administrator accounts,Firmware restore by administrators with read-write access,8.0.2 and later,NDM SRG-APP-000378-NDM-000302; NDM SRG-APP-000033-NDM-000212,—
+Monitoring,Recent email statistics and log dashboard,8.0.2 and later,"No direct requirement; if unused, disable (ALG SRG-NET-000131-ALG-000085)",—
+Logging,Display name and Reply-To in history logs,8.0.2 and later,ALG SRG-NET-000079-ALG-000048,—
+Content,CDR component types in the GUI,8.0.2 and later,ALG SRG-NET-000288-ALG-000109,—

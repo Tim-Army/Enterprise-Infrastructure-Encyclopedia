@@ -48,6 +48,16 @@ if [[ -d publishing/interactive ]]; then
   cp -R publishing/interactive "$output/interactive"
 fi
 
+# Downloadable data files (CSV exports of chapter tables, written by
+# scripts/python/export_srg_tables.py). Chapters link to them at
+# data/<volume>/<file>.csv on the portal.
+for data_dir in volumes/*/data; do
+  [[ -d "$data_dir" ]] || continue
+  vol="$(basename "$(dirname "$data_dir")")"
+  mkdir -p "$output/data/$vol"
+  cp "$data_dir"/*.csv "$output/data/$vol/"
+done
+
 page_head() {
   # $1 = <title> text
   # $2 = relative prefix from this page back to the site root, e.g. "../../"

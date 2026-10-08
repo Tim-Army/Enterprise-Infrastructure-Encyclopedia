@@ -1,0 +1,519 @@
+﻿Category,Feature,Introduced (FortiSandbox),SRG requirement(s),Command to satisfy the requirement
+Core: Management access,"Administrative access on port1 (HTTPS by default; HTTP, SSH, and Telnet optional)",4.0.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000172-NDM-000259; NDM SRG-APP-000408-NDM-000314,"GUI: System > Interfaces (Access Rights on port1: HTTPS and SSH only, HTTP and Telnet off; other administrative ports follow port1)"
+Core: Management access,"Additional administrative ports, including aggregate interfaces",4.0.0 or earlier,NDM SRG-APP-000880-NDM-000290,"set admin-port <PORT> (a port on the dedicated management network, never port3 or a sniffer port)"
+Core: Management access,Web UI and SSH server certificates (Fortinet factory certificate by default),4.0.0 or earlier,NDM SRG-APP-000516-NDM-000344; NDM SRG-APP-000910-NDM-000300,GUI: System > Certificates (import a DoD-issued certificate and assign it to the HTTPS and SSH services with Service)
+Core: Management access,Trusted hosts for each administrator (three IPv4 and three IPv6 hosts in 4.0.0),4.0.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000038-NDM-000213,"GUI: System > Administrators (Restrict login to trusted host, on every account)"
+Core: Management access,Idle timeout for administrator sessions,4.0.0 or earlier,NDM SRG-APP-000190-NDM-000267; NDM SRG-APP-000220-NDM-000268,GUI: System > Settings (Idle timeout: 5 minutes or less; the CC technote says it also applies to SSH and the console)
+Core: Management access,Administrator logout,4.0.0 or earlier,NDM SRG-APP-000296-NDM-000280; NDM SRG-APP-000220-NDM-000268,—
+Core: Management access,Login disclaimer on the web UI,4.0.0 or earlier,NDM SRG-APP-000068-NDM-000215; NDM SRG-APP-000069-NDM-000216,GUI: System > Login Disclaimer (enable it with the Standard Mandatory DoD Notice and Consent Banner)
+Core: Management access,TLS versions of the HTTPS service,4.0.0 or earlier,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; NDM SRG-APP-000172-NDM-000259,"set-tlsver -l; set-tlsver -r (TLS 1.2 and 1.3, the default; TLS 1.0 and 1.1 are not supported)"
+Core: Management access,Login lockout after failed logins (CC mode),4.4 (CC technote),NDM SRG-APP-000065-NDM-000214,GUI: System > Settings (Admin Session in CC mode: Failed Sign-On Attempt Limit 3 and Lockout Period 15 minutes; the 5.2.2 Administration Guide lists no lockout fields)
+Core: Management access,"CC mode of operation (NDcPP evaluated configuration, self-tests, restricted cipher suites)",4.4 (CC technote),NDM SRG-APP-000179-NDM-000265; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; NDM SRG-APP-000516-NDM-000317,cc-mode-conf -e (from the FortiSandbox 4.4 NDcPP technote; not in the 5.2.2 CLI Reference; it resets the configuration)
+Core: Management access,TCP timestamp responses,5.2.2 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",set-tcp-timestamp-response -d
+Core: Administrator accounts,Default admin account and local administrator accounts,4.0.0 or earlier,NDM SRG-APP-000148-NDM-000346; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000178-NDM-000264,GUI: System > Administrators (one local account of last resort with a password of 15 or more characters)
+Core: Administrator accounts,"Admin profiles (Super Admin, Read Only, and Device, and custom profiles with Read Write, Read Only, or None for each menu)",4.0.0 or earlier,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000340-NDM-000288; NDM SRG-APP-000516-NDM-000335,GUI: System > Admin Profiles (Super Admin only for the administrators who need it)
+Core: Administrator accounts,JSON API and CLI access for each admin profile,5.2.2 or earlier,NDM SRG-APP-000340-NDM-000288; NDM SRG-APP-000408-NDM-000314,GUI: System > Admin Profiles (API/CLI Access: Disallowed for profiles that do not need them)
+Core: Administrator accounts,Device administrators limited to assigned devices and device groups,4.0.0 or earlier,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271,GUI: System > Device Groups
+Core: Administrator accounts,Maintainer account for resetting administrator passwords from the console,4.0.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000148-NDM-000346,set-maintainer -d (enable it only for a password recovery)
+Core: Authentication,LDAP servers for administrator authentication (LDAPS or STARTTLS),4.0.0 or earlier,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000172-NDM-000259,GUI: System > LDAP Servers (Secure Connection with LDAPS and the DoD CA certificate)
+Core: Authentication,"RADIUS servers for administrator authentication (primary and secondary, with RADIUS two-factor authentication)",4.0.0 or earlier,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000820-NDM-000170; NDM SRG-APP-000825-NDM-000180,GUI: System > RADIUS Servers (the RADIUS server enforces DoD PKI or another approved second factor)
+Core: Authentication,Wildcard LDAP and RADIUS administrators (all accounts of a group),4.0.0 or earlier,NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000033-NDM-000212,"GUI: System > Administrators (Type LDAP WILDCARD or RADIUS WILDCARD, with the narrowest admin profile)"
+Core: Authentication,"Two-factor authentication for local administrators (email, SMS, or FortiToken Mobile)",4.0.0 or earlier,NDM SRG-APP-000820-NDM-000170; NDM SRG-APP-000825-NDM-000180,"GUI: System > Administrators (Two-factor Authentication; appliances only in 4.0.0, and FSA-VM0T with FortiToken Cloud in 5.2.2)"
+Core: Authentication,Timeout for RADIUS and LDAP authentication,4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",— (remote-auth-timeout keeps the default of 10 seconds unless the server is slow)
+Core: Logging,"Local event logs (system, VM, job, HA cluster, and notification events)",4.0.0 or earlier,NDM SRG-APP-000026-NDM-000208; NDM SRG-APP-000027-NDM-000209; NDM SRG-APP-000029-NDM-000211; NDM SRG-APP-000343-NDM-000289; NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000503-NDM-000320; NDM SRG-APP-000095-NDM-000225; NDM SRG-APP-000096-NDM-000226; NDM SRG-APP-000100-NDM-000230; NDM SRG-APP-000098-NDM-000228; NDM SRG-APP-000099-NDM-000229,GUI: Log & Report > Events (keep the default categories)
+Core: Logging,Local log levels and report retention,4.0.0 or earlier,NDM SRG-APP-000357-NDM-000293,GUI: Log & Report > Settings (Log Level: Information and higher; local logs hold up to 1 GB)
+Core: Logging,"Remote log servers (syslog over TCP or UDP, CEF, and FortiAnalyzer)",4.0.0 or earlier,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350; IDPS SRG-NET-000334-IDPS-00191; IDPS SRG-NET-000511-IDPS-00012; IDPS SRG-NET-000091-IDPS-00193,"GUI: Log & Report > Log Servers (two servers, syslog over TCP with Secure Connection or FortiAnalyzer, with Alert, Critical, Error, Warning, and Information logs)"
+Core: Logging,Recording of CLI input and output,4.0.0 or earlier,NDM SRG-APP-000101-NDM-000231,diagnose-clilog -e (or CLI Logging under Log & Report > Settings)
+Core: Logging,Protection of logs through admin profiles,4.0.0 or earlier,NDM SRG-APP-000119-NDM-000236; NDM SRG-APP-000120-NDM-000237,GUI: System > Admin Profiles (Logs & Reports: Read Only or None for administrators who do not manage logs; log-purge deletes all system logs)
+Core: Logging,"Job event logs for every scanned file and URL (rating, malware name, source and destination addresses, service)",4.0.0 or earlier,IDPS SRG-NET-000113-IDPS-00013; IDPS SRG-NET-000074-IDPS-00059; IDPS SRG-NET-000075-IDPS-00060; IDPS SRG-NET-000076-IDPS-00061; IDPS SRG-NET-000077-IDPS-00062; IDPS SRG-NET-000078-IDPS-00063,GUI: Log & Report > Events > Job Events (and Alert logs to the remote log servers)
+Core: Logging,"Network alerts (attackers, botnet connections, and malicious URLs seen in sniffer mode)",4.0.0 or earlier,IDPS SRG-NET-000392-IDPS-00214; IDPS SRG-NET-000390-IDPS-00212; IDPS SRG-NET-000391-IDPS-00213; IDPS SRG-NET-000113-IDPS-00013,GUI: Log & Report > Network Alerts
+Core: Alerts,Email notifications for detected malware and scheduled PDF reports,4.0.0 or earlier,IDPS SRG-NET-000249-IDPS-00222; IDPS SRG-NET-000392-IDPS-00219; IDPS SRG-NET-000392-IDPS-00214,GUI: System > Mail Server (notification email to the ISSO and ISSM for Malicious and High Risk ratings)
+Core: Alerts,"SNMP traps (CPU, memory, and disk use, interface changes, and detected malware)",4.0.0 or earlier,IDPS SRG-NET-000249-IDPS-00222; NDM SRG-APP-000357-NDM-000293,GUI: System > SNMP (SNMP v3 Events: Malware is detected and Hard disk usage is high)
+Core: Time and SNMP,System time and NTP synchronization (FortiGuard or one NTP server),4.0.0 or earlier,NDM SRG-APP-000920-NDM-000320; NDM SRG-APP-000374-NDM-000299; NDM SRG-APP-000925-NDM-000330,"GUI: Dashboard > Status (System Information widget, System Time: synchronize with a DoD NTP server)"
+Core: Time and SNMP,SNMPv3 users (authentication and privacy),4.0.0 or earlier,NDM SRG-APP-000395-NDM-000310; NDM SRG-APP-000412-NDM-000331,"GUI: System > SNMP (Security Level: Encryption and authentication, with SHA1 and AES)"
+Core: Time and SNMP,SNMP v1 and v2c communities,4.0.0 or earlier,NDM SRG-APP-000395-NDM-000310; NDM SRG-APP-000142-NDM-000245,GUI: System > SNMP (no v1 or v2c communities)
+Core: System integrity,"Firmware upgrades (web UI, and fw-upgrade over SCP, FTP, or HTTPS)",4.0.0 or earlier,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-001035-NDM-000340; NDM SRG-APP-000131-NDM-000243; NDM SRG-APP-000378-NDM-000302,fw-upgrade -b -tscp -s<SERVER> -u<USER> -f<IMAGE_PATH> (compare the image checksum with the Fortinet support site first)
+Core: System integrity,"FortiGuard updates of antivirus signatures, engines, and AI models",4.0.0 or earlier,IDPS SRG-NET-000246-IDPS-00205; IDPS SRG-NET-000251-IDPS-00178; IDPS SRG-NET-000019-IDPS-00187,"GUI: System > FortiGuard (automatic updates from FDN, or Upload Package File on units without FDN access)"
+Core: System integrity,Configuration backup and restore through a remote server (CLI),4.0.0 or earlier,NDM SRG-APP-000516-NDM-000340,backup-sysconf -s<SERVER> -tscp -u<USER> -f<FILE_PATH> (after every change)
+Core: System integrity,Configuration backup encryption passphrase,4.0.0 or earlier,NDM SRG-APP-000516-NDM-000340; NDM SRG-APP-000231-NDM-000271,"set-cfg-backup-key -s (a passphrase of the organization's own, not the default key)"
+Core: High availability,"HA cluster of primary, secondary, and worker nodes (load balancing and failover)",4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)","hc-settings -sc -tN (standalone unit, if no cluster is used)"
+Core: High availability,Encryption of traffic between cluster members,4.0.0 or earlier,NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000412-NDM-000331,hc-primary -sg -e (on the primary node; the cluster protocol can fall back to plain text)
+Core: Detection,"Antivirus, static, and dynamic (VM) scanning of files and URLs",4.0.0 or earlier,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000228-IDPS-00196; IDPS SRG-NET-000249-IDPS-00176,GUI: Scan Policy and Object > Scan Profile
+Core: Detection,Scan profiles (file types in the job queue and their VM associations),4.0.0 or earlier,IDPS SRG-NET-000228-IDPS-00196; IDPS SRG-NET-000248-IDPS-00206,GUI: Scan Policy and Object > Scan Profile (VM Association for every file type the site receives)
+Core: Detection,FortiGuard sandboxing prefilter by file type,4.0.0 or earlier,IDPS SRG-NET-000228-IDPS-00196,sandboxing-prefilter -l (files that pass the prefilter skip the VM scan; enable it only for file types where that is acceptable)
+Core: Detection,VM images (default and optional VMs) and clone numbers,4.0.0 or earlier,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Core: Detection,"VM Internet access through port3, and the simulated network (SIMNET)",4.0.0 or earlier,IDPS SRG-NET-000715-IDPS-00120,"vm-internet -s -g<GATEWAY> -d<DNS_SERVER> (port3 on an isolated network behind a firewall, with no access to protected subnets)"
+Core: Detection,Allowlist and blocklist of files and URLs,4.0.0 or earlier,IDPS SRG-NET-000249-IDPS-00176; IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Allowlist/Blocklist (review the allowlist regularly)
+Core: Detection,YARA rules,4.0.0 or earlier,IDPS SRG-NET-000228-IDPS-00196; IDPS SRG-NET-000019-IDPS-00187,GUI: Scan Policy and Object > YARA Rules
+Core: Detection,Web category risk ratings for URLs,4.0.0 or earlier,IDPS SRG-NET-000019-IDPS-00019,GUI: Scan Policy and Object > Web Category
+Core: Detection,Customized rating of scan results,4.0.0 or earlier,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Customized Rating
+Core: Detection,On-demand file and URL submission (web UI and JSON API),4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Core: Detection,Job archive to a network share,4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: Scan Policy and Object > Job Archive (leave it disabled unless needed; archived samples are live malware)
+Core: Fabric integration,"Device mode (files from FortiGate, FortiMail, FortiWeb, FortiClient, and other devices over OFTP)",4.0.0 or earlier,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000383-IDPS-00208,GUI: Security Fabric > Device
+Core: Fabric integration,Authorization of new devices (manual or automatic),4.0.0 or earlier,NDM SRG-APP-000038-NDM-000213; IDPS SRG-NET-000383-IDPS-00208,device-authorization -m -o (every new device authorized by an administrator)
+Core: Fabric integration,Malware and URL packages for FortiGate and other devices,4.0.0 or earlier,IDPS SRG-NET-000249-IDPS-00176; IDPS SRG-NET-000249-IDPS-00221; IDPS SRG-NET-000383-IDPS-00208,GUI: Threat Intelligence > IOC Packages
+Core: Fabric integration,"Adapters (ICAP, MTA, BCC, and Carbon Black)",4.0.0 or earlier,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000383-IDPS-00208,GUI: Security Fabric > Adapter
+Core: Fabric integration,Network share scans and quarantine,4.0.0 or earlier,IDPS SRG-NET-000249-IDPS-00221; IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share (and Security Fabric > Quarantine)
+Core: Fabric integration,Sniffer mode (files and network alerts from spanned switch ports),4.0.0 or earlier,IDPS SRG-NET-000390-IDPS-00212; IDPS SRG-NET-000391-IDPS-00213; IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000392-IDPS-00214,GUI: Security Fabric > Sniffer
+Core: Threat data,Upload of malicious and suspicious file information to the FortiSandbox Community Cloud,4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",upload-settings -tuploadcloud -d (unless sharing with Fortinet is approved)
+Core: Threat data,Retention of original files and job traces,5.2.2 or earlier,NDM SRG-APP-000231-NDM-000271,GUI: System > Settings (Data Storage: delete original files and job traces after the organization's retention period)
+Core: Threat data,Download of original files and job packages,4.0.0 or earlier,NDM SRG-APP-000231-NDM-000271,GUI: System > Admin Profiles (Download Original File only in profiles that need it)
+Core: Threat data,Job visibility (Super Admin sees all jobs; other administrators see their own jobs or those of their devices),4.0.0 or earlier,NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000033-NDM-000212,—
+Core: Troubleshooting,"Diagnose, test-network, tac-report, and tcpdump commands",4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Core: Troubleshooting,"Factory reset, configuration reset, and database cleanup",4.0.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",— (factory-reset before the unit leaves service)
+Dashboard,"Redesigned menu layout and dashboard (Connectivity and Services, Scan Performance, Licenses, and System Resources widgets; Favorites menu)",4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+HA cluster,Cluster Management pages for administering an HA cluster,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Updates,Reset of the FortiGuard settings to default,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Licensing,"One upload for VM, Microsoft Windows, and Microsoft Office licenses",4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Warning before downloading samples or other malicious content,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Serial number or hostname in the browser tab and the CLI prompt,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Custom VMs in a separate Virtual Private Cloud on AWS,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Management access,Separate port for the JSON REST API,4.0.0 and later,NDM SRG-APP-000880-NDM-000290,set api-port <PORT> (a port on the management network; the API port accepts no web UI logins)
+Updates,Hostname in the HTTP CONNECT request of the FortiGuard proxy,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Secured logging to FortiAnalyzer,4.0.0 and later,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000119-NDM-000236; IDPS SRG-NET-000334-IDPS-00191,GUI: Log & Report > Log Servers (Type FortiAnalyzer)
+API,LDAP settings through the JSON RPC API (all settings and advanced fields),4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,Adaptive Scan Profile (the scan profile adjusts to the submission),4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,sandboxing-adaptive -l (not all models support it)
+Scan engine,VM Scan Ratio (VM use balanced by system load),4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,sandboxing-ratio -l (a ratio of 100 scans every job in the VMs)
+Dynamic analysis,PEXBox code emulation module for Windows malware,4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,— (no setting in the 5.2.2 CLI Reference)
+Scan engine,Rating Engine Plus (cloud rating),4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Scan engine,Reset of the prescan configuration to default,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Deletion of a VM job during an interactive scan,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,Larger files (new file size limit and prescan settings),4.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,filesize-limit -l (limits that cover the largest files the sources send)
+URL analysis,Scan and rating of websites that do not return 200 OK,4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Device integration,FortiMail verdict returned as soon as known malware is detected,4.0.0 and later,IDPS SRG-NET-000249-IDPS-00176,—
+Static analysis,AI mode enabled by default,4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,— (no setting in the 5.2.2 CLI Reference)
+Dynamic analysis,Several VM types for the same file or URL,4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Scan Profile (VM Association)
+Alerts,System health check alerts when a threshold is reached,4.0.0 and later,NDM SRG-APP-000357-NDM-000293,"GUI: System > Mail Server (Send scheduled system resource status report, with CPU, RAM, and disk thresholds)"
+Time,FortiGuard as an NTP server option,4.0.0 and later,NDM SRG-APP-000920-NDM-000320,GUI: Dashboard > Status (prefer a DoD NTP server to FortiGuard)
+HA cluster,Cluster IP on an aggregate interface,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,Rescue mode on Hyper-V,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,FortiSandbox 3000F,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,LACP interfaces for health check and the MTA adapter,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Backup,Configuration backup file named after the hostname,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,"One Sandbox Rating Engine for Windows, Android, and Linux",4.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Reports,"Redesigned job PDF report (extracted URLs, VM images, antivirus signature, BCC job details, system information, and settings)",4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Malware category field in the job event logs,4.0.0 and later,IDPS SRG-NET-000074-IDPS-00059,—
+Reports,Detected malware name in the Suspicious Indicator Detail table,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,"VM category (Default, Optional, or Custom) in the report",4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Submit condition (scan profile or scan ratio) in the job details report,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Logging of scan performance,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,prescan-config command for the prescan module,4.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,prescan-config -l
+CLI,"tac-report runs the diagnose commands, including 4.0 features",4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,test-network checks network speed and Community Cloud query and submission,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,status shows the file system state of the boot and data disks,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,admin-pwd-reset renamed reset-admin-pwd,4.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Scan Profile page layout,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,"FortiAI integration (FortiNDR from 4.2.0, with network response detection)",4.0.1+; 4.2.0+,IDPS SRG-NET-000383-IDPS-00208,GUI: Security Fabric > FortiNDR
+Dynamic analysis,Internal VM scan timeout adjusted for detection,4.0.1 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Public cloud,Parallel scan on AWS and Azure,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,On-demand scans forced to the VM continue even when the sample is allowlisted,4.0.1 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Scan engine,MD5 and SHA1 entries in the custom allowlist and blocklist,4.0.1 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Scan Policy and Object > Allowlist/Blocklist
+Licensing,Perpetual custom VM license,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Alerts,SNMP trap for contract and license expiration,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Encrypted communication with syslog servers,4.0.1 and later,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000119-NDM-000236; IDPS SRG-NET-000334-IDPS-00191,GUI: Log & Report > Log Servers (Secure Connection)
+Logging,Event log for the system health check,4.0.1 and later,NDM SRG-APP-000357-NDM-000293,—
+Logging,Logging rate and resilience to FortiAnalyzer,4.0.1 and later,NDM SRG-APP-000515-NDM-000325,—
+CLI,Aggregate interface IP address set in the CLI,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,Disk and inode use in the get-system-status API response,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Command to cancel processing jobs,4.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,Performance widgets,4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Fortinet logo and firmware version in the web UI,4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,False positive and false negative submissions for URLs,4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Option to leave the password out of downloaded job files and packages,4.0.2 and later,NDM SRG-APP-000231-NDM-000271,GUI: System > Settings (keep a customized password on original files and no readme file with the password)
+Public cloud,Instance types with Elastic Network Adapter on AWS,4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ICAP adapter,ICAP PUT method,4.0.2 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Adapter
+Static analysis,YARA engine upgrade with the Magic module,4.0.2 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > YARA Rules
+Public cloud,Hot-standby VMs on AWS and Azure,4.0.2+; 4.2.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,jQuery library upgrade,4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Hard disk expansion on AWS and Azure (resize-hd),4.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,Scan Performance page with historical use,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Custom VM changes on FortiSandbox,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Neutrino GUI framework,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,FortiAnalyzer on the Connectivity widget,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,FortiNDR on the Connectivity widget,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,Last 7 days in the System Resources Usage widget,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Recorded video link on the Job Detail page,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,Inline blocking with FortiOS 7.2 (FortiGate holds the file until the verdict),4.2.0 and later,IDPS SRG-NET-000249-IDPS-00176; IDPS SRG-NET-000229-IDPS-00163,GUI: Security Fabric > Device (Inline Block on each authorized FortiGate)
+ICAP adapter,Several ICAP adapter profiles for multi-tenancy,4.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Adapter
+ICAP adapter,Hold option for ICAP adapter deployments,4.2.0 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Adapter (hold the file until the verdict)
+API,Aggregate interfaces through JSON RPC,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,Download of macro content through JSON RPC,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,"False positive and false negative marking through JSON RPC, with automatic submission to Fortinet",4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Sniffer,"TCP reset (TCP RST) of sessions with suspicious files, URLs, and network alerts in sniffer mode",4.2.0+; 4.4.0+,IDPS SRG-NET-000249-IDPS-00176; IDPS SRG-NET-000018-IDPS-00018,GUI: Security Fabric > Sniffer (TCP RST for file-based and network alert detection)
+API,System resource check through the API,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Configurable Internet browser for dynamic scans,4.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Dynamic analysis,Pipeline Scan Mode (one VM instance scans several jobs; URLs from 4.4.3),4.2.0+; 4.4.3+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",sandboxing-pipeline -d (the default)
+Scan engine,Rating Engine Service mode,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,"One tracer engine for Windows, Android, and Linux",4.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Dynamic analysis,Resilient log tracking in dynamic analysis,4.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Email adapters,Faster email relay with the MTA adapter,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Similar URLs whose payload has changed,4.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Dynamic analysis,Minimum dynamic scan timeout of 30 seconds on high-end models,4.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+HA cluster,Warning event for system time differences in an HA cluster,4.2.0 and later,NDM SRG-APP-000920-NDM-000320,—
+Backup,"Configuration backup, restore, and revisions in the web UI",4.2.0 and later,NDM SRG-APP-000516-NDM-000340,GUI: System > System Recovery (Remote Backup on a schedule)
+System,OpenSSL library upgrade,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Custom Linux VMs on public cloud,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Customizable reports (white labeling),4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,"Submit Time, Rated By, and File Type fields in FortiAnalyzer logs",4.2.0 and later,IDPS SRG-NET-000074-IDPS-00059; IDPS SRG-NET-000075-IDPS-00060,—
+Reports,Rated By names in the job reports,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Periodic scan statistics logs to FortiAnalyzer,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Periodic system resource logs to FortiAnalyzer,4.2.0 and later,NDM SRG-APP-000357-NDM-000293,—
+Inline block,device-authorization option to enable or disable inline blocking on FortiGate,4.2.0 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Device (the 5.2.2 device-authorization command has no inline block option)
+CLI,"test-network checks FortiAnalyzer, Cloud VM, and public cloud connectivity",4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,show lists the HA cluster external IP address,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,tac-report updated for the 4.2.0 features,4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,device-clean-pdf (job PDF of clean jobs sent to the requesting device),4.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",device-clean-pdf -d (the default; a template PDF is sent)
+Dashboard,Notice on the Community Cloud icon when community submission is disabled,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Tooltip on the VM clone update icon,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Licensing,One license upload link on hardware units,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,French and Japanese translations of new labels and messages,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Management access,Up to 50 trusted hosts for web UI logins,4.2.1 and later,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000038-NDM-000213,GUI: System > Administrators (Restrict login to trusted host)
+Network share,Network share scans of Microsoft Azure Blob Storage,4.2.1 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+Device integration,Device registration before any VM is configured,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,JSON API for the VM scan timeout of non-executable files,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Windows Cloud VM service on appliances,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",— (cloud VMs scan files in Fortinet's cloud; use them only if approved)
+Threat data,Upload of detection statistics (summary and details) to FortiGuard,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",upload-settings -tuploadstats -d (the default)
+Inline block,Result caching for inline block,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,Fault tolerance of the scan engine,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,Duplicate submissions in inline block,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Detection of a Windows blue screen (BSOD),4.2.1 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Scan engine,Not Applied and Unknown options in Customized Rating for timeouts and encrypted files,4.2.1 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Customized Rating
+URL analysis,Cloud query of websites on the FortiGuard allowlist and blocklist,4.2.1 and later,IDPS SRG-NET-000019-IDPS-00019,—
+Licensing,Licensing logic for additional licenses,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Licensing,Office 2019 upgrade license,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,FSA-VM00 as a dispatcher,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Clean behavior left out of the job report,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,FQDN for log servers,4.2.1 and later,NDM SRG-APP-000516-NDM-000350,GUI: Log & Report > Log Servers
+Reports,FortiWeb http_host and session_id in the job report,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,MTA adapter message ID in the job report,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Web browser in the job report,4.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,tac-report shows diagnose-sys-perf for more time ranges,4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,vm-license shows more license information,4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,User-defined file type groups in the File Statistics widget,4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,REST API query of the pending job count,4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Sniffer,Replacement message in sniffer mode when TCP reset is enabled,4.2.3 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Sniffer
+Scan engine,CSV files in the Microsoft Office scan profile group,4.2.3 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Scan Policy and Object > Scan Profile
+Network share,"Network share scans of 10,000 files (conserve mode)",4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,"More VM memory on the VM00, 500F, and 1000F",4.2.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Optional VM WIN10O19V1 (Windows 10 with Office 2019),4.2.3 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Management access,Login disclaimer on SSH sessions,4.2.3 and later,NDM SRG-APP-000068-NDM-000215; NDM SRG-APP-000069-NDM-000216,GUI: System > Login Disclaimer
+ICAP adapter,application/octet-stream in ICAP request mode,4.2.4+; 4.4.0+,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Adapter
+VMs,Windows 10 2021 LTSC VM with Office 2021 (WIN10LTSCO21V1),4.2.5+; 4.4.1+,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+VMs,Windows 10 2021 LTSC VM with Office 2019 (WIN10LTSCO19V1),4.2.6+; 4.4.2+,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Device integration,FortiManager 7.6.0,4.2.8+; 4.4.7+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Custom VM upload and update in the web UI,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Reorganized System and Scan Profile settings,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Log & Report Settings page,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,System Resource widget,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Adjustable columns on the File and URL On Demand pages,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"Filtering, sorting, and Last Seen column on the Device and FortiClient pages",4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,VM Settings page usability and status indicators,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Installed applications list (meta information) for custom VMs,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"Windows and macOS cloud VMs combined, with separate local and remote key counts",4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Admin Profile page layout,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,ICAP adapter page labels,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,0-day detection statistics in the Scan Performance widget,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,Inline Block setting on the device page,4.4.0 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Device
+Authentication,Test connection for LDAP remote administrators,4.4.0 and later,NDM SRG-APP-000516-NDM-000336,GUI: System > LDAP Servers
+Logging,Port number for FortiAnalyzer log servers,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,VM Interaction (interactive on-demand scans),4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: System > Admin Profiles (Allow On-Demand Scan Interaction only in profiles that need it)
+HA cluster,Auto-refresh of the Cluster Management pages,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+HA cluster,Refresh button on the HA cluster Job Summary page,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Renamed Scan Timeout labels,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,FortiSandbox on Oracle Cloud Infrastructure (OCI),4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ICAP adapter,Imported certificates for the ICAP adapter,4.4.0 and later,NDM SRG-APP-000516-NDM-000344; IDPS SRG-NET-000383-IDPS-00208,GUI: System > Certificates (a DoD-issued certificate for ICAP over SSL)
+ICAP adapter,Editable default profile with several ICAP profiles,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Network share,SMB 3.1.1 for network share scans,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ICAP adapter,ICAP return code 202 (submission accepted),4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Management access,TLS 1.3,4.4.0 and later,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000172-NDM-000259,set-tlsver -l; device-ssl -l
+Anti-phishing,Real-Time Anti-Phishing (RTAP) service for 0-day phishing sites,4.4.0 and later,IDPS SRG-NET-000019-IDPS-00019; IDPS SRG-NET-000228-IDPS-00196,GUI: System > FortiGuard (Real-time Zero-Day Anti-Phishing Service Settings; subscription)
+Network share,Prioritized network share scan jobs with user rights and groups,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,QR code analysis of embedded URLs,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (QR code extraction, type qr, is off by default; set -n to 1 or more to enable it)"
+Inline block,Configurable file type list for inline block scans,4.4.0 and later,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Device
+ICAP adapter,Hold for dynamic scans of ICAP submissions,4.4.0 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Adapter
+VMs,Optional VM with Office 2021,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+VMs,Windows 11 for dynamic scans,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Static analysis,Installer-type archive files,4.4.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+VMs,CPU and memory settings for custom VMs (vm-customized parameters from 5.0.0),4.4.0+; 5.0.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Embedded URL scanning enabled by default,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (3 embedded URLs and 3 embedded files by default, up to 30)"
+URL analysis,DNS queries of URL scans through port3,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,"Terrorism, URL Shortening, Crypto Mining, and Potentially Unwanted Program web filtering categories",4.4.0 and later,IDPS SRG-NET-000019-IDPS-00019,GUI: Scan Policy and Object > Web Category
+Static analysis,YARA engine 4.2.3,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+URL analysis,Override ratings for URL categories such as Phishing,4.4.0 and later,IDPS SRG-NET-000019-IDPS-00019,GUI: Scan Policy and Object > Web Category
+Network share,Option to skip the placeholder file for quarantined network share files,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Scan timeout for executable files,4.4.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Scan Profile (Advanced tab)
+Public cloud,Custom Linux VMs on AWS,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Microsoft OneNote files,4.4.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+System,"Self-check of configuration, connectivity, and services",4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Authentication,Single sign-on (SAML) for administrators,4.4.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000149-NDM-000247; NDM SRG-APP-000820-NDM-000170,GUI: System > SAML SSO (an IdP that enforces DoD PKI)
+System,"Hardware status (temperature, fans, disks, and power supplies) in the MIB and the CLI",4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,Effective Sandboxing Throughput raised 5 to 10 times,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,"Kernel, Python, OpenSSL, and Apache upgrades",4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrators,Administrator types for device groups and network share submissions (Netshare administrators and groups),4.4.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271,GUI: System > Netshare Groups
+Network share,Database cleanup of network share scans by retention,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrators,Deletion of the built-in admin account,4.4.0 and later,NDM SRG-APP-000148-NDM-000346,"rename-admin -uadmin -n<NEW_NAME> (then delete it in the web UI, or keep it as the account of last resort)"
+Reports,Job Details display settings and field names,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Web filtering rating and redirected URL in URL scan job reports,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,MITRE ATT&CK version 11 in the Job Detail report,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,File type in the event log,4.4.0 and later,IDPS SRG-NET-000074-IDPS-00059,—
+Reports,Overflow VM indicator in the job details,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Email adapters,Warning when MTA adapter email accounts exceed the license,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,File submission from remote and network share paths through the API,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Low-level hard disk format that erases all data and keeps the default licenses,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Command to show the MTA queue,4.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Faster web page loading,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Automatic login to the CLI console in the web UI,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: System > Admin Profiles (GUI Console only in profiles that need it)
+GUI,Cloud VM region in the System Checklist,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Warning to keep the file and job retention settings the same,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,Limit of 30 archive passwords,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Source device and user filters on the job search page,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Tooltips for default ratings on the Web Category page,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,New FortiWeb model,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Network share scans on AWS in the Hong Kong region,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Windows 11 VMs with Office 2019 and with Office 2021,4.4.3 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+VMs,Custom VMs with Windows 11,4.4.3+; 5.0.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Ubuntu 18 optional VM (Ubuntu18V5),4.4.3 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Scan engine,Files of up to 30 GB,4.4.3 and later,IDPS SRG-NET-000248-IDPS-00206,filesize-limit -l
+Public cloud,Idle custom VM instances deallocated in hot standby,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Anti-phishing,RTAP screenshots of URLs rated clean,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Anti-phishing,More FortiGuard RTAP servers for redundancy,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Anti-phishing,Proxy for the Real-Time Anti-Phishing service,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Default VM of the VM00 changed to WIN10LTSCO21V1,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Sniffer,Allowlist and blocklist overrides in sniffer mode,4.4.3 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Scan Policy and Object > Allowlist/Blocklist
+Platform,Firmware builds for GCP and OCI,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrators,"Password policy for local administrators (length, character types, expiration, and reuse)",4.4.3 and later,NDM SRG-APP-000164-NDM-000252; NDM SRG-APP-000166-NDM-000254; NDM SRG-APP-000167-NDM-000255; NDM SRG-APP-000168-NDM-000256; NDM SRG-APP-000169-NDM-000257; NDM SRG-APP-000860-NDM-000250,"GUI: System > Password Policy (Minimum password length 15, at least one of each character type, Allow password reuse off)"
+Authentication,Several LDAP and RADIUS users,4.4.3 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249,GUI: System > Administrators
+Public cloud,Premium disks on Azure for custom VMs,4.4.3+; 5.0.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrators,Netshare users with Full Access can change their network share configuration,4.4.3 and later,NDM SRG-APP-000033-NDM-000212,GUI: System > Admin Profiles
+Logging,Event logs for the confirm-id command,4.4.3 and later,NDM SRG-APP-000343-NDM-000289,—
+System integrity,Proxy server for fw-upgrade,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,More debug information in tac-report,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Grouping and order of the CLI commands,4.4.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Management access,TLS cipher suites for administrative HTTPS and OFTP fabric connections,4.4.3 and later,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; IDPS SRG-NET-000383-IDPS-00208,"device-ssl -j (weak cipher suites and certificates refused, the default)"
+Updates,Engine package upload in the CLI for air-gapped units,4.4.3 and later,IDPS SRG-NET-000246-IDPS-00205,fw-upgrade -e -tscp -s<SERVER> -u<USER> -f<PACKAGE_PATH>
+Administrators,CLI command to create and delete administrator accounts (system-admin),4.4.3 and later,NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000033-NDM-000212,system-admin -c -u<ADMIN> -fread-only -tradius -lr<RADIUS_SERVER> -t4<MGMT_SUBNET> (a remote account with the narrowest profile and trusted hosts)
+Dashboard,Historical data for the Scan Statistics widget,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Nested VMs on Azure with local VMs,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,File system upgrade for newer WIN10LTSC VMs,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Anti-phishing,RTAP server list downloaded over port 443,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Option to leave screenshots out of PDF job reports,4.4.4 and later,NDM SRG-APP-000231-NDM-000271,GUI: Log & Report > Customize Report (Print screenshot off for reports that leave the enclave)
+Anti-phishing,Detailed reason for RTAP verdicts,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Smaller job PDF reports,4.4.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,Inline block policy with FortiProxy,4.4.5 and later,IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Device
+ICAP adapter,Configurable ICAP service name,4.4.6 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ICAP adapter,New ICAP encodings and content types,4.4.6 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Adapter
+Sniffer,Q-in-Q traffic in sniffer mode,4.4.6+; 5.0.0+,IDPS SRG-NET-000390-IDPS-00212; IDPS SRG-NET-000391-IDPS-00213,GUI: Security Fabric > Sniffer (Interface MTU)
+Dynamic analysis,Customized ratings for application crashes during dynamic scans,4.4.7+; 5.0.0+,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Customized Rating
+Logging,"Log of each VM rescan, with the job ID and the reason",4.4.7+; 5.0.0+,IDPS SRG-NET-000113-IDPS-00013,—
+Dynamic analysis,Job configuration protection against detection evasion,4.4.8+; 5.0.2+,IDPS SRG-NET-000228-IDPS-00196,—
+VMs,Redesigned VM Settings page for the Universal VM,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Incident Assist page for SOC monitoring and investigation,5.0.0 and later,IDPS SRG-NET-000392-IDPS-00214,GUI: Threat Intelligence > Incident Assist
+Reports,Redesigned Job Detail page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Threat intelligence enrichment through the FortiGuard IOC service,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Email adapters,Email Management page for email not delivered through the MTA adapter,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,VM Interaction on Linux VMs,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: System > Admin Profiles (Allow On-Demand Scan Interaction only in profiles that need it)
+GUI,Option to hide clean and debug tracer logs on the Job Detail page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,GUI themes,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Latest web application framework for the GUI pages,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,System Dashboard content and layout,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Simplified On Demand submission page with advanced options,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,VM Association page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,System Settings page (Alert Notification and VM External Network Access),5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Update status on the FortiGuard page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Tree view design,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,False positive or false negative mark when submitting a job to FortiGuard,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Compressed-file icon on the job search page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Tracer log download for Linux files,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Network share,Network share scans of Google Cloud Storage,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+Network share,Network share scans of Microsoft OneDrive and SharePoint,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+Network share,Network share scans of SFTP sites,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+Public cloud,"Nested VMs on AWS, Azure, GCP, and OCI",5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Azure client ID instead of an email address,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Email adapters,Custom certificates for the MTA and BCC adapters,5.0.0 and later,NDM SRG-APP-000516-NDM-000344; IDPS SRG-NET-000383-IDPS-00208,GUI: Security Fabric > Adapter (a DoD-issued certificate)
+Static analysis,"PAIX AI engine for 0-day malware (Windows executables, Android, Office, and PDF)",5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196; IDPS SRG-NET-000246-IDPS-00205,"GUI: System > FortiGuard (AI Engine and Model, updated with the Advanced Subscription)"
+Dynamic analysis,Application-level behavioral tracking,5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Static analysis,Optical character recognition (OCR) of images,5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (OCR, type ocr, is off by default; set -n to 1 or more to enable it)"
+VMs,Android VM for APK files,5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Static analysis,Extraction of files embedded in Office and PDF files,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (3 embedded URLs and 3 embedded files by default, up to 30)"
+Public cloud,VM recording with nested VMs,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,QR code images in FortiMail URL submissions,5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Scan engine,Faster aggregation of archive results,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Dynamic scan skipped for URLs rated High Risk by a customized category,5.0.0 and later,IDPS SRG-NET-000019-IDPS-00019,GUI: Scan Policy and Object > Web Category
+Scan engine,Up to 30 passwords for PDF and Office files in the scan profile,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Scan Policy and Object > Scan Profile
+Network share,Network share scan performance,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,Job result caching,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Static analysis,"New file types (.vbe, .ics, .vcs, .pub, .udf, and ISO in UDF 2.5)",5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Static analysis,UTF-8 encoded attachments in MIME email,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Email adapters,Password extraction from email submitted through the BCC adapter,5.0.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+URL analysis,Scan of script files downloaded by URL jobs,5.0.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Static analysis,Trusted-vendor check of archive files,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Network share,Options to skip unchanged files,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,More disk capacity for job retention,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,Database scalability and reliability,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+HA cluster,SSL certificates for communication between cluster nodes,5.0.0 and later,NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000412-NDM-000331,hc-primary -sg -e
+System,FortiSandbox OS software upgrade,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,AWS and Azure SDK update for newer regions,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Serial number as the remote access password of interactive custom VMs,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,TLS 1.3 by default for device connections,5.0.0 and later,NDM SRG-APP-000412-NDM-000331; IDPS SRG-NET-000383-IDPS-00208,device-ssl -g (the default)
+Public cloud,Availability zones for nested VMs on Azure,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,Automatic file system conversion for newer optional VMs,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,HTTP CONNECT and SOCKS5 proxy for cloud VMs,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,HTTP CONNECT proxy for VM network access,5.0.0 and later,IDPS SRG-NET-000715-IDPS-00120,"GUI: System > Settings (VM External Network Access, Use Proxy)"
+ICAP adapter,Limit of 32 ICAP profiles,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,AI-based threat summary,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Option to hide debug tracer logs in PDF reports,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Five cover page designs for the Job Detail PDF report,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,"Kernel panic, segmentation fault, and out-of-memory events in the system event log",5.0.0 and later,IDPS SRG-NET-000236-IDPS-00170; NDM SRG-APP-000095-NDM-000225,—
+Logging,Daemon restart events in the system event log,5.0.0 and later,IDPS SRG-NET-000236-IDPS-00170,—
+Reports,Engine versions in reports and on the Job Detail page,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Serial number sent with files submitted to the Community Cloud,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",upload-settings -tuploadcloud -d
+Email adapters,From and To fields for email submitted through the BCC adapter,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Sharing of IOCs through STIX/TAXII packages and servers,5.0.0 and later,IDPS SRG-NET-000383-IDPS-00208,GUI: Threat Intelligence > IOC Packages (STIX/TAXII Integration only with approved servers)
+CLI,"More debug output in tac-report and test-network (HA cluster, web category overrides, and proxy)",5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Database status in the status command,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,File system type in the debug commands,5.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,"Job Details report page (Info labels, icons, and tree view panel)",5.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Windows 11 IoT Enterprise LTSC VM with Office 2021 for AWS and Azure,5.0.1 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+Licensing,Windows-only license and Windows activation SKU,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Network share,Scans of SharePoint files,5.0.2 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+HA cluster,Standby secondary node that processes no jobs,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Dynamic scans of URLs embedded in QR codes,5.0.2 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (QR code extraction, type qr, is off by default; set -n to 1 or more to enable it)"
+Threat data,Option to keep the job folder of clean jobs,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,Long URLs submitted by FortiMail,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Static analysis,Extraction and scanning of Microsoft Outlook PST files,5.0.2+; 5.2.0+,IDPS SRG-NET-000248-IDPS-00206,—
+URL analysis,URLs extracted from .eml files from all input sources,5.0.2 and later,IDPS SRG-NET-000228-IDPS-00196,—
+URL analysis,File downloads from Google Drive,5.0.2 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Static analysis,multipart/related content type,5.0.2 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Scan engine,Custom rating of document files,5.0.2 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Customized Rating
+Static analysis,File typing of PowerShell (PS1) files,5.0.2 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Static analysis,AI engine 05000.00025 released as GA,5.0.2 and later,IDPS SRG-NET-000246-IDPS-00205,—
+GUI,Redesigned GUI console,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Malware Package page,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Authentication,Import of IdP metadata on the SAML SSO page,5.0.2 and later,NDM SRG-APP-000516-NDM-000336,GUI: System > SAML SSO
+GUI,Deletion of several FortiGate and FortiClient devices at once,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ICAP adapter,Up to 1000 ICAP connections,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,Automatic deletion of idle devices,5.0.2 and later,IDPS SRG-NET-000383-IDPS-00208,GUI: System > Settings (Data Storage; deleted devices must be authorized again)
+Licensing,Pooled MTA seat licenses in an HA cluster,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,FortiSandbox VMS deployment model for on-premises and public cloud,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrators,CLI command to change one's own password (change-password),5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,FortiSandbox PaaS,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Secure connection to the FortiSandbox Community Cloud and threat intelligence,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)","GUI: System > FortiGuard (Secure Connection on, if the Community Cloud is used)"
+Platform,Root-OU IAM accounts on FortiSandbox PaaS,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Authentication,Admin profile assigned from the SAML assertion,5.0.2 and later,NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000033-NDM-000212,GUI: System > SAML SSO
+Threat data,HTTP Community Cloud queries through a proxy,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,All extracted URLs in the job report PDF,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Arabic file names on the Job Search and Details pages,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,System event when concurrent connections exceed the limit,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,Built-in email server on FortiSandbox PaaS,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,AndroidVMV5 setup scripts,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,"Disk health in hardware-info, tac-report, and SNMP",5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,"disk-usage command for system, job, and VM disk use",5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,ENA attribute of custom VMs installed from a VHD file on AWS,5.0.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,"Lite Mode (mainly static analysis, for large volumes of files)",5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)","lite-mode -d (Full Mode, the default; Lite Mode has no dynamic scan)"
+Static analysis,Content Disarm and Reconstruction (CDR) for the API and ICAP,5.0.3 and later,IDPS SRG-NET-000249-IDPS-00176,—
+Logging,FortiAnalyzer Cloud as a log server,5.0.3 and later,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350,GUI: Log & Report > Log Servers
+Static analysis,Valid subscription required for manual PAIX package uploads,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,User-defined file extensions for custom Linux VMs,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Anti-phishing,RTAP queries for URLs filtered out of the dynamic scan,5.0.3 and later,IDPS SRG-NET-000019-IDPS-00019,url-deep-check -e -a (RTAP checks of all URLs; RTAP subscription)
+Anti-phishing,CAPTCHA recognition in the Real-Time Anti-Phishing service,5.0.3 and later,IDPS SRG-NET-000019-IDPS-00019,—
+URL analysis,URLs extracted from .msg files,5.0.3 and later,IDPS SRG-NET-000228-IDPS-00196,—
+ICAP adapter,Several file extractions in ICAP REQMOD,5.0.3 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Dashboard,RTAP Statistics,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Browser selection for cloud VMs,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Filters on the job and on-demand pages,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,VM Jobs page view size and clone filter,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Date format in the allowlist and blocklist,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Force dynamic scan on antivirus and static detections,5.0.3 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Scan Profile (Advanced tab)
+VMs,Storage type for customized VMs,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,Proxy for sending password-protected encrypted files,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,More file types in the inline block profile,5.0.3 and later,IDPS SRG-NET-000248-IDPS-00206; IDPS SRG-NET-000249-IDPS-00176,GUI: Security Fabric > Device
+Scan engine,Choice of the child files to scan within an archive (File On-Demand),5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,Concurrent API connections,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,SSD status in tac-report,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Public cloud,Private link authentication on AWS,5.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,prescan-config timeouts and limits by file size for unpacking and YARA scans,5.0.3 and later,IDPS SRG-NET-000248-IDPS-00206,prescan-config -l
+Threat data,Encryption option of format-storage on the 3000G,5.0.3 and later,NDM SRG-APP-000231-NDM-000271,format-storage -k <BASE64_PASSPHRASE> (3000G only; it erases all data)
+Inline block,Inline behavior timeout extended to 180 seconds,5.0.5 and later,IDPS SRG-NET-000249-IDPS-00176,"inline-block-timeout -l (a timeout of 20 to 180 seconds; the action for the submitted file is skip, the default, or scan in the VM)"
+CLI,"Power supply status (ps-status) on more models, including the 1500G",5.0.5+; 5.2.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Automatic rescan of documents when the application crashes,5.0.6 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Scan engine,Rating of files hosted on trusted Fortinet domains,5.0.6 and later,IDPS SRG-NET-000228-IDPS-00196,—
+HA cluster,Cluster Management mode (primary or secondary nodes that do not scan),5.0.6+; 5.2.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,RHEL9 custom VMs,5.0.6 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,System security and stability enhancements,5.0.7+; 5.2.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,scan-perf command for scan performance statistics,5.0.7+; 5.2.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,New dashboard page,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Threat Intelligence menu,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,FortiGuard threat intelligence in Job Details reports,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,"Cloud VM names for Windows, Linux, Android, and macOS",5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dashboard,Lite Mode widgets,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Warning banner in global conserve mode,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Alerts,Trap port number for SNMP v3,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Static analysis,Adjustable image category ratings,5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > Image Category
+Threat intelligence,MITRE ATT&CK matrix of all threats in a time period,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+System,Best practice compliance checklists,5.2.0 and later,NDM SRG-APP-000516-NDM-000317; IDPS SRG-NET-000512-IDPS-00194,GUI: System > Best Practices (System Hardening)
+Scan engine,Archive rating that shows malicious or suspicious child files,5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Reports,Job Detail and tree view readability,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Modify URL package page style,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,GUI migrated to the Neutrino framework,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Network share,Sentinel Mode for AWS S3 buckets (event-driven),5.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+Threat intelligence,Webhook callbacks of verdicts to FortiSOAR,5.2.0 and later,IDPS SRG-NET-000383-IDPS-00208,GUI: Threat Intelligence > Threat Intelligence Settings (WebHook Integration with token authentication)
+Device integration,"Up to 10,000 FortiClients",5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,Hyper-V on Windows Server 2025,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,HTA files in the inline block profile,5.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Device
+Inline block,"Android, Linux, and macOS files for inline block",5.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Device
+ICAP adapter,ICAP resilience in conserve mode,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Lightning Mode (clean job details are not saved),5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",lightning-mode -d (the default)
+Static analysis,AI-based FIRE image categorization with OCR and QR code extraction,5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (image classification, type image, is off by default; set -n to 1 or more to enable it)"
+ICAP adapter,Antivirus scan daemon for ICAP quick scans,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Dynamic analysis,Dynamic scans in as little as 15 seconds,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Inline block,Faster verdicts for inline block and ICAP when a suspicious file is found in a compressed file,5.2.0 and later,IDPS SRG-NET-000249-IDPS-00176,—
+Network share,Event-driven network share scans and a one-minute minimum interval,5.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,GUI: Security Fabric > Network Share
+URL analysis,Multi-stage evasion in URL detonation jobs,5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+Network share,Network share scans resume after a reboot,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,URL processing,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,"URLs extracted from executable scripts, SVG files, and all other file types",5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (3 embedded URLs and 3 embedded files by default, up to 30)"
+System,Global conserve mode,5.2.0 and later,NDM SRG-APP-000435-NDM-000315,—
+Static analysis,LZIP archives,5.2.0 and later,IDPS SRG-NET-000248-IDPS-00206,—
+Dynamic analysis,Rescan of jobs that were scanned dynamically,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,Android Docker environment,5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,—
+VMs,AndroidVM6 (older Android VMs disabled),5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,GUI: Scan Policy and Object > VM Settings
+ICAP adapter,Full scan timeout through the ICAP adapter of up to 30 minutes,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Malware clustering model based on sandbox behavior,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,QR code or URL shown for embedded URLs,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Manual uploads and URL detonations on the Incident Assist page,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat intelligence,Automatic IOC validation against FortiGuard for every suspicious file,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Installer details in PDF reports,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Data-at-Rest Encryption (DARE) of configuration and job data,5.2.0 and later,NDM SRG-APP-000231-NDM-000271,set-dare-encryption -e (before the unit joins a cluster; not on cloud VMs or E models; only a factory reset disables it)
+Management access,Central management of CA certificates,5.2.0 and later,NDM SRG-APP-000910-NDM-000300,GUI: System > Certificates
+CLI,diagnose-debug option for report generation,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Alerts,Email alerts when the system enters and leaves conserve mode,5.2.0 and later,NDM SRG-APP-000357-NDM-000293,GUI: System > Mail Server
+Dashboard,Scan Performance widget data,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,CSV reports with predefined columns,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Conserve mode in tac-report,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,"URL deep scan (recursive analysis, redirects, and chained URL detonation)",5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196; IDPS SRG-NET-000019-IDPS-00019,url-deep-check -e -r (recursive URL checks)
+API,Image category scoring in the API,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,Submit multiple files option in the administrator creation API,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Static analysis,paix-ioc command for enriched PAIX IOCs,5.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",paix-ioc -d (the default)
+URL analysis,"Number of embedded URLs for dynamic scans, and sandboxing-embedded-url renamed sandboxing-embeddedobj",5.2.0 and later,IDPS SRG-NET-000228-IDPS-00196,"sandboxing-embeddedobj -l (3 embedded URLs and 3 embedded files by default, up to 30)"
+Updates,FDN update schedule and server port on the FortiGuard page,5.2.2 and later,IDPS SRG-NET-000246-IDPS-00205,GUI: System > FortiGuard (Server Update Settings: Adaptive or a short custom interval)
+Public cloud,Larger EC2 instance types for non-nested AWS clones,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+URL analysis,Parked Domain web category,5.2.2 and later,IDPS SRG-NET-000019-IDPS-00019,GUI: Scan Policy and Object > Web Category
+Reports,FortiGuard IOC message when no IOC data is available,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Backup,Remote SCP server check that works without ping,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging,Original submission ID in the event log for dropped duplicates,5.2.2 and later,IDPS SRG-NET-000074-IDPS-00059,—
+ICAP adapter,ICAP adapter verdict timeout of up to 12 hours,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Updates,Fallback to the full package when a delta engine update fails,5.2.2 and later,IDPS SRG-NET-000246-IDPS-00205,—
+Threat intelligence,Malware packages exclude files with trusted digital signatures,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Threat data,Disk encryption passphrase stored in the TPM on G models,5.2.2 and later,NDM SRG-APP-000231-NDM-000271,set-dare-encryption -l
+Logging,ICAP adapter debug logs,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Scan engine,filesize-limit can remove the size and extraction limits,5.2.2 and later,IDPS SRG-NET-000248-IDPS-00206,filesize-limit -l
+API,get-job-ids filtered by the serial number of the device,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,Conserve mode in the status command,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Device integration,Legacy OFTP device login authentication can be disabled (certificate identity required),5.2.2 and later,IDPS SRG-NET-000383-IDPS-00208; NDM SRG-APP-000038-NDM-000213,device-authorization -q (once every device's certificate carries its serial number)
+Backup,SFTP for remote configuration backup and restore,5.2.2 and later,NDM SRG-APP-000516-NDM-000340,backup-sysconf -s<SERVER> -tsftp -u<USER> -f<FILE_PATH>
+API,pwd_protected attribute in the job verdict response,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+VMs,UEFI boot for custom VMs,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,diagnose-debug events streams event logs,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Updates,reset-sandbox-av command to reset antivirus and network alert signatures,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+CLI,User information in tac-report,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+API,PCAP download through the job detail API,5.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—

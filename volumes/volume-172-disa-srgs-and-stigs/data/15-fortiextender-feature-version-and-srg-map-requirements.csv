@@ -1,0 +1,66 @@
+﻿SRG,Requirement,Severity,Requirement title
+NDM,SRG-APP-000001-NDM-000200,CAT II,The network device must limit the number of concurrent sessions to an organization-defined number for each administrator account and/or administrator account type.
+NDM,SRG-APP-000026-NDM-000208,CAT II,The network device must automatically audit account creation.
+NDM,SRG-APP-000033-NDM-000212,CAT I,The network device must be configured to assign appropriate user roles or access levels to authenticated users.
+NDM,SRG-APP-000038-NDM-000213,CAT II,The network device must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.
+NDM,SRG-APP-000065-NDM-000214,CAT II,"The network device must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes."
+NDM,SRG-APP-000068-NDM-000215,CAT II,The network device must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.
+NDM,SRG-APP-000095-NDM-000225,CAT II,The network device must produce audit log records containing sufficient information to establish what type of event occurred.
+NDM,SRG-APP-000131-NDM-000243,CAT II,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000148-NDM-000346,CAT II,The network device must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+NDM,SRG-APP-000153-NDM-000249,CAT II,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+NDM,SRG-APP-000164-NDM-000252,CAT II,The network device must enforce a minimum 15-character password length.
+NDM,SRG-APP-000166-NDM-000254,CAT II,The network device must enforce password complexity by requiring that at least one uppercase character be used.
+NDM,SRG-APP-000167-NDM-000255,CAT II,The network device must enforce password complexity by requiring that at least one lowercase character be used.
+NDM,SRG-APP-000168-NDM-000256,CAT II,The network device must enforce password complexity by requiring that at least one numeric character be used.
+NDM,SRG-APP-000169-NDM-000257,CAT II,The network device must enforce password complexity by requiring that at least one special character be used.
+NDM,SRG-APP-000170-NDM-000329,CAT II,"The network device must require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+NDM,SRG-APP-000171-NDM-000258,CAT I,"The network device must be configured to store passwords using an approved salted key derivation function, preferably using a keyed hash for password-based authentication."
+NDM,SRG-APP-000172-NDM-000259,CAT I,The network device must transmit only encrypted representations of passwords.
+NDM,SRG-APP-000179-NDM-000265,CAT I,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000190-NDM-000267,CAT I,"The network device must terminate all network connections associated with a device management session at the end of the session, or the session must be terminated after five minutes of inactivity except to fulfill documented and validated mission requirements."
+NDM,SRG-APP-000231-NDM-000271,CAT I,"The network device must only allow authorized administrators to view or change the device configuration, system files, and other files stored either in the device or on removable media (such as a flash drive)."
+NDM,SRG-APP-000296-NDM-000280,CAT II,The network device must be configured to provide a logout mechanism for administrator-initiated communication sessions.
+NDM,SRG-APP-000357-NDM-000293,CAT II,The network device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+NDM,SRG-APP-000374-NDM-000299,CAT II,The network device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+NDM,SRG-APP-000380-NDM-000304,CAT II,The network device must enforce access restrictions associated with changes to device configuration.
+NDM,SRG-APP-000395-NDM-000310,CAT II,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000408-NDM-000314,CAT II,Network devices performing maintenance functions must restrict use of these functions to authorized personnel only.
+NDM,SRG-APP-000411-NDM-000330,CAT I,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000412-NDM-000331,CAT I,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions
+NDM,SRG-APP-000457-NDM-000352,CAT II,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000503-NDM-000320,CAT II,The network device must generate audit records when successful/unsuccessful logon attempts occur.
+NDM,SRG-APP-000505-NDM-000322,CAT II,The network device must generate audit records showing starting and ending time for administrator access to the system.
+NDM,SRG-APP-000515-NDM-000325,CAT II,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000317,CAT II,"The network device must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs."
+NDM,SRG-APP-000516-NDM-000335,CAT II,The network device must enforce access restrictions associated with changes to the system components.
+NDM,SRG-APP-000516-NDM-000336,CAT I,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000344,CAT II,The network device must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+NDM,SRG-APP-000516-NDM-000350,CAT I,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000910-NDM-000300,CAT II,The network device must be configured to include only approved trust anchors in trust stores or certificate stores managed by the organization.
+NDM,SRG-APP-000920-NDM-000320,CAT II,The network device must be configured to synchronize system clocks within and between systems or system components.
+NDM,SRG-APP-001035-NDM-000340,CAT I,The network device hardware and software must be a version supported by the vendor.
+RTR,SRG-NET-000018-RTR-000001,CAT II,The router must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.
+RTR,SRG-NET-000019-RTR-000008,CAT I,The perimeter router must be configured to protect an enclave connected to an alternate gateway by using an inbound filter that only permits packets with destination addresses within the site's address space.
+RTR,SRG-NET-000131-RTR-000083,CAT II,The router must not be configured to have any feature enabled that calls home to the vendor.
+RTR,SRG-NET-000168-RTR-000078,CAT II,The router must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.
+RTR,SRG-NET-000202-RTR-000001,CAT I,The perimeter router must be configured to deny network traffic by default and allow network traffic by exception.
+RTR,SRG-NET-000230-RTR-000001,CAT II,The router must be configured to implement message authentication for all control plane protocols.
+RTR,SRG-NET-000362-RTR-000109,CAT II,The router must not be configured to have any zero-touch deployment feature enabled when connected to an operational network.
+RTR,SRG-NET-000512-RTR-000014,CAT II,The perimeter router must be configured to suppress Router Advertisements on all external IPv6-enabled interfaces.
+RTR,SRG-NET-000760-RTR-000160,CAT II,The router must establish organization-defined alternate communications paths for system operations organizational command and control.
+VPN,SRG-NET-000063-VPN-000220,CAT II,The VPN Gateway must be configured to use IPsec with SHA-2 at 384 bits or greater for hashing to protect the integrity of remote access sessions.
+VPN,SRG-NET-000074-VPN-000250,CAT I,The IPSec VPN must be configured to use a Diffie-Hellman (DH) Group of 16 or greater for Internet Key Exchange (IKE) Phase 1.
+VPN,SRG-NET-000132-VPN-000460,CAT II,The IPsec VPN Gateway must use IKEv2 for IPsec VPN security associations.
+VPN,SRG-NET-000164-VPN-000560,CAT II,"The VPN Gateway, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."
+VPN,SRG-NET-000230-VPN-000780,CAT I,The IPSec VPN must be configured to use FIPS-validated SHA-2 at 384 bits or higher for Internet Key Exchange (IKE).
+VPN,SRG-NET-000317-VPN-001090,CAT I,The IPsec VPN Gateway must use AES encryption for the Internet Key Exchange (IKE) proposal to protect confidentiality of remote access sessions.
+VPN,SRG-NET-000337-VPN-001290,CAT II,The VPN Gateway must renegotiate the IPsec security association (SA) after eight hours or less.
+VPN,SRG-NET-000337-VPN-001300,CAT II,The VPN Gateway must renegotiate the IKE security association (SA) after eight hours or less.
+VPN,SRG-NET-000371-VPN-001640,CAT I,The IPsec VPN Gateway must specify Perfect Forward Secrecy (PFS) during Internet Key Exchange (IKE) negotiation.
+VPN,SRG-NET-000371-VPN-001650,CAT I,The VPN Gateway and Client must be configured to protect the confidentiality and integrity of transmitted information.
+VPN,SRG-NET-000522-VPN-002320,CAT II,"For site-to-site, VPN Gateway must be configured to store only cryptographic representations of pre-shared Keys (PSKs)."
+VPN,SRG-NET-000525-VPN-002330,CAT I,The IPsec VPN must use AES256 or greater encryption for the IPsec proposal to protect the confidentiality of remote access sessions.

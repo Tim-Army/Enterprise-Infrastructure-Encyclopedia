@@ -1,0 +1,293 @@
+﻿Category,Feature,Introduced (FortiDDoS-F),SRG requirement(s),Command to satisfy the requirement
+Core: Management access,"Administrative access per management port (HTTPS, SSH, ping, SNMP, HTTP, Telnet, SQL)",6.1.0 or earlier,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000172-NDM-000259; NDM SRG-APP-000880-NDM-000290,"config system interface; edit mgmt1; set allowaccess https ssh; next; end (dedicated management network; leave out HTTP, Telnet, and SQL)"
+Core: Management access,Web UI over HTTPS only (HTTP requests redirected to the HTTPS port),6.1.0 or earlier,NDM SRG-APP-000172-NDM-000259; NDM SRG-APP-000412-NDM-000331,GUI: System > Settings (HTTP Port: HTTP is not supported and is redirected to HTTPS)
+Core: Management access,"Administrative HTTPS, SSH, and Telnet port numbers",6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)","— (non-standard HTTPS and SSH ports, as the Handbook's security hardening appendix suggests, are optional)"
+Core: Management access,Web UI server certificate (Factory certificate by default),6.1.0 or earlier,NDM SRG-APP-000516-NDM-000344; NDM SRG-APP-000910-NDM-000300,"GUI: System > Certificate > Web Administration (HTTPS Server Certificate: a DoD-issued certificate, not Factory)"
+Core: Management access,Certificate signing requests and certificate import,6.1.0 or earlier,NDM SRG-APP-000516-NDM-000344; NDM SRG-APP-000910-NDM-000300,GUI: System > Certificate > Generate and Import (generate the key pair on FortiDDoS and have a DoD CA sign the request)
+Core: Management access,Trusted hosts for each administrator (up to three subnets),6.1.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000038-NDM-000213,config system admin; edit <ADMIN>; set trusted-hosts <MGMT_SUBNET>; next; end (set on every administrator account)
+Core: Management access,Idle timeout for administrator sessions,6.1.0 or earlier,NDM SRG-APP-000190-NDM-000267; NDM SRG-APP-000220-NDM-000268,GUI: System > Settings (Idle Timeout: 10 minutes or less)
+Core: Management access,Login lockout (source IP blocked for five minutes after three failed logins),6.1.0 or earlier,NDM SRG-APP-000065-NDM-000214,"— (fixed behavior; no setting, and the block is five minutes, not 15)"
+Core: Management access,Administrator logout from the user menu,6.1.0 or earlier,NDM SRG-APP-000296-NDM-000280; NDM SRG-APP-000220-NDM-000268,—
+Core: Management access,Protection of the management port from DoS (an SPP for the management address),6.1.0 or earlier,NDM SRG-APP-000435-NDM-000315,GUI: Service Protection > Service Protection Policy (only where the management port is reached through FortiDDoS traffic ports)
+Core: Administrator accounts,Local administrator accounts and the admin (globaladmin) account,6.1.0 or earlier,NDM SRG-APP-000148-NDM-000346; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000178-NDM-000264,config system admin; edit <ADMIN>; set auth-strategy local; set access-profile <PROFILE>; set password <PASSWORD_15_CHARS_MIN>; next; end (one local account of last resort)
+Core: Administrator accounts,"Access profiles (None, Read Only, or Read-Write for each menu area)",6.1.0 or earlier,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000231-NDM-000271; NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000340-NDM-000288; NDM SRG-APP-000516-NDM-000335,GUI: System > Admin > Access Profile (super_admin_prof only for the administrators who need it)
+Core: Administrator accounts,Password policy for administrators (length and character types),6.1.0 or earlier,NDM SRG-APP-000164-NDM-000252; NDM SRG-APP-000166-NDM-000254; NDM SRG-APP-000167-NDM-000255; NDM SRG-APP-000168-NDM-000256; NDM SRG-APP-000169-NDM-000257; NDM SRG-APP-000860-NDM-000250,config system password-policy; set status enable; set apply-to admin-user; set minimum-length 15; set must-contain lower-case-letter upper-case-letter number non-alphanumeric; end
+Core: Administrator accounts,"REST API administrator accounts (authorization token, CORS, trusted hosts)",6.1.0 or earlier,NDM SRG-APP-000408-NDM-000314; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000038-NDM-000213,"GUI: System > Admin (Create > REST API Admin only where needed, with Restrict to Trusted Hosts and a profile other than super_admin_prof)"
+Core: Administrator accounts,Private data encryption key for stored passwords and keys,6.1.0 or earlier,NDM SRG-APP-000171-NDM-000258; NDM SRG-APP-000231-NDM-000271,"GUI: System > Settings (Private Data Encryption: a custom 32-character hexadecimal key, the same on both HA peers)"
+Core: Logging and alerts,"Local event log (admin, configuration, system, HA, update, and user categories)",6.1.0 or earlier,NDM SRG-APP-000026-NDM-000208; NDM SRG-APP-000027-NDM-000209; NDM SRG-APP-000028-NDM-000210; NDM SRG-APP-000029-NDM-000211; NDM SRG-APP-000343-NDM-000289; NDM SRG-APP-000380-NDM-000304; NDM SRG-APP-000095-NDM-000225; NDM SRG-APP-000096-NDM-000226; NDM SRG-APP-000100-NDM-000230,config log setting local; set loglevel notification; set event-log-category admin configuration system ha update user health_check default_gateway; end
+Core: Logging and alerts,Login events (successful and failed administrator logins),6.1.0 or earlier,NDM SRG-APP-000503-NDM-000320; NDM SRG-APP-000505-NDM-000322; NDM SRG-APP-000098-NDM-000228; NDM SRG-APP-000099-NDM-000229,GUI: Log & Report > Log Access > Login Events
+Core: Logging and alerts,"DDoS attack log (every drop event, with SPP, direction, source, destination, and drop count; always enabled)",6.1.0 or earlier,FW SRG-NET-000492-FW-000006; FW SRG-NET-000074-FW-000009; FW SRG-NET-000075-FW-000010; FW SRG-NET-000076-FW-000011; FW SRG-NET-000077-FW-000012; FW SRG-NET-000078-FW-000013,— (all DDoS attack log categories are enabled and cannot be disabled)
+Core: Logging and alerts,Remote syslog servers for the event log (up to three),6.1.0 or earlier,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350,config log setting remote; edit 1; set status enable; set ip-address <SYSLOG_SERVER>; set port 514; set event-log-status enable; set loglevel Notification; set event-log-category admin configuration system ha update user; next; end
+Core: Logging and alerts,Remote syslog servers for the DDoS attack log,6.1.0 or earlier,FW SRG-NET-000333-FW-000014; NDM SRG-APP-000515-NDM-000325,config log setting ddos-attack-log-remote; edit <ATTACK_SYSLOG>; set status enable; set ip-address <SYSLOG_SERVER>; set port 514; set global enable; set spp <SPP>; next; end
+Core: Logging and alerts,Minimum drops for remote attack logs and SNMP traps,6.1.0 or earlier,FW SRG-NET-000333-FW-000014,config log setting remote-log-settings; set minimum-drops 1; end (the default; a higher value suppresses low-drop logs)
+Core: Logging and alerts,Local log disk size and disk-full action,6.1.0 or earlier,NDM SRG-APP-000357-NDM-000293,"GUI: Log & Report > Log Configuration > Local Log Settings (File Size and Disk full set to the organization's retention plan, with remote syslog)"
+Core: Logging and alerts,Attack log purge watermark and automatic purge,6.1.0 or earlier,NDM SRG-APP-000357-NDM-000293; FW SRG-NET-000100-FW-000023,config ddos global attack-event-purge; set purge-watermark 2000000; end (and keep the attack log on a remote syslog server)
+Core: Logging and alerts,Alert email for event log categories,6.1.0 or earlier,NDM SRG-APP-000360-NDM-000295; NDM SRG-APP-000795-NDM-000130; FW SRG-NET-000392-FW-000042,config log alertemail setting; set categories admin diskfull ha update; end; config log alertemail recipient; edit <RECIPIENT>; set address <ISSO_EMAIL>; next; end (mail server under System > Maintenance > Mail Server)
+Core: Logging and alerts,"SNMP traps for CPU, memory, and log disk thresholds",6.1.0 or earlier,NDM SRG-APP-000357-NDM-000293; NDM SRG-APP-000360-NDM-000295,config system snmp threshold; set logdisk 75 1 7200 3600; end (alert before the log disk fills)
+Core: Logging and alerts,SNMP trap receivers for DDoS attack logs,6.1.0 or earlier,FW SRG-NET-000392-FW-000042,config log setting ddos-attack-snmp-trap-receivers; edit <TRAP_RECEIVER>; set status enable; set type all_attack_logs; set global enable; set ip-address <SNMP_MANAGER>; set snmp-version v3; set v3-access-type privacy; set authentication-passphrase <AUTH_KEY>; set privacy-passphrase <PRIV_KEY>; next; end
+Core: Logging and alerts,Protection of logs through access profiles,6.1.0 or earlier,NDM SRG-APP-000119-NDM-000236; NDM SRG-APP-000120-NDM-000237; FW SRG-NET-000099-FW-000161; FW SRG-NET-000100-FW-000023,"GUI: System > Admin > Access Profile (Log & Report: Read Only, or None, for every administrator who does not manage logs)"
+Core: Time and SNMP,NTP time synchronization,6.1.0 or earlier,NDM SRG-APP-000920-NDM-000320; NDM SRG-APP-000374-NDM-000299; NDM SRG-APP-000925-NDM-000330,config system time ntp; set ntpsync enable; set ntpserver <NTP_SERVER>; set syncinterval 60; end
+Core: Time and SNMP,SNMPv3 users (authentication and privacy),6.1.0 or earlier,NDM SRG-APP-000395-NDM-000310; NDM SRG-APP-000412-NDM-000331,GUI: System > SNMP > Config (SNMPv3: Auth And Privacy with SHA and AES 128)
+Core: Time and SNMP,SNMP v1 and v2c communities,6.1.0 or earlier,NDM SRG-APP-000395-NDM-000310; NDM SRG-APP-000142-NDM-000245,config system snmp community; edit <ID>; set status disable; next; end
+Core: System integrity,Firmware upgrades (super_admin_prof only),6.1.0 or earlier,NDM SRG-APP-000457-NDM-000352; NDM SRG-APP-001035-NDM-000340; NDM SRG-APP-000131-NDM-000243; NDM SRG-APP-000378-NDM-000302,GUI: System > Firmware (compare the image checksum on the Fortinet support site before upgrading)
+Core: System integrity,"FortiGuard updates (IP reputation, domain reputation, and geolocation databases)",6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,config system fortiguard; set scheduled-update-status enable; set scheduled-update-frequency daily; end
+Core: System integrity,Configuration backup and restore,6.1.0 or earlier,NDM SRG-APP-000516-NDM-000340,GUI: System > Maintenance > Backup & Restore (back up after every change and store the file encrypted)
+Core: High availability,Active-passive HA cluster (configuration and threshold synchronization),6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config system ha; set mode standalone; end
+Core: DDoS mitigation,Service Protection Policies (SPPs) with protected subnets,6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030; FW SRG-NET-000705-FW-000110,GUI: Service Protection > Service Protection Policy (one SPP for each group of servers with similar traffic)
+Core: DDoS mitigation,Detection Mode and Prevention Mode for each SPP and direction,6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030; FW SRG-NET-000192-FW-000029,config ddos spp rule; edit <SPP>; set inbound-operating-mode prevention; set outbound-operating-mode prevention; next; end (after the learning period in Detection Mode)
+Core: DDoS mitigation,"Rate thresholds for Layer 3, 4, and 7 parameters with continuous learning and adaptive thresholds",6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030; FW SRG-NET-000705-FW-000110,config ddos spp rule; edit <SPP>; set adaptive-mode adaptive; next; end
+Core: DDoS mitigation,Traffic statistics and System Recommended thresholds,6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000705-FW-000110,execute generate-traffic-stats spp <SPP> <PERIOD>; config ddos spp rule; edit <SPP>; set system-recommendation enable; next; end
+Core: DDoS mitigation,Source tracking and blocking periods for attacking sources,6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,config ddos spp rule; edit <SPP>; set blocking-period <SECONDS>; set source-blocking-period <SECONDS>; next; end
+Core: DDoS mitigation,"Protocol anomaly protection (IP, UDP, TCP, ICMP, and HTTP header anomalies)",6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000042,"GUI: Service Protection > IP Profile (and the ICMP, TCP, and HTTP profiles of each SPP)"
+Core: DDoS mitigation,"TCP session state protection (SYN flood mitigation, foreign packet validation, aggressive aging)",6.1.0 or earlier,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,GUI: Service Protection > TCP Profile
+Core: DDoS mitigation,Global access control lists (deny by source address and service),6.1.0 or earlier,FW SRG-NET-000019-FW-000003; FW SRG-NET-000364-FW-000031; FW SRG-NET-000364-FW-000032,config ddos global acl; edit <ACL_ID>; set source-address <ADDRESS>; set action deny; next; end
+Core: DDoS mitigation,SPP access control lists,6.1.0 or earlier,FW SRG-NET-000019-FW-000003; FW SRG-NET-000364-FW-000031; FW SRG-NET-000364-FW-000032,config ddos spp rule; edit <SPP>; config acl; edit <ACL>; set status enable; set action reject; set ip-version IPv4; set source-address4-type addr4; set source-address-v4 <ADDRESS>; set service-type service; set service-id <SERVICE>; next; end; next; end
+Core: DDoS mitigation,Blocklisted IPv4 addresses and domains,6.1.0 or earlier,FW SRG-NET-000364-FW-000031; FW SRG-NET-000362-FW-000028,GUI: Global Protection > Blocklist > Blocklisted IPv4 (and Blocklisted Domains)
+Core: DDoS mitigation,Power fail bypass mode (fail-open or fail-closed on power or system failure),6.1.0 or earlier,FW SRG-NET-000235-FW-000133,config ddos global deployment; set power-fail-bypass-mode fail-closed; end (where the protected links must not pass unfiltered traffic; record the decision if fail-open is chosen for availability)
+Core: DDoS mitigation,Asymmetric Mode for networks where FortiDDoS does not see both directions,6.1.0 or earlier,FW SRG-NET-000362-FW-000028,"config ddos global deployment; set asymmetric-mode enable; end (only for asymmetric, multi-link, or load-balanced deployments)"
+Core: DDoS mitigation,Tap Mode (out-of-path detection with a bypass bridge),6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config ddos global deployment; set tap-mode disable; end
+Core: DDoS mitigation,Do Not Track policies (addresses that are passed without inspection),6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: Global Protection > Do Not Track Policy (delete entries that are not needed)
+Core: DDoS mitigation,"Dashboard, Top Attacks, and Monitor graphs",6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Core: DDoS mitigation,Attack reports (on demand or scheduled),6.1.0 or earlier,FW SRG-NET-000392-FW-000042,GUI: Log & Report > Report Configuration (scheduled reports to the ISSO)
+Core: Troubleshooting,"Packet capture, diagnose commands, and debug files",6.1.0 or earlier,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,"FortiDDoS-F VM support in several hypervisor environments (VMware, with SR-IOV where available)",6.1.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+NTP protection,NTP support from the E-Series on all models,6.1.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > NTP Profile
+SSL/TLS protection,Additional SSL DDoS mitigation settings,6.1.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > SSL/TLS Profile
+Platform,"16 SPPs on the 1500F (and 4, 8, or 16 on VM04, VM08, and VM16)",6.1.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,"Split System Recommendation for Layer 4 scalars and ICMP, TCP ports, and UDP ports (from B/E-Series 5.4.0)",6.1.0 and later,FW SRG-NET-000705-FW-000110,GUI: Service Protection > Service Protection Policy (Threshold Settings > System Recommendation)
+Thresholds,DNS Rcode scalars in Traffic Statistics and System Recommendations,6.1.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000705-FW-000110,—
+Thresholds,NTP scalars in Traffic Statistics and System Recommendations,6.1.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000705-FW-000110,—
+ACLs,Common UDP source reflection ports pre-populated as global service objects,6.1.0 and later,FW SRG-NET-000019-FW-000003; FW SRG-NET-000364-FW-000031,GUI: System > Address and Service (use the reflection port services in Global or SPP ACLs)
+ACLs,Service objects with source or destination ports (source port ACLs for UDP reflection ports),6.1.0 and later,FW SRG-NET-000019-FW-000003; FW SRG-NET-000364-FW-000031,config system service; edit <SERVICE>; set protocol-type udp; set specify-source-port enable; set source-port-min <PORT>; set source-port-max <PORT>; next; end
+ACLs,IP address and subnet objects assigned to Global or SPP ACLs,6.1.0 and later,FW SRG-NET-000019-FW-000003,config system address4; edit <ADDRESS>; set type ip-netmask; set ip-netmask <IP/MASK>; next; end
+IP protection,Private (bogon) and multicast IP ACLs in any SPP,6.1.0 and later,FW SRG-NET-000364-FW-000042; FW SRG-NET-000364-FW-000031,"GUI: Service Protection > IP Profile (All Private IP ACL and All Multicast IP ACL, for SPPs that never receive them)"
+Service protection,"SPP profiles for IP, ICMP, TCP, HTTP, SSL/TLS, NTP, and DNS (one profile for many SPPs)",6.1.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000705-FW-000110,config ddos spp rule; edit <SPP>; set ip-profile <IP_PROFILE>; set icmp-profile <ICMP_PROFILE>; set tcp-profile <TCP_PROFILE>; set http-profile <HTTP_PROFILE>; set ssltls-profile <SSLTLS_PROFILE>; set ntp-profile <NTP_PROFILE>; set dns-profile <DNS_PROFILE>; next; end
+Service protection,Source MAC address for aggressive aging per SPP,6.1.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+IP protection,Strict anomaly options in the SPP profiles (Layer 2 to Layer 7),6.1.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000042,"GUI: Service Protection > IP Profile (IP Strict Anomalies, and the strict options of the other profiles)"
+Cloud signaling,Cloud signaling thresholds in pps and Mbps for each protected subnet,6.1.0 and later,FW SRG-NET-000193-FW-000030; FW SRG-NET-000705-FW-000110,config ddos spp rule; edit <SPP>; set cloud-signaling-status enable; config address; edit <SUBNET>; set signaling-threshold-kpps <KPPS>; set signaling-threshold-mbps <MBPS>; next; end; next; end (signaling devices under Global Protection > Cloud Signaling)
+Service protection,Protected subnets entered for each SPP,6.1.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; config address; edit <SUBNET>; set type ipv4-netmask; set ip-netmask <IP/MASK>; next; end; next; end
+DNS protection,"Explicit TCP thresholds for DNS query, question count, fragment, MX, and ALL",6.1.0 and later,FW SRG-NET-000362-FW-000028,—
+IP protection,IP reputation and domain reputation set for each SPP (IP and DNS profiles),6.1.0 and later,FW SRG-NET-000364-FW-000031; FW SRG-NET-000362-FW-000028,GUI: Service Protection > IP Profile (IP Reputation; Domain Reputation in the DNS Profile; FortiGuard subscriptions)
+SSL/TLS protection,Cipher anomaly option in the SSL/TLS profile,6.1.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp ssl-tls profile; edit <SSLTLS_PROFILE>; set protocol-anomaly enable; set cipher-anomaly enable; next; end
+Troubleshooting,tcpdump-style packet capture,6.1.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+HTTP protection,Additional known method anomalies,6.1.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > HTTP Profile
+High availability,HA override option removed (priority or uptime decides the primary),6.1.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Event logs when the alert mail server is unreachable or authentication fails,6.1.1 and later,NDM SRG-APP-000360-NDM-000295,— (logged automatically)
+Service protection,HTTP and HTTPS service ports for each SPP,6.1.1 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set http-service-port <PORTS>; set ssl-service-port <PORTS>; next; end
+Platform,KVM hypervisor support,6.1.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+TCP protection,SYN/ACK and SYN/ACK per destination thresholds in Asymmetric Mode,6.2.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,GUI: Service Protection > Service Protection Policy (manual thresholds; not learned or recommended)
+UDP protection,DTLS profile for SPPs (DTLS direct and reflection attacks),6.2.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set dtls-profile <DTLS_PROFILE>; next; end
+UDP protection,Possible UDP Reflection Flood detection for source ports 1 to 9999,6.2.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+Thresholds,System Recommendation option for outbound thresholds (actual traffic or system maximum),6.2.0 and later,FW SRG-NET-000192-FW-000029; FW SRG-NET-000705-FW-000110,GUI: Service Protection > Service Protection Policy (System Recommendation outbound option)
+ACLs,"Global ACLs handled by a dedicated global SPP, with their own Top Attacks table and drop graphs",6.2.0 and later,FW SRG-NET-000019-FW-000003; FW SRG-NET-000492-FW-000006,"GUI: Global Protection > Access Control List (global ACLs always drop, whatever the SPP mode)"
+GUI,Protection Subnets List page,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ACLs,"Blocklisted IPv4 and Blocklisted Domains pages (counts, last update, add, delete, and search)",6.2.0 and later,FW SRG-NET-000364-FW-000031,GUI: Global Protection > Blocklist > Blocklisted Domains
+GUI,Navigation between SPPs in the SPP pages,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+FortiGuard,FortiGuard scheduled updates daily or weekly only,6.2.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,config system fortiguard; set scheduled-update-status enable; set scheduled-update-frequency daily; end
+GUI,Reboot and Shutdown commands in the user menu,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Domain Reputation attack log event separated from the Domain Blocklist event,6.2.0 and later,FW SRG-NET-000074-FW-000009,—
+GUI,FortiView Threat Map time period selection,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Date and time tooltips on long-period graphs,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,CLI command to restart the web server (nginx),6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Bypass,CLI command to show the inline or bypass status of the traffic ports,6.2.0 and later,FW SRG-NET-000235-FW-000133,get system bypass-status
+Troubleshooting,diagnose dataplane geo-ip (geolocation of an IPv4 address),6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"GUI labeling, units, field sizes, and tooltip improvements",6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,CSV downloads of tables such as the attack log not available,6.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,"get system performance (CPU, memory, and disk usage)",6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,"RRD check and reset commands (diagnose debug rrd_files_check, execute spp-rrd-reset, execute rrd-reset)",6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,Console port for FortiDDoS VM on VMware and KVM,6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Inbound and outbound operation mode columns in the Protection Subnets list,6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,SPP shown in the Dashboard attack log widget,6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,VM model shown in the header bar,6.2.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,"DNS profile FQDN allowlist and blocklist files, manual entries, regex, and 0x20 mixed-case FQDNs",6.3.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > DNS Profile
+DNS protection,Incomplete DNS header anomaly (blocks non-DNS traffic to port 53),6.3.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > DNS Profile (DNS header anomaly: Incomplete DNS)
+DNS protection,"DNSSEC inspection, anomalies, and mitigation",6.3.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > DNS Profile
+UDP protection,Monitoring of user-entered UDP service ports above 9999 for reflection floods,6.3.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set udp-service-port <PORTS>; next; end
+Security Fabric,FortiDDoS graphs and tables on the FortiGate Security Fabric dashboard,6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config system csf; set status disable; end
+SSL/TLS protection,SSL/TLS traffic inspection for HTTP anomalies and thresholds (1500F; experimental in 6.3.0),6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config ddos spp ssl-tls profile; edit <SSLTLS_PROFILE>; set ssl-inspection-mode disable; next; end (it requires the servers' certificates and private keys on FortiDDoS)
+Administrator accounts,"LDAP, RADIUS, and TACACS+ remote password authentication for GUI, CLI, and console logins",6.3.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000148-NDM-000346,"config system authentication radius; set state enable; set primary-server <RADIUS_SERVER>; set primary-secret <SECRET>; set backup-server <RADIUS_SERVER_2>; set backup-secret <SECRET>; set require-msg-auth; end; config system admin; edit <ADMIN>; set auth-strategy radius; set access-profile <PROFILE>; next; end (or TACACS+, or LDAP over TLS)"
+TCP protection,Foreign packet threshold with foreign packet validation,6.3.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > TCP Profile
+IP protection,"Phishing, spam, and Tor exit node categories for IP reputation",6.3.0 and later,FW SRG-NET-000364-FW-000031,GUI: Service Protection > IP Profile
+Troubleshooting,Customer folder in the debug file; more SNMP debug logs,6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,Additional packet capture options,6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Event log entry when an administrator changes the system time,6.3.0 and later,NDM SRG-APP-000343-NDM-000289; NDM SRG-APP-000380-NDM-000304,— (logged automatically)
+Bypass,Out of memory action (pass traffic or drop packets),6.3.0 and later,FW SRG-NET-000235-FW-000133,"config ddos global settings; set out-of-memory-mode Drop; end (Bypass, the default, passes traffic without mitigation; record the choice)"
+Troubleshooting,RRD troubleshooting and repair commands,6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"Reboot, shutdown, configuration backup and restore, and password change in the user menu",6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"GUI enhancements (more characters in administrator names, port speed, ACL status, column settings)",6.3.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Top Attacks header stays visible when scrolling,6.3.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Global deny rule names in the attack log,6.3.1 and later,FW SRG-NET-000074-FW-000009,—
+GUI,"Dashboard enhancements (operating mode of all SPPs, system resources)",6.3.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,Transceiver information in get transceiver status,6.3.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,DQRM timer change for performance,6.3.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,DNS profile options (bitcoin mining domains in domain reputation; drop when no cache match),6.4.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > DNS Profile
+Bypass,Toggle the bypass ports between inline and bypass from the Dashboard,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Dashboard widgets can be pinned and expanded,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+UDP protection,"QUIC profile, thresholds, and graphs",6.4.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set quic-profile <QUIC_PROFILE>; next; end
+Reports,"Reports per SPP or group of SPPs, report periods from one hour to one year, and reports when a drop threshold is exceeded",6.4.0 and later,FW SRG-NET-000392-FW-000042,GUI: Log & Report > Report Configuration
+GUI,Direction and SPP filters in the DDoS attack log,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Direction in the anomaly drop graphs,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+SNMP,FORTINET-CORE-MIB and FORTINET-FORTIDDOS-MIB included in the build,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+HTTP protection,HTTP anomalies detected on the HTTP flow rather than per packet,6.4.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > HTTP Profile
+Administrator accounts,LDAPS and STARTTLS for CLI logins,6.4.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000172-NDM-000259,config system authentication LDAP; set state enable; set server <LDAP_SERVER>; set port 636; set cnid <CNID>; set dn <BASE_DN>; set secure ldaps; set ca-profile <CA_PROFILE>; end; config system admin; edit <ADMIN>; set auth-strategy ldap; next; end
+Troubleshooting,execute restapi-restart,6.4.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,International domain names (IDN) in the DNS tables,6.4.1 and later,FW SRG-NET-000362-FW-000028,—
+Management access,"Shell access set from the CLI (allowed users, password, and duration)",6.4.1 and later,NDM SRG-APP-000142-NDM-000245; NDM SRG-APP-000340-NDM-000288; NDM SRG-APP-000408-NDM-000314,— (the command is not in the 8.0.0 Handbook; leave shell access unset unless Fortinet support needs it)
+UDP protection,DTLS content types 25 and 26,6.4.1 and later,FW SRG-NET-000362-FW-000028,—
+GUI,Refreshed GUI pages and graphs,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"GUI and graph updates (UDP reflection port table, links to Monitor graphs; FortiView Threat Map removed)",6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,System Recommended thresholds for DNS TCP at twice the UDP thresholds; DNS query per source,6.5.0 and later,FW SRG-NET-000705-FW-000110,—
+ACLs,IPv6 geolocation and geolocation ACLs (IPv4 and IPv6) in SPPs,6.5.0 and later,FW SRG-NET-000364-FW-000031; FW SRG-NET-000019-FW-000003,config system address4; edit <GEO_ADDRESS>; set type geo; set country <COUNTRY>; next; end (used in an SPP ACL)
+GUI,SPP policy list shows the profiles of each SPP,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Reordering and deleting in the SPP ACL list,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrator accounts,Two-factor authentication (2FA) for RADIUS remote authentication,6.5.0 and later,NDM SRG-APP-000820-NDM-000170; NDM SRG-APP-000825-NDM-000180,GUI: System > Authentication > RADIUS (with a RADIUS server that enforces the second factor)
+Administrator accounts,"Remote password authentication for CLI users (RADIUS, LDAP, TACACS+)",6.5.0 and later,NDM SRG-APP-000516-NDM-000336; NDM SRG-APP-000153-NDM-000249,config system admin; edit <ADMIN>; set auth-strategy radius; next; end (CLI users need a local user name with super_admin_prof)
+DNS protection,"DNS proxy validation, dynamic updates, known opcode anomalies, and resource record ACLs under flood",6.5.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > DNS Profile
+Thresholds,Anomaly tracking changes for most active source and port thresholds,6.5.0 and later,FW SRG-NET-000362-FW-000028,—
+Troubleshooting,Packet capture from the management ports,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,Debug file split into customer and developer files,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,License and FortiGuard subscription icons,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,"CSV download of up to 100,000 DDoS attack logs",6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,Drop log for good FQDNs with bad resource record queries (NODATA),6.5.0 and later,FW SRG-NET-000492-FW-000006,—
+GUI,FortiView updates,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Event logs describe FortiGuard update actions,6.5.0 and later,NDM SRG-APP-000095-NDM-000225,—
+GUI,Disabled global ACLs hidden from the ACL drop graphs,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Drops of disabled or deleted global ACLs in the aggregate graph,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,execute recover-gui,6.5.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Event log for a data plane (VPP) restart,6.5.0 and later,NDM SRG-APP-000095-NDM-000225,—
+High availability,Merging traffic statistics from the HA secondary to the primary,6.5.0 and later,FW SRG-NET-000705-FW-000110,GUI: System > Maintenance > Traffic Statistics Management
+Certificates,Certificates with password files,6.5.0 and later,NDM SRG-APP-000516-NDM-000344,GUI: System > Certificate > Generate and Import
+Logging and alerts,"One Update event log filter for IP reputation, domain reputation, and geolocation updates",6.5.1+; 6.6.0+,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"GUI and graph updates (event log at 90% CPU, RAM, or log disk; input validation on graphs)",6.6.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Administrator accounts,RADIUS vendor-specific attributes and TACACS+ custom attributes,6.6.0 and later,NDM SRG-APP-000153-NDM-000249; NDM SRG-APP-000033-NDM-000212,GUI: System > Authentication > RADIUS (Fortinet VSAs for the access profile and trusted hosts; TACACS+ shell profiles)
+Logging and alerts,RFC 5424 and FortiAnalyzer encrypted (OFTP) syslog formats,6.6.0+; 7.0.0+,NDM SRG-APP-000515-NDM-000325; NDM SRG-APP-000516-NDM-000350; FW SRG-NET-000333-FW-000014,config log setting remote; edit 1; set status enable; set ip-address <FAZ_IP>; set fortianalyzer enable; set encrypt-traffic-to-fortianalyzer; next; end; config log setting ddos-attack-log-remote; edit <ATTACK_SYSLOG>; set status enable; set ip-address <FAZ_IP>; set fortianalyzer enable; set encrypt-traffic-to-fortianalyzer enable; next; end
+FortiGuard,FQDN proxy tunneling for FortiGuard updates,6.6.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config system fortiguard; set tunneling-status disable; end
+System integrity,"Daily configuration backup and debug upload over SFTP, with server folders",6.6.0 and later,NDM SRG-APP-000516-NDM-000340,config system daily-config-backup; set status enable; set server <BACKUP_SERVER>; set server-type SFTP; set sftp-username <USER>; set sftp-password <PASSWORD>; end
+Logging and alerts,Event logs for failed configuration restores and daily backup results,6.6.0 and later,NDM SRG-APP-000516-NDM-000340; NDM SRG-APP-000095-NDM-000225,—
+ACLs,Geolocation data downloaded dynamically from FortiGuard,6.6.0 and later,FW SRG-NET-000364-FW-000031,—
+Troubleshooting,CLI error messages explained; Flowspec ACL output from the CLI,6.6.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Platform,KVM deployment (log disk formatted automatically; SPP-1 created),6.6.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,SPP names instead of SPP IDs in the debug file and attack log,6.6.0 and later,FW SRG-NET-000076-FW-000011,—
+Management access,Default idle timeout lowered from 30 to 5 minutes (1 to 480 minutes),6.6.0 and later,NDM SRG-APP-000190-NDM-000267,GUI: System > Settings (Idle Timeout: 10 minutes or less)
+ACLs,Faster application of the IPv4 and domain blocklists,6.6.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,Multiple DNS queries in one TCP session blocked,6.6.0 and later,FW SRG-NET-000362-FW-000028,—
+GUI,"GUI and graph updates (certificate type, FQDN lists, SSL/TLS version anomaly redesign, log search)",7.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+UDP protection,Low UDP ports (1024 to 9999) as UDP service ports,7.0.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set udp-service-port <PORTS>; next; end
+High availability,Inter-appliance HA protocol change,7.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Service protection,Video Conference profile (Zoom),7.0.0 and later,FW SRG-NET-000362-FW-000028,config ddos spp rule; edit <SPP>; set video-conferencing-profile <VIDEO_PROFILE>; next; end
+Troubleshooting,Network diagnostics (deep packet trace),7.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Bypass,Fail-closed mode works as in 6.4 (manual bypass not available in fail-closed mode),7.0.0 and later,FW SRG-NET-000235-FW-000133,config ddos global deployment; set power-fail-bypass-mode fail-closed; end
+Management access,"TLS versions for the management ports (TLS 1.1, 1.2, and 1.3)",7.0.0 and later,NDM SRG-APP-000412-NDM-000331; NDM SRG-APP-000411-NDM-000330; NDM SRG-APP-000172-NDM-000259,GUI: System > Settings (TLS Versions: disable TLS 1.1; allow only TLS 1.2 and 1.3)
+DNS protection,Domain reputation category for DNS tunneling,7.0.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > DNS Profile
+Service protection,GRE tunnel endpoints in an SPP,7.0.0 and later,FW SRG-NET-000364-FW-000031; FW SRG-NET-000362-FW-000028,GUI: Global Protection > GRE Tunnel Endpoint
+Administrator accounts,Permission changes for admin and global-admin users,7.0.0 and later,NDM SRG-APP-000033-NDM-000212; NDM SRG-APP-000340-NDM-000288,GUI: System > Admin > Access Profile
+DNS protection,TTL-less DNS LQ Populate (legitimate query table),7.0.1 and later,FW SRG-NET-000362-FW-000028,GUI: Global Protection > DNS LQ Populate
+DNS protection,"TCP DNS improvements (SYN validation, foreign packet validation, multiple queries per packet)",7.0.1 and later,FW SRG-NET-000362-FW-000028,—
+High availability,"Unicast TCP HA and synchronization of uploaded tables (certificates, blocklists, FQDN files)",7.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,SYN-ACK parameters in Traffic Statistics and System Recommended thresholds in Asymmetric Mode,7.0.1 and later,FW SRG-NET-000705-FW-000110,—
+Logging and alerts,"GUI, log, and profile updates (TLS 1.1 disabled on upgrade, IP Land Attack anomaly, TCP syslog, event trap for each SPP)",7.0.1 and later,FW SRG-NET-000098-FW-000021; FW SRG-NET-000362-FW-000028; FW SRG-NET-000392-FW-000042; NDM SRG-APP-000412-NDM-000331,config log setting remote; edit 1; set proto tcp; next; end; config log setting ddos-attack-log-remote; edit <ATTACK_SYSLOG>; set proto tcp; next; end (and TLS 1.1 left disabled)
+Security Fabric,"GUI and graph updates (Data Path Resources graphs, report cloning, external IP list connectors, Fabric connector)",7.0.3 and later,FW SRG-NET-000364-FW-000031,config system external-resource; edit <CONNECTOR>; set type address; set status enable; set resource <URI>; set verify-host-cert enable; next; end
+IP protection,"TCP and UDP enhancements (UDP empty checksum option, TCP DNS through all DNS features, UDP reflection flood logs, 256 UDP service ports)",7.0.3 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > IP Profile
+TCP protection,Foreign packet pause timer for link events,7.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+High availability,HA partner switches from fail-closed to fail-open on a link failure,7.0.3 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+SNMP,SNMP polling of global and SPP drop counts and attack flags,7.0.3 and later,FW SRG-NET-000392-FW-000042,config ddos global settings; set snmp-minimum-drops <DROPS>; end
+System integrity,"Daily configuration backup at local time, on demand, or as a test",7.0.3 and later,NDM SRG-APP-000516-NDM-000340,config system daily-config-backup; set scheduled-time <HH:MM>; end
+High availability,Traffic statistics merged automatically between HA primary and secondary,7.0.4 and later,FW SRG-NET-000705-FW-000110,GUI: System > High Availability
+ACLs,Automatic Layer 3 and Layer 4 distress ACLs (ADACLs) under large floods on the 3000F,7.0.4 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+GUI,Top Attacks single-column layout on small screens,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+High availability,Low traffic rate on links signals the HA partner to pause foreign packet validation,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Separate attack log event for SYN with payload,7.0.4 and later,FW SRG-NET-000074-FW-000009,—
+GUI,"Last 20 emergency, alert, and critical event logs on the Dashboard",7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+UDP protection,IKE (UDP 500) anomaly and flood protection,7.0.4 and later,FW SRG-NET-000362-FW-000028,—
+GUI,Attack log filter by drop count,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+High availability,Link status signaling to the HA partner,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+High availability,Distress ACLs and ADACLs independent on each HA partner,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,Thresholds for the top 512 FQDN rates in DNS responses,7.0.4 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+GUI,Outbound system-generated validation packets shown,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,S.M.A.R.T. SSD integrity commands (checklogdisk removed),7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Service protection,Bypass VLAN (ignore private VLAN traffic),7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",— (off by default; enable only for VLANs with private addresses)
+ACLs,IPsec tunnel endpoint lists (only VPN traffic between the listed local and remote IPs),7.0.4 and later,FW SRG-NET-000364-FW-000031; FW SRG-NET-000019-FW-000003,GUI: Global Protection > IPSEC
+GUI,SPP links on the Top Attacks Summary page,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Attack log backup removed (download logs or use the debug files),7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ACLs,TTL options removed from 3000F distress ACLs,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Cloud signaling,Cloud signaling devices only for third-party service providers,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Cloud signaling,Last Successful Attack Sent column for signaling devices,7.0.4 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,SPP membership changed from the Protection Subnets List,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Links to the SPP from the Protection Subnets List,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+High availability,Pause HA during upgrades with the HA settings kept,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,Traffic statistics from peak or 95th percentile traffic,7.2.0 and later,FW SRG-NET-000705-FW-000110,—
+GUI,Link Down Sync setting shown for each port pair,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Management CPU usage and an event log when it exceeds 90% for five minutes,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,TCP and UDP port low traffic thresholds adjustable without new System Recommendations,7.2.0 and later,FW SRG-NET-000705-FW-000110,config ddos spp rule; edit <SPP>; set threshold-system-recommended-layer-4-tcp-port-low-traffic <PPS>; set threshold-system-recommended-layer-4-udp-port-low-traffic <PPS>; next; end
+IP protection,IP-in-IP tunneling attack detection,7.2.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > IP Profile
+IP protection,Drop of unratified Layer 3 protocols (IP strict anomalies),7.2.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > IP Profile
+Logging and alerts,Event logs for user and system bypass actions,7.2.0 and later,NDM SRG-APP-000343-NDM-000289; NDM SRG-APP-000095-NDM-000225,—
+FortiGuard,GEO Update Status option to stop geolocation database downloads,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",GUI: System > FortiGuard (GEO Update Status disabled when geolocation is not used)
+Logging and alerts,Event logs for power supply failures,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,"Bypass, transceiver, and interface details in the full debug file",7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Bypass,Shorter outages on inline and bypass transitions after a data plane crash,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Bypass status icon turns red in bypass mode,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Several debug files deleted at once,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Scalar threshold pages reached from the DNS graphs,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,Debug file compression,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Data plane CPU data cleared to add management CPU metrics,7.2.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+IP protection,UDP empty checksum check disabled by default,7.2.1 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > IP Profile (enable it except in SPPs that carry IPsec NAT traversal)
+TCP protection,ACK=0 check for SYN packets in TCP strict anomalies,7.2.1 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > TCP Profile
+GUI,Attacked destination drop distribution tables; SYN-ACK and DNS response graphs rearranged,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Context-sensitive help on all GUI pages,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,"Scalar thresholds for UDP fragments, UDP port 53, and DNS Rcode 0 per destination",7.2.2 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+Logging and alerts,Custom FQDN for the mail server HELO/EHLO check,7.2.2 and later,NDM SRG-APP-000360-NDM-000295,GUI: System > Settings (FQDN)
+Bypass,Bypass status of port pairs cross-connected to the optical bypass module (2000F and 3000F),7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,FQDN check for DNS LQ Populate,7.2.2 and later,FW SRG-NET-000362-FW-000028,—
+ACLs,IPv6 geolocation database management,7.2.2 and later,FW SRG-NET-000364-FW-000031,—
+ACLs,IPsec tunnel endpoints monitor only ESP (protocol 50),7.2.2 and later,FW SRG-NET-000364-FW-000031,GUI: Global Protection > IPSEC
+GUI,Top Attacks SPP tables added or removed with widget controls,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,"TCP port low traffic threshold range up to 262,140 pps",7.2.2 and later,FW SRG-NET-000705-FW-000110,—
+GUI,Faster event log filtering,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"GUI labels for Chinese, Japanese, Korean, and Spanish",7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Service protection,Bypass Reversed Traffic for hair-pinned traffic,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",— (off by default; enable only where hair-pinned traffic is seen)
+TCP protection,Foreign packet threshold kept when foreign packet validation is disabled and re-enabled,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Non-IP Ethertypes graph,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,DNS Suspicious Sources (NXDOMAIN and NODATA responses),7.2.2 and later,FW SRG-NET-000362-FW-000028,—
+Troubleshooting,More tables in the customer and full debug files,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ACLs,Geolocation package without regions,7.2.2 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+TCP protection,Allow Inbound SYN-ACK set in the TCP profile of each SPP,8.0.0 and later,FW SRG-NET-000362-FW-000028,GUI: Service Protection > TCP Profile (disable it for SPPs that expect only inbound sessions)
+GUI,System > Settings moved to the main System menu,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Thresholds,ESP and UDP source port 53 per destination thresholds,8.0.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+Thresholds,Rcode 0 and Rcode 1 to 15 threshold ranges in System Recommendations,8.0.0 and later,FW SRG-NET-000705-FW-000110,—
+DNS protection,DNS Query TKEY threshold,8.0.0 and later,FW SRG-NET-000362-FW-000028,—
+Thresholds,Fewer false positives for UDP applications such as Microsoft Teams and Zoom,8.0.0 and later,FW SRG-NET-000705-FW-000110,—
+Thresholds,Three TCP port ranges in System Recommendations,8.0.0 and later,FW SRG-NET-000705-FW-000110,—
+GUI,Custom dashboard views for super_admin_prof users,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Management access,"Pre-login warning banner (disabled by default, customizable)",8.0.0 and later,NDM SRG-APP-000068-NDM-000215; NDM SRG-APP-000069-NDM-000216,GUI: System > Settings (Pre Login Warning enabled); GUI: System > Replacement Messages (Pre-Login Disclaimer Message: the Standard Mandatory DoD Notice and Consent Banner)
+FortiGuard,Attack telemetry sent to FortiGuard (opt-out),8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",config system global; set fds-statistics disable; end
+TCP protection,Inbound SYN service ACL for each SPP (drops all inbound SYN packets),8.0.0 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000364-FW-000031,GUI: Service Protection > Service Protection Policy (only for SPPs that never expect inbound SYN packets)
+Logging and alerts,Mail server settings moved to System > Maintenance > Mail Server,8.0.0 and later,NDM SRG-APP-000360-NDM-000295,GUI: System > Maintenance > Mail Server
+GUI,Custom Monitor page,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Collapsible sections on the DNS Profile page,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Pie and bar graphs on the Report Browse page,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Logarithmic (base 2) graph labels,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+SNMP,SNMP trap with threshold for Data Path Resources,8.0.0 and later,FW SRG-NET-000392-FW-000042; NDM SRG-APP-000360-NDM-000295,config log setting ddos-attack-snmp-trap-receivers; edit <TRAP_RECEIVER>; set status enable; set type data_path_resources; set data-path-resources-threshold 90; set ip-address <SNMP_MANAGER>; next; end
+GUI,File selector for firmware upload,8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,"CSV of ACLs, blocklist, and external resource files in the debug files",8.0.0 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Main menu and submenus reorganized,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+SSL/TLS protection,JA4 TLS fingerprint thresholds against TLS floods without decryption,8.0.1 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,—
+UDP protection,STUN thresholds for UDP port 3478 and STUN anomalies,8.0.1 and later,FW SRG-NET-000362-FW-000028,—
+ACLs,Automated distress ACL threshold set as a CPU percentage,8.0.1 and later,FW SRG-NET-000362-FW-000028; FW SRG-NET-000193-FW-000030,GUI: Global Protection > Access Control List (Auto-Distress ACL)
+Thresholds,System Recommended thresholds created in one action on the Threshold Settings page,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+ACLs,IPsec tunnel endpoints configured for each SPP,8.0.1 and later,FW SRG-NET-000364-FW-000031; FW SRG-NET-000019-FW-000003,GUI: Service Protection > Service Protection Policy (IPsec tunnel endpoints of the SPP)
+Reports,Yesterday report period,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Simplified report configuration,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Comment field for protected subnets,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Port logical names in port up and down event logs,8.0.1 and later,NDM SRG-APP-000097-NDM-000227,—
+IP protection,"IP profile blocks invalid and non-public address ranges (loopback, APIPA, CGNAT, TEST-NET, reserved)",8.0.1 and later,FW SRG-NET-000364-FW-000042; FW SRG-NET-000364-FW-000031,GUI: Service Protection > IP Profile
+Reports,Top Attacks Summary report tables scheduled and sent by email,8.0.1 and later,FW SRG-NET-000392-FW-000042,GUI: Log & Report > Report Configuration
+GUI,Event Detail column in the attack log,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,"Dashboard Top Attacks tables added, removed, rearranged, and resized",8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Reports,Top Attacks Summary tables in reports,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,Favorites menu,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Troubleshooting,Debug files generated from the CLI and uploaded by TFTP or FTP,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+Logging and alerts,Alert mail settings for log levels and categories,8.0.1 and later,NDM SRG-APP-000360-NDM-000295,GUI: Log & Report > Log Configuration > Alert Email Settings
+GUI,Global Settings > Deployment reorganized,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+DNS protection,DNS Packet Track per Source renamed DNS Suspicious Sources,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—
+GUI,New color scheme for resource use on the Dashboard,8.0.1 and later,"No direct requirement; if unused, disable (NDM SRG-APP-000142-NDM-000245)",—

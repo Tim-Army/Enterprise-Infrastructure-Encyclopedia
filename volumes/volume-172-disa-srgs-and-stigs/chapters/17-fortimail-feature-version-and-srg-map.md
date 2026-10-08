@@ -294,6 +294,8 @@ The SRG column uses the abbreviations defined in *Where the SRG data comes
 from*. The requirement titles are listed in the next table. The command
 column follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/17-fortimail-feature-version-and-srg-map-feature-map.csv) (331 rows).
+
 | Category | Feature | Introduced (FortiMail) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: Management access | Administrative access per interface (HTTPS, SSH, ping, SNMP, HTTP, Telnet) | 7.0.0 or earlier | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000172-NDM-000259` | `config system interface; edit <MGMT_PORT>; set allowaccess https ssh; next; end` (management interface only; leave out HTTP and Telnet) |
@@ -632,6 +634,8 @@ column follows the conventions in *Where the commands come from*.
 
 The requirements used in the map and in this chapter's text, with their
 severity in the current SRG releases:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/17-fortimail-feature-version-and-srg-map-requirements.csv) (115 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

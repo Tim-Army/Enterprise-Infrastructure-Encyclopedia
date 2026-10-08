@@ -393,6 +393,8 @@ The SRG column uses the abbreviations defined in *Where the SRG data comes
 from*. The requirement titles are listed in the next table. The command
 column follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/21-fortisandbox-feature-version-and-srg-map-feature-map.csv) (518 rows).
+
 | Category | Feature | Introduced (FortiSandbox) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: Management access | Administrative access on port1 (HTTPS by default; HTTP, SSH, and Telnet optional) | 4.0.0 or earlier | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000172-NDM-000259`; NDM `SRG-APP-000408-NDM-000314` | GUI: System > Interfaces (Access Rights on port1: HTTPS and SSH only, HTTP and Telnet off; other administrative ports follow port1) |
@@ -918,6 +920,8 @@ column follows the conventions in *Where the commands come from*.
 
 The requirements used in the map and in this chapter's text, with their
 severity in the current SRG releases:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/21-fortisandbox-feature-version-and-srg-map-requirements.csv) (95 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

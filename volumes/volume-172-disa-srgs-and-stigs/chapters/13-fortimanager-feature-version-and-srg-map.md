@@ -196,6 +196,8 @@ Abbreviation in the SRG column: **NDM** is the Network Device Management SRG.
 The requirement titles are listed in the next table. The command column
 follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/13-fortimanager-feature-version-and-srg-map-feature-map.csv) (487 rows).
+
 | Category | Feature | Introduced (FortiManager) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: management access | HTTPS and SSH management encryption | 7.0.0 or earlier | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; NDM `SRG-APP-000172-NDM-000259`; NDM `SRG-APP-000179-NDM-000265` | `config system global; set global-ssl-protocol tlsv1.2; set ssl-low-encryption disable; set enc-algorithm high; set ssh-enc-algo aes256-ctr aes256-gcm@openssh.com; set ssh-mac-algo hmac-sha2-256 hmac-sha2-512; end` |
@@ -690,6 +692,8 @@ follows the conventions in *Where the commands come from*.
 
 The SRG requirements used in the map, with their severity in the current SRG
 release:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/13-fortimanager-feature-version-and-srg-map-requirements.csv) (79 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

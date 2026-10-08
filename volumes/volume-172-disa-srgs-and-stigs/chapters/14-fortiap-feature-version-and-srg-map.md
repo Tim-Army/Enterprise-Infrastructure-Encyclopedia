@@ -258,6 +258,8 @@ The SRG column uses the abbreviations defined in *Where the SRG data comes
 from*. The requirement titles are listed in the next table. The command
 column follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/14-fortiap-feature-version-and-srg-map-feature-map.csv) (186 rows).
+
 | Category | Feature | Introduced (FortiAP) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: FortiAP management | FortiAP administrator password set from the controller | 7.0.0 or earlier | WLAN-AM `WLAN-ND-000200`; WLAN-AM `WLAN-ND-000300`; WLAN-AM `WLAN-ND-001300`; NDM `SRG-APP-000171-NDM-000258` | FortiGate: `config wireless-controller wtp-profile; edit <PROFILE>; set login-passwd-change yes; set login-passwd <PASSWORD_15_CHARS_MIN>; end` |
@@ -452,6 +454,8 @@ column follows the conventions in *Where the commands come from*.
 The requirements used in the map, with their severity in the current STIG
 and SRG releases. For WLAN rules the SRG ID that DISA assigns to the rule is
 shown in parentheses:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/14-fortiap-feature-version-and-srg-map-requirements.csv) (56 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

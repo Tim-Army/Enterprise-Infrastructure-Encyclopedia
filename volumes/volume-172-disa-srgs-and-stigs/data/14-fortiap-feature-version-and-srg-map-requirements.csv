@@ -1,0 +1,57 @@
+﻿SRG,Requirement,Severity,Requirement title
+WLAN-AM,WLAN-ND-000200 (SRG-APP-000164-NDM-000252),CAT II,The network device must enforce a minimum 15-character password length.
+WLAN-AM,WLAN-ND-000300 (SRG-APP-000080-NDM-000345),CAT II,The network device must not have any default manufacturer passwords when deployed.
+WLAN-AM,WLAN-ND-000500 (SRG-APP-000190-NDM-000267),CAT I,"The network device must terminate all network connections associated with a device management session at the end of the session, or the session must be terminated after 10 minutes of inactivity except to fulfill documented and validated mission requirements."
+WLAN-AM,WLAN-ND-000600 (SRG-APP-000153-NDM-000249),CAT II,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+WLAN-AM,WLAN-ND-000800 (SRG-APP-000412-NDM-000331),CAT I,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.
+WLAN-AM,WLAN-ND-000900 (SRG-APP-000503-NDM-000320),CAT II,The network device must generate audit records when successful/unsuccessful logon attempts occur.
+WLAN-AM,WLAN-ND-001000 (SRG-APP-000516-NDM-000351),CAT I,The network device must be running an operating system release that is currently supported by the vendor.
+WLAN-AM,WLAN-ND-001100 (SRG-APP-000516-NDM-000336),CAT I,The network device must be configured to use an authentication server to authenticate users prior to granting administrative access.
+WLAN-AM,WLAN-ND-001200 (SRG-APP-000395-NDM-000310),CAT II,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+WLAN-AM,WLAN-ND-001300 (SRG-APP-000148-NDM-000346),CAT II,The network device must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+WLAN-AM,WLAN-ND-001400 (SRG-APP-000065-NDM-000214),CAT II,"The network device must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes."
+WLAN-AM,WLAN-ND-001500 (SRG-APP-000142-NDM-000245),CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services."
+WLAN-AM,WLAN-ND-001600 (SRG-APP-000395-NDM-000347),CAT II,The network device must authenticate Network Time Protocol (NTP) sources using authentication that is cryptographically based.
+WLAN-AM,WLAN-ND-001800 (SRG-APP-000516-NDM-000335),CAT II,The network device must be configured with both an ingress and egress ACL.
+WLAN-AP,WLAN-NW-000100 (SRG-NET-000383),CAT II,The site must conduct continuous wireless Intrusion Detection System (IDS) scanning.
+WLAN-AP,WLAN-NW-000200 (SRG-NET-000512),CAT III,"WLAN SSIDs must be changed from the manufacturer's default to a pseudo random word that does not identify the unit, base, organization, etc."
+WLAN-AP,WLAN-NW-000300 (SRG-NET-000514),CAT II,The WLAN inactive/idle session timeout must be set for 30 minutes or less.
+WLAN-AP,WLAN-NW-000400 (SRG-NET-000063),CAT II,WLAN components must be Wi-Fi Alliance certified with WPA3.
+WLAN-AP,WLAN-NW-000500 (SRG-NET-000070),CAT II,WLAN must use EAP-TLS.
+WLAN-AP,WLAN-NW-000600 (SRG-NET-000151),CAT II,WLAN components must be FIPS 140-2 or FIPS 140-3 certified and configured to operate in FIPS mode.
+WLAN-AP,WLAN-NW-000700 (SRG-NET-000070),CAT II,WLAN EAP-TLS implementation must use certificate-based PKI authentication to connect to DoW networks.
+WLAN-AP,WLAN-NW-000800 (SRG-NET-000384),CAT III,WLAN signals must not be intercepted outside areas authorized for WLAN access.
+WLAN-AP,WLAN-NW-001100 (SRG-NET-000512),CAT II,Wireless access points and bridges must be placed in dedicated subnets outside the enclave's perimeter.
+WLAN-AP,WLAN-NW-001200 (SRG-NET-000205),CAT II,The network device must be configured to only permit management traffic that ingresses and egresses the out-of-band management (OOBM) interface.
+WLAN-AP,WLAN-NW-001300 (SRG-NET-000131),CAT II,The network device must not be configured to have any feature enabled that calls home to the vendor.
+WLAN-IG,WLAN-ND-000100 (SRG-APP-000164-NDM-000252),CAT II,The password configured on the WLAN access point for key generation and client access must be set to a 15-character or longer complex password as required by USCYBERCOM CTO 07-15 Rev1.
+WLAN-IG,WLAN-NW-000900 (SRG-NET-000063),CAT II,The WLAN access point must be configured for Wi-Fi Alliance WPA3 security.
+WLAN-IG,WLAN-NW-001000 (SRG-NET-000512),CAT II,"DoW Components providing guest WLAN access (internet access only) must use separate WLAN or logical segmentation of the enterprise WLAN (e.g., separate service set identifier [SSID] and virtual LAN) or DoW network."
+WLAN-CM,WLAN-ND-000600 (SRG-APP-000153-NDM-000249),CAT II,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+WLAN-CM,WLAN-ND-000700 (SRG-APP-000033-NDM-000212),CAT I,The network device must enforce the assigned privilege level for each administrator and authorizations for access to all commands relative to the privilege level in accordance with applicable policy for the device.
+WLAN-CM,WLAN-ND-000800 (SRG-APP-000412-NDM-000331),CAT I,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.
+WLAN-CM,WLAN-ND-001000 (SRG-APP-000516-NDM-000351),CAT I,The network device must be running an operating system release that is currently supported by the vendor.
+WLAN-CM,WLAN-ND-001500 (SRG-APP-000142-NDM-000245),CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services."
+WLAN-CP,WLAN-NW-000300 (SRG-NET-000514),CAT II,The WLAN inactive/idle session timeout must be set for 30 minutes or less.
+WLAN-CP,WLAN-NW-000500 (SRG-NET-000070),CAT II,WLAN must use EAP-TLS.
+WLAN-CP,WLAN-NW-000600 (SRG-NET-000151),CAT II,WLAN components must be FIPS 140-2 or FIPS 140-3 certified and configured to operate in FIPS mode.
+WLAN-CP,WLAN-NW-000700 (SRG-NET-000070),CAT II,WLAN EAP-TLS implementation must use certificate-based PKI authentication to connect to DoD networks.
+WLAN-CP,WLAN-NW-001200 (SRG-NET-000205),CAT II,The network device must be configured to only permit management traffic that ingresses and egresses the out-of-band management (OOBM) interface.
+WLAN-CP,WLAN-NW-001300 (SRG-NET-000131),CAT II,The network device must not be configured to have any feature enabled that calls home to the vendor.
+NDM,SRG-APP-000131-NDM-000243,CAT II,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000171-NDM-000258,CAT I,"The network device must be configured to store passwords using an approved salted key derivation function, preferably using a keyed hash for password-based authentication."
+NDM,SRG-APP-000172-NDM-000259,CAT I,The network device must transmit only encrypted representations of passwords.
+NDM,SRG-APP-000179-NDM-000265,CAT I,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000380-NDM-000304,CAT II,The network device must enforce access restrictions associated with changes to device configuration.
+NDM,SRG-APP-000408-NDM-000314,CAT II,Network devices performing maintenance functions must restrict use of these functions to authorized personnel only.
+NDM,SRG-APP-000411-NDM-000330,CAT I,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000435-NDM-000315,CAT II,The network device must be configured to protect against known types of denial-of-service (DoS) attacks by employing organization-defined security safeguards.
+NDM,SRG-APP-000457-NDM-000352,CAT II,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000515-NDM-000325,CAT II,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000335,CAT II,The network device must enforce access restrictions associated with changes to the system components.
+NDM,SRG-APP-000516-NDM-000340,CAT II,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000344,CAT II,The network device must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+NDM,SRG-APP-000516-NDM-000350,CAT I,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000880-NDM-000290,CAT II,The network device must be configured to protect nonlocal maintenance sessions by separating the maintenance session from other network sessions with the system by logically separated communications paths.
+NDM,SRG-APP-001035-NDM-000340,CAT I,The network device hardware and software must be a version supported by the vendor.

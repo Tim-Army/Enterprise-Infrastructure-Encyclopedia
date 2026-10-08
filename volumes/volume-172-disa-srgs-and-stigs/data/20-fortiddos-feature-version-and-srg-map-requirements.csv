@@ -1,0 +1,91 @@
+﻿SRG,Requirement,Severity,Requirement title
+NDM,SRG-APP-000001-NDM-000200,CAT II,The network device must limit the number of concurrent sessions to an organization-defined number for each administrator account and/or administrator account type.
+NDM,SRG-APP-000026-NDM-000208,CAT II,The network device must automatically audit account creation.
+NDM,SRG-APP-000027-NDM-000209,CAT II,The network device must automatically audit account modification.
+NDM,SRG-APP-000028-NDM-000210,CAT II,The network device must automatically audit account disabling actions.
+NDM,SRG-APP-000029-NDM-000211,CAT II,The network device must automatically audit account removal actions.
+NDM,SRG-APP-000033-NDM-000212,CAT I,The network device must be configured to assign appropriate user roles or access levels to authenticated users.
+NDM,SRG-APP-000038-NDM-000213,CAT II,The network device must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.
+NDM,SRG-APP-000065-NDM-000214,CAT II,"The network device must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes."
+NDM,SRG-APP-000068-NDM-000215,CAT II,The network device must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.
+NDM,SRG-APP-000069-NDM-000216,CAT II,The network device must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until the administrator acknowledges the usage conditions and takes explicit actions to log on for further access.
+NDM,SRG-APP-000095-NDM-000225,CAT II,The network device must produce audit log records containing sufficient information to establish what type of event occurred.
+NDM,SRG-APP-000096-NDM-000226,CAT II,The network device must produce audit records containing information to establish when (date and time) the events occurred.
+NDM,SRG-APP-000097-NDM-000227,CAT II,The network device must produce audit records containing information to establish where the events occurred.
+NDM,SRG-APP-000098-NDM-000228,CAT II,The network device must produce audit log records containing information to establish the source of events.
+NDM,SRG-APP-000099-NDM-000229,CAT II,The network device must produce audit records that contain information to establish the outcome of the event.
+NDM,SRG-APP-000100-NDM-000230,CAT II,The network device must generate audit records containing information that establishes the identity of any individual or process associated with the event.
+NDM,SRG-APP-000119-NDM-000236,CAT II,The network device must protect audit information from unauthorized modification.
+NDM,SRG-APP-000120-NDM-000237,CAT II,The network device must protect audit information from unauthorized deletion.
+NDM,SRG-APP-000131-NDM-000243,CAT II,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000148-NDM-000346,CAT II,The network device must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+NDM,SRG-APP-000149-NDM-000247,CAT I,The network device must be configured to use DoD PKI as multi-factor authentication (MFA) for interactive logins.
+NDM,SRG-APP-000153-NDM-000249,CAT II,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+NDM,SRG-APP-000164-NDM-000252,CAT II,The network device must enforce a minimum 15-character password length.
+NDM,SRG-APP-000166-NDM-000254,CAT II,The network device must enforce password complexity by requiring that at least one uppercase character be used.
+NDM,SRG-APP-000167-NDM-000255,CAT II,The network device must enforce password complexity by requiring that at least one lowercase character be used.
+NDM,SRG-APP-000168-NDM-000256,CAT II,The network device must enforce password complexity by requiring that at least one numeric character be used.
+NDM,SRG-APP-000169-NDM-000257,CAT II,The network device must enforce password complexity by requiring that at least one special character be used.
+NDM,SRG-APP-000170-NDM-000329,CAT II,"The network device must require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+NDM,SRG-APP-000171-NDM-000258,CAT I,"The network device must be configured to store passwords using an approved salted key derivation function, preferably using a keyed hash for password-based authentication."
+NDM,SRG-APP-000172-NDM-000259,CAT I,The network device must transmit only encrypted representations of passwords.
+NDM,SRG-APP-000178-NDM-000264,CAT I,The network device must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.
+NDM,SRG-APP-000179-NDM-000265,CAT I,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000190-NDM-000267,CAT I,"The network device must terminate all network connections associated with a device management session at the end of the session, or the session must be terminated after five minutes of inactivity except to fulfill documented and validated mission requirements."
+NDM,SRG-APP-000220-NDM-000268,CAT II,The network device must invalidate session identifiers upon administrator logout or other session termination.
+NDM,SRG-APP-000231-NDM-000271,CAT I,"The network device must only allow authorized administrators to view or change the device configuration, system files, and other files stored either in the device or on removable media (such as a flash drive)."
+NDM,SRG-APP-000296-NDM-000280,CAT II,The network device must be configured to provide a logout mechanism for administrator-initiated communication sessions.
+NDM,SRG-APP-000340-NDM-000288,CAT I,"The network device must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures."
+NDM,SRG-APP-000343-NDM-000289,CAT II,The network device must audit the execution of privileged functions.
+NDM,SRG-APP-000357-NDM-000293,CAT II,The network device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+NDM,SRG-APP-000360-NDM-000295,CAT II,The network device must generate an immediate real-time alert of all audit failure events requiring real-time alerts.
+NDM,SRG-APP-000374-NDM-000299,CAT II,The network device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+NDM,SRG-APP-000378-NDM-000302,CAT II,The network device must prohibit installation of software without explicit privileged status.
+NDM,SRG-APP-000380-NDM-000304,CAT II,The network device must enforce access restrictions associated with changes to device configuration.
+NDM,SRG-APP-000395-NDM-000310,CAT II,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000408-NDM-000314,CAT II,Network devices performing maintenance functions must restrict use of these functions to authorized personnel only.
+NDM,SRG-APP-000411-NDM-000330,CAT I,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000412-NDM-000331,CAT I,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions
+NDM,SRG-APP-000435-NDM-000315,CAT II,The network device must be configured to protect against known types of denial-of-service (DoS) attacks by employing organization-defined security safeguards.
+NDM,SRG-APP-000457-NDM-000352,CAT II,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000503-NDM-000320,CAT II,The network device must generate audit records when successful/unsuccessful logon attempts occur.
+NDM,SRG-APP-000505-NDM-000322,CAT II,The network device must generate audit records showing starting and ending time for administrator access to the system.
+NDM,SRG-APP-000515-NDM-000325,CAT II,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000335,CAT II,The network device must enforce access restrictions associated with changes to the system components.
+NDM,SRG-APP-000516-NDM-000336,CAT I,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000344,CAT II,The network device must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+NDM,SRG-APP-000516-NDM-000350,CAT I,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000795-NDM-000130,CAT II,"The network device must be configured to alert organization-defined personnel or roles upon detection of unauthorized access, modification, or deletion of audit information."
+NDM,SRG-APP-000820-NDM-000170,CAT II,The network device must be configured to implement multifactor authentication for local; network; and/or remote access to privileged accounts; and/or nonprivileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+NDM,SRG-APP-000825-NDM-000180,CAT II,The network device must be configured to implement multifactor authentication for local; network; and/or remote access to privileged accounts; and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.
+NDM,SRG-APP-000845-NDM-000220,CAT II,"The network device must be configured to verify, when users create or update passwords, the passwords are not found on the list of commonly used, expected, or compromised passwords in IA-5 (1) (a) for password-based authentication."
+NDM,SRG-APP-000860-NDM-000250,CAT II,"The network device must be configured to allow user selection of long passwords and passphrases, including spaces and all printable characters for password-based authentication."
+NDM,SRG-APP-000880-NDM-000290,CAT II,The network device must be configured to protect nonlocal maintenance sessions by separating the maintenance session from other network sessions with the system by logically separated communications paths.
+NDM,SRG-APP-000910-NDM-000300,CAT II,The network device must be configured to include only approved trust anchors in trust stores or certificate stores managed by the organization.
+NDM,SRG-APP-000920-NDM-000320,CAT II,The network device must be configured to synchronize system clocks within and between systems or system components.
+NDM,SRG-APP-000925-NDM-000330,CAT II,The network device must be configured to compare the internal system clocks on an organization-defined frequency with organization-defined authoritative time source.
+NDM,SRG-APP-001035-NDM-000340,CAT I,The network device hardware and software must be a version supported by the vendor.
+FW,SRG-NET-000019-FW-000003,CAT I,"The firewall must be configured to use filters that use packet headers and packet attributes, including source and destination IP addresses and ports, to prevent the flow of unauthorized or suspicious traffic between interconnected networks with different security policies (including perimeter firewalls and server VLANs)."
+FW,SRG-NET-000074-FW-000009,CAT II,The firewall must generate traffic log entries containing information to establish what type of events occurred.
+FW,SRG-NET-000075-FW-000010,CAT II,The firewall must generate traffic log entries containing information to establish when (date and time) the events occurred.
+FW,SRG-NET-000076-FW-000011,CAT II,The firewall must generate traffic log entries containing information to establish the location on the network where the events occurred.
+FW,SRG-NET-000077-FW-000012,CAT III,"The firewall must generate traffic log entries containing information to establish the source of the events, such as the source IP address at a minimum."
+FW,SRG-NET-000078-FW-000013,CAT II,"The firewall must generate traffic log entries containing information to establish the outcome of the events, such as, at a minimum, the success or failure of the application of the firewall rule."
+FW,SRG-NET-000098-FW-000021,CAT II,The firewall must be configured to use TCP when sending log records to the central audit server.
+FW,SRG-NET-000099-FW-000161,CAT II,The firewall must protect the traffic log from unauthorized modification of local log records.
+FW,SRG-NET-000100-FW-000023,CAT II,The firewall must protect the traffic log from unauthorized deletion of local log files and log records.
+FW,SRG-NET-000192-FW-000029,CAT II,The firewall must block outbound traffic containing denial-of-service (DoS) attacks to protect against the use of internal information systems to launch any DoS attacks against other networks or endpoints.
+FW,SRG-NET-000193-FW-000030,CAT II,The firewall implementation must manage excess bandwidth to limit the effects of packet flooding types of denial-of-service (DoS) attacks.
+FW,SRG-NET-000235-FW-000133,CAT II,"The firewall must fail to a secure state upon the failure of the following: system initialization, shutdown, or system abort."
+FW,SRG-NET-000333-FW-000014,CAT II,The firewall must be configured to send traffic log entries to a central audit server for management and configuration of the traffic log entries.
+FW,SRG-NET-000335-FW-000017,CAT II,"If communication with the central audit server is lost, the firewall must generate a real-time alert to, at a minimum, the systems administrator (SA) and information system security officer (ISSO)."
+FW,SRG-NET-000362-FW-000028,CAT I,"The firewall must employ filters that prevent or limit the effects of all types of commonly known denial-of-service (DoS) attacks, including flooding, packet sweeps, and unauthorized port scanning."
+FW,SRG-NET-000364-FW-000031,CAT II,The firewall must apply ingress filters to traffic that is inbound to the network through any active external interface.
+FW,SRG-NET-000364-FW-000032,CAT II,The firewall must apply egress filters to traffic that is outbound from the network through any internal interface.
+FW,SRG-NET-000364-FW-000042,CAT II,The firewall must be configured to restrict it from accepting outbound packets that contain an illegitimate address in the source address field via an egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).
+FW,SRG-NET-000392-FW-000042,CAT III,"The firewall must generate an alert that can be forwarded to, at a minimum, the ISSO and ISSM when denial-of-service (DoS) incidents are detected."
+FW,SRG-NET-000492-FW-000006,CAT II,"The firewall must generate traffic log records when traffic is denied, restricted, or discarded."
+FW,SRG-NET-000705-FW-000110,CAT II,The firewall must be configured to employ organization-defined controls by type of denial-of-service (DoS) to achieve the DoS objective.

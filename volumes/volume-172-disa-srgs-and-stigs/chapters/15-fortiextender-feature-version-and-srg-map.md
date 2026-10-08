@@ -296,6 +296,8 @@ The SRG column uses the abbreviations defined in *Where the SRG data comes
 from*. The requirement titles are listed in the next table. The command
 column follows the conventions in *Where the commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/15-fortiextender-feature-version-and-srg-map-feature-map.csv) (154 rows).
+
 | Category | Feature | Introduced (FortiExtender OS) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: FortiGate-managed operation | FortiExtender controller on the FortiGate | 7.0.0 or earlier | NDM `SRG-APP-000142-NDM-000245` | FortiGate: `config system global; set fortiextender disable; end` (only when the FortiGate manages no FortiExtender) |
@@ -457,6 +459,8 @@ column follows the conventions in *Where the commands come from*.
 
 The requirements used in the map and in this chapter's text, with their
 severity in the current SRG releases:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/15-fortiextender-feature-version-and-srg-map-requirements.csv) (65 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |

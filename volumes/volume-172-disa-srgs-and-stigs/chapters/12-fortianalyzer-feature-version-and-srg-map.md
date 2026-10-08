@@ -148,6 +148,8 @@ Abbreviations in the SRG column: **CLS** is the Central Log Server SRG and
 in the next table. The command column follows the conventions in *Where the
 commands come from*.
 
+[Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/12-fortianalyzer-feature-version-and-srg-map-feature-map.csv) (349 rows).
+
 | Category | Feature | Introduced (FortiAnalyzer) | SRG requirement(s) | Command to satisfy the requirement |
 | --- | --- | --- | --- | --- |
 | Core: log collection | Log collection from Fortinet devices (OFTP) | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000330`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system global; set oftp-ssl-protocol tlsv1.2; set enc-algorithm high; end` |
@@ -504,6 +506,8 @@ commands come from*.
 
 The SRG requirements used in the map, with their severity in the current SRG
 releases:
+
+[Download the requirement reference as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/12-fortianalyzer-feature-version-and-srg-map-requirements.csv) (65 rows).
 
 | SRG | Requirement | Severity | Requirement title |
 | --- | --- | --- | --- |
