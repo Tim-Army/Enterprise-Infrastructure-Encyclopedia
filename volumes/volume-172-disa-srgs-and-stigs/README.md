@@ -75,6 +75,9 @@ finally the program:
   SRG requirement it meets, and the FortiProxy command that meets it.
 - **Chapter 19** maps every FortiADC feature to its release, the ALG, NDM,
   or VPN SRG requirement it meets, and the FortiADC command that meets it.
+- **Chapter 20** maps every FortiDDoS-F feature to its release, the NDM SRG or
+  Firewall SRG denial-of-service requirement it meets, and the command or web
+  UI pane that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -103,10 +106,11 @@ except that this volume has no hands-on labs (see
 17. [FortiMail Feature, Version, and SRG Map](chapters/17-fortimail-feature-version-and-srg-map.md) — 331 FortiMail features (84 core platform features and every feature in the FortiMail 7.0.0 to 8.0.2 release notes "What's new" tables) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiMail CLI command that meets it.
 18. [FortiProxy Feature, Version, and SRG Map](chapters/18-fortiproxy-feature-version-and-srg-map.md) — 425 FortiProxy features (89 core platform features and every feature in the FortiProxy 7.0.0 to 7.6.7 release notes "What's new" sections) with the release that introduced each, the ALG or NDM SRG requirement it maps to, and the FortiProxy CLI command that meets it.
 19. [FortiADC Feature, Version, and SRG Map](chapters/19-fortiadc-feature-version-and-srg-map.md) — 327 FortiADC features (80 core platform features and every feature in the FortiADC 7.0.0 to 8.0.4 release notes and New Features guides) with the release that introduced each, the ALG, NDM, or VPN SRG requirement it maps to, and the FortiADC CLI command that meets it.
+20. [FortiDDoS Feature, Version, and SRG Map](chapters/20-fortiddos-feature-version-and-srg-map.md) — 292 FortiDDoS-F features (51 core platform features and every feature in the 6.1.0 to 8.0.1 release notes) with the release that introduced each, the NDM SRG or Firewall SRG denial-of-service, filtering, and logging requirement it maps to, and the command or web UI pane that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all nineteen chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

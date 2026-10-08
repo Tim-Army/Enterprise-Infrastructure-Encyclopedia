@@ -116,7 +116,7 @@ or hypervisor they run on.
 | **FortiMail** | Email security gateway | ALG SRG and NDM SRG. Chapter 17 maps every FortiMail feature to its release, SRG requirement, and configuration command |
 | **FortiProxy** | Secure web gateway | ALG SRG and NDM SRG. Chapter 18 maps every FortiProxy feature to its release, SRG requirement, and configuration command |
 | **FortiADC** | Application delivery controller and load balancer | ALG SRG and NDM SRG, plus the VPN SRG if it terminates VPN or TLS for remote users. Chapter 19 maps every FortiADC feature to its release, SRG requirement, and configuration command |
-| **FortiDDoS** | DDoS mitigation | NDM SRG; its filtering role relates to the Firewall SRG's DoS requirements |
+| **FortiDDoS** | DDoS mitigation | NDM SRG; its filtering role relates to the Firewall SRG's DoS requirements. Chapter 20 maps every FortiDDoS feature to its release, SRG requirement, and configuration command |
 | **FortiSandbox** | Malware detonation and analysis | NDM SRG; protect its threat data and integrations |
 | **FortiVoice** | Business phone system and unified communications | Enterprise Voice, Video, and Messaging (EVVM) SRGs (session management, endpoint, and policy) and the NDM SRG |
 | **FortiAuthenticator** | Authentication, RADIUS and LDAP services, SSO, certificates | AAA Services SRG and NDM SRG; because other devices depend on it for administrator authentication, its availability and logging carry extra weight |

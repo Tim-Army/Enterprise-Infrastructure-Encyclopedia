@@ -5031,7 +5031,19 @@
     "ipreputation",
     "sockopt",
     "synflood",
-    "tcpssl"
+    "tcpssl",
+    "ADACLs",
+    "Blocklisted",
+    "DQRM",
+    "Ethertypes",
+    "FORTIDDOS",
+    "KPPS",
+    "NODATA",
+    "SSLTLS",
+    "TKEY",
+    "checklogdisk",
+    "globaladmin",
+    "syncinterval"
   ],
   "ignorePaths": [
     "node_modules/**",
