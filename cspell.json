@@ -5092,7 +5092,15 @@
     "Xshell",
     "multiprocess",
     "subfolders",
-    "sysinfo"
+    "sysinfo",
+    "adminui",
+    "Alaxala",
+    "Alcatel",
+    "Armis",
+    "Barox",
+    "Ivanti",
+    "Lantronix",
+    "Ruijie"
   ],
   "ignorePaths": [
     "node_modules/**",

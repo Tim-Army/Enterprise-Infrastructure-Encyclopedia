@@ -18,6 +18,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **CKL / CKLB** — checklist file formats: CKL is XML (STIG Viewer 2.x), CKLB is JSON (STIG Viewer 3.x).
 - **Cloud Computing SRG** — the DISA SRG that sets requirements for cloud service offerings hosting DoD data and defines impact levels IL2, IL4, IL5, and IL6.
 - **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
+- **Comply-to-Connect (C2C)** — the DoD network access control program whose steps the Cisco ISE NAC STIG rules reference.
 - **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
 - **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.
@@ -29,6 +30,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
+- **FortiNAC-OS** — the firmware operating system of FortiNAC-F, with a FortiOS-like CLI, which replaced the CentOS 7 base of legacy FortiNAC.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Glass breaking mode** — FortiPAM's emergency mode that temporarily gives an authorized administrator access to all secrets, with forced session recording and optional email alerts.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.

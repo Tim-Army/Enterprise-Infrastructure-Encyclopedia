@@ -87,6 +87,9 @@ finally the program:
 - **Chapter 24** maps every FortiPAM feature to its release, the NDM SRG
   requirement or Application Security and Development STIG rule it meets, and
   the web UI pane or command that meets it.
+- **Chapter 25** maps every FortiNAC-F feature to its release, the NDM or AAA
+  Services SRG requirement or Cisco ISE NAC STIG pattern rule it relates to,
+  and the command or web UI pane that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -120,10 +123,11 @@ except that this volume has no hands-on labs (see
 22. [FortiVoice Feature, Version, and SRG Map](chapters/22-fortivoice-feature-version-and-srg-map.md) — 172 FortiVoice features (86 core platform features and every feature in the 7.0.0 to 8.0.1 release notes) with the release that introduced each, the EVVM Session Management, Endpoint, or Policy SRG or NDM SRG requirement it maps to, and the web UI pane or command that meets it.
 23. [FortiAuthenticator Feature, Version, and SRG Map](chapters/23-fortiauthenticator-feature-version-and-srg-map.md) — 198 FortiAuthenticator features (102 core platform features and every feature in the 6.6.0 to 8.0.3 release notes) with the release that introduced each, the AAA Services or NDM SRG requirement it maps to, and the web UI pane or command that meets it.
 24. [FortiPAM Feature, Version, and SRG Map](chapters/24-fortipam-feature-version-and-srg-map.md) — 366 FortiPAM features (85 core platform features and every feature in the 1.0.0 to 7.0.0 release notes) with the release that introduced each, the NDM SRG requirement or administrator-configurable Application Security and Development STIG rule it maps to, and the web UI pane or command that meets it.
+25. [FortiNAC Feature, Version, and SRG Map](chapters/25-fortinac-feature-version-and-srg-map.md) — 172 FortiNAC-F features (53 core platform features and every feature in the 7.2.0 to 7.6.7 release notes) with the release that introduced each, the NDM or AAA Services SRG requirement or Cisco ISE NAC STIG pattern rule it maps to, and the FortiNAC CLI command or web UI pane that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty-four chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty-five chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

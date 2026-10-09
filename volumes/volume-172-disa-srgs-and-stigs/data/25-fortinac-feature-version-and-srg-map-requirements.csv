@@ -1,0 +1,98 @@
+﻿SRG,Requirement,Severity,SRG ID,Requirement title
+NDM,SRG-APP-000026-NDM-000208,CAT II,SRG-APP-000026,The network device must automatically audit account creation.
+NDM,SRG-APP-000027-NDM-000209,CAT II,SRG-APP-000027,The network device must automatically audit account modification.
+NDM,SRG-APP-000028-NDM-000210,CAT II,SRG-APP-000028,The network device must automatically audit account disabling actions.
+NDM,SRG-APP-000029-NDM-000211,CAT II,SRG-APP-000029,The network device must automatically audit account removal actions.
+NDM,SRG-APP-000033-NDM-000212,CAT I,SRG-APP-000033,The network device must be configured to assign appropriate user roles or access levels to authenticated users.
+NDM,SRG-APP-000065-NDM-000214,CAT II,SRG-APP-000065,"The network device must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes."
+NDM,SRG-APP-000068-NDM-000215,CAT II,SRG-APP-000068,The network device must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.
+NDM,SRG-APP-000069-NDM-000216,CAT II,SRG-APP-000069,The network device must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until the administrator acknowledges the usage conditions and takes explicit actions to log on for further access.
+NDM,SRG-APP-000095-NDM-000225,CAT II,SRG-APP-000095,The network device must produce audit log records containing sufficient information to establish what type of event occurred.
+NDM,SRG-APP-000100-NDM-000230,CAT II,SRG-APP-000100,The network device must generate audit records containing information that establishes the identity of any individual or process associated with the event.
+NDM,SRG-APP-000101-NDM-000231,CAT II,SRG-APP-000101,The network device must generate audit records containing the full-text recording of privileged commands.
+NDM,SRG-APP-000131-NDM-000243,CAT II,SRG-APP-000131,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,SRG-APP-000142,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000148-NDM-000346,CAT II,SRG-APP-000148,The network device must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+NDM,SRG-APP-000149-NDM-000247,CAT I,SRG-APP-000149,The network device must be configured to use DoD PKI as multi-factor authentication (MFA) for interactive logins.
+NDM,SRG-APP-000153-NDM-000249,CAT II,SRG-APP-000153,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+NDM,SRG-APP-000164-NDM-000252,CAT II,SRG-APP-000164,The network device must enforce a minimum 15-character password length.
+NDM,SRG-APP-000170-NDM-000329,CAT II,SRG-APP-000170,"The network device must require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+NDM,SRG-APP-000171-NDM-000258,CAT I,SRG-APP-000171,"The network device must be configured to store passwords using an approved salted key derivation function, preferably using a keyed hash for password-based authentication."
+NDM,SRG-APP-000172-NDM-000259,CAT I,SRG-APP-000172,The network device must transmit only encrypted representations of passwords.
+NDM,SRG-APP-000179-NDM-000265,CAT I,SRG-APP-000179,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000190-NDM-000267,CAT I,SRG-APP-000190,"The network device must terminate all network connections associated with a device management session at the end of the session, or the session must be terminated after five minutes of inactivity except to fulfill documented and validated mission requirements."
+NDM,SRG-APP-000231-NDM-000271,CAT I,SRG-APP-000231,"The network device must only allow authorized administrators to view or change the device configuration, system files, and other files stored either in the device or on removable media (such as a flash drive)."
+NDM,SRG-APP-000340-NDM-000288,CAT I,SRG-APP-000340,"The network device must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures."
+NDM,SRG-APP-000343-NDM-000289,CAT II,SRG-APP-000343,The network device must audit the execution of privileged functions.
+NDM,SRG-APP-000360-NDM-000295,CAT II,SRG-APP-000360,The network device must generate an immediate real-time alert of all audit failure events requiring real-time alerts.
+NDM,SRG-APP-000374-NDM-000299,CAT II,SRG-APP-000374,The network device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+NDM,SRG-APP-000378-NDM-000302,CAT II,SRG-APP-000378,The network device must prohibit installation of software without explicit privileged status.
+NDM,SRG-APP-000380-NDM-000304,CAT II,SRG-APP-000380,The network device must enforce access restrictions associated with changes to device configuration.
+NDM,SRG-APP-000395-NDM-000310,CAT II,SRG-APP-000395,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,SRG-APP-000395,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000411-NDM-000330,CAT I,SRG-APP-000411,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000412-NDM-000331,CAT I,SRG-APP-000412,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions
+NDM,SRG-APP-000457-NDM-000352,CAT II,SRG-APP-000457,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000503-NDM-000320,CAT II,SRG-APP-000503,The network device must generate audit records when successful/unsuccessful logon attempts occur.
+NDM,SRG-APP-000515-NDM-000325,CAT II,SRG-APP-000515,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000317,CAT II,SRG-APP-000516,"The network device must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs."
+NDM,SRG-APP-000516-NDM-000336,CAT I,SRG-APP-000516,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,SRG-APP-000516,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000344,CAT II,SRG-APP-000516,The network device must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+NDM,SRG-APP-000516-NDM-000350,CAT I,SRG-APP-000516,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000820-NDM-000170,CAT II,SRG-APP-000820,The network device must be configured to implement multifactor authentication for local; network; and/or remote access to privileged accounts; and/or nonprivileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+NDM,SRG-APP-000845-NDM-000220,CAT II,SRG-APP-000845,"The network device must be configured to verify, when users create or update passwords, the passwords are not found on the list of commonly used, expected, or compromised passwords in IA-5 (1) (a) for password-based authentication."
+NDM,SRG-APP-000880-NDM-000290,CAT II,SRG-APP-000880,The network device must be configured to protect nonlocal maintenance sessions by separating the maintenance session from other network sessions with the system by logically separated communications paths.
+NDM,SRG-APP-000910-NDM-000300,CAT II,SRG-APP-000910,The network device must be configured to include only approved trust anchors in trust stores or certificate stores managed by the organization.
+NDM,SRG-APP-000920-NDM-000320,CAT II,SRG-APP-000920,The network device must be configured to synchronize system clocks within and between systems or system components.
+NDM,SRG-APP-001035-NDM-000340,CAT I,SRG-APP-001035,The network device hardware and software must be a version supported by the vendor.
+AAA,SRG-APP-000024-AAA-000040,CAT II,SRG-APP-000024,AAA Services must be configured to automatically remove temporary user accounts after 72 hours.
+AAA,SRG-APP-000024-AAA-000050,CAT II,SRG-APP-000024,AAA Services must be configured to automatically remove authorizations for temporary user accounts after 72 hours.
+AAA,SRG-APP-000025-AAA-000080,CAT II,SRG-APP-000025,AAA Services must be configured to automatically disable accounts after a 35-day period of account inactivity.
+AAA,SRG-APP-000089-AAA-000380,CAT II,SRG-APP-000089,AAA Services must be configured to audit each authentication and authorization transaction.
+AAA,SRG-APP-000142-AAA-000010,CAT I,SRG-APP-000142,AAA Services must be configured to use secure protocols when connecting to directory services.
+AAA,SRG-APP-000142-AAA-000020,CAT I,SRG-APP-000142,"AAA Services must be configured to use protocols that encrypt credentials when authenticating clients, as defined in the PPSM CAL and vulnerability assessments."
+AAA,SRG-APP-000142-AAA-000680,CAT II,SRG-APP-000142,"AAA Services must be configured to prohibit or restrict the use of organization-defined functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments."
+AAA,SRG-APP-000148-AAA-000390,CAT I,SRG-APP-000148,AAA Services must be configured to uniquely identify and authenticate organizational users.
+AAA,SRG-APP-000158-AAA-000420,CAT II,SRG-APP-000158,AAA Services used for 802.1x must be configured to uniquely identify network endpoints (supplicants) before the authenticator establishes any connection.
+AAA,SRG-APP-000172-AAA-000520,CAT I,SRG-APP-000172,AAA Services must be configured to encrypt transmitted credentials using a FIPS-validated cryptographic module.
+AAA,SRG-APP-000175-AAA-000570,CAT I,SRG-APP-000175,AAA Services must be configured to only accept certificates issued by a DoW-approved certificate authority (CA) for Public Key Infrastructure (PKI)-based authentication.
+AAA,SRG-APP-000175-AAA-000580,CAT I,SRG-APP-000175,AAA Services must be configured to not accept certificates that have been revoked for PKI-based authentication.
+AAA,SRG-APP-000177-AAA-000600,CAT II,SRG-APP-000177,AAA Services must be configured to map the authenticated identity to the user account for PKI-based authentication.
+AAA,SRG-APP-000358-AAA-000280,CAT II,SRG-APP-000358,AAA Services must be configured to send audit records to a centralized audit server.
+AAA,SRG-APP-000394-AAA-000430,CAT II,SRG-APP-000394,AAA Services used for 802.1x must be configured to authenticate network endpoint devices (supplicants) before the authenticator establishes any connection.
+AAA,SRG-APP-000516-AAA-000440,CAT II,SRG-APP-000516,"AAA Services used for 802.1x must be configured to use secure Extensible Authentication Protocol (EAP), such as EAP-TLS, EAP-TTLS, and PEAP."
+AAA,SRG-APP-000516-AAA-000640,CAT II,SRG-APP-000516,"AAA Services must be configured to use a unique shared secret for communication (i.e. RADIUS, TACACS+) with clients requesting authentication services."
+AAA,SRG-APP-000516-AAA-000660,CAT II,SRG-APP-000516,AAA Services must be configured to place non-authenticated network access requests in the Unauthorized VLAN or the Guest VLAN with limited access.
+AAA,SRG-APP-000875-AAA-000220,CAT II,SRG-APP-000875,"For public key-based authentication, AAA Services must be configured to implement a local cache of revocation data to support path discovery and validation."
+AAA,SRG-APP-000910-AAA-000230,CAT II,SRG-APP-000910,AAA Services must be configured to include only approved trust anchors in trust stores or certificate stores managed by the organization.
+ISE,CSCO-NC-000010,CAT I,SRG-NET-000062-NAC-000340,"The Cisco ISE must use TLS 1.2, at a minimum, to protect the confidentiality of information passed between the endpoint agent and the Cisco ISE."
+ISE,CSCO-NC-000020,CAT I,SRG-NET-000015-NAC-000020,"The Cisco ISE must enforce approved access by employing authorization policies with specific attributes; such as resource groups, device type, certificate attributes, or any other attributes that are specific to a group of endpoints, and/or mission conditions as defined in the site's Cisco ISE System Security Plan (SSP)."
+ISE,CSCO-NC-000030,CAT I,SRG-NET-000015-NAC-000020,The Cisco ISE must be configured to profile endpoints connecting to the network.
+ISE,CSCO-NC-000040,CAT I,SRG-NET-000015-NAC-000020,The Cisco ISE must verify host-based firewall software is running on posture required clients defined in the NAC System Security Plan (SSP) prior to granting trusted network access.
+ISE,CSCO-NC-000050,CAT I,SRG-NET-000015-NAC-000020,The Cisco ISE must verify anti-malware software is installed and up to date on posture required clients defined in the NAC System Security Plan (SSP) prior to granting trusted network access.
+ISE,CSCO-NC-000060,CAT I,SRG-NET-000015-NAC-000020,The Cisco ISE must verify host-based IDS/IPS software is authorized and running on posture required clients defined in the NAC System Security Plan (SSP) prior to granting trusted network access.
+ISE,CSCO-NC-000070,CAT II,SRG-NET-000015-NAC-000040,"For endpoints that require automated remediation, the Cisco ISE must be configured to redirect endpoints to a logically separate VLAN for remediation services."
+ISE,CSCO-NC-000080,CAT III,SRG-NET-000015-NAC-000070,The Cisco ISE must be configured to notify the user before proceeding with remediation of the user's endpoint device when automated remediation is used.
+ISE,CSCO-NC-000090,CAT II,SRG-NET-000015-NAC-000080,The Cisco ISE must be configured so that all endpoints that are allowed to bypass policy assessment are approved by the Information System Security Manager (ISSM) and documented in the System Security Plan (SSP).
+ISE,CSCO-NC-000100,CAT II,SRG-NET-000015-NAC-000100,"The Cisco ISE must send an alert to the Information System Security Manager (ISSM) and System Administrator (SA), at a minimum, when security issues are found that put the network at risk."
+ISE,CSCO-NC-000110,CAT II,SRG-NET-000015-NAC-000110,"When endpoints fail the policy assessment, the Cisco ISE must create a record with sufficient detail suitable for forwarding to a remediation server for automated remediation or sending to the user for manual remediation."
+ISE,CSCO-NC-000120,CAT II,SRG-NET-000015-NAC-000120,The Cisco ISE must place client machines on the blacklist and terminate the agent connection when critical security issues are found that put the network at risk.
+ISE,CSCO-NC-000130,CAT II,SRG-NET-000015-NAC-000130,The Cisco ISE must be configured so client machines do not communicate with other network devices in the DMZ or subnet except as needed to perform an access client assessment or to identify themselves.
+ISE,CSCO-NC-000140,CAT II,SRG-NET-000322-NAC-001230,The Cisco ISE must deny or restrict access for endpoints that fail required posture checks.
+ISE,CSCO-NC-000150,CAT II,SRG-NET-000492-NAC-002100,The Cisco ISE must generate a log record when an endpoint fails authentication.
+ISE,CSCO-NC-000160,CAT II,SRG-NET-000492-NAC-002101,The Cisco ISE must generate a log record when the client machine fails posture assessment because required security software is missing or has been deleted.
+ISE,CSCO-NC-000170,CAT II,SRG-NET-000492-NAC-002120,"The Cisco ISE must send an alert to the system administrator, at a minimum, when endpoints fail the policy assessment checks for organization-defined infractions."
+ISE,CSCO-NC-000200,CAT II,SRG-NET-000335-NAC-001360,The Cisco ISE must generate a critical alert to be sent to the ISSO and SA (at a minimum) in the event of an audit processing failure.
+ISE,CSCO-NC-000210,CAT II,SRG-NET-000335-NAC-001370,"The Cisco ISE must provide an alert to, at a minimum, the SA and ISSO of all audit failure events where the detection and/or prevention function is unable to write events to either local storage or the centralized server."
+ISE,CSCO-NC-000220,CAT II,SRG-NET-000336-NAC-001390,The Cisco ISE must be configured with a secondary log server in case the primary log is unreachable.
+ISE,CSCO-NC-000230,CAT II,SRG-NET-000088-NAC-000440,The Cisco ISE must generate a critical alert to be sent to the ISSO and SA (at a minimum) if it is unable to communicate with the central event log.
+ISE,CSCO-NC-000240,CAT II,SRG-NET-000089-NAC-000450,The Cisco ISE must continue to queue traffic log records locally when communication with the central log server is lost and there is an audit archival failure.
+ISE,CSCO-NC-000250,CAT II,SRG-NET-000512-NAC-002310,The Cisco ISE must perform continuous detection and tracking of endpoint devices attached to the network.
+ISE,CSCO-NC-000260,CAT II,SRG-NET-000148-NAC-000620,The Cisco ISE must deny network connection for endpoints that cannot be authenticated using an approved method.
+ISE,CSCO-NC-000270,CAT II,SRG-NET-000343-NAC-001460,The Cisco ISE must authenticate all endpoint devices before establishing a connection and proceeding with posture assessment.
+ISE,CSCO-NC-000280,CAT II,SRG-NET-000343-NAC-001470,The Cisco ISE must be configured to dynamically apply restricted access of endpoints that are granted access using MAC Authentication Bypass (MAB).
+ISE,CSCO-NC-000290,CAT II,SRG-NET-000550-NAC-002470,"Before establishing a connection with a Network Time Protocol (NTP) server, the Cisco ISE must authenticate using a bidirectional, cryptographically based authentication method that uses a FIPS-validated Advanced Encryption Standard (AES) cipher block algorithm to authenticate with the NTP server."
+ISE,CSCO-NC-000300,CAT II,SRG-NET-000151-NAC-000630,"Before establishing a local, remote, and/or network connection with any endpoint device, the Cisco ISE must use a bidirectional authentication mechanism configured with a FIPS-validated Advanced Encryption Standard (AES) cipher block algorithm to authenticate with the endpoint device."
+ISE,CSCO-NC-000310,CAT I,SRG-NET-000512-NAC-002310,The Cisco ISE must enforce posture status assessment for posture required clients defined in the NAC System Security Plan (SSP).
+ISE,CSCO-NC-000320,CAT I,SRG-NET-000512-NAC-002310,The Cisco ISE must have a posture policy for posture required clients defined in the NAC System Security Plan (SSP).
