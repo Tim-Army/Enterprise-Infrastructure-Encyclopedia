@@ -1,0 +1,184 @@
+﻿SRG,Requirement,Severity,SRG ID,Requirement title
+NDM,SRG-APP-000001-NDM-000200,CAT II,SRG-APP-000001,The network device must limit the number of concurrent sessions to an organization-defined number for each administrator account and/or administrator account type.
+NDM,SRG-APP-000026-NDM-000208,CAT II,SRG-APP-000026,The network device must automatically audit account creation.
+NDM,SRG-APP-000027-NDM-000209,CAT II,SRG-APP-000027,The network device must automatically audit account modification.
+NDM,SRG-APP-000028-NDM-000210,CAT II,SRG-APP-000028,The network device must automatically audit account disabling actions.
+NDM,SRG-APP-000029-NDM-000211,CAT II,SRG-APP-000029,The network device must automatically audit account removal actions.
+NDM,SRG-APP-000033-NDM-000212,CAT I,SRG-APP-000033,The network device must be configured to assign appropriate user roles or access levels to authenticated users.
+NDM,SRG-APP-000038-NDM-000213,CAT II,SRG-APP-000038,The network device must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.
+NDM,SRG-APP-000065-NDM-000214,CAT II,SRG-APP-000065,"The network device must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes."
+NDM,SRG-APP-000068-NDM-000215,CAT II,SRG-APP-000068,The network device must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.
+NDM,SRG-APP-000069-NDM-000216,CAT II,SRG-APP-000069,The network device must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until the administrator acknowledges the usage conditions and takes explicit actions to log on for further access.
+NDM,SRG-APP-000080-NDM-000220,CAT II,SRG-APP-000080,The network device must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.
+NDM,SRG-APP-000095-NDM-000225,CAT II,SRG-APP-000095,The network device must produce audit log records containing sufficient information to establish what type of event occurred.
+NDM,SRG-APP-000096-NDM-000226,CAT II,SRG-APP-000096,The network device must produce audit records containing information to establish when (date and time) the events occurred.
+NDM,SRG-APP-000097-NDM-000227,CAT II,SRG-APP-000097,The network device must produce audit records containing information to establish where the events occurred.
+NDM,SRG-APP-000098-NDM-000228,CAT II,SRG-APP-000098,The network device must produce audit log records containing information to establish the source of events.
+NDM,SRG-APP-000099-NDM-000229,CAT II,SRG-APP-000099,The network device must produce audit records that contain information to establish the outcome of the event.
+NDM,SRG-APP-000100-NDM-000230,CAT II,SRG-APP-000100,The network device must generate audit records containing information that establishes the identity of any individual or process associated with the event.
+NDM,SRG-APP-000101-NDM-000231,CAT II,SRG-APP-000101,The network device must generate audit records containing the full-text recording of privileged commands.
+NDM,SRG-APP-000116-NDM-000234,CAT II,SRG-APP-000116,The network device must use internal system clocks to generate time stamps for audit records.
+NDM,SRG-APP-000119-NDM-000236,CAT II,SRG-APP-000119,The network device must protect audit information from unauthorized modification.
+NDM,SRG-APP-000120-NDM-000237,CAT II,SRG-APP-000120,The network device must protect audit information from unauthorized deletion.
+NDM,SRG-APP-000121-NDM-000238,CAT II,SRG-APP-000121,The network device must protect audit tools from unauthorized access.
+NDM,SRG-APP-000131-NDM-000243,CAT II,SRG-APP-000131,"The network device must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+NDM,SRG-APP-000142-NDM-000245,CAT I,SRG-APP-000142,"The network device must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services"
+NDM,SRG-APP-000148-NDM-000346,CAT II,SRG-APP-000148,The network device must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+NDM,SRG-APP-000149-NDM-000247,CAT I,SRG-APP-000149,The network device must be configured to use DoD PKI as multi-factor authentication (MFA) for interactive logins.
+NDM,SRG-APP-000153-NDM-000249,CAT II,SRG-APP-000153,The network device must be configured to authenticate each administrator prior to authorizing privileges based on assignment of group or role.
+NDM,SRG-APP-000156-NDM-000250,CAT II,SRG-APP-000156,The network device must implement replay-resistant authentication mechanisms for network access to privileged accounts.
+NDM,SRG-APP-000164-NDM-000252,CAT II,SRG-APP-000164,The network device must enforce a minimum 15-character password length.
+NDM,SRG-APP-000166-NDM-000254,CAT II,SRG-APP-000166,The network device must enforce password complexity by requiring that at least one uppercase character be used.
+NDM,SRG-APP-000167-NDM-000255,CAT II,SRG-APP-000167,The network device must enforce password complexity by requiring that at least one lowercase character be used.
+NDM,SRG-APP-000168-NDM-000256,CAT II,SRG-APP-000168,The network device must enforce password complexity by requiring that at least one numeric character be used.
+NDM,SRG-APP-000169-NDM-000257,CAT II,SRG-APP-000169,The network device must enforce password complexity by requiring that at least one special character be used.
+NDM,SRG-APP-000170-NDM-000329,CAT II,SRG-APP-000170,"The network device must require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+NDM,SRG-APP-000171-NDM-000258,CAT I,SRG-APP-000171,"The network device must be configured to store passwords using an approved salted key derivation function, preferably using a keyed hash for password-based authentication."
+NDM,SRG-APP-000172-NDM-000259,CAT I,SRG-APP-000172,The network device must transmit only encrypted representations of passwords.
+NDM,SRG-APP-000175-NDM-000262,CAT I,SRG-APP-000175,The network device must be configured to use DoD approved OCSP responders or CRLs to validate certificates used for PKI-based authentication.
+NDM,SRG-APP-000177-NDM-000263,CAT I,SRG-APP-000177,"The network device, for PKI-based authentication, must be configured to map validated certificates to unique user accounts."
+NDM,SRG-APP-000178-NDM-000264,CAT I,SRG-APP-000178,The network device must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.
+NDM,SRG-APP-000179-NDM-000265,CAT I,SRG-APP-000179,The network device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+NDM,SRG-APP-000190-NDM-000267,CAT I,SRG-APP-000190,"The network device must terminate all network connections associated with a device management session at the end of the session, or the session must be terminated after five minutes of inactivity except to fulfill documented and validated mission requirements."
+NDM,SRG-APP-000220-NDM-000268,CAT II,SRG-APP-000220,The network device must invalidate session identifiers upon administrator logout or other session termination.
+NDM,SRG-APP-000231-NDM-000271,CAT I,SRG-APP-000231,"The network device must only allow authorized administrators to view or change the device configuration, system files, and other files stored either in the device or on removable media (such as a flash drive)."
+NDM,SRG-APP-000296-NDM-000280,CAT II,SRG-APP-000296,The network device must be configured to provide a logout mechanism for administrator-initiated communication sessions.
+NDM,SRG-APP-000319-NDM-000283,CAT II,SRG-APP-000319,The network device must automatically audit account enabling actions.
+NDM,SRG-APP-000329-NDM-000287,CAT II,SRG-APP-000329,"If the network device uses role-based access control, the network device must enforce organization-defined role-based access control policies over defined subjects and objects."
+NDM,SRG-APP-000340-NDM-000288,CAT I,SRG-APP-000340,"The network device must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures."
+NDM,SRG-APP-000343-NDM-000289,CAT II,SRG-APP-000343,The network device must audit the execution of privileged functions.
+NDM,SRG-APP-000357-NDM-000293,CAT II,SRG-APP-000357,The network device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+NDM,SRG-APP-000360-NDM-000295,CAT II,SRG-APP-000360,The network device must generate an immediate real-time alert of all audit failure events requiring real-time alerts.
+NDM,SRG-APP-000374-NDM-000299,CAT II,SRG-APP-000374,The network device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+NDM,SRG-APP-000378-NDM-000302,CAT II,SRG-APP-000378,The network device must prohibit installation of software without explicit privileged status.
+NDM,SRG-APP-000380-NDM-000304,CAT II,SRG-APP-000380,The network device must enforce access restrictions associated with changes to device configuration.
+NDM,SRG-APP-000381-NDM-000305,CAT II,SRG-APP-000381,The network device must audit the enforcement actions used to restrict access associated with changes to the device.
+NDM,SRG-APP-000395-NDM-000310,CAT II,SRG-APP-000395,The network device must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+NDM,SRG-APP-000395-NDM-000347,CAT II,SRG-APP-000395,The network device must authenticate Network Time Protocol sources using authentication that is cryptographically based.
+NDM,SRG-APP-000408-NDM-000314,CAT II,SRG-APP-000408,Network devices performing maintenance functions must restrict use of these functions to authorized personnel only.
+NDM,SRG-APP-000411-NDM-000330,CAT I,SRG-APP-000411,The network devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+NDM,SRG-APP-000412-NDM-000331,CAT I,SRG-APP-000412,The network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions
+NDM,SRG-APP-000435-NDM-000315,CAT II,SRG-APP-000435,The network device must be configured to protect against known types of denial-of-service (DoS) attacks by employing organization-defined security safeguards.
+NDM,SRG-APP-000457-NDM-000352,CAT II,SRG-APP-000457,"The network device must install security-relevant firmware updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+NDM,SRG-APP-000503-NDM-000320,CAT II,SRG-APP-000503,The network device must generate audit records when successful/unsuccessful logon attempts occur.
+NDM,SRG-APP-000504-NDM-000321,CAT II,SRG-APP-000504,The network device must generate audit records for privileged activities or other system-level access.
+NDM,SRG-APP-000505-NDM-000322,CAT II,SRG-APP-000505,The network device must generate audit records showing starting and ending time for administrator access to the system.
+NDM,SRG-APP-000515-NDM-000325,CAT II,SRG-APP-000515,The network device must off-load audit records onto a different system or media than the system being audited.
+NDM,SRG-APP-000516-NDM-000317,CAT II,SRG-APP-000516,"The network device must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs."
+NDM,SRG-APP-000516-NDM-000335,CAT II,SRG-APP-000516,The network device must enforce access restrictions associated with changes to the system components.
+NDM,SRG-APP-000516-NDM-000336,CAT I,SRG-APP-000516,"The network device must be configured to use at least one authentication server for the purpose of authenticating users prior to granting administrative access. For boundary devices, two authentication servers are required."
+NDM,SRG-APP-000516-NDM-000340,CAT II,SRG-APP-000516,The network device must be configured to conduct backups of system level information contained in the information system when changes occur.
+NDM,SRG-APP-000516-NDM-000344,CAT II,SRG-APP-000516,The network device must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+NDM,SRG-APP-000516-NDM-000350,CAT I,SRG-APP-000516,"The network device must be configured to send log data to at least one central log server for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO). For boundary devices, two log servers are required."
+NDM,SRG-APP-000795-NDM-000130,CAT II,SRG-APP-000795,"The network device must be configured to alert organization-defined personnel or roles upon detection of unauthorized access, modification, or deletion of audit information."
+NDM,SRG-APP-000820-NDM-000170,CAT II,SRG-APP-000820,The network device must be configured to implement multifactor authentication for local; network; and/or remote access to privileged accounts; and/or nonprivileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+NDM,SRG-APP-000825-NDM-000180,CAT II,SRG-APP-000825,The network device must be configured to implement multifactor authentication for local; network; and/or remote access to privileged accounts; and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.
+NDM,SRG-APP-000845-NDM-000220,CAT II,SRG-APP-000845,"The network device must be configured to verify, when users create or update passwords, the passwords are not found on the list of commonly used, expected, or compromised passwords in IA-5 (1) (a) for password-based authentication."
+NDM,SRG-APP-000860-NDM-000250,CAT II,SRG-APP-000860,"The network device must be configured to allow user selection of long passwords and passphrases, including spaces and all printable characters for password-based authentication."
+NDM,SRG-APP-000875-NDM-000280,CAT II,SRG-APP-000875,The network device must be configured to implement certificate revocation checking to support path discovery and validation for public key-based authentication.
+NDM,SRG-APP-000880-NDM-000290,CAT II,SRG-APP-000880,The network device must be configured to protect nonlocal maintenance sessions by separating the maintenance session from other network sessions with the system by logically separated communications paths.
+NDM,SRG-APP-000910-NDM-000300,CAT II,SRG-APP-000910,The network device must be configured to include only approved trust anchors in trust stores or certificate stores managed by the organization.
+NDM,SRG-APP-000920-NDM-000320,CAT II,SRG-APP-000920,The network device must be configured to synchronize system clocks within and between systems or system components.
+NDM,SRG-APP-000925-NDM-000330,CAT II,SRG-APP-000925,The network device must be configured to compare the internal system clocks on an organization-defined frequency with organization-defined authoritative time source.
+NDM,SRG-APP-001035-NDM-000340,CAT I,SRG-APP-001035,The network device hardware and software must be a version supported by the vendor.
+ASD,APSC-DV-000010,CAT II,SRG-APP-000001,The application must provide a capability to limit the number of logon sessions per user.
+ASD,APSC-DV-000070,CAT II,SRG-APP-000295,The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.
+ASD,APSC-DV-000080,CAT II,SRG-APP-000295,The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.
+ASD,APSC-DV-000090,CAT II,SRG-APP-000296,Applications requiring user access authentication must provide a logoff capability for user initiated communication session.
+ASD,APSC-DV-000290,CAT II,SRG-APP-000317,Shared/group account credentials must be terminated when members leave the group.
+ASD,APSC-DV-000300,CAT II,SRG-APP-000024,The application must automatically remove or disable temporary user accounts 72 hours after account creation.
+ASD,APSC-DV-000320,CAT III,SRG-APP-000025,The application must automatically disable accounts after a 35 day period of account inactivity.
+ASD,APSC-DV-000330,CAT II,SRG-APP-000025,"Unnecessary application accounts must be disabled, or deleted."
+ASD,APSC-DV-000340,CAT II,SRG-APP-000026,The application must automatically audit account creation.
+ASD,APSC-DV-000350,CAT II,SRG-APP-000027,The application must automatically audit account modification.
+ASD,APSC-DV-000360,CAT II,SRG-APP-000028,The application must automatically audit account disabling actions.
+ASD,APSC-DV-000370,CAT II,SRG-APP-000029,The application must automatically audit account removal actions.
+ASD,APSC-DV-000380,CAT III,SRG-APP-000291,The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.
+ASD,APSC-DV-000390,CAT III,SRG-APP-000292,The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified.
+ASD,APSC-DV-000400,CAT III,SRG-APP-000293,The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions.
+ASD,APSC-DV-000410,CAT III,SRG-APP-000294,The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions.
+ASD,APSC-DV-000420,CAT II,SRG-APP-000319,The application must automatically audit account enabling actions.
+ASD,APSC-DV-000430,CAT III,SRG-APP-000320,The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.
+ASD,APSC-DV-000460,CAT I,SRG-APP-000033,The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+ASD,APSC-DV-000470,CAT II,SRG-APP-000328,The application must enforce organization-defined discretionary access control policies over defined subjects and objects.
+ASD,APSC-DV-000490,CAT II,SRG-APP-000039,The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.
+ASD,APSC-DV-000500,CAT II,SRG-APP-000340,"The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures."
+ASD,APSC-DV-000520,CAT II,SRG-APP-000343,The application must audit the execution of privileged functions.
+ASD,APSC-DV-000530,CAT I,SRG-APP-000065,The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.
+ASD,APSC-DV-000550,CAT III,SRG-APP-000068,The application must display the Standard Mandatory DoW Notice and Consent Banner before granting access to the application.
+ASD,APSC-DV-000560,CAT III,SRG-APP-000069,The application must retain the Standard Mandatory DoW Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.
+ASD,APSC-DV-000580,CAT III,SRG-APP-000075,The application must display the time and date of the users last successful logon.
+ASD,APSC-DV-000590,CAT II,SRG-APP-000080,The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.
+ASD,APSC-DV-000650,CAT II,SRG-APP-000089,The application must not write sensitive data into the application logs.
+ASD,APSC-DV-000690,CAT II,SRG-APP-000089,The application must provide audit record generation capability for connecting system IP addresses.
+ASD,APSC-DV-000830,CAT II,SRG-APP-000503,The application must generate audit records when successful/unsuccessful logon attempts occur.
+ASD,APSC-DV-000840,CAT II,SRG-APP-000504,The application must generate audit records for privileged activities or other system-level access.
+ASD,APSC-DV-000850,CAT II,SRG-APP-000505,The application must generate audit records showing starting and ending time for user access to the system.
+ASD,APSC-DV-000860,CAT II,SRG-APP-000507,The application must generate audit records when successful/unsuccessful accesses to objects occur.
+ASD,APSC-DV-000880,CAT II,SRG-APP-000509,"The application must generate audit records for all account creations, modifications, disabling, and termination events."
+ASD,APSC-DV-000950,CAT II,SRG-APP-000095,The application must log destination IP addresses.
+ASD,APSC-DV-000960,CAT II,SRG-APP-000095,The application must log user actions involving access to data.
+ASD,APSC-DV-000970,CAT II,SRG-APP-000095,The application must log user actions involving changes to data.
+ASD,APSC-DV-001030,CAT II,SRG-APP-000101,The application must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.
+ASD,APSC-DV-001070,CAT II,SRG-APP-000358,The application must off-load audit records onto a different system or media than the system being audited.
+ASD,APSC-DV-001080,CAT II,SRG-APP-000515,The application must be configured to write application logs to a centralized log repository.
+ASD,APSC-DV-001090,CAT II,SRG-APP-000359,The application must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity.
+ASD,APSC-DV-001110,CAT II,SRG-APP-000108,The application must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.
+ASD,APSC-DV-001140,CAT II,SRG-APP-000115,The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria.
+ASD,APSC-DV-001180,CAT II,SRG-APP-000366,The application must provide a report generation capability that supports on-demand audit review and analysis.
+ASD,APSC-DV-001250,CAT II,SRG-APP-000116,The applications must use internal system clocks to generate time stamps for audit records.
+ASD,APSC-DV-001260,CAT II,SRG-APP-000374,The application must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+ASD,APSC-DV-001280,CAT II,SRG-APP-000118,The application must protect audit information from any type of unauthorized read access.
+ASD,APSC-DV-001290,CAT II,SRG-APP-000119,The application must protect audit information from unauthorized modification.
+ASD,APSC-DV-001300,CAT II,SRG-APP-000120,The application must protect audit information from unauthorized deletion.
+ASD,APSC-DV-001340,CAT II,SRG-APP-000125,The application must back up audit records at least every seven days onto a different system or system component than the system or component being audited.
+ASD,APSC-DV-001410,CAT II,SRG-APP-000380,The application must enforce access restrictions associated with changes to application configuration.
+ASD,APSC-DV-001420,CAT II,SRG-APP-000381,The application must audit who makes configuration changes to the application.
+ASD,APSC-DV-001430,CAT II,SRG-APP-000131,"The application must have the capability to prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+ASD,APSC-DV-001500,CAT II,SRG-APP-000141,The application must be configured to disable non-essential capabilities.
+ASD,APSC-DV-001510,CAT II,SRG-APP-000142,"The application must be configured to use only functions, ports, and protocols permitted to it in the PPSM CAL."
+ASD,APSC-DV-001520,CAT II,SRG-APP-000389,The application must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.
+ASD,APSC-DV-001540,CAT I,SRG-APP-000148,The application must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+ASD,APSC-DV-001550,CAT II,SRG-APP-000149,The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.
+ASD,APSC-DV-001560,CAT II,SRG-APP-000391,The application must accept Personal Identity Verification (PIV) credentials.
+ASD,APSC-DV-001570,CAT II,SRG-APP-000392,The application must electronically verify Personal Identity Verification (PIV) credentials.
+ASD,APSC-DV-001580,CAT II,SRG-APP-000150,"The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts."
+ASD,APSC-DV-001610,CAT II,SRG-APP-000153,The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.
+ASD,APSC-DV-001680,CAT I,SRG-APP-000164,The application must enforce a minimum 15-character password length.
+ASD,APSC-DV-001690,CAT II,SRG-APP-000166,The application must enforce password complexity by requiring that at least one uppercase character be used.
+ASD,APSC-DV-001700,CAT II,SRG-APP-000167,The application must enforce password complexity by requiring that at least one lowercase character be used.
+ASD,APSC-DV-001710,CAT II,SRG-APP-000168,The application must enforce password complexity by requiring that at least one numeric character be used.
+ASD,APSC-DV-001720,CAT II,SRG-APP-000169,The application must enforce password complexity by requiring that at least one special character be used.
+ASD,APSC-DV-001730,CAT II,SRG-APP-000170,The application must require the change of at least eight of the total number of characters when passwords are changed.
+ASD,APSC-DV-001740,CAT I,SRG-APP-000171,The application must only store cryptographic representations of passwords.
+ASD,APSC-DV-001750,CAT I,SRG-APP-000172,The application must transmit only cryptographically-protected passwords.
+ASD,APSC-DV-001760,CAT II,SRG-APP-000173,The application must enforce 24 hours/1 day as the minimum password lifetime.
+ASD,APSC-DV-001770,CAT II,SRG-APP-000174,The application must enforce a 180-day maximum password lifetime restriction.
+ASD,APSC-DV-001780,CAT II,SRG-APP-000165,The application must prohibit password reuse for a minimum of five generations.
+ASD,APSC-DV-001800,CAT II,SRG-APP-000400,The application must terminate existing user sessions upon account deletion.
+ASD,APSC-DV-001810,CAT I,SRG-APP-000175,"The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."
+ASD,APSC-DV-001830,CAT II,SRG-APP-000177,The application must map the authenticated identity to the individual user or group account for PKI-based authentication.
+ASD,APSC-DV-001840,CAT II,SRG-APP-000401,"The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network."
+ASD,APSC-DV-001850,CAT I,SRG-APP-000178,The application must not display passwords/PINs as clear text.
+ASD,APSC-DV-001860,CAT I,SRG-APP-000179,"The application must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module."
+ASD,APSC-DV-001870,CAT II,SRG-APP-000180,The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users).
+ASD,APSC-DV-001940,CAT II,SRG-APP-000411,Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications.
+ASD,APSC-DV-001950,CAT II,SRG-APP-000412,Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications.
+ASD,APSC-DV-002000,CAT II,SRG-APP-000190,The application must terminate all network connections associated with a communications session at the end of the session.
+ASD,APSC-DV-002040,CAT II,SRG-APP-000514,The application must utilize FIPS-validated cryptographic modules when protecting unclassified information that requires cryptographic protection.
+ASD,APSC-DV-002300,CAT II,SRG-APP-000427,The application must only allow the use of DoW-approved certificate authorities for verification of the establishment of protected sessions.
+ASD,APSC-DV-002330,CAT II,SRG-APP-000231,The application must protect the confidentiality and integrity of stored information when required by DoW policy or the information owner.
+ASD,APSC-DV-002340,CAT I,SRG-APP-000428,The application must implement approved cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest on organization-defined information system components.
+ASD,APSC-DV-002350,CAT I,SRG-APP-000429,The application must use appropriate cryptography in order to protect stored DoW information when required by the information owner or DoW policy.
+ASD,APSC-DV-002380,CAT II,SRG-APP-000243,Applications must prevent unauthorized and unintended information transfer via shared system resources.
+ASD,APSC-DV-002400,CAT II,SRG-APP-000246,The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems.
+ASD,APSC-DV-002440,CAT I,SRG-APP-000439,The application must protect the confidentiality and integrity of transmitted information.
+ASD,APSC-DV-002630,CAT II,SRG-APP-000456,Security-relevant software updates and patches must be kept up to date.
+ASD,APSC-DV-002770,CAT II,SRG-APP-000473,The application must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.
+ASD,APSC-DV-002900,CAT II,SRG-APP-000516,The ISSO must ensure application audit trails are retained for at least 30 months (12 months active + 18 months cold storage) for applications without SAMI data and five years for applications including SAMI data.
+ASD,APSC-DV-002970,CAT II,SRG-APP-000516,"The ISSO must ensure if a DoW STIG or NSA guide is not available, a third-party product will be configured by following available guidance."
+ASD,APSC-DV-003070,CAT II,SRG-APP-000516,Data backup must be performed at required intervals in accordance with DoW policy.
+ASD,APSC-DV-003240,CAT I,SRG-APP-000516,All products must be supported by the vendor or the development team.
+ASD,APSC-DV-003270,CAT II,SRG-APP-000516,Unnecessary built-in application accounts must be disabled.
+ASD,APSC-DV-003280,CAT I,SRG-APP-000516,Default passwords must be changed.
+ASD,APSC-DV-003330,CAT II,SRG-APP-000516,The system must alert an administrator when low resource conditions are encountered.

@@ -7,6 +7,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.
 - **Application delivery controller (ADC)** — a reverse-proxy appliance that load balances application traffic and adds SSL offloading, a WAF, and global server load balancing.
+- **ASD STIG (Application Security and Development)** — DISA's STIG for applications in general; its rules have IDs of the form APSC-DV-nnnnnn, and most are developer obligations rather than configuration settings.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
 - **CAPWAP (Control and Provisioning of Wireless Access Points)** — the protocol between a FortiAP and its wireless controller; its control channel is always DTLS-encrypted, and its data channel can be clear text, DTLS, or IPsec.
@@ -29,6 +30,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
+- **Glass breaking mode** — FortiPAM's emergency mode that temporarily gives an authorized administrator access to all secrets, with forced session recording and optional email alerts.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Identity-based encryption (IBE)** — the FortiMail feature that encrypts email for external recipients, who read it on a FortiMail web portal after registering or authenticating.
 - **IDPS SRG** — the DISA Intrusion Detection and Prevention Systems SRG; its malicious-code detection, alerting, and update requirements apply to FortiSandbox's analysis features.

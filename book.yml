@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 23
+    chapter_count: 24
     build_eligible: true
     chapters:
       - id: 01
@@ -5999,6 +5999,9 @@ volumes:
       - id: 23
         title: "Chapter 23: FortiAuthenticator Feature, Version, and SRG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/23-fortiauthenticator-feature-version-and-srg-map.md
+      - id: 24
+        title: "Chapter 24: FortiPAM Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/24-fortipam-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

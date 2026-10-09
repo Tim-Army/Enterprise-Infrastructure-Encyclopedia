@@ -5083,7 +5083,16 @@
     "nonblocking",
     "softclients",
     "TEAP",
-    "HOTP"
+    "HOTP",
+    "APSC",
+    "Moba",
+    "Radmin",
+    "SAMI",
+    "SSMS",
+    "Xshell",
+    "multiprocess",
+    "subfolders",
+    "sysinfo"
   ],
   "ignorePaths": [
     "node_modules/**",
