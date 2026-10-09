@@ -93,6 +93,9 @@ finally the program:
 - **Chapter 26** maps every FortiSIEM feature to its release, the Central Log
   Server, NDM, or GPOS SRG requirement it meets, and the web UI pane or command
   that meets it.
+- **Chapter 27** maps every FortiClient and FortiClient EMS feature to its
+  release, the UEM Server, UEM Agent, or VPN SRG requirement it meets, and the
+  EMS pane, FortiClient XML setting, or command that meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -128,10 +131,11 @@ except that this volume has no hands-on labs (see
 24. [FortiPAM Feature, Version, and SRG Map](chapters/24-fortipam-feature-version-and-srg-map.md) — 366 FortiPAM features (85 core platform features and every feature in the 1.0.0 to 7.0.0 release notes) with the release that introduced each, the NDM SRG requirement or administrator-configurable Application Security and Development STIG rule it maps to, and the web UI pane or command that meets it.
 25. [FortiNAC Feature, Version, and SRG Map](chapters/25-fortinac-feature-version-and-srg-map.md) — 172 FortiNAC-F features (53 core platform features and every feature in the 7.2.0 to 7.6.7 release notes) with the release that introduced each, the NDM or AAA Services SRG requirement or Cisco ISE NAC STIG pattern rule it maps to, and the FortiNAC CLI command or web UI pane that meets it.
 26. [FortiSIEM Feature, Version, and SRG Map](chapters/26-fortisiem-feature-version-and-srg-map.md) — 153 FortiSIEM features (63 core platform features and every feature in the 7.0.0 to 7.6.0 release notes) with the release that introduced each, the Central Log Server, NDM, or GPOS SRG requirement it maps to, and the web UI pane or command that meets it.
+27. [FortiClient and EMS Feature, Version, and SRG Map](chapters/27-forticlient-and-ems-feature-version-and-srg-map.md) — 185 FortiClient and FortiClient EMS features (63 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the FortiClient or EMS release that introduced each, the UEM Server, UEM Agent, or VPN SRG requirement it maps to, and the EMS GUI pane, FortiClient XML setting, or emscli command that meets it.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty-six chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty-seven chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

@@ -1,0 +1,125 @@
+﻿SRG,Requirement,Severity,Requirement title
+UEM-S,SRG-APP-000003-UEM-000003,CAT II,The UEM server must initiate a session lock after a 15-minute period of inactivity.
+UEM-S,SRG-APP-000014-UEM-000009,CAT II,"The UEM server must use TLS 1.2, or higher, to protect the confidentiality of sensitive data during electronic dissemination using remote access."
+UEM-S,SRG-APP-000023-UEM-000012,CAT II,The UEM server must provide automated mechanisms for supporting account management functions.
+UEM-S,SRG-APP-000025-UEM-000014,CAT II,The UEM server must automatically disable accounts after a 35-day period of account inactivity.
+UEM-S,SRG-APP-000026-UEM-000015,CAT II,The UEM server must automatically audit account creation.
+UEM-S,SRG-APP-000027-UEM-000016,CAT II,The UEM server must automatically audit account modification.
+UEM-S,SRG-APP-000065-UEM-000036,CAT II,The UEM server must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.
+UEM-S,SRG-APP-000068-UEM-000037,CAT II,The UEM server must display the Standard Mandatory DoW Notice and Consent Banner before granting access to the application.
+UEM-S,SRG-APP-000069-UEM-000038,CAT III,The UEM server must retain the access banner until the user acknowledges acceptance of the access conditions.
+UEM-S,SRG-APP-000089-UEM-000049,CAT II,The UEM server must provide audit record generation capability for DoW-defined auditable events within all application components.
+UEM-S,SRG-APP-000089-UEM-000050,CAT II,The UEM server must be configured to provide audit records in a manner suitable for the authorized administrators to interpret the information.
+UEM-S,SRG-APP-000090-UEM-000051,CAT II,The UEM server must be configured to allow only specific administrator roles to select which auditable events are to be audited.
+UEM-S,SRG-APP-000108-UEM-000062,CAT II,The UEM SRG must alert the information system security officer (ISSO) and system administrator (SA) (at a minimum) in the event of an audit processing failure.
+UEM-S,SRG-APP-000116-UEM-000067,CAT II,The UEM server must use host operating system clocks to generate time stamps for audit records.
+UEM-S,SRG-APP-000118-UEM-000068,CAT II,The UEM server must protect audit information from any type of unauthorized read access.
+UEM-S,SRG-APP-000120-UEM-000070,CAT II,The UEM server must protect audit information from unauthorized deletion.
+UEM-S,SRG-APP-000125-UEM-000074,CAT II,The UEM server must back up audit records at least every seven days onto a log management server.
+UEM-S,SRG-APP-000131-UEM-000076,CAT II,"The UEM server must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization."
+UEM-S,SRG-APP-000133-UEM-000078,CAT II,The UEM server must limit privileges to change the software resident within software libraries.
+UEM-S,SRG-APP-000141-UEM-000079,CAT II,The UEM server must be configured to disable nonessential capabilities.
+UEM-S,SRG-APP-000142-UEM-000080,CAT II,"The firewall protecting the UEM server platform must be configured so only DoW-approved ports, protocols, and services are enabled. (Refer to the DoW Ports, Protocols, Services Management [PPSM] Category Assurance Levels [CAL] list for DoW-approved ports, protocols, and services)."
+UEM-S,SRG-APP-000148-UEM-000082,CAT II,The UEM server must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+UEM-S,SRG-APP-000149-UEM-000083,CAT II,The UEM server must be configured to use a DoW Central Directory Service to provide multifactor authentication for network access to privileged and nonprivileged accounts.
+UEM-S,SRG-APP-000151-UEM-000085,CAT II,All UEM server local accounts created during application installation and configuration must be removed. Note: In this context local accounts refers to user and or administrator accounts on the server that use user name and password for user access and authentication.
+UEM-S,SRG-APP-000154-UEM-000088,CAT II,The UEM server must be configured to use DoW PKI for multifactor authentication. This requirement is included in SRG-APP-000149.
+UEM-S,SRG-APP-000164-UEM-000094,CAT II,The UEM server must enforce a minimum 15-character password length.
+UEM-S,SRG-APP-000165-UEM-000095,CAT II,The UEM server must prohibit password reuse for a minimum of five generations.
+UEM-S,SRG-APP-000166-UEM-000096,CAT II,The UEM server must enforce password complexity by requiring that at least one uppercase character be used.
+UEM-S,SRG-APP-000170-UEM-000100,CAT II,UEM server must require the change of at least 50 percent of the previous password's characters.
+UEM-S,SRG-APP-000171-UEM-000101,CAT II,"For UEM server using password authentication, the application must store only cryptographic representations of passwords."
+UEM-S,SRG-APP-000174-UEM-000104,CAT II,The UEM server must enforce a 180-day maximum password lifetime restriction.
+UEM-S,SRG-APP-000177-UEM-000108,CAT II,The UEM server must map the authenticated identity to the individual user or group account for PKI-based authentication.
+UEM-S,SRG-APP-000179-UEM-000110,CAT I,"The UEM server must use FIPS-validated SHA-2 or higher hash function to protect the integrity of keyed-hash message authentication code (HMAC), Key Derivation Functions (KDFs), Random Bit Generation, and hash-only applications."
+UEM-S,SRG-APP-000191-UEM-000117,CAT II,"The UEM server must be configured to provide a trusted communication channel between itself and authorized IT entities using [selection: -IPsec, -SSH, -mutually authenticated TLS, -mutually authenticated DTLS, -HTTPS]."
+UEM-S,SRG-APP-000191-UEM-000118,CAT II,"The UEM server must be configured to invoke either host-OS functionality or server functionality to provide a trusted communication channel between itself and remote administrators that provides assured identification of its endpoints and protection of the communicated data from modification and disclosure using [selection: -IPsec, -SSH, -TLS, -HTTPS]."
+UEM-S,SRG-APP-000191-UEM-000119,CAT II,"The UEM server must be configured to invoke either host-OS functionality or server functionality to provide a trusted communication channel between itself and managed devices that provides assured identification of its endpoints and protection of the communicated data from modification and disclosure using [selection: -TLS, -HTTPS]."
+UEM-S,SRG-APP-000225-UEM-000136,CAT II,"The UEM server must fail to a secure state if system initialization fails, shutdown fails, or aborts fail."
+UEM-S,SRG-APP-000226-UEM-000137,CAT II,"In the event of a system failure, the UEM server must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes."
+UEM-S,SRG-APP-000291-UEM-000165,CAT II,The UEM server must notify system administrators (SAs) and the information system security officer (ISSO) when accounts are created.
+UEM-S,SRG-APP-000295-UEM-000169,CAT II,The UEM server must automatically terminate a user session after an organization-defined period of user inactivity.
+UEM-S,SRG-APP-000329-UEM-000202,CAT II,The UEM server must be configured to have at least one user in defined administrator roles.
+UEM-S,SRG-APP-000343-UEM-000216,CAT II,The UEM server must audit the execution of privileged functions.
+UEM-S,SRG-APP-000345-UEM-000218,CAT II,The UEM server must automatically lock the account until the locked account is released by an administrator when three unsuccessful login attempts in 15 minutes are exceeded.
+UEM-S,SRG-APP-000358-UEM-000228,CAT II,"The UEM server must be configured to transfer UEM server logs to another server for storage, analysis, and reporting. Note: UEM server logs include logs of UEM events and logs transferred to the UEM server by UEM agents of managed devices."
+UEM-S,SRG-APP-000374-UEM-000244,CAT II,The UEM server must be configured to record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+UEM-S,SRG-APP-000378-UEM-000248,CAT II,The UEM server must prohibit user installation of software by an administrator without the appropriate assigned permission for software installation.
+UEM-S,SRG-APP-000378-UEM-000249,CAT II,The UEM server must be configured to only allow enrolled devices that are compliant with UEM policies and assigned to a user in the application access group to download applications.
+UEM-S,SRG-APP-000380-UEM-000251,CAT II,The UEM server must enforce access restrictions associated with changes to the server configuration.
+UEM-S,SRG-APP-000383-UEM-000254,CAT II,"The UEM server must disable organization-defined functions, ports, protocols, and services (within the application) deemed unnecessary and/or nonsecure."
+UEM-S,SRG-APP-000395-UEM-000266,CAT I,"Before establishing a connection to any endpoint device being managed, the UEM server must establish a trusted path between the server and endpoint that provides assured identification of the end point using a bidirectional authentication mechanism configured with a FIPS-validated Advanced Encryption Standard (AES) cipher block algorithm to authenticate with the device."
+UEM-S,SRG-APP-000412-UEM-000283,CAT I,The UEM server must configure web management tools with FIPS-validated Advanced Encryption Standard (AES) cipher block algorithm to protect the confidentiality of maintenance and diagnostic communications for nonlocal maintenance sessions.
+UEM-S,SRG-APP-000427-UEM-000298,CAT II,The UEM server must only allow the use of DoW PKI established certificate authorities for verification of the establishment of protected sessions.
+UEM-S,SRG-APP-000427-UEM-000299,CAT II,The UEM server must be configured to use X.509v3 certificates for code signing for system software updates.
+UEM-S,SRG-APP-000427-UEM-000300,CAT II,The UEM server must be configured to use X.509v3 certificates for code signing for integrity verification.
+UEM-S,SRG-APP-000427-UEM-000500,CAT I,The UEM server must provide digitally signed policies and policy updates to the UEM agent.
+UEM-S,SRG-APP-000427-UEM-000501,CAT I,"The UEM server must sign policies and policy updates using a private key associated with [selection: an X509 certificate, a public key provisioned to the agent trusted by the agent] for policy verification."
+UEM-S,SRG-APP-000427-UEM-000502,CAT I,"The UEM server, for each unique policy managed, must validate the policy is appropriate for an agent using [selection: a private key associated with an X509 certificate representing the agent, a token issued by the agent] associated with a policy signing key uniquely associated with the policy."
+UEM-S,SRG-APP-000439-UEM-000313,CAT I,The UEM server must connect to [assignment: [list of applications]] and managed mobile devices with an authenticated and secure (encrypted) connection to protect the confidentiality and integrity of transmitted information.
+UEM-S,SRG-APP-000456-UEM-000330,CAT I,"The UEM server must install security-relevant software updates within 30 days unless the time period is directed by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs)."
+UEM-S,SRG-APP-000472-UEM-000347,CAT II,The UEM server must be configured with the periodicity of the following commands to the agent of six hours or less: - query connectivity status; - query the current version of the managed device firmware/software; - query the current version of installed mobile applications; - read audit logs kept by the managed device.
+UEM-S,SRG-APP-000474-UEM-000349,CAT II,The UEM server must alert the system administrator (SA) when anomalies in the operation of security functions are discovered.
+UEM-S,SRG-APP-000479-UEM-000354,CAT II,The UEM server must be configured to verify software updates to the server using a digital signature mechanism prior to installing those updates.
+UEM-S,SRG-APP-000503-UEM-000378,CAT II,The UEM server must generate audit records when successful/unsuccessful logon attempts occur.
+UEM-S,SRG-APP-000514-UEM-000389,CAT I,The UEM server must use a FIPS-validated cryptographic module to generate cryptographic hashes.
+UEM-S,SRG-APP-000515-UEM-000390,CAT II,"The UEM server must, at a minimum, off-load audit logs of interconnected systems in real time and off-load standalone systems weekly."
+UEM-S,SRG-APP-000516-UEM-000391,CAT II,"The UEM server must be configured in accordance with the security configuration settings based on DoW security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs."
+UEM-S,SRG-APP-000516-UEM-000392,CAT II,The UEM server must be configured to allow authorized administrators to read all audit data from audit records on the server.
+UEM-S,SRG-APP-000555-UEM-000393,CAT I,The UEM server must be configured to implement FIPS 140-3 mode for all server and agent encryption.
+UEM-S,SRG-APP-000580-UEM-000398,CAT II,"The UEM server must authenticate endpoint devices (servers) before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based."
+UEM-S,SRG-APP-000605-UEM-000401,CAT II,The UEM server must validate certificates used for Transport Layer Security (TLS) functions by performing RFC 5280-compliant certification path validation.
+UEM-S,SRG-APP-001035-UEM-000408,CAT I,The UEM server must be a version supported by the vendor.
+UEM-A,SRG-APP-000089-UEM-100002,CAT II,The UEM Agent must provide an alert via the trusted channel to the UEM Server in the event of any of the following audit events: -successful application of policies to a mobile device -receiving or generating periodic reachability events -change in enrollment state -failure to install an application from the UEM Server -failure to update an application from the UEM Server.
+UEM-A,SRG-APP-000089-UEM-100004,CAT II,The UEM Agent must generate a UEM Agent audit record of the following auditable events:-startup and shutdown of the UEM Agent-UEM policy updated-any modification commanded by the UEM Server.
+UEM-A,SRG-APP-000089-UEM-100012,CAT II,The UEM Agent must be configured to enable the following function: read audit logs of the managed endpoint device.
+UEM-A,SRG-APP-000097-UEM-100005,CAT II,The UEM Agent must record within each UEM Agent audit record the following information: -date and time of the event -type of event -subject identity -(if relevant) the outcome (success or failure) of the event.
+UEM-A,SRG-APP-000175-UEM-100008,CAT II,The UEM Agent must not install policies if the policy-signing certificate is deemed invalid.
+UEM-A,SRG-APP-000176-UEM-100001,CAT II,The UEM Agent must use managed endpoint device key storage for all persistent secret and private keys.
+UEM-A,SRG-APP-000358-UEM-100003,CAT II,The UEM Agent must queue alerts if the trusted channel is not available.
+UEM-A,SRG-APP-000358-UEM-100013,CAT II,The UEM Agent must be configured to enable the following function: transfer managed endpoint device audit logs read by the UEM Agent to an UEM server or third-party audit management server.
+UEM-A,SRG-APP-000427-UEM-100007,CAT II,The UEM Agent must only accept policies and policy updates that are digitally signed by a certificate that has been authorized for policy updates by the UEM Server.
+UEM-A,SRG-APP-000427-UEM-100009,CAT II,The UEM Agent must perform the following functions: Import the certificates to be used for authentication of UEM Agent communications.
+UEM-A,SRG-APP-000516-UEM-100006,CAT II,The UEM Agent must record the reference identifier of the UEM Server during the enrollment process.
+UEM-A,SRG-APP-000516-UEM-100010,CAT II,The UEM Agent must perform the following functions: -enroll in management -configure whether users can unenroll from management -configure periodicity of reachability events.
+UEM-A,SRG-APP-000516-UEM-100011,CAT II,The UEM Agent must be configured to perform one of the following actions upon an attempt to unenroll the mobile device from management: -prevent the unenrollment from occurring -wipe the device to factory default settings -wipe the work profile with all associated applications and data.
+UEM-A,SRG-APP-000555-UEM-100014,CAT I,All UEM Agent cryptography supporting DoW functionality must be FIPS 140-3 validated.
+VPN,SRG-NET-000019-VPN-000040,CAT II,The VPN Gateway must ensure inbound and outbound traffic is configured with a security policy in compliance with information flow control policies.
+VPN,SRG-NET-000019-VPN-002435,CAT II,The TLS VPN must be configured to limit authenticated client sessions to initial session source IP.
+VPN,SRG-NET-000041-VPN-000110,CAT II,The Remote Access VPN Gateway and/or client must display the Standard Mandatory DOD Notice and Consent Banner before granting remote access to the network.
+VPN,SRG-NET-000042-VPN-000120,CAT II,The Remote Access VPN Gateway and/or client must enforce a policy to retain the Standard Mandatory DOD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.
+VPN,SRG-NET-000062-VPN-000200,CAT I,"The TLS VPN Gateway must use TLS 1.2, at a minimum, to protect the confidentiality of sensitive data during transmission for remote access connections."
+VPN,SRG-NET-000063-VPN-000220,CAT II,The VPN Gateway must be configured to use IPsec with SHA-2 at 384 bits or greater for hashing to protect the integrity of remote access sessions.
+VPN,SRG-NET-000074-VPN-000250,CAT I,The IPSec VPN must be configured to use a Diffie-Hellman (DH) Group of 16 or greater for Internet Key Exchange (IKE) Phase 1.
+VPN,SRG-NET-000132-VPN-000450,CAT II,"The VPN Gateway must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments."
+VPN,SRG-NET-000132-VPN-000460,CAT II,The IPsec VPN Gateway must use IKEv2 for IPsec VPN security associations.
+VPN,SRG-NET-000138-VPN-000490,CAT II,The VPN Gateway must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+VPN,SRG-NET-000140-VPN-000500,CAT I,"The VPN Gateway must use multifactor authentication (e.g., DoD PKI) for network access to non-privileged accounts."
+VPN,SRG-NET-000145-VPN-000510,CAT II,The VPN Client must implement multifactor authentication for network access to nonprivileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+VPN,SRG-NET-000147-VPN-000530,CAT II,The IPsec VPN Gateway must use anti-replay mechanisms for security associations.
+VPN,SRG-NET-000148-VPN-000540,CAT II,The VPN Gateway must uniquely identify all network-connected endpoint devices before establishing a connection.
+VPN,SRG-NET-000164-VPN-000560,CAT II,"The VPN Gateway, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."
+VPN,SRG-NET-000166-VPN-000580,CAT II,"The Remote Access VPN Gateway must use a separate authentication server (e.g., LDAP, RADIUS, TACACS+) to perform user authentication."
+VPN,SRG-NET-000166-VPN-000590,CAT II,The VPN Gateway must map the authenticated identity to the user account for PKI-based authentication.
+VPN,SRG-NET-000213-VPN-000720,CAT III,The VPN Gateway must terminate all network connections associated with a communications session at the end of the session.
+VPN,SRG-NET-000230-VPN-000780,CAT I,The IPSec VPN must be configured to use FIPS-validated SHA-2 at 384 bits or higher for Internet Key Exchange (IKE).
+VPN,SRG-NET-000230-VPN-002436,CAT II,The VPN Gateway must use Always On VPN connections for remote computing.
+VPN,SRG-NET-000314-VPN-001060,CAT II,The VPN Gateway administrator accounts or security policy must be configured to allow the system administrator to immediately disconnect or disable remote access to devices and/or users when needed.
+VPN,SRG-NET-000317-VPN-001090,CAT I,The IPsec VPN Gateway must use AES encryption for the Internet Key Exchange (IKE) proposal to protect confidentiality of remote access sessions.
+VPN,SRG-NET-000334-VPN-001260,CAT II,The VPN Gateway must off-load audit records onto a different system or media than the system being audited.
+VPN,SRG-NET-000337-VPN-001290,CAT II,The VPN Gateway must renegotiate the IPsec security association (SA) after eight hours or less.
+VPN,SRG-NET-000337-VPN-001300,CAT II,The VPN Gateway must renegotiate the IKE security association (SA) after eight hours or less.
+VPN,SRG-NET-000341-VPN-001350,CAT II,The VPN Gateway must accept the Common Access Card (CAC) credential.
+VPN,SRG-NET-000342-VPN-001360,CAT II,The VPN Gateway must electronically verify the Common Access Card (CAC) credential.
+VPN,SRG-NET-000343-VPN-001370,CAT II,The VPN Gateway must authenticate all network-connected endpoint devices before establishing a connection.
+VPN,SRG-NET-000355-VPN-002433,CAT II,The VPN Gateway providing authentication intermediary services must only accept end entity certificates (user or machine) issued by DOD PKI or DOD-approved PKI Certification Authorities (CAs) for the establishment of VPN sessions.
+VPN,SRG-NET-000369-VPN-001620,CAT II,The VPN Gateway must disable split-tunneling for remote clients VPNs.
+VPN,SRG-NET-000371-VPN-001640,CAT I,The IPsec VPN Gateway must specify Perfect Forward Secrecy (PFS) during Internet Key Exchange (IKE) negotiation.
+VPN,SRG-NET-000371-VPN-001650,CAT I,The VPN Gateway and Client must be configured to protect the confidentiality and integrity of transmitted information.
+VPN,SRG-NET-000510-VPN-002170,CAT II,The VPN Gateway must use a FIPS-validated cryptographic module to implement encryption services for unclassified information requiring confidentiality.
+VPN,SRG-NET-000512-VPN-002220,CAT I,The IPsec VPN Gateway must use Internet Key Exchange (IKE) for IPsec VPN Security Associations (SAs).
+VPN,SRG-NET-000518-VPN-002280,CAT II,The VPN Client logout function must be configured to terminate the session on/with the VPN Gateway.
+VPN,SRG-NET-000519-VPN-002290,CAT II,The VPN Client must display an explicit logout message to users indicating the reliable termination of authenticated communications sessions.
+VPN,SRG-NET-000525-VPN-002330,CAT I,The IPsec VPN must use AES256 or greater encryption for the IPsec proposal to protect the confidentiality of remote access sessions.
+VPN,SRG-NET-000530-VPN-002340,CAT II,"The TLS VPN Gateway that supports Government-only services must prohibit client negotiation to TLS 1.1, TLS 1.0, SSL 2.0, or SSL 3.0."
+VPN,SRG-NET-000580-VPN-002410,CAT II,The VPN Gateway must validate certificates used for Transport Layer Security (TLS) functions by performing RFC 5280-compliant certification path validation.

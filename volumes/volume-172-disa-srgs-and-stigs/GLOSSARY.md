@@ -29,6 +29,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FGFM (FortiGate-to-FortiManager protocol)** — the TLS management tunnel between FortiManager and the devices it manages.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
+- **FortiClient Telemetry** — the endpoint control connection over which FortiClient registers with FortiClient EMS, reports its status, and receives endpoint profiles.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiNAC-OS** — the firmware operating system of FortiNAC-F, with a FortiOS-like CLI, which replaced the CentOS 7 base of legacy FortiNAC.
 - **FortiSIEM Collector** — a FortiSIEM node placed near monitored devices that receives and pulls events, parses them, and uploads them over HTTPS to the Supervisor and Workers.
@@ -68,6 +69,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
+- **UEM SRGs (Unified Endpoint Management)** — the DISA Server and Agent SRGs for systems that enroll endpoints, push policy to a managed agent, and collect its status and logs.
 - **WAN extension** — a FortiExtender mode in which the unit acts as a cellular WAN interface of its FortiGate, so the FortiGate's firewall policies filter traffic on the cellular link.
 - **Web protection profile** — the FortiWeb object that names the protection modules (signatures, protocol constraints, IP reputation, DoS, bot, file, and input checks) a server policy applies to its web traffic.
 - **WIDS (Wireless Intrusion Detection System)** — FortiAP radio scanning, configured in FortiGate WIDS profiles, that detects rogue access points and wireless attacks.

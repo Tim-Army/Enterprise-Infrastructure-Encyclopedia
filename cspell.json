@@ -5105,7 +5105,19 @@
     "eventdb",
     "LDAPTLS",
     "phoenixdb",
-    "phscripts"
+    "phscripts",
+    "autoupgrade",
+    "dhgroup",
+    "EMSCLI",
+    "forticlient",
+    "FSSOMA",
+    "ipsecvpn",
+    "NCSC",
+    "NRPT",
+    "Smartcard",
+    "SSOMA",
+    "usesmcardcert",
+    "vpns"
   ],
   "ignorePaths": [
     "node_modules/**",
