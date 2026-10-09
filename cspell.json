@@ -5100,7 +5100,12 @@
     "Barox",
     "Ivanti",
     "Lantronix",
-    "Ruijie"
+    "Ruijie",
+    "clickhouse",
+    "eventdb",
+    "LDAPTLS",
+    "phoenixdb",
+    "phscripts"
   ],
   "ignorePaths": [
     "node_modules/**",

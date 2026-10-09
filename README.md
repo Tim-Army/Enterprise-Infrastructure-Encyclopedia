@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-177 volumes, 1698 chapters. Each volume has a dedicated
+177 volumes, 1699 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -201,7 +201,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CLXIX | [Hitachi Vantara Certification Tracks](volumes/volume-169-hitachi-vantara-certifications/README.md) | 9 |
 | CLXX | [Teradata Certification Tracks](volumes/volume-170-teradata-certifications/README.md) | 9 |
 | CLXXI | [Alpine Linux](volumes/volume-171-alpine-linux/README.md) | 7 |
-| CLXXII | [DISA SRGs and STIGs](volumes/volume-172-disa-srgs-and-stigs/README.md) | 25 |
+| CLXXII | [DISA SRGs and STIGs](volumes/volume-172-disa-srgs-and-stigs/README.md) | 26 |
 | CLXXIII | [Integrated Master Schedule (IMS)](volumes/volume-173-integrated-master-schedule/README.md) | 10 |
 | CM | [Tim's Lab Gear](volumes/volume-900-tims-lab-gear/README.md) | 3 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |

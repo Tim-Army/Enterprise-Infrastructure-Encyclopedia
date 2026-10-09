@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 25
+    chapter_count: 26
     build_eligible: true
     chapters:
       - id: 01
@@ -6005,6 +6005,9 @@ volumes:
       - id: 25
         title: "Chapter 25: FortiNAC Feature, Version, and SRG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/25-fortinac-feature-version-and-srg-map.md
+      - id: 26
+        title: "Chapter 26: FortiSIEM Feature, Version, and SRG Map"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/26-fortisiem-feature-version-and-srg-map.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

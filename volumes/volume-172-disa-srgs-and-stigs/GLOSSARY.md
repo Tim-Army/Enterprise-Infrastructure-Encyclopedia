@@ -31,8 +31,10 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiNAC-OS** — the firmware operating system of FortiNAC-F, with a FortiOS-like CLI, which replaced the CentOS 7 base of legacy FortiNAC.
+- **FortiSIEM Collector** — a FortiSIEM node placed near monitored devices that receives and pulls events, parses them, and uploads them over HTTPS to the Supervisor and Workers.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Glass breaking mode** — FortiPAM's emergency mode that temporarily gives an authorized administrator access to all secrets, with forced session recording and optional email alerts.
+- **GPOS SRG (General Purpose Operating System)** — the DISA SRG that the operating system STIGs are built from; it applies to hosts with no STIG of their own, such as the Rocky Linux base of FortiSIEM nodes.
 - **Group ID (Vuln ID)** — a rule's `V-` identifier within a STIG; stable across releases and the usual key for tracking findings.
 - **Identity-based encryption (IBE)** — the FortiMail feature that encrypts email for external recipients, who read it on a FortiMail web portal after registering or authenticating.
 - **IDPS SRG** — the DISA Intrusion Detection and Prevention Systems SRG; its malicious-code detection, alerting, and update requirements apply to FortiSandbox's analysis features.
