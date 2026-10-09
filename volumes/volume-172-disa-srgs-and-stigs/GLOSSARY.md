@@ -30,6 +30,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **FIPS-CC mode** — a FortiOS operating mode that restricts the device to FIPS-approved cryptography and Common Criteria-evaluated behavior.
 - **FortiAnalyzer New Features Guide** — Fortinet's per-release-train document listing every feature added to FortiAnalyzer, tagged with the patch release that introduced it.
 - **FortiClient Telemetry** — the endpoint control connection over which FortiClient registers with FortiClient EMS, reports its status, and receives endpoint profiles.
+- **FortiEDR Collector** — the FortiEDR endpoint agent; it registers with the Aggregator, enforces security policies, and sends events to the Core and Aggregator.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiNAC-OS** — the firmware operating system of FortiNAC-F, with a FortiOS-like CLI, which replaced the CentOS 7 base of legacy FortiNAC.
 - **FortiSIEM Collector** — a FortiSIEM node placed near monitored devices that receives and pulls events, parses them, and uploads them over HTTPS to the Supervisor and Workers.

@@ -5117,7 +5117,13 @@
     "Smartcard",
     "SSOMA",
     "usesmcardcert",
-    "vpns"
+    "vpns",
+    "fortiedr",
+    "fortiedrconfig",
+    "Hoster",
+    "LEEF",
+    "NGAV",
+    "tzselect"
   ],
   "ignorePaths": [
     "node_modules/**",
