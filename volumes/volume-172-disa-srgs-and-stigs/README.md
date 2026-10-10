@@ -102,6 +102,10 @@ finally the program:
   Computing, ALG, VPN, or NDM SRG requirement it relates to, and the portal
   pane that meets it, separating what Fortinet operates from what the tenant
   configures.
+- **Chapter 30** maps every FortiGate feature to its release, the FortiGate
+  NDM or Firewall STIG rule it satisfies (all 89 rules) or the IDPS, VPN, ALG,
+  or Router SRG requirement for other functions, and the FortiOS command that
+  meets it.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -140,10 +144,11 @@ except that this volume has no hands-on labs (see
 27. [FortiClient and EMS Feature, Version, and SRG Map](chapters/27-forticlient-and-ems-feature-version-and-srg-map.md) — 185 FortiClient and FortiClient EMS features (63 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the FortiClient or EMS release that introduced each, the UEM Server, UEM Agent, or VPN SRG requirement it maps to, and the EMS GUI pane, FortiClient XML setting, or emscli command that meets it.
 28. [FortiEDR Feature, Version, and SRG Map](chapters/28-fortiedr-feature-version-and-srg-map.md) — 143 FortiEDR features (53 core platform features and every feature in the 5.0 to 7.2.3 release notes) with the release or Central Manager build that introduced each, the NDM, UEM Server, UEM Agent, or IDPS SRG requirement it maps to, and the web UI pane or command that meets it.
 29. [FortiSASE Feature, Version, and SRG Map](chapters/29-fortisase-feature-version-and-srg-map.md) — 168 FortiSASE features (66 core platform features and every feature in the 24.3.b to 26.3.1.a release notes) with the release that introduced each, the Cloud Computing, ALG, VPN, or NDM SRG requirement it maps to, and the portal pane that meets it, with a split between what Fortinet operates and what the tenant configures.
+30. [FortiGate Feature, Version, and STIG Map](chapters/30-fortigate-feature-version-and-stig-map.md) — 1,363 FortiGate features (72 core platform features and every feature in the FortiOS 7.0 to 8.0 New Features Guides) with the release that introduced each, the FortiGate Firewall NDM or Firewall STIG rule it satisfies (all 89 rules) or the IDPS, VPN, ALG, or Router SRG requirement for other functions, and the FortiOS 8.0.1 command that meets it, plus the Cloud Computing SRG obligations for FortiGate VM in public cloud.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty-nine chapters.
+- [Index](INDEX.md) — alphabetized topical index across all thirty chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

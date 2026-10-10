@@ -106,7 +106,7 @@ or hypervisor they run on.
 
 | Product | What it does | SRGs and STIGs to start from |
 | --- | --- | --- |
-| **FortiGate** (hardware and VM) | Next-generation firewall | FortiGate NDM and Firewall STIGs; IDPS, VPN, ALG, and Router SRGs for enabled functions |
+| **FortiGate** (hardware and VM) | Next-generation firewall | FortiGate NDM and Firewall STIGs; IDPS, VPN, ALG, and Router SRGs for enabled functions. Chapter 30 maps every FortiGate feature to its release, STIG rule or SRG requirement, and configuration command |
 | **FortiManager** | Central management of FortiGates and other devices | NDM SRG; it controls the configuration of every managed device, so treat its access control and auditing as high impact. Chapter 13 maps every FortiManager feature to its release, SRG requirement, and configuration command |
 | **FortiAnalyzer** | Log collection, analytics, and reporting | Central Log Server SRG and NDM SRG; it is the central log server the FortiGate STIGs depend on, so its log protection, retention, and access control matter. Chapter 12 maps every FortiAnalyzer feature to its release, SRG requirement, and configuration command |
 | **FortiSwitch** | Ethernet switching, often managed by FortiGate through FortiLink | Layer 2 Switch SRG and NDM SRG; when FortiGate manages the switch through FortiLink, collect the evidence on the FortiGate. Chapter 11 maps every FortiSwitch feature to its supported releases and SRG requirement |

@@ -2,7 +2,7 @@
 """Export the SRG tables of Volume CLXXII's product map chapters to CSV.
 
 For every chapter matching volumes/volume-172-disa-srgs-and-stigs/chapters/
-NN-*-feature-version-and-srg-map.md, this script:
+NN-*-feature-version-and-s*-map.md, this script:
 
 - writes the feature map table to data/<chapter>-feature-map.csv and the
   requirement reference table to data/<chapter>-requirements.csv (UTF-8 with a
@@ -87,7 +87,7 @@ def process(path):
 
 
 def main():
-    for path in sorted(glob.glob(f"volumes/{VOLUME}/chapters/*-feature-version-and-srg-map.md")):
+    for path in sorted(glob.glob(f"volumes/{VOLUME}/chapters/*-feature-version-and-s*-map.md")):
         for name, n in process(path):
             print(f"{name}: {n} rows")
 

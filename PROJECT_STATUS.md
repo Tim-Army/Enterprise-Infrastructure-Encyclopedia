@@ -181,14 +181,14 @@ does not by itself verify every technical claim in it.
 | CLXIX — Hitachi Vantara Certification Tracks | 9 | Drafted |
 | CLXX — Teradata Certification Tracks | 9 | Drafted |
 | CLXXI — Alpine Linux | 7 | Drafted |
-| CLXXII — DISA SRGs and STIGs | 29 | Drafted |
+| CLXXII — DISA SRGs and STIGs | 30 | Drafted |
 | CLXXIII — Integrated Master Schedule (IMS) | 10 | Drafted |
 | CM — Tim's Lab Gear | 3 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1699 of 1699 drafted (100%). Every volume has a
+**Total declared chapters:** 1700 of 1700 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

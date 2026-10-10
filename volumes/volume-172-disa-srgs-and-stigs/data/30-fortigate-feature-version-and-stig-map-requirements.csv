@@ -1,0 +1,185 @@
+﻿STIG or SRG,Requirement,Severity,SRG ID,Requirement title
+FGT-NDM,FGFW-ND-000005,CAT II,SRG-APP-000026-NDM-000208,The FortiGate device must automatically audit account creation.
+FGT-NDM,FGFW-ND-000010,CAT II,SRG-APP-000027-NDM-000209,The FortiGate device must automatically audit account modification.
+FGT-NDM,FGFW-ND-000020,CAT II,SRG-APP-000029-NDM-000211,The FortiGate device must automatically audit account removal actions.
+FGT-NDM,FGFW-ND-000030,CAT II,SRG-APP-000148-NDM-000346,The FortiGate device must have only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+FGT-NDM,FGFW-ND-000035,CAT II,SRG-APP-000038-NDM-000213,The FortiGate device must allow full access to only those individuals or roles designated by the ISSM.
+FGT-NDM,FGFW-ND-000040,CAT II,SRG-APP-000343-NDM-000289,The FortiGate device must audit the execution of privileged functions.
+FGT-NDM,FGFW-ND-000045,CAT II,SRG-APP-000065-NDM-000214,"The FortiGate device must enforce the limit of three consecutive invalid logon attempts, after which time it must lock out the user account from accessing the device for 15 minutes."
+FGT-NDM,FGFW-ND-000050,CAT II,SRG-APP-000068-NDM-000215,The FortiGate device must display the Standard Mandatory DoW Notice and Consent Banner before granting access to the device.
+FGT-NDM,FGFW-ND-000055,CAT II,SRG-APP-000069-NDM-000216,The FortiGate device must retain the Standard Mandatory DoW Notice and Consent Banner on the screen until the administrator acknowledges the usage conditions and takes explicit actions to log on for further access.
+FGT-NDM,FGFW-ND-000060,CAT II,SRG-APP-000080-NDM-000220,The FortiGate device must log all user activity.
+FGT-NDM,FGFW-ND-000065,CAT II,SRG-APP-000495-NDM-000318,The FortiGate device must generate audit records when successful/unsuccessful attempts to modify administrator privileges occur.
+FGT-NDM,FGFW-ND-000070,CAT II,SRG-APP-000499-NDM-000319,The FortiGate device must generate audit records when successful/unsuccessful attempts to delete administrator privileges occur.
+FGT-NDM,FGFW-ND-000075,CAT II,SRG-APP-000503-NDM-000320,The FortiGate device must generate audit records when successful/unsuccessful logon attempts occur.
+FGT-NDM,FGFW-ND-000080,CAT II,SRG-APP-000504-NDM-000321,The FortiGate device must generate audit records for privileged activities or other system-level access.
+FGT-NDM,FGFW-ND-000085,CAT II,SRG-APP-000505-NDM-000322,The FortiGate device must generate audit records showing starting and ending time for administrator access to the system.
+FGT-NDM,FGFW-ND-000090,CAT II,SRG-APP-000506-NDM-000323,The FortiGate device must generate audit records when concurrent logons from different workstations occur.
+FGT-NDM,FGFW-ND-000095,CAT II,SRG-APP-000100-NDM-000230,The FortiGate device must generate audit records containing information that establishes the identity of any individual or process associated with the event.
+FGT-NDM,FGFW-ND-000100,CAT II,SRG-APP-000101-NDM-000231,The FortiGate device must generate audit records containing the full-text recording of privileged commands.
+FGT-NDM,FGFW-ND-000105,CAT II,SRG-APP-000357-NDM-000293,The FortiGate device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+FGT-NDM,FGFW-ND-000110,CAT II,SRG-APP-000515-NDM-000325,The FortiGate device must off-load audit records on to a different system or media than the system being audited.
+FGT-NDM,FGFW-ND-000115,CAT II,SRG-APP-000360-NDM-000295,The FortiGate device must generate an immediate real-time alert of all audit failure events requiring real-time alerts.
+FGT-NDM,FGFW-ND-000120,CAT II,SRG-APP-000373-NDM-000298,The FortiGate device must synchronize internal information system clocks using redundant authoritative time sources.
+FGT-NDM,FGFW-ND-000125,CAT II,SRG-APP-000374-NDM-000299,The FortiGate device must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).
+FGT-NDM,FGFW-ND-000130,CAT II,SRG-APP-000120-NDM-000237,The FortiGate device must protect audit information from unauthorized deletion.
+FGT-NDM,FGFW-ND-000135,CAT II,SRG-APP-000121-NDM-000238,The FortiGate device must protect audit tools from unauthorized access.
+FGT-NDM,FGFW-ND-000140,CAT II,SRG-APP-000122-NDM-000239,The FortiGate device must protect audit tools from unauthorized modification.
+FGT-NDM,FGFW-ND-000145,CAT II,SRG-APP-000378-NDM-000302,The FortiGate device must prohibit installation of software without explicit privileged status.
+FGT-NDM,FGFW-ND-000150,CAT II,SRG-APP-000380-NDM-000304,The FortiGate device must enforce access restrictions associated with changes to device configuration.
+FGT-NDM,FGFW-ND-000155,CAT II,SRG-APP-000133-NDM-000244,The FortiGate device must limit privileges to change the software resident within software libraries.
+FGT-NDM,FGFW-ND-000160,CAT II,SRG-APP-000516-NDM-000335,The FortiGate device must enforce access restrictions associated with changes to the system components.
+FGT-NDM,FGFW-ND-000165,CAT II,SRG-APP-000516-NDM-000336,The FortiGate device must use LDAP for authentication.
+FGT-NDM,FGFW-ND-000170,CAT I,SRG-APP-000516-NDM-000351,The FortiGate device must be running an operating system release that is currently supported by the vendor.
+FGT-NDM,FGFW-ND-000175,CAT II,SRG-APP-000516-NDM-000334,The FortiGate device must generate log records for a locally developed list of auditable events.
+FGT-NDM,FGFW-ND-000180,CAT II,SRG-APP-000516-NDM-000340,The FortiGate device must conduct backups of system-level information contained in the information system when changes occur.
+FGT-NDM,FGFW-ND-000185,CAT II,SRG-APP-000516-NDM-000341,"The FortiGate device must support organizational requirements to conduct backups of information system documentation, including security-related documentation, when changes occur or weekly, whichever is sooner."
+FGT-NDM,FGFW-ND-000190,CAT II,SRG-APP-000408-NDM-000314,FortiGate devices performing maintenance functions must restrict use of these functions to authorized personnel only.
+FGT-NDM,FGFW-ND-000195,CAT II,SRG-APP-000516-NDM-000344,The FortiGate device must use DoW-approved Certificate Authorities (CAs) for public key certificates.
+FGT-NDM,FGFW-ND-000200,CAT I,SRG-APP-000142-NDM-000245,"The FortiGate device must prohibit the use of all unnecessary and/or non-secure functions, ports, protocols, and/or services."
+FGT-NDM,FGFW-ND-000205,CAT II,SRG-APP-000156-NDM-000250,The FortiGate device must implement replay-resistant authentication mechanisms for network access to privileged accounts.
+FGT-NDM,FGFW-ND-000210,CAT II,SRG-APP-000395-NDM-000310,The FortiGate device must authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+FGT-NDM,FGFW-ND-000215,CAT II,SRG-APP-000395-NDM-000347,The FortiGate device must authenticate Network Time Protocol (NTP) sources using authentication that is cryptographically based.
+FGT-NDM,FGFW-ND-000220,CAT II,SRG-APP-000164-NDM-000252,The FortiGate device must enforce a minimum 15-character password length.
+FGT-NDM,FGFW-ND-000225,CAT II,SRG-APP-000166-NDM-000254,The FortiGate device must enforce password complexity by requiring that at least one uppercase character be used.
+FGT-NDM,FGFW-ND-000230,CAT II,SRG-APP-000167-NDM-000255,The FortiGate device must enforce password complexity by requiring that at least one lowercase character be used.
+FGT-NDM,FGFW-ND-000235,CAT II,SRG-APP-000168-NDM-000256,The FortiGate device must enforce password complexity by requiring at least one numeric character be used.
+FGT-NDM,FGFW-ND-000240,CAT II,SRG-APP-000169-NDM-000257,The FortiGate device must enforce password complexity by requiring that at least one special character be used.
+FGT-NDM,FGFW-ND-000245,CAT I,SRG-APP-000172-NDM-000259,The FortiGate device must use LDAPS for the LDAP connection.
+FGT-NDM,FGFW-ND-000250,CAT II,SRG-APP-000080-NDM-000345,The FortiGate device must not have any default manufacturer passwords when deployed.
+FGT-NDM,FGFW-ND-000255,CAT I,SRG-APP-000179-NDM-000265,The FortiGate device must use FIPS 140-2 approved algorithms for authentication to a cryptographic module.
+FGT-NDM,FGFW-ND-000260,CAT I,SRG-APP-000411-NDM-000330,The FortiGate devices must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.
+FGT-NDM,FGFW-ND-000265,CAT I,SRG-APP-000412-NDM-000331,The FortiGate device must implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.
+FGT-NDM,FGFW-ND-000270,CAT II,SRG-APP-000186-NDM-000266,The FortiGate device must terminate idle sessions after 10 minutes of inactivity.
+FGT-NDM,FGFW-ND-000275,CAT I,SRG-APP-000190-NDM-000267,The FortiGate device must terminate idle sessions after 10 minutes of inactivity.
+FGT-NDM,FGFW-ND-000280,CAT II,SRG-APP-000224-NDM-000270,The FortiGate device must generate unique session identifiers using a FIPS 140-2-approved random number generator.
+FGT-NDM,FGFW-ND-000285,CAT I,SRG-APP-000231-NDM-000271,"The FortiGate device must only allow authorized administrators to view or change the device configuration, system files, and other files stored either in the device or on removable media (such as a flash drive)."
+FGT-NDM,FGFW-ND-000290,CAT II,SRG-APP-000435-NDM-000315,The FortiGate device must protect against known types of denial-of-service (DoS) attacks by employing organization-defined security safeguards.
+FGT-NDM,FGFW-ND-000295,CAT I,SRG-APP-000516-NDM-000350,The FortiGate device must be configured to send log data to a central log server for the purpose of forwarding alerts to the administrators and the ISSO.
+FGT-NDM,FGFW-ND-000300,CAT II,SRG-APP-000001-NDM-000200,The FortiGate device must limit the number of logon and user sessions.
+FGT-NDM,FGFW-ND-000305,CAT II,SRG-APP-000131-NDM-000243,The FortiGate device must only install patches or updates that are validated by the vendor via digital signature or hash.
+FGT-NDM,FGFW-ND-000311,CAT II,SRG-APP-000170-NDM-000329,"The FortiGate device must require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+FGT-FW,FNFG-FW-000005,CAT I,SRG-NET-000019-FW-000003,"The FortiGate firewall must use filters that use packet headers and packet attributes, including source and destination IP addresses and ports."
+FGT-FW,FNFG-FW-000015,CAT II,SRG-NET-000061-FW-000001,The FortiGate firewall must use organization-defined filtering rules that apply to the monitoring of remote access traffic for the traffic from the VPN access points.
+FGT-FW,FNFG-FW-000020,CAT II,SRG-NET-000074-FW-000009,The FortiGate firewall must generate traffic log entries containing information to establish what type of events occurred.
+FGT-FW,FNFG-FW-000025,CAT II,SRG-NET-000075-FW-000010,The FortiGate firewall must generate traffic log entries containing information to establish when (date and time) the events occurred.
+FGT-FW,FNFG-FW-000030,CAT II,SRG-NET-000076-FW-000011,The FortiGate firewall must generate traffic log entries containing information to establish the network location where the events occurred.
+FGT-FW,FNFG-FW-000035,CAT III,SRG-NET-000077-FW-000012,"The FortiGate firewall must generate traffic log entries containing information to establish the source of the events, such as the source IP address at a minimum."
+FGT-FW,FNFG-FW-000040,CAT II,SRG-NET-000078-FW-000013,"The FortiGate firewall must generate traffic log entries containing information to establish the outcome of the events, such as, at a minimum, the success or failure of the application of the firewall rule."
+FGT-FW,FNFG-FW-000045,CAT II,SRG-NET-000089-FW-000019,"In the event that communication with the central audit server is lost, the FortiGate firewall must continue to queue traffic log records locally."
+FGT-FW,FNFG-FW-000050,CAT II,SRG-NET-000098-FW-000021,The FortiGate firewall must protect traffic log records from unauthorized access while in transit to the central audit server.
+FGT-FW,FNFG-FW-000055,CAT II,SRG-NET-000099-FW-000161,The FortiGate firewall must protect the traffic log from unauthorized modification of local log records.
+FGT-FW,FNFG-FW-000060,CAT I,SRG-NET-000100-FW-000023,The FortiGate firewall must protect the traffic log from unauthorized deletion of local log files and log records.
+FGT-FW,FNFG-FW-000065,CAT II,SRG-NET-000131-FW-000025,The FortiGate firewall must disable or remove unnecessary network services and functions that are not used as part of its role in the architecture.
+FGT-FW,FNFG-FW-000070,CAT II,SRG-NET-000192-FW-000029,The FortiGate firewall must block outbound traffic containing denial-of-service (DoS) attacks to protect against the use of internal information systems to launch any DoS attacks against other networks or endpoints.
+FGT-FW,FNFG-FW-000075,CAT II,SRG-NET-000193-FW-000030,The FortiGate firewall implementation must manage excess bandwidth to limit the effects of packet flooding types of denial-of-service (DoS) attacks.
+FGT-FW,FNFG-FW-000085,CAT II,SRG-NET-000205-FW-000040,"The FortiGate firewall must filter traffic destined to the internal enclave in accordance with the specific traffic that is approved and registered in the Ports, Protocols, and Services Management (PPSM) Category Assurance List (CAL), Vulnerability Assessments (VAs) for that the enclave."
+FGT-FW,FNFG-FW-000090,CAT II,SRG-NET-000235-FW-000133,The FortiGate firewall must fail to a secure state if the firewall filtering functions fail unexpectedly.
+FGT-FW,FNFG-FW-000100,CAT II,SRG-NET-000333-FW-000014,The FortiGate firewall must send traffic log entries to a central audit server for management and configuration of the traffic log entries.
+FGT-FW,FNFG-FW-000105,CAT II,SRG-NET-000335-FW-000017,"If communication with the central audit server is lost, the FortiGate firewall must generate a real-time alert to, at a minimum, the SA and ISSO."
+FGT-FW,FNFG-FW-000110,CAT I,SRG-NET-000362-FW-000028,"The FortiGate firewall must employ filters that prevent or limit the effects of all types of commonly known denial-of-service (DoS) attacks, including flooding, packet sweeps, and unauthorized port scanning."
+FGT-FW,FNFG-FW-000115,CAT II,SRG-NET-000364-FW-000031,The FortiGate firewall must apply ingress filters to traffic that is inbound to the network through any active external interface.
+FGT-FW,FNFG-FW-000120,CAT II,SRG-NET-000364-FW-000032,The FortiGate firewall must apply egress filters to traffic outbound from the network through any internal interface.
+FGT-FW,FNFG-FW-000125,CAT II,SRG-NET-000364-FW-000035,"When employed as a premise firewall, FortiGate must block all outbound management traffic."
+FGT-FW,FNFG-FW-000130,CAT II,SRG-NET-000364-FW-000036,The FortiGate firewall must restrict traffic entering the VPN tunnels to the management network to only the authorized management packets based on destination address.
+FGT-FW,FNFG-FW-000135,CAT II,SRG-NET-000364-FW-000040,The FortiGate firewall must be configured to inspect all inbound and outbound traffic at the application layer.
+FGT-FW,FNFG-FW-000145,CAT II,SRG-NET-000364-FW-000042,The FortiGate firewall must be configured to restrict it from accepting outbound packets that contain an illegitimate address in the source address field via an egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).
+FGT-FW,FNFG-FW-000150,CAT III,SRG-NET-000392-FW-000042,"The FortiGate firewall must generate an alert that can be forwarded to, at a minimum, the Information System Security Officer (ISSO) and Information System Security Manager (ISSM) when denial-of-service (DoS) incidents are detected."
+FGT-FW,FNFG-FW-000155,CAT II,SRG-NET-000399-FW-000008,"The FortiGate firewall must allow authorized users to record a packet-capture-based IP, traffic type (TCP, UDP, or ICMP), or protocol."
+FGT-FW,FNFG-FW-000160,CAT II,SRG-NET-000492-FW-000006,"The FortiGate firewall must generate traffic log records when traffic is denied, restricted, or discarded."
+FGT-FW,FNFG-FW-000165,CAT II,SRG-NET-000493-FW-000007,The FortiGate firewall must generate traffic log records when attempts are made to send packets between security zones that are not authorized to communicate.
+IDPS,SRG-NET-000018-IDPS-00018,CAT II,SRG-NET-000018,The IPS must enforce approved authorizations by restricting or blocking the flow of harmful or suspicious communications traffic within the network.
+IDPS,SRG-NET-000019-IDPS-00019,CAT II,SRG-NET-000019,"The IPS must restrict or block harmful or suspicious communications traffic between interconnected networks based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+IDPS,SRG-NET-000019-IDPS-00187,CAT II,SRG-NET-000019,"The IDPS must immediately use updates made to policy filters, rules, signatures, and anomaly analysis algorithms for traffic detection and prevention functions."
+IDPS,SRG-NET-000113-IDPS-00013,CAT II,SRG-NET-000113,"The IDPS must provide audit record generation capability for detection events based on implementation of policy filters, rules, signatures, and anomaly analysis."
+IDPS,SRG-NET-000113-IDPS-00082,CAT II,SRG-NET-000113,"The IDPS must provide audit record generation capability for events where communication traffic is blocked or restricted based on policy filters, rules, signatures, and anomaly analysis."
+IDPS,SRG-NET-000235-IDPS-00169,CAT II,SRG-NET-000235,"The IDPS must fail to a secure state which maintains access control mechanisms when the IDPS hardware, software, or firmware fails on initialization/shutdown or experiences a sudden abort during normal operation."
+IDPS,SRG-NET-000246-IDPS-00205,CAT II,SRG-NET-000246,The IDPS must automatically update malicious code protection mechanisms as new releases are available in accordance with organizational configuration management procedures.
+IDPS,SRG-NET-000249-IDPS-00176,CAT II,SRG-NET-000249,The IPS must block malicious code.
+IDPS,SRG-NET-000318-IDPS-00182,CAT II,SRG-NET-000318,"To protect against unauthorized data mining, the IPS must prevent code injection attacks launched against application objects including, at a minimum, application URLs and application code."
+IDPS,SRG-NET-000318-IDPS-00183,CAT II,SRG-NET-000318,"To protect against unauthorized data mining, the IPS must prevent SQL injection attacks launched against data storage objects, including, at a minimum, databases, database records, and database fields."
+IDPS,SRG-NET-000362-IDPS-00197,CAT II,SRG-NET-000362,The IPS must protect against or limit the effects of known and unknown types of denial-of-service (DoS) attacks by employing anomaly-based attack detection.
+IDPS,SRG-NET-000362-IDPS-00198,CAT II,SRG-NET-000362,The IPS must protect against or limit the effects of known types of denial-of-service (DoS) attacks by employing signatures.
+IDPS,SRG-NET-000390-IDPS-00212,CAT II,SRG-NET-000390,The IDPS must continuously monitor inbound communications traffic for unusual/unauthorized activities or conditions.
+IDPS,SRG-NET-000391-IDPS-00213,CAT II,SRG-NET-000391,The IDPS must continuously monitor outbound communications traffic for unusual/unauthorized activities or conditions.
+VPN,SRG-NET-000019-VPN-000040,CAT II,SRG-NET-000019,The VPN Gateway must ensure inbound and outbound traffic is configured with a security policy in compliance with information flow control policies.
+VPN,SRG-NET-000053-VPN-000170,CAT II,SRG-NET-000053,The VPN Gateway must limit the number of concurrent sessions for user accounts to 1 or to an organization-defined number.
+VPN,SRG-NET-000062-VPN-000200,CAT I,SRG-NET-000062,"The TLS VPN Gateway must use TLS 1.2, at a minimum, to protect the confidentiality of sensitive data during transmission for remote access connections."
+VPN,SRG-NET-000063-VPN-000220,CAT II,SRG-NET-000063,The VPN Gateway must be configured to use IPsec with SHA-2 at 384 bits or greater for hashing to protect the integrity of remote access sessions.
+VPN,SRG-NET-000074-VPN-000250,CAT I,SRG-NET-000074,The IPSec VPN must be configured to use a Diffie-Hellman (DH) Group of 16 or greater for Internet Key Exchange (IKE) Phase 1.
+VPN,SRG-NET-000132-VPN-000450,CAT II,SRG-NET-000132,"The VPN Gateway must be configured to prohibit the use of all unnecessary and/or nonsecure functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments."
+VPN,SRG-NET-000132-VPN-000460,CAT II,SRG-NET-000132,The IPsec VPN Gateway must use IKEv2 for IPsec VPN security associations.
+VPN,SRG-NET-000138-VPN-000490,CAT II,SRG-NET-000138,The VPN Gateway must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+VPN,SRG-NET-000140-VPN-000500,CAT I,SRG-NET-000140,"The VPN Gateway must use multifactor authentication (e.g., DoD PKI) for network access to non-privileged accounts."
+VPN,SRG-NET-000147-VPN-000530,CAT II,SRG-NET-000147,The IPsec VPN Gateway must use anti-replay mechanisms for security associations.
+VPN,SRG-NET-000148-VPN-000540,CAT II,SRG-NET-000148,The VPN Gateway must uniquely identify all network-connected endpoint devices before establishing a connection.
+VPN,SRG-NET-000164-VPN-000560,CAT II,SRG-NET-000164,"The VPN Gateway, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor."
+VPN,SRG-NET-000166-VPN-000580,CAT II,SRG-NET-000166,"The Remote Access VPN Gateway must use a separate authentication server (e.g., LDAP, RADIUS, TACACS+) to perform user authentication."
+VPN,SRG-NET-000166-VPN-000590,CAT II,SRG-NET-000166,The VPN Gateway must map the authenticated identity to the user account for PKI-based authentication.
+VPN,SRG-NET-000213-VPN-000721,CAT II,SRG-NET-000213,The Remote Access VPN Gateway must terminate remote access network connections after an organization-defined time period.
+VPN,SRG-NET-000230-VPN-000780,CAT I,SRG-NET-000230,The IPSec VPN must be configured to use FIPS-validated SHA-2 at 384 bits or higher for Internet Key Exchange (IKE).
+VPN,SRG-NET-000230-VPN-002436,CAT II,SRG-NET-000230,The VPN Gateway must use Always On VPN connections for remote computing.
+VPN,SRG-NET-000317-VPN-001090,CAT I,SRG-NET-000317,The IPsec VPN Gateway must use AES encryption for the Internet Key Exchange (IKE) proposal to protect confidentiality of remote access sessions.
+VPN,SRG-NET-000337-VPN-001290,CAT II,SRG-NET-000337,The VPN Gateway must renegotiate the IPsec security association (SA) after eight hours or less.
+VPN,SRG-NET-000337-VPN-001300,CAT II,SRG-NET-000337,The VPN Gateway must renegotiate the IKE security association (SA) after eight hours or less.
+VPN,SRG-NET-000343-VPN-001370,CAT II,SRG-NET-000343,The VPN Gateway must authenticate all network-connected endpoint devices before establishing a connection.
+VPN,SRG-NET-000355-VPN-002433,CAT II,SRG-NET-000355,The VPN Gateway providing authentication intermediary services must only accept end entity certificates (user or machine) issued by DOD PKI or DOD-approved PKI Certification Authorities (CAs) for the establishment of VPN sessions.
+VPN,SRG-NET-000369-VPN-001620,CAT II,SRG-NET-000369,The VPN Gateway must disable split-tunneling for remote clients VPNs.
+VPN,SRG-NET-000371-VPN-001640,CAT I,SRG-NET-000371,The IPsec VPN Gateway must specify Perfect Forward Secrecy (PFS) during Internet Key Exchange (IKE) negotiation.
+VPN,SRG-NET-000371-VPN-001650,CAT I,SRG-NET-000371,The VPN Gateway and Client must be configured to protect the confidentiality and integrity of transmitted information.
+VPN,SRG-NET-000492-VPN-001980,CAT II,SRG-NET-000492,The VPN Gateway must generate log records when successful and/or unsuccessful VPN connection attempts occur.
+VPN,SRG-NET-000510-VPN-002180,CAT II,SRG-NET-000510,The IPsec VPN Gateway IKE must use NIST FIPS-validated cryptography to implement encryption services for unclassified VPN traffic.
+VPN,SRG-NET-000512-VPN-002220,CAT I,SRG-NET-000512,The IPsec VPN Gateway must use Internet Key Exchange (IKE) for IPsec VPN Security Associations (SAs).
+VPN,SRG-NET-000525-VPN-002330,CAT I,SRG-NET-000525,The IPsec VPN must use AES256 or greater encryption for the IPsec proposal to protect the confidentiality of remote access sessions.
+VPN,SRG-NET-000530-VPN-002340,CAT II,SRG-NET-000530,"The TLS VPN Gateway that supports Government-only services must prohibit client negotiation to TLS 1.1, TLS 1.0, SSL 2.0, or SSL 3.0."
+ALG,SRG-NET-000018-ALG-000017,CAT II,SRG-NET-000018,"The ALG must enforce approved authorizations for controlling the flow of information within the network based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+ALG,SRG-NET-000019-ALG-000018,CAT II,SRG-NET-000019,"The ALG must restrict or block harmful or suspicious communications traffic by controlling the flow of information between interconnected networks based on attribute- and content-based inspection of the source, destination, headers, and/or content of the communications traffic."
+ALG,SRG-NET-000019-ALG-000019,CAT II,SRG-NET-000019,"The ALG must immediately use updates made to policy enforcement mechanisms such as policy filters, rules, signatures, and analysis algorithms for gateway and/or intermediary functions."
+ALG,SRG-NET-000062-ALG-000150,CAT II,SRG-NET-000062,The ALG that provides intermediary services for TLS must be configured to comply with the required TLS settings in NIST SP 800-52.
+ALG,SRG-NET-000074-ALG-000043,CAT II,SRG-NET-000074,The ALG must produce audit records containing information to establish what type of events occurred.
+ALG,SRG-NET-000131-ALG-000085,CAT II,SRG-NET-000131,The ALG must not have unnecessary services and functions enabled.
+ALG,SRG-NET-000131-ALG-000086,CAT II,SRG-NET-000131,The ALG must be configured to remove or disable unrelated or unneeded application proxy services.
+ALG,SRG-NET-000132-ALG-000087,CAT II,SRG-NET-000132,"The ALG must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments."
+ALG,SRG-NET-000138-ALG-000063,CAT II,SRG-NET-000138,The ALG providing user authentication intermediary services must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).
+ALG,SRG-NET-000140-ALG-000094,CAT II,SRG-NET-000140,The ALG providing user authentication intermediary services must use multifactor authentication for network access to non-privileged accounts.
+ALG,SRG-NET-000164-ALG-000100,CAT II,SRG-NET-000164,The ALG that provides intermediary services for TLS must validate certificates used for TLS functions by performing RFC 5280-compliant certification path validation.
+ALG,SRG-NET-000246-ALG-000132,CAT II,SRG-NET-000246,The ALG providing content filtering must update malicious code protection mechanisms and signature definitions whenever new releases are available in accordance with organizational configuration management policy.
+ALG,SRG-NET-000248-ALG-000133,CAT II,SRG-NET-000248,The ALG providing content filtering must be configured to perform real-time scans of files from external sources at network entry/exit points as they are downloaded and prior to being opened or executed.
+ALG,SRG-NET-000249-ALG-000134,CAT II,SRG-NET-000249,The ALG providing content filtering must block malicious code upon detection.
+ALG,SRG-NET-000249-ALG-000145,CAT II,SRG-NET-000249,The ALG providing content filtering must delete or quarantine malicious code in response to malicious code detection.
+ALG,SRG-NET-000288-ALG-000109,CAT II,SRG-NET-000288,The ALG providing content filtering must block or restrict detected prohibited mobile code.
+ALG,SRG-NET-000384-ALG-000136,CAT II,SRG-NET-000384,"The ALG providing content filtering must detect use of network services that have not been authorized or approved by the ISSM and ISSO, at a minimum."
+ALG,SRG-NET-000390-ALG-000139,CAT II,SRG-NET-000390,The ALG providing content filtering must continuously monitor inbound communications traffic crossing internal security boundaries for unusual or unauthorized activities or conditions.
+ALG,SRG-NET-000391-ALG-000140,CAT II,SRG-NET-000391,The ALG providing content filtering must continuously monitor outbound communications traffic crossing internal security boundaries for unusual/unauthorized activities or conditions.
+ALG,SRG-NET-000400-ALG-000097,CAT I,SRG-NET-000400,The ALG providing user authentication intermediary services must transmit only encrypted representations of passwords.
+ALG,SRG-NET-000512-ALG-000066,CAT II,SRG-NET-000512,The ALG that provides intermediary services for HTTP must inspect inbound and outbound HTTP traffic for protocol compliance and protocol anomalies.
+ALG,SRG-NET-000750-ALG-000140,CAT II,SRG-NET-000750,The ALG must include only approved trust anchors in trust stores or certificate stores managed by the organization.
+RTR,SRG-NET-000018-RTR-000001,CAT II,SRG-NET-000018,The router must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.
+RTR,SRG-NET-000018-RTR-000002,CAT II,SRG-NET-000018,The BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.
+RTR,SRG-NET-000018-RTR-000003,CAT II,SRG-NET-000018,The BGP router must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).
+RTR,SRG-NET-000131-RTR-000035,CAT III,SRG-NET-000131,The router must be configured to have all non-essential capabilities disabled.
+RTR,SRG-NET-000168-RTR-000078,CAT II,SRG-NET-000168,The router must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.
+RTR,SRG-NET-000202-RTR-000001,CAT I,SRG-NET-000202,The perimeter router must be configured to deny network traffic by default and allow network traffic by exception.
+RTR,SRG-NET-000205-RTR-000001,CAT I,SRG-NET-000205,The router must be configured to restrict traffic destined to itself.
+RTR,SRG-NET-000205-RTR-000014,CAT I,SRG-NET-000205,The perimeter router must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field via egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).
+RTR,SRG-NET-000230-RTR-000001,CAT II,SRG-NET-000230,The router must be configured to implement message authentication for all control plane protocols.
+RTR,SRG-NET-000230-RTR-000002,CAT II,SRG-NET-000230,The BGP router must be configured to use a unique key for each autonomous system (AS) that it peers with.
+RTR,SRG-NET-000230-RTR-000003,CAT II,SRG-NET-000230,The router must be configured to use keys with a duration not exceeding 180 days for authenticating routing protocol messages.
+RTR,SRG-NET-000362-RTR-000112,CAT III,SRG-NET-000362,The router must be configured to have IP directed broadcast disabled on all interfaces.
+RTR,SRG-NET-000362-RTR-000115,CAT II,SRG-NET-000362,The router must be configured to have Internet Control Message Protocol (ICMP) redirects disabled on all external interfaces.
+RTR,SRG-NET-000362-RTR-000117,CAT II,SRG-NET-000362,The BGP router must be configured to use the maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks.
+RTR,SRG-NET-000364-RTR-000111,CAT III,SRG-NET-000364,The perimeter router must be configured to have Link Layer Discovery Protocols (LLDPs) disabled on all external interfaces.
+RTR,SRG-NET-000364-RTR-000113,CAT II,SRG-NET-000364,The perimeter router must be configured to block all outbound management traffic.
+CC,SRG-NET-000205-CLD-000085,CAT I,SRG-NET-000205,The Infrastructure as a Service (IaaS)/Platform as a Service (PaaS) must implement a security stack that restricts traffic flow inbound and outbound between the IaaS and the Boundary Cloud Access Point (BCAP) or Internal Cloud Access Point (ICAP) connection.
+CC,SRG-NET-000205-CLD-000090,CAT I,SRG-NET-000205,The Mission Owner's internet-facing applications must be configured to traverse the Cloud Access Point (CAP) and Virtual Datacenter Security Stack (VDSS) prior to communicating with the internet.
+CC,SRG-NET-000205-CLD-000100,CAT II,SRG-NET-000205,The Infrastructure as a Service (IaaS)/Platform as a Service (PaaS) must be configured to maintain separation of all management and data traffic.
+CC,SRG-NET-000383-CLD-000105,CAT I,SRG-NET-000383,"For Infrastructure as a Service (IaaS)/Platform as a Service (PaaS), the Mission Owner must configure an intrusion detection and prevention system (IDPS) to protect DOD virtual machines (VMs), services, and applications."
+CC,SRG-NET-000390-CLD-000110,CAT II,SRG-NET-000390,"The Mission Owner of the Infrastructure as a Service (IaaS) or Platform as a Service (PaaS) must continuously monitor and protect inbound communications from external systems, other IaaS within the same cloud service environment, or collocated mission applications for unusual or unauthorized activities or conditions."
+CC,SRG-NET-000391-CLD-000115,CAT II,SRG-NET-000391,The Mission Owner of the Infrastructure as a Service (IaaS) must continuously monitor outbound communications to other systems and enclaves for unusual or unauthorized activities or conditions.
+CC,SRG-OS-000001-CLD-000010,CAT I,SRG-OS-000001,The Mission Owner must configure the customer service portal credentials for least privilege.
+CC,SRG-OS-000096-CLD-000060,CAT II,SRG-OS-000096,"The Mission Owner must configure the Infrastructure as a Service (IaaS)/Platform as a Service (PaaS) to prohibit or restrict the use of functions, ports, protocols, and/or services."
+CC,SRG-OS-000342-CLD-000020,CAT II,SRG-OS-000342,The Infrastructure as a Service (IaaS)/Platform as a Service (PaaS) must perform centralized logging to capture and store log records.
+CC,SRG-OS-000368-CLD-000040,CAT II,SRG-OS-000368,"For Impact Levels 4 and 5, the Mission Owner must register all cloud-based services, their CSP/CSO, and connection method in the DISA Systems/Network Approval Process (SNAP) database Cloud Module."
+CC,SRG-OS-000368-CLD-000045,CAT II,SRG-OS-000368,The Mission Owner of the Infrastructure as a Service (IaaS)/Platform as a Service (PaaS) must remove orphaned or unused virtual machine (VM) instances.
+CC,SRG-OS-000480-CLD-000025,CAT II,SRG-OS-000480,The Mission owner must obtain Authorizing Official (AO) authorization for each cloud service offering (CSO) implemented in support of production or development environments prior to operational use.
+CC,SRG-OS-000480-CLD-000031,CAT I,SRG-OS-000480,The Mission Owner must select and configure an Impact Level 4/5 cloud service offering (CSO) listed in the DISA Provisional Authorization (PA) DOD Cloud Catalog when hosting Controlled Unclassified Information (CUI).
