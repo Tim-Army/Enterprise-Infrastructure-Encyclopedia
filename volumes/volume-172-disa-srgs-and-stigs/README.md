@@ -3,9 +3,11 @@
 > A practitioner's guide to **DISA Security Requirements Guides (SRGs)** and
 > **Security Technical Implementation Guides (STIGs)**: where they come from,
 > how the content is structured, how to assess and harden Linux, Windows,
-> network devices, applications, containers, and the Fortinet portfolio against
-> them, and how to run a compliance program that keeps systems compliant as STIGs
-> change every quarter.
+> network devices, applications, and containers against them, and how to run a
+> compliance program that keeps systems compliant as STIGs change every
+> quarter. The second half of the volume applies all of it to the Fortinet
+> portfolio, with a feature-by-feature requirement map for twenty Fortinet
+> products.
 
 ## Overview
 
@@ -28,8 +30,10 @@ STIG material appears throughout the encyclopedia as hardening advice inside
 product volumes. This volume explains the framework itself, so those product
 chapters can be read in context.
 
-Chapters move from the framework to the content, the tools, the platforms, and
-finally the program:
+The volume has two parts. Chapters 01 to 09 move from the framework to the
+content, the tools, the platforms, and finally the program. Chapters 10 to 30
+apply that method to the Fortinet portfolio, where only FortiGate has STIGs and
+every other product must be assessed against SRGs:
 
 - **Chapter 01** explains what SRGs and STIGs are, the DoD policies behind
   them, and the chain from 800-53 to STIG rule.
@@ -52,60 +56,31 @@ finally the program:
 - **Chapter 09** runs the program: RMF, finding dispositions, POA&Ms,
   continuous monitoring, metrics, and STIGs compared with CIS Benchmarks.
 - **Chapter 10** covers the Fortinet portfolio: the two FortiGate STIGs and
-  how to meet them on FortiOS, and the SRGs that apply to every other Fortinet
-  product.
-- **Chapter 11** maps every FortiSwitch feature to the FortiSwitchOS releases
-  that support it and to the SRG requirement it implements or must meet.
-- **Chapter 12** does the same for FortiAnalyzer, against the Central Log
-  Server SRG, with the command or GUI location that meets each requirement.
-- **Chapter 13** maps every FortiManager feature to its release, the NDM SRG
-  requirement it meets, and the command that meets it, with emphasis on access
-  control, auditing, and configuration-change control.
-- **Chapter 14** maps every FortiAP feature to its release, the Network WLAN
-  STIG or NDM SRG requirement it meets, and the FortiGate wireless-controller
-  or FortiAP command that meets it.
-- **Chapter 15** maps every FortiExtender feature to its release, the NDM,
-  Router, or VPN SRG requirement it meets, and the FortiGate or FortiExtender
-  command that meets it.
-- **Chapter 16** maps every FortiWeb feature to its release, the ALG or NDM
-  SRG requirement it meets, and the FortiWeb command that meets it.
-- **Chapter 17** maps every FortiMail feature to its release, the ALG or NDM
-  SRG requirement it meets, and the FortiMail command that meets it.
-- **Chapter 18** maps every FortiProxy feature to its release, the ALG or NDM
-  SRG requirement it meets, and the FortiProxy command that meets it.
-- **Chapter 19** maps every FortiADC feature to its release, the ALG, NDM,
-  or VPN SRG requirement it meets, and the FortiADC command that meets it.
-- **Chapter 20** maps every FortiDDoS-F feature to its release, the NDM SRG or
-  Firewall SRG denial-of-service requirement it meets, and the command or web
-  UI pane that meets it.
-- **Chapter 21** maps every FortiSandbox feature to its release, the NDM or
-  IDPS SRG requirement it meets, and the command or web UI pane that meets it.
-- **Chapter 22** maps every FortiVoice feature to its release, the EVVM or NDM
-  SRG requirement it meets, and the web UI pane or command that meets it.
-- **Chapter 23** maps every FortiAuthenticator feature to its release, the AAA
-  Services or NDM SRG requirement it meets, and the web UI pane that meets it.
-- **Chapter 24** maps every FortiPAM feature to its release, the NDM SRG
-  requirement or Application Security and Development STIG rule it meets, and
-  the web UI pane or command that meets it.
-- **Chapter 25** maps every FortiNAC-F feature to its release, the NDM or AAA
-  Services SRG requirement or Cisco ISE NAC STIG pattern rule it relates to,
-  and the command or web UI pane that meets it.
-- **Chapter 26** maps every FortiSIEM feature to its release, the Central Log
-  Server, NDM, or GPOS SRG requirement it meets, and the web UI pane or command
-  that meets it.
-- **Chapter 27** maps every FortiClient and FortiClient EMS feature to its
-  release, the UEM Server, UEM Agent, or VPN SRG requirement it meets, and the
-  EMS pane, FortiClient XML setting, or command that meets it.
-- **Chapter 28** maps every FortiEDR feature to its release, the NDM, UEM, or
-  IDPS SRG requirement it meets, and the web UI pane or command that meets it.
-- **Chapter 29** maps every FortiSASE feature to its release, the Cloud
-  Computing, ALG, VPN, or NDM SRG requirement it relates to, and the portal
-  pane that meets it, separating what Fortinet operates from what the tenant
-  configures.
-- **Chapter 30** maps every FortiGate feature to its release, the FortiGate
-  NDM or Firewall STIG rule it satisfies (all 89 rules) or the IDPS, VPN, ALG,
-  or Router SRG requirement for other functions, and the FortiOS command that
-  meets it.
+  how to meet them on FortiOS, the SRGs that apply to every other Fortinet
+  product, and a summary of what the product maps found, including the gaps
+  that recur across products (FIPS, administrator CAC login, password and
+  lockout details, and banners).
+- **Chapters 11 to 30** are the **product maps**, one per product: FortiSwitch,
+  FortiAnalyzer, FortiManager, FortiAP, FortiExtender, FortiWeb, FortiMail,
+  FortiProxy, FortiADC, FortiDDoS, FortiSandbox, FortiVoice,
+  FortiAuthenticator, FortiPAM, FortiNAC, FortiSIEM, FortiClient and EMS,
+  FortiEDR, FortiSASE, and FortiGate. Each one maps every feature of the
+  product to the release that introduced it, the STIG rule or SRG requirement
+  it relates to, and the command or setting that meets it.
+
+The product maps share one design, so they can be read the same way:
+
+- **Versions** come from Fortinet's per-release documents (feature matrices,
+  New Features Guides, or release notes), from the 7.0 train or the product's
+  oldest current train to the newest.
+- **Requirements** come from the October 2026 DISA library. Each chapter has a
+  requirement reference table with the severity of every requirement it cites.
+- **Commands** were checked automatically against the product's newest CLI
+  reference, or against its Administration Guide where Fortinet publishes no
+  CLI reference.
+- **Product limitations**, the requirements a product cannot meet with its own
+  settings, are documented with a mitigation for each.
+- Both tables in every map chapter can be **downloaded as CSV**.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -124,8 +99,8 @@ except that this volume has no hands-on labs (see
 7. [Network Device STIGs — Management, Routing, and Filtering](chapters/07-network-device-stigs-management-routing-and-filtering.md) — NDM and traffic-plane STIGs, common requirements, and manual assessment with evidence.
 8. [Applications, Databases, Web Servers, Containers, and Cloud](chapters/08-applications-databases-web-servers-containers-and-cloud.md) — the ASD STIG, instance and object STIGs, containers and Iron Bank, and Cloud Computing SRG impact levels.
 9. [Running a STIG Compliance Program](chapters/09-running-a-stig-compliance-program.md) — RMF, dispositions, POA&Ms, continuous monitoring, metrics, and STIGs versus CIS Benchmarks.
-10. [Fortinet Products — STIGs and SRG Mapping](chapters/10-fortinet-products-stigs-and-srg-mapping.md) — the FortiGate NDM and Firewall STIGs on FortiOS, uncovered FortiGate functions, and SRG mapping for every other Fortinet product.
-11. [FortiSwitch Feature, Version, and SRG Map](chapters/11-fortiswitch-feature-version-and-srg-map.md) — all 235 FortiSwitchOS 8.0.0 features with the releases that list them and the Layer 2 Switch, NDM, Router, or AAA Services SRG requirement each maps to.
+10. [Fortinet Products — STIGs and SRG Mapping](chapters/10-fortinet-products-stigs-and-srg-mapping.md) — the FortiGate NDM and Firewall STIGs on FortiOS, uncovered FortiGate functions, SRG mapping for every other Fortinet product, and what the product maps found.
+11. [FortiSwitch Feature, Version, and SRG Map](chapters/11-fortiswitch-feature-version-and-srg-map.md) — all 235 FortiSwitchOS 8.0.0 features with the releases that list them, the Layer 2 Switch, NDM, Router, or AAA Services SRG requirement each maps to, and the command that meets it.
 12. [FortiAnalyzer Feature, Version, and SRG Map](chapters/12-fortianalyzer-feature-version-and-srg-map.md) — 349 FortiAnalyzer features (53 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the Central Log Server or NDM SRG requirement it maps to, and the command that meets it.
 13. [FortiManager Feature, Version, and SRG Map](chapters/13-fortimanager-feature-version-and-srg-map.md) — 487 FortiManager features (52 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the NDM SRG requirement it maps to, and the command that meets it.
 14. [FortiAP Feature, Version, and SRG Map](chapters/14-fortiap-feature-version-and-srg-map.md) — 186 FortiAP features (39 core platform features and every feature in the FortiAP 7.0.0 to 8.0.0 release notes) with the release that introduced each, the Network WLAN STIG or NDM SRG requirement it maps to, and the FortiGate or FortiAP command that meets it.
@@ -187,6 +162,12 @@ tool versions change with them. Confirm the current release of any STIG on the
 DoD Cyber Exchange before assessing against it, and update that file, not
 individual chapters, when the baseline changes.
 
+The product maps in Chapters 11 to 30 reflect Fortinet's documentation as of
+October 2026. Each map chapter names the releases and documents it used, such
+as the FortiOS 8.0.1 CLI Reference for FortiGate. Fortinet adds features in
+patch releases, so check the release notes for anything newer than the release
+range a chapter covers.
+
 ## Building and validating this volume
 
 From the repository root, after completing [SETUP.md](../../SETUP.md):
@@ -197,6 +178,13 @@ scripts/bash/validate.sh
 
 ```bash
 scripts/bash/build-book.sh --format all --volume volume-172-disa-srgs-and-stigs
+```
+
+After changing a table in a product map chapter, regenerate its CSV downloads
+(written to the volume's `data/` folder) and refresh the download links:
+
+```bash
+python scripts/python/export_srg_tables.py
 ```
 
 See the root [README.md](../../README.md#validation) for the complete

@@ -10,6 +10,11 @@
 - Map every major Fortinet product to the SRGs that apply when no STIG exists.
 - Explain how FIPS-CC mode, the DoDIN Approved Products List, and Security
   Fabric management fit into a Fortinet STIG program.
+- Use the product map chapters (Chapters 11 to 30) to find, for any Fortinet
+  feature, the release that introduced it, the requirement it relates to, and
+  the setting that meets it.
+- Recognize the gaps that recur across the Fortinet portfolio, and plan
+  mitigations for them.
 
 ## Theory and Architecture
 
@@ -127,7 +132,80 @@ or hypervisor they run on.
 | **FortiClient** and **FortiClient EMS** | Endpoint VPN and protection agent; its management server | The host operating system STIG for endpoints, with the VPN SRG for the client's remote-access role; the operating system STIG for the EMS server (Windows Server for EMS 7.0 and 7.2; RHEL 9 or Ubuntu for EMS 7.4 and later, which run on Linux), with the Unified Endpoint Management (UEM) Server and Agent SRGs as the closest match for central endpoint management. Chapter 27 maps every FortiClient and EMS feature to its release, SRG requirement, and configuration |
 | **FortiEDR** | Endpoint detection and response | The host operating system STIG for agents; NDM and application requirements for the management console. Chapter 28 maps every FortiEDR feature to its release, SRG requirement, and configuration |
 | **FortiSASE** | Cloud-delivered security service | The Cloud Computing SRG; confirm the offering's authorization status and impact level before use (Chapter 08). Chapter 29 maps every FortiSASE feature to its release, SRG requirement, and portal setting |
-| **FortiGate VM in public cloud** | FortiGate on AWS, Azure, or another cloud | The FortiGate STIGs, plus the Cloud Computing SRG obligations of the hosting environment |
+| **FortiGate VM in public cloud** | FortiGate on AWS, Azure, or another cloud | The FortiGate STIGs, plus the Cloud Computing SRG obligations of the hosting environment. Chapter 30 covers it with FortiGate, in its section on FortiGate VM in public cloud |
+
+### The product map chapters
+
+Chapters 11 to 30 take each product in the table and map **every feature** to
+three things: the release that introduced it, the STIG rule or SRG requirement
+it relates to, and the command or setting that meets that requirement. All
+twenty chapters are built the same way:
+
+- **Versions** come from Fortinet's own per-release documents: the feature
+  matrices for FortiSwitch; the New Features Guides for FortiAnalyzer,
+  FortiManager, FortiClient and EMS, and FortiGate; and the "What's new"
+  sections of the release notes for the other products.
+- **Requirements** come from the October 2026 DISA library, using the SRGs and
+  STIGs in the table above. Each chapter lists every requirement it cites, with
+  its severity, in a requirement reference table.
+- **Commands** were checked automatically against the newest CLI reference for
+  each product. Fortinet publishes no CLI reference for FortiDDoS-F,
+  FortiVoice, FortiAuthenticator, FortiPAM, FortiSIEM, FortiEDR, or FortiSASE,
+  so most of their entries name a web UI pane, checked against the
+  Administration Guide instead.
+- **Features with no requirement of their own** are mapped to the
+  requirement to disable non-essential capabilities, because anything not in
+  use should be off.
+- Both tables in every map chapter can be **downloaded as CSV** for use in a
+  checklist or spreadsheet.
+
+### What the product maps found
+
+Building the maps showed where each product cannot meet a requirement exactly
+with its own settings. The table summarizes the main gaps; each map chapter
+explains them in its "Where the commands come from" section, with a mitigation
+for each.
+
+| Product | Chapter | Features mapped | Requirements used | Command source | Main gaps to plan for |
+| --- | --- | --- | --- | --- | --- |
+| FortiSwitch | 11 | 235 | Layer 2 Switch, NDM, Router, AAA Services | FortiSwitchOS 8.0.0 CLI Reference | OSPF, RIP, and IS-IS authenticate with MD5 only, which is not FIPS 198-1; no VRRP authentication |
+| FortiAnalyzer | 12 | 349 | Central Log Server, NDM | FortiAnalyzer 8.0.0 CLI Reference | Password change rule of 4 characters (the SRG asks for 8); MD5 log checksums; no inactivity disable; time-based lockout; FIPS-CC mode from the console only |
+| FortiManager | 13 | 487 | NDM | FortiManager 8.0.1 CLI Reference | Password change rule of 4 characters; no compromised-password check; CRLs imported by hand; FIPS-CC mode from the console only |
+| FortiAP | 14 | 186 | Network WLAN STIGs, NDM | FortiOS 8.0.1 CLI Reference and the FortiAP CLI appendix | 5-character AP password minimum; no AP banner or NTP setting; lockout only from 7.6.2; FIPS mode only from 7.4.0 |
+| FortiExtender | 15 | 154 | NDM, Router, VPN | FortiExtender 8.0.0 CLI Reference | 12-character password minimum; no lockout setting or banner; no NTP authentication; no FIPS mode documented; IPsec hashes stop at SHA-256 |
+| FortiWeb | 16 | 480 | ALG, NDM | FortiWeb 8.0.8 CLI Reference | No 8-character change rule; NTP authentication and SNMPv3 SHA-2 only from 7.6.1; signed firmware not enforced |
+| FortiMail | 17 | 331 | ALG, NDM | FortiMail 8.0.0 CLI Reference | No NTP authentication; SNMPv3 SHA-2 only from 7.6.5; RADIUS over TLS only from 8.0.0; webmail users see the disclaimer only after login |
+| FortiProxy | 18 | 425 | ALG, NDM | FortiProxy 7.6.7 CLI Reference | Change rule counts unique characters; no compromised-password check; the proxy-user banner reaches browsers only |
+| FortiADC | 19 | 327 | ALG, NDM, VPN | FortiADC 8.0.3 CLI Reference | No PKI or CAC administrator login; no command to enable FIPS-CC mode; web UI TLS settings only from 8.0.4 |
+| FortiDDoS-F | 20 | 292 | NDM, Firewall (denial-of-service requirements) | FortiDDoS-F 8.0.0 Handbook | No PKI or CAC login; no FIPS mode documented; 5-minute IP-based lockout; banner only from 8.0.0; bypass fails open by default |
+| FortiSandbox | 21 | 518 | NDM, IDPS | FortiSandbox 5.2.2 CLI Reference | No direct CAC login (SAML or RADIUS only); no FIPS mode in the 5.2.2 documents; legacy OFTP login and Community Cloud upload on by default |
+| FortiVoice | 22 | 172 | EVVM (session management, endpoint, policy), NDM | FortiVoice 8.0.0 Administration Guide | No banner or account lockout; no PKI login or FIPS mode; weak documented defaults |
+| FortiAuthenticator | 23 | 198 | AAA Services, NDM | FortiAuthenticator 8.0.3 Administration Guide | Administrator lockout by source IP, not account; no CAC administrator login; no FIPS mode documented |
+| FortiPAM | 24 | 366 | NDM, ASD STIG | FortiPAM 7.0.0 Administration Guide | No FIPS mode; banner shown only after login; PKI login only from 7.0.0 |
+| FortiNAC-F | 25 | 172 | NDM, AAA Services, Cisco ISE NAC STIG (as the pattern) | FortiNAC-F 7.6.0 CLI Reference | No FIPS or Common Criteria mode; no DoD banner; CAC only through SAML (7.6.3 and later); signed firmware only from 7.6.3; legacy FortiNAC on CentOS 7 must be migrated |
+| FortiSIEM | 26 | 153 | Central Log Server, NDM, GPOS | FortiSIEM 7.6.0 documentation | Lockout after 5 attempts; banner after login; no CAC login; validated FIPS modules only on RHEL installations; internal certificate checking off by default |
+| FortiClient and EMS | 27 | 185 | UEM Server, UEM Agent, VPN | EMS 8.0.0 documentation, FortiClient XML Reference, and EMS CLI Reference | EMS does not sign the policies it pushes (CAT I); FIPS not supported; lockout ends on a timer; CAC only through SAML |
+| FortiEDR | 28 | 143 | NDM, UEM, IDPS | FortiEDR 7.2.3 Administration Guide | No banner; no FIPS mode documented; lockout after 5 attempts; one registration password shared by all collectors |
+| FortiSASE | 29 | 168 | Cloud Computing, ALG, VPN, NDM | FortiSASE 7.4 Administration Guide | No FedRAMP or DoD authorization or impact level documented; no banners; tunnel cryptography fixed by Fortinet; log retention of 2 to 7 days |
+| FortiGate | 30 | 1,363 | FortiGate NDM and Firewall STIGs (all 89 rules), IDPS, VPN, ALG, Router | FortiOS 8.0.1 CLI Reference | Some STIG fix text no longer matches FortiOS 8.0.1 (`config firewall policy6`, the 8-character change rule, three logging options); no built-in alert for a lost syslog server |
+
+Four gaps recur across the portfolio:
+
+- **FIPS.** FortiGate, FortiManager, FortiAnalyzer, and FortiSwitch have a
+  FIPS-CC mode, and FortiAP has a FIPS mode from 7.4.0, but many other
+  products, including some built on FortiOS, document none. For those, look up a
+  current CMVP certificate for the exact product and version, and record the
+  finding if there is none.
+- **Administrator PKI or CAC login.** Several products have no native CAC
+  login. Where a product supports SAML, sign administrators in through an
+  identity provider that enforces CAC.
+- **Password and lockout details.** Change-character rules, compromised-password
+  checks, lockout by account rather than by address, and lockout that waits for
+  an administrator often fall short. Authenticating administrators against a
+  central AAA server moves those controls to a system that can meet them.
+- **Banners, NTP authentication, and signed firmware.** These are missing or
+  late on several products. Record each one on the POA&M with its mitigation
+  (Chapter 09).
 
 ## Design Considerations
 
@@ -139,6 +217,12 @@ or hypervisor they run on.
   Common Criteria-evaluated behavior. Several CAT I NDM rules depend on approved
   cryptography. Enabling FIPS-CC mode changes device behavior and can require a
   reset of the configuration, so plan it at deployment rather than retrofitting.
+  Many non-FortiOS products have no FIPS mode at all (see *What the product
+  maps found*), so check FIPS status before choosing a product, not after.
+- **Pick releases from the map chapters.** A requirement may depend on a
+  feature introduced in a specific release, such as NTP authentication or
+  signed firmware. The version column of each map chapter sets the minimum
+  release for a compliant design.
 - **Check the DoDIN Approved Products List.** DoD networks generally require
   products listed on the DoD Information Network (DoDIN) Approved Products List.
   APL testing evaluates products against the applicable STIGs and SRGs, and many
@@ -159,8 +243,11 @@ or hypervisor they run on.
 The FortiOS commands below show how the main FortiGate NDM requirements are
 typically met. Values must match the current STIG's fix text, and command
 options vary between FortiOS releases, so check them against the STIG and the
-FortiOS CLI reference for your version. [Volume XIX](../../volume-019-fortinet-network-security/README.md)
-covers FortiGate deployment and hardening in depth.
+FortiOS CLI reference for your version. [Chapter 30](30-fortigate-feature-version-and-stig-map.md)
+gives a command, checked against the FortiOS 8.0.1 CLI Reference, for every one
+of the 89 rules in the two FortiGate STIGs.
+[Volume XIX](../../volume-019-fortinet-network-security/README.md) covers
+FortiGate deployment and hardening in depth.
 
 ### Administrative sessions, lockout, and banner
 
@@ -178,10 +265,15 @@ it shows the Standard Mandatory DoD Notice and Consent Banner (or your
 organization's approved banner):
 
 ```text
-config system replacemsg admin pre_admin-disclaimer-text
-    set buffer "<APPROVED_DOD_NOTICE_AND_CONSENT_BANNER_TEXT>"
+config system replacemsg admin
+    edit "pre_admin-disclaimer-text"
+        set buffer "<APPROVED_DOD_NOTICE_AND_CONSENT_BANNER_TEXT>"
+    next
 end
 ```
+
+This is the FortiOS 8.0.1 syntax, with the message name on an `edit` line. The
+STIG fix text writes it on the `config` line instead.
 
 ### Management access limited to secure protocols
 
@@ -247,6 +339,12 @@ and the version listed for the device on the DoDIN APL.
 - **A command option in the fix text does not exist on your FortiOS release.**
   The STIG may have been written against a different release. Find the
   equivalent setting for your version and record how it meets the requirement.
+  Chapter 30 lists the fix text that no longer matches FortiOS 8.0.1 (for
+  example `config firewall policy6`, which no longer exists because IPv4 and
+  IPv6 share one policy table) and the setting to use instead.
+- **A product cannot meet a requirement with its own settings.** Check the
+  product's map chapter. Each one documents these gaps with a mitigation, such
+  as a central AAA server, a SAML identity provider, or a documented procedure.
 - **Administrators are locked out after enabling remote authentication.** Keep
   one session open while testing, and confirm the account of last resort works
   before closing it.
@@ -269,7 +367,11 @@ and the version listed for the device on the DoDIN APL.
 - Build STIG settings into FortiManager templates or configuration scripts, so
   new devices start compliant.
 - Document the SRG assessment for every Fortinet product without a STIG, and
-  review it each quarter alongside the FortiGate STIG updates.
+  review it each quarter alongside the FortiGate STIG updates. Start from the
+  product's map chapter and its CSV download.
+- Turn off every feature you do not use. The map chapters list each feature
+  with no requirement of its own, and the setting that disables it where one
+  exists.
 
 ## References and Knowledge Checks
 
@@ -284,6 +386,30 @@ and the version listed for the device on the DoDIN APL.
 - DoD Information Network (DoDIN) Approved Products List.
 - Fortinet FortiOS documentation, including the CLI reference and FIPS-CC mode
   guidance, and Fortinet's product lifecycle information.
+- Fortinet New Features Guides, release notes, CLI references, and
+  Administration Guides for each product (docs.fortinet.com); each map chapter
+  names the exact documents and releases it used.
+- The product map chapters:
+  [FortiSwitch (11)](11-fortiswitch-feature-version-and-srg-map.md),
+  [FortiAnalyzer (12)](12-fortianalyzer-feature-version-and-srg-map.md),
+  [FortiManager (13)](13-fortimanager-feature-version-and-srg-map.md),
+  [FortiAP (14)](14-fortiap-feature-version-and-srg-map.md),
+  [FortiExtender (15)](15-fortiextender-feature-version-and-srg-map.md),
+  [FortiWeb (16)](16-fortiweb-feature-version-and-srg-map.md),
+  [FortiMail (17)](17-fortimail-feature-version-and-srg-map.md),
+  [FortiProxy (18)](18-fortiproxy-feature-version-and-srg-map.md),
+  [FortiADC (19)](19-fortiadc-feature-version-and-srg-map.md),
+  [FortiDDoS (20)](20-fortiddos-feature-version-and-srg-map.md),
+  [FortiSandbox (21)](21-fortisandbox-feature-version-and-srg-map.md),
+  [FortiVoice (22)](22-fortivoice-feature-version-and-srg-map.md),
+  [FortiAuthenticator (23)](23-fortiauthenticator-feature-version-and-srg-map.md),
+  [FortiPAM (24)](24-fortipam-feature-version-and-srg-map.md),
+  [FortiNAC (25)](25-fortinac-feature-version-and-srg-map.md),
+  [FortiSIEM (26)](26-fortisiem-feature-version-and-srg-map.md),
+  [FortiClient and EMS (27)](27-forticlient-and-ems-feature-version-and-srg-map.md),
+  [FortiEDR (28)](28-fortiedr-feature-version-and-srg-map.md),
+  [FortiSASE (29)](29-fortisase-feature-version-and-srg-map.md), and
+  [FortiGate (30)](30-fortigate-feature-version-and-stig-map.md).
 - [Volume XIX — Fortinet Network Security](../../volume-019-fortinet-network-security/README.md).
 
 **Knowledge checks:**
@@ -295,6 +421,10 @@ and the version listed for the device on the DoDIN APL.
 5. Why do FortiManager and FortiAnalyzer deserve extra protection in a STIG
    program?
 6. What does FIPS-CC mode change, and why plan it at deployment?
+7. Where do you find the release that introduced a Fortinet feature, and the
+   setting that meets its requirement?
+8. Name three gaps that recur across Fortinet products, and a mitigation for
+   each.
 
 ## Summary and Completion Checklist
 
@@ -305,9 +435,15 @@ inspection, routing) fall back to their SRGs, and every other Fortinet product
 is assessed against the SRGs that match its functions, almost always starting
 with the NDM SRG. FIPS-CC mode, DoDIN APL listing, supported firmware, and a
 hardened FortiManager and FortiAnalyzer round out a Fortinet STIG program.
+Chapters 11 to 30 map every feature of twenty Fortinet products to its release,
+its requirement, and the setting that meets it, and document where each product
+falls short. FIPS, administrator CAC login, password and lockout details, and
+banners are the gaps to plan for most often.
 
 - [ ] Can name the two Fortinet STIGs and what each covers.
 - [ ] Can configure the main FortiGate NDM requirements on FortiOS.
 - [ ] Can map FortiGate functions outside the STIGs to their SRGs.
 - [ ] Can scope the SRGs for any other Fortinet product.
 - [ ] Can explain the roles of FIPS-CC mode and the DoDIN APL.
+- [ ] Can use a product map chapter to scope an assessment and pick a release.
+- [ ] Can plan mitigations for the gaps that recur across Fortinet products.
