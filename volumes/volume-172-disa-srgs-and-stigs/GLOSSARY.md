@@ -57,6 +57,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **SCAP (Security Content Automation Protocol)** — the NIST suite of specifications, including XCCDF and OVAL, for automated security checks.
 - **SCAP benchmark** — the automatable version of a STIG, as a SCAP data stream with OVAL checks, covering only rules that can be automated.
 - **SCAP Compliance Checker (SCC)** — the NIWC Atlantic-developed scanner that runs DISA SCAP benchmarks.
+- **Security point of presence (PoP)** — a Fortinet-operated FortiSASE data center that inspects tenant traffic.
 - **Service Protection Policy (SPP)** — a FortiDDoS policy that groups protected subnets with their own operating mode, learned traffic statistics, thresholds, and protocol profiles.
 - **Session profile** — the FortiMail object that sets SMTP protocol checks, connection and message limits, sender reputation, and DKIM signing for the SMTP sessions an IP-based policy matches.
 - **Severity override** — a change to a finding's severity on a specific asset, allowed only with a documented justification such as a mitigation.

@@ -98,6 +98,10 @@ finally the program:
   EMS pane, FortiClient XML setting, or command that meets it.
 - **Chapter 28** maps every FortiEDR feature to its release, the NDM, UEM, or
   IDPS SRG requirement it meets, and the web UI pane or command that meets it.
+- **Chapter 29** maps every FortiSASE feature to its release, the Cloud
+  Computing, ALG, VPN, or NDM SRG requirement it relates to, and the portal
+  pane that meets it, separating what Fortinet operates from what the tenant
+  configures.
 
 Every chapter follows the standard structure defined in
 [templates/chapter.md](../../templates/chapter.md) and enforced by
@@ -135,10 +139,11 @@ except that this volume has no hands-on labs (see
 26. [FortiSIEM Feature, Version, and SRG Map](chapters/26-fortisiem-feature-version-and-srg-map.md) — 153 FortiSIEM features (63 core platform features and every feature in the 7.0.0 to 7.6.0 release notes) with the release that introduced each, the Central Log Server, NDM, or GPOS SRG requirement it maps to, and the web UI pane or command that meets it.
 27. [FortiClient and EMS Feature, Version, and SRG Map](chapters/27-forticlient-and-ems-feature-version-and-srg-map.md) — 185 FortiClient and FortiClient EMS features (63 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the FortiClient or EMS release that introduced each, the UEM Server, UEM Agent, or VPN SRG requirement it maps to, and the EMS GUI pane, FortiClient XML setting, or emscli command that meets it.
 28. [FortiEDR Feature, Version, and SRG Map](chapters/28-fortiedr-feature-version-and-srg-map.md) — 143 FortiEDR features (53 core platform features and every feature in the 5.0 to 7.2.3 release notes) with the release or Central Manager build that introduced each, the NDM, UEM Server, UEM Agent, or IDPS SRG requirement it maps to, and the web UI pane or command that meets it.
+29. [FortiSASE Feature, Version, and SRG Map](chapters/29-fortisase-feature-version-and-srg-map.md) — 168 FortiSASE features (66 core platform features and every feature in the 24.3.b to 26.3.1.a release notes) with the release that introduced each, the Cloud Computing, ALG, VPN, or NDM SRG requirement it maps to, and the portal pane that meets it, with a split between what Fortinet operates and what the tenant configures.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all twenty-eight chapters.
+- [Index](INDEX.md) — alphabetized topical index across all twenty-nine chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes
