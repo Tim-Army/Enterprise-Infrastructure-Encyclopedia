@@ -1,0 +1,150 @@
+PLAYBOOK: product feature, version, and STIG/SRG map chapters
+==============================================================
+
+Repository: D:\Documents\claude\Enterprise-Infrastructure-Encyclopedia
+Volume:     volumes/volume-172-disa-srgs-and-stigs (DISA SRGs and STIGs)
+
+You are writing ONE chapter for ONE product. Read these chapters first and copy
+their structure, tone, and conventions closely:
+
+  chapters/12-fortianalyzer-feature-version-and-srg-map.md   SRG map, New Features Guide version source (primary model)
+  chapters/11-fortiswitch-feature-version-and-srg-map.md     SRG map, feature-matrix version source
+  chapters/30-fortigate-feature-version-and-stig-map.md      STIG map: every STIG rule mapped, fix text checked
+  chapters/24-fortipam-feature-version-and-srg-map.md        STIG rule IDs with an SRG ID column
+  chapters/10-fortinet-products-stigs-and-srg-mapping.md     vendor overview (which SRGs apply to which product)
+  chapters/31-cisco-products-stigs-and-srg-mapping.md        vendor overview for a vendor with many STIGs
+
+(all under volumes/volume-172-disa-srgs-and-stigs/). If the scratch folders of
+earlier chapters still exist under temp/ (for example temp/faz/, temp/fmg/,
+temp/fgt/), their scripts are useful models: build.py, gen.py, verify.py,
+srg.py, chapter-template.txt.
+
+HARD RULES
+- Work ONLY inside the repository folder. Scratch work goes in temp/<product-slug>/
+  (temp/ is gitignored). Never write .md files under temp/ (the link checker scans
+  temp/); use .txt or .tsv.
+- Write ONLY your one chapter file under volumes/. Do NOT edit book.yml, README.md,
+  PROJECT_STATUS.md, cspell.json, the volume README/INDEX/GLOSSARY, or any other
+  chapter. The coordinator does registration.
+- Do NOT add "[Download ... as CSV](...)" lines; the coordinator's export script
+  adds them. Keep the headings "### The <Product> feature map" and
+  "### Requirement reference" exactly, because the export script finds the
+  tables by them.
+- Do NOT git add, commit, or push.
+- Do NOT fabricate. Every version, requirement ID, and command must come from a
+  source file you downloaded and read. If something cannot be verified, say so in
+  the row (for example "— (no setting found in the <ver> CLI Reference)") rather
+  than guessing.
+- Do not launch subagents.
+- Windows: Python printing needs PYTHONIOENCODING=utf-8. Avoid giant shell heredocs
+  with complex quoting; write data files with the Write tool and run Python on them.
+  pdftotext (xpdf) and pypdf 6.x are installed; pypdf's outline gives PDF bookmarks.
+  Never print large outputs into your context; work with scripts and files.
+
+STEP 1. Sources (download into temp/<product-slug>/)
+- Vendor documentation sites are often JavaScript-rendered. Try curl first; if
+  it fails, use the built-in browser (mcp__Claude_Browser__navigate +
+  javascript_tool) to find document pages and their PDF links, then download
+  with curl -sSfLO. Table-of-contents HTML pages often give full, untruncated
+  feature titles. If a PDF is blocked (HTTP 403), use the online pages and say so.
+- Version source, in order of preference:
+    a) a per-release feature matrix, or
+    b) a New Features Guide (or "What's new" document) per release train, or
+    c) the release notes' "What's new / New features" sections, or
+    d) the administration guide table of contents for the oldest and newest
+       train (only if nothing better exists; say so in the chapter).
+  Cover every release train the vendor still publishes, from the oldest current
+  train to the newest. Say exactly which documents and releases were used.
+- Command source: the newest CLI or command reference. If the product has no
+  CLI reference (GUI-only or a cloud service), say so and use "GUI: <pane>"
+  entries checked against the administration guide.
+- Requirement source: unzip the needed STIG or SRG ZIPs from the newest dated
+  DISA library folder under imports/ into temp/<product-slug>/ (unless the
+  coordinator says they are already unzipped elsewhere) and parse the XCCDF
+  (Group/Rule/version = rule or requirement ID; severity high/medium/low =
+  CAT I/II/III; Group title = the SRG ID a STIG rule implements; title).
+
+STEP 2. Feature list
+- Listed features: every feature from the version source, with truncated
+  titles repaired, sub-topics folded into their parent feature, and duplicates
+  across trains merged (version entries like "7.4.3+; 7.6.0+").
+- Core platform features (category "Core: ..."): the long-standing capabilities
+  the requirements depend on but that predate the oldest source (management
+  access, administrator accounts and roles, remote authentication, password
+  policy, lockout, idle timeout, banner, logging, NTP, SNMPv3, FIPS mode,
+  certificates, backups, firmware, high availability, plus the product's main
+  functional capabilities), dated "<oldest release> or earlier".
+- The version column's wording must match the source ("First listed" for a
+  feature matrix, "Introduced" for a New Features Guide or release notes).
+  Explain the version-entry formats in a small table.
+
+STEP 3. Requirement mapping
+- STIG products: map to the STIG rules. EVERY rule in the product's STIG(s)
+  must appear in the map, attached to the feature that satisfies it; make the
+  build script fail if any rule is unmapped. The requirement reference table
+  has an extra column for the SRG ID each rule implements:
+  | STIG | Rule | Severity | SRG ID | Rule title |.
+- SRG products: map to the SRGs the coordinator names (and only those, unless a
+  clearly better one exists in the library; justify it in the chapter).
+  Reference table: | SRG | Requirement | Severity | Requirement title |.
+- Three relationship kinds: implements, must be configured to meet, or no
+  direct requirement (NONE). NONE rows render as "No direct requirement; if
+  unused, disable (<ABBR> `<non-essential-capabilities rule or requirement>`)",
+  using the rule or requirement the coordinator names, and the chapter says
+  which it is.
+- Use abbreviations in the requirement column and define them in the chapter.
+- The reference table lists every ID used in the map or cited in the prose.
+
+STEP 4. Commands
+- One command cell per feature: the command that configures it to meet the
+  mapped requirement; for NONE rows, the command that disables it if unused;
+  "GUI: <pane>" for GUI-only settings; or "—" when there is nothing to
+  configure. Statements separated by "; ", placeholders in <ANGLE_BRACKETS>,
+  backticks around commands. Never put a raw "|" inside a table cell.
+- For a STIG rule, the rule's fix text is the starting point, but CHECK it
+  against the vendor's command reference: DISA fix text sometimes contains
+  syntax that does not parse or has been removed from newer releases. Use the
+  correct current syntax and document every correction in the chapter.
+- VERIFY every command automatically against the extracted command reference
+  with a script: every command path or mode must exist, every option must exist
+  in that context, and every literal value must be a documented value. Test the
+  verifier with deliberately wrong commands to prove it catches them. Fix every
+  failure, or replace the command with an honest "—" or "GUI:" entry.
+- Document product limitations (requirements the product cannot meet exactly
+  with its own settings) in the "Where the commands come from" section, each
+  with a mitigation.
+
+STEP 5. Chapter
+- File and title as the coordinator gives them.
+- Sections, as in the model chapters: Learning Objectives; Theory and
+  Architecture (with "Where the version data comes from", "Where the SRG data
+  comes from" or "Where the STIG data comes from", and "Where the commands come
+  from"); Design Considerations; Implementation and Automation ("The <Product>
+  feature map", "Requirement reference", "Collecting evidence"); Validation and
+  Troubleshooting; Security and Best Practices; References and Knowledge
+  Checks; Summary and Completion Checklist. No labs.
+- Feature map columns:
+  | Category | Feature | <First listed|Introduced> (<Product OS>) | <STIG rule(s)|SRG requirement(s)> | Command to satisfy the requirement |
+- Link Chapter 03, the vendor's overview chapter, and the most similar earlier
+  map chapter, with relative links.
+- Generate the chapter from a template and a script (keep the template as
+  chapter-template.txt in temp/<product-slug>/), so it can be rebuilt.
+
+STEP 6. Checks (run all, fix all)
+- npx --yes markdownlint-cli2 <chapter>      (no errors for the chapter)
+- npx --yes cspell --no-progress --words-only --unique <chapter>
+    -> do NOT edit cspell.json; list the unknown words in your final report
+       (real product and command words only; fix genuine misspellings).
+- python scripts/python/check_internal_links.py
+
+FINAL REPORT (your last message, concise):
+- Chapter path, row counts (core / listed), number of requirement IDs (and, for
+  a STIG chapter, confirmation that every rule is mapped).
+- Sources used (document names and releases).
+- Verify result (0 failures), and what was changed to an honest "—".
+- Fix text corrections (STIG chapters) and product limitations documented.
+- cspell unknown words to add (space-separated, one line).
+- A one-line README entry in this exact form:
+  <NN>. [<Title>](chapters/<file>.md) — <summary sentence>.
+- Up to three INDEX.md topic lines and up to two GLOSSARY.md term lines you
+  recommend, in the existing formats.
