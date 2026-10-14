@@ -1,0 +1,31 @@
+<!-- Jump to the chapter or section named in the URL fragment (for example
+     Enterprise-Infrastructure-Encyclopedia.html#c12) once the page is ready.
+     Volume pages are several megabytes, and a browser can lose its own jump
+     to the fragment while such a page is still loading, leaving the reader
+     at the top. This repeats the jump when the document is parsed and again
+     when it has finished loading, unless the reader has already scrolled,
+     clicked, or pressed a key. Included in the per-volume builds; on a URL
+     with no fragment it does nothing. -->
+<script>
+  (function () {
+    if (location.hash.length < 2) { return; }
+    var id;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+    var interacted = false;
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (type) {
+      window.addEventListener(type, function () { interacted = true; },
+        { passive: true, once: true });
+    });
+    function jump() {
+      if (interacted) { return; }
+      var target = document.getElementById(id);
+      if (target) { target.scrollIntoView(); }
+    }
+    jump();
+    if (document.readyState === 'complete') { return; }
+    window.addEventListener('load', function () {
+      jump();
+      setTimeout(jump, 300);
+    });
+  })();
+</script>

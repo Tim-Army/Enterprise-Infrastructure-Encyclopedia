@@ -352,6 +352,7 @@ build_volume_html() {
     --include-before-body=publishing/theme-toggle.html \
     --include-after-body="$(footer_for)" \
     --include-after-body=publishing/toc-freeze.html \
+    --include-after-body=publishing/hash-scroll.html \
     --lua-filter=scripts/pandoc/open-links-new-tab.lua \
     --toc --toc-depth=3 \
     --metadata "title=$title" \
