@@ -5201,7 +5201,9 @@
     "Trustpoints",
     "unreachables",
     "UUFB",
-    "vrfri"
+    "vrfri",
+    "mntgrp",
+    "aspath"
   ],
   "ignorePaths": [
     "node_modules/**",

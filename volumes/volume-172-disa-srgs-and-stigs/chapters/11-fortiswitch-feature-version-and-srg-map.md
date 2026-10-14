@@ -491,7 +491,9 @@ Attach both to the SRG-based checklist (Chapter 03).
 - [Chapter 03](03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md)
   (SRG-based assessment) and
   [Chapter 10](10-fortinet-products-stigs-and-srg-mapping.md) (Fortinet
-  products).
+  products), and
+  [Chapter 33](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md)
+  (these requirements aligned with the Cisco switch STIG rules).
 
 **Knowledge checks:**
 

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Export the SRG tables of Volume CLXXII's product map chapters to CSV.
+"""Export the SRG tables of Volume CLXXII's map and crosswalk chapters to CSV.
 
-For every chapter matching volumes/volume-172-disa-srgs-and-stigs/chapters/
-NN-*-feature-version-and-s*-map.md, this script:
+For every chapter in volumes/volume-172-disa-srgs-and-stigs/chapters/ that
+matches one of the KINDS below (product maps: NN-*-feature-version-and-s*-map.md;
+crosswalks: NN-*-crosswalk.md), this script:
 
-- writes the feature map table to data/<chapter>-feature-map.csv and the
-  requirement reference table to data/<chapter>-requirements.csv (UTF-8 with a
-  byte-order mark, so spreadsheet programs show dashes and quotes correctly);
+- writes each table it recognizes, by the heading above it, to
+  data/<chapter>-<suffix>.csv (UTF-8 with a byte-order mark, so spreadsheet
+  programs show dashes and quotes correctly), for example the feature map to
+  data/<chapter>-feature-map.csv;
 - inserts, or refreshes, a download link on the line before each table.
 
 The links point at the published Pages portal, because the HTML and EPUB
@@ -25,12 +27,18 @@ import re
 
 VOLUME = "volume-172-disa-srgs-and-stigs"
 PORTAL = "https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia"
-TABLES = [
-    # (heading prefix, csv suffix, link text)
-    ("### The ", "feature-map", "Download the feature map as CSV"),
-    ("### Requirement reference", "requirements", "Download the requirement reference as CSV"),
+# Per chapter kind: (file glob, [(heading prefix, csv suffix, link text), ...]).
+KINDS = [
+    ("*-feature-version-and-s*-map.md", [
+        ("### The ", "feature-map", "Download the feature map as CSV"),
+        ("### Requirement reference", "requirements", "Download the requirement reference as CSV"),
+    ]),
+    ("*-crosswalk.md", [
+        ("### The crosswalk table", "crosswalk", "Download the crosswalk as CSV"),
+        ("### FortiSwitch requirements with no", "unmatched", "Download the unmatched requirements as CSV"),
+    ]),
 ]
-LINK_RE = re.compile(r"^\[Download the (?:feature map|requirement reference) as CSV\]\(")
+LINK_RE = re.compile(r"^\[Download the [a-z ]+ as CSV\]\(")
 
 
 def split_row(line):
@@ -45,7 +53,7 @@ def plain(cell):
     return cell.replace("`", "")
 
 
-def process(path):
+def process(path, tables):
     stem = os.path.basename(path)[:-3]
     lines = open(path, encoding="utf-8").read().split("\n")
     out, i, written = [], 0, []
@@ -53,7 +61,7 @@ def process(path):
     while i < len(lines):
         line = lines[i]
         if line.startswith("### "):
-            heading = next((t for t in TABLES if line.startswith(t[0])), None)
+            heading = next((t for t in tables if line.startswith(t[0])), None)
         if LINK_RE.match(line):
             # drop an old link (and the blank line after it); it is re-added below
             i += 1
@@ -87,9 +95,10 @@ def process(path):
 
 
 def main():
-    for path in sorted(glob.glob(f"volumes/{VOLUME}/chapters/*-feature-version-and-s*-map.md")):
-        for name, n in process(path):
-            print(f"{name}: {n} rows")
+    for pattern, tables in KINDS:
+        for path in sorted(glob.glob(f"volumes/{VOLUME}/chapters/{pattern}")):
+            for name, n in process(path, tables):
+                print(f"{name}: {n} rows")
 
 
 if __name__ == "__main__":

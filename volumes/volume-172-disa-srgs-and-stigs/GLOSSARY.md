@@ -69,6 +69,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **SRG (Security Requirements Guide)** — a DISA document of product-neutral security requirements for a class of technology.
 - **SRG ID** — the `SRG-...` identifier of the SRG requirement a STIG rule implements.
 - **STIG (Security Technical Implementation Guide)** — a DISA configuration standard for a specific product, with check and fix procedures for each rule.
+- **STIG crosswalk** — an alignment of one vendor's STIG rules with another platform's settings through the SRG requirement each rule implements, used where the second platform, such as FortiSwitch, has no STIG of its own.
 - **STIG ID** — a rule's human-readable product number (for example the `RHEL-09-` or `WN22-` forms), stored in the rule's `version` element.
 - **STIG Library Compilation** — a single ZIP of all public STIGs and SRGs, refreshed with each quarterly release.
 - **STIG Manager** — an open-source web application from NUWC Division Newport for managing STIG assessments across many assets.
