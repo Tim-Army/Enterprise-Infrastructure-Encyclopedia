@@ -103,7 +103,7 @@ Cisco IOS XE                          FortiOS
 show running-config                   show full-configuration
 show version                          get system status
 show ip ssh                           show system admin
-show line vty 0 15                    show system global
+show line vty 0 31                    show system global
 show ntp associations                 show system ntp
 show logging                          show log syslogd setting
 show snmp user                        show system snmp user
@@ -118,7 +118,7 @@ The syntax differs by platform, but the intent is the same. A few common NDM
 settings on Cisco IOS XE:
 
 ```text
-line vty 0 15
+line vty 0 31
  exec-timeout 5 0
  transport input ssh
 !

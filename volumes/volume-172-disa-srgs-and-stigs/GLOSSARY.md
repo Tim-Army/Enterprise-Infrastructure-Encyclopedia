@@ -3,6 +3,7 @@
 Definitions for terms introduced in **Volume CLXXII — DISA SRGs and STIGs**.
 See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 
+- **AAA common criteria policy** — the IOS XE password policy (`aaa common-criteria policy`) that sets minimum length, character classes, and changed characters for local passwords.
 - **AAA Services SRG** — the DISA Authentication, Authorization, and Accounting Services SRG; its account management, lockout, password, PKI, 802.1X, shared-secret, and audit requirements apply to authentication servers such as FortiAuthenticator.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.

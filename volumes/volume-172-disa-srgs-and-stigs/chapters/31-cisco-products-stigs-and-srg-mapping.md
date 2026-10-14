@@ -72,7 +72,7 @@ STIGs in the package apply:
 | Device | Package | STIGs to apply |
 | --- | --- | --- |
 | Router running IOS XE (for example ISR 4000, Catalyst 8000) | IOS XE Router | NDM and RTR |
-| Catalyst 3650, 3850, or 9000 switch (IOS XE) | IOS XE Switch | NDM and L2S; RTR as well if the switch routes |
+| Catalyst 3650, 3850, or 9000 switch (IOS XE) | IOS XE Switch | NDM and L2S; RTR as well if the switch routes. Chapter 32 maps every Catalyst 9000 feature to these rules |
 | Catalyst 2960-family switch (classic IOS) | IOS Switch | NDM and L2S; RTR as well if the switch routes |
 | Router running classic IOS | IOS Router | NDM and RTR |
 | Router running IOS XR (for example ASR 9000, NCS) | IOS XR Router | NDM and RTR |
@@ -235,7 +235,7 @@ service password-encryption
 !
 line con 0
  exec-timeout 5 0
-line vty 0 4
+line vty 0 31
  exec-timeout 5 0
  transport input ssh
 !
@@ -243,6 +243,12 @@ login block-for 900 attempts 3 within 120
 login on-failure log
 login on-success log
 ```
+
+Configure every VTY line, not only the first few. From IOS XE 17.1.1, a
+Catalyst 9300 has 32 VTY lines by default (16 before that), so the examples use
+`line vty 0 31`; check the range on your device with `show line`. The fix text
+examples configure only lines 0 to 4, which would leave the rest without the
+timeout, SSH-only access, and AAA login.
 
 The fix text for `CISC-ND-000470` lists more services to disable, including
 BOOTP, DNS server, identd, finger, rcp and rsh, and call-home. Disable any that
@@ -274,7 +280,7 @@ aaa authentication login CONSOLE group RADIUS_SERVERS local
 !
 line con 0
  login authentication CONSOLE
-line vty 0 4
+line vty 0 31
  login authentication LOGIN_AUTHENTICATION
 ```
 
@@ -331,7 +337,7 @@ crypto ikev2 policy 1
 ### Collecting evidence
 
 Collect `show running-config`, `show version`, `show ip ssh`,
-`show line vty 0 4`, `show ntp associations`, `show logging`, and
+`show line vty 0 31`, `show ntp associations`, `show logging`, and
 `show snmp user` from each IOS or IOS XE device (Chapter 07). On an ASA, also
 collect `show running-config all` for the settings that do not appear in the
 default output. Attach the output to each rule in the checklist.

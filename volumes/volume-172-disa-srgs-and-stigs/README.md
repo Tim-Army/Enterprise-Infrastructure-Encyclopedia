@@ -33,8 +33,8 @@ chapters can be read in context.
 The volume has three parts. Chapters 01 to 09 move from the framework to the
 content, the tools, the platforms, and finally the program. Chapters 10 to 30
 apply that method to the Fortinet portfolio, where only FortiGate has STIGs and
-every other product must be assessed against SRGs. Chapter 31 does the same for
-Cisco, which has the broadest STIG coverage of any network vendor:
+every other product must be assessed against SRGs. Chapters 31 and 32 do the
+same for Cisco, which has the broadest STIG coverage of any network vendor:
 
 - **Chapter 01** explains what SRGs and STIGs are, the DoD policies behind
   them, and the chain from 800-53 to STIG rule.
@@ -72,6 +72,10 @@ Cisco, which has the broadest STIG coverage of any network vendor:
   ten Cisco STIG packages (25 STIGs, 1,096 rules), how to choose the right one
   for a device, their CAT I requirements and how to meet them, and the SRGs for
   Cisco products without a STIG.
+- **Chapter 32** is the first Cisco product map: every Catalyst 9000 (IOS XE)
+  switch feature mapped to the release that introduced it, the IOS XE Switch
+  STIG rule it satisfies (all 152 rules), and the verified command, with the
+  DISA fix text that needed correcting.
 
 The product maps share one design, so they can be read the same way:
 
@@ -126,10 +130,11 @@ except that this volume has no hands-on labs (see
 29. [FortiSASE Feature, Version, and SRG Map](chapters/29-fortisase-feature-version-and-srg-map.md) — 168 FortiSASE features (66 core platform features and every feature in the 24.3.b to 26.3.1.a release notes) with the release that introduced each, the Cloud Computing, ALG, VPN, or NDM SRG requirement it maps to, and the portal pane that meets it, with a split between what Fortinet operates and what the tenant configures.
 30. [FortiGate Feature, Version, and STIG Map](chapters/30-fortigate-feature-version-and-stig-map.md) — 1,363 FortiGate features (72 core platform features and every feature in the FortiOS 7.0 to 8.0 New Features Guides) with the release that introduced each, the FortiGate Firewall NDM or Firewall STIG rule it satisfies (all 89 rules) or the IDPS, VPN, ALG, or Router SRG requirement for other functions, and the FortiOS 8.0.1 command that meets it, plus the Cloud Computing SRG obligations for FortiGate VM in public cloud.
 31. [Cisco Products — STIGs and SRG Mapping](chapters/31-cisco-products-stigs-and-srg-mapping.md) — the ten Cisco STIG packages (IOS, IOS XE, IOS XR, NX-OS, ASA, ISE, ACI, and Secure Network Analytics), choosing the package and STIGs for a device, CAT I requirements and IOS XE and ASA examples, and SRG mapping for Cisco products without a STIG.
+32. [Cisco Catalyst Switch Feature, Version, and STIG Map](chapters/32-cisco-catalyst-switch-feature-version-and-stig-map.md) — 352 Cisco Catalyst 9000 switch features (72 core platform features and every software feature in the Catalyst 9300 IOS XE 17.1.x to 26.2.x release notes) with the release that introduced each, the Cisco IOS XE Switch NDM, L2S, or RTR STIG rule it satisfies (all 152 rules, with severity and SRG ID), and the IOS XE command that meets it, with every corrected fix text listed.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all thirty-one chapters.
+- [Index](INDEX.md) — alphabetized topical index across all thirty-two chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

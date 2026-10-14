@@ -1,0 +1,153 @@
+﻿STIG,Rule,Severity,SRG ID,Rule title
+C-NDM,CISC-ND-000010,CAT II,SRG-APP-000001-NDM-000200,The Cisco switch must be configured to limit the number of concurrent management sessions to an organization-defined number.
+C-NDM,CISC-ND-000090,CAT II,SRG-APP-000026-NDM-000208,The Cisco switch must be configured to automatically audit account creation.
+C-NDM,CISC-ND-000100,CAT II,SRG-APP-000027-NDM-000209,The Cisco switch must be configured to automatically audit account modification.
+C-NDM,CISC-ND-000110,CAT II,SRG-APP-000028-NDM-000210,The Cisco switch must be configured to automatically audit account disabling actions.
+C-NDM,CISC-ND-000120,CAT II,SRG-APP-000029-NDM-000211,The Cisco switch must be configured to automatically audit account removal actions.
+C-NDM,CISC-ND-000140,CAT II,SRG-APP-000038-NDM-000213,The Cisco switch must be configured to enforce approved authorizations for controlling the flow of management information within the device based on control policies.
+C-NDM,CISC-ND-000150,CAT II,SRG-APP-000065-NDM-000214,"The Cisco switch must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must lock out the user account from accessing the device for 15 minutes."
+C-NDM,CISC-ND-000160,CAT II,SRG-APP-000068-NDM-000215,The Cisco switch must be configured to display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.
+C-NDM,CISC-ND-000210,CAT II,SRG-APP-000080-NDM-000220,The Cisco device must be configured to audit all administrator activity.
+C-NDM,CISC-ND-000280,CAT II,SRG-APP-000096-NDM-000226,The Cisco switch must produce audit records containing information to establish when (date and time) the events occurred.
+C-NDM,CISC-ND-000290,CAT II,SRG-APP-000097-NDM-000227,The Cisco switch must produce audit records containing information to establish where the events occurred.
+C-NDM,CISC-ND-000330,CAT II,SRG-APP-000101-NDM-000231,The Cisco switch must be configured to generate audit records containing the full-text recording of privileged commands.
+C-NDM,CISC-ND-000380,CAT II,SRG-APP-000119-NDM-000236,The Cisco switch must be configured to protect audit information from unauthorized modification.
+C-NDM,CISC-ND-000390,CAT II,SRG-APP-000120-NDM-000237,The Cisco switch must be configured to protect audit information from unauthorized deletion.
+C-NDM,CISC-ND-000460,CAT II,SRG-APP-000133-NDM-000244,The Cisco switch must be configured to limit privileges to change the software resident within software libraries.
+C-NDM,CISC-ND-000470,CAT I,SRG-APP-000142-NDM-000245,The Cisco switch must be configured to prohibit the use of all unnecessary and nonsecure functions and services.
+C-NDM,CISC-ND-000490,CAT II,SRG-APP-000148-NDM-000346,The Cisco switch must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+C-NDM,CISC-ND-000550,CAT II,SRG-APP-000164-NDM-000252,The Cisco switch must be configured to enforce a minimum 15-character password length.
+C-NDM,CISC-ND-000570,CAT II,SRG-APP-000166-NDM-000254,The Cisco switch must be configured to enforce password complexity by requiring that at least one uppercase character be used.
+C-NDM,CISC-ND-000580,CAT II,SRG-APP-000167-NDM-000255,The Cisco switch must be configured to enforce password complexity by requiring that at least one lowercase character be used.
+C-NDM,CISC-ND-000590,CAT II,SRG-APP-000168-NDM-000256,The Cisco switch must be configured to enforce password complexity by requiring that at least one numeric character be used.
+C-NDM,CISC-ND-000600,CAT II,SRG-APP-000169-NDM-000257,The Cisco switch must be configured to enforce password complexity by requiring that at least one special character be used.
+C-NDM,CISC-ND-000610,CAT II,SRG-APP-000170-NDM-000329,"The Cisco switch must be configured to require that when a password is changed, the characters are changed in at least eight of the positions within the password."
+C-NDM,CISC-ND-000620,CAT I,SRG-APP-000171-NDM-000258,The Cisco switch must only store cryptographic representations of passwords.
+C-NDM,CISC-ND-000720,CAT I,SRG-APP-000190-NDM-000267,The Cisco switch must be configured to terminate all network connections associated with device management after five minutes of inactivity.
+C-NDM,CISC-ND-000880,CAT II,SRG-APP-000319-NDM-000283,The Cisco switch must be configured to automatically audit account enabling actions.
+C-NDM,CISC-ND-000980,CAT II,SRG-APP-000357-NDM-000293,The Cisco switch must be configured to allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.
+C-NDM,CISC-ND-001000,CAT II,SRG-APP-000360-NDM-000295,The Cisco switch must be configured to generate an alert for all audit failure events.
+C-NDM,CISC-ND-001030,CAT II,SRG-APP-000373-NDM-000298,The Cisco switch must be configured to synchronize its clock with the primary and secondary time sources using redundant authoritative time sources.
+C-NDM,CISC-ND-001130,CAT II,SRG-APP-000395-NDM-000310,The Cisco switch must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).
+C-NDM,CISC-ND-001140,CAT II,SRG-APP-000395-NDM-000310,The Cisco switch must be configured to encrypt SNMP messages using a FIPS 140-2 approved algorithm.
+C-NDM,CISC-ND-001150,CAT II,SRG-APP-000395-NDM-000347,The Cisco switch must be configured to authenticate Network Time Protocol (NTP) sources using authentication that is cryptographically based.
+C-NDM,CISC-ND-001200,CAT I,SRG-APP-000411-NDM-000330,The Cisco switch must be configured to use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of remote maintenance sessions.
+C-NDM,CISC-ND-001210,CAT I,SRG-APP-000412-NDM-000331,The Cisco switch must be configured to implement cryptographic mechanisms to protect the confidentiality of remote maintenance sessions.
+C-NDM,CISC-ND-001250,CAT II,SRG-APP-000499-NDM-000319,The Cisco switch must be configured to generate log records when administrator privileges are deleted.
+C-NDM,CISC-ND-001260,CAT II,SRG-APP-000503-NDM-000320,The Cisco switch must be configured to generate audit records when successful/unsuccessful logon attempts occur.
+C-NDM,CISC-ND-001270,CAT II,SRG-APP-000504-NDM-000321,The Cisco switch must be configured to generate log records for privileged activities.
+C-NDM,CISC-ND-001370,CAT I,SRG-APP-000516-NDM-000336,The Cisco switch must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.
+C-NDM,CISC-ND-001410,CAT II,SRG-APP-000516-NDM-000340,The Cisco switch must be configured to support organizational requirements to conduct backups of the configuration when changes occur.
+C-NDM,CISC-ND-001440,CAT II,SRG-APP-000516-NDM-000344,The Cisco switch must be configured to obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+C-NDM,CISC-ND-001450,CAT I,SRG-APP-000516-NDM-000350,The Cisco switch must be configured to send log data to at least two central log servers for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO).
+C-NDM,CISC-ND-001470,CAT I,SRG-APP-000516-NDM-000351,The Cisco switch must be running an IOS release that is currently supported by Cisco Systems.
+C-L2S,CISC-L2-000020,CAT I,SRG-NET-000148-L2S-000015,The Cisco switch must uniquely identify and authenticate all network-connected endpoint devices before establishing any connection.
+C-L2S,CISC-L2-000030,CAT II,SRG-NET-000168-L2S-000019,The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available.
+C-L2S,CISC-L2-000040,CAT II,SRG-NET-000193-L2S-000020,The Cisco switch must manage excess bandwidth to limit the effects of packet flooding types of denial-of-service (DoS) attacks.
+C-L2S,CISC-L2-000090,CAT III,SRG-NET-000362-L2S-000021,The Cisco switch must have Root Guard enabled on all switch ports connecting to access layer switches.
+C-L2S,CISC-L2-000100,CAT II,SRG-NET-000362-L2S-000022,The Cisco switch must have BPDU Guard enabled on all user-facing or untrusted access switch ports.
+C-L2S,CISC-L2-000110,CAT II,SRG-NET-000362-L2S-000023,The Cisco switch must have STP Loop Guard enabled.
+C-L2S,CISC-L2-000120,CAT II,SRG-NET-000362-L2S-000024,The Cisco switch must have Unknown Unicast Flood Blocking (UUFB) enabled.
+C-L2S,CISC-L2-000130,CAT II,SRG-NET-000362-L2S-000025,The Cisco switch must have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources.
+C-L2S,CISC-L2-000140,CAT II,SRG-NET-000362-L2S-000026,The Cisco switch must have IP Source Guard enabled on all user-facing or untrusted access switch ports.
+C-L2S,CISC-L2-000150,CAT II,SRG-NET-000362-L2S-000027,The Cisco switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.
+C-L2S,CISC-L2-000160,CAT III,SRG-NET-000512-L2S-000001,The Cisco switch must have Storm Control configured on all host-facing switchports.
+C-L2S,CISC-L2-000170,CAT III,SRG-NET-000512-L2S-000002,The Cisco switch must have IGMP or MLD Snooping configured on all VLANs.
+C-L2S,CISC-L2-000180,CAT II,SRG-NET-000512-L2S-000003,The Cisco switch must implement Rapid STP where VLANs span multiple switches with redundant links.
+C-L2S,CISC-L2-000190,CAT II,SRG-NET-000512-L2S-000004,The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections.
+C-L2S,CISC-L2-000200,CAT II,SRG-NET-000512-L2S-000005,The Cisco switch must have all trunk links enabled statically.
+C-L2S,CISC-L2-000210,CAT II,SRG-NET-000512-L2S-000007,The Cisco switch must have all disabled switch ports assigned to an unused VLAN.
+C-L2S,CISC-L2-000220,CAT II,SRG-NET-000512-L2S-000008,The Cisco switch must not have the default VLAN assigned to any host-facing switch ports.
+C-L2S,CISC-L2-000230,CAT II,SRG-NET-000512-L2S-000009,The Cisco switch must have the default VLAN pruned from all trunk ports that do not require it.
+C-L2S,CISC-L2-000240,CAT II,SRG-NET-000512-L2S-000010,The Cisco switch must not use the default VLAN for management traffic.
+C-L2S,CISC-L2-000250,CAT II,SRG-NET-000512-L2S-000011,The Cisco switch must have all user-facing or untrusted ports configured as access switch ports.
+C-L2S,CISC-L2-000260,CAT II,SRG-NET-000512-L2S-000012,The Cisco switch must have the native VLAN assigned to an ID other than the default VLAN for all 802.1q trunk links.
+C-L2S,CISC-L2-000270,CAT III,SRG-NET-000512-L2S-000013,The Cisco switch must not have any switchports assigned to the native VLAN.
+C-RTR,CISC-RT-000010,CAT II,SRG-NET-000018-RTR-000001,The Cisco switch must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.
+C-RTR,CISC-RT-000050,CAT II,SRG-NET-000168-RTR-000078,The Cisco switch must be configured to enable routing protocol authentication using FIPS 198-1 algorithms with keys not exceeding 180 days of lifetime.
+C-RTR,CISC-RT-000060,CAT III,SRG-NET-000019-RTR-000007,The Cisco switch must be configured to have all inactive layer 3 interfaces disabled.
+C-RTR,CISC-RT-000090,CAT II,SRG-NET-000362-RTR-000109,The Cisco switch must not be configured to have any zero-touch deployment feature enabled when connected to an operational network.
+C-RTR,CISC-RT-000120,CAT I,SRG-NET-000362-RTR-000110,The Cisco switch must be configured to protect against or limit the effects of denial-of-service (DoS) attacks by employing control plane protection.
+C-RTR,CISC-RT-000150,CAT II,SRG-NET-000362-RTR-000111,The Cisco switch must be configured to have Gratuitous ARP disabled on all external interfaces.
+C-RTR,CISC-RT-000160,CAT III,SRG-NET-000362-RTR-000112,The Cisco switch must be configured to have IP directed broadcast disabled on all interfaces.
+C-RTR,CISC-RT-000170,CAT II,SRG-NET-000362-RTR-000113,The Cisco switch must be configured to have Internet Control Message Protocol (ICMP) unreachable messages disabled on all external interfaces.
+C-RTR,CISC-RT-000180,CAT II,SRG-NET-000362-RTR-000114,The Cisco switch must be configured to have Internet Control Message Protocol (ICMP) mask reply messages disabled on all external interfaces.
+C-RTR,CISC-RT-000190,CAT II,SRG-NET-000362-RTR-000115,The Cisco switch must be configured to have Internet Control Message Protocol (ICMP) redirect messages disabled on all external interfaces.
+C-RTR,CISC-RT-000200,CAT III,SRG-NET-000078-RTR-000001,The Cisco switch must be configured to log all packets that have been dropped at interfaces via an ACL.
+C-RTR,CISC-RT-000210,CAT II,SRG-NET-000076-RTR-000001,The Cisco switch must be configured to produce audit records containing information to establish where the events occurred.
+C-RTR,CISC-RT-000220,CAT II,SRG-NET-000077-RTR-000001,The Cisco switch must be configured to produce audit records containing information to establish the source of the events.
+C-RTR,CISC-RT-000230,CAT III,SRG-NET-000019-RTR-000001,The Cisco switch must be configured to disable the auxiliary port unless it is connected to a secured modem providing encryption and authentication.
+C-RTR,CISC-RT-000235,CAT II,SRG-NET-000512-RTR-000100,The Cisco switch must be configured to have Cisco Express Forwarding enabled.
+C-RTR,CISC-RT-000236,CAT III,SRG-NET-000512-RTR-000012,The Cisco switch must be configured to advertise a hop limit of at least 32 in Switch Advertisement messages for IPv6 stateless auto-configuration deployments.
+C-RTR,CISC-RT-000237,CAT II,SRG-NET-000512-RTR-000013,The Cisco switch must not be configured to use IPv6 Site Local Unicast addresses.
+C-RTR,CISC-RT-000240,CAT I,SRG-NET-000202-RTR-000001,The Cisco perimeter switch must be configured to deny network traffic by default and allow network traffic by exception.
+C-RTR,CISC-RT-000250,CAT II,SRG-NET-000019-RTR-000002,The Cisco perimeter switch must be configured to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.
+C-RTR,CISC-RT-000260,CAT II,SRG-NET-000364-RTR-000109,The Cisco perimeter switch must be configured to only allow incoming communications from authorized sources to be routed to authorized destinations.
+C-RTR,CISC-RT-000270,CAT II,SRG-NET-000364-RTR-000110,The Cisco perimeter switch must be configured to block inbound packets with source Bogon IP address prefixes.
+C-RTR,CISC-RT-000310,CAT I,SRG-NET-000205-RTR-000014,The Cisco perimeter switch must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field via egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).
+C-RTR,CISC-RT-000320,CAT II,SRG-NET-000205-RTR-000003,The Cisco perimeter switch must be configured to filter traffic destined to the enclave in accordance with the guidelines contained in DoD Instruction 8551.1.
+C-RTR,CISC-RT-000330,CAT II,SRG-NET-000205-RTR-000004,The Cisco perimeter switch must be configured to filter ingress traffic at the external interface on an inbound direction.
+C-RTR,CISC-RT-000340,CAT II,SRG-NET-000205-RTR-000005,The Cisco perimeter switch must be configured to filter egress traffic at the internal interface on an inbound direction.
+C-RTR,CISC-RT-000350,CAT II,SRG-NET-000205-RTR-000015,The Cisco perimeter switch must be configured to block all packets with any IP options.
+C-RTR,CISC-RT-000360,CAT III,SRG-NET-000364-RTR-000111,The Cisco perimeter switch must be configured to have Link Layer Discovery Protocol (LLDP) disabled on all external interfaces.
+C-RTR,CISC-RT-000370,CAT III,SRG-NET-000364-RTR-000111,The Cisco perimeter switch must be configured to have Cisco Discovery Protocol (CDP) disabled on all external interfaces.
+C-RTR,CISC-RT-000380,CAT II,SRG-NET-000364-RTR-000112,The Cisco perimeter switch must be configured to have Proxy ARP disabled on all external interfaces.
+C-RTR,CISC-RT-000390,CAT II,SRG-NET-000364-RTR-000113,The Cisco perimeter switch must be configured to block all outbound management traffic.
+C-RTR,CISC-RT-000391,CAT II,SRG-NET-000512-RTR-000014,The Cisco perimeter switch must be configured to suppress Router Advertisements on all external IPv6-enabled interfaces.
+C-RTR,CISC-RT-000392,CAT II,SRG-NET-000364-RTR-000200,The Cisco perimeter switch must be configured to drop IPv6 undetermined transport packets.
+C-RTR,CISC-RT-000393,CAT II,SRG-NET-000364-RTR-000201,"The Cisco perimeter switch must be configured drop IPv6 packets with a Routing Header type 0, 1, or 3-255."
+C-RTR,CISC-RT-000394,CAT II,SRG-NET-000364-RTR-000202,The Cisco perimeter switch must be configured to drop IPv6 packets containing a Hop-by-Hop header with invalid option type values.
+C-RTR,CISC-RT-000395,CAT II,SRG-NET-000364-RTR-000203,The Cisco perimeter switch must be configured to drop IPv6 packets containing a Destination Option header with invalid option type values.
+C-RTR,CISC-RT-000396,CAT II,SRG-NET-000364-RTR-000204,The Cisco perimeter switch must be configured to drop IPv6 packets containing an extension header with the Endpoint Identification option.
+C-RTR,CISC-RT-000397,CAT II,SRG-NET-000364-RTR-000205,The Cisco perimeter switch must be configured to drop IPv6 packets containing the NSAP address option within Destination Option header.
+C-RTR,CISC-RT-000398,CAT II,SRG-NET-000364-RTR-000206,The Cisco perimeter switch must be configured to drop IPv6 packets containing a Hop-by-Hop or Destination Option extension header with an undefined option type.
+C-RTR,CISC-RT-000450,CAT II,SRG-NET-000205-RTR-000012,The Cisco switch must be configured to only permit management traffic that ingresses and egresses the out-of-band management (OOBM) interface.
+C-RTR,CISC-RT-000470,CAT III,SRG-NET-000362-RTR-000124,The Cisco BGP switch must be configured to enable the Generalized TTL Security Mechanism (GTSM).
+C-RTR,CISC-RT-000480,CAT II,SRG-NET-000230-RTR-000002,The Cisco BGP switch must be configured to use a unique key for each autonomous system (AS) that it peers with.
+C-RTR,CISC-RT-000490,CAT II,SRG-NET-000018-RTR-000002,The Cisco BGP switch must be configured to reject inbound route advertisements for any Bogon prefixes.
+C-RTR,CISC-RT-000500,CAT II,SRG-NET-000018-RTR-000003,The Cisco BGP switch must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).
+C-RTR,CISC-RT-000510,CAT II,SRG-NET-000018-RTR-000004,The Cisco BGP switch must be configured to reject inbound route advertisements from a customer edge (CE) switch for prefixes that are not allocated to that customer.
+C-RTR,CISC-RT-000520,CAT II,SRG-NET-000018-RTR-000005,The Cisco BGP switch must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).
+C-RTR,CISC-RT-000530,CAT II,SRG-NET-000205-RTR-000006,The Cisco BGP switch must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.
+C-RTR,CISC-RT-000540,CAT III,SRG-NET-000018-RTR-000006,The Cisco BGP switch must be configured to reject route advertisements from BGP peers that do not list their autonomous system (AS) number as the first AS in the AS_PATH attribute.
+C-RTR,CISC-RT-000550,CAT III,SRG-NET-000018-RTR-000010,The Cisco BGP switch must be configured to reject route advertisements from CE switches with an originating AS in the AS_PATH attribute that does not belong to that customer.
+C-RTR,CISC-RT-000560,CAT II,SRG-NET-000362-RTR-000117,The Cisco BGP switch must be configured to use the maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks.
+C-RTR,CISC-RT-000570,CAT III,SRG-NET-000362-RTR-000118,"The Cisco BGP switch must be configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer."
+C-RTR,CISC-RT-000580,CAT III,SRG-NET-000512-RTR-000001,The Cisco BGP switch must be configured to use its loopback address as the source address for iBGP peering sessions.
+C-RTR,CISC-RT-000590,CAT III,SRG-NET-000512-RTR-000002,The Cisco MPLS switch must be configured to use its loopback address as the source address for LDP peering sessions.
+C-RTR,CISC-RT-000600,CAT III,SRG-NET-000512-RTR-000003,The Cisco MPLS switch must be configured to synchronize Interior Gateway Protocol (IGP) and LDP to minimize packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.
+C-RTR,CISC-RT-000610,CAT III,SRG-NET-000193-RTR-000001,The MPLS switch with RSVP-TE enabled must be configured with message pacing to adjust maximum burst and maximum number of RSVP messages to an output queue based on the link speed and input queue size of adjacent core switches.
+C-RTR,CISC-RT-000620,CAT II,SRG-NET-000512-RTR-000004,The Cisco MPLS switch must be configured to have TTL Propagation disabled.
+C-RTR,CISC-RT-000630,CAT I,SRG-NET-000512-RTR-000005,The Cisco PE switch must be configured to have each Virtual Routing and Forwarding (VRF) instance bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.
+C-RTR,CISC-RT-000640,CAT I,SRG-NET-000512-RTR-000006,The Cisco PE switch must be configured to have each Virtual Routing and Forwarding (VRF) instance with the appropriate Route Target (RT).
+C-RTR,CISC-RT-000650,CAT II,SRG-NET-000512-RTR-000007,The Cisco PE switch must be configured to have each VRF with the appropriate Route Distinguisher (RD).
+C-RTR,CISC-RT-000660,CAT II,SRG-NET-000343-RTR-000001,The Cisco PE switch providing MPLS Layer 2 Virtual Private Network (L2VPN) services must be configured to authenticate targeted Label Distribution Protocol (LDP) sessions used to exchange virtual circuit (VC) information using a FIPS-approved message authentication code algorithm.
+C-RTR,CISC-RT-000670,CAT I,SRG-NET-000512-RTR-000008,The Cisco PE switch providing MPLS Virtual Private Wire Service (VPWS) must be configured to have the appropriate virtual circuit identification (VC ID) for each attachment circuit.
+C-RTR,CISC-RT-000680,CAT I,SRG-NET-000512-RTR-000009,The Cisco PE switch providing Virtual Private LAN Services (VPLS) must be configured to have all attachment circuits defined to the virtual forwarding instance (VFI) with the globally unique VPN ID assigned for each customer VLAN.
+C-RTR,CISC-RT-000690,CAT III,SRG-NET-000512-RTR-000010,The Cisco PE switch must be configured to enforce the split-horizon rule for all pseudowires within a Virtual Private LAN Services (VPLS) bridge domain.
+C-RTR,CISC-RT-000700,CAT II,SRG-NET-000193-RTR-000002,The Cisco PE switch providing Virtual Private LAN Services (VPLS) must be configured to have traffic storm control thresholds on CE-facing interfaces.
+C-RTR,CISC-RT-000710,CAT III,SRG-NET-000362-RTR-000119,The Cisco PE switch must be configured to implement Internet Group Management Protocol (IGMP) or Multicast Listener Discovery (MLD) snooping for each Virtual Private LAN Services (VPLS) bridge domain.
+C-RTR,CISC-RT-000720,CAT II,SRG-NET-000192-RTR-000002,The Cisco PE switch must be configured to limit the number of MAC addresses it can learn for each Virtual Private LAN Services (VPLS) bridge domain.
+C-RTR,CISC-RT-000730,CAT I,SRG-NET-000205-RTR-000007,The Cisco PE switch must be configured to block any traffic that is destined to the IP core infrastructure.
+C-RTR,CISC-RT-000740,CAT II,SRG-NET-000205-RTR-000008,The Cisco PE switch must be configured with Unicast Reverse Path Forwarding (uRPF) loose mode enabled on all CE-facing interfaces.
+C-RTR,CISC-RT-000750,CAT II,SRG-NET-000205-RTR-000016,The Cisco PE switch must be configured to ignore or drop all packets with any IP options.
+C-RTR,CISC-RT-000760,CAT III,SRG-NET-000193-RTR-000113,The Cisco PE switch must be configured to enforce a Quality-of-Service (QoS) policy to provide preferred treatment for mission-critical applications.
+C-RTR,CISC-RT-000770,CAT III,SRG-NET-000193-RTR-000114,The Cisco P switch must be configured to enforce a Quality-of-Service (QoS) policy to provide preferred treatment for mission-critical applications.
+C-RTR,CISC-RT-000780,CAT II,SRG-NET-000193-RTR-000112,The Cisco switch must be configured to enforce a Quality-of-Service (QoS) policy to limit the effects of packet flooding denial-of-service (DoS) attacks.
+C-RTR,CISC-RT-000790,CAT II,SRG-NET-000019-RTR-000003,The Cisco multicast switch must be configured to disable Protocol Independent Multicast (PIM) on all interfaces that are not required to support multicast routing.
+C-RTR,CISC-RT-000800,CAT II,SRG-NET-000019-RTR-000004,The Cisco multicast switch must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.
+C-RTR,CISC-RT-000810,CAT III,SRG-NET-000019-RTR-000005,The Cisco multicast edge switch must be configured to establish boundaries for administratively scoped multicast traffic.
+C-RTR,CISC-RT-000820,CAT III,SRG-NET-000362-RTR-000120,The Cisco multicast Rendezvous Point (RP) switch must be configured to limit the multicast forwarding cache so that its resources are not saturated by managing an overwhelming number of Protocol Independent Multicast (PIM) and Multicast Source Discovery Protocol (MSDP) source-active entries.
+C-RTR,CISC-RT-000830,CAT III,SRG-NET-000019-RTR-000013,The Cisco multicast Rendezvous Point (RP) switch must be configured to filter Protocol Independent Multicast (PIM) Register messages received from the Designated switch (DR) for any undesirable multicast groups and sources.
+C-RTR,CISC-RT-000840,CAT III,SRG-NET-000019-RTR-000014,The Cisco multicast Rendezvous Point (RP) switch must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Cisco switch (DR) for any undesirable multicast groups.
+C-RTR,CISC-RT-000850,CAT II,SRG-NET-000362-RTR-000121,The Cisco multicast Rendezvous Point (RP) must be configured to rate limit the number of Protocol Independent Multicast (PIM) Register messages.
+C-RTR,CISC-RT-000860,CAT III,SRG-NET-000364-RTR-000114,The Cisco multicast Designated switch (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join only multicast groups that have been approved by the organization.
+C-RTR,CISC-RT-000870,CAT II,SRG-NET-000364-RTR-000115,The Cisco multicast Designated switch (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join a multicast group only from sources that have been approved by the organization.
+C-RTR,CISC-RT-000880,CAT II,SRG-NET-000362-RTR-000122,The Cisco multicast Designated switch (DR) must be configured to limit the number of mroute states resulting from Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Host Membership Reports.
+C-RTR,CISC-RT-000890,CAT II,SRG-NET-000362-RTR-000123,"The Cisco multicast Designated switch (DR) must be configured to set the shortest-path tree (SPT) threshold to infinity to minimalize source-group (S, G) state within the multicast topology where Any Source Multicast (ASM) is deployed."
+C-RTR,CISC-RT-000900,CAT II,SRG-NET-000364-RTR-000116,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to only accept MSDP packets from known MSDP peers.
+C-RTR,CISC-RT-000910,CAT II,SRG-NET-000343-RTR-000002,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to authenticate all received MSDP packets.
+C-RTR,CISC-RT-000920,CAT III,SRG-NET-000018-RTR-000007,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to filter received source-active multicast advertisements for any undesirable multicast groups and sources.
+C-RTR,CISC-RT-000930,CAT III,SRG-NET-000018-RTR-000008,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to filter source-active multicast advertisements to external MSDP peers to avoid global visibility of local-only multicast sources and groups.
+C-RTR,CISC-RT-000940,CAT III,SRG-NET-000018-RTR-000009,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to limit the amount of source-active messages it accepts on a per-peer basis.
+C-RTR,CISC-RT-000950,CAT III,SRG-NET-000512-RTR-000011,The Cisco Multicast Source Discovery Protocol (MSDP) switch must be configured to use a loopback address as the source address when originating MSDP traffic.
