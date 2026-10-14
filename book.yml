@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 30
+    chapter_count: 31
     build_eligible: true
     chapters:
       - id: 01
@@ -6020,6 +6020,9 @@ volumes:
       - id: 30
         title: "Chapter 30: FortiGate Feature, Version, and STIG Map"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/30-fortigate-feature-version-and-stig-map.md
+      - id: 31
+        title: "Chapter 31: Cisco Products — STIGs and SRG Mapping"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/31-cisco-products-stigs-and-srg-mapping.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

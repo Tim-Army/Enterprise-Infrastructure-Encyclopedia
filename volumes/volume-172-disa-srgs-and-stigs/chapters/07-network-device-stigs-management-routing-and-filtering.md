@@ -43,7 +43,7 @@ IOS XE and NX-OS, Juniper Junos, Palo Alto Networks, Fortinet FortiGate, F5
 BIG-IP, and others. Check the library for the exact STIG names and releases for
 your platform and software version. Chapter 10 covers the Fortinet portfolio in
 detail, including the FortiGate STIGs and the SRGs for Fortinet products that
-have no STIG.
+have no STIG. Chapter 31 does the same for Cisco's ten STIG packages.
 
 ### What nearly every NDM STIG requires
 
@@ -55,7 +55,7 @@ for the same things in different syntax:
 | **Centralized authentication** | Administrators authenticate through TACACS+ or RADIUS backed by the enterprise directory, ideally with MFA |
 | **Account of last resort** | Exactly one local account, used only when the AAA servers are unreachable |
 | **Logon banner** | The DoD Notice and Consent Banner (or your organization's equivalent) before login |
-| **Session timeout** | Idle administrative sessions end after 10 minutes or less |
+| **Session timeout** | Idle administrative sessions end within the STIG's limit: 10 minutes for FortiGate, 5 minutes for Cisco |
 | **Lockout** | Accounts lock after a small number of failed logons |
 | **Secure management protocols** | SSHv2 and HTTPS with FIPS-approved algorithms; Telnet, HTTP, and SNMPv1/v2c disabled |
 | **Restricted management access** | Management only from defined administrative networks |
@@ -119,16 +119,20 @@ settings on Cisco IOS XE:
 
 ```text
 line vty 0 15
- exec-timeout 10 0
+ exec-timeout 5 0
  transport input ssh
 !
 ip ssh version 2
 banner login ^C
 <APPROVED_LOGON_BANNER_TEXT>
 ^C
-logging host <SYSLOG_SERVER_IP>
+logging host <SYSLOG_SERVER_1_IP>
+logging host <SYSLOG_SERVER_2_IP>
 ntp authenticate
 ```
+
+The Cisco NDM STIGs make the five-minute timeout and the two syslog servers
+CAT I requirements.
 
 And on FortiOS:
 
@@ -150,7 +154,9 @@ end
 
 Treat these as examples of the pattern. The STIG for your platform and software
 version gives the exact required values and commands; follow its fix text. For
-FortiGate specifics, see
+Cisco specifics, see
+[Chapter 31](31-cisco-products-stigs-and-srg-mapping.md). For FortiGate
+specifics, see [Chapter 30](30-fortigate-feature-version-and-stig-map.md) and
 [Volume XIX](../../volume-019-fortinet-network-security/README.md), whose
 deployment and hardening chapter covers these settings in depth.
 

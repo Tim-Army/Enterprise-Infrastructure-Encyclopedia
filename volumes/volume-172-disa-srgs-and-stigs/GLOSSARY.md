@@ -49,9 +49,11 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Not a Finding / Open / Not Applicable / Not Reviewed** — the four statuses of a rule in a STIG checklist.
 - **OpenSCAP (`oscap`)** — the open-source SCAP scanner shipped with RHEL and other Linux distributions.
 - **OVAL (Open Vulnerability and Assessment Language)** — the SCAP language that expresses checks a scanner can execute.
+- **Perimeter router** — in the DISA Router STIGs, a router at the edge of an enterprise network that connects it to NIPRNet or SIPRNet and filters inbound and outbound traffic.
 - **POA&M (Plan of Action and Milestones)** — the record of each unresolved weakness, its owner, resources, milestones, and scheduled completion date.
 - **PowerSTIG** — an open-source Microsoft project that applies and monitors STIG settings with PowerShell Desired State Configuration.
 - **PPSM CAL (Ports, Protocols, and Services Management Category Assurance List)** — the DoD list that assigns ports, protocols, and services to risk categories and governs which may cross DoD network boundaries.
+- **Provider edge (PE) router** — in the DISA Router STIGs, a router at the edge of a backbone network that gives customers MPLS, L2VPN, and L3VPN services.
 - **RADSEC** — RADIUS carried over TLS, which protects RADIUS authentication and accounting traffic with certificates instead of only a shared secret.
 - **Release / version (V#R#)** — a STIG's maintenance update number and major revision number, written together as V2R1.
 - **Rule ID** — a rule's `SV-...r..._rule` identifier, whose revision suffix changes when the rule text changes.

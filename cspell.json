@@ -5157,7 +5157,18 @@
     "vlanforward",
     "VMAC",
     "Websense",
-    "wpad"
+    "wpad",
+    "CACI",
+    "CASA",
+    "CSNA",
+    "CSCO",
+    "NSO",
+    "CISC",
+    "SIPR",
+    "contenttype",
+    "hidekeys",
+    "identd",
+    "userinfo"
   ],
   "ignorePaths": [
     "node_modules/**",
