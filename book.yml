@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 35
+    chapter_count: 36
     build_eligible: true
     chapters:
       - id: 01
@@ -6035,6 +6035,9 @@ volumes:
       - id: 35
         title: "Chapter 35: Cisco ISE and FortiNAC STIG Crosswalk"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/35-cisco-ise-and-fortinac-stig-crosswalk.md
+      - id: 36
+        title: "Chapter 36: Cisco IOS XE Router and FortiGate STIG Crosswalk"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/36-cisco-ios-xe-router-and-fortigate-stig-crosswalk.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

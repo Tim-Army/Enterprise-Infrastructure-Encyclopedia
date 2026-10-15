@@ -71,7 +71,7 @@ STIGs in the package apply:
 
 | Device | Package | STIGs to apply |
 | --- | --- | --- |
-| Router running IOS XE (for example ISR 4000, Catalyst 8000) | IOS XE Router | NDM and RTR |
+| Router running IOS XE (for example ISR 4000, Catalyst 8000) | IOS XE Router | NDM and RTR. Chapter 36 aligns these rules with FortiGate |
 | Catalyst 3650, 3850, or 9000 switch (IOS XE) | IOS XE Switch | NDM and L2S; RTR as well if the switch routes. Chapter 32 maps every Catalyst 9000 feature to these rules, and Chapter 33 aligns the rules with FortiSwitch |
 | Catalyst 2960-family switch (classic IOS) | IOS Switch | NDM and L2S; RTR as well if the switch routes |
 | Router running classic IOS | IOS Router | NDM and RTR |

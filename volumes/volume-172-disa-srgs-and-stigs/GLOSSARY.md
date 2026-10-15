@@ -12,6 +12,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **ASD STIG (Application Security and Development)** — DISA's STIG for applications in general; its rules have IDs of the form APSC-DV-nnnnnn, and most are developer obligations rather than configuration settings.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
+- **BGP VPNv4 PE role (FortiOS)** — a FortiOS BGP VRF setting (`set role pe`, with `rd`, `import-rt`, and `export-rt`) that carries VRF routes as VPNv4 routes over IPsec overlays; it is not MPLS, which FortiOS 8.0.1 does not support.
 - **CAPWAP (Control and Provisioning of Wireless Access Points)** — the protocol between a FortiAP and its wireless controller; its control channel is always DTLS-encrypted, and its data channel can be clear text, DTLS, or IPsec.
 - **CAT I / CAT II / CAT III** — DoD severity categories for STIG findings, equivalent to XCCDF severity high, medium, and low.
 - **CCI (Control Correlation Identifier)** — a DISA-maintained identifier for a single, testable statement derived from a NIST SP 800-53 control; links STIG rules to 800-53.
@@ -21,6 +22,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Cloud Computing SRG** — the DISA SRG that sets requirements for cloud service offerings hosting DoD data and defines impact levels IL2, IL4, IL5, and IL6.
 - **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
 - **Comply-to-Connect (C2C)** — the DoD network access control program whose steps the Cisco ISE NAC STIG rules reference.
+- **Control plane policing (CoPP)** — an IOS XE QoS policy attached to the control plane that rate-limits traffic to the route processor by class; routers attach an MQC policy with `control-plane` and `service-policy input`, while Catalyst 9000 switches apply `cpp system-default`.
 - **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
 - **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.

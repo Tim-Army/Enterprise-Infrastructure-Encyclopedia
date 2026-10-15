@@ -5213,7 +5213,9 @@
     "dtlsv",
     "DRBG",
     "tunnelall",
-    "Syslogs"
+    "Syslogs",
+    "hdopt",
+    "neighbour"
   ],
   "ignorePaths": [
     "node_modules/**",
