@@ -76,7 +76,7 @@ STIGs in the package apply:
 | Catalyst 2960-family switch (classic IOS) | IOS Switch | NDM and L2S; RTR as well if the switch routes |
 | Router running classic IOS | IOS Router | NDM and RTR |
 | Router running IOS XR (for example ASR 9000, NCS) | IOS XR Router | NDM and RTR |
-| Nexus switch running NX-OS | NX-OS Switch | NDM and L2S; RTR as well if the switch routes |
+| Nexus switch running NX-OS | NX-OS Switch | NDM and L2S; RTR as well if the switch routes. Chapter 37 aligns these rules with FortiSwitch |
 | ASA 5500 or 5500-X, including FirePOWER Services | ASA | NDM and Firewall; VPN if it terminates VPNs; IPS if the FirePOWER module is installed. Chapter 34 aligns these rules with FortiGate |
 | Identity Services Engine | ISE | NDM and NAC. Chapter 35 aligns these rules with FortiNAC |
 | ACI fabric (APIC and its leaf and spine switches) | ACI | NDM, L2S, and RTR, assessed for the fabric as a whole |

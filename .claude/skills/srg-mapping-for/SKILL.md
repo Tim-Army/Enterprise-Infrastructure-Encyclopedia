@@ -133,6 +133,27 @@ Invoking this workflow authorizes committing and pushing each finished chapter
 to `main`, as the Fortinet and Cisco runs did. If the user says otherwise,
 stop before committing and ask.
 
+### Crosswalks between vendors
+
+When the user asks to compare or align comparable products from two vendors
+(models: Chapters 33–37, Cisco and Fortinet), build one crosswalk chapter per
+product pair instead of a map chapter:
+
+- Pick pairs where the reference product has a STIG and the comparison product
+  has a map chapter in this volume, and confirm the pair list with the user.
+- Launch one agent per pair, one at a time, following
+  `SKILL/CROSSWALK-PLAYBOOK.txt`. Give it the reference STIG's parsed rules,
+  any map chapter whose verified commands it can reuse, the comparison
+  product's map chapter and command reference text, and the exact heading for
+  the unmatched table ("### <Comparison> requirements with no <Reference>
+  rule").
+- File names end in `-stig-crosswalk.md`; `scripts/python/export_srg_tables.py`
+  exports both crosswalk tables to CSV.
+- Review, re-run the build, register, check, commit, push, and watch each
+  chapter as in step 5, and fix any errors the crosswalk finds in earlier
+  chapters (the Cisco crosswalks found DISA fix text the overview chapter had
+  quoted without correcting).
+
 ### 6. Finish
 
 After the last product chapter:

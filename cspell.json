@@ -5215,7 +5215,11 @@
     "tunnelall",
     "Syslogs",
     "hdopt",
-    "neighbour"
+    "neighbour",
+    "NETOPS",
+    "callhome",
+    "cmac",
+    "fabricpath"
   ],
   "ignorePaths": [
     "node_modules/**",

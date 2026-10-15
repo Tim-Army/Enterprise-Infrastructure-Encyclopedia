@@ -82,6 +82,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
 - **UEM SRGs (Unified Endpoint Management)** — the DISA Server and Agent SRGs for systems that enroll endpoints, push policy to a managed agent, and collect its status and logs.
+- **vPC (virtual port channel)** — a Cisco Nexus feature that lets two switches present one port channel to a downstream device; FortiSwitch provides the same function with MCLAG.
 - **WAN extension** — a FortiExtender mode in which the unit acts as a cellular WAN interface of its FortiGate, so the FortiGate's firewall policies filter traffic on the cellular link.
 - **Web protection profile** — the FortiWeb object that names the protection modules (signatures, protocol constraints, IP reputation, DoS, bot, file, and input checks) a server policy applies to its web traffic.
 - **WIDS (Wireless Intrusion Detection System)** — FortiAP radio scanning, configured in FortiGate WIDS profiles, that detects rogue access points and wireless attacks.
