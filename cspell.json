@@ -5212,7 +5212,8 @@
     "prfsha",
     "dtlsv",
     "DRBG",
-    "tunnelall"
+    "tunnelall",
+    "Syslogs"
   ],
   "ignorePaths": [
     "node_modules/**",

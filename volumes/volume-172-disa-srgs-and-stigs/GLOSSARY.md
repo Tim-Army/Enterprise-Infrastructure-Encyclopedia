@@ -47,6 +47,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Iron Bank** — DoD Platform One's repository of hardened, continuously scanned container images.
 - **LAN extension** — a FortiExtender mode in which the unit builds IPsec tunnels back to its FortiGate and carries a remote LAN over VXLAN inside them, so the FortiGate secures the remote site.
 - **LGPO** — Microsoft's Local Group Policy Object utility, used to apply GPO backups to the local policy of a standalone Windows system.
+- **Log Collection Error** — the Cisco ISE alarm raised when the monitoring collector cannot continue processing audit logs from the policy service nodes; the ISE STIG has it emailed to the SA and ISSO.
 - **NDM (Network Device Management)** — the SRG, and the matching vendor STIGs, covering the management plane of network devices.
 - **Not a Finding / Open / Not Applicable / Not Reviewed** — the four statuses of a rule in a STIG checklist.
 - **OpenSCAP (`oscap`)** — the open-source SCAP scanner shipped with RHEL and other Linux distributions.
