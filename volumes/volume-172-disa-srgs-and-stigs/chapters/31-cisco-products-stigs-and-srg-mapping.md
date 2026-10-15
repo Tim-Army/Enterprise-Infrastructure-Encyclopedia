@@ -77,7 +77,7 @@ STIGs in the package apply:
 | Router running classic IOS | IOS Router | NDM and RTR |
 | Router running IOS XR (for example ASR 9000, NCS) | IOS XR Router | NDM and RTR |
 | Nexus switch running NX-OS | NX-OS Switch | NDM and L2S; RTR as well if the switch routes |
-| ASA 5500 or 5500-X, including FirePOWER Services | ASA | NDM and Firewall; VPN if it terminates VPNs; IPS if the FirePOWER module is installed |
+| ASA 5500 or 5500-X, including FirePOWER Services | ASA | NDM and Firewall; VPN if it terminates VPNs; IPS if the FirePOWER module is installed. Chapter 34 aligns these rules with FortiGate |
 | Identity Services Engine | ISE | NDM and NAC |
 | ACI fabric (APIC and its leaf and spine switches) | ACI | NDM, L2S, and RTR, assessed for the fabric as a whole |
 | Secure Network Analytics (formerly Stealthwatch) | SNA | SNA (a single management-plane STIG) |
@@ -331,8 +331,13 @@ console timeout 5
 http server idle-timeout 5
 !
 crypto ikev2 policy 1
- group 24
+ group 20
 ```
+
+The fix text for `CASA-VN-000210` uses `group 24`, but ASA 9.15(1) removed DH
+groups 1, 2, 5, and 24, so the example uses group 20 (384-bit elliptic curve),
+which meets the requirement for group 16 or higher. Chapter 34 lists the other
+ASA fix text corrections.
 
 ### Collecting evidence
 

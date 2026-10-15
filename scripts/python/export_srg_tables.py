@@ -35,7 +35,7 @@ KINDS = [
     ]),
     ("*-crosswalk.md", [
         ("### The crosswalk table", "crosswalk", "Download the crosswalk as CSV"),
-        ("### FortiSwitch requirements with no", "unmatched", "Download the unmatched requirements as CSV"),
+        (re.compile(r"### .+ requirements with no "), "unmatched", "Download the unmatched requirements as CSV"),
     ]),
 ]
 LINK_RE = re.compile(r"^\[Download the [a-z ]+ as CSV\]\(")
@@ -61,7 +61,8 @@ def process(path, tables):
     while i < len(lines):
         line = lines[i]
         if line.startswith("### "):
-            heading = next((t for t in tables if line.startswith(t[0])), None)
+            heading = next((t for t in tables if (t[0].match(line) if hasattr(t[0], "match")
+                                                  else line.startswith(t[0]))), None)
         if LINK_RE.match(line):
             # drop an old link (and the blank line after it); it is re-added below
             i += 1

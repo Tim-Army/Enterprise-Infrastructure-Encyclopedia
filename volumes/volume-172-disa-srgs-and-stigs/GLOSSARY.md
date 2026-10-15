@@ -8,6 +8,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.
 - **Application delivery controller (ADC)** — a reverse-proxy appliance that load balances application traffic and adds SSL offloading, a WAF, and global server load balancing.
+- **ASA FirePOWER module** — the IPS and file-inspection module for ASA 5500-X firewalls, configured in ASDM, which the Cisco ASA IPS STIG covers; it is not Firepower Threat Defense (FTD), which has no STIG.
 - **ASD STIG (Application Security and Development)** — DISA's STIG for applications in general; its rules have IDs of the form APSC-DV-nnnnnn, and most are developer obligations rather than configuration settings.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
@@ -74,6 +75,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **STIG Library Compilation** — a single ZIP of all public STIGs and SRGs, refreshed with each quarterly release.
 - **STIG Manager** — an open-source web application from NUWC Division Newport for managing STIG assessments across many assets.
 - **STIG Viewer** — DISA's desktop application for reading STIGs and completing checklists.
+- **STIG-to-STIG crosswalk** — an alignment of two vendors' STIG rules through the SRG requirement each implements, used where both products have STIGs, such as Cisco ASA and FortiGate.
 - **Sunset STIG** — a STIG DISA no longer maintains, usually because the product reached end of support.
 - **Ubuntu Security Guide (USG)** — Canonical's audit and remediation tool for Ubuntu, with a `disa_stig` profile; requires Ubuntu Pro.
 - **UEM SRGs (Unified Endpoint Management)** — the DISA Server and Agent SRGs for systems that enroll endpoints, push policy to a managed agent, and collect its status and logs.

@@ -5203,7 +5203,16 @@
     "UUFB",
     "vrfri",
     "mntgrp",
-    "aspath"
+    "aspath",
+    "noconfirm",
+    "webfo",
+    "vpnc",
+    "vpnfo",
+    "hostdown",
+    "prfsha",
+    "dtlsv",
+    "DRBG",
+    "tunnelall"
   ],
   "ignorePaths": [
     "node_modules/**",

@@ -35,7 +35,7 @@ content, the tools, the platforms, and finally the program. Chapters 10 to 30
 apply that method to the Fortinet portfolio, where only FortiGate has STIGs and
 every other product must be assessed against SRGs. Chapters 31 and 32 do the
 same for Cisco, which has the broadest STIG coverage of any network vendor, and
-Chapter 33 aligns the two vendors' switches:
+Chapters 33 and 34 align comparable Cisco and Fortinet products:
 
 - **Chapter 01** explains what SRGs and STIGs are, the DoD policies behind
   them, and the chain from 800-53 to STIG rule.
@@ -81,6 +81,9 @@ Chapter 33 aligns the two vendors' switches:
   rule aligned, through the SRG requirement it implements, with the FortiSwitch
   setting that meets it, so the Cisco rules can serve as a FortiSwitch
   checklist. DISA has no FortiSwitch STIG.
+- **Chapter 34** aligns the Cisco ASA STIGs (NDM, Firewall, VPN, IPS) with
+  FortiGate, the one pair where both products have STIGs, so it also shows
+  which FortiGate STIG rule implements the same requirement.
 
 The product maps share one design, so they can be read the same way:
 
@@ -137,10 +140,11 @@ except that this volume has no hands-on labs (see
 31. [Cisco Products — STIGs and SRG Mapping](chapters/31-cisco-products-stigs-and-srg-mapping.md) — the ten Cisco STIG packages (IOS, IOS XE, IOS XR, NX-OS, ASA, ISE, ACI, and Secure Network Analytics), choosing the package and STIGs for a device, CAT I requirements and IOS XE and ASA examples, and SRG mapping for Cisco products without a STIG.
 32. [Cisco Catalyst Switch Feature, Version, and STIG Map](chapters/32-cisco-catalyst-switch-feature-version-and-stig-map.md) — 352 Cisco Catalyst 9000 switch features (72 core platform features and every software feature in the Catalyst 9300 IOS XE 17.1.x to 26.2.x release notes) with the release that introduced each, the Cisco IOS XE Switch NDM, L2S, or RTR STIG rule it satisfies (all 152 rules, with severity and SRG ID), and the IOS XE command that meets it, with every corrected fix text listed.
 33. [FortiSwitch and Cisco Catalyst Switch STIG Crosswalk](chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md) — all 152 Cisco IOS XE Switch STIG rules aligned, through the SRG requirement each implements, with the FortiSwitch setting and verified FortiSwitchOS 8.0.0 command that meets it (31 same requirement, 55 equivalent setting, 16 partial, 28 not supported, 20 not applicable, 2 by procedure), plus the 26 FortiSwitch SRG requirements no Cisco rule covers.
+34. [Cisco ASA and FortiGate STIG Crosswalk](chapters/34-cisco-asa-and-fortigate-stig-crosswalk.md) — all 132 Cisco ASA STIG rules (NDM, Firewall, VPN, IPS) aligned through their SRG IDs with the FortiGate STIG rule and the verified FortiOS 8.0.1 setting that meet the same requirement (83 same requirement, 46 equivalent setting, 3 partial; 58 rules share an SRG ID with a FortiGate STIG rule), with corrected ASA fix-text commands and the 88 FortiGate requirements no ASA rule covers.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all thirty-three chapters.
+- [Index](INDEX.md) — alphabetized topical index across all thirty-four chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

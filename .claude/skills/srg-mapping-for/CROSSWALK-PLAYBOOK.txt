@@ -1,0 +1,112 @@
+PLAYBOOK: STIG crosswalk chapters (one vendor's STIG rules aligned with another vendor's settings)
+=================================================================================================
+
+Repository: D:\Documents\claude\Enterprise-Infrastructure-Encyclopedia
+Volume:     volumes/volume-172-disa-srgs-and-stigs (DISA SRGs and STIGs)
+
+You are writing ONE crosswalk chapter that aligns every rule of one vendor's
+STIG package (the "reference" product, for example Cisco ASA) with the setting
+on a comparable product from another vendor (the "comparison" product, for
+example FortiGate) that meets the same SRG requirement.
+
+Model chapter (read it first and copy its structure, wording, and conventions):
+  volumes/volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md
+Its build scripts, if still present, are in temp/xwalk/ (load.py, build.py,
+verify.py, fswblocks.py, chapter-template.txt) and are good models.
+
+HOW THE ALIGNMENT WORKS
+- Every STIG rule names the SRG requirement it implements (the XCCDF Group
+  title, for example SRG-APP-000190-NDM-000267). Align through that ID.
+- The comparison product's settings come from its map chapter in this volume
+  (the coordinator names it). A comparison row with the same SRG ID is "Same
+  requirement". For the rest, find the comparison product's setting that meets
+  the same requirement yourself, in its command reference.
+- Do not use CCI matches without reading the requirement text: the catch-all
+  CCI-000366 links unrelated requirements.
+- Some rules cite SRG IDs retired from the current SRG releases. Say so, and
+  point the row to the current requirement for the same topic.
+- If the comparison product has its own STIG (FortiGate does), add a column
+  for the comparison STIG rule that implements the same SRG ID, and count
+  matches in the summary.
+
+HARD RULES
+- Work ONLY inside the repository. Scratch work in the folder the coordinator
+  names under temp/ (gitignored). Never write .md files under temp/.
+- Write ONLY your one chapter file under volumes/. Do not edit any other file.
+- Do NOT add "[Download ... as CSV](...)" lines; the coordinator's export script
+  adds them. Keep the headings "### The crosswalk table" and
+  "### <Comparison product> requirements with no <Reference vendor> rule"
+  (for example "### FortiGate requirements with no Cisco ASA rule") exactly in
+  that form, because the export script finds the tables by them.
+- Do NOT git add, commit, or push. Do not launch subagents.
+- Do NOT fabricate. Every command must come from the vendor's command
+  reference; every requirement from the XCCDF; every version from a cited
+  source. If something cannot be verified, the cell says so honestly.
+- Windows: PYTHONIOENCODING=utf-8. Write data files with the Write tool rather
+  than giant heredocs. Never print large outputs into your context.
+
+SOURCES
+- Reference product rules: the coordinator gives the parsed STIG JSON
+  (temp/cisco/stigs.json for Cisco: id, severity, srg, title, fix text) and the
+  unzipped XCCDF folder.
+- Reference product commands: if a map chapter for the reference product exists
+  (for example Chapter 32 for Cisco IOS XE switches), reuse its verified
+  commands for the same rule IDs. Otherwise start from each rule's fix text and
+  CHECK it against the vendor's command references (cisco.com returns HTTP 403
+  to curl, so read pages through the built-in browser, mcp__Claude_Browser__*,
+  and save what you read as JSON or text in your scratch folder). DISA fix text
+  often contains syntax that does not parse; correct it and list every
+  correction in the chapter.
+- Reference product versions: the release in which each command was introduced,
+  from the "Command History" table of the command's entry in the vendor's
+  command reference. If a command entry has no history, say which reference
+  release it was verified in. Do not guess.
+- Comparison product settings, commands, and versions: its map chapter and CSV
+  (data/<chapter>-feature-map.csv) and the command reference text the
+  coordinator names. The version is the map chapter's version column for the
+  feature used; settings not in that product's version source read
+  "Not in the <source> (<release> CLI Reference)", never a guessed release.
+
+WHAT TO BUILD
+1. "### The crosswalk table": one row per reference rule (ALL of them, grouped
+   by STIG), columns:
+   | <Ref> rule | Severity | SRG ID | Requirement | <Ref> command | <Ref> version | <Cmp> setting | <Cmp> command | <Cmp> version | Alignment |
+   plus "<Cmp> STIG rule" after "SRG ID" when the comparison product has a STIG.
+   Alignment is one of: Same requirement, Equivalent setting, Partial (say
+   what is missing), Not supported (say so), Not applicable (the rule targets a
+   role, protocol, or component the comparison product does not have), or By
+   procedure. Define them in the chapter, as Chapter 33 does.
+2. "### <Cmp> requirements with no <Ref> rule": the comparison product's mapped
+   requirements that no reference rule cites, with its setting, command, and
+   version.
+3. "### Alignment summary": counts by STIG and category, and prose on the main
+   differences (stricter or weaker on each side, unsupported capabilities,
+   managed modes).
+4. Standard sections as in Chapter 33, including "Why this is a crosswalk",
+   "How the rules are aligned", "Where the version columns come from", and
+   "Collecting evidence" for a mixed estate. No labs. Link Chapters 03, 07,
+   the reference vendor's overview chapter, both products' map chapters (where
+   they exist), and Chapter 33.
+
+VERIFY
+- Verify every comparison-product command against its command reference text
+  with a script (paths, options in context, documented values), and every
+  reference-product command against the saved vendor command reference text
+  (command words in the right mode). Test each verifier with deliberately wrong
+  commands. Fix or replace failures with an honest "—".
+- Make the build fail if any reference rule is missing or duplicated, and if a
+  reused command does not appear in its source chapter for the same rule.
+- Generate the chapter from a template and a script (keep chapter-template.txt
+  in your scratch folder).
+
+CHECKS
+- npx --yes markdownlint-cli2 <chapter>   (0 errors for the chapter)
+- npx --yes cspell --no-progress --words-only --unique <chapter>   (report words; do not edit cspell.json)
+- python scripts/python/check_internal_links.py
+
+FINAL REPORT (concise)
+- Chapter path; counts by alignment category; confirmation every rule is present.
+- Sources (documents and releases), including where the reference versions came from.
+- Verify results; fix text corrections; notable findings.
+- cspell words; a README line "NN. [Title](chapters/<file>.md) — <summary>.";
+  up to three INDEX.md lines and two GLOSSARY.md lines.

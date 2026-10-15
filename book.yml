@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 33
+    chapter_count: 34
     build_eligible: true
     chapters:
       - id: 01
@@ -6029,6 +6029,9 @@ volumes:
       - id: 33
         title: "Chapter 33: FortiSwitch and Cisco Catalyst Switch STIG Crosswalk"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md
+      - id: 34
+        title: "Chapter 34: Cisco ASA and FortiGate STIG Crosswalk"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/34-cisco-asa-and-fortigate-stig-crosswalk.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule
