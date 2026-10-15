@@ -35,7 +35,7 @@ content, the tools, the platforms, and finally the program. Chapters 10 to 30
 apply that method to the Fortinet portfolio, where only FortiGate has STIGs and
 every other product must be assessed against SRGs. Chapters 31 and 32 do the
 same for Cisco, which has the broadest STIG coverage of any network vendor, and
-Chapters 33 to 37 align comparable Cisco and Fortinet products:
+Chapters 33 to 38 align comparable Cisco and Fortinet products:
 
 - **Chapter 01** explains what SRGs and STIGs are, the DoD policies behind
   them, and the chain from 800-53 to STIG rule.
@@ -91,6 +91,10 @@ Chapters 33 to 37 align comparable Cisco and Fortinet products:
 - **Chapter 37** aligns the Cisco NX-OS Switch STIGs (Nexus data center
   switches) with FortiSwitch, reusing Chapter 33's FortiSwitch side where the
   requirements match.
+- **Chapter 38** turns the comparison around for FortiAnalyzer, which has no
+  comparable Cisco product: each of its requirements is matched against every
+  Cisco STIG, with Cisco SNA as the main comparison and the Cisco rules that
+  govern the log-source side.
 
 The product maps share one design, so they can be read the same way:
 
@@ -151,10 +155,11 @@ except that this volume has no hands-on labs (see
 35. [Cisco ISE and FortiNAC STIG Crosswalk](chapters/35-cisco-ise-and-fortinac-stig-crosswalk.md) — all 81 Cisco ISE NDM and NAC STIG rules aligned with the FortiNAC-F settings that meet the same requirements (FortiNAC has no STIG): 38 same requirement, 15 equivalent setting, 20 partial, 6 not supported, with corrected ISE 3.5 commands and GUI paths, versions, and the 38 FortiNAC NDM and AAA requirements no ISE rule covers.
 36. [Cisco IOS XE Router and FortiGate STIG Crosswalk](chapters/36-cisco-ios-xe-router-and-fortigate-stig-crosswalk.md) — all 139 Cisco IOS XE Router NDM and RTR STIG rules aligned through their SRG IDs with the FortiGate STIG rule and the verified FortiOS 8.0.1 setting for a FortiGate used as a router (48 same requirement, 50 equivalent setting, 14 partial, 17 not supported, 9 not applicable, 1 by procedure; 36 NDM rules share an SRG ID with a FortiGate STIG rule, and FortiGate routing is assessed against the Router SRG), with 125 commands reused from Chapter 32, 14 corrected router fix-text commands dated by Command History, and the 124 FortiGate requirements no router rule covers.
 37. [Cisco NX-OS Switch and FortiSwitch STIG Crosswalk](chapters/37-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md) — all 142 Cisco NX-OS Switch STIG rules (NDM, L2S, RTR) aligned through their SRG IDs with a corrected, script-verified Nexus 9000 NX-OS 10.5(x) command and the FortiSwitch setting and FortiSwitchOS 8.0.0 command that meet the same requirement (30 same requirement, 57 equivalent setting, 17 partial, 19 not supported, 17 not applicable, 2 by procedure; 120 rows reuse Chapter 33's FortiSwitch side), with vPC, VXLAN EVPN, and CoPP notes and the 25 FortiSwitch SRG requirements no NX-OS rule covers.
+38. [FortiAnalyzer and Cisco STIG Crosswalk](chapters/38-fortianalyzer-and-cisco-stig-crosswalk.md) — all 65 FortiAnalyzer requirements from Chapter 12 (60 Central Log Server, 5 NDM) aligned with the Cisco SNA STIG rule and the rules in every other Cisco STIG that implement the same or an equivalent requirement, plus the Cisco rules on the log-source side (5 same requirement, 18 equivalent, 9 log-source counterpart only, 33 with no Cisco counterpart, because no Cisco STIG implements the Central Log Server SRG), with verified SNA settings, corrected SNA fix text, and the 17 SNA rules no FortiAnalyzer requirement covers.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all thirty-seven chapters.
+- [Index](INDEX.md) — alphabetized topical index across all thirty-eight chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms introduced in this volume.
 
 ## Related volumes

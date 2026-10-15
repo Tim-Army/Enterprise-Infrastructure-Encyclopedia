@@ -12,6 +12,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **ASD STIG (Application Security and Development)** — DISA's STIG for applications in general; its rules have IDs of the form APSC-DV-nnnnnn, and most are developer obligations rather than configuration settings.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
 - **Authorizing Official (AO)** — the senior official who accepts the risk of operating a system and grants or denies its ATO.
+- **Base requirement number** — the first part of an SRG ID (for example `SRG-APP-000065`) that DISA reuses across SRGs for the same underlying requirement; a shared base number suggests, but does not prove, that two requirements are equivalent.
 - **BGP VPNv4 PE role (FortiOS)** — a FortiOS BGP VRF setting (`set role pe`, with `rd`, `import-rt`, and `export-rt`) that carries VRF routes as VPNv4 routes over IPsec overlays; it is not MPLS, which FortiOS 8.0.1 does not support.
 - **CAPWAP (Control and Provisioning of Wireless Access Points)** — the protocol between a FortiAP and its wireless controller; its control channel is always DTLS-encrypted, and its data channel can be clear text, DTLS, or IPsec.
 - **CAT I / CAT II / CAT III** — DoD severity categories for STIG findings, equivalent to XCCDF severity high, medium, and low.

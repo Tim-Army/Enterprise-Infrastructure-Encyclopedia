@@ -623,7 +623,9 @@ and the log forwarding settings. Attach them to the SRG-based checklist
   [Chapter 10](10-fortinet-products-stigs-and-srg-mapping.md) (Fortinet
   products), and
   [Chapter 11](11-fortiswitch-feature-version-and-srg-map.md) (the
-  FortiSwitch map, built the same way).
+  FortiSwitch map, built the same way), and
+  [Chapter 38](38-fortianalyzer-and-cisco-stig-crosswalk.md) (these
+  requirements compared with the Cisco STIGs).
 
 **Knowledge checks:**
 

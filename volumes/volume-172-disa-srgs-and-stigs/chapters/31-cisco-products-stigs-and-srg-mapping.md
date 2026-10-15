@@ -80,7 +80,7 @@ STIGs in the package apply:
 | ASA 5500 or 5500-X, including FirePOWER Services | ASA | NDM and Firewall; VPN if it terminates VPNs; IPS if the FirePOWER module is installed. Chapter 34 aligns these rules with FortiGate |
 | Identity Services Engine | ISE | NDM and NAC. Chapter 35 aligns these rules with FortiNAC |
 | ACI fabric (APIC and its leaf and spine switches) | ACI | NDM, L2S, and RTR, assessed for the fabric as a whole |
-| Secure Network Analytics (formerly Stealthwatch) | SNA | SNA (a single management-plane STIG) |
+| Secure Network Analytics (formerly Stealthwatch) | SNA | SNA (a single management-plane STIG). Chapter 38 compares it, and the other Cisco STIGs, with FortiAnalyzer |
 
 The overviews state the scope. The IOS XE Switch STIG names the Catalyst 3650,
 3850, and 9000 Series; the IOS Switch STIG names the Catalyst 2960 family. The
