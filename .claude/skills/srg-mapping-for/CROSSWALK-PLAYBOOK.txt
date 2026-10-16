@@ -34,10 +34,11 @@ HARD RULES
   names under temp/ (gitignored). Never write .md files under temp/.
 - Write ONLY your one chapter file under volumes/. Do not edit any other file.
 - Do NOT add "[Download ... as CSV](...)" lines; the coordinator's export script
-  adds them. Keep the headings "### The crosswalk table" and
+  adds them. Keep the headings "### The crosswalk table",
   "### <Comparison product> requirements with no <Reference vendor> rule"
-  (for example "### FortiGate requirements with no Cisco ASA rule") exactly in
-  that form, because the export script finds the tables by them.
+  (for example "### FortiGate requirements with no Cisco ASA rule"), and
+  "### <Comparison product> prerequisites" exactly in that form, because the
+  export script finds the tables by them.
 - Do NOT git add, commit, or push. Do not launch subagents.
 - Do NOT fabricate. Every command must come from the vendor's command
   reference; every requirement from the XCCDF; every version from a cited
@@ -79,6 +80,13 @@ WHAT TO BUILD
 2. "### <Cmp> requirements with no <Ref> rule": the comparison product's mapped
    requirements that no reference rule cites, with its setting, command, and
    version.
+2b. "### <Cmp> prerequisites": the comparison product's prerequisites table,
+   placed just before "### The crosswalk table", plus a "<Cmp> prerequisites"
+   column right after "<Cmp> version" in the crosswalk table and at the end of
+   the unmatched table, as .claude/skills/srg-mapping-for/PREREQ-PLAYBOOK.txt
+   describes (model: Chapter 33). If the comparison product's map chapter
+   already has a prerequisites table, reuse its IDs, wording, and commands
+   exactly, and make the build confirm they match.
 3. "### Alignment summary": counts by STIG and category, and prose on the main
    differences (stricter or weaker on each side, unsupported capabilities,
    managed modes).

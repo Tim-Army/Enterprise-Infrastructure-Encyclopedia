@@ -38,7 +38,12 @@ The argument is the vendor name. If it is missing, ask for it.
    `-feature-version-and-stig-map.md`, title "... Feature, Version, and STIG
    Map"); products without one are mapped to SRGs (suffix
    `-feature-version-and-srg-map.md`, title "... Feature, Version, and SRG Map").
-3. **CSV downloads** before both tables of every map chapter, from
+   Every map chapter also has a **prerequisites** table ("### <Product>
+   prerequisites": P1, P2, ... with what each enables, how to put it in place,
+   and its source) and a prerequisites column in the feature map listing the
+   IDs each row needs (model: Chapter 33).
+3. **CSV downloads** before every table of every map chapter (feature map,
+   requirement reference, and prerequisites), from
    `scripts/python/export_srg_tables.py`.
 4. **An updated overview chapter and volume README** at the end, with a
    "What the product maps found" table (model: Chapter 10's section of that
@@ -153,6 +158,27 @@ product pair instead of a map chapter:
   chapter as in step 5, and fix any errors the crosswalk finds in earlier
   chapters (the Cisco crosswalks found DISA fix text the overview chapter had
   quoted without correcting).
+
+### Prerequisites
+
+Every new map and crosswalk chapter includes a prerequisites table and column
+from the start (the product and crosswalk playbooks say how). To add them to
+chapters that were built before this step existed:
+
+- Confirm the chapter list with the user.
+- For each chapter, launch one agent at a time following
+  `SKILL/PREREQ-PLAYBOOK.txt`. Tell it the chapter, its scratch folder (the
+  pipeline that built it, under `temp/`), the product name for the table
+  heading, and any existing prerequisite list it must reuse: chapters about
+  the same product (a map chapter and the crosswalks built on it) must share
+  one list, with the same IDs, wording, and commands.
+- When it reports, re-run the chapter's build and verifier, confirm the row
+  count is unchanged, compare the prerequisite table with any chapter it
+  reuses, run `bash SKILL/check.sh <chapter-file>` (which adds the table's CSV
+  download), then commit, push, and watch as in step 5.
+- Check every license or model-support claim against the product's own
+  documentation before accepting it, and fix any chapter whose prose
+  disagrees (the FortiSwitch work corrected Chapter 11's license list).
 
 ### 6. Finish
 

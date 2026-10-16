@@ -30,6 +30,7 @@ PORTAL = "https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia"
 # Per chapter kind: (file glob, [(heading prefix, csv suffix, link text), ...]).
 KINDS = [
     ("*-feature-version-and-s*-map.md", [
+        (re.compile(r"### .+ prerequisites$"), "prerequisites", "Download the prerequisites as CSV"),
         ("### The ", "feature-map", "Download the feature map as CSV"),
         ("### Requirement reference", "requirements", "Download the requirement reference as CSV"),
     ]),

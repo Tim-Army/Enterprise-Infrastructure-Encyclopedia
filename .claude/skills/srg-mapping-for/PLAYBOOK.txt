@@ -27,9 +27,9 @@ HARD RULES
   PROJECT_STATUS.md, cspell.json, the volume README/INDEX/GLOSSARY, or any other
   chapter. The coordinator does registration.
 - Do NOT add "[Download ... as CSV](...)" lines; the coordinator's export script
-  adds them. Keep the headings "### The <Product> feature map" and
-  "### Requirement reference" exactly, because the export script finds the
-  tables by them.
+  adds them. Keep the headings "### The <Product> feature map",
+  "### Requirement reference", and "### <Product> prerequisites" exactly,
+  because the export script finds the tables by them.
 - Do NOT git add, commit, or push.
 - Do NOT fabricate. Every version, requirement ID, and command must come from a
   source file you downloaded and read. If something cannot be verified, say so in
@@ -113,6 +113,20 @@ STEP 4. Commands
 - Document product limitations (requirements the product cannot meet exactly
   with its own settings) in the "Where the commands come from" section, each
   with a mitigation.
+
+STEP 4b. Prerequisites
+- Build a prerequisites list for the product and a prerequisites column in the
+  feature map, as .claude/skills/srg-mapping-for/PREREQ-PLAYBOOK.txt describes
+  (sections WHAT A PREREQUISITE IS and WHAT TO ADD), with Chapter 33 as the
+  model: a "### Prerequisites" prose section after the last "Where ... comes
+  from" section, a "### <Product> prerequisites" table (P1, P2, ...) just
+  before "### The <Product> feature map", and a "<Product> prerequisites"
+  column at the end of the feature map listing the IDs each row needs.
+- Licenses and model support come only from the product's own documentation
+  (feature matrix, licensing guide, release notes, administration guide),
+  cited by section. Verify every command in the prerequisites table with the
+  same verifier as the rest of the chapter. Make the build fail on unknown,
+  unused, or misplaced IDs.
 
 STEP 5. Chapter
 - File and title as the coordinator gives them.

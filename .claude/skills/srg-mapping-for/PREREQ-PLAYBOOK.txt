@@ -1,0 +1,91 @@
+PLAYBOOK: add a prerequisites table and column to an existing map or crosswalk chapter
+======================================================================================
+
+Repository: D:\Documents\claude\Enterprise-Infrastructure-Encyclopedia
+Volume:     volumes/volume-172-disa-srgs-and-stigs (DISA SRGs and STIGs)
+
+You are adding prerequisites to ONE chapter that is already committed and
+live. Model: Chapter 33
+(chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md): read
+its "### Prerequisites" prose section, its "### FortiSwitch prerequisites"
+table, and its "FortiSwitch prerequisites" column, and copy their form.
+
+WHAT A PREREQUISITE IS
+Anything that must exist or be configured BEFORE a row's setting can meet its
+requirement: an external server (RADIUS, TACACS+, LDAP, syslog, NTP, SNMP
+manager, SFTP/SCP backup server, SIEM, identity provider), a user group or
+role, a certificate or PKI enrollment, a license or subscription, a model or
+hardware capability, an operating mode (for example FIPS-CC, FortiLink-
+managed, HA), a managing system (FortiGate, FortiManager, EMS), a configured
+interface, VLAN, or zone, an earlier setting the row depends on (for example
+DHCP snooping before dynamic ARP inspection), cloud services, and so on.
+Include only what the product's documentation supports; cite it.
+
+WHAT TO ADD
+1. A "### Prerequisites" prose section after the chapter's last "Where ...
+   comes from" section: what counts as a prerequisite, that licenses and model
+   support must be checked for the exact model and release, and how to use the
+   column in an assessment (check a row's prerequisites before its setting; a
+   missing prerequisite is itself the finding).
+2. A table with the exact heading "### <Product> prerequisites" (for example
+   "### FortiGate prerequisites"; for a crosswalk, the comparison product,
+   which is the side whose settings the chapter verifies), placed just before
+   the chapter's main table ("### The <Product> feature map" in a map chapter,
+   "### The crosswalk table" in a crosswalk). Columns:
+   | ID | Prerequisite | What it enables | How to put it in place | Source |
+   IDs are P1, P2, ... "How to put it in place" is a command verified with the
+   chapter's existing verifier like every other command, or a GUI pane checked
+   the same way, or a plain description where it is not a product setting.
+   "Source" names the document and section (or the chapter row) it comes from.
+3. A "<Product> prerequisites" column in the main table, right after the
+   version column(s) that belong to that product (in a map chapter, after the
+   command column), listing the IDs each row needs (for example "P1, P4"), or
+   "—" when it needs none. Rows with no requirement of their own ("No direct
+   requirement") and Not supported or Not applicable rows get "—" unless their
+   disabling command itself needs a prerequisite. In a crosswalk, add the same
+   column to the "... requirements with no ..." table.
+4. Licenses and model support: take them from the product's own feature matrix,
+   licensing guide, release notes, or administration guide, and cite the
+   section. Do not infer a license or model limit; if the documentation does
+   not say, leave it out.
+
+REUSE
+- Where the chapter's settings come from another chapter that already has a
+  prerequisites table (for example a crosswalk built on a map chapter), reuse
+  that chapter's IDs and definitions exactly, and make the build confirm they
+  match.
+- Chapters about the same product (map and crosswalk) must use the same
+  prerequisite list. The coordinator tells you if one already exists.
+
+BUILD
+- Change the chapter's own build pipeline in its scratch folder under temp/
+  (the coordinator names it) and regenerate the chapter, so it can still be
+  rebuilt. If the pipeline is missing or cannot regenerate the chapter
+  identically, add the table and column with a small script that edits the
+  committed chapter, and keep that script in the scratch folder.
+- The build or script must fail on an unknown ID, an unused ID, or an ID on a
+  row that cannot have one, and must keep every row and every existing command
+  unchanged.
+- Keep every existing "[Download ... as CSV](...)" line exactly as it is. Do
+  NOT add a CSV line for the new table; the coordinator's exporter adds it.
+- Do not change anything else in the chapter.
+
+HARD RULES
+- Stay in the repository. Write only the one chapter (plus the scratch folder).
+  Do not edit any other file. No commits. No subagents. No fabrication.
+- Windows: PYTHONIOENCODING=utf-8; write data files with the Write tool; never
+  print large outputs into your context.
+
+CHECKS
+- Re-run the chapter's verifier: 0 failures, including the new table's
+  commands.
+- npx --yes markdownlint-cli2 <chapter>   (0 errors for the chapter)
+- npx --yes cspell --no-progress --words-only --unique <chapter>   (report words; do not edit cspell.json)
+- python scripts/python/check_internal_links.py
+
+FINAL REPORT (concise)
+- The prerequisite list (IDs and names) and how many rows reference each.
+- Sources for licenses and model support.
+- Confirmation that every row and existing command is unchanged (row counts
+  before and after), and the verify and check results.
+- cspell words to add.
