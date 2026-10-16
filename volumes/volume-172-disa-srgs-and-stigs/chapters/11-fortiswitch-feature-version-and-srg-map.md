@@ -122,9 +122,12 @@ interfaces or using static routing.
   FortiGate through FortiLink. Security Fabric features are available only in
   managed mode, and the switch configuration and evidence then live on the
   FortiGate.
-- **Watch the Advanced Features license.** Several Layer 3 features (OSPF, BGP,
-  IS-IS, VRF, PBR, EVPN) require the FortiSwitch Advanced Features license. The
-  SRG requirements apply only if the feature is licensed and enabled.
+- **Watch the Advanced Features license.** The FortiSwitchOS 8.0.0 feature
+  matrix lists the Layer 3 features that require the FortiSwitch Advanced
+  Features license: policy-based routing, VRF, OSPF, RIP, VRRP, BGP, IS-IS,
+  PIM-SSM, and VXLAN BGP EVPN, plus inter-VLAN routing offload. They are the
+  rows in the "Layer 3 (Advanced Features license)" category below. The SRG
+  requirements apply only if the feature is licensed and enabled.
 
 ## Implementation and Automation
 

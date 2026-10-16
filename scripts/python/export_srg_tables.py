@@ -35,6 +35,7 @@ KINDS = [
     ]),
     ("*-crosswalk.md", [
         ("### The crosswalk table", "crosswalk", "Download the crosswalk as CSV"),
+        (re.compile(r"### .+ prerequisites$"), "prerequisites", "Download the prerequisites as CSV"),
         (re.compile(r"### .+ requirements with no "), "unmatched", "Download the unmatched requirements as CSV"),
     ]),
 ]
