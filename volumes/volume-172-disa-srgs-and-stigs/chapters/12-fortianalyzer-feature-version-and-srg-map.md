@@ -119,6 +119,52 @@ by procedure:
   the release procedure, or enforce lockout on the authentication server.
 - **FIPS-CC mode** can be enabled only from the console.
 
+### Prerequisites
+
+A FortiAnalyzer feature often meets its requirement only if something else is
+already in place. A **prerequisite** is anything that must exist or be
+configured *before* a row's command can meet the requirement: an external
+server (RADIUS, TACACS+, LDAP, a SAML identity provider, SMTP, an SNMP
+manager, NTP, a syslog server or SIEM, an SFTP server), a PKI, the log sources
+themselves, ADOMs, log storage, another FortiAnalyzer (an HA peer, a Fabric
+supervisor or member, an aggregation peer), the external system a connector
+reaches, console access, a FortiCloud registration or support contract, or a
+license. Settings that the row's own command already creates are not listed
+again.
+
+The 30 prerequisites are listed once, with IDs, in *FortiAnalyzer
+prerequisites*, and the feature map names the IDs each row needs in its
+**FortiAnalyzer prerequisites** column. A dash means the feature needs nothing
+beyond the FortiAnalyzer itself. "No direct requirement" rows, and rows whose
+only requirement is to disable the feature when it is unused
+(`SRG-APP-000141-AU-000090`), always show a dash. Rows whose command disables
+an unused feature but whose requirement is more than that (FortiCloud SSO, SOC
+remote access) list what the feature needs when it is used. Two conventions
+keep the column short:
+
+- **Log sources** (P1) are given for the collection and per-device rows, and
+  for features built on one product's logs (for example a FortiMail dashboard
+  or a FortiDeceptor report). Analysis features that work on whatever logs are
+  collected (Log View, FortiView, and general reports and event handlers) do
+  not repeat P1.
+- **FortiCloud registration** (P21) is mandatory for every FortiAnalyzer from
+  7.2.1, but it is given only on rows whose feature depends on FortiCloud.
+
+Fortinet publishes no feature matrix for FortiAnalyzer, so the **licenses and
+subscriptions** (P22 to P30) come from the FortiAnalyzer New Features Guides
+for 7.0 through 8.0, and a license is given only where a guide says the
+feature requires it. Licensing and capacity also depend on the platform: the
+license sets the daily log storage and the number of ADOMs, the FortiAI token
+entitlement varies by platform, and `execute lvm` exists only on VM models.
+Check the License Information widget and the FortiAnalyzer Administration
+Guide for your exact model and release before you plan on a licensed feature.
+
+During an assessment, check a row's prerequisites before its command: a
+correctly configured setting with a missing prerequisite (an unreachable
+RADIUS server, an unlicensed compliance report, a member that never joined the
+Fabric) does not meet the requirement, and the missing prerequisite is the
+finding.
+
 ## Design Considerations
 
 - **Pick the release first, then the features.** If your design depends on a
@@ -141,366 +187,410 @@ by procedure:
 
 ## Implementation and Automation
 
+### FortiAnalyzer prerequisites
+
+What must be in place before the FortiAnalyzer features in the feature map can
+meet their requirements (see *Prerequisites*). The commands were verified
+against the FortiAnalyzer 8.0.0 CLI Reference with the same script as the
+feature map; GUI entries name the pane, and entries that are not FortiAnalyzer
+settings are described in words.
+
+[Download the prerequisites as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/12-fortianalyzer-feature-version-and-srg-map-prerequisites.csv) (30 rows).
+
+| ID | Prerequisite | What it enables | How to put it in place | Source |
+| --- | --- | --- | --- | --- |
+| P1 | Log sources (FortiGates, other Fortinet devices, and syslog devices) set to send logs to the FortiAnalyzer, registered, and authorized | Log collection, per-device quotas, rate limits, integrity checks, and backups, no-logging detection, and the features built on one product's logs (for example FortiMail, FortiWeb, FortiDeceptor, FortiSandbox, FortiNDR, or FortiEDR logs) | On each device, send logs to the FortiAnalyzer's address; then authorize the device in GUI: Device Manager, and check it with `diagnose dvm device list` | FortiAnalyzer 8.0.0 CLI Reference, `config system admin setting` (`unreg_dev_opt`) and `diagnose dvm device list`; Chapter 12 rows *Device registration and authorization* and *Security Fabric authorization* |
+| P2 | ADOMs enabled and created, with the devices and administrators assigned to them | Per-ADOM disk quotas, data policies, log rates, time zones, and administrator profiles, ADOM assignment of administrators, Fabric ADOMs, and EMS multitenancy | `config system global; set adom-status enable; end`, then create the ADOMs in the GUI and assign administrators with `config system admin user; edit <ADMIN>; set adom <ADOM>; end` | FortiAnalyzer 8.0.0 CLI Reference, "Administrative Domains" ("Configuring ADOMs": the feature must first be enabled, ADOMs created, and administrators assigned) and `config system global` (`adom-status`) |
+| P3 | Log storage sized for the retention period: disks on a hardware unit, or virtual disks on a FortiAnalyzer-VM, within the license's storage limits | Disk quotas, the data policy (retention), and disk-full alerting with room to store logs for the required period | Hardware: a model with enough disk capacity. VM: add a virtual disk, then `execute lvm extend`, and check with `execute lvm info` | FortiAnalyzer 8.0.0 CLI Reference, `execute lvm` (FortiAnalyzer VM models only); FortiAnalyzer 7.2 New Features Guide, "FortiAnalyzer-VM has been added to the Flex-VM offering" (the license sets the daily storage and number of ADOMs) |
+| P4 | Reachable RADIUS, TACACS+, or LDAP servers, each with a unique shared secret or bind account, and administrator accounts that use them | Remote administrator authentication, so the authentication server enforces password, inactivity, and lockout rules | An organization RADIUS, TACACS+, or LDAP service, then `config system admin radius; edit <RADIUS>; set server <RADIUS_IP>; set secret <SECRET>; end` and `config system admin user; edit <ADMIN>; set user_type radius; set radius_server <RADIUS>; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system admin radius`, `config system admin tacacs`, `config system admin ldap`, and `config system admin user` (`user_type`, `radius_server`, `tacacs-plus-server`, `ldap-server`); Chapter 12 rows *RADIUS administrator authentication*, *TACACS+ administrator authentication*, and *LDAP administrator authentication* |
+| P5 | A SAML identity provider with the FortiAnalyzer registered as a service provider, and the IdP certificate on the FortiAnalyzer | SAML single sign-on for administrators, with signed assertions and requests and SHA-256 or SHA-512 signatures | An organization SAML IdP, then `config system saml; set status enable; set role SP; set idp-entity-id <IDP_ENTITY_ID>; set idp-single-sign-on-url <IDP_SSO_URL>; set idp-cert <IDP_CERT>; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system saml`; Chapter 12 rows *SAML SSO wildcard admin user to match all users on IdP server*, *SAML assertions and SAML requests can be now signed to better support third-party IdPs*, and *SAML SSO supports SHA-256 and SHA-512 for both IdP and SP* |
+| P6 | PKI: the DoD CA certificates and CRLs on the FortiAnalyzer, a reachable CRL distribution point, and certificates from that PKI for administrators and log sources | PKI (certificate) administrator login, two-factor authentication (available only for PKI administrators), LDAPS server validation, and syslog client certificate authentication | `config system certificate ca; edit <DOD_CA>; set ca <CA_CERTIFICATE>; end` and `config system certificate crl; edit <DOD_CRL>; set http-url <CRL_URL>; end`, with certificates issued to the administrators and the syslog log sources | FortiAnalyzer 8.0.0 CLI Reference, `config system certificate ca`, `config system certificate crl`, `config system admin user` (`user_type pki-auth`, `ca`; `two-factor-auth` is available when a PKI administrator account is configured), and `config system log settings` (`client-cert-auth`); Chapter 12 rows *PKI (certificate) administrator authentication* and *CA certificates and CRLs* |
+| P7 | FortiToken Cloud with a token for each administrator | Two-factor authentication for administrators (FortiToken Cloud email, mobile, or SMS) | FortiToken Cloud, then `config system admin user; edit <ADMIN>; set two-factor-auth ftc-ftm; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system admin user` (`two-factor-auth`); Chapter 12 row *Two-factor authentication (FortiToken Cloud)* |
+| P8 | A reachable SMTP server (with STARTTLS and an account if it requires authentication) | Alert email to the ISSO and administrators: disk-full, no-logging, and system alerts, and event handler and scheduled notifications | An organization mail server, then `config system mail; edit <SMTP>; set server <SMTP_IP>; set secure-option starttls; set auth enable; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system mail` and `config system alert-event`; Chapter 12 row *Alert email (SMTP)* |
+| P9 | SNMPv3 manager configured with the same user, authentication, and privacy settings | SNMPv3 queries and notifications with SHA-2 authentication and AES privacy | The organization network management system, then `config system snmp user; edit <USER>; set notify-hosts <NMS_IP>; set queries enable; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system snmp user`; Chapter 12 row *SNMPv3* |
+| P10 | Authoritative NTP servers and their authentication keys | Synchronized, authenticated time for the FortiAnalyzer's own records and for log receipt time stamps | Organization NTP servers, then `config system ntp; config ntpserver; edit 1; set server <NTP_IP>; set authentication enable; set key-type sha256; set key-id <ID>; set key <KEY>; end; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system ntp`; Chapter 12 rows *NTP server* and *FortiAnalyzer supports NTPv4 with SHA-256 encryption* |
+| P11 | A remote syslog server or SIEM that accepts reliable (TCP) syslog with TLS | Off-loading the FortiAnalyzer's own event logs, and forwarding collected logs in real time to a different system | An organization syslog server or SIEM, then `config system syslog; edit <SYSLOG>; set ip <SYSLOG_IP>; set reliable enable; set secure-connection enable; end` for the FortiAnalyzer's own logs, or `config system log-forward; edit 1; set mode forwarding; set server-addr <SIEM_IP>; end` for collected logs | FortiAnalyzer 8.0.0 CLI Reference, `config system syslog` and `config system log-forward`; Chapter 12 rows *Sending FortiAnalyzer event logs to a syslog server* and *Log forwarding to syslog, CEF, or another FortiAnalyzer* |
+| P12 | A public cloud log service (for example the Azure Monitor Log Ingestion API) with an account for the Fluentd output profile | Log forwarding to public cloud services through Fluentd | An organization cloud log service, then an output profile in GUI: System Settings > Advanced > Log Forwarding > Output Profile | FortiAnalyzer 7.4 New Features Guide, "Fluentd support for public cloud integration"; FortiAnalyzer 8.0 New Features Guide, "FortiAnalyzer Fluentd supports the Azure Monitor Log Ingestion API"; FortiAnalyzer 8.0.0 CLI Reference, `config system log-forward` (`fwd-output-plugin-id`) |
+| P13 | Another FortiAnalyzer: the analyzer that receives aggregated logs, or the server that log fetching pulls from | Log aggregation from a collector to an analyzer, and log fetching between FortiAnalyzer units | On the analyzer, `config system log-forward-service; set accept-aggregation enable; end`; for log fetching, the other unit is the fetch server (`config system log-fetch server-setting`) | FortiAnalyzer 8.0.0 CLI Reference, `config system log-forward-service` (`accept-aggregation`), `config system log-fetch server-setting`, and `config system log-fetch client-profile`; Chapter 12 rows *Log aggregation (collector to analyzer)* and *Log fetching between FortiAnalyzer units* |
+| P14 | An SFTP server and account for backups and firmware images | Log and configuration backups to another system, the backup before an upgrade, and loading firmware from the CLI | An organization SFTP server; the backup runs `execute backup all-settings sftp <SERVER_IP> <FILE> <USER> <PASSWORD>` | FortiAnalyzer 8.0.0 CLI Reference, `execute backup`, `execute restore image`, and `config system backup all-settings`; Chapter 12 rows *Log backup to another system*, *Configuration backup*, and *Firmware upgrade* |
+| P15 | A second FortiAnalyzer as the HA peer | FortiAnalyzer HA (active-passive or geo-redundant active-active), HA graceful upgrade, and Fabric supervisor HA | `config system ha; set mode a-p; set password <HA_PASSWORD>; config peer; edit 1; set addr <PEER_IP>; set serial-number <PEER_SN>; end; end` on each unit | FortiAnalyzer 8.0.0 CLI Reference, `config system ha` (`config peer`); FortiAnalyzer 7.4 New Features Guide, "Geo-redundant High Availability (HA)"; FortiAnalyzer 8.0 New Features Guide, "FortiAnalyzer Fabric Supervisor HA" |
+| P16 | A FortiAnalyzer Fabric: a supervisor and member units joined to it | Global log search, FortiView, reports, and threat hunting across members, Fabric role-based access, and Fabric management | On each member, `config system soc-fabric; set status enable; set role member; set supervisor <SUPERVISOR_IP>; end`, and add the member serial numbers to the supervisor's trusted list | FortiAnalyzer 8.0.0 CLI Reference, `config system soc-fabric`; FortiAnalyzer 7.4 New Features Guide, "Fabric of FAZ: member authorization with supervisor"; FortiAnalyzer 7.0 New Features Guide, "FortiAnalyzer Federation" |
+| P17 | The external system a Fabric connector reaches (for example FortiClient EMS, FortiMail, FortiEDR, ServiceNow, a webhook receiver such as Microsoft Teams, Windows Active Directory, or a product that sends alerts by webhook), with an API account or token | Connector actions in playbooks and incidents, data ingestion through API polling and alert ingestion, and EMS endpoint data for dashboards and reports | An account on the external system for FortiAnalyzer, then the connector in GUI: Fabric View (connectors) | FortiAnalyzer New Features Guides, the connector topics (for example 7.4 "Report generation from EMS connector data", 7.6 "Ingest logs or event data through API polling", "Alert ingestion service", and "Connector to Windows Active Directory"); Chapter 12 rows that name *GUI: Fabric View (connectors)* |
+| P18 | A FortiSIEM Supervisor that the SIEM Collector registers with | The FortiSIEM Collector management extension and the SIEM Collector on FortiAnalyzer, which forward logs to FortiSIEM | An organization FortiSIEM Supervisor, then register the collector in GUI: System Settings > SIEM Collector (8.0.1) | FortiAnalyzer 8.0 New Features Guide, "SIEM Collector on FortiAnalyzer"; FortiAnalyzer 7.0 New Features Guide, "New management extension - FortiSIEM Collector" |
+| P19 | Console access to the FortiAnalyzer (serial console, or the hypervisor console of a VM) | Enabling FIPS-CC mode, which is available only from the console | A console connection, then `config system fips; set status enable; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system fips` (the enable option is available only through the console); Chapter 12 row *FIPS-CC mode* |
+| P20 | An organization web proxy for the FortiAnalyzer's outbound connections | FortiAI (and other outbound services) where the FortiAnalyzer reaches the Internet only through a proxy | An organization web proxy, then `config system web-proxy; set status enable; set address <PROXY_IP>; set port <PORT>; end` | FortiAnalyzer 8.0.0 CLI Reference, `config system web-proxy`; FortiAnalyzer 8.0 New Features Guide, "FortiAI enabled on FortiAnalyzer supports web proxy deployments" |
+| P21 | A FortiCloud account with the FortiAnalyzer registered in FortiCare | Use of the unit (registration is mandatory from 7.2.1), FortiCloud SSO and management from FortiCloud, and SOC remote access | Register the unit in the GUI setup wizard (Register and SSO with FortiCare), and check it in GUI: Dashboards > Status > License Information | FortiAnalyzer 7.2 New Features Guide, "Mandatory FortiCare/FortiCloud registration - 7.2.1"; FortiAnalyzer 7.0 New Features Guide, "Admins can use a SAML SSO FortiCloud account to log in to FortiAnalyzer"; FortiAnalyzer 7.6 New Features Guide, "Enable SOC remote access for the Managed FortiAnalyzer Service" |
+| P22 | A valid FortiCare support contract: the Firmware & General Updates entitlement, and FortiCare Premium or Elite | Upgrades to a higher major or minor release, and object updates from FortiGuard (FortiGate metadata, Internet Service Database, GeoIP, safeguarding) | Purchase and register the contract in FortiCloud; check with `diagnose fmupdate dbcontract` and `diagnose license list` | FortiAnalyzer 7.4 New Features Guide, "Prevent FortiAnalyzers with an expired support contract from upgrading to a major or minor firmware release"; FortiAnalyzer 8.0 New Features Guide, "FortiCare Elite or FortiCare Premium required to download FortiGuard objects" |
+| P23 | FortiGuard Outbreak Detection Service license | Outbreak alerts, with their event handlers and reports downloaded from FortiGuard | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.0 New Features Guide, "FortiGuard outbreak detection service" (without a valid license, outbreak alerts cannot be downloaded and no outbreak event handlers or reports are available); FortiAnalyzer 7.2 New Features Guide, "Rename Outbreak Alerts Service to Outbreak Detection Service" |
+| P24 | Indicators of compromise (IOC) service license | IOC detection (compromised hosts) and the charts that depend on it | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.0 New Features Guide, "DNS security report 7.0.3" (without IOC, the charts show "No license for the Indicators of Compromise (IOC) service") |
+| P25 | FortiAnalyzer Security Automation Service (SOAR) license | Security Automation content packages from FortiGuard (reports, event handlers, SIEM log parsers, playbooks), the DLP monitor, and the reports that require it | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.4 New Features Guide, "Deliver reports, event handlers, and SIEM rules as FortiGuard packages 7.4.2", "Data leak prevention monitor in FortiView 7.4.1", "ZTNA Report 7.4.1", and "DLP report 7.4.1"; FortiAnalyzer 7.6 New Features Guide, "Content package update page 7.6.3", "NIST CSF Compliance Report", and "Expanding log parsers for third-party applications through syslog" |
+| P26 | Security Rating Update (FGSA) license (the Security Rating and Compliance subscription) | Compliance and security rating reports (PCI DSS, FSBP, CIS Controls, ISO 27001, HIPAA, SOC 2, NERC CIP, NIST CSF) | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.4 New Features Guide, "Licensing adjustment" and the report topics that require it (for example "FSBP Security Rating Report" and "HIPAA report 7.4.2"); FortiAnalyzer 7.6 New Features Guide, "NIST CSF Compliance Report" |
+| P27 | Industrial Security Service (ISSS) license (the OT Security Service subscription) | OT features: the OT/IoT vulnerability widgets, the MITRE ATT&CK ICS matrix, and the OT reports | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.4 New Features Guide, "Licensing adjustment", "Operational Technology (OT) Security Service", and "OT Security Risk Report"; FortiAnalyzer 8.0 New Features Guide, "OT Network Traffic and Policy Optimization Report 8.0.1" |
+| P28 | FortiAI license | The FortiAI assistant and agents (three FortiAI users, local administrators only, with a monthly token entitlement) | Purchase and register the license; check with `diagnose license list` or GUI: Dashboards > Status > License Information | FortiAnalyzer 7.6 New Features Guide, "FortiAI license"; FortiAnalyzer 8.0 New Features Guide, "Account-level FortiAI token top-up" |
+| P29 | SOCaaS remote access Service (SOCA) license | Remote access for the SOCaaS Managed FortiAnalyzer Service | Purchase and register the license; check with `diagnose license list` | FortiAnalyzer 7.6 New Features Guide, "Enable SOC remote access for the Managed FortiAnalyzer Service 7.6.5" |
+| P30 | Licenses on the FortiGates that send the logs: the IoT Detection Service, and the Attack Surface Security Rating license (FortiOS 7.4.1 or later) | IoT device data in the IoT dashboards, and data for the CIS Controls Security Rating report | Purchase and register the licenses on each FortiGate, and check them on the FortiGate | FortiAnalyzer 7.2 New Features Guide, "IoT visibility"; FortiAnalyzer 7.6 New Features Guide, "IoT Dashboard"; FortiAnalyzer 7.4 New Features Guide, "CIS Controls Security Rating report" |
+
 ### The FortiAnalyzer feature map
 
 Abbreviations in the SRG column: **CLS** is the Central Log Server SRG and
 **NDM** the Network Device Management SRG. The requirement titles are listed
 in the next table. The command column follows the conventions in *Where the
 commands come from*.
+The last column lists the IDs from *FortiAnalyzer prerequisites*.
 
 [Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/12-fortianalyzer-feature-version-and-srg-map-feature-map.csv) (349 rows).
 
-| Category | Feature | Introduced (FortiAnalyzer) | SRG requirement(s) | Command to satisfy the requirement |
-| --- | --- | --- | --- | --- |
-| Core: log collection | Log collection from Fortinet devices (OFTP) | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000330`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system global; set oftp-ssl-protocol tlsv1.2; set enc-algorithm high; end` |
-| Core: log collection | Syslog collection from third-party devices | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system log settings; set syslog-over-tls-port 6514; set unencrypted-logging-tcp disable; set unencrypted-logging-udp disable; config client-cert-auth; set mode strict; end; end` |
-| Core: log collection | Device registration and authorization | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000330` | `config system admin setting; set unreg_dev_opt add_no_service; end` |
-| Core: log collection | Log receipt time stamps | 7.0.0 or earlier | CLS `SRG-APP-000374-AU-000290`; CLS `SRG-APP-000086-AU-000030` | See the NTP server row |
-| Core: log collection | No-logging detection for devices | 7.0.0 or earlier | CLS `SRG-APP-000360-AU-000130` | `config system locallog setting; set no-log-detection-threshold <MINUTES>; set log-interval-dev-no-logging <MINUTES>; end` |
-| Core: log storage | Per-ADOM disk quota | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `execute log adom disk-quota <ADOM> <MB>` |
-| Core: log storage | Per-device disk quota | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `execute log device disk-quota <DEVICE_ID> <MB>` |
-| Core: log storage | Data policy (log retention by ADOM) | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000050`; CLS `SRG-APP-000090-AU-000070` | GUI: System Settings, ADOM data policy (Analytics and Archive retention) |
-| Core: log storage | Disk-full alerting | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `config system locallog setting; set log-interval-disk-full <MINUTES>; end` and `config system alert-event; edit <ALERT>; config alert-destination; edit 1; set type mail; set to <ISSO_EMAIL>; end; end` |
-| Core: log storage | Log file integrity (hash and authentication code) | 7.0.0 or earlier | CLS `SRG-APP-000080-AU-000010`; CLS `SRG-APP-000119-AU-000110` | `config system global; set log-checksum md5-auth; end` and `execute log-integrity <DEVICE> <VDOM> <LOG_FILE>` |
-| Core: log storage | Keep logs after a device is deleted | 7.0.0 or earlier | CLS `SRG-APP-000120-AU-000120` | `config system log settings; set keep-dev-logs enable; end` |
-| Core: log storage | Log backup to another system | 7.0.0 or earlier | CLS `SRG-APP-000125-AU-000300`; CLS `SRG-APP-000358-AU-000100` | `execute backup logs <DEVICE> sftp <SERVER_IP> <USER> <PASSWORD> <DIRECTORY>` |
-| Core: log storage | Automatic deletion of logs, reports, and archives | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000050` | `config system auto-delete; config log-auto-deletion; set status enable; set retention months; set value <MONTHS>; end; end` |
-| Core: log forwarding | Log forwarding to syslog, CEF, or another FortiAnalyzer | 7.0.0 or earlier | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000515-AU-000110`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit 1; set mode forwarding; set fwd-server-type syslog; set server-addr <SIEM_IP>; set fwd-reliable enable; set fwd-secure enable; set fwd-max-delay realtime; end` |
-| Core: log forwarding | Log aggregation (collector to analyzer) | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000390` | `config system global; set log-mode collector; end` and `config system log-forward; edit 1; set mode aggregation; set server-addr <ANALYZER_IP>; end` |
-| Core: log forwarding | Log fetching between FortiAnalyzer units | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000439-AU-004310` | `config system log-fetch client-profile; edit 1; set server-ip <SERVER_IP>; set secure-connection enable; end` |
-| Core: analysis | Log View: search and filter | 7.0.0 or earlier | CLS `SRG-APP-000115-AU-000160`; CLS `SRG-APP-000790-AU-000210` | GUI: Log View |
-| Core: analysis | FortiView | 7.0.0 or earlier | CLS `SRG-APP-000745-AU-000120`; CLS `SRG-APP-000111-AU-000150` | GUI: FortiView |
-| Core: analysis | SQL database for analytics | 7.0.0 or earlier | CLS `SRG-APP-000750-AU-000130` | `config system sql; set status local; end` |
-| Core: analysis | Reports and report templates | 7.0.0 or earlier | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Core: analysis | Event handlers and alerts | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380`; CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers); `config system alert-event` for system alerts |
-| Core: analysis | Incidents | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) |
-| Core: analysis | Indicators of compromise (IOC) | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; set notification enable; end` |
-| Core: analysis | Event correlation across devices | 7.0.0 or earlier | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000370` | GUI: Incidents & Events (Handlers, correlation rules) |
-| Core: administration | Administrative domains (ADOMs) | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000118-AU-000100` | `config system global; set adom-status enable; end` |
-| Core: administration | Individual administrator accounts | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000815-AU-000260` | `config system admin user; edit <ADMIN>; set profileid <PROFILE>; set adom <ADOM>; end` |
-| Core: administration | Administrator profiles (role-based access) | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000118-AU-000100`; CLS `SRG-APP-000119-AU-000110`; CLS `SRG-APP-000120-AU-000120`; CLS `SRG-APP-000121-AU-000130` | `config system admin profile; edit <PROFILE>; set log-viewer read; set report-viewer read; set system-setting none; end` |
-| Core: administration | Trusted hosts for administrators | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000410` | `config system admin user; edit <ADMIN>; set trusthost1 <IP> <MASK>; end` |
-| Core: administration | Password policy | 7.0.0 or earlier | CLS `SRG-APP-000164-AU-002480`; CLS `SRG-APP-000166-AU-002490`; CLS `SRG-APP-000170-AU-002530`; CLS `SRG-APP-000174-AU-002570` | `config system password-policy; set status enable; set minimum-length 15; set must-contain upper-case-letter lower-case-letter number non-alphanumeric; set change-4-characters enable; set expire 180; end` |
-| Core: administration | Administrator lockout | 7.0.0 or earlier | CLS `SRG-APP-000065-AU-000240` | `config system global; set admin-lockout-threshold 3; set admin-lockout-duration <SECONDS>; end` |
-| Core: administration | Idle session timeout | 7.0.0 or earlier | CLS `SRG-APP-000295-AU-000190` | `config system admin setting; set idle_timeout <MINUTES>; end` |
-| Core: administration | Pre-login banner | 7.0.0 or earlier | CLS `SRG-APP-000068-AU-000035` | `config system global; set pre-login-banner enable; set pre-login-banner-message <DOD_BANNER>; end` |
-| Core: administration | RADIUS administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin radius; edit <RADIUS>; set server <IP>; set secret <SECRET>; set protocol tls; set message-authenticator require; end` |
-| Core: administration | TACACS+ administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin tacacs; edit <TACACS>; set server <IP>; set key <KEY>; set authorization enable; end` |
-| Core: administration | LDAP administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin ldap; edit <LDAP>; set server <IP>; set secure ldaps; set ca-cert <CA_CERT>; end` |
-| Core: administration | PKI (certificate) administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000175-AU-002630`; CLS `SRG-APP-000391-AU-002290`; CLS `SRG-APP-000149-AU-002280`; CLS `SRG-APP-000427-AU-000040` | `config system admin user; edit <ADMIN>; set user_type pki-auth; set subject <CERT_SUBJECT>; set ca <CA_CERT>; end` and `config system global; set clt-cert-req enable; end` |
-| Core: administration | Two-factor authentication (FortiToken Cloud) | 7.0.0 or earlier | CLS `SRG-APP-000149-AU-002280` | `config system admin user; edit <ADMIN>; set two-factor-auth ftc-ftm; end` |
-| Core: administration | FortiAnalyzer event log (own audit records) | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000680`; CLS `SRG-APP-000503-AU-000280`; CLS `SRG-APP-000026-AU-000580` | `config system locallog disk setting; set status enable; set severity information; end` |
-| Core: administration | Sending FortiAnalyzer event logs to a syslog server | 7.0.0 or earlier | NDM `SRG-APP-000516-NDM-000350`; CLS `SRG-APP-000358-AU-000100` | `config system syslog; edit <SYSLOG>; set ip <SYSLOG_IP>; set reliable enable; set secure-connection enable; end` and `config system locallog syslogd setting; set status enable; set syslog-name <SYSLOG>; end` |
-| Core: administration | Alert email (SMTP) | 7.0.0 or earlier | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000359-AU-000120` | `config system mail; edit <ID>; set server <SMTP_IP>; set secure-option starttls; set auth enable; end` |
-| Core: security | HTTPS and SSH management encryption | 7.0.0 or earlier | CLS `SRG-APP-000439-AU-004310`; CLS `SRG-APP-000514-AU-002890` | `config system global; set global-ssl-protocol tlsv1.2; set ssl-low-encryption disable; set enc-algorithm high; end` |
-| Core: security | Interface administrative access | 7.0.0 or earlier | CLS `SRG-APP-000141-AU-000090`; CLS `SRG-APP-000516-AU-000410` | `config system interface; edit <PORT>; set allowaccess https ssh; end` |
-| Core: security | Local-in policies | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000410` | `config system local-in-policy; edit 1; set intf <PORT>; set src <IP> <MASK>; set dport 443; set action accept; end` |
-| Core: security | FIPS-CC mode | 7.0.0 or earlier | CLS `SRG-APP-000514-AU-002890` | `config system fips; set status enable; end` |
-| Core: security | Private data encryption | 7.0.0 or earlier | CLS `SRG-APP-000915-AU-000400` | `config system global; set private-data-encryption enable; end` |
-| Core: security | CA certificates and CRLs | 7.0.0 or earlier | CLS `SRG-APP-000910-AU-000390`; CLS `SRG-APP-000175-AU-002630` | `config system certificate ca; edit <CA>; set ca <CERTIFICATE>; end` and `config system certificate crl; edit <CRL>; set http-url <CRL_URL>; end` |
-| Core: security | SNMPv3 | 7.0.0 or earlier | NDM `SRG-APP-000395-NDM-000310` | `config system snmp user; edit <USER>; set security-level auth-priv; set auth-proto sha256; set priv-proto aes256; end` |
-| Core: security | NTP server | 7.0.0 or earlier | CLS `SRG-APP-000920-AU-000410`; CLS `SRG-APP-000086-AU-000030`; NDM `SRG-APP-000395-NDM-000347` | `config system ntp; set status enable; config ntpserver; edit 1; set server <NTP_IP>; set authentication enable; set key-type sha256; set key-id <ID>; set key <KEY>; end; end` |
-| Core: security | Firmware upgrade | 7.0.0 or earlier | CLS `SRG-APP-000456-AU-000270`; CLS `SRG-APP-001035-AU-000430`; CLS `SRG-APP-000810-AU-000250` | `execute restore image sftp <IMAGE_PATH> <SERVER_IP> <USER> <PASSWORD>` (use a vendor-supported release) |
-| Core: security | Configuration backup | 7.0.0 or earlier | NDM `SRG-APP-000516-NDM-000340` | `config system backup all-settings; set status enable; set protocol sftp; set server <IP>; set user <USER>; set passwd <PASSWORD>; set crptpasswd <ENCRYPTION_PASSWORD>; end` |
-| Core: security | Data masking for administrators | 7.0.0 or earlier | CLS `SRG-APP-000118-AU-000100` | `config system admin profile; edit <PROFILE>; set datamask enable; set datamask-fields <FIELDS>; end` |
-| Core: security | High availability (HA) | 7.0.0 or earlier | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Core: security | Disable unused analytics modules | 7.0.0 or earlier | CLS `SRG-APP-000141-AU-000090` | `config system global; set disable-module <MODULES>; end` |
-| Device Manager | World map added to the Device Manager | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Device Manager | Model device support for central logging | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000330` | GUI: Device Manager (add a model device) |
-| Device Manager | Security Fabric authorization | 7.0.1 and later | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000330` | GUI: Device Manager (authorize devices) |
-| Device Manager | Support for six major versions of FortiOS | 7.0.5+; 7.2.1+ | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Device Manager | Improved secure SD-WAN monitor | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Device Manager | SD-WAN application performance monitoring | 7.0.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | FortiOS connector health check | 7.0.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Attach FortiMail connector actions to incidents | 7.0.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | SIEM correlation and analysis | 7.0.0 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Importing and exporting playbooks | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | FortiGuard outbreak detection service | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) |
-| Security Operations (SOC) | Manage subnets | 7.0.0 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Incidents & Events (subnet lists) |
-| Security Operations (SOC) | EMS API support for FortiAnalyzer to notify and tag suspicious endpoints | 7.0.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (EMS connector) |
-| Security Operations (SOC) | FortiClient event handler update | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | FortiDeceptor default handler | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | IPS signatures on-hold event handler | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | NOC event handlers | 7.0.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Allowlisting on Event Handlers | 7.0.1 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Assign events for alert triage | 7.0.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Events) |
-| Security Operations (SOC) | Filter syntax enhancement | 7.0.1 and later | CLS `SRG-APP-000115-AU-000160`; CLS `SRG-APP-000790-AU-000210` | GUI: Log View |
-| Security Operations (SOC) | IPS signature lookup | 7.0.3 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Log View |
-| Security Operations (SOC) | IOC detection support for FortiMail logs | 7.0.3 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; end` |
-| Security Operations (SOC) | Subnet filter for Log View | 7.0.3 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Log View |
-| Security Operations (SOC) | Event handler configuration improvements | 7.0.3 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Shadow IT Monitoring Service | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Data sources tuning | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Asset and Identity Dashboards | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Asset and Identity Center |
-| Security Operations (SOC) | Personalized custom views | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | SD-WAN monitoring improvement | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | FortiView monitors for FortiMail | 7.0.3 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Threat research monitor | 7.0.3 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Log and Report | Improve log forwarding bandwidth efficiency | 7.0.0 and later | CLS `SRG-APP-000358-AU-000100` | `config system log-forward; edit <ID>; set fwd-compression enable; end` |
-| Log and Report | Per-device log receiving rate limit | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020` | `config system log ratelimit; set mode manual; config ratelimits; edit 1; set filter-type devid; set filter <DEVICE_ID>; set ratelimit <LOGS_PER_SEC>; end; end` |
-| Log and Report | Mask user data in log forwarder | 7.0.0 and later | CLS `SRG-APP-000118-AU-000100` | `config system log-forward; edit <ID>; set log-masking-status enable; set log-masking-fields user srcip; set log-masking-key <KEY>; end` |
-| Log and Report | FortiEDR Central Manager logging | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | FortiAI logging on FortiAnalyzer | 7.0.1 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Log forwarding enhancement | 7.0.1 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000515-AU-000110` | `config system log-forward; edit <ID>; set fwd-max-delay realtime; set fwd-reliable enable; set fwd-secure enable; end` |
-| Log and Report | FortiSOAR central logging | 7.0.2 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | ZTNA traffic logs | 7.0.3 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Improved caching mechanism for reports | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | `config system report auto-cache` (performance tuning) |
-| Log and Report | FortiDeceptor report | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Central UEBA table for custom reporting and widgets | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000516-AU-000370` | GUI: Reports |
-| Log and Report | FortiSandbox CTAP report | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Organize reports in folders | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Additional charts for SD-WAN reporting | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | SD-WAN Summary Report | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | FortiView support for FortiWeb | 7.0.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Log and Report | Shadow IT monitoring for cloud application and users | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | FortiAI report and event handler | 7.0.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | FortiSandbox CTAP report update | 7.0.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Asset and identity report | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Improved report time filter | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | DNS security report | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Dataset editor update | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports (Datasets) |
-| System | FortiAnalyzer HA graceful upgrade | 7.0.0 and later | CLS `SRG-APP-000456-AU-000270` | `config system ha; set mode a-p; end` (upgrade the HA cluster per the Upgrade Guide) |
-| System | Theme mode | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | Add operation permissions to Admin profile | 7.0.0 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set device-op none; end` |
-| System | Admins can use a SAML SSO FortiCloud account to log in to FortiAnalyzer | 7.0.0 and later | CLS `SRG-APP-000148-AU-002270` | If unused: `config system saml; set forticloud-sso disable; end` |
-| System | Suggest backup before upgrade | 7.0.2 and later | NDM `SRG-APP-000516-NDM-000340` | `execute backup all-settings sftp <SERVER_IP> <FILE> <USER> <PASSWORD>` |
-| System | Admin user attributes can be set in the admin profile and override the individual admin settings | 7.0.3 and later | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000410` | `config system admin profile; edit <PROFILE>; set trusthost1 <IP> <MASK>; end` and `config system admin user; edit <ADMIN>; set th-from-profile <TRUSTHOST_INDEX>; end` |
-| System | Support for link aggregation | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | Migrate to Fabric ADOM | 7.0.2 and later | CLS `SRG-APP-000033-AU-001610` | — |
-| Management Extensions | New management extension - FortiSOAR | 7.0.0 and later | CLS `SRG-APP-000141-AU-000090` | — |
-| Management Extensions | New management extension - FortiSIEM Collector | 7.0.1 and later | CLS `SRG-APP-000086-AU-000390` | — |
-| Management Extensions | Check for new MEA versions using CLI | 7.0.1 and later | CLS `SRG-APP-000456-AU-000270` | — |
-| Other | FortiAnalyzer Setup wizard | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | FortiAnalyzer VM licenses | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | CSF support for multiple VDOMs | 7.0.0 and later | CLS `SRG-APP-000516-AU-000330` | — |
-| Other | FortiAnalyzer Federation | 7.0.0 and later | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000033-AU-001610` | — |
-| Other | FortiAnalyzer VM supports Amazon EC2 IMDS version 2 | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | Event log easier to read | 7.0.1 and later | CLS `SRG-APP-000095-AU-000680` | GUI: System Settings (Event Log) |
-| Other | Migrate a FortiAnalyzer-VM license to VM-S | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | SD-WAN application bandwidth per interface widget | 7.0.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | Deploying FortiAnalyzer-VM on IBM Cloud | 7.0.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Device Manager | Device Group | 7.2.0 and later | CLS `SRG-APP-000033-AU-001610` | GUI: Device Manager (device groups) |
-| System | SAML SSO wildcard admin user to match all users on IdP server | 7.2.0 and later | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000815-AU-000260` | `config system admin user; edit <ADMIN>; set user_type sso; set wildcard disable; end` (prefer named accounts) |
-| Fabric View | OAuth 2.0 authentication for webhook connectors | 7.2.0 and later | CLS `SRG-APP-000439-AU-004310` | GUI: Fabric View (webhook connectors) |
-| Security Operations (SOC) | Use ServiceNow connector in playbooks | 7.2.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) and Incidents & Events (Automation) |
-| Security Operations (SOC) | Network reconnaissance events detection | 7.2.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Shadow IT events detection | 7.2.0 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | New event handlers for NOC monitoring | 7.2.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Include IOC detected on FortiGate local traffic in FortiAnalyzer IOC view | 7.2.0 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; end` |
-| Security Operations (SOC) | Rule based event correlation | 7.2.2 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers, correlation rules) |
-| Security Operations (SOC) | Data exfiltration detection | 7.2.2 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | SD-WAN chart to include more ADVPN shortcut information | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | SD-WAN chart for MOS scoring | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Add ZTNA dashboard to FortiView | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | IoT visibility | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Traffic shaping charts | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | CASB Apps Access widget | 7.2.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Auto-refresh on FortiSoC dashboard elements | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Rename Outbreak Alerts Service to Outbreak Detection Service | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Summary dashboard for event logs | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Log View |
-| Log and Report | Log caching enhancement | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | FortiNDR logging and reporting enhancements | 7.2.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Security events consolidated page | 7.2.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Log View |
-| Log and Report | Log View right-click filtering supports OR, AND, and Replace | 7.2.3 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Log View |
-| Log and Report | Report in JSON format | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Report cache control | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | `config system report auto-cache` (performance tuning) |
-| Log and Report | Upgrade report editor | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Improve data visualization for the web usage report | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | 360 Security Report | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | VPN report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Application risk and control report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Bandwidth and applications report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Security events and incidents summary report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Log and Report | High bandwidth application usage report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Cyber-bullying indicators report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Self-harm and risk indicators report update | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Use device metadata in datasets and reports | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports (Datasets) |
-| Log and Report | Search by object names | 7.2.0 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View |
-| Log and Report | Generate system event log when daemon crashes | 7.2.2 and later | CLS `SRG-APP-000095-AU-000680` | `config system locallog setting; set log-daemon-crash enable; end` |
-| System | Global log search across FortiAnalyzer Fabric members | 7.2.1 and later | CLS `SRG-APP-000790-AU-000210`; CLS `SRG-APP-000086-AU-000390` | GUI: Log View (Fabric supervisor) |
-| System | FortiAnalyzer French GUI support | 7.2.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | FortiAnalyzer supports VLANs on physical network interfaces | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | FortiAnalyzer Fabric usability improvements | 7.2.0 and later | CLS `SRG-APP-000086-AU-000390` | GUI: System Settings (Fabric Management) |
-| System | Add LLDP support on FMG and FAZ | 7.2.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused, leave LLDP disabled on the interface (GUI: System Settings, Network) |
-| System | Mandatory FortiCare/FortiCloud registration | 7.2.1 and later | CLS `SRG-APP-000456-AU-000270` | — |
-| System | SAML assertions and SAML requests can be now signed to better support third-party IdPs | 7.2.3 and later | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000080-AU-000010` | `config system saml; set want-assertions-signed enable; set auth-request-signed enable; end` |
-| Cloud Services | VM flexible shapes support for Oracle Cloud Infrastructure | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Cloud Services | FortiAnalyzer-VM has been added to the Flex-VM offering | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Cloud Services | FortiAnalyzer-VM supported in OCI DRCC | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Cloud Services | FortiAnalyzer management from FortiCloud via SSO | 7.2.5 and later | CLS `SRG-APP-000148-AU-002270` | If unused: `config system central-management; set type none; end` |
-| Device Manager | Support FortiGate HA vSN | 7.4.0 and later | CLS `SRG-APP-000516-AU-000330` | — |
-| Fabric View | Reference individual fabric devices | 7.4.1 and later | CLS `SRG-APP-000516-AU-000330` | — |
-| Fabric View | Webhook connector to support MS Teams | 7.4.0 and later | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (webhook connectors) |
-| Fabric View | Webhook enhancement | 7.4.4 and later | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (webhook connectors) |
-| Fabric View | Report generation from EMS connector data | 7.4.4 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Security Operations (SOC) | Playbook event trigger correlation rules | 7.4.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Automation) |
-| Security Operations (SOC) | New predefined correlation event handlers | 7.4.0 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Update to the Event Handler rule configuration | 7.4.2 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | SD-WAN Cloud Assisted Monitoring service widgets | 7.4.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Data leak prevention monitor in FortiView | 7.4.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | FortiProxy central visibility | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Compromised hosts improvements | 7.4.2 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; set notification enable; end` |
-| Security Operations (SOC) | Replay attacks in the Threat Map | 7.4.2 and later | CLS `SRG-APP-000775-AU-000180` | GUI: FortiView |
-| Security Operations (SOC) | Sankey view for SASE network | 7.4.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Managed endpoint vulnerability dashboard | 7.4.4 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | New charts in the Asset Identity Center | 7.4.0 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Asset and Identity Center |
-| Security Operations (SOC) | FortiSoC GUI reorganization | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Notifications for new Outbreak Alerts | 7.4.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) |
-| Security Operations (SOC) | MITRE ATT&CK matrices for Enterprise and ICS | 7.4.1 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events |
-| Security Operations (SOC) | Deliver reports, event handlers, and SIEM rules as FortiGuard packages | 7.4.2 and later | CLS `SRG-APP-000456-AU-000270` | — |
-| Security Operations (SOC) | MITRE information included in outbreak detection | 7.4.2 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Outbreak Alerts) |
-| Log and Report | FortiAnalyzer supports FortiWeb Cloud attack logs | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Support parsing and addition of third-party application logs to the SIEM DB | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) |
-| Log and Report | Per-ADOM log rate | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020` | `config system log ratelimit; set mode manual; config ratelimits; edit 1; set filter-type adom; set filter <ADOM>; set ratelimit <LOGS_PER_SEC>; end; end` |
-| Log and Report | Support EMS multitenancy via FortiAnalyzer ADOMs | 7.4.1 and later | CLS `SRG-APP-000033-AU-001610` | — |
-| Log and Report | Logging support for FortiCASB | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Logging support for FortiPAM | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Logging support for FortiToken Cloud | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | Support parsing and addition of third-party application logs to the SIEM DB in JSON format | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) |
-| Log and Report | FortiAnalyzer supports packet header information for FortiWeb traffic log | 7.4.1 and later | CLS `SRG-APP-000089-AU-000400` | — |
-| Log and Report | Support additional log fields for long live session logs | 7.4.2 and later | CLS `SRG-APP-000089-AU-000400` | — |
-| Log and Report | Support FortiWeb performance statistics logs | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Fluentd support for public cloud integration | 7.4.0 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit <ID>; set fwd-server-type fwd-via-output-plugin; set fwd-output-plugin-id <PLUGIN>; end` |
-| Log and Report | Report guidance | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | PCI Security Rating Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Cyber Threats Assessment Report update | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Threat Report update | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Log and Report | FSBP Security Rating Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | CIS Controls Security Rating report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Shadow IT Report | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | FortiADC Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | ZTNA Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | FortiEDR Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Log and Report | ISO 27001:2022 Compliance Security Rating Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Exporting a report with settings | 7.4.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | DLP report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | PCI DSS security rating report update | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | HIPAA report | 7.4.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | SOC2 compliance report | 7.4.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Endpoint security vulnerability report | 7.4.4 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Time zone settings per ADOMs/Reports | 7.4.0 and later | CLS `SRG-APP-000086-AU-000030` | — |
-| Log and Report | New API to restore logs | 7.4.0 and later | CLS `SRG-APP-000125-AU-000300` | — |
-| Log and Report | Download PCAP files in encrypted and ZIP format | 7.4.1 and later | CLS `SRG-APP-000118-AU-000100` | `config system log pcap-file; set download-mode zip-with-password; end` |
-| System | Geo-redundant High Availability (HA) | 7.4.0 and later | CLS `SRG-APP-000086-AU-000390` | `config system ha; set mode a-p; set unicast enable; end` |
-| System | A new restricted admin profile can be used to only change the administrators passwords | 7.4.2 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set write-passwd-access specify-by-user; set write-passwd-user-list <USERS>; end` |
-| System | Per-ADOM admin profile | 7.4.2 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set scope adom; end` |
-| System | DNS settings per ADOM | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | FortiAnalyzer GUI enhancements | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | Fabric of FAZ topology chart | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | Fabric of FAZ: member authorization with supervisor | 7.4.0 and later | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000033-AU-001610` | `config system soc-fabric; set status enable; set role supervisor; set secure-connection enable; config trusted-list; edit 1; set serial <MEMBER_SN>; end; end` |
-| System | Fabric of FAZ global FortiView support | 7.4.0 and later | CLS `SRG-APP-000745-AU-000120`; CLS `SRG-APP-000086-AU-000390` | GUI: FortiView (Fabric supervisor) |
-| System | Fabric of FAZ: Central report support and creating Fabric groups | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000086-AU-000390` | GUI: Reports (Fabric supervisor) |
-| System | Prevent FortiAnalyzers with an expired support contract from upgrading to a major or minor firmware release | 7.4.0 and later | CLS `SRG-APP-001035-AU-000430` | — |
-| System | FortiManager and FortiAnalyzer support HTTP/2 for improved security, multiplexing, and reduced network latency | 7.4.1 and later | CLS `SRG-APP-000439-AU-004310` | `config system global; set httpd-ssl-protocol tlsv1.3 tlsv1.2; end` |
-| System | Backup strategy and configuration setup added to the FortiAnalyzer setup wizard | 7.4.2 and later | NDM `SRG-APP-000516-NDM-000340`; CLS `SRG-APP-000125-AU-000300` | `config system backup all-settings; set status enable; set protocol sftp; set server <IP>; end` |
-| System | FortiAnalyzer fabric HA awareness | 7.4.3 and later | CLS `SRG-APP-000086-AU-000390` | — |
-| System | FortiAnalyzer supports IPv6 address type for syslog server configuration | 7.4.3 and later | NDM `SRG-APP-000516-NDM-000350` | `config system syslog; edit <SYSLOG>; set ip <IPV6>; set reliable enable; set secure-connection enable; end` |
-| System | FortiAnalyzer introduces OS firmware levels Feature(F) and Mature(M) | 7.4.4+; 7.6.0+ | CLS `SRG-APP-001035-AU-000430` | — |
-| Cloud Services | FortiAnalyzer supports FortiCare Elite Service | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Cloud Services | FortiAnalyzer supports M6 and M7 instance types in AWS | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Operational Technology | Operational Technology (OT) Security Service | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | If unused: `config system global; set disable-module ot-view; end` |
-| Operational Technology | OT Purdue Model in a consolidated Asset & Identity Center Dashboard | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | If unused: `config system global; set disable-module ot-view; end` |
-| Operational Technology | OT Security Risk Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Operational Technology | NERC CIP compliance security rating report (OT) | 7.4.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Other | Licensing adjustment | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Fabric View | Ingest logs or event data through API polling | 7.6.2 and later | CLS `SRG-APP-000086-AU-000020` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Native SOAR connectors | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | New connectors for automation | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Cloning predefined playbooks, indicators, and reports | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Execute playbook from incident | 7.6.2 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | Support FortiEDR connectors | 7.6.3 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Unified incident response page | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | Incident analysis re-design | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | Export incident | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | New indicators page | 7.6.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Indicators) |
-| Security Operations (SOC) | Indicator enrichment | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Indicators) |
-| Security Operations (SOC) | Automatically raise actionable events for incident investigation | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Raise an incident when an outbreak is detected | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) |
-| Security Operations (SOC) | Merge basic event handler and correlation event handler GUIs | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Event handlers: use SIEM database | 7.6.2 and later | CLS `SRG-APP-000111-AU-000150` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | New event handlers for ZTNA login based breach detections | 7.6.2 and later | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Safeguarding event handler | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Block IP, URL, or domain from incident | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Content package update page | 7.6.3 and later | CLS `SRG-APP-000456-AU-000270` | — |
-| Security Operations (SOC) | Scheduled alert email notifications | 7.6.3 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (notification profiles) |
-| Security Operations (SOC) | FortiAnalyzer Cloud Connector | 7.6.3 and later | CLS `SRG-APP-000358-AU-000100` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Alert ingestion service | 7.6.3 and later | CLS `SRG-APP-000086-AU-000020` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Geo-alerting and MS Exchange event handlers | 7.6.3 and later | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Automatic event suppression | 7.6.3 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Reduce delay and improve notification performance | 7.6.4 and later | CLS `SRG-APP-000516-AU-000350` | — |
-| Security Operations (SOC) | Excessive email sending detection | 7.6.4 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | IoT Dashboard | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Email metrics dashboard | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | SOC dashboard for alerts and incidents | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | SD-WAN FortiView dashboard redesign | 7.6.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | XDR dashboard | 7.6.4 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Using SIEM database for the asset & identity tables | 7.6.2 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Asset and Identity Center |
-| Security Operations (SOC) | UEBA: assets and identities with risk score | 7.6.4 and later | CLS `SRG-APP-000516-AU-000370` | `config system log ueba; set ip-unique-scope adom; end` |
-| Security Operations (SOC) | Connector to Windows Active Directory | 7.6.5 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Fabric View (connectors) |
-| Security Operations (SOC) | Safeguarding keywords | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Update Outbreak Alerts GUI | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Enable SOC remote access for the Managed FortiAnalyzer Service | 7.6.5 and later | CLS `SRG-APP-000516-AU-000410` | If unused: `config system central-management; set socaas-remote-access disable; end` |
-| Security Operations (SOC) | FortiSOC Connector | 7.6.7 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) |
-| Log and Report | Reorganize menus in Log View | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Add device log data and GUI columns into web filter traffic | 7.6.0 and later | CLS `SRG-APP-000089-AU-000400` | — |
-| Log and Report | Support FortiAP as device type | 7.6.2 and later | CLS `SRG-APP-000086-AU-000020` | — |
-| Log and Report | User experience improvements for Log View | 7.6.2 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View |
-| Log and Report | FortiMail Log View improvement | 7.6.4 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View |
-| Log and Report | Decode the attackcontext field in IPS logs | 7.6.3 and later | CLS `SRG-APP-000089-AU-000400` | `config system log-forward; edit <ID>; set fwd-syslog-decode-b64 enable; end` |
-| Log and Report | New metrics for SD-WAN monitoring | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | NIST CSF Compliance Report | 7.6.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Safeguarding report | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | NGFW assessment report | 7.6.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | Bandwidth and applications report (SIEM) | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Anomaly login report | 7.6.7+; 8.0.0+ | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000770-AU-000170` | GUI: Reports |
-| Log and Report | FortiDeceptor incident report | 7.6.7+; 8.0.0+ | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Log and Report | Object usage APIs | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | Add normalized log fields | 7.6.0 and later | CLS `SRG-APP-000089-AU-000400` | — |
-| Log and Report | Expanding log parsers for third-party applications through syslog | 7.6.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) |
-| Log and Report | Migrate logs to ClickHouse | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| FortiAI | FortiAI license | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | Using FortiAI | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI data privacy | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090`; CLS `SRG-APP-000118-AU-000100` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI uses Retrieval-Augmented Generation (RAG) to enhance accuracy | 7.6.2 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI event monitor and threat hunting enhancements | 7.6.2 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | Display FortiAI top-up token quantities in the GUI | 7.6.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| FortiAI | Feedback function collects overall user satisfaction and suggestions on FortiAnalyzer AI | 7.6.5 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| System | FortiAnalyzer detects concurrent backup sessions and returns error message | 7.6.2 and later | NDM `SRG-APP-000516-NDM-000340` | — |
-| System | Event log for FortiAnalyzer API Calls | 7.6.3 and later | CLS `SRG-APP-000095-AU-000680` | `config system global; set jsonapi-log all; end` |
-| System | Legal third party disclosure panel | 7.6.5+; 8.0.0+ | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| System | Role-based access control with FortiAnalyzer Fabric | 7.6.3 and later | CLS `SRG-APP-000033-AU-001610` | GUI: System Settings (Fabric Management) |
-| System | New FortiAnalyzer Fabric management page | 7.6.3 and later | CLS `SRG-APP-000086-AU-000390` | GUI: System Settings (Fabric Management) |
-| System | Members not counted for ADOM limits on the supervisor | 7.6.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | Improve collapse function for the GUI tree menu | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Other | Support for FortiTIP service integration | 7.6.4 and later | CLS `SRG-APP-000141-AU-000090` | — |
-| Security Operations (SOC) | Playbook editor improvements | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | Alert explorer improvements | 8.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Incidents & Events |
-| Security Operations (SOC) | Machine learning for anomaly detection | 8.0.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | GUI support for machine learning for anomaly detection | 8.0.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) |
-| Security Operations (SOC) | Raise incidents for on-premise FortiNDR detections | 8.0.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) |
-| Security Operations (SOC) | AI Access Visibility dashboard | 8.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView |
-| Security Operations (SOC) | Improvements to the user experience in the Asset and Identity Center | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | FortiMQ connector for automated blocking | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Security Operations (SOC) | SIEM Collector on FortiAnalyzer | 8.0.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000086-AU-000390` | — |
-| Log and Report | FortiData incident support | 8.0.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) |
-| Log and Report | FortiAnalyzer Fluentd supports the Azure Monitor Log Ingestion API | 8.0.0 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit <ID>; set fwd-server-type fwd-via-output-plugin; set fwd-output-plugin-id <PLUGIN>; end` |
-| Log and Report | Shadow-AI report | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| Log and Report | FortiNDR Incident Report | 8.0.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports |
-| Log and Report | OT Network Traffic and Policy Optimization Report | 8.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| FortiAI | FortiAI alert triage agent | 8.0.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI threat posture timeline | 8.0.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | Account-level FortiAI token top-up | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — |
-| FortiAI | FortiAI assistant prompt suggestions by role | 8.0.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI agents | 8.0.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` |
-| FortiAI | FortiAI enabled on FortiAnalyzer supports web proxy deployments | 8.0.1 and later | CLS `SRG-APP-000439-AU-004310` | `config system web-proxy; set status enable; set address <PROXY_IP>; set port <PORT>; end` |
-| System | Custom session labels in FortiAnalyzer event logs | 8.0.0 and later | CLS `SRG-APP-000095-AU-000680` | `config system admin setting; set custom-session-label enable; set custom-session-label-mode unique-per-session; end` |
-| System | SAML SSO supports SHA-256 and SHA-512 for both IdP and SP | 8.0.0 and later | CLS `SRG-APP-000610-AU-000050`; CLS `SRG-APP-000148-AU-002270` | `config system saml; set digest-method sha256; set signature-algorithm rsa-sha256; set idp-digest-method sha256; set idp-signature-algorithm rsa-sha256; end` |
-| System | FortiAnalyzer supports NTPv4 with SHA-256 encryption | 8.0.0 and later | CLS `SRG-APP-000920-AU-000410`; NDM `SRG-APP-000395-NDM-000347` | `config system ntp; config ntpserver; edit 1; set ntpv3 disable; set authentication enable; set key-type sha256; set key-id <ID>; set key <KEY>; end; end` |
-| System | Time-base retention is configurable for the task monitor and event log | 8.0.0 and later | CLS `SRG-APP-000095-AU-000050` | `config system locallog disk setting; set log-max-days <DAYS>; end` |
-| System | Assign access to multiple fabric groups for a single admin | 8.0.0 and later | CLS `SRG-APP-000033-AU-001610` | GUI: System Settings (Administrators) |
-| System | FortiAnalyzer Fabric Supervisor HA | 8.0.0 and later | CLS `SRG-APP-000086-AU-000390` | `config system ha; set mode a-p; end` |
-| System | Threat Hunting on the FortiAnalyzer Fabric Supervisor | 8.0.1 and later | CLS `SRG-APP-000775-AU-000180`; CLS `SRG-APP-000086-AU-000390` | GUI: Incidents & Events (Threat Hunting) |
-| Other | FortiCare Elite or FortiCare Premium required to download FortiGuard objects | 8.0.0 and later | CLS `SRG-APP-000456-AU-000270` | — |
+| Category | Feature | Introduced (FortiAnalyzer) | SRG requirement(s) | Command to satisfy the requirement | FortiAnalyzer prerequisites |
+| --- | --- | --- | --- | --- | --- |
+| Core: log collection | Log collection from Fortinet devices (OFTP) | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000330`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system global; set oftp-ssl-protocol tlsv1.2; set enc-algorithm high; end` | P1 |
+| Core: log collection | Syslog collection from third-party devices | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system log settings; set syslog-over-tls-port 6514; set unencrypted-logging-tcp disable; set unencrypted-logging-udp disable; config client-cert-auth; set mode strict; end; end` | P1, P6 |
+| Core: log collection | Device registration and authorization | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000330` | `config system admin setting; set unreg_dev_opt add_no_service; end` | — |
+| Core: log collection | Log receipt time stamps | 7.0.0 or earlier | CLS `SRG-APP-000374-AU-000290`; CLS `SRG-APP-000086-AU-000030` | See the NTP server row | P10 |
+| Core: log collection | No-logging detection for devices | 7.0.0 or earlier | CLS `SRG-APP-000360-AU-000130` | `config system locallog setting; set no-log-detection-threshold <MINUTES>; set log-interval-dev-no-logging <MINUTES>; end` | P1, P8 |
+| Core: log storage | Per-ADOM disk quota | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `execute log adom disk-quota <ADOM> <MB>` | P2, P3 |
+| Core: log storage | Per-device disk quota | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `execute log device disk-quota <DEVICE_ID> <MB>` | P1, P3 |
+| Core: log storage | Data policy (log retention by ADOM) | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000050`; CLS `SRG-APP-000090-AU-000070` | GUI: System Settings, ADOM data policy (Analytics and Archive retention) | P2, P3 |
+| Core: log storage | Disk-full alerting | 7.0.0 or earlier | CLS `SRG-APP-000359-AU-000120` | `config system locallog setting; set log-interval-disk-full <MINUTES>; end` and `config system alert-event; edit <ALERT>; config alert-destination; edit 1; set type mail; set to <ISSO_EMAIL>; end; end` | P3, P8 |
+| Core: log storage | Log file integrity (hash and authentication code) | 7.0.0 or earlier | CLS `SRG-APP-000080-AU-000010`; CLS `SRG-APP-000119-AU-000110` | `config system global; set log-checksum md5-auth; end` and `execute log-integrity <DEVICE> <VDOM> <LOG_FILE>` | P1 |
+| Core: log storage | Keep logs after a device is deleted | 7.0.0 or earlier | CLS `SRG-APP-000120-AU-000120` | `config system log settings; set keep-dev-logs enable; end` | — |
+| Core: log storage | Log backup to another system | 7.0.0 or earlier | CLS `SRG-APP-000125-AU-000300`; CLS `SRG-APP-000358-AU-000100` | `execute backup logs <DEVICE> sftp <SERVER_IP> <USER> <PASSWORD> <DIRECTORY>` | P1, P14 |
+| Core: log storage | Automatic deletion of logs, reports, and archives | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000050` | `config system auto-delete; config log-auto-deletion; set status enable; set retention months; set value <MONTHS>; end; end` | — |
+| Core: log forwarding | Log forwarding to syslog, CEF, or another FortiAnalyzer | 7.0.0 or earlier | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000515-AU-000110`; CLS `SRG-APP-000516-AU-000340`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit 1; set mode forwarding; set fwd-server-type syslog; set server-addr <SIEM_IP>; set fwd-reliable enable; set fwd-secure enable; set fwd-max-delay realtime; end` | P11 |
+| Core: log forwarding | Log aggregation (collector to analyzer) | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000390` | `config system global; set log-mode collector; end` and `config system log-forward; edit 1; set mode aggregation; set server-addr <ANALYZER_IP>; end` | P13 |
+| Core: log forwarding | Log fetching between FortiAnalyzer units | 7.0.0 or earlier | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000439-AU-004310` | `config system log-fetch client-profile; edit 1; set server-ip <SERVER_IP>; set secure-connection enable; end` | P13 |
+| Core: analysis | Log View: search and filter | 7.0.0 or earlier | CLS `SRG-APP-000115-AU-000160`; CLS `SRG-APP-000790-AU-000210` | GUI: Log View | — |
+| Core: analysis | FortiView | 7.0.0 or earlier | CLS `SRG-APP-000745-AU-000120`; CLS `SRG-APP-000111-AU-000150` | GUI: FortiView | — |
+| Core: analysis | SQL database for analytics | 7.0.0 or earlier | CLS `SRG-APP-000750-AU-000130` | `config system sql; set status local; end` | — |
+| Core: analysis | Reports and report templates | 7.0.0 or earlier | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | — |
+| Core: analysis | Event handlers and alerts | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380`; CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers); `config system alert-event` for system alerts | P8 |
+| Core: analysis | Incidents | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) | — |
+| Core: analysis | Indicators of compromise (IOC) | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; set notification enable; end` | P24 |
+| Core: analysis | Event correlation across devices | 7.0.0 or earlier | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000370` | GUI: Incidents & Events (Handlers, correlation rules) | — |
+| Core: administration | Administrative domains (ADOMs) | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000118-AU-000100` | `config system global; set adom-status enable; end` | — |
+| Core: administration | Individual administrator accounts | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000815-AU-000260` | `config system admin user; edit <ADMIN>; set profileid <PROFILE>; set adom <ADOM>; end` | P2 |
+| Core: administration | Administrator profiles (role-based access) | 7.0.0 or earlier | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000118-AU-000100`; CLS `SRG-APP-000119-AU-000110`; CLS `SRG-APP-000120-AU-000120`; CLS `SRG-APP-000121-AU-000130` | `config system admin profile; edit <PROFILE>; set log-viewer read; set report-viewer read; set system-setting none; end` | — |
+| Core: administration | Trusted hosts for administrators | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000410` | `config system admin user; edit <ADMIN>; set trusthost1 <IP> <MASK>; end` | — |
+| Core: administration | Password policy | 7.0.0 or earlier | CLS `SRG-APP-000164-AU-002480`; CLS `SRG-APP-000166-AU-002490`; CLS `SRG-APP-000170-AU-002530`; CLS `SRG-APP-000174-AU-002570` | `config system password-policy; set status enable; set minimum-length 15; set must-contain upper-case-letter lower-case-letter number non-alphanumeric; set change-4-characters enable; set expire 180; end` | — |
+| Core: administration | Administrator lockout | 7.0.0 or earlier | CLS `SRG-APP-000065-AU-000240` | `config system global; set admin-lockout-threshold 3; set admin-lockout-duration <SECONDS>; end` | — |
+| Core: administration | Idle session timeout | 7.0.0 or earlier | CLS `SRG-APP-000295-AU-000190` | `config system admin setting; set idle_timeout <MINUTES>; end` | — |
+| Core: administration | Pre-login banner | 7.0.0 or earlier | CLS `SRG-APP-000068-AU-000035` | `config system global; set pre-login-banner enable; set pre-login-banner-message <DOD_BANNER>; end` | — |
+| Core: administration | RADIUS administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin radius; edit <RADIUS>; set server <IP>; set secret <SECRET>; set protocol tls; set message-authenticator require; end` | P4 |
+| Core: administration | TACACS+ administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin tacacs; edit <TACACS>; set server <IP>; set key <KEY>; set authorization enable; end` | P4 |
+| Core: administration | LDAP administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000148-AU-002270`; NDM `SRG-APP-000516-NDM-000336` | `config system admin ldap; edit <LDAP>; set server <IP>; set secure ldaps; set ca-cert <CA_CERT>; end` | P4, P6 |
+| Core: administration | PKI (certificate) administrator authentication | 7.0.0 or earlier | CLS `SRG-APP-000175-AU-002630`; CLS `SRG-APP-000391-AU-002290`; CLS `SRG-APP-000149-AU-002280`; CLS `SRG-APP-000427-AU-000040` | `config system admin user; edit <ADMIN>; set user_type pki-auth; set subject <CERT_SUBJECT>; set ca <CA_CERT>; end` and `config system global; set clt-cert-req enable; end` | P6 |
+| Core: administration | Two-factor authentication (FortiToken Cloud) | 7.0.0 or earlier | CLS `SRG-APP-000149-AU-002280` | `config system admin user; edit <ADMIN>; set two-factor-auth ftc-ftm; end` | P6, P7 |
+| Core: administration | FortiAnalyzer event log (own audit records) | 7.0.0 or earlier | CLS `SRG-APP-000095-AU-000680`; CLS `SRG-APP-000503-AU-000280`; CLS `SRG-APP-000026-AU-000580` | `config system locallog disk setting; set status enable; set severity information; end` | — |
+| Core: administration | Sending FortiAnalyzer event logs to a syslog server | 7.0.0 or earlier | NDM `SRG-APP-000516-NDM-000350`; CLS `SRG-APP-000358-AU-000100` | `config system syslog; edit <SYSLOG>; set ip <SYSLOG_IP>; set reliable enable; set secure-connection enable; end` and `config system locallog syslogd setting; set status enable; set syslog-name <SYSLOG>; end` | P11 |
+| Core: administration | Alert email (SMTP) | 7.0.0 or earlier | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000359-AU-000120` | `config system mail; edit <ID>; set server <SMTP_IP>; set secure-option starttls; set auth enable; end` | P8 |
+| Core: security | HTTPS and SSH management encryption | 7.0.0 or earlier | CLS `SRG-APP-000439-AU-004310`; CLS `SRG-APP-000514-AU-002890` | `config system global; set global-ssl-protocol tlsv1.2; set ssl-low-encryption disable; set enc-algorithm high; end` | — |
+| Core: security | Interface administrative access | 7.0.0 or earlier | CLS `SRG-APP-000141-AU-000090`; CLS `SRG-APP-000516-AU-000410` | `config system interface; edit <PORT>; set allowaccess https ssh; end` | — |
+| Core: security | Local-in policies | 7.0.0 or earlier | CLS `SRG-APP-000516-AU-000410` | `config system local-in-policy; edit 1; set intf <PORT>; set src <IP> <MASK>; set dport 443; set action accept; end` | — |
+| Core: security | FIPS-CC mode | 7.0.0 or earlier | CLS `SRG-APP-000514-AU-002890` | `config system fips; set status enable; end` | P19 |
+| Core: security | Private data encryption | 7.0.0 or earlier | CLS `SRG-APP-000915-AU-000400` | `config system global; set private-data-encryption enable; end` | — |
+| Core: security | CA certificates and CRLs | 7.0.0 or earlier | CLS `SRG-APP-000910-AU-000390`; CLS `SRG-APP-000175-AU-002630` | `config system certificate ca; edit <CA>; set ca <CERTIFICATE>; end` and `config system certificate crl; edit <CRL>; set http-url <CRL_URL>; end` | P6 |
+| Core: security | SNMPv3 | 7.0.0 or earlier | NDM `SRG-APP-000395-NDM-000310` | `config system snmp user; edit <USER>; set security-level auth-priv; set auth-proto sha256; set priv-proto aes256; end` | P9 |
+| Core: security | NTP server | 7.0.0 or earlier | CLS `SRG-APP-000920-AU-000410`; CLS `SRG-APP-000086-AU-000030`; NDM `SRG-APP-000395-NDM-000347` | `config system ntp; set status enable; config ntpserver; edit 1; set server <NTP_IP>; set authentication enable; set key-type sha256; set key-id <ID>; set key <KEY>; end; end` | P10 |
+| Core: security | Firmware upgrade | 7.0.0 or earlier | CLS `SRG-APP-000456-AU-000270`; CLS `SRG-APP-001035-AU-000430`; CLS `SRG-APP-000810-AU-000250` | `execute restore image sftp <IMAGE_PATH> <SERVER_IP> <USER> <PASSWORD>` (use a vendor-supported release) | P14, P22 |
+| Core: security | Configuration backup | 7.0.0 or earlier | NDM `SRG-APP-000516-NDM-000340` | `config system backup all-settings; set status enable; set protocol sftp; set server <IP>; set user <USER>; set passwd <PASSWORD>; set crptpasswd <ENCRYPTION_PASSWORD>; end` | P14 |
+| Core: security | Data masking for administrators | 7.0.0 or earlier | CLS `SRG-APP-000118-AU-000100` | `config system admin profile; edit <PROFILE>; set datamask enable; set datamask-fields <FIELDS>; end` | — |
+| Core: security | High availability (HA) | 7.0.0 or earlier | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Core: security | Disable unused analytics modules | 7.0.0 or earlier | CLS `SRG-APP-000141-AU-000090` | `config system global; set disable-module <MODULES>; end` | — |
+| Device Manager | World map added to the Device Manager | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Device Manager | Model device support for central logging | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000516-AU-000330` | GUI: Device Manager (add a model device) | P1 |
+| Device Manager | Security Fabric authorization | 7.0.1 and later | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000330` | GUI: Device Manager (authorize devices) | P1 |
+| Device Manager | Support for six major versions of FortiOS | 7.0.5+; 7.2.1+ | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Device Manager | Improved secure SD-WAN monitor | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Device Manager | SD-WAN application performance monitoring | 7.0.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | FortiOS connector health check | 7.0.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Fabric View (connectors) | P1 |
+| Security Operations (SOC) | Attach FortiMail connector actions to incidents | 7.0.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) | P17 |
+| Security Operations (SOC) | SIEM correlation and analysis | 7.0.0 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Importing and exporting playbooks | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | FortiGuard outbreak detection service | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) | P23 |
+| Security Operations (SOC) | Manage subnets | 7.0.0 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Incidents & Events (subnet lists) | — |
+| Security Operations (SOC) | EMS API support for FortiAnalyzer to notify and tag suspicious endpoints | 7.0.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (EMS connector) | P17 |
+| Security Operations (SOC) | FortiClient event handler update | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | P1 |
+| Security Operations (SOC) | FortiDeceptor default handler | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | P1 |
+| Security Operations (SOC) | IPS signatures on-hold event handler | 7.0.0 and later | CLS `SRG-APP-000516-AU-000350`; CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | NOC event handlers | 7.0.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Allowlisting on Event Handlers | 7.0.1 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Assign events for alert triage | 7.0.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Events) | — |
+| Security Operations (SOC) | Filter syntax enhancement | 7.0.1 and later | CLS `SRG-APP-000115-AU-000160`; CLS `SRG-APP-000790-AU-000210` | GUI: Log View | — |
+| Security Operations (SOC) | IPS signature lookup | 7.0.3 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Log View | — |
+| Security Operations (SOC) | IOC detection support for FortiMail logs | 7.0.3 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; end` | P1, P24 |
+| Security Operations (SOC) | Subnet filter for Log View | 7.0.3 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Log View | — |
+| Security Operations (SOC) | Event handler configuration improvements | 7.0.3 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Shadow IT Monitoring Service | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Data sources tuning | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | Asset and Identity Dashboards | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Asset and Identity Center | — |
+| Security Operations (SOC) | Personalized custom views | 7.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | SD-WAN monitoring improvement | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | FortiView monitors for FortiMail | 7.0.3 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P1 |
+| Security Operations (SOC) | Threat research monitor | 7.0.3 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Log and Report | Improve log forwarding bandwidth efficiency | 7.0.0 and later | CLS `SRG-APP-000358-AU-000100` | `config system log-forward; edit <ID>; set fwd-compression enable; end` | P11 |
+| Log and Report | Per-device log receiving rate limit | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020` | `config system log ratelimit; set mode manual; config ratelimits; edit 1; set filter-type devid; set filter <DEVICE_ID>; set ratelimit <LOGS_PER_SEC>; end; end` | P1 |
+| Log and Report | Mask user data in log forwarder | 7.0.0 and later | CLS `SRG-APP-000118-AU-000100` | `config system log-forward; edit <ID>; set log-masking-status enable; set log-masking-fields user srcip; set log-masking-key <KEY>; end` | P11 |
+| Log and Report | FortiEDR Central Manager logging | 7.0.0 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | FortiAI logging on FortiAnalyzer | 7.0.1 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | Log forwarding enhancement | 7.0.1 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000515-AU-000110` | `config system log-forward; edit <ID>; set fwd-max-delay realtime; set fwd-reliable enable; set fwd-secure enable; end` | P11 |
+| Log and Report | FortiSOAR central logging | 7.0.2 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | ZTNA traffic logs | 7.0.3 and later | CLS `SRG-APP-000086-AU-000020` | — | — |
+| Log and Report | Improved caching mechanism for reports | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | `config system report auto-cache` (performance tuning) | — |
+| Log and Report | FortiDeceptor report | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | Central UEBA table for custom reporting and widgets | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000516-AU-000370` | GUI: Reports | — |
+| Log and Report | FortiSandbox CTAP report | 7.0.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | Organize reports in folders | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Additional charts for SD-WAN reporting | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | SD-WAN Summary Report | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | FortiView support for FortiWeb | 7.0.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P1 |
+| Log and Report | Shadow IT monitoring for cloud application and users | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | FortiAI report and event handler | 7.0.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | FortiSandbox CTAP report update | 7.0.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | Asset and identity report | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Improved report time filter | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | DNS security report | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P24 |
+| Log and Report | Dataset editor update | 7.0.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports (Datasets) | — |
+| System | FortiAnalyzer HA graceful upgrade | 7.0.0 and later | CLS `SRG-APP-000456-AU-000270` | `config system ha; set mode a-p; end` (upgrade the HA cluster per the Upgrade Guide) | P15 |
+| System | Theme mode | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | Add operation permissions to Admin profile | 7.0.0 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set device-op none; end` | — |
+| System | Admins can use a SAML SSO FortiCloud account to log in to FortiAnalyzer | 7.0.0 and later | CLS `SRG-APP-000148-AU-002270` | If unused: `config system saml; set forticloud-sso disable; end` | P21 |
+| System | Suggest backup before upgrade | 7.0.2 and later | NDM `SRG-APP-000516-NDM-000340` | `execute backup all-settings sftp <SERVER_IP> <FILE> <USER> <PASSWORD>` | P14 |
+| System | Admin user attributes can be set in the admin profile and override the individual admin settings | 7.0.3 and later | CLS `SRG-APP-000033-AU-001610`; CLS `SRG-APP-000516-AU-000410` | `config system admin profile; edit <PROFILE>; set trusthost1 <IP> <MASK>; end` and `config system admin user; edit <ADMIN>; set th-from-profile <TRUSTHOST_INDEX>; end` | — |
+| System | Support for link aggregation | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | Migrate to Fabric ADOM | 7.0.2 and later | CLS `SRG-APP-000033-AU-001610` | — | P2 |
+| Management Extensions | New management extension - FortiSOAR | 7.0.0 and later | CLS `SRG-APP-000141-AU-000090` | — | — |
+| Management Extensions | New management extension - FortiSIEM Collector | 7.0.1 and later | CLS `SRG-APP-000086-AU-000390` | — | P18 |
+| Management Extensions | Check for new MEA versions using CLI | 7.0.1 and later | CLS `SRG-APP-000456-AU-000270` | — | — |
+| Other | FortiAnalyzer Setup wizard | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | FortiAnalyzer VM licenses | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | CSF support for multiple VDOMs | 7.0.0 and later | CLS `SRG-APP-000516-AU-000330` | — | P1 |
+| Other | FortiAnalyzer Federation | 7.0.0 and later | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000033-AU-001610` | — | P16 |
+| Other | FortiAnalyzer VM supports Amazon EC2 IMDS version 2 | 7.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | Event log easier to read | 7.0.1 and later | CLS `SRG-APP-000095-AU-000680` | GUI: System Settings (Event Log) | — |
+| Other | Migrate a FortiAnalyzer-VM license to VM-S | 7.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | SD-WAN application bandwidth per interface widget | 7.0.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | Deploying FortiAnalyzer-VM on IBM Cloud | 7.0.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Device Manager | Device Group | 7.2.0 and later | CLS `SRG-APP-000033-AU-001610` | GUI: Device Manager (device groups) | — |
+| System | SAML SSO wildcard admin user to match all users on IdP server | 7.2.0 and later | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000815-AU-000260` | `config system admin user; edit <ADMIN>; set user_type sso; set wildcard disable; end` (prefer named accounts) | P5 |
+| Fabric View | OAuth 2.0 authentication for webhook connectors | 7.2.0 and later | CLS `SRG-APP-000439-AU-004310` | GUI: Fabric View (webhook connectors) | P17 |
+| Security Operations (SOC) | Use ServiceNow connector in playbooks | 7.2.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) and Incidents & Events (Automation) | P17 |
+| Security Operations (SOC) | Network reconnaissance events detection | 7.2.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Shadow IT events detection | 7.2.0 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | New event handlers for NOC monitoring | 7.2.0 and later | CLS `SRG-APP-000360-AU-000130` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Include IOC detected on FortiGate local traffic in FortiAnalyzer IOC view | 7.2.0 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; end` | — |
+| Security Operations (SOC) | Rule based event correlation | 7.2.2 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers, correlation rules) | — |
+| Security Operations (SOC) | Data exfiltration detection | 7.2.2 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | SD-WAN chart to include more ADVPN shortcut information | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | SD-WAN chart for MOS scoring | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Add ZTNA dashboard to FortiView | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | IoT visibility | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P30 |
+| Security Operations (SOC) | Traffic shaping charts | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | CASB Apps Access widget | 7.2.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | Auto-refresh on FortiSoC dashboard elements | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Rename Outbreak Alerts Service to Outbreak Detection Service | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Summary dashboard for event logs | 7.2.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Log View | — |
+| Log and Report | Log caching enhancement | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | FortiNDR logging and reporting enhancements | 7.2.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | Security events consolidated page | 7.2.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Log View | — |
+| Log and Report | Log View right-click filtering supports OR, AND, and Replace | 7.2.3 and later | CLS `SRG-APP-000115-AU-000160` | GUI: Log View | — |
+| Log and Report | Report in JSON format | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Report cache control | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | `config system report auto-cache` (performance tuning) | — |
+| Log and Report | Upgrade report editor | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Improve data visualization for the web usage report | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | 360 Security Report | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | VPN report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Application risk and control report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Bandwidth and applications report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Security events and incidents summary report update | 7.2.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | — |
+| Log and Report | High bandwidth application usage report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Cyber-bullying indicators report update | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Self-harm and risk indicators report update | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Use device metadata in datasets and reports | 7.2.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports (Datasets) | — |
+| Log and Report | Search by object names | 7.2.0 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View | — |
+| Log and Report | Generate system event log when daemon crashes | 7.2.2 and later | CLS `SRG-APP-000095-AU-000680` | `config system locallog setting; set log-daemon-crash enable; end` | — |
+| System | Global log search across FortiAnalyzer Fabric members | 7.2.1 and later | CLS `SRG-APP-000790-AU-000210`; CLS `SRG-APP-000086-AU-000390` | GUI: Log View (Fabric supervisor) | P16 |
+| System | FortiAnalyzer French GUI support | 7.2.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | FortiAnalyzer supports VLANs on physical network interfaces | 7.2.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | FortiAnalyzer Fabric usability improvements | 7.2.0 and later | CLS `SRG-APP-000086-AU-000390` | GUI: System Settings (Fabric Management) | P16 |
+| System | Add LLDP support on FMG and FAZ | 7.2.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused, leave LLDP disabled on the interface (GUI: System Settings, Network) | — |
+| System | Mandatory FortiCare/FortiCloud registration | 7.2.1 and later | CLS `SRG-APP-000456-AU-000270` | — | P21 |
+| System | SAML assertions and SAML requests can be now signed to better support third-party IdPs | 7.2.3 and later | CLS `SRG-APP-000148-AU-002270`; CLS `SRG-APP-000080-AU-000010` | `config system saml; set want-assertions-signed enable; set auth-request-signed enable; end` | P5 |
+| Cloud Services | VM flexible shapes support for Oracle Cloud Infrastructure | 7.2.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Cloud Services | FortiAnalyzer-VM has been added to the Flex-VM offering | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Cloud Services | FortiAnalyzer-VM supported in OCI DRCC | 7.2.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Cloud Services | FortiAnalyzer management from FortiCloud via SSO | 7.2.5 and later | CLS `SRG-APP-000148-AU-002270` | If unused: `config system central-management; set type none; end` | P21 |
+| Device Manager | Support FortiGate HA vSN | 7.4.0 and later | CLS `SRG-APP-000516-AU-000330` | — | P1 |
+| Fabric View | Reference individual fabric devices | 7.4.1 and later | CLS `SRG-APP-000516-AU-000330` | — | P1 |
+| Fabric View | Webhook connector to support MS Teams | 7.4.0 and later | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (webhook connectors) | P17 |
+| Fabric View | Webhook enhancement | 7.4.4 and later | CLS `SRG-APP-000360-AU-000130`; CLS `SRG-APP-000516-AU-000350` | GUI: Fabric View (webhook connectors) | P17 |
+| Fabric View | Report generation from EMS connector data | 7.4.4 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P17 |
+| Security Operations (SOC) | Playbook event trigger correlation rules | 7.4.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Automation) | — |
+| Security Operations (SOC) | New predefined correlation event handlers | 7.4.0 and later | CLS `SRG-APP-000111-AU-000150`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Update to the Event Handler rule configuration | 7.4.2 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | SD-WAN Cloud Assisted Monitoring service widgets | 7.4.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Data leak prevention monitor in FortiView | 7.4.1 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P25 |
+| Security Operations (SOC) | FortiProxy central visibility | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P1 |
+| Security Operations (SOC) | Compromised hosts improvements | 7.4.2 and later | CLS `SRG-APP-000516-AU-000350` | `config system log ioc; set status enable; set notification enable; end` | P24 |
+| Security Operations (SOC) | Replay attacks in the Threat Map | 7.4.2 and later | CLS `SRG-APP-000775-AU-000180` | GUI: FortiView | — |
+| Security Operations (SOC) | Sankey view for SASE network | 7.4.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Managed endpoint vulnerability dashboard | 7.4.4 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P1, P17 |
+| Security Operations (SOC) | New charts in the Asset Identity Center | 7.4.0 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Asset and Identity Center | — |
+| Security Operations (SOC) | FortiSoC GUI reorganization | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Notifications for new Outbreak Alerts | 7.4.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) | P23 |
+| Security Operations (SOC) | MITRE ATT&CK matrices for Enterprise and ICS | 7.4.1 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events | — |
+| Security Operations (SOC) | Deliver reports, event handlers, and SIEM rules as FortiGuard packages | 7.4.2 and later | CLS `SRG-APP-000456-AU-000270` | — | P25 |
+| Security Operations (SOC) | MITRE information included in outbreak detection | 7.4.2 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Outbreak Alerts) | P23 |
+| Log and Report | FortiAnalyzer supports FortiWeb Cloud attack logs | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | Support parsing and addition of third-party application logs to the SIEM DB | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) | P1 |
+| Log and Report | Per-ADOM log rate | 7.4.0 and later | CLS `SRG-APP-000086-AU-000020` | `config system log ratelimit; set mode manual; config ratelimits; edit 1; set filter-type adom; set filter <ADOM>; set ratelimit <LOGS_PER_SEC>; end; end` | P2 |
+| Log and Report | Support EMS multitenancy via FortiAnalyzer ADOMs | 7.4.1 and later | CLS `SRG-APP-000033-AU-001610` | — | P2, P17 |
+| Log and Report | Logging support for FortiCASB | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | Logging support for FortiPAM | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | Logging support for FortiToken Cloud | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | Support parsing and addition of third-party application logs to the SIEM DB in JSON format | 7.4.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) | P1 |
+| Log and Report | FortiAnalyzer supports packet header information for FortiWeb traffic log | 7.4.1 and later | CLS `SRG-APP-000089-AU-000400` | — | P1 |
+| Log and Report | Support additional log fields for long live session logs | 7.4.2 and later | CLS `SRG-APP-000089-AU-000400` | — | — |
+| Log and Report | Support FortiWeb performance statistics logs | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Fluentd support for public cloud integration | 7.4.0 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit <ID>; set fwd-server-type fwd-via-output-plugin; set fwd-output-plugin-id <PLUGIN>; end` | P12 |
+| Log and Report | Report guidance | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | PCI Security Rating Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | Cyber Threats Assessment Report update | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Threat Report update | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | — |
+| Log and Report | FSBP Security Rating Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | CIS Controls Security Rating report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26, P30 |
+| Log and Report | Shadow IT Report | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | FortiADC Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P1 |
+| Log and Report | ZTNA Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P25 |
+| Log and Report | FortiEDR Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | P1 |
+| Log and Report | ISO 27001:2022 Compliance Security Rating Report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | Exporting a report with settings | 7.4.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | DLP report | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P25 |
+| Log and Report | PCI DSS security rating report update | 7.4.1 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | HIPAA report | 7.4.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | SOC2 compliance report | 7.4.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Log and Report | Endpoint security vulnerability report | 7.4.4 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P17 |
+| Log and Report | Time zone settings per ADOMs/Reports | 7.4.0 and later | CLS `SRG-APP-000086-AU-000030` | — | P2 |
+| Log and Report | New API to restore logs | 7.4.0 and later | CLS `SRG-APP-000125-AU-000300` | — | — |
+| Log and Report | Download PCAP files in encrypted and ZIP format | 7.4.1 and later | CLS `SRG-APP-000118-AU-000100` | `config system log pcap-file; set download-mode zip-with-password; end` | — |
+| System | Geo-redundant High Availability (HA) | 7.4.0 and later | CLS `SRG-APP-000086-AU-000390` | `config system ha; set mode a-p; set unicast enable; end` | P15 |
+| System | A new restricted admin profile can be used to only change the administrators passwords | 7.4.2 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set write-passwd-access specify-by-user; set write-passwd-user-list <USERS>; end` | — |
+| System | Per-ADOM admin profile | 7.4.2 and later | CLS `SRG-APP-000033-AU-001610` | `config system admin profile; edit <PROFILE>; set scope adom; end` | P2 |
+| System | DNS settings per ADOM | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | FortiAnalyzer GUI enhancements | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | Fabric of FAZ topology chart | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | Fabric of FAZ: member authorization with supervisor | 7.4.0 and later | CLS `SRG-APP-000086-AU-000390`; CLS `SRG-APP-000033-AU-001610` | `config system soc-fabric; set status enable; set role supervisor; set secure-connection enable; config trusted-list; edit 1; set serial <MEMBER_SN>; end; end` | P16 |
+| System | Fabric of FAZ global FortiView support | 7.4.0 and later | CLS `SRG-APP-000745-AU-000120`; CLS `SRG-APP-000086-AU-000390` | GUI: FortiView (Fabric supervisor) | P16 |
+| System | Fabric of FAZ: Central report support and creating Fabric groups | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000086-AU-000390` | GUI: Reports (Fabric supervisor) | P16 |
+| System | Prevent FortiAnalyzers with an expired support contract from upgrading to a major or minor firmware release | 7.4.0 and later | CLS `SRG-APP-001035-AU-000430` | — | P22 |
+| System | FortiManager and FortiAnalyzer support HTTP/2 for improved security, multiplexing, and reduced network latency | 7.4.1 and later | CLS `SRG-APP-000439-AU-004310` | `config system global; set httpd-ssl-protocol tlsv1.3 tlsv1.2; end` | — |
+| System | Backup strategy and configuration setup added to the FortiAnalyzer setup wizard | 7.4.2 and later | NDM `SRG-APP-000516-NDM-000340`; CLS `SRG-APP-000125-AU-000300` | `config system backup all-settings; set status enable; set protocol sftp; set server <IP>; end` | P14 |
+| System | FortiAnalyzer fabric HA awareness | 7.4.3 and later | CLS `SRG-APP-000086-AU-000390` | — | P15, P16 |
+| System | FortiAnalyzer supports IPv6 address type for syslog server configuration | 7.4.3 and later | NDM `SRG-APP-000516-NDM-000350` | `config system syslog; edit <SYSLOG>; set ip <IPV6>; set reliable enable; set secure-connection enable; end` | P11 |
+| System | FortiAnalyzer introduces OS firmware levels Feature(F) and Mature(M) | 7.4.4+; 7.6.0+ | CLS `SRG-APP-001035-AU-000430` | — | — |
+| Cloud Services | FortiAnalyzer supports FortiCare Elite Service | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Cloud Services | FortiAnalyzer supports M6 and M7 instance types in AWS | 7.4.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Operational Technology | Operational Technology (OT) Security Service | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | If unused: `config system global; set disable-module ot-view; end` | — |
+| Operational Technology | OT Purdue Model in a consolidated Asset & Identity Center Dashboard | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | If unused: `config system global; set disable-module ot-view; end` | — |
+| Operational Technology | OT Security Risk Report | 7.4.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P27 |
+| Operational Technology | NERC CIP compliance security rating report (OT) | 7.4.3 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P26 |
+| Other | Licensing adjustment | 7.4.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Fabric View | Ingest logs or event data through API polling | 7.6.2 and later | CLS `SRG-APP-000086-AU-000020` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Native SOAR connectors | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | New connectors for automation | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Cloning predefined playbooks, indicators, and reports | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Execute playbook from incident | 7.6.2 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) | — |
+| Security Operations (SOC) | Support FortiEDR connectors | 7.6.3 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Unified incident response page | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) | — |
+| Security Operations (SOC) | Incident analysis re-design | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) | — |
+| Security Operations (SOC) | Export incident | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Incidents) | — |
+| Security Operations (SOC) | New indicators page | 7.6.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Indicators) | — |
+| Security Operations (SOC) | Indicator enrichment | 7.6.0 and later | CLS `SRG-APP-000775-AU-000180` | GUI: Incidents & Events (Indicators) | — |
+| Security Operations (SOC) | Automatically raise actionable events for incident investigation | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Raise an incident when an outbreak is detected | 7.6.0 and later | CLS `SRG-APP-000516-AU-000360`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Outbreak Alerts) | P23 |
+| Security Operations (SOC) | Merge basic event handler and correlation event handler GUIs | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Event handlers: use SIEM database | 7.6.2 and later | CLS `SRG-APP-000111-AU-000150` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | New event handlers for ZTNA login based breach detections | 7.6.2 and later | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Safeguarding event handler | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Block IP, URL, or domain from incident | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Content package update page | 7.6.3 and later | CLS `SRG-APP-000456-AU-000270` | — | P25 |
+| Security Operations (SOC) | Scheduled alert email notifications | 7.6.3 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (notification profiles) | P8 |
+| Security Operations (SOC) | FortiAnalyzer Cloud Connector | 7.6.3 and later | CLS `SRG-APP-000358-AU-000100` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Alert ingestion service | 7.6.3 and later | CLS `SRG-APP-000086-AU-000020` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Geo-alerting and MS Exchange event handlers | 7.6.3 and later | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | P1 |
+| Security Operations (SOC) | Automatic event suppression | 7.6.3 and later | CLS `SRG-APP-000516-AU-000380` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Reduce delay and improve notification performance | 7.6.4 and later | CLS `SRG-APP-000516-AU-000350` | — | — |
+| Security Operations (SOC) | Excessive email sending detection | 7.6.4 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | IoT Dashboard | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P30 |
+| Security Operations (SOC) | Email metrics dashboard | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | P1 |
+| Security Operations (SOC) | SOC dashboard for alerts and incidents | 7.6.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | SD-WAN FortiView dashboard redesign | 7.6.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | XDR dashboard | 7.6.4 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | Using SIEM database for the asset & identity tables | 7.6.2 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Asset and Identity Center | — |
+| Security Operations (SOC) | UEBA: assets and identities with risk score | 7.6.4 and later | CLS `SRG-APP-000516-AU-000370` | `config system log ueba; set ip-unique-scope adom; end` | — |
+| Security Operations (SOC) | Connector to Windows Active Directory | 7.6.5 and later | CLS `SRG-APP-000516-AU-000370` | GUI: Fabric View (connectors) | P17 |
+| Security Operations (SOC) | Safeguarding keywords | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Update Outbreak Alerts GUI | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Enable SOC remote access for the Managed FortiAnalyzer Service | 7.6.5 and later | CLS `SRG-APP-000516-AU-000410` | If unused: `config system central-management; set socaas-remote-access disable; end` | P21, P29 |
+| Security Operations (SOC) | FortiSOC Connector | 7.6.7 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Fabric View (connectors) | P17 |
+| Log and Report | Reorganize menus in Log View | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Add device log data and GUI columns into web filter traffic | 7.6.0 and later | CLS `SRG-APP-000089-AU-000400` | — | — |
+| Log and Report | Support FortiAP as device type | 7.6.2 and later | CLS `SRG-APP-000086-AU-000020` | — | P1 |
+| Log and Report | User experience improvements for Log View | 7.6.2 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View | — |
+| Log and Report | FortiMail Log View improvement | 7.6.4 and later | CLS `SRG-APP-000790-AU-000210` | GUI: Log View | P1 |
+| Log and Report | Decode the attackcontext field in IPS logs | 7.6.3 and later | CLS `SRG-APP-000089-AU-000400` | `config system log-forward; edit <ID>; set fwd-syslog-decode-b64 enable; end` | P11 |
+| Log and Report | New metrics for SD-WAN monitoring | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | NIST CSF Compliance Report | 7.6.0 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | P25, P26 |
+| Log and Report | Safeguarding report | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | NGFW assessment report | 7.6.2 and later | CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | Bandwidth and applications report (SIEM) | 7.6.2 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Anomaly login report | 7.6.7+; 8.0.0+ | CLS `SRG-APP-000516-AU-000370`; CLS `SRG-APP-000770-AU-000170` | GUI: Reports | — |
+| Log and Report | FortiDeceptor incident report | 7.6.7+; 8.0.0+ | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | P1 |
+| Log and Report | Object usage APIs | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | Add normalized log fields | 7.6.0 and later | CLS `SRG-APP-000089-AU-000400` | — | — |
+| Log and Report | Expanding log parsers for third-party applications through syslog | 7.6.0 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000089-AU-000400` | GUI: Log View (log parsers) | P1, P25 |
+| Log and Report | Migrate logs to ClickHouse | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| FortiAI | FortiAI license | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | Using FortiAI | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | FortiAI data privacy | 7.6.0 and later | CLS `SRG-APP-000141-AU-000090`; CLS `SRG-APP-000118-AU-000100` | If unused: `config system global; set ai-mode disable; end` | P28 |
+| FortiAI | FortiAI uses Retrieval-Augmented Generation (RAG) to enhance accuracy | 7.6.2 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | FortiAI event monitor and threat hunting enhancements | 7.6.2 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | Display FortiAI top-up token quantities in the GUI | 7.6.3 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| FortiAI | Feedback function collects overall user satisfaction and suggestions on FortiAnalyzer AI | 7.6.5 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| System | FortiAnalyzer detects concurrent backup sessions and returns error message | 7.6.2 and later | NDM `SRG-APP-000516-NDM-000340` | — | P14 |
+| System | Event log for FortiAnalyzer API Calls | 7.6.3 and later | CLS `SRG-APP-000095-AU-000680` | `config system global; set jsonapi-log all; end` | — |
+| System | Legal third party disclosure panel | 7.6.5+; 8.0.0+ | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| System | Role-based access control with FortiAnalyzer Fabric | 7.6.3 and later | CLS `SRG-APP-000033-AU-001610` | GUI: System Settings (Fabric Management) | P16 |
+| System | New FortiAnalyzer Fabric management page | 7.6.3 and later | CLS `SRG-APP-000086-AU-000390` | GUI: System Settings (Fabric Management) | P16 |
+| System | Members not counted for ADOM limits on the supervisor | 7.6.4 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | Improve collapse function for the GUI tree menu | 7.6.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Other | Support for FortiTIP service integration | 7.6.4 and later | CLS `SRG-APP-000141-AU-000090` | — | — |
+| Security Operations (SOC) | Playbook editor improvements | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | Alert explorer improvements | 8.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: Incidents & Events | — |
+| Security Operations (SOC) | Machine learning for anomaly detection | 8.0.0 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | GUI support for machine learning for anomaly detection | 8.0.1 and later | CLS `SRG-APP-000516-AU-000350` | GUI: Incidents & Events (Handlers) | — |
+| Security Operations (SOC) | Raise incidents for on-premise FortiNDR detections | 8.0.1 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) | P1 |
+| Security Operations (SOC) | AI Access Visibility dashboard | 8.0.0 and later | CLS `SRG-APP-000745-AU-000120` | GUI: FortiView | — |
+| Security Operations (SOC) | Improvements to the user experience in the Asset and Identity Center | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | FortiMQ connector for automated blocking | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Security Operations (SOC) | SIEM Collector on FortiAnalyzer | 8.0.1 and later | CLS `SRG-APP-000086-AU-000020`; CLS `SRG-APP-000086-AU-000390` | — | P18 |
+| Log and Report | FortiData incident support | 8.0.0 and later | CLS `SRG-APP-000516-AU-000360` | GUI: Incidents & Events (Incidents) | P1 |
+| Log and Report | FortiAnalyzer Fluentd supports the Azure Monitor Log Ingestion API | 8.0.0 and later | CLS `SRG-APP-000358-AU-000100`; CLS `SRG-APP-000439-AU-004310` | `config system log-forward; edit <ID>; set fwd-server-type fwd-via-output-plugin; set fwd-output-plugin-id <PLUGIN>; end` | P12 |
+| Log and Report | Shadow-AI report | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| Log and Report | FortiNDR Incident Report | 8.0.1 and later | CLS `SRG-APP-000770-AU-000170`; CLS `SRG-APP-000775-AU-000180` | GUI: Reports | P1 |
+| Log and Report | OT Network Traffic and Policy Optimization Report | 8.0.1 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| FortiAI | FortiAI alert triage agent | 8.0.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | FortiAI threat posture timeline | 8.0.0 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | Account-level FortiAI token top-up | 8.0.0 and later | No direct requirement; if unused, disable (CLS `SRG-APP-000141-AU-000090`) | — | — |
+| FortiAI | FortiAI assistant prompt suggestions by role | 8.0.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | FortiAI agents | 8.0.1 and later | CLS `SRG-APP-000141-AU-000090` | If unused: `config system global; set ai-mode disable; end` | — |
+| FortiAI | FortiAI enabled on FortiAnalyzer supports web proxy deployments | 8.0.1 and later | CLS `SRG-APP-000439-AU-004310` | `config system web-proxy; set status enable; set address <PROXY_IP>; set port <PORT>; end` | P20, P28 |
+| System | Custom session labels in FortiAnalyzer event logs | 8.0.0 and later | CLS `SRG-APP-000095-AU-000680` | `config system admin setting; set custom-session-label enable; set custom-session-label-mode unique-per-session; end` | — |
+| System | SAML SSO supports SHA-256 and SHA-512 for both IdP and SP | 8.0.0 and later | CLS `SRG-APP-000610-AU-000050`; CLS `SRG-APP-000148-AU-002270` | `config system saml; set digest-method sha256; set signature-algorithm rsa-sha256; set idp-digest-method sha256; set idp-signature-algorithm rsa-sha256; end` | P5 |
+| System | FortiAnalyzer supports NTPv4 with SHA-256 encryption | 8.0.0 and later | CLS `SRG-APP-000920-AU-000410`; NDM `SRG-APP-000395-NDM-000347` | `config system ntp; config ntpserver; edit 1; set ntpv3 disable; set authentication enable; set key-type sha256; set key-id <ID>; set key <KEY>; end; end` | P10 |
+| System | Time-base retention is configurable for the task monitor and event log | 8.0.0 and later | CLS `SRG-APP-000095-AU-000050` | `config system locallog disk setting; set log-max-days <DAYS>; end` | — |
+| System | Assign access to multiple fabric groups for a single admin | 8.0.0 and later | CLS `SRG-APP-000033-AU-001610` | GUI: System Settings (Administrators) | P16 |
+| System | FortiAnalyzer Fabric Supervisor HA | 8.0.0 and later | CLS `SRG-APP-000086-AU-000390` | `config system ha; set mode a-p; end` | P15, P16 |
+| System | Threat Hunting on the FortiAnalyzer Fabric Supervisor | 8.0.1 and later | CLS `SRG-APP-000775-AU-000180`; CLS `SRG-APP-000086-AU-000390` | GUI: Incidents & Events (Threat Hunting) | P16 |
+| Other | FortiCare Elite or FortiCare Premium required to download FortiGuard objects | 8.0.0 and later | CLS `SRG-APP-000456-AU-000270` | — | P22 |
 
 ### Requirement reference
 

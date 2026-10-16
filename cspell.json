@@ -5219,7 +5219,11 @@
     "NETOPS",
     "callhome",
     "cmac",
-    "fabricpath"
+    "fabricpath",
+    "dbcontract",
+    "FGSA",
+    "ISSS",
+    "SOCA"
   ],
   "ignorePaths": [
     "node_modules/**",
