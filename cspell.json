@@ -5290,7 +5290,10 @@
     "wpasupplicant",
     "usergroups",
     "ipmask",
-    "snmpmibs"
+    "snmpmibs",
+    "FMWR",
+    "ktpass",
+    "fdsm"
   ],
   "ignorePaths": [
     "node_modules/**",
