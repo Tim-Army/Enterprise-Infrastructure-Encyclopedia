@@ -48,6 +48,8 @@ Administration; NSE 5 in Security Operations is FortiAnalyzer Analyst
 or FortiSandbox; NSE 5 in Cloud Security is FortiWeb/FortiADC/
 FortiAppSec; NSE 5 in SASE is FortiSASE and SD-WAN Core. This volume
 devotes a chapter to each track's NSE 5–7 ladder and closes with NSE 8.
+Hands-on labs for NSE 5 FortiSwitch are in
+[Volume CLXXIV — NSE 5 FortiSwitch Lab](../../volume-174-nse-5-fortiswitch-lab/README.md).
 
 ## Design Considerations
 

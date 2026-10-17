@@ -157,6 +157,10 @@ stays offline to management — adoption is an explicit authorization step.
 
 **Rollback:** remove the lab switch's authorization and restore its port VLANs.
 
+**Full lab:** [Volume CLXXIV — NSE 5 FortiSwitch Lab](../../volume-174-nse-5-fortiswitch-lab/README.md) builds this out
+across the whole NSE 5 FortiSwitch 7.6 Administrator exam, on a real switch or
+FortiGate-only.
+
 ### Lab 11.2 — FortiAP managed wireless (Topic: Secure wireless)
 
 **Objective:** Provision an SSID and push it to a managed FortiAP.

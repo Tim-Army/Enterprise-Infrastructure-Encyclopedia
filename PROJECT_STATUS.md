@@ -183,12 +183,13 @@ does not by itself verify every technical claim in it.
 | CLXXI — Alpine Linux | 7 | Drafted |
 | CLXXII — DISA SRGs and STIGs | 38 | Drafted |
 | CLXXIII — Integrated Master Schedule (IMS) | 10 | Drafted |
+| CLXXIV — NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only) | 12 | Drafted |
 | CM — Tim's Lab Gear | 3 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1708 of 1708 drafted (100%). Every volume has a
+**Total declared chapters:** 1720 of 1720 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

@@ -31,6 +31,7 @@ rewritten against a newer release, and record the date of the change.
 | Palo Alto Networks PAN-OS | 11.x | 2026-07 |
 | Palo Alto Networks Panorama | 11.x | 2026-07 |
 | Fortinet FortiOS | 7.6.x | 2026-07 |
+| Fortinet FortiSwitchOS (FortiLink and standalone) | 7.6.7 (FortiOS 7.6.0 CLI as the controller baseline; 8.0 as cross-check) | 2026-10 |
 | Forescout eyeSight/eyeControl (Console) | 8.5.x | 2026-07 |
 | Gigamon GigaVUE-FM | 6.x | 2026-07 |
 | Wireshark | 4.4.x | 2026-07 |

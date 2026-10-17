@@ -6081,6 +6081,49 @@ volumes:
       - id: 10
         title: "Chapter 10: Reporting and Contract Deliverables"
         path: volumes/volume-173-integrated-master-schedule/chapters/10-reporting-and-contract-deliverables.md
+  - id: volume-174
+    number: "CLXXIV"
+    slug: volume-174-nse-5-fortiswitch-lab
+    title: "NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only)"
+    chapter_count: 12
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: Lab Overview, Topology, and Exam Map"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/01-lab-overview-topology-and-exam-map.md
+      - id: 02
+        title: "Chapter 02: Lab Preparation"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/02-lab-preparation.md
+      - id: 03
+        title: "Chapter 03: FortiLink Provisioning and the Managed-Switch Lifecycle"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/03-fortilink-provisioning-and-the-managed-switch-lifecycle.md
+      - id: 04
+        title: "Chapter 04: VLANs, Switch Ports, Transceivers, and Routing"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/04-vlans-switch-ports-transceivers-and-routing.md
+      - id: 05
+        title: "Chapter 05: Spanning Tree and Loop Protection"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/05-spanning-tree-and-loop-protection.md
+      - id: 06
+        title: "Chapter 06: Layer 2 Design: FortiLink Redundancy, Stacking, and MCLAG"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/06-layer-2-design-fortilink-redundancy-stacking-and-mclag.md
+      - id: 07
+        title: "Chapter 07: Port Security: 802.1X, MAB, Dynamic VLANs, and MAC Limits"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/07-port-security-8021x-mab-dynamic-vlans-and-mac-limits.md
+      - id: 08
+        title: "Chapter 08: Filtering, Antispoofing, ACLs, and VLAN Security"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/08-filtering-antispoofing-acls-and-vlan-security.md
+      - id: 09
+        title: "Chapter 09: NAC, Dynamic Port Policies, Quarantine, and Multicast"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/09-nac-dynamic-port-policies-quarantine-and-multicast.md
+      - id: 10
+        title: "Chapter 10: QoS, LLDP-MED, and Multi-Tenancy"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/10-qos-lldp-med-and-multi-tenancy.md
+      - id: 11
+        title: "Chapter 11: Standalone FortiSwitch: Layer 2, Layer 3, and FortiEdge Cloud"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/11-standalone-fortiswitch-layer-2-layer-3-and-fortiedge-cloud.md
+      - id: 12
+        title: "Chapter 12: Monitoring, Troubleshooting, Hardening, and Teardown"
+        path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/12-monitoring-troubleshooting-hardening-and-teardown.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear

@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-177 volumes, 1711 chapters. Each volume has a dedicated
+178 volumes, 1723 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -203,6 +203,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CLXXI | [Alpine Linux](volumes/volume-171-alpine-linux/README.md) | 7 |
 | CLXXII | [DISA SRGs and STIGs](volumes/volume-172-disa-srgs-and-stigs/README.md) | 38 |
 | CLXXIII | [Integrated Master Schedule (IMS)](volumes/volume-173-integrated-master-schedule/README.md) | 10 |
+| CLXXIV | [NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only)](volumes/volume-174-nse-5-fortiswitch-lab/README.md) | 12 |
 | CM | [Tim's Lab Gear](volumes/volume-900-tims-lab-gear/README.md) | 3 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |
 | CMXCVIII | [Acronyms](volumes/volume-998-acronyms/README.md) | 4 |
@@ -233,7 +234,7 @@ ascending order.
 | Juniper | [XXXI Juniper Networks Certification Tracks](volumes/volume-031-juniper-networks-certifications/README.md) — all eight tracks, JNCIA-Junos through JNCIE, in one volume |
 | Dell | [XXII OpenManage Enterprise](volumes/volume-022-dell-openmanage-enterprise/README.md) → [XXIII iDRAC Administration](volumes/volume-023-dell-idrac-9-10-administration/README.md) → [XXVI R640 Proxmox Lab](volumes/volume-026-proxmox-lab-poweredge-r640/README.md) → [XXXII Dell Technologies Certification Tracks](volumes/volume-032-dell-technologies-certifications/README.md) |
 | Palo Alto Networks | [XVI Palo Alto Networks Security](volumes/volume-016-palo-alto-networks-security/README.md) — all three tracks: Network Security, Security Operations (Cortex), and Cloud Security |
-| Fortinet | [XIX Fortinet NSE Certification Program](volumes/volume-019-fortinet-network-security/README.md) — the whole NSE 1–8 program in one volume: Secure Networking, Security Operations, Cloud Security, and SASE |
+| Fortinet | [XIX Fortinet NSE Certification Program](volumes/volume-019-fortinet-network-security/README.md) — the whole NSE 1–8 program in one volume: Secure Networking, Security Operations, Cloud Security, and SASE → [CIX Fortinet ISFW and VDOM Build-It-Yourself Lab](volumes/volume-109-fortinet-isfw-vdom-lab/README.md) → [CLXXIV NSE 5 FortiSwitch Lab](volumes/volume-174-nse-5-fortiswitch-lab/README.md) — hands-on FortiLink-managed and standalone FortiSwitch labs for the NSE 5 FortiSwitch 7.6 Administrator exam, on a real switch or FortiGate-only |
 | VMware | [V VMware Virtualization](volumes/volume-005-vmware-virtualization/README.md) — the full Broadcom certification program in one volume: VCP, VCAP, Distinguished Expert (VCDX), and Telco Cloud, across vSphere, VCF, NSX, Avi, and Private Cloud Security |
 | AWS | [XVII AWS Architecture and Security](volumes/volume-017-aws-architecture-security/README.md) — the whole AWS certification program in one volume: foundational, associate, professional, and specialty across all twelve current exams |
 | Microsoft Azure | [XXXIII Microsoft Azure Certification Tracks](volumes/volume-033-microsoft-azure-certifications/README.md) — the whole Azure certification program in one volume: fundamentals, the role-based associate tier, expert, and specialty |

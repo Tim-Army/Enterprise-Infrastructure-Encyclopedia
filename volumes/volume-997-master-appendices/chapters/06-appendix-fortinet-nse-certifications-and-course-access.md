@@ -45,7 +45,7 @@ Training Institute links its free course and its exam registration.
 |  Secure Networking (foundation) | NSE 2 — The Evolution of Cybersecurity / Fortinet Portfolio | — | Free self-paced  |
 |  Secure Networking (foundation) | NSE 3 — Associate technical | — | Free self-paced  |
 |  All tracks (shared) | NSE 4 — FortiGate / FortiOS Administrator | — | Free self-paced course; optional paid ILT  |
-|  Secure Networking | NSE 5 — FortiSwitch Administrator | — | Free self-paced course; optional paid ILT  |
+|  Secure Networking | NSE 5 — FortiSwitch Administrator | — | Free self-paced course; optional paid ILT; hands-on labs in [Volume CLXXIV](../../volume-174-nse-5-fortiswitch-lab/README.md)  |
 |  Secure Networking | NSE 5 — Secure Wireless LAN Administrator | — | Free self-paced course; optional paid ILT  |
 |  Secure Networking | NSE 6 — FortiAnalyzer Administrator | — | Free self-paced course; optional paid ILT  |
 |  Secure Networking | NSE 6 — FortiAuthenticator Administrator | — | Free self-paced course; optional paid ILT  |
