@@ -5287,7 +5287,8 @@
     "tsformat",
     "vlanuser",
     "vmbrfl",
-    "wpasupplicant"
+    "wpasupplicant",
+    "usergroups"
   ],
   "ignorePaths": [
     "node_modules/**",
