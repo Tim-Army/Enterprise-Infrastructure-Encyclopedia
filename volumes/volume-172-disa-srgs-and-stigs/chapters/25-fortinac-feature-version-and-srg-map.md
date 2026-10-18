@@ -334,6 +334,84 @@ another way:
   ISE STIG, and the vendor guidance as the baseline, and record the
   settings that differ from it.
 
+### Prerequisites
+
+A FortiNAC feature often meets its requirement only if something else is
+already in place. A **prerequisite** is anything that must exist or be
+configured *before* a row's pane or command can meet the requirement: a
+license level or licensed feature, the isolation interface and its
+scopes, the network devices that FortiNAC manages, modeled with working
+credentials and with access values for each logical network, the
+user/host profiles that policies use, an agent on the endpoints, a
+certificate from the DoD PKI and its CA certificates and revocation
+responder, an external server (an LDAP directory, a RADIUS server,
+Microsoft Entra ID, a SAML identity provider, an email server or SMS
+gateway, syslog or FortiAnalyzer, NTP, an SNMP manager, a backup server),
+access to the Fortinet update and FortiGuard servers, the platform behind
+a service connector, the switches and controllers that send RADIUS,
+syslog, or traps to FortiNAC, and the supplicants on the endpoints.
+Settings that the row's own pane or command already creates are not
+listed again.
+
+The 25 prerequisites are listed once, with IDs, in *FortiNAC
+prerequisites*, and the feature map names the IDs each row needs in its
+**FortiNAC prerequisites** column. The list is written for the product,
+not for this chapter's rows, so other chapters about FortiNAC use the
+same IDs. A dash means the feature needs nothing beyond the FortiNAC
+appliance itself. "No direct requirement" rows always show a dash,
+because their entry turns the feature off, and so do the three rows
+whose only requirements are the disable requirements
+(NDM `SRG-APP-000142-NDM-000245`, AAA `SRG-APP-000142-AAA-000680`).
+Four conventions keep the column readable:
+
+- **Licenses.** A row lists the lowest license level that includes its
+  feature, and each level includes the ones below it: the Base key
+  (P1, which also carries the concurrent licenses and the licensed
+  features such as Device Profiler and Guest Manager) on the discovery,
+  profiling, and guest rows, Plus (P2) on the rows that
+  register hosts, scan them, or apply network access policies, and Pro
+  (P3) on the Security Incidents row.
+- **Devices and enforcement.** The modeled devices (P5) and their access
+  values (P6) are listed on the rows that enforce access on a switch,
+  controller, or VPN device; the RADIUS authenticators (P23) on the
+  rows of the local RADIUS server, MAB, and CoA.
+- **Certificates.** The DoD-issued server certificate (P9) is listed on
+  the rows that assign or use a server certificate, the CA certificates
+  (P10) on the rows that validate a client or identity provider
+  certificate with them, and the supplicant certificates (P24)
+  on the certificate-based EAP rows.
+- **Interface services.** The `allowaccess` services that a prerequisite
+  needs (SNMP, syslog, RADIUS, the agent, and the isolation services) are
+  part of that prerequisite, not listed as a separate one.
+
+Fortinet publishes no feature matrix for FortiNAC-F, so the **licenses**
+come from the FortiNAC-F 7.6.0 Administration Guide: *Licenses* (the
+license types, the concurrent license count and what happens when it is
+exceeded, and the FortiNAC Manager licensed features), *License
+management* (the license level, Base, Plus, or Pro, the Security
+Incidents licenses, and the Device Profiler, Guest Manager, Endpoint
+Compliance, and Integration Suite fields), and *Security Incidents*
+(which needs the Security Incidents license); the Base level is
+described in the *Licenses* chapter of the FortiNAC F 7.2.0
+Administration Guide. All license levels include high availability, and
+HA needs matching keys that include it; no row's setting depends on
+that. **Model support** is given only where the guide states it: network
+device management needs an IPv4 address, and L3 polling is supported
+only on Cisco, Juniper EX, HP ProCurve, Brocade, and FortiGate devices
+(P5); the Dissolvable Agent needs a valid third-party certificate (P8);
+Entra ID and SAML SSO need 7.6.3 or later (P14, P15). Check the License
+Information widget, the release notes, and the device support lists for
+your exact appliance, release, and network devices before you plan on a
+licensed or device-specific feature.
+
+During an assessment, check a row's prerequisites before its pane or
+command: a correctly configured setting with a missing prerequisite (a
+Plus feature on a Base key, a policy on a device without access values,
+EAP-TLS without the DoD root certificate in RADIUS Endpoint Trust, OCSP
+with an unreachable responder, alarms without an email server, a log
+receiver that nothing listens on) does not meet the requirement, and the
+missing prerequisite is the finding.
+
 ## Design Considerations
 
 - **Pick the release first, then the features.** FortiNAC-F 7.6 runs only
@@ -373,6 +451,44 @@ another way:
 
 ## Implementation and Automation
 
+### FortiNAC prerequisites
+
+What must be in place before the FortiNAC features in the feature map can
+meet their requirements (see *Prerequisites*). The GUI panes and CLI
+commands were verified against the FortiNAC-F 7.6.0 Administration Guide
+and CLI Reference Guide with the same checks as the feature map; entries
+that are not FortiNAC settings are described in words.
+
+[Download the prerequisites as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/25-fortinac-feature-version-and-srg-map-prerequisites.csv) (25 rows).
+
+| ID | Prerequisite | What it enables | How to put it in place | Source |
+| --- | --- | --- | --- | --- |
+| P1 | A FortiNAC license key at the Base level or higher, with enough concurrent licenses for the hosts and devices online, that includes the licensed features in use (Device Profiler, Guest Manager, Endpoint Compliance, Integration Suite) | Network discovery, host profiling, and classification, and the licensed features the key includes; when the concurrent license count is exceeded, no new registrations are allowed and network access provisioning based on policy does not occur | Install the key from Fortinet (on a VM, during the configuration wizard); GUI: System > Settings > System management > License management (Modify License Key; check License Name, Concurrent Licenses, and the feature fields) | FortiNAC-F 7.6.0 Administration Guide, "Licenses" (license types, license count, concurrent licenses) and "License management" (Settings); FortiNAC F 7.2.0 Administration Guide, "Licenses" (Base: network discovery, host profiling, and classification) |
+| P2 | A FortiNAC license key at the Plus level or higher | Host registration, scanning, and access control (the Plus features, which include all Base features) | Buy and install a Plus or Pro key; GUI: System > Settings > System management > License management (License Name: Plus or Pro) | FortiNAC-F 7.6.0 Administration Guide, "Licenses" (license types) and "License management" (License Name: Base, Plus, or Pro); FortiNAC F 7.2.0 Administration Guide, "Licenses" |
+| P3 | A FortiNAC license key at the Pro level, with Security Incidents licenses | Automated Threat Response (Security Incidents): security rules, triggers, and actions on events from security devices; without the Security Incidents license its features cannot be accessed | Buy and install a Pro key; GUI: System > Settings > System management > License management (License Name: Pro; Security Incidents Licenses) | FortiNAC-F 7.6.0 Administration Guide, "Licenses" (Pro: Automated Threat Response), "License management" (Security Incidents Licenses), and "Security Incidents" |
+| P4 | The isolation interface (port2) with the isolation scopes and the DHCP, DNS, and HTTPS services that the isolation networks and the captive portal use | Registration, remediation, and dead-end isolation networks, where FortiNAC serves IP addresses and DNS to isolated hosts, and the captive portal | Define the isolation interface and scopes with GUI: System > Config wizard; `config system global`; `set portal port2`; `end`; `config system interface`; `edit port2`; `append allowaccess dhcp dns https`; `next`; `end` | FortiNAC-F 7.6.0 Administration Guide, "Config wizard" (isolation interface port2) and "Open ports" ("FortiNAC Access Configuration": isolation scopes and captive portal need dhcp, dns, and https on port2); FortiNAC-F 7.6.0 CLI Reference Guide, interface context (allowaccess) |
+| P5 | The network devices that FortiNAC manages (switches, wireless controllers and access points, firewalls, VPN devices) modeled in Inventory with an IPv4 address and working SNMP and CLI credentials, and SNMP allowed on port1 | Discovery, polling, and host location, and enforcement on the device (VLAN switching, ACLs, CoA); L3 (IP to MAC) polling is supported only on Cisco, Juniper EX, HP ProCurve, Brocade, and FortiGate devices | GUI: Network > Inventory (Add Device with SNMPv3 credentials; Credentials tab, Validate Credentials); `config system interface`; `edit port1`; `append allowaccess snmp`; `next`; `end` | FortiNAC-F 7.6.0 Administration Guide, "Add or modify a device" (SNMP device, snmp in set allowaccess), "Credentials", "Model configuration" (CLI user name), and "IPv6 support" (device management needs IPv4; L3 polling vendors) |
+| P6 | The access value of each logical network on each modeled device (VLAN ID or name, ACL, filter ID, role, VPN group policy, or CoA profile) | Enforcement of network access policies, registration and remediation networks, and quarantine on the device | GUI: Network > Inventory > Device configuration > Model configuration (logical network access values for the device) | FortiNAC-F 7.6.0 Administration Guide, "Model configuration" and "Network access" (Policy & Objects; Access Value: VLAN ID, VLAN name, Aruba role, or VPN group policy) |
+| P7 | User/host profiles that select the users and hosts a policy applies to | Authentication policies and endpoint compliance policies, which map a profile to a configuration | GUI: Policy & Objects > User/host profiles | FortiNAC-F 7.6.0 Administration Guide, "User/host profiles", "Authentication" (Policy & Objects), and "Endpoint compliance" ("Policies") |
+| P8 | A FortiNAC agent on the endpoints (the Persistent Agent installed, or the Dissolvable Agent from the captive portal), the current agent package on FortiNAC, and agent communication allowed on the interface | Posture scans, status notifications, and remediation of endpoints (the Persistent Agent uses TCP 4568, and TCP 80 for upgrades; the Dissolvable Agent requires a valid third-party SSL certificate, not a self-signed one) | GUI: System > Settings > Updates > Agent packages; install the agent on the hosts (MSI, GPO, or the portal); `config system interface`; `edit <PORT>`; `append allowaccess nac-agent http`; `next`; `end` | FortiNAC-F 7.6.0 Administration Guide, "Persistent Agent" (communication; setup requirements: nac-agent and http in set allowaccess), "Dissolvable Agent" (setup requirements), and "Agent packages" |
+| P9 | A DoD-issued server certificate for each certificate target in use (Admin UI, Portal, Persistent Agent, Local RADIUS Server for EAP, RadSec, SAML) | TLS for the Admin UI, the portal, and the agents, EAP termination (the local RADIUS server requires a server certificate), RadSec, and SAML | GUI: System > Certificate management (Generate CSR for the target, submit it to the DoD CA, Upload the certificate) | FortiNAC-F 7.6.0 Administration Guide, "Certificates" (uses and requirements), "Obtain a certificate from CA" (targets), and "Configure Local RADIUS Server settings" (requires a server certificate for EAP) |
+| P10 | The DoD root and intermediate CA certificates in each trusted certificate target in use (RADIUS Endpoint Trust for EAP-TLS and RadSec, SAML Trust, General Trusted CA) | Validation of client certificates for EAP-TLS, PEAP-EAP-TLS, EAP-TTLS/EAP-TLS, TEAP, and RadSec (a client cannot authenticate unless its root certificate is installed), of SAML identity providers, and of devices over SSL | GUI: System > Certificate management > Trusted certificates (select the target; add the DoD root and intermediate certificates) | FortiNAC-F 7.6.0 Administration Guide, "Trusted certificates" (targets; RADIUS Endpoint Trust [radius]) and "Configure Local RADIUS Server settings" (Client Certificate Required) |
+| P11 | An OCSP responder for the DoD CA that FortiNAC can reach | Real-time revocation checking of client certificates by the local RADIUS server | Make the DoD-approved OCSP responder reachable from FortiNAC and allow for its response time in the OCSP Timeout | FortiNAC-F 7.6.0 Administration Guide, "Configure Local Server" (OCSP Enabled, Timeout, OCSP Soft Fail) |
+| P12 | An LDAP directory (such as Active Directory) with an account for FortiNAC, TLS 1.2 or TLS 1.3 enabled for SSL or TLS connections, and DNS resolution of its name | Directory authentication of administrators and users, and synchronization of users, groups, and computer groups | GUI: System > Settings > Authentication > Directories (connection, data field mapping, search branches, synchronization schedule) | FortiNAC-F 7.6.0 Administration Guide, "Directories" ("Requirements") and "Administrators" (Auth Type: LDAP) |
+| P13 | An external RADIUS server, with a validation account, defined as a RADIUS authentication source | RADIUS authentication of administrators and of user registrations | GUI: Network > Service Connectors > Authentication sources > RADIUS (server, RADIUS secret, ports, validation account) | FortiNAC-F 7.6.0 Administration Guide, "RADIUS" (Authentication sources) and "Administrators" (Auth Type: RADIUS) |
+| P14 | A Microsoft Entra ID tenant with an application registered for FortiNAC | Entra ID as an authentication source for 802.1X and portal login, and Entra ID group mapping (7.6.3 and later) | Register the application as the Microsoft Entra ID Authentication Guide describes and select it in GUI: Network > RADIUS > Configure Local Server (Authentication Source) | FortiNAC-F 7.6.3 Release Notes, "What's new" (Entra ID as native authentication source); FortiNAC-F 7.6.0 Administration Guide, "Configure Local Server" (Authentication Source) |
+| P15 | A SAML 2.0 identity provider for administrators or portal users (7.6.3 and later) | Admin SAML SSO and User SAML SSO, with role mapping from the identity provider | Configure the identity provider and the SAML target and SAML Trust certificates; GUI: Network > Service Connectors > Admin SAML SSO | FortiNAC-F 7.6.3 Release Notes, "What's new" (SAML SSO enhancements); FortiNAC-F 7.6.0 Administration Guide, "Admin SAML SSO", "User SAML SSO", "Obtain a certificate from CA" (SAML target), and "Trusted certificates" (SAML Trust) |
+| P16 | An email server (SMTP) and, for SMS, an SMTP or REST SMS gateway | Email and SMS notification of alarms, and delivery of administrator multi-factor authentication tokens | GUI: System > Settings > System communication > Email settings (server, sender, authentication, Connection Security SSL/TLS or STARTTLS); GUI: Network > Service Connectors > Email/SMS > SMTP SMS Gateway | FortiNAC-F 7.6.0 Administration Guide, "Email settings", "Email/SMS" (SMTP and REST SMS gateways), and "Multi-factor Authentication" (token by email or SMS) |
+| P17 | External log receivers: a syslog server, FortiAnalyzer, SIEM, or SNMP trap receiver that FortiNAC can reach | Off-loading of events and alarms (Syslog CSV, Syslog CEF, SNMP trap, FortiAnalyzer) | GUI: System > Settings > System communication > Log receivers (Add; type, IP address, port) | FortiNAC-F 7.6.0 Administration Guide, "Log receivers" and "Log events to an external log host"; "Open ports" (syslog, UDP 514) |
+| P18 | NTP servers that FortiNAC can reach (UDP 123) | Clock synchronization of each FortiNAC server | Set during the configuration wizard; GUI: System > Settings > System management > NTP and time zone | FortiNAC-F 7.6.0 Administration Guide, "Config wizard" (NTP and time zone), "NTP and time zone", and "Open ports" (NTP, UDP 123) |
+| P19 | An SNMP manager that queries FortiNAC, using SNMPv3, and SNMP allowed on port1 | SNMP queries of FortiNAC and SNMPv3 traps that register hosts and users (the SNMP version is global, so every querying device must use it) | `config system interface`; `edit port1`; `append allowaccess snmp`; `next`; `end`; configure the manager with the same SNMPv3 settings | FortiNAC-F 7.6.0 Administration Guide, "SNMP" (System communication; snmp in set allowaccess) |
+| P20 | A remote backup server reachable over SSH or SFTP, with an account with write access and an existing remote path | Copies of the database and system backups off the appliance | GUI: System > Settings > System management > Remote backup configuration (server, user name, password, remote path) | FortiNAC-F 7.6.0 Administration Guide, "Remote backup configuration" |
+| P21 | Outbound access from port1 to the Fortinet update and FortiGuard servers | Firmware upgrades from the download server, agent packages, auto-definition updates, license entitlements, and FortiGuard device lookups | Allow port1 to reach fnac-updates.fortinet.net, fds1.fortinet.com, globalupdate.fortinet.net, and the FortiGuard device query servers listed in Open ports | FortiNAC-F 7.6.0 Administration Guide, "FortiNAC CA Firewall Policy Requirements" (product updates, license entitlements, FortiGuard), "System" (Updates), "Agent packages", and "Auto-definition updates" |
+| P22 | The third-party or Fortinet platform behind a service connector (MDM, FortiClient EMS, OT platform, vulnerability scanner, CMDB, or ITSM), with an API account for FortiNAC | Host data, compliance data, and device data from the platform, and incidents sent to it | Create the API account on the platform; GUI: Network > Service Connectors (Create New; the connector for the platform) | FortiNAC-F 7.6.0 Administration Guide, "Service Connectors", "MDM Servers", "OT", "Vulnerability Scanners", and "ServiceNow ITSM Integration" |
+| P23 | The authenticators (switches, wireless controllers, VPN devices) configured to send RADIUS to FortiNAC, and the RADIUS services allowed on port1 | 802.1X and MAB through the local RADIUS server or a proxy virtual server, and CoA to the devices | Configure each device with FortiNAC as its RADIUS server and the device's secret; `config system interface`; `edit port1`; `append allowaccess radius-auth radius-acct`; `next`; `end` | FortiNAC-F 7.6.0 Administration Guide, "Open ports" ("FortiNAC Access Configuration": radius-auth and radius-acct on port1) and "Configure Local RADIUS Server settings" |
+| P24 | 802.1X supplicants on the endpoints, with user or computer certificates issued by the DoD PKI for certificate-based EAP | EAP-TLS, PEAP-EAP-TLS, EAP-TTLS/EAP-TLS, and TEAP authentication of users and machines | Configure the supplicants and enroll the endpoints for DoD certificates | FortiNAC-F 7.6.0 Administration Guide, "Trusted certificates" (RADIUS Endpoint Trust [radius]: user or computer certificates), "Certificates" (supplicant configuration), and "Configure Local Server" (Client Certificate Attribute) |
+| P25 | Network and security devices configured to send syslog messages or SNMP traps to FortiNAC, and syslog allowed on port1 | MAC notification and link events, and device change notifications from IPS and IDS devices (security events) | Configure the devices to send syslog or traps to FortiNAC; `config system interface`; `edit port1`; `append allowaccess syslog`; `next`; `end` | FortiNAC-F 7.6.0 Administration Guide, "Open ports" ("FortiNAC Access Configuration": syslog and snmp on port1), "SNMP trap support", and "Security Incidents" ("Implementation": network devices) |
+
 ### The FortiNAC feature map
 
 The SRG column uses the abbreviations defined in *Where the SRG data
@@ -380,183 +496,184 @@ comes from*; remember that **ISE** entries are the Cisco ISE NAC STIG
 rules used as a pattern. The requirement titles are listed in the next
 table. The command column follows the conventions in *Where the commands
 come from*.
+The last column lists the IDs from *FortiNAC prerequisites*.
 
 [Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/25-fortinac-feature-version-and-srg-map-feature-map.csv) (172 rows).
 
-| Category | Feature | Introduced (FortiNAC-F) | SRG requirement(s) | Command to satisfy the requirement |
-| --- | --- | --- | --- | --- |
-| Core: Management access | Admin UI over HTTPS (TCP 8443) and HTTP (TCP 8080) on the management interface | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000172-NDM-000259`; NDM `SRG-APP-000142-NDM-000245` | `config system interface`; `edit port1`; `unselect allowaccess http-adminui`; `next`; `end` |
-| Core: Management access | Interface access services (set allowaccess: SSH, Admin UI, SNMP, syslog, RADIUS, agent, DHCP, DNS, and others) | 7.2.0 | NDM `SRG-APP-000142-NDM-000245`; AAA `SRG-APP-000142-AAA-000680` | `config system interface`; `edit <PORT>`; `set allowaccess <ACCESS_LIST>`; `next`; `end` (only the services the deployment uses; SSH and the Admin UI only on port1) |
-| Core: Management access | Management (port1) and portal/isolation (port2) interfaces | 7.2.0 | NDM `SRG-APP-000880-NDM-000290` | `config system global`; `set management port1`; `set portal port2`; `end` |
-| Core: Management access | CLI over SSH and the console | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000880-NDM-000290`; NDM `SRG-APP-000340-NDM-000288` | `config system interface`; `edit port2`; `unselect allowaccess ssh`; `next`; `end` (SSH only on port1) |
-| Core: Cryptography | Strong encryption mode for running services | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000179-NDM-000265`; NDM `SRG-APP-000411-NDM-000330` | `config system global`; `set strong-crypto enable`; `end` |
-| Core: Cryptography | TLS service configurations (Admin UI, Persistent Agent, and RADIUS EAP certificates, protocols, and ciphers) | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; ISE `CSCO-NC-000010`; AAA `SRG-APP-000172-AAA-000520` | GUI: System > Settings > Persistent Agent > Transport configurations (TLS service settings: TLS Protocol TLSv1.2 and TLSv1.3 only) |
-| Core: Admin accounts | Administrators and administrator profiles (permissions, landing page, login availability) | 7.2.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000231-NDM-000271` | GUI: Users & Hosts > Administrators (Profiles tab: least-privilege profiles; System Administrator profile only for a few accounts) |
-| Core: Admin accounts | Administrator profile inactivity time | 7.2.0 | NDM `SRG-APP-000190-NDM-000267` | GUI: Users & Hosts > Administrators (Profiles tab, Inactivity Time: 5 minutes or less, also on the System Administrator profile) |
-| Core: Admin accounts | CLI administrator idle timeout | 7.2.0 | NDM `SRG-APP-000190-NDM-000267` | `config system global`; `set admin-idle-timeout <MINUTES>`; `end` (5 or less) |
-| Core: Admin accounts | Administrator profile lockout (Lock Out After Attempts, Lock Out Duration) | 7.2.0 | NDM `SRG-APP-000065-NDM-000214` | GUI: Users & Hosts > Administrators (Profiles tab: Lock Out After Attempts 3; Lock Out Duration 900 seconds or longer) |
-| Core: Admin accounts | CLI administrator lockout threshold and duration | 7.6 (release not stated) | NDM `SRG-APP-000065-NDM-000214` | `config system global`; `set admin-lockout-threshold 3`; `set admin-lockout-duration 900`; `end` |
-| Core: Admin accounts | CLI admin account and password (account of last resort) | 7.2.0 | NDM `SRG-APP-000148-NDM-000346`; NDM `SRG-APP-000164-NDM-000252` | `config system admin`; `edit admin`; `set password <PASSWORD>`; `end` |
-| Core: Admin accounts | Administrator expiration and aging (User Expires, User Never Expires, User Inactivity Limit) | 7.2.0 | NDM `SRG-APP-000028-NDM-000210`; NDM `SRG-APP-000029-NDM-000211` | GUI: Users & Hosts > Administrators (Set Expiration for temporary administrators) |
-| Core: Remote authentication | Administrator authentication by LDAP or RADIUS (Auth Type) and administrator profile mappings | 7.2.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000153-NDM-000249`; AAA `SRG-APP-000148-AAA-000390` | GUI: Users & Hosts > Administrators (Auth Type: LDAP or RADIUS; Administrator profile mappings from directory groups) |
-| Core: Remote authentication | LDAP directories (SSL or STARTTLS security protocol, synchronization of users and groups) | 7.2.0 | AAA `SRG-APP-000142-AAA-000010`; NDM `SRG-APP-000516-NDM-000336` | GUI: System > Settings > Authentication > Directories (Security Protocol: SSL or STARTTLS) |
-| Core: Passwords | Local administrator passwords (character rules; no length or complexity policy) | 7.2.0 | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000170-NDM-000329`; NDM `SRG-APP-000845-NDM-000220` | GUI: Users & Hosts > Administrators (Change Password: 15 or more characters by procedure; see the limitations) |
-| Core: Logging | Admin auditing log (who changed what and when; CLI changes as CLI Tool) | 7.2.0 | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000100-NDM-000230`; NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000343-NDM-000289` | GUI: Logs > Audit Logs (grant Admin Auditing only to auditors) |
-| Core: Logging | Events and event management (enable events, thresholds, internal and external logging) | 7.2.0 | NDM `SRG-APP-000503-NDM-000320`; NDM `SRG-APP-000095-NDM-000225`; ISE `CSCO-NC-000150`; ISE `CSCO-NC-000160`; AAA `SRG-APP-000089-AAA-000380` | GUI: Logs > Events > Event management (enable the authentication, login failure, and Security Risk Host events; Options: Internal & External) |
-| Core: Logging | Log receivers (Syslog CSV, Syslog CEF, SNMP trap, FortiAnalyzer OFTP) | 7.2.0 | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325`; ISE `CSCO-NC-000220`; AAA `SRG-APP-000358-AAA-000280` | GUI: System > Settings > System communication > Log receivers (at least two receivers) |
-| Core: Logging | Alarm mappings with email and SMS notification | 7.2.0 | ISE `CSCO-NC-000100`; ISE `CSCO-NC-000170`; NDM `SRG-APP-000360-NDM-000295` | GUI: Logs > Alarms (map security and failure events to alarms that notify the SA and ISSO) |
-| Core: Time | NTP and time zone (UTC in the database) | 7.2.0 | NDM `SRG-APP-000920-NDM-000320`; NDM `SRG-APP-000374-NDM-000299`; NDM `SRG-APP-000395-NDM-000347`; ISE `CSCO-NC-000290` | `config system ntp`; `set ntpserver <NTP_SERVER_1> <NTP_SERVER_2>`; `set ntpsync enable`; `end` |
-| Core: SNMP | SNMP agent (SNMPv1/v2c, SNMPv3 AuthPriv and AuthNoPriv) | 7.2.0 | NDM `SRG-APP-000395-NDM-000310`; NDM `SRG-APP-000142-NDM-000245` | GUI: System > Settings > System communication > SNMP (SNMPv3-AuthPriv with SHA1 and AES-128, or Disable) |
-| Core: Certificates | Certificate management (server certificates for Admin UI, portal, agent, and RADIUS; trusted certificates) | 7.2.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; AAA `SRG-APP-000175-AAA-000570`; AAA `SRG-APP-000910-AAA-000230` | GUI: System > Certificate management (DoD-issued server certificates; only DoD CAs in Trusted Certificates) |
-| Core: Backups | Database and system backups (scheduled tasks), remote backup over SSH or FTP, and configuration backup from the CLI | 7.2.0 | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Settings > System management > Remote backup configuration (Enable SSH Remote Backup); `execute backup config scp <FILE> <SERVER> <USER> <PASSWORD>` |
-| Core: Firmware | Firmware upgrades (Updates > System, or execute restore image) | 7.2.0 | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-000378-NDM-000302` | GUI: System > Settings > Updates > System |
-| Core: High availability | High availability (primary and secondary servers, shared IP) | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Discovery | Network device inventory and discovery (switches, wireless controllers, firewalls, VPN devices) | 7.2.0 | ISE `CSCO-NC-000250` | GUI: Network > Inventory |
-| Core: Discovery | L2 and L3 polling, MAC notification traps, and host location | 7.2.0 | ISE `CSCO-NC-000250` | GUI: Network > L2 polling; GUI: Network > L3 polling |
-| Core: Discovery | Rogue host detection and isolation of unknown devices (registration, isolation, and dead-end VLANs) | 7.2.0 | ISE `CSCO-NC-000260`; ISE `CSCO-NC-000130`; AAA `SRG-APP-000516-AAA-000660` | GUI: Network > Logical networks (registration and isolation logical networks with access limited to the portal and remediation resources) |
-| Core: Profiling | Device profiling rules and device types | 7.2.0 | ISE `CSCO-NC-000030` | GUI: Users & Hosts > Device profiling rules |
-| Core: Profiling | Endpoint fingerprints (DHCP and other fingerprint sources) | 7.2.0 | ISE `CSCO-NC-000030`; ISE `CSCO-NC-000250` | GUI: Users & Hosts > Endpoint Fingerprints |
-| Core: Policy | User/host profiles and network access policies (logical networks mapped to VLANs, ACLs, and filter IDs) | 7.2.0 | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000130`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Network access; GUI: Network > Logical networks |
-| Core: Policy | Authentication policies (portal and agent authentication) | 7.2.0 | ISE `CSCO-NC-000270`; ISE `CSCO-NC-000260` | GUI: Policy & Objects > Authentication |
-| Core: Endpoint compliance | Endpoint compliance policies and scans (anti-virus, operating system, custom scans, monitors) | 7.2.0 | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000320`; ISE `CSCO-NC-000050`; ISE `CSCO-NC-000040`; ISE `CSCO-NC-000060` | GUI: Policy & Objects > Endpoint compliance (Policies and Scans for every posture-required profile; custom process or service scans for the host firewall and host IDS/IPS) |
-| Core: Endpoint compliance | Agents (Persistent, Dissolvable, Passive, and Mobile) | 7.2.0 | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000010` | GUI: System > Settings > Persistent Agent (Transport configurations with TLS) |
-| Core: Endpoint compliance | Auto-definition updates for anti-virus and operating system scans | 7.2.0 | ISE `CSCO-NC-000050` | GUI: Policy & Objects > Endpoint compliance > Auto-definition updates |
-| Core: Remediation | Remediation on scan failure (remediation VLAN, failure page with instructions) | 7.2.0 | ISE `CSCO-NC-000070`; ISE `CSCO-NC-000110`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Endpoint compliance > Scans (Remediation - On Failure; Instructions For Scan Failure) |
-| Core: Remediation | Quarantine VLAN switching | 7.2.0 | ISE `CSCO-NC-000070` | GUI: System > Settings > Control > Quarantine |
-| Core: Security response | Security incidents (events from security devices, rules, triggers, and actions such as disabling a host) | 7.2.0 | ISE `CSCO-NC-000120`; ISE `CSCO-NC-000100` | GUI: Logs > Security Incidents |
-| Core: Enforcement | Port groups for enforcement (Forced Registration, Forced Remediation, Role-Based Access, and other system groups) | 7.2.0 | ISE `CSCO-NC-000090`; ISE `CSCO-NC-000260` | GUI: System > Groups (every access port in an enforcement group; document ports left out) |
-| Core: Enforcement | MAC address exclusion | 7.2.0 | ISE `CSCO-NC-000090` | GUI: System > Settings > User/Host Management > MAC address exclusion (only ISSM-approved devices, recorded in the SSP) |
-| Core: RADIUS | Local RADIUS server (802.1X EAP termination; EAP types TLS, TTLS, PEAP, MD5, GTC, MSCHAPv2, FAST, TEAP) | 7.2.0 | AAA `SRG-APP-000516-AAA-000440`; AAA `SRG-APP-000394-AAA-000430`; AAA `SRG-APP-000158-AAA-000420`; ISE `CSCO-NC-000270`; ISE `CSCO-NC-000300` | GUI: Network > RADIUS > Configure Local Server (Supported EAP Types: TLS, TTLS, PEAP, and TEAP only) |
-| Core: RADIUS | RADIUS secrets and RADIUS mode per modeled device | 7.2.0 | AAA `SRG-APP-000516-AAA-000640` | GUI: Network > Inventory > Device configuration > Model configuration (a unique RADIUS Secret for each device) |
-| Core: RADIUS | MAC Authentication Bypass (MAB) | 7.2.0 | ISE `CSCO-NC-000280` | GUI: Policy & Objects > Network access (MAB devices only in restricted logical networks) |
-| Core: RADIUS | OCSP certificate revocation checking for EAP-TLS | 7.2.0 | AAA `SRG-APP-000175-AAA-000580`; AAA `SRG-APP-000875-AAA-000220` | GUI: Network > RADIUS > Configure Local Server (OCSP Enabled) |
-| Core: RADIUS | Require Message-Authenticator (BlastRADIUS protection) | 7.2 (release not stated) | AAA `SRG-APP-000516-AAA-000640` | GUI: Network > RADIUS > Configuration (Require Message-Authenticator: Enabled, or Auto while legacy NAS clients remain) |
-| Core: Guests | Guest and contractor accounts, templates, and sponsors | 7.2.0 | AAA `SRG-APP-000024-AAA-000040`; AAA `SRG-APP-000024-AAA-000050`; AAA `SRG-APP-000516-AAA-000660` | GUI: Users & Hosts > Guests & Contractors > Guest & Contractor templates (Account Duration 72 hours or less) |
-| Core: Captive portal | Captive portal and portal SSL certificate | 7.2.0 | AAA `SRG-APP-000142-AAA-000020`; ISE `CSCO-NC-000010` | GUI: Portal > Portal SSL |
-| Core: Users | Aging of host and user records | 7.2.0 | AAA `SRG-APP-000025-AAA-000080` | GUI: System > Settings > User/Host Management > Aging (35 days of inactivity or less) |
-| Core: Integrations | MDM service connectors | 7.2.0 | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000310` | GUI: Network > Service Connectors > MDM Servers |
-| Core: Integrations | FortiGate Security Fabric connection and FSSO | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port1`; `unselect allowaccess fsso`; `next`; `end` |
-| Core: Isolation services | DHCP and DNS services for isolation networks | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port2`; `unselect allowaccess dhcp dns`; `next`; `end` |
-| Core: Visibility | Dashboard, reports, and network sessions | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiNAC software re-versioning to F 7.2 (Fortinet Fabric versioning) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiNAC-F VM SKUs and FortiNAC-OS (FortiOS-like CLI, firmware image) replacing CentOS 7 | 7.2.0 and later | NDM `SRG-APP-001035-NDM-000340` | `get system status` (FortiNAC-OS on FNC-CAX, FNC-MX, or F-series appliances) |
-| Authentication | SAML/Shibboleth not available on FortiNAC-OS (until the SAML SSO of 7.6.3) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Hardware and cloud | AWS secure deployment (SSH keys set up during image deployment) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Hardware and cloud | Cloud-init bootstrap of the initial VM configuration (AWS, KVM, ESX, Hyper-V) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Agents | macOS agents natively compatible with the M1 processor | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Visibility | Report of enforced and non-enforced ports and APs/SSIDs (Network Device Summary and Network Inventory) | 7.2.0 and later | ISE `CSCO-NC-000250`; ISE `CSCO-NC-000090` | GUI: Network > Inventory (review non-enforced ports against the SSP) |
-| Device integration | Cambium cnPilot APs, Dell EMC N3248P-ON MAC-notification traps, Extreme Campus Controller E3120 | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | FortiGate VDOM modeling enhancements | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | New UI for the policy and logical network views (common search, filtering, drag-and-drop) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| RADIUS | RADIUS over TLS (RadSec) for the Local RADIUS Server | 7.2.1 and later | AAA `SRG-APP-000142-AAA-000020`; AAA `SRG-APP-000172-AAA-000520`; AAA `SRG-APP-000516-AAA-000640` | GUI: Network > RADIUS > Configuration (RADIUS over TLS (RadSec); Discard Unencrypted Requests and Client Certificate Required where the devices support RadSec); `config system interface`; `edit port1`; `append allowaccess radius-radsec`; `next`; `end` |
-| Platform | Enhanced communication method between FortiNAC servers (Manager and CA; configuration required before upgrade) | 7.2.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Hardware and cloud | F-series hardware (FortiNAC-CA-500F, CA-600F, CA-700F, M-550F) | 7.2.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | HSTS enabled by default for the Admin GUI | 7.2.4+; 7.4.0+ | NDM `SRG-APP-000412-NDM-000331` | — |
-| Device integration | Meraki MX as RADIUS concentrator/wireless controller | 7.2.6+; 7.4.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| MDM and OT | MS Intune integration enhancements (on-demand API query for a host, certificate-based authentication) | 7.2.6+; 7.4.1+ | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000310` | GUI: Network > Service Connectors > MDM Servers |
-| Agents | New agent versions (Windows 9.4.4, macOS/Linux 10.7.2) | 7.2.6 and later | ISE `CSCO-NC-000310` | GUI: System > Settings > Updates > Agent packages |
-| Platform | Migration of legacy CentOS C-series appliances to FortiNAC-OS | 7.2.7+; 7.4.0+; 7.6.1+ | NDM `SRG-APP-001035-NDM-000340` | — |
-| MDM and OT | Host role from MDM device ownership (Intune, AirWatch, MaaS360, MobileIron, Citrix) | 7.2.9+; 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000020` | GUI: Network > Service Connectors > MDM Servers |
-| RADIUS | RADIUS CoA and Disconnect messages with custom attribute profiles assigned to logical networks | 7.4.0 and later | ISE `CSCO-NC-000140`; ISE `CSCO-NC-000280`; ISE `CSCO-NC-000120` | GUI: Network > Logical networks (assign a CoA profile so that access changes take effect at once) |
-| RADIUS | EduRoam and the RADIUS service proxy (Proxy virtual servers; legacy proxy deprecated) | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Network > RADIUS > Virtual Servers (delete unused Proxy servers; leave Legacy Proxy Configuration disabled) |
-| Backups | Secure FTP remote backup | 7.4.0 and later | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Settings > System management > Remote backup configuration (Enable Secure FTP Remote Backup; disable FTP Remote Backup) |
-| Agents | Persistent Agent status notification with the logical network name, and user acknowledgment of VLAN changes | 7.4.0 and later | ISE `CSCO-NC-000080` | GUI: System > Settings > Persistent Agent > Properties |
-| Endpoint compliance | Palo Alto XDR and Trend Micro Apex One (Japanese version) detected as anti-virus products | 7.4.0 and later | ISE `CSCO-NC-000050` | GUI: Policy & Objects > Endpoint compliance > Scans |
-| Device integration | FortiLAN Cloud FortiAP and FortiSwitch support | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| MDM and OT | Claroty integration | 7.4.0 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors > OT |
-| Device integration | Arista Cloud Wireless integration | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Endpoint compliance | Custom Windows registry scan with date comparison | 7.4.0 and later | ISE `CSCO-NC-000320` | GUI: Policy & Objects > Endpoint compliance > Scans |
-| Device integration | Mist wireless integration through the Mist Service Connector (Device Management API) | 7.4.1+; 7.6.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Huawei iMaster Cloud service connector | 7.4.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Ruckus R1 Cloud integration | 7.4.1+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Endpoint compliance | FortiClient EMS Cloud integration (in addition to on-premises EMS) | 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000020` | GUI: Network > Service Connectors |
-| Profiling | Device Detection database with FortiGuard (over 140 device types) | 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000030` | GUI: System > Settings > Identification > Device types |
-| MDM and OT | MS Intune with randomized MACs (Intune Device ID from the user certificate in the RADIUS request) | 7.4.2 and later | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000270` | GUI: Network > Service Connectors > MDM Servers |
-| Visibility | Wireless access point security (syslog link-change events against rogue devices posing as APs) | 7.4.2 and later | ISE `CSCO-NC-000250`; ISE `CSCO-NC-000260` | `config system interface`; `edit port1`; `append allowaccess syslog`; `next`; `end` |
-| Device integration | Meraki integration polling the Meraki API for devices | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Ruijie Wireless Controller integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Sophos Wireless integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Juniper Mist Cloud Wireless API integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Yamaha router NVR510 and switch SWX2310 support | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | CentOS appliances no longer supported (7.6 runs only on FortiNAC-OS) | 7.6.0 and later | NDM `SRG-APP-001035-NDM-000340` | `get system status` |
-| Platform | Access Point Management removed | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Endpoint compliance | Check Point VPN integration (posture of VPN users and machines) | 7.6.0 and later | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Network access (VPN logical networks for compliant and non-compliant hosts) |
-| Authentication | Machine authentication with RBAC based on Active Directory computer groups | 7.6.0 and later | ISE `CSCO-NC-000270`; AAA `SRG-APP-000394-AAA-000430` | GUI: Policy & Objects > User/host profiles |
-| Authentication | Maximum concurrent sessions per user (global and per user) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| RADIUS | TEAP for RADIUS clients and TLS 1.3 in the Local RADIUS Server | 7.6.0 and later | AAA `SRG-APP-000516-AAA-000440`; AAA `SRG-APP-000172-AAA-000520`; ISE `CSCO-NC-000300` | GUI: Network > RADIUS > Configure Local Server (TLS Configuration: TLS 1.3 and TLS 1.2 only) |
-| Device integration | Palo Alto Networks SSO tags for non-VPN environments | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Cluster custom health check (ICMP, TCP, TCP Echo) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | FortiNAC Manager Cluster Management (replaces Manager HA) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | CA management from FortiNAC Manager | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | N+1 failover groups for CAs | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | KEA DHCP as the internal DHCP server for isolated hosts | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port2`; `unselect allowaccess dhcp`; `next`; `end` |
-| GUI | GUI enhancements (OT connector categories, Actions views, portal configuration UI, secondary server UI, SSL certificate installation, Config Wizard) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Policy | Temporary port enforcement exception | 7.6.1 and later | ISE `CSCO-NC-000090` | GUI: Network > Inventory > Ports view (Set Temporary Port Exception only with ISSM approval) |
-| Management | Centralized management of host and user records from FortiNAC Manager | 7.6.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Policy | Endpoint compliance attribute filters in user/host profiles (Compliance Status, Last Compliance Scan) | 7.6.2 and later | ISE `CSCO-NC-000140`; ISE `CSCO-NC-000020` | GUI: Policy & Objects > User/host profiles |
-| Management | Squid HTTP proxy on FortiNAC Manager for CA downloads | 7.6.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port1`; `unselect allowaccess http-proxy`; `next`; `end` |
-| Management access | Out-of-band management in high availability configurations (ports 3 to 6) | 7.6.2 and later | NDM `SRG-APP-000880-NDM-000290` | — |
-| Authentication | Microsoft Entra ID as a native authentication source (802.1X and portal) | 7.6.3 and later | ISE `CSCO-NC-000270`; AAA `SRG-APP-000148-AAA-000390` | GUI: Network > RADIUS > Configure Local Server (Authentication Source) |
-| Authentication | SAML SSO for administrators and users, and FortiCloud SSO for admin login | 7.6.3 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000820-NDM-000170` | GUI: Network > Service Connectors > Admin SAML SSO (identity provider that enforces DoD PKI; disable Admin FortiCloud SSO) |
-| MDM and OT | Armis service connector | 7.6.3 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors |
-| Firmware | Secure boot, file integrity verification, and signed firmware enforcement | 7.6.3 and later | NDM `SRG-APP-000131-NDM-000243`; NDM `SRG-APP-000378-NDM-000302` | `get system status` (allow downgrades to unsigned builds only with ISSM approval) |
-| Platform | Link aggregation groups on FortiNAC appliances | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Automated certificate sync from the primary server in HA | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Faster failover in active-standby HA | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Independent IP for CA N+1 setups | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Shared IP for FortiNAC Manager clusters | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | N+1 health check refinement | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| High availability | Split-brain prevention for HA pairs managed by FortiNAC Manager | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Firmware | Firmware upgrade from the FortiGuard Distribution Network | 7.6.3 and later | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352` | GUI: System > Settings > Updates > System |
-| RADIUS | TEAP with multiple inner authentication methods (user and machine) | 7.6.3 and later | AAA `SRG-APP-000516-AAA-000440`; ISE `CSCO-NC-000270` | GUI: Network > RADIUS > Configure Local Server (TEAP/FAST PAC Settings; Allow Anonymous In-Band PAC Provisioning disabled) |
-| MDM and OT | Vulnerability scanner service connector (Tenable, Qualys) | 7.6.3 and later | ISE `CSCO-NC-000020` | GUI: Network > Service Connectors > Vulnerability Scanners |
-| Management access | CLI console in the FortiNAC GUI | 7.6.3 and later | NDM `SRG-APP-000340-NDM-000288` | — |
-| Hardware and cloud | OCI and GCP images | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Alcatel OAW-AP1221, Future Matrix switches, Alaxala AX3660S, FortiPAM and FortiSRA mappings | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Authentication | Remote group mapping for Entra ID in user/host profiles | 7.6.5 and later | ISE `CSCO-NC-000020` | GUI: Policy & Objects > User/host profiles |
-| Admin accounts | Multi-factor authentication for administrators (token by SMS or email; individual and global) | 7.6.5 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000149-NDM-000247` | GUI: System > Settings > Authentication > Multi-factor Authentication (Global MFA) |
-| High availability | Backup IP for N+1 failover groups | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Guests | Self-registration guest login option in the authentication portal | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Portal > Portal configuration |
-| Authentication | External Ethernet adapter (docking station and dongle) management | 7.6.5 and later | ISE `CSCO-NC-000270` | GUI: System > Settings > Identification > Docking Station Management |
-| Policy | Allowed hosts per user group and standalone Host Inventory page | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | API token for FortiGate REST calls and SSH public key authentication to network devices | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | SSID description column | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Portal | captive.apple.com allowed DNS exception for macOS captive portal | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| RADIUS | OCSP soft-fail flag for certificate-based RADIUS authentication | 7.6.5 and later | AAA `SRG-APP-000175-AAA-000580` | GUI: Network > RADIUS > Configure Local Server (OCSP Soft Fail disabled) |
-| Device integration | VDOM multi-tenancy for FortiGate-managed FortiSwitch and FortiAP | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Certificates | Import of PKCS#12 certificates in the GUI | 7.6.5 and later | NDM `SRG-APP-000516-NDM-000344` | GUI: System > Certificate management |
-| Hardware and cloud | Deployment in Alibaba Cloud | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | LDAP group and OU search bar | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Portal | Captive portal over NATted infrastructure with FortiGate | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | Demo license expiration date and grace period | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Certificates | ECC certificates | 7.6.5 and later | NDM `SRG-APP-000516-NDM-000344` | GUI: System > Certificate management |
-| Platform | FortiFlex VM licensing | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| RADIUS | Client certificate attribute ranking for user authentication (CN, DNS, UPN) | 7.6.5 and later | AAA `SRG-APP-000177-AAA-000600` | GUI: Network > RADIUS > Configure Local Server (Client Certificate Attribute) |
-| High availability | FortiADC as health monitor and virtual IP manager for N+1 groups | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Agents | VLAN switch acknowledgment changes (only when leaving remediation; canceled switches stop; new event) | 7.6.5 and later | ISE `CSCO-NC-000080` | GUI: System > Settings > Persistent Agent > Properties |
-| MDM and OT | ServiceNow CMDB integration as MDM | 7.6.5 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors > MDM Servers |
-| Logging | ServiceNow ITSM incidents from FortiNAC alarms | 7.6.5 and later | ISE `CSCO-NC-000100` | GUI: Network > Service Connectors > ServiceNow ITSM Integration |
-| Device integration | RADIUS-only devices (selector-based configuration without SNMP) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Device integration | Remote groups sent to FortiGate and Palo Alto Networks firewalls | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | IPv6 for the portal, agents, Admin UI, RADIUS, and 802.1X | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Visibility | IP-MAC mapping from DHCP and RADIUS Framed-IP-Address caching | 7.6.7 and later | ISE `CSCO-NC-000250` | GUI: Users & Hosts > Endpoint Fingerprints |
-| Device integration | Meraki Service Connector with API polling (SNMP optional) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management | FortiAI Assist chat assistant | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Settings > AI Assist (Enable FortiAI Assist off) |
-| Logging | Live authentication logs (LDAP, Local, RADIUS, SAML, Social) | 7.6.7 and later | ISE `CSCO-NC-000150`; AAA `SRG-APP-000089-AAA-000380` | GUI: Logs > Authentication Logs |
-| High availability | CA clustering failover health check (true hot standby) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | MDM and service connector column on the Host page and in user/host profiles | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Hardware and cloud | OCI DRCC Oman images | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Authentication | Logged-on user handling across user and machine authentication | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | Automatic shutdown of unused captive portal services (dhcpd, named, apache2) | 7.6.7 and later | NDM `SRG-APP-000142-NDM-000245` | — |
-| Platform | Perpetual license expiration display | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Admin audit and event logging of port enforcement changes, data exports, and syslog forwarding | 7.6.7 and later | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000343-NDM-000289` | GUI: Logs > Audit Logs |
-| Logging | Additional endpoint and network data and the Hostname field sent to FortiAnalyzer | 7.6.7 and later | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325` | GUI: System > Settings > System communication > Log receivers |
-| High availability | FortiNAC Manager shared IP in public cloud | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Profiling | Regex vendor codes for randomized MAC addresses | 7.6.7 and later | ISE `CSCO-NC-000030` | GUI: System > Settings > Identification > Vendor OUIs |
-| Management access | Interface enable/disable and speed/duplex from the CLI | 7.6.7 and later | NDM `SRG-APP-000142-NDM-000245` | `config system interface`; `edit <PORT>`; `set status down`; `next`; `end` (unused ports) |
-| RADIUS | Configurable RadSec idle timeout | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Guests | Re-registration period for guest and contractor hosts | 7.6.7 and later | AAA `SRG-APP-000024-AAA-000050` | GUI: Users & Hosts > Guests & Contractors > Guest & Contractor templates (re-registration period: 72 hours or less) |
-| Device integration | H3C WX3820X, D-Link DIS-300G-14PSW, Aruba 2930F, Barox switch, Cisco 8300, Transition/Lantronix switches, Altai APs | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
+| Category | Feature | Introduced (FortiNAC-F) | SRG requirement(s) | Command to satisfy the requirement | FortiNAC prerequisites |
+| --- | --- | --- | --- | --- | --- |
+| Core: Management access | Admin UI over HTTPS (TCP 8443) and HTTP (TCP 8080) on the management interface | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000172-NDM-000259`; NDM `SRG-APP-000142-NDM-000245` | `config system interface`; `edit port1`; `unselect allowaccess http-adminui`; `next`; `end` | — |
+| Core: Management access | Interface access services (set allowaccess: SSH, Admin UI, SNMP, syslog, RADIUS, agent, DHCP, DNS, and others) | 7.2.0 | NDM `SRG-APP-000142-NDM-000245`; AAA `SRG-APP-000142-AAA-000680` | `config system interface`; `edit <PORT>`; `set allowaccess <ACCESS_LIST>`; `next`; `end` (only the services the deployment uses; SSH and the Admin UI only on port1) | — |
+| Core: Management access | Management (port1) and portal/isolation (port2) interfaces | 7.2.0 | NDM `SRG-APP-000880-NDM-000290` | `config system global`; `set management port1`; `set portal port2`; `end` | — |
+| Core: Management access | CLI over SSH and the console | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000880-NDM-000290`; NDM `SRG-APP-000340-NDM-000288` | `config system interface`; `edit port2`; `unselect allowaccess ssh`; `next`; `end` (SSH only on port1) | — |
+| Core: Cryptography | Strong encryption mode for running services | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000179-NDM-000265`; NDM `SRG-APP-000411-NDM-000330` | `config system global`; `set strong-crypto enable`; `end` | — |
+| Core: Cryptography | TLS service configurations (Admin UI, Persistent Agent, and RADIUS EAP certificates, protocols, and ciphers) | 7.2.0 | NDM `SRG-APP-000412-NDM-000331`; ISE `CSCO-NC-000010`; AAA `SRG-APP-000172-AAA-000520` | GUI: System > Settings > Persistent Agent > Transport configurations (TLS service settings: TLS Protocol TLSv1.2 and TLSv1.3 only) | P9 |
+| Core: Admin accounts | Administrators and administrator profiles (permissions, landing page, login availability) | 7.2.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000231-NDM-000271` | GUI: Users & Hosts > Administrators (Profiles tab: least-privilege profiles; System Administrator profile only for a few accounts) | — |
+| Core: Admin accounts | Administrator profile inactivity time | 7.2.0 | NDM `SRG-APP-000190-NDM-000267` | GUI: Users & Hosts > Administrators (Profiles tab, Inactivity Time: 5 minutes or less, also on the System Administrator profile) | — |
+| Core: Admin accounts | CLI administrator idle timeout | 7.2.0 | NDM `SRG-APP-000190-NDM-000267` | `config system global`; `set admin-idle-timeout <MINUTES>`; `end` (5 or less) | — |
+| Core: Admin accounts | Administrator profile lockout (Lock Out After Attempts, Lock Out Duration) | 7.2.0 | NDM `SRG-APP-000065-NDM-000214` | GUI: Users & Hosts > Administrators (Profiles tab: Lock Out After Attempts 3; Lock Out Duration 900 seconds or longer) | — |
+| Core: Admin accounts | CLI administrator lockout threshold and duration | 7.6 (release not stated) | NDM `SRG-APP-000065-NDM-000214` | `config system global`; `set admin-lockout-threshold 3`; `set admin-lockout-duration 900`; `end` | — |
+| Core: Admin accounts | CLI admin account and password (account of last resort) | 7.2.0 | NDM `SRG-APP-000148-NDM-000346`; NDM `SRG-APP-000164-NDM-000252` | `config system admin`; `edit admin`; `set password <PASSWORD>`; `end` | — |
+| Core: Admin accounts | Administrator expiration and aging (User Expires, User Never Expires, User Inactivity Limit) | 7.2.0 | NDM `SRG-APP-000028-NDM-000210`; NDM `SRG-APP-000029-NDM-000211` | GUI: Users & Hosts > Administrators (Set Expiration for temporary administrators) | — |
+| Core: Remote authentication | Administrator authentication by LDAP or RADIUS (Auth Type) and administrator profile mappings | 7.2.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000153-NDM-000249`; AAA `SRG-APP-000148-AAA-000390` | GUI: Users & Hosts > Administrators (Auth Type: LDAP or RADIUS; Administrator profile mappings from directory groups) | P12, P13 |
+| Core: Remote authentication | LDAP directories (SSL or STARTTLS security protocol, synchronization of users and groups) | 7.2.0 | AAA `SRG-APP-000142-AAA-000010`; NDM `SRG-APP-000516-NDM-000336` | GUI: System > Settings > Authentication > Directories (Security Protocol: SSL or STARTTLS) | P12 |
+| Core: Passwords | Local administrator passwords (character rules; no length or complexity policy) | 7.2.0 | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000170-NDM-000329`; NDM `SRG-APP-000845-NDM-000220` | GUI: Users & Hosts > Administrators (Change Password: 15 or more characters by procedure; see the limitations) | — |
+| Core: Logging | Admin auditing log (who changed what and when; CLI changes as CLI Tool) | 7.2.0 | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000100-NDM-000230`; NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000343-NDM-000289` | GUI: Logs > Audit Logs (grant Admin Auditing only to auditors) | — |
+| Core: Logging | Events and event management (enable events, thresholds, internal and external logging) | 7.2.0 | NDM `SRG-APP-000503-NDM-000320`; NDM `SRG-APP-000095-NDM-000225`; ISE `CSCO-NC-000150`; ISE `CSCO-NC-000160`; AAA `SRG-APP-000089-AAA-000380` | GUI: Logs > Events > Event management (enable the authentication, login failure, and Security Risk Host events; Options: Internal & External) | P17 |
+| Core: Logging | Log receivers (Syslog CSV, Syslog CEF, SNMP trap, FortiAnalyzer OFTP) | 7.2.0 | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325`; ISE `CSCO-NC-000220`; AAA `SRG-APP-000358-AAA-000280` | GUI: System > Settings > System communication > Log receivers (at least two receivers) | P17 |
+| Core: Logging | Alarm mappings with email and SMS notification | 7.2.0 | ISE `CSCO-NC-000100`; ISE `CSCO-NC-000170`; NDM `SRG-APP-000360-NDM-000295` | GUI: Logs > Alarms (map security and failure events to alarms that notify the SA and ISSO) | P16 |
+| Core: Time | NTP and time zone (UTC in the database) | 7.2.0 | NDM `SRG-APP-000920-NDM-000320`; NDM `SRG-APP-000374-NDM-000299`; NDM `SRG-APP-000395-NDM-000347`; ISE `CSCO-NC-000290` | `config system ntp`; `set ntpserver <NTP_SERVER_1> <NTP_SERVER_2>`; `set ntpsync enable`; `end` | P18 |
+| Core: SNMP | SNMP agent (SNMPv1/v2c, SNMPv3 AuthPriv and AuthNoPriv) | 7.2.0 | NDM `SRG-APP-000395-NDM-000310`; NDM `SRG-APP-000142-NDM-000245` | GUI: System > Settings > System communication > SNMP (SNMPv3-AuthPriv with SHA1 and AES-128, or Disable) | P19 |
+| Core: Certificates | Certificate management (server certificates for Admin UI, portal, agent, and RADIUS; trusted certificates) | 7.2.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; AAA `SRG-APP-000175-AAA-000570`; AAA `SRG-APP-000910-AAA-000230` | GUI: System > Certificate management (DoD-issued server certificates; only DoD CAs in Trusted Certificates) | P9, P10 |
+| Core: Backups | Database and system backups (scheduled tasks), remote backup over SSH or FTP, and configuration backup from the CLI | 7.2.0 | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Settings > System management > Remote backup configuration (Enable SSH Remote Backup); `execute backup config scp <FILE> <SERVER> <USER> <PASSWORD>` | P20 |
+| Core: Firmware | Firmware upgrades (Updates > System, or execute restore image) | 7.2.0 | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-000378-NDM-000302` | GUI: System > Settings > Updates > System | P21 |
+| Core: High availability | High availability (primary and secondary servers, shared IP) | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Discovery | Network device inventory and discovery (switches, wireless controllers, firewalls, VPN devices) | 7.2.0 | ISE `CSCO-NC-000250` | GUI: Network > Inventory | P1 |
+| Core: Discovery | L2 and L3 polling, MAC notification traps, and host location | 7.2.0 | ISE `CSCO-NC-000250` | GUI: Network > L2 polling; GUI: Network > L3 polling | P1, P5, P25 |
+| Core: Discovery | Rogue host detection and isolation of unknown devices (registration, isolation, and dead-end VLANs) | 7.2.0 | ISE `CSCO-NC-000260`; ISE `CSCO-NC-000130`; AAA `SRG-APP-000516-AAA-000660` | GUI: Network > Logical networks (registration and isolation logical networks with access limited to the portal and remediation resources) | P2, P4, P5, P6 |
+| Core: Profiling | Device profiling rules and device types | 7.2.0 | ISE `CSCO-NC-000030` | GUI: Users & Hosts > Device profiling rules | P1 |
+| Core: Profiling | Endpoint fingerprints (DHCP and other fingerprint sources) | 7.2.0 | ISE `CSCO-NC-000030`; ISE `CSCO-NC-000250` | GUI: Users & Hosts > Endpoint Fingerprints | P1 |
+| Core: Policy | User/host profiles and network access policies (logical networks mapped to VLANs, ACLs, and filter IDs) | 7.2.0 | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000130`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Network access; GUI: Network > Logical networks | P2, P5, P6 |
+| Core: Policy | Authentication policies (portal and agent authentication) | 7.2.0 | ISE `CSCO-NC-000270`; ISE `CSCO-NC-000260` | GUI: Policy & Objects > Authentication | P2, P4, P7 |
+| Core: Endpoint compliance | Endpoint compliance policies and scans (anti-virus, operating system, custom scans, monitors) | 7.2.0 | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000320`; ISE `CSCO-NC-000050`; ISE `CSCO-NC-000040`; ISE `CSCO-NC-000060` | GUI: Policy & Objects > Endpoint compliance (Policies and Scans for every posture-required profile; custom process or service scans for the host firewall and host IDS/IPS) | P2, P7, P8 |
+| Core: Endpoint compliance | Agents (Persistent, Dissolvable, Passive, and Mobile) | 7.2.0 | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000010` | GUI: System > Settings > Persistent Agent (Transport configurations with TLS) | P2, P8, P9 |
+| Core: Endpoint compliance | Auto-definition updates for anti-virus and operating system scans | 7.2.0 | ISE `CSCO-NC-000050` | GUI: Policy & Objects > Endpoint compliance > Auto-definition updates | P2, P21 |
+| Core: Remediation | Remediation on scan failure (remediation VLAN, failure page with instructions) | 7.2.0 | ISE `CSCO-NC-000070`; ISE `CSCO-NC-000110`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Endpoint compliance > Scans (Remediation - On Failure; Instructions For Scan Failure) | P2, P4, P5, P6, P8 |
+| Core: Remediation | Quarantine VLAN switching | 7.2.0 | ISE `CSCO-NC-000070` | GUI: System > Settings > Control > Quarantine | P2, P5, P6 |
+| Core: Security response | Security incidents (events from security devices, rules, triggers, and actions such as disabling a host) | 7.2.0 | ISE `CSCO-NC-000120`; ISE `CSCO-NC-000100` | GUI: Logs > Security Incidents | P3, P5, P25 |
+| Core: Enforcement | Port groups for enforcement (Forced Registration, Forced Remediation, Role-Based Access, and other system groups) | 7.2.0 | ISE `CSCO-NC-000090`; ISE `CSCO-NC-000260` | GUI: System > Groups (every access port in an enforcement group; document ports left out) | P2, P5 |
+| Core: Enforcement | MAC address exclusion | 7.2.0 | ISE `CSCO-NC-000090` | GUI: System > Settings > User/Host Management > MAC address exclusion (only ISSM-approved devices, recorded in the SSP) | — |
+| Core: RADIUS | Local RADIUS server (802.1X EAP termination; EAP types TLS, TTLS, PEAP, MD5, GTC, MSCHAPv2, FAST, TEAP) | 7.2.0 | AAA `SRG-APP-000516-AAA-000440`; AAA `SRG-APP-000394-AAA-000430`; AAA `SRG-APP-000158-AAA-000420`; ISE `CSCO-NC-000270`; ISE `CSCO-NC-000300` | GUI: Network > RADIUS > Configure Local Server (Supported EAP Types: TLS, TTLS, PEAP, and TEAP only) | P9, P10, P23, P24 |
+| Core: RADIUS | RADIUS secrets and RADIUS mode per modeled device | 7.2.0 | AAA `SRG-APP-000516-AAA-000640` | GUI: Network > Inventory > Device configuration > Model configuration (a unique RADIUS Secret for each device) | P5, P23 |
+| Core: RADIUS | MAC Authentication Bypass (MAB) | 7.2.0 | ISE `CSCO-NC-000280` | GUI: Policy & Objects > Network access (MAB devices only in restricted logical networks) | P2, P5, P6, P23 |
+| Core: RADIUS | OCSP certificate revocation checking for EAP-TLS | 7.2.0 | AAA `SRG-APP-000175-AAA-000580`; AAA `SRG-APP-000875-AAA-000220` | GUI: Network > RADIUS > Configure Local Server (OCSP Enabled) | P10, P11, P24 |
+| Core: RADIUS | Require Message-Authenticator (BlastRADIUS protection) | 7.2 (release not stated) | AAA `SRG-APP-000516-AAA-000640` | GUI: Network > RADIUS > Configuration (Require Message-Authenticator: Enabled, or Auto while legacy NAS clients remain) | P23 |
+| Core: Guests | Guest and contractor accounts, templates, and sponsors | 7.2.0 | AAA `SRG-APP-000024-AAA-000040`; AAA `SRG-APP-000024-AAA-000050`; AAA `SRG-APP-000516-AAA-000660` | GUI: Users & Hosts > Guests & Contractors > Guest & Contractor templates (Account Duration 72 hours or less) | P1 |
+| Core: Captive portal | Captive portal and portal SSL certificate | 7.2.0 | AAA `SRG-APP-000142-AAA-000020`; ISE `CSCO-NC-000010` | GUI: Portal > Portal SSL | P4, P9 |
+| Core: Users | Aging of host and user records | 7.2.0 | AAA `SRG-APP-000025-AAA-000080` | GUI: System > Settings > User/Host Management > Aging (35 days of inactivity or less) | — |
+| Core: Integrations | MDM service connectors | 7.2.0 | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000310` | GUI: Network > Service Connectors > MDM Servers | P2, P22 |
+| Core: Integrations | FortiGate Security Fabric connection and FSSO | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port1`; `unselect allowaccess fsso`; `next`; `end` | — |
+| Core: Isolation services | DHCP and DNS services for isolation networks | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port2`; `unselect allowaccess dhcp dns`; `next`; `end` | — |
+| Core: Visibility | Dashboard, reports, and network sessions | 7.2.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiNAC software re-versioning to F 7.2 (Fortinet Fabric versioning) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiNAC-F VM SKUs and FortiNAC-OS (FortiOS-like CLI, firmware image) replacing CentOS 7 | 7.2.0 and later | NDM `SRG-APP-001035-NDM-000340` | `get system status` (FortiNAC-OS on FNC-CAX, FNC-MX, or F-series appliances) | — |
+| Authentication | SAML/Shibboleth not available on FortiNAC-OS (until the SAML SSO of 7.6.3) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Hardware and cloud | AWS secure deployment (SSH keys set up during image deployment) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Hardware and cloud | Cloud-init bootstrap of the initial VM configuration (AWS, KVM, ESX, Hyper-V) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Agents | macOS agents natively compatible with the M1 processor | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Visibility | Report of enforced and non-enforced ports and APs/SSIDs (Network Device Summary and Network Inventory) | 7.2.0 and later | ISE `CSCO-NC-000250`; ISE `CSCO-NC-000090` | GUI: Network > Inventory (review non-enforced ports against the SSP) | P1 |
+| Device integration | Cambium cnPilot APs, Dell EMC N3248P-ON MAC-notification traps, Extreme Campus Controller E3120 | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | FortiGate VDOM modeling enhancements | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | New UI for the policy and logical network views (common search, filtering, drag-and-drop) | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| RADIUS | RADIUS over TLS (RadSec) for the Local RADIUS Server | 7.2.1 and later | AAA `SRG-APP-000142-AAA-000020`; AAA `SRG-APP-000172-AAA-000520`; AAA `SRG-APP-000516-AAA-000640` | GUI: Network > RADIUS > Configuration (RADIUS over TLS (RadSec); Discard Unencrypted Requests and Client Certificate Required where the devices support RadSec); `config system interface`; `edit port1`; `append allowaccess radius-radsec`; `next`; `end` | P9, P10, P23 |
+| Platform | Enhanced communication method between FortiNAC servers (Manager and CA; configuration required before upgrade) | 7.2.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Hardware and cloud | F-series hardware (FortiNAC-CA-500F, CA-600F, CA-700F, M-550F) | 7.2.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | HSTS enabled by default for the Admin GUI | 7.2.4+; 7.4.0+ | NDM `SRG-APP-000412-NDM-000331` | — | — |
+| Device integration | Meraki MX as RADIUS concentrator/wireless controller | 7.2.6+; 7.4.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| MDM and OT | MS Intune integration enhancements (on-demand API query for a host, certificate-based authentication) | 7.2.6+; 7.4.1+ | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000310` | GUI: Network > Service Connectors > MDM Servers | P2, P22 |
+| Agents | New agent versions (Windows 9.4.4, macOS/Linux 10.7.2) | 7.2.6 and later | ISE `CSCO-NC-000310` | GUI: System > Settings > Updates > Agent packages | P21 |
+| Platform | Migration of legacy CentOS C-series appliances to FortiNAC-OS | 7.2.7+; 7.4.0+; 7.6.1+ | NDM `SRG-APP-001035-NDM-000340` | — | — |
+| MDM and OT | Host role from MDM device ownership (Intune, AirWatch, MaaS360, MobileIron, Citrix) | 7.2.9+; 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000020` | GUI: Network > Service Connectors > MDM Servers | P2, P22 |
+| RADIUS | RADIUS CoA and Disconnect messages with custom attribute profiles assigned to logical networks | 7.4.0 and later | ISE `CSCO-NC-000140`; ISE `CSCO-NC-000280`; ISE `CSCO-NC-000120` | GUI: Network > Logical networks (assign a CoA profile so that access changes take effect at once) | P2, P5, P6, P23 |
+| RADIUS | EduRoam and the RADIUS service proxy (Proxy virtual servers; legacy proxy deprecated) | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Network > RADIUS > Virtual Servers (delete unused Proxy servers; leave Legacy Proxy Configuration disabled) | — |
+| Backups | Secure FTP remote backup | 7.4.0 and later | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Settings > System management > Remote backup configuration (Enable Secure FTP Remote Backup; disable FTP Remote Backup) | P20 |
+| Agents | Persistent Agent status notification with the logical network name, and user acknowledgment of VLAN changes | 7.4.0 and later | ISE `CSCO-NC-000080` | GUI: System > Settings > Persistent Agent > Properties | P2, P8 |
+| Endpoint compliance | Palo Alto XDR and Trend Micro Apex One (Japanese version) detected as anti-virus products | 7.4.0 and later | ISE `CSCO-NC-000050` | GUI: Policy & Objects > Endpoint compliance > Scans | P2, P8 |
+| Device integration | FortiLAN Cloud FortiAP and FortiSwitch support | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| MDM and OT | Claroty integration | 7.4.0 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors > OT | P22 |
+| Device integration | Arista Cloud Wireless integration | 7.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Endpoint compliance | Custom Windows registry scan with date comparison | 7.4.0 and later | ISE `CSCO-NC-000320` | GUI: Policy & Objects > Endpoint compliance > Scans | P2, P8 |
+| Device integration | Mist wireless integration through the Mist Service Connector (Device Management API) | 7.4.1+; 7.6.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Huawei iMaster Cloud service connector | 7.4.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Ruckus R1 Cloud integration | 7.4.1+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Endpoint compliance | FortiClient EMS Cloud integration (in addition to on-premises EMS) | 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000020` | GUI: Network > Service Connectors | P2, P22 |
+| Profiling | Device Detection database with FortiGuard (over 140 device types) | 7.4.2+; 7.6.3+ | ISE `CSCO-NC-000030` | GUI: System > Settings > Identification > Device types | P1, P21 |
+| MDM and OT | MS Intune with randomized MACs (Intune Device ID from the user certificate in the RADIUS request) | 7.4.2 and later | ISE `CSCO-NC-000020`; ISE `CSCO-NC-000270` | GUI: Network > Service Connectors > MDM Servers | P2, P22, P24 |
+| Visibility | Wireless access point security (syslog link-change events against rogue devices posing as APs) | 7.4.2 and later | ISE `CSCO-NC-000250`; ISE `CSCO-NC-000260` | `config system interface`; `edit port1`; `append allowaccess syslog`; `next`; `end` | P5, P25 |
+| Device integration | Meraki integration polling the Meraki API for devices | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Ruijie Wireless Controller integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Sophos Wireless integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Juniper Mist Cloud Wireless API integration | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Yamaha router NVR510 and switch SWX2310 support | 7.4.2+; 7.6.3+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | CentOS appliances no longer supported (7.6 runs only on FortiNAC-OS) | 7.6.0 and later | NDM `SRG-APP-001035-NDM-000340` | `get system status` | — |
+| Platform | Access Point Management removed | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Endpoint compliance | Check Point VPN integration (posture of VPN users and machines) | 7.6.0 and later | ISE `CSCO-NC-000310`; ISE `CSCO-NC-000140` | GUI: Policy & Objects > Network access (VPN logical networks for compliant and non-compliant hosts) | P2, P5, P6 |
+| Authentication | Machine authentication with RBAC based on Active Directory computer groups | 7.6.0 and later | ISE `CSCO-NC-000270`; AAA `SRG-APP-000394-AAA-000430` | GUI: Policy & Objects > User/host profiles | P2, P12, P23, P24 |
+| Authentication | Maximum concurrent sessions per user (global and per user) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| RADIUS | TEAP for RADIUS clients and TLS 1.3 in the Local RADIUS Server | 7.6.0 and later | AAA `SRG-APP-000516-AAA-000440`; AAA `SRG-APP-000172-AAA-000520`; ISE `CSCO-NC-000300` | GUI: Network > RADIUS > Configure Local Server (TLS Configuration: TLS 1.3 and TLS 1.2 only) | P9, P23, P24 |
+| Device integration | Palo Alto Networks SSO tags for non-VPN environments | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Cluster custom health check (ICMP, TCP, TCP Echo) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | FortiNAC Manager Cluster Management (replaces Manager HA) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | CA management from FortiNAC Manager | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | N+1 failover groups for CAs | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | KEA DHCP as the internal DHCP server for isolated hosts | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port2`; `unselect allowaccess dhcp`; `next`; `end` | — |
+| GUI | GUI enhancements (OT connector categories, Actions views, portal configuration UI, secondary server UI, SSL certificate installation, Config Wizard) | 7.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Policy | Temporary port enforcement exception | 7.6.1 and later | ISE `CSCO-NC-000090` | GUI: Network > Inventory > Ports view (Set Temporary Port Exception only with ISSM approval) | P2, P5 |
+| Management | Centralized management of host and user records from FortiNAC Manager | 7.6.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Policy | Endpoint compliance attribute filters in user/host profiles (Compliance Status, Last Compliance Scan) | 7.6.2 and later | ISE `CSCO-NC-000140`; ISE `CSCO-NC-000020` | GUI: Policy & Objects > User/host profiles | P2 |
+| Management | Squid HTTP proxy on FortiNAC Manager for CA downloads | 7.6.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `config system interface`; `edit port1`; `unselect allowaccess http-proxy`; `next`; `end` | — |
+| Management access | Out-of-band management in high availability configurations (ports 3 to 6) | 7.6.2 and later | NDM `SRG-APP-000880-NDM-000290` | — | — |
+| Authentication | Microsoft Entra ID as a native authentication source (802.1X and portal) | 7.6.3 and later | ISE `CSCO-NC-000270`; AAA `SRG-APP-000148-AAA-000390` | GUI: Network > RADIUS > Configure Local Server (Authentication Source) | P14, P23 |
+| Authentication | SAML SSO for administrators and users, and FortiCloud SSO for admin login | 7.6.3 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000820-NDM-000170` | GUI: Network > Service Connectors > Admin SAML SSO (identity provider that enforces DoD PKI; disable Admin FortiCloud SSO) | P9, P10, P15 |
+| MDM and OT | Armis service connector | 7.6.3 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors | P22 |
+| Firmware | Secure boot, file integrity verification, and signed firmware enforcement | 7.6.3 and later | NDM `SRG-APP-000131-NDM-000243`; NDM `SRG-APP-000378-NDM-000302` | `get system status` (allow downgrades to unsigned builds only with ISSM approval) | — |
+| Platform | Link aggregation groups on FortiNAC appliances | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Automated certificate sync from the primary server in HA | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Faster failover in active-standby HA | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Independent IP for CA N+1 setups | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Shared IP for FortiNAC Manager clusters | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | N+1 health check refinement | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| High availability | Split-brain prevention for HA pairs managed by FortiNAC Manager | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Firmware | Firmware upgrade from the FortiGuard Distribution Network | 7.6.3 and later | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352` | GUI: System > Settings > Updates > System | P21 |
+| RADIUS | TEAP with multiple inner authentication methods (user and machine) | 7.6.3 and later | AAA `SRG-APP-000516-AAA-000440`; ISE `CSCO-NC-000270` | GUI: Network > RADIUS > Configure Local Server (TEAP/FAST PAC Settings; Allow Anonymous In-Band PAC Provisioning disabled) | P9, P23, P24 |
+| MDM and OT | Vulnerability scanner service connector (Tenable, Qualys) | 7.6.3 and later | ISE `CSCO-NC-000020` | GUI: Network > Service Connectors > Vulnerability Scanners | P2, P22 |
+| Management access | CLI console in the FortiNAC GUI | 7.6.3 and later | NDM `SRG-APP-000340-NDM-000288` | — | — |
+| Hardware and cloud | OCI and GCP images | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Alcatel OAW-AP1221, Future Matrix switches, Alaxala AX3660S, FortiPAM and FortiSRA mappings | 7.6.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Authentication | Remote group mapping for Entra ID in user/host profiles | 7.6.5 and later | ISE `CSCO-NC-000020` | GUI: Policy & Objects > User/host profiles | P2, P14 |
+| Admin accounts | Multi-factor authentication for administrators (token by SMS or email; individual and global) | 7.6.5 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000149-NDM-000247` | GUI: System > Settings > Authentication > Multi-factor Authentication (Global MFA) | P16 |
+| High availability | Backup IP for N+1 failover groups | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Guests | Self-registration guest login option in the authentication portal | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Portal > Portal configuration | — |
+| Authentication | External Ethernet adapter (docking station and dongle) management | 7.6.5 and later | ISE `CSCO-NC-000270` | GUI: System > Settings > Identification > Docking Station Management | — |
+| Policy | Allowed hosts per user group and standalone Host Inventory page | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | API token for FortiGate REST calls and SSH public key authentication to network devices | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | SSID description column | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Portal | captive.apple.com allowed DNS exception for macOS captive portal | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| RADIUS | OCSP soft-fail flag for certificate-based RADIUS authentication | 7.6.5 and later | AAA `SRG-APP-000175-AAA-000580` | GUI: Network > RADIUS > Configure Local Server (OCSP Soft Fail disabled) | P11 |
+| Device integration | VDOM multi-tenancy for FortiGate-managed FortiSwitch and FortiAP | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Certificates | Import of PKCS#12 certificates in the GUI | 7.6.5 and later | NDM `SRG-APP-000516-NDM-000344` | GUI: System > Certificate management | P9 |
+| Hardware and cloud | Deployment in Alibaba Cloud | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | LDAP group and OU search bar | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Portal | Captive portal over NATted infrastructure with FortiGate | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | Demo license expiration date and grace period | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Certificates | ECC certificates | 7.6.5 and later | NDM `SRG-APP-000516-NDM-000344` | GUI: System > Certificate management | P9 |
+| Platform | FortiFlex VM licensing | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| RADIUS | Client certificate attribute ranking for user authentication (CN, DNS, UPN) | 7.6.5 and later | AAA `SRG-APP-000177-AAA-000600` | GUI: Network > RADIUS > Configure Local Server (Client Certificate Attribute) | P10, P24 |
+| High availability | FortiADC as health monitor and virtual IP manager for N+1 groups | 7.6.5 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Agents | VLAN switch acknowledgment changes (only when leaving remediation; canceled switches stop; new event) | 7.6.5 and later | ISE `CSCO-NC-000080` | GUI: System > Settings > Persistent Agent > Properties | P2, P8 |
+| MDM and OT | ServiceNow CMDB integration as MDM | 7.6.5 and later | ISE `CSCO-NC-000250` | GUI: Network > Service Connectors > MDM Servers | P22 |
+| Logging | ServiceNow ITSM incidents from FortiNAC alarms | 7.6.5 and later | ISE `CSCO-NC-000100` | GUI: Network > Service Connectors > ServiceNow ITSM Integration | P22 |
+| Device integration | RADIUS-only devices (selector-based configuration without SNMP) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Device integration | Remote groups sent to FortiGate and Palo Alto Networks firewalls | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | IPv6 for the portal, agents, Admin UI, RADIUS, and 802.1X | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Visibility | IP-MAC mapping from DHCP and RADIUS Framed-IP-Address caching | 7.6.7 and later | ISE `CSCO-NC-000250` | GUI: Users & Hosts > Endpoint Fingerprints | P1 |
+| Device integration | Meraki Service Connector with API polling (SNMP optional) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management | FortiAI Assist chat assistant | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Settings > AI Assist (Enable FortiAI Assist off) | — |
+| Logging | Live authentication logs (LDAP, Local, RADIUS, SAML, Social) | 7.6.7 and later | ISE `CSCO-NC-000150`; AAA `SRG-APP-000089-AAA-000380` | GUI: Logs > Authentication Logs | — |
+| High availability | CA clustering failover health check (true hot standby) | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | MDM and service connector column on the Host page and in user/host profiles | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Hardware and cloud | OCI DRCC Oman images | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Authentication | Logged-on user handling across user and machine authentication | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | Automatic shutdown of unused captive portal services (dhcpd, named, apache2) | 7.6.7 and later | NDM `SRG-APP-000142-NDM-000245` | — | — |
+| Platform | Perpetual license expiration display | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Admin audit and event logging of port enforcement changes, data exports, and syslog forwarding | 7.6.7 and later | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000343-NDM-000289` | GUI: Logs > Audit Logs | — |
+| Logging | Additional endpoint and network data and the Hostname field sent to FortiAnalyzer | 7.6.7 and later | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325` | GUI: System > Settings > System communication > Log receivers | P17 |
+| High availability | FortiNAC Manager shared IP in public cloud | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Profiling | Regex vendor codes for randomized MAC addresses | 7.6.7 and later | ISE `CSCO-NC-000030` | GUI: System > Settings > Identification > Vendor OUIs | P1 |
+| Management access | Interface enable/disable and speed/duplex from the CLI | 7.6.7 and later | NDM `SRG-APP-000142-NDM-000245` | `config system interface`; `edit <PORT>`; `set status down`; `next`; `end` (unused ports) | — |
+| RADIUS | Configurable RadSec idle timeout | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Guests | Re-registration period for guest and contractor hosts | 7.6.7 and later | AAA `SRG-APP-000024-AAA-000050` | GUI: Users & Hosts > Guests & Contractors > Guest & Contractor templates (re-registration period: 72 hours or less) | P1 |
+| Device integration | H3C WX3820X, D-Link DIS-300G-14PSW, Aruba 2930F, Barox switch, Cisco 8300, Transition/Lantronix switches, Altai APs | 7.6.7 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
 
 ### Requirement reference
 

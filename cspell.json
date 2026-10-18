@@ -5304,7 +5304,9 @@
     "Safenet",
     "FCLL",
     "AVDB",
-    "selftest"
+    "selftest",
+    "fnac",
+    "globalupdate"
   ],
   "ignorePaths": [
     "node_modules/**",
