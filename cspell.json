@@ -5294,7 +5294,8 @@
     "FMWR",
     "ktpass",
     "fdsm",
-    "respmod"
+    "respmod",
+    "fsavm"
   ],
   "ignorePaths": [
     "node_modules/**",
