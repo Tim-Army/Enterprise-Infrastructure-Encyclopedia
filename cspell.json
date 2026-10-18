@@ -5295,7 +5295,10 @@
     "ktpass",
     "fdsm",
     "respmod",
-    "fsavm"
+    "fsavm",
+    "SCLIENT",
+    "RDPARTY",
+    "CALLC"
   ],
   "ignorePaths": [
     "node_modules/**",
