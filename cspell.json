@@ -5315,7 +5315,10 @@
     "netlog",
     "cldsrv",
     "ensilo",
-    "fortiav"
+    "fortiav",
+    "FAIS",
+    "FSAC",
+    "FSAP"
   ],
   "ignorePaths": [
     "node_modules/**",
