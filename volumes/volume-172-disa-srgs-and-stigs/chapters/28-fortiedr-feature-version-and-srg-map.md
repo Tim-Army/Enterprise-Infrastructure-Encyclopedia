@@ -381,6 +381,94 @@ another way:
   use this map, the NDM, UEM, and IDPS SRGs, and the operating system STIGs
   as the baseline, and record the settings that differ from it.
 
+### Prerequisites
+
+A FortiEDR feature often meets its requirement only if something else is
+already in place. A **prerequisite** is anything that must exist or be
+configured *before* a row's pane or command can meet the requirement: a
+license or add-on, the on-premises back-end hosts, network paths between
+the components, the device registration password, endpoints and Collector
+versions that support the feature, a Jumpbox Core, connectivity to the
+FortiEDR Cloud Service, certificates from the DoD PKI, an external server
+(NTP, an email server, a syslog server or SIEM, an LDAP directory, a SAML
+identity provider), FortiToken or an authenticator application, the
+external systems that connectors call (a FortiGate, FortiManager,
+FortiNAC, FortiSandbox, FortiClient EMS, Active Directory, an eXtended
+detection source, a threat intelligence feed), a user with the Custom
+script option, and back-end changes by Fortinet Support. Settings that
+the row's own pane or command already creates are not listed again, and
+neither are the Central Manager, the Collector groups, and the security
+policy assignments, which every protection row depends on.
+
+The 25 prerequisites are listed once, with IDs, in *FortiEDR
+prerequisites*, and the feature map names the IDs each row needs in its
+**FortiEDR prerequisites** column. The list is written for the product,
+not for this chapter's rows, so other chapters about FortiEDR can use the
+same IDs. A dash means the feature needs nothing beyond the FortiEDR
+deployment and its registered Collectors. "No direct requirement" rows
+always show a dash, because their entry turns the feature off or leaves
+it unconfigured, and so do the two rows whose only requirement is the
+disable requirement (NDM `SRG-APP-000142-NDM-000245`); it is the only
+requirement in the SRG column about disabling or removing unneeded
+functions. Four conventions keep the column readable:
+
+- **Licenses.** The license and its seats (P1) are listed on the
+  Collector installation rows and on the security policy rows, because
+  only licensed Collectors register and the license decides which
+  policies arrive. The add-ons are listed on the rows of the functions
+  they unlock: Threat Hunting (P2) on the threat hunting rows,
+  eXtended Detection (P3) on the eXtended detection source row,
+  Communication Control (P4) and Vulnerability Management (P5) on the
+  communication control row, and Content Updates (P6) on the content
+  update row.
+- **Back end.** The on-premises hosts (P7) are listed on the rows that
+  install, run, or harden the on-premises components; in FortiEDR Cloud,
+  Fortinet provides them. The network paths (P8) and the registration
+  password (P9) are listed on the Collector installation rows and the
+  network paths also on the Collector channel rows.
+- **Integrations.** Every connector row lists the Jumpbox (P11) and FCS
+  connectivity (P12), except the Threat Intelligence Feed row, which
+  lists FCS only; the external system follows with its API user (P20),
+  the FortiGate objects (P21), the eXtended detection source (P22), or
+  the threat intelligence server (P23).
+- **Collectors.** The endpoint platform and Collector version (P10) are
+  listed on the installation rows and on the rows whose feature needs a
+  minimum Collector version (threat hunting collection, host firewall,
+  AV signature, Collector Settings, and High-Sensitivity Mode).
+
+Fortinet publishes no feature matrix for FortiEDR, so the **licenses**
+come from the FortiEDR 7.2.3 Administration Guide: the licensed
+entitlements table in *Appendix C* (*Configuring the FortiEDR Central
+Manager server and console*: the three license types, the Communication
+Control, eXtended Detection, Forensics, Threat Hunting, Content Updates,
+and Vulnerability Management add-ons, and the license capacity for
+workstations, servers, and IoT devices), *Deploying FortiEDR Cloud* (the
+subscription contract registered in FortiCloud), *Licensing*, the
+organization settings in *Step 2 – Defining or importing an
+organization* (which license types carry Threat Hunting and
+Vulnerability and IoT Management), and the license notes of *Threat
+Hunting*, *Severity*, *Out-of-the-box policies*, and the eXtended
+detection source prerequisites. The Forensics add-on, Device Control,
+and IoT discovery cover only "No direct requirement" rows, so they are
+not listed on any row. **Platform support** is given only where the
+guide states it: the back-end system requirements (P7), and the
+Collector versions and operating systems of individual features (P10);
+the guide also limits Device Control to Windows, FortiEDR Connect to
+Windows devices, and disk encryption to Windows 7 or later with a TPM
+and macOS, which are "No direct requirement" rows or rows that turn the
+feature off. Check *Administration > Licensing*, the release notes, and
+the Collector System Requirements for your exact release and platforms
+before you plan on a licensed or platform-specific feature.
+
+During an assessment, check a row's prerequisites before its pane or
+command: a correctly configured setting with a missing prerequisite (a
+Collector that cannot register because the license seats are used up,
+LDAP authentication with no Jumpbox Core, distribution lists with no
+SMTP server, a syslog destination that does not accept TLS, a firewall
+connector without FCS connectivity, a host firewall policy on Collectors
+older than 6.1) does not meet the requirement, and the missing
+prerequisite is the finding.
+
 ## Design Considerations
 
 - **Pick the releases first, then the features.** If your design depends
@@ -418,6 +506,44 @@ another way:
 
 ## Implementation and Automation
 
+### FortiEDR prerequisites
+
+What must be in place before the FortiEDR features in the feature map
+can meet their requirements (see *Prerequisites*). The GUI panes, field
+labels, and commands were verified against the FortiEDR 7.2.3
+Administration Guide with the same checks as the feature map; entries
+that are not FortiEDR settings are described in words.
+
+[Download the prerequisites as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/28-fortiedr-feature-version-and-srg-map-prerequisites.csv) (25 rows).
+
+| ID | Prerequisite | What it enables | How to put it in place | Source |
+| --- | --- | --- | --- | --- |
+| P1 | A FortiEDR license of one of the three license types (Discover, Protect and Response; Discover and Protect; or Protect and Response), with license seats for the workstations and servers to be protected | Collector registration (only the number of Collectors the license allows can register with the Central Manager) and the out-of-the-box security policies (one or all of them, depending on the license); the license type also decides which add-ons are available | FortiEDR Cloud: register the subscription contract's license activation code in FortiCloud and provision the environment; on premises: send the Installation ID to Fortinet and load the license string that Fortinet returns; GUI: Administration > Licensing (License Type, License Capacity) | FortiEDR 7.2.3 Administration Guide, "Deploying FortiEDR Cloud", "Installing FortiEDR Collectors", "Out-of-the-box policies", "Licensing", and Appendix C, "Configuring the FortiEDR Central Manager server and console" (the licensed entitlements table) |
+| P2 | The Threat Hunting add-on, available with the Discover, Protect and Response or Protect and Response license type, with Repository storage add-ons as needed | Threat Hunting, Threat Hunting collection profiles and exclusions, scheduled queries, and the Threat Intelligence Feed queries; Threat Hunting supports only Collectors that run FortiEDR 5.0 or later | Buy the add-on with the license; GUI: Administration > Licensing (Threat Hunting) | FortiEDR 7.2.3 Administration Guide, "Threat Hunting" (license-dependent add-on), "EDR" (Threat Hunting Settings), Appendix C (licensed entitlements table), and "Step 2 – Defining or importing an organization" (Threat Hunting and Repository storage add-ons) |
+| P3 | The eXtended Detection add-on | A working eXtended detection source connector and the eXtended Detection policy (a connector can be created without the license, but the license is required for a successful XDR definition) | Buy the add-on with the license; GUI: Administration > Licensing (eXtended Detection) | FortiEDR 7.2.3 Administration Guide, "Out-of-the-box policies" (eXtended Detection Policy), "eXtended detection source integration" (Prerequisites of each source), and Appendix C (licensed entitlements table) |
+| P4 | The Communication Control add-on | Application communication control | Buy the add-on with the license; GUI: Administration > Licensing (Communication Control) | FortiEDR 7.2.3 Administration Guide, Appendix C, "Configuring the FortiEDR Central Manager server and console" (licensed entitlements table) |
+| P5 | The Vulnerability Management add-on, which comes with the Discover and Protect or Discover, Protect and Response license type | The NIST and ACI severity ratings of applications that communication control uses for vulnerability assessment and virtual patching (also Device Control and IoT discovery, which are "No direct requirement" rows) | Buy a license type that includes the add-on; GUI: Administration > Licensing (Vulnerability Management) | FortiEDR 7.2.3 Administration Guide, "Severity" (ratings only with the Discover and Protect or Discover, Protect and Response license), "Out-of-the-box policies" (Device Control), "IoT devices", and Appendix C (licensed entitlements table) |
+| P6 | The Content Updates add-on | Automatic updates of the FortiEDR policy rules and built-in exceptions, and loading content files | Buy the add-on with the license; GUI: Administration > Licensing (Content Updates) | FortiEDR 7.2.3 Administration Guide, "Protection or Simulation mode" (Content add-on license) and Appendix C (licensed entitlements table) |
+| P7 | On-premises back-end hosts that meet the system requirements: Intel or AMD x86 64-bit virtual machines built from the Fortinet ISO images, with 4 CPUs, 16 GB memory, and 150 GB SSD for the Central Manager; 4 CPUs, 16 GB, and 80 GB for the Aggregator; 4 CPUs, 16 GB, and 250 GB SSD for a Core (2 CPUs, 8 GB, and 50 GB for a Core running as a Jumpbox); 4 CPUs, 16 GB, and 120 GB for the reputation server; and a Threat Hunting Repository sized by seats and data retention | Installing, upgrading, and administering the Central Manager, Aggregator, Core, Threat Hunting Repository, and reputation server on premises, including the air-gapped deployment, and assessing each host against its operating system STIG | Build each VM to the system requirements and set up the components top-down (Central Manager, Aggregator, Threat Hunting Repository, reputation server, Core); `fortiedr status` | FortiEDR 7.2.3 Administration Guide, Appendix C, "System requirements", "Threat Hunting Repository CPU, Physical Memory, and Disk Space Requirements", and "Setting up FortiEDR components on-premise"; Appendix D for air-gapped environments |
+| P8 | Network paths between the FortiEDR components: Collectors to the Aggregator on port 8081 and to the Core on port 555 (or the custom port), and the other component ports in the on-premises port table, with the 10.42.x.x and 10.43.x.x ranges not used by any device | Collector registration and the channels from Collectors to the Aggregator and Core, including the SSL channel between Collector and Core | Open the documented ports in the firewalls, narrowed to the component addresses; behind a web proxy, allow tunneling from the Collector to the Aggregator on port 8081 and to the Core on port 555 | FortiEDR 7.2.3 Administration Guide, Appendix C, "Network ports", and "Requesting and obtaining a Collector installer" (Use System Proxy Settings) |
+| P9 | The device registration password, set when the Central Manager is configured | Installing, upgrading, and uninstalling Collectors, and unzipping a custom Collector installer | Set it in the Device Registration Password fields when you configure the Central Manager, and keep it from endpoint users; GUI: Administration > Settings > Component Authentication | FortiEDR 7.2.3 Administration Guide, "Component Authentication", "Requesting and obtaining a Collector installer", and Appendix C, "Configuring the FortiEDR Central Manager server and console" |
+| P10 | Endpoints whose operating system meets the Collector System Requirements (Windows, macOS, and Linux; Android and iOS through the mobile Collector), with the Collector version that a feature needs: 5.0 or later for Threat Hunting, 6.1 or later for host firewall policies, and 6.2 or later for the Security Content Update (AV signature) and Collector Settings policies and the High-Sensitivity Mode of the File Encryptor rule (Windows) | Installing the Collector (Linux Collectors need network access to their package repositories for dependencies, and macOS Collectors need the System Extensions, Network Extensions, and Full Disk Access approvals) and the features that need a minimum Collector version | Check each endpoint's operating system and Collector version before you assign the feature; GUI: Assets > Inventory | FortiEDR 7.2.3 Administration Guide, "Installing FortiEDR Collectors" (Collector System Requirements; Windows, macOS, and Linux sections), "Threat Hunting", "Host Firewall", "Security Content Update", "Collector Settings", and "Out-of-the-box policies" (Ransomware Prevention) |
+| P11 | A Core with Jumpbox functionality that has connectivity to the LDAP server or the external system (an on-premises Core; a cloud Core is configured as a Jumpbox only by Fortinet Support) | LDAP authentication and the connectors (firewall, NAC, sandbox, eXtended detection sources, custom, Identity Management, and User Access) | Install an on-premises Core (Setting up the FortiEDR Core) and give it Jumpbox functionality; GUI: Administration > Deployment > System Components (Functionality: Jumpbox) | FortiEDR 7.2.3 Administration Guide, "LDAP authentication", "System Components" (Cores, Functionality), and the prerequisites of each connector in "Integrations" |
+| P12 | Connectivity from the Central Manager to the FortiEDR Cloud Service (FCS) and the Fortinet cloud destinations of the port table (FCS at rbq.cldsrv.ensilo.com and cldsrv.ensilo.com, AV signature updates at fortiav.cloud.ensilo.com), through the web proxy if one is used | The Connectors menu (available only when the environment is connected to FCS) and AV signature updates | `fortiedr config` (answer Yes at the Do you want to enable FCS? prompt when installing the Central Manager on premises, and enable the web proxy there if one is needed); Allow those destinations in the firewall | FortiEDR 7.2.3 Administration Guide, "Integrations" (Connectors menu and FCS), the prerequisites of each connector, and Appendix C, "Setting up a VM to be the FortiEDR Central Manager" and "Network ports" |
+| P13 | Certificates from a DoD-approved CA: a PEM server certificate with its private key whose CN matches the Central Manager FQDN registered in DNS, the approved CA certificates, a certificate for the on-premises Grafana connection, and a client certificate for a TLS syslog server that requires one (for FortiAnalyzer, the client certificate files come from Fortinet Support) | HTTPS to the Central Manager console with a trusted certificate, trusted CAs, TLS syslog with a client certificate, and HTTPS for Grafana | Request the certificates from the DoD PKI, register the Central Manager FQDN in DNS, and on premises set the FQDN in the application-customer.properties file when you load the server certificate | FortiEDR 7.2.3 Administration Guide, "Loading a server certificate", "Syslog" (TLS and Client Certificate), and Appendix C, "Configuring the FortiEDR Central Manager server and console" (MITM CA certificate); this chapter, Grafana row |
+| P14 | An authoritative time source (NTP server) that the on-premises hosts synchronize with | Accurate time stamps on the Central Manager, Aggregator, and Core, whose date and time are otherwise only set at installation | Configure time synchronization on each Ubuntu host as the Ubuntu STIG requires; FortiEDR Cloud relies on Fortinet's service | FortiEDR 7.2.3 Administration Guide, Appendix C (date, time, and time zone prompts of the installers); this chapter, "Where the commands come from" (Time) |
+| P15 | An SMTP server that accepts mail from the Central Manager | Email for security events and system events through distribution lists and playbooks (SMTP must be configured before distribution lists are used) | Provide the server and its settings, then set and test it; GUI: Profiles > Export settings > SMTP (Test) | FortiEDR 7.2.3 Administration Guide, "SMTP", "Distribution lists", and "System events" |
+| P16 | A syslog server or SIEM that is reachable from the Central Manager (the source of all syslog messages) over TCP with TLS: FortiAnalyzer for the FAZ format (not FortiAnalyzer Cloud), or a server that accepts the CEF, LEEF, or semicolon format | Sending security events, system events, and the audit trail through syslog, and the syslog playbook action | Set up the server to listen on TCP with TLS; GUI: Profiles > Export settings > Syslog (Test) | FortiEDR 7.2.3 Administration Guide, "Syslog"; FortiEDR 7.2 Syslog Message Reference |
+| P17 | An Active Directory or OpenLDAP directory reachable from the Jumpbox (P11), with a bind user and the directory groups to map to FortiEDR roles (user names without a backslash) | LDAP authentication of console users and the mapping of directory groups to the Admin, Senior Analyst, Analyst, IT, and Read-Only roles | Create the bind user and the groups in the directory; GUI: Administration > Users > LDAP authentication (Directory Type, Bind User DN/Bind Password) | FortiEDR 7.2.3 Administration Guide, "LDAP authentication" |
+| P18 | A SAML identity provider (such as FortiAuthenticator, Okta, or Azure, which may need a Microsoft license for SAML) that has the FortiEDR SP metadata, sends a group attribute in its assertion, and for DoD enforces CAC | SAML authentication of console users and the mapping of IdP groups to FortiEDR roles | Upload the FortiEDR SP metadata to the IdP and define the group attribute; GUI: Administration > Users > SAML authentication (IDP Metadata, Attribute Name) | FortiEDR 7.2.3 Administration Guide, "SAML authentication" (and the Azure, Okta, and FortiAuthenticator examples) |
+| P19 | FortiToken or a third-party authentication application (such as Google Authenticator, Microsoft Authenticator, Okta, or Duo) on each user's mobile device | Two-factor authentication for specific users or for all users (Require 2FA) | Give each user FortiToken or an approved authenticator application before 2FA is required | FortiEDR 7.2.3 Administration Guide, "Two-factor authentication" |
+| P20 | The external system of each connector, reachable from the Jumpbox, with an API user or token on it: a firewall or FortiManager, FortiNAC or another NAC system, FortiSandbox (an administrator with JSON API access), FortiClient EMS (an API user on premises, or the FortiCloud master user for FortiClient EMS Cloud), Active Directory for User Access, or the third-party system of a custom connector | Firewall, NAC, sandbox, Identity Management (FortiClient EMS Zero Trust tagging), User Access, and custom connectors and their playbook actions | Create the API user or token on the external system; GUI: Profiles > Integrations > Connectors (Host, Port) | FortiEDR 7.2.3 Administration Guide, "Firewall integration", "Network Access Control (NAC) integration", "Sandbox integration", "Custom integration", "Identity Management integration", and "User Access integration" (Prerequisites) |
+| P21 | On the FortiGate (or through FortiManager), an address group for FortiEDR to populate and a firewall policy that denies traffic to the addresses in it | Blocking malicious addresses on the firewall with the Block address on Firewall action | Create the address group and the deny policy on the FortiGate, in the VDOM that the connector names | FortiEDR 7.2.3 Administration Guide, "Firewall integration" (FortiGate configuration) |
+| P22 | An eXtended detection source reachable from the Jumpbox: FortiAnalyzer or FortiAnalyzer Cloud, FortiSIEM or FortiSIEM Cloud, Google Cloud Security Command Center with the Premium tier licensing that has Event Threat Detection, AWS GuardDuty, or a custom system | Collecting activity logs from the source for eXtended detection | Set up the source as the integration section describes; GUI: Profiles > Integrations > Connectors | FortiEDR 7.2.3 Administration Guide, "eXtended detection source integration" (Prerequisites of each source) |
+| P23 | A STIX/TAXII threat intelligence server (TAXII (JSON) or TAXII 1 (XML)) with the collection to retrieve and an API key or credentials | The Threat Intelligence Feed connector, which turns the collection into Threat Hunting queries | Get the server address, collection ID, and credentials from the feed provider | FortiEDR 7.2.3 Administration Guide, "Threat Intelligence Feed integration" |
+| P24 | An Admin or IT user with the Custom script option | Defining custom integration connectors and uploading actions in the Action Manager | GUI: Administration > Users (Custom script) | FortiEDR 7.2.3 Administration Guide, "Users" (Custom script) and "Custom integration" |
+| P25 | A back-end change by Fortinet Support | The features that are enabled only through Fortinet Support: exceptions for specific command execution, the SSL connection between Collector and Core, and the Degraded Collector system event | Open a Fortinet Support request for the change | FortiEDR release notes (5.2.0 Core build 5.2.2.2027, 5.2.0 Central Manager build 3092, 6.0 Central Manager build 6.0.1.0940); FortiEDR 7.2.3 Administration Guide, "System events" |
+
 ### The FortiEDR feature map
 
 The SRG column uses the abbreviations defined in *Where the SRG data comes
@@ -426,154 +552,155 @@ Server SRG, **UEM-A** the UEM Agent SRG, and **IDPS** the Intrusion
 Detection and Prevention Systems SRG. The requirement titles are listed in
 the next table. The command column follows the conventions in *Where the
 commands come from*.
+The last column lists the IDs from *FortiEDR prerequisites*.
 
 [Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/28-fortiedr-feature-version-and-srg-map-feature-map.csv) (143 rows).
 
-| Category | Feature | Introduced (FortiEDR) | SRG requirement(s) | Command to satisfy the requirement |
-| --- | --- | --- | --- | --- |
-| Core: Architecture | Collector on Windows, macOS, and Linux endpoints (the host operating system STIG applies to each endpoint) | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100010`; UEM-A `SRG-APP-000516-UEM-100006` | `msiexec /i FortiEDRCollectorInstaller64.msi /qn AGG=<AGGREGATOR>:8081 PWD=<REGISTRATION_PASSWORD>`; `sudo /opt/FortiEDRCollector/scripts/fortiedrconfig.sh` |
-| Core: Architecture | Custom Collector installer with the Aggregator address, organization, and group embedded | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100010`; UEM-A `SRG-APP-000516-UEM-100006` | GUI: Administration > Deployment > Collector (Request Collector Installer, Aggregator Address) |
-| Core: Architecture | Device registration password for Collectors, Aggregators, and Cores (also needed to uninstall a Collector) | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100011`; UEM-S `SRG-APP-000580-UEM-000398` | GUI: Administration > Settings > Component Authentication (keep the password secret; endpoint users must not know it) |
-| Core: Architecture | Aggregator and Core (cloud-hosted, or on-premises appliances), and the Collector communication channel | 5.0.0 or earlier | UEM-S `SRG-APP-000191-UEM-000119`; UEM-S `SRG-APP-000439-UEM-000313` | Use SSL between Collector and Core (see the 5.2.0 build 3092 row) |
-| Core: Architecture | Network ports between Collectors, Aggregator, Core, Central Manager, and Threat Hunting Repository | 5.0.0 or earlier | NDM `SRG-APP-000142-NDM-000245` | Open only the documented ports, narrowed to the component addresses |
-| Core: Architecture | FortiEDR Cloud Service (FCS) classification and analysis | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `fortiedr config` (answer no at the Do you want to enable FCS? prompt if FCS is not approved) |
-| Core: Architecture | Threat Hunting Repository (on-premises) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Architecture | Multi-tenancy (organizations) and Hoster view | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Console | Central Manager console over HTTPS (port 443) | 5.0.0 or earlier | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000172-NDM-000259` | Browse to https://<CENTRAL_MANAGER>/ only; restrict port 443 to the management network |
-| Core: Console | Central Manager server certificate (PEM, CN matching the FQDN) | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000344` | GUI: Administration > Deployment > Collector (Central Manager Certificate); `fortiedr manager load-ssl-certificate <USER> <PASSWORD> <CERTIFICATE_FILE> <PRIVATE_KEY_FILE> <PRIVATE_KEY_PASSWORD>` (certificate from a DoD-approved CA) |
-| Core: Console | Trusted CA certificates of the Central Manager (MITM CA upload for Internet access) | 5.0.0 or earlier | NDM `SRG-APP-000910-NDM-000300` | Upload only approved CAs with the /maintenance/upload-certificate API |
-| Core: Accounts | Local console users and predefined roles | 5.0.0 or earlier | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000340-NDM-000288` | GUI: Administration > Users (Add User, Role) |
-| Core: Accounts | First administrator defined at installation (account of last resort) | 5.0.0 or earlier | NDM `SRG-APP-000148-NDM-000346` | GUI: Administration > Users (keep one local Admin; log on everyone else through LDAP or SAML) |
-| Core: Accounts | Rest API, Custom script, and FortiEDR Connect user permissions | 5.0.0 or earlier | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000231-NDM-000271` | GUI: Administration > Users (Rest API, Custom script, FortiEDR Connect) |
-| Core: Accounts | Resetting a user password and releasing a locked account | 5.0.0 or earlier | NDM `SRG-APP-000065-NDM-000214` | GUI: Administration > Users > Resetting a user password |
-| Core: Authentication | Two-factor authentication for a user (FortiToken or an authenticator application) | 5.0.0 or earlier | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250` | GUI: Administration > Users > Two-factor authentication |
-| Core: Authentication | LDAP authentication (Active Directory or OpenLDAP through a Jumpbox Core) | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000153-NDM-000249`; NDM `SRG-APP-000172-NDM-000259` | GUI: Administration > Users > LDAP authentication (LDAP Enabled, Security Level: TLS, Role/Group mapping) |
-| Core: Authentication | SAML authentication (FortiEDR as service provider with FortiAuthenticator, Okta, or another IdP) | 5.0.0 or earlier | NDM `SRG-APP-000149-NDM-000247`; NDM `SRG-APP-000516-NDM-000336` | GUI: Administration > Users > SAML authentication (use an IdP that enforces CAC) |
-| Core: Audit | Audit Trail of user actions (CSV download, sent through syslog) | 5.0.0 or earlier | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000343-NDM-000289`; NDM `SRG-APP-000095-NDM-000225`; NDM `SRG-APP-000100-NDM-000230` | GUI: Administration > Settings > Audit Trail |
-| Core: Audit | System events (component, Collector, license, and mode changes; FCS connectivity) | 5.0.0 or earlier | UEM-S `SRG-APP-000474-UEM-000349` | GUI: Administration > System events; GUI: Administration > Distribution lists |
-| Core: Audit | Personal Data Handling (removal of a user's data, including from the Audit Trail) | 5.0.0 or earlier | NDM `SRG-APP-000120-NDM-000237` | GUI: Administration > Settings > Personal Data Handling (restrict to Admin users; record each removal) |
-| Core: Logging | Syslog destinations for security events, system events, and the audit trail | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325`; IDPS `SRG-NET-000511-IDPS-00012`; IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog (Protocol: TCP, TLS, Client Certificate) |
-| Core: Logging | SMTP server and distribution lists (email for security and system events) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00222`; IDPS `SRG-NET-000392-IDPS-00214` | GUI: Profiles > Export settings > SMTP; GUI: Administration > Distribution lists |
-| Core: Logging | Open Ticket (events sent to Jira, ServiceNow, or another tool by email) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Export settings > Open Ticket |
-| Core: Platform | Central Manager, Aggregator, and Core installation and upgrade with Fortinet installer files | 5.0.0 or earlier | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-000131-NDM-000243` | `fortiedr version` (install the installer files that Fortinet provides, after checking them) |
-| Core: Platform | The fortiedr command line of the Central Manager, Aggregator, Core, and Repository | 5.0.0 or earlier | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000378-NDM-000302` | `fortiedr status` (restrict root and SSH access to authorized administrators) |
-| Core: Platform | Date, time, and time zone set by the installer | 5.0.0 or earlier | NDM `SRG-APP-000116-NDM-000234`; NDM `SRG-APP-000374-NDM-000299`; NDM `SRG-APP-000920-NDM-000320` | `fortiedr tzselect` (synchronize the host clock with an authoritative time source) |
-| Core: Platform | Licensing page and license loading | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Licensing |
-| Core: Platform | Collector version updates and automatic Collector updates | 5.0.0 or earlier | UEM-S `SRG-APP-000427-UEM-000299`; NDM `SRG-APP-000378-NDM-000302` | GUI: Administration > Deployment > Collector (Update Collectors) |
-| Core: Platform | Content updates (policy rules and built-in exceptions, Content Updates add-on) | 5.0.0 or earlier | IDPS `SRG-NET-000246-IDPS-00205`; IDPS `SRG-NET-000251-IDPS-00178`; IDPS `SRG-NET-000019-IDPS-00187` | GUI: Administration > Licensing (Load Content) |
-| Core: Platform | Exporting logs of Collectors, Cores, and Aggregators (diagnostics) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Protection | Security policies assigned to Collector groups | 5.0.0 or earlier | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Policies (assign every Collector group a policy set) |
-| Core: Protection | Protection or Simulation mode of each policy | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Protection) |
-| Core: Protection | Execution Prevention policy (malicious file detection and blocking, NGAV) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176`; IDPS `SRG-NET-000249-IDPS-00221` | GUI: Profiles > Security > Policies (Execution Prevention) |
-| Core: Protection | Exfiltration Prevention policy (malicious connection establishment) | 5.0.0 or earlier | IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Exfiltration Prevention) |
-| Core: Protection | Ransomware Prevention policy | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Ransomware Prevention) |
-| Core: Protection | Device Control policy (USB devices) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Security > Policies (Device Control) |
-| Core: Protection | File Scan (scheduled and on-demand scans) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Administration > Settings > File Scan (Perform scheduled scan) |
-| Core: Protection | Exception Manager and Exclusion Manager | 5.0.0 or earlier | IDPS `SRG-NET-000512-IDPS-00194`; NDM `SRG-APP-000380-NDM-000304` | GUI: Profiles > Security > Exception Manager; GUI: Profiles > Security > Exclusion Manager (review exceptions and exclusions) |
-| Core: Protection | Device isolation | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Protection | Enabling and disabling a Collector | 5.0.0 or earlier | NDM `SRG-APP-000340-NDM-000288` | GUI: Assets > Inventory > Enabling/disabling a Collector |
-| Core: Response | Playbook policies (notifications, isolation, high-security group, remediation) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00222`; IDPS `SRG-NET-000392-IDPS-00219` | GUI: Profiles > Playbooks (Send Email Notification, Send Syslog Notification) |
-| Core: Response | Remediating a device upon malware detection (delete file, terminate process, clean registry) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00221` | GUI: Incidents > Investigation View > Remediating a device upon malware detection |
-| Core: Response | Event Viewer (security events, classification, handled status) | 5.0.0 or earlier | IDPS `SRG-NET-000113-IDPS-00013`; IDPS `SRG-NET-000113-IDPS-00082`; IDPS `SRG-NET-000074-IDPS-00059` | GUI: Incidents |
-| Core: Response | Forensics (flow analyzer, stack view, compare view, memory retrieval) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Communication control | Application communication control (reputation, vulnerability, allow or deny policies) | 5.0.0 or earlier | IDPS `SRG-NET-000384-IDPS-00209`; IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000018-IDPS-00018` | GUI: Communication control > Policies; GUI: Communication control > Applications |
-| Core: Integrations | Connectors (firewall, NAC, sandbox, eXtended detection, custom) and Jumpbox Cores | 5.0.0 or earlier | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors |
-| Core: Integrations | IP sets | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Inventory | Collector inventory, states, and versions | 5.0.0 or earlier | UEM-S `SRG-APP-000472-UEM-000347` | GUI: Assets > Inventory |
-| Core: Inventory | Unmanaged devices | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Inventory | IoT device discovery | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > IoT Device Discovery (Perform ongoing device discovery: off) |
-| Core: Inventory | Dashboard and executive summary report | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Endpoint | End-user notifications (tray icon and pop-ups) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| XDR | FortiXDR extended detection, investigation, and response, with the event advanced analysis view of the automated FCS analysis | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Threat hunting | Behavior-based threat hunting with MITRE techniques, collection profiles, and collection exclusions | 5.0.1 and later | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Profiles; GUI: Profiles > EDR > Collection Exclusions |
-| Threat hunting | Scheduled threat hunting queries, and incident response actions triggered by them | 5.0.1+; 5.2.1+ | IDPS `SRG-NET-000392-IDPS-00214` | GUI: Forensics > Threat Hunting |
-| Protection | Web filtering powered by FortiGuard | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | Security event exception enhancements (user-based exceptions) | 5.0.1 and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager |
-| Platform | Oracle Linux Collector support | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Endpoint | Enhanced end-user notification (recent events, Collector version and state) | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > End Users Notifications (Show system tray icon with collector status) |
-| Endpoint | Windows Security Center registration controlled from the console | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > Windows Security Center (Register collectors to Windows Security Center) |
-| Console administration | REST API additions (threat hunting, enriched events, unmanaged devices, SAML SSO configuration) | 5.0.1 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: Administration > Users (Rest API: off) (for every user who does not need the API) |
-| Communication control | Communication Control free-text search covers process properties | 5.0.3 (CM build 827) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Forensics | Forensics > Events available to every role with Forensics permission, regardless of license type | 5.0.3 (CM build 834)+; 5.2.1+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Inventory | Disabling IoT scans (iot.disabled in application.properties on premises; Fortinet Support for cloud) | 5.0.3 (CM build 834)+; 5.2.0 (CM build 2162)+ | NDM `SRG-APP-000142-NDM-000245` | Set iot.disabled in application.properties |
-| Integrations | Custom cross-platform eXtended incident response and pre-canned third-party integrations triggered by playbooks | 5.0.3+; 5.2.0 GA+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors; GUI: Profiles > Playbooks |
-| Protection | Application Control: blocklist of applications per Collector group, by hash, name, path, or signer, predefined application groups, and the Application Name field | 5.1.0+; 5.2.0 GA+; 6.2 GA+ | IDPS `SRG-NET-000249-IDPS-00176`; IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Application Control |
-| Threat hunting | Threat hunting for Linux and macOS | 5.1.0+; 6.0 GA+ | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Profiles |
-| Protection | Process exclusions and NGAV exclusions, and exporting and importing exclusion lists | 5.1.0+; 6.2 GA+ | IDPS `SRG-NET-000512-IDPS-00194`; NDM `SRG-APP-000380-NDM-000304` | GUI: Profiles > Security > Exclusion Manager (exclude only approved, signed processes and paths) |
-| Protection | Keylogging activity detection | 5.1.0 and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies |
-| Threat hunting | Enhanced data collection, the Collection Profiles and Collection Exclusions terms, and collection exclusions for macOS | 5.1.0+; 6.0 (CM 6.0.1.0723)+ | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Exclusions |
-| Platform | FortiEDR serial number on the Licensing page | 5.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Response | FortiEDR Connect (remote shell to Windows devices) | 5.2.0 GA and later | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000408-NDM-000314` | GUI: Administration > Settings > FortiEDR Connect (leave remote shell off unless needed; grant it per user) |
-| Threat hunting | Threat hunting data retention visibility | 5.2.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Japanese and Chinese localization of the console | 5.2.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Syslog additions: remediation details, MITRE techniques, event data, deployment, stack hashes, and stack certificates | 5.2.0 GA+; 6.0 (CM 6.0.1.0940)+ | IDPS `SRG-NET-000074-IDPS-00059`; IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog |
-| Platform | On-premises deployment (Central Manager, Aggregator, Threat Hunting Repository, reputation server, and Core) | 5.2.0 (CM build 2325) and later | NDM `SRG-APP-000516-NDM-000317` | `fortiedr config` (assess each host against DoD guidance) |
-| Logging | FortiAnalyzer syslog support | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000516-NDM-000350`; IDPS `SRG-NET-000511-IDPS-00012` | GUI: Profiles > Export settings > Syslog (Format: FAZ) |
-| Logging | Client certificate for TLS syslog servers | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000516-NDM-000344` | GUI: Profiles > Export settings > Syslog (TLS, Client Certificate) |
-| Console administration | Idle session timeout (1 to 1440 minutes, 15 by default; Hoster view) | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000190-NDM-000267` | GUI: Administration > Settings (Session Time Out: 5) |
-| Console administration | REST API tokens valid only for the TCP session (60 seconds idle, 4 hours maximum) | 5.2.0 (CM build 2527) and later | NDM `SRG-APP-000190-NDM-000267` | — |
-| Protection | Exceptions for specific command execution (enabled by Fortinet Support) | 5.2.0 (Core 5.2.2.2027) and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager |
-| Threat hunting | Changing the default threat hunting collection profile | 5.2.0 (CM build 3092)+; 6.0 (CM 6.0.1.0723)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Architecture | SSL connection between Collector and Core (enabled by Fortinet Support) | 5.2.0 (CM build 3092) and later | UEM-S `SRG-APP-000191-UEM-000119`; UEM-S `SRG-APP-000395-UEM-000266`; UEM-S `SRG-APP-000439-UEM-000313` | Ask Fortinet Support to enable SSL between Collector and Core |
-| Architecture | Revoking a compromised registration password | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | UEM-A `SRG-APP-000516-UEM-100011`; UEM-S `SRG-APP-000580-UEM-000398` | GUI: Administration > Settings > Component Authentication (Advanced Password Management) |
-| Inventory | Aggregators listed by their machine names | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Creating a syslog destination through the REST API (all fields and notifications enabled by default) | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | NDM `SRG-APP-000516-NDM-000350` | GUI: Profiles > Export settings > Syslog |
-| Protection | Exceptions based on child processes | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager |
-| Console administration | Admin, Senior Analyst, Analyst, IT, and Read-Only roles, also mapped to LDAP and SAML groups | 5.2.1 and later | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000153-NDM-000249` | GUI: Administration > Users (Role) |
-| XDR | eXtended detection sources: Google SCC, Amazon GuardDuty, FortiAnalyzer Cloud, FortiSIEM, FortiSIEM Cloud, FortiGate and VDOM filters, and custom external systems | 5.2.1+; 6.2 GA+; 7.0 GA+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors |
-| Integrations | Zero Trust incident response with FortiClient EMS tags, including the predefined FortiEDR tags | 5.2.1+; 6.0 (CM 6.0.1.0723)+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors |
-| Integrations | User access incident response (reset a user password, disable an Active Directory account) | 5.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Response | Time filter in the Event Viewer | 5.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Integrations | FortiGate connector with virtual domains, and FortiManager ADOM blocking in workspace mode | 5.2.1+; 6.2 (CM 6.2.4.0026)+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors |
-| Response | Investigation View and its enhancements (stacks view, JSON export, response actions, filters) | 6.0 GA+; 6.2 GA+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Threat hunting | Threat Intelligence Feed integration (STIX/TAXII) and query conversion into Lucene | 6.0 GA and later | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors |
-| Console administration | Password policy: minimum length, character types, brute-force protection, required 2FA, and closing open sessions | 6.0 GA and later | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000166-NDM-000254`; NDM `SRG-APP-000167-NDM-000255`; NDM `SRG-APP-000168-NDM-000256`; NDM `SRG-APP-000169-NDM-000257`; NDM `SRG-APP-000065-NDM-000214`; NDM `SRG-APP-000820-NDM-000170` | GUI: Administration > Users (Password Policy, Minimum password length: 15, Brute-force protection, Require 2FA, Close open sessions immediately) |
-| Architecture | Organization-specific Aggregators | 6.0 (CM 6.0.1.0723) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Getting started videos | 6.0 (CM 6.0.1.0940) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | System event when a Collector becomes Degraded (enabled by Fortinet Support) | 6.0 (CM 6.0.1.0940) and later | UEM-S `SRG-APP-000474-UEM-000349` | Ask Fortinet Support to enable the event |
-| Architecture | Reputation service: Core and Windows Collector query it directly | 6.0 (Core 6.0.1.0637)+; 6.2 (CM 6.2.3.0036)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > Reputation Service |
-| Platform | Core and on-premises components on Ubuntu 22.04 instead of CentOS, and migration | 6.0 (Core 6.0.1.0646)+; 6.2 (CM 6.2.1.0111)+ | NDM `SRG-APP-000516-NDM-000317` | Migrate to Ubuntu 22.04 and assess the host |
-| Forensics | Forensics moved into the Investigation View, then the Forensics Viewer restored | 6.2 GA+; 7.2.1+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Response | FortiEDR Connect commands recorded in the Audit Trail | 6.2 GA and later | NDM `SRG-APP-000101-NDM-000231`; NDM `SRG-APP-000343-NDM-000289` | GUI: Administration > Settings > Audit Trail |
-| Logging | CEF and LEEF syslog formats | 6.2 GA and later | IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog (Format) |
-| Console administration | Control of access to new license functionality in multi-tenant environments | 6.2 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Certificate field renamed Signature | 6.2 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | New applications not blocked by default, and the Enable Default application state option | 6.2 (CM 6.2.0.0451) and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Administration > Settings > Application Control Manager (Enable Default application state) |
-| Platform | HTTPS for the Grafana connection (on-premises) | 6.2 (CM 6.2.1.0111) and later | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000516-NDM-000344` | Enable TLS on Grafana with your own certificate |
-| Forensics | Legacy Forensics view (enabled by Fortinet Support) | 6.2 (CM 6.2.1.0111) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Endpoint | FortiClient notifications for FortiEndpoint deployments | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > End Users Notifications (Enable FortiClient notifications) |
-| Architecture | Jumpbox change disabled for Cores earlier than 6.0.1.652 | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Architecture | Obfuscation of user names, host names, addresses, and other data sent to FCS | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Deployment URL and reputation service list in Administration > Tools | 6.2 (CM 6.2.5.0052) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | License consolidation for workstations and servers | 6.2 (CM 6.2.5.0052)+; 7.0 (CM 7.0.4.0050)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Inventory | VDI devices shown as Disconnected (Expired) after 6 hours | 6.2 (CM 6.2.5.0052) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | PUP Prevented rule in the Execution Prevention policy | 6.2 (CM 6.2.6.0097) and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Execution Prevention) |
-| Console administration | Login blocked when the license has expired | 6.2 (CM 6.2.6.0097) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | AV Engine 7.0 signatures selected through the Aggregator API | 6.2 (CM 6.2.6.0097) and later | IDPS `SRG-NET-000246-IDPS-00205` | — |
-| Platform | Hardening enhancements | 6.2 (CM 6.2.6.0097) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | Cloud workload protection with the node Collector (AWS, Azure, GCP) | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | Mobile device protection (Android and iOS) and the Mobile Devices policy | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Dashboard changes, and PDF reports generated from the dashboard | 7.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Response | Incidents workflow (Event Viewer renamed Incidents), incident entities, and filtering of events older than 30 days | 7.0 GA+; 7.2.0+ | IDPS `SRG-NET-000113-IDPS-00013` | GUI: Incidents |
-| Inventory | Security posture indicator (Device Security column) for Windows and macOS endpoints | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Integrations | External attack surface visibility with FortiRecon (NIST and ACI severity) | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | New look and feel and color schemes of the console | 7.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | Administration > Tools renamed Administration > Settings | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Communication control | Host firewall policies on Collector groups | 7.2.0 and later | IDPS `SRG-NET-000390-IDPS-00212`; IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000018-IDPS-00018` | GUI: Communications Control > Host Firewall |
-| Protection | Disk encryption management for Windows (BitLocker) and macOS (FileVault) endpoints | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Disk Encryption |
-| Communication control | Exporting Communication Control applications through the notification center | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | Secure browser (disabled by default) | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Inventory | Collector filtering, including devices not seen for more than 30 days | 7.2.1 and later | UEM-S `SRG-APP-000472-UEM-000347` | GUI: Assets > Inventory |
-| Console administration | Time zone per organization | 7.2.1 and later | NDM `SRG-APP-000374-NDM-000299` | GUI: Administration > Settings > Time Zone (Ignore data converter) |
-| Console administration | Login without the organization name in multi-tenancy | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | GUI enhancements: user field validation (2FA, password, role), exceptions loaded only on supported Collectors, error reporting | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | On-premises deployment in air-gapped environments | 7.2.3 and later | NDM `SRG-APP-000516-NDM-000317` | — |
-| Protection | AV Signature policy and manual content upload in the Update Center | 7.2.3 and later | IDPS `SRG-NET-000246-IDPS-00205`; IDPS `SRG-NET-000251-IDPS-00178`; IDPS `SRG-NET-000019-IDPS-00187` | GUI: Profiles > Security > Security Content Update; GUI: Administration > Deployment > Update Center |
-| Protection | Collector Settings policy (behavior in operating modes, upgrade schedule) | 7.2.3 and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Collector Settings |
-| Response | Inconclusive events sent to FCS before they appear in Incidents | 7.2.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Protection | High-Sensitivity Mode of the File Encryptor rule (Ransomware Prevention) | 7.2.3 and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Ransomware Prevention) |
-| Inventory | System summary and reporting enhancements | 7.2.3 (CM 7.2.3.0302) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Console administration | UX improvements (loading indicator, notification counters, certificate settings navigation) | 7.2.3 (CM 7.2.3.0302) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
+| Category | Feature | Introduced (FortiEDR) | SRG requirement(s) | Command to satisfy the requirement | FortiEDR prerequisites |
+| --- | --- | --- | --- | --- | --- |
+| Core: Architecture | Collector on Windows, macOS, and Linux endpoints (the host operating system STIG applies to each endpoint) | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100010`; UEM-A `SRG-APP-000516-UEM-100006` | `msiexec /i FortiEDRCollectorInstaller64.msi /qn AGG=<AGGREGATOR>:8081 PWD=<REGISTRATION_PASSWORD>`; `sudo /opt/FortiEDRCollector/scripts/fortiedrconfig.sh` | P1, P8, P9, P10 |
+| Core: Architecture | Custom Collector installer with the Aggregator address, organization, and group embedded | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100010`; UEM-A `SRG-APP-000516-UEM-100006` | GUI: Administration > Deployment > Collector (Request Collector Installer, Aggregator Address) | P1, P8, P9, P10 |
+| Core: Architecture | Device registration password for Collectors, Aggregators, and Cores (also needed to uninstall a Collector) | 5.0.0 or earlier | UEM-A `SRG-APP-000516-UEM-100011`; UEM-S `SRG-APP-000580-UEM-000398` | GUI: Administration > Settings > Component Authentication (keep the password secret; endpoint users must not know it) | — |
+| Core: Architecture | Aggregator and Core (cloud-hosted, or on-premises appliances), and the Collector communication channel | 5.0.0 or earlier | UEM-S `SRG-APP-000191-UEM-000119`; UEM-S `SRG-APP-000439-UEM-000313` | Use SSL between Collector and Core (see the 5.2.0 build 3092 row) | P8 |
+| Core: Architecture | Network ports between Collectors, Aggregator, Core, Central Manager, and Threat Hunting Repository | 5.0.0 or earlier | NDM `SRG-APP-000142-NDM-000245` | Open only the documented ports, narrowed to the component addresses | — |
+| Core: Architecture | FortiEDR Cloud Service (FCS) classification and analysis | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `fortiedr config` (answer no at the Do you want to enable FCS? prompt if FCS is not approved) | — |
+| Core: Architecture | Threat Hunting Repository (on-premises) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Architecture | Multi-tenancy (organizations) and Hoster view | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Console | Central Manager console over HTTPS (port 443) | 5.0.0 or earlier | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000172-NDM-000259` | Browse to https://<CENTRAL_MANAGER>/ only; restrict port 443 to the management network | P13 |
+| Core: Console | Central Manager server certificate (PEM, CN matching the FQDN) | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000344` | GUI: Administration > Deployment > Collector (Central Manager Certificate); `fortiedr manager load-ssl-certificate <USER> <PASSWORD> <CERTIFICATE_FILE> <PRIVATE_KEY_FILE> <PRIVATE_KEY_PASSWORD>` (certificate from a DoD-approved CA) | P13 |
+| Core: Console | Trusted CA certificates of the Central Manager (MITM CA upload for Internet access) | 5.0.0 or earlier | NDM `SRG-APP-000910-NDM-000300` | Upload only approved CAs with the /maintenance/upload-certificate API | P13 |
+| Core: Accounts | Local console users and predefined roles | 5.0.0 or earlier | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000340-NDM-000288` | GUI: Administration > Users (Add User, Role) | — |
+| Core: Accounts | First administrator defined at installation (account of last resort) | 5.0.0 or earlier | NDM `SRG-APP-000148-NDM-000346` | GUI: Administration > Users (keep one local Admin; log on everyone else through LDAP or SAML) | — |
+| Core: Accounts | Rest API, Custom script, and FortiEDR Connect user permissions | 5.0.0 or earlier | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000231-NDM-000271` | GUI: Administration > Users (Rest API, Custom script, FortiEDR Connect) | — |
+| Core: Accounts | Resetting a user password and releasing a locked account | 5.0.0 or earlier | NDM `SRG-APP-000065-NDM-000214` | GUI: Administration > Users > Resetting a user password | — |
+| Core: Authentication | Two-factor authentication for a user (FortiToken or an authenticator application) | 5.0.0 or earlier | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250` | GUI: Administration > Users > Two-factor authentication | P19 |
+| Core: Authentication | LDAP authentication (Active Directory or OpenLDAP through a Jumpbox Core) | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000153-NDM-000249`; NDM `SRG-APP-000172-NDM-000259` | GUI: Administration > Users > LDAP authentication (LDAP Enabled, Security Level: TLS, Role/Group mapping) | P11, P17 |
+| Core: Authentication | SAML authentication (FortiEDR as service provider with FortiAuthenticator, Okta, or another IdP) | 5.0.0 or earlier | NDM `SRG-APP-000149-NDM-000247`; NDM `SRG-APP-000516-NDM-000336` | GUI: Administration > Users > SAML authentication (use an IdP that enforces CAC) | P18 |
+| Core: Audit | Audit Trail of user actions (CSV download, sent through syslog) | 5.0.0 or earlier | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000343-NDM-000289`; NDM `SRG-APP-000095-NDM-000225`; NDM `SRG-APP-000100-NDM-000230` | GUI: Administration > Settings > Audit Trail | — |
+| Core: Audit | System events (component, Collector, license, and mode changes; FCS connectivity) | 5.0.0 or earlier | UEM-S `SRG-APP-000474-UEM-000349` | GUI: Administration > System events; GUI: Administration > Distribution lists | P15 |
+| Core: Audit | Personal Data Handling (removal of a user's data, including from the Audit Trail) | 5.0.0 or earlier | NDM `SRG-APP-000120-NDM-000237` | GUI: Administration > Settings > Personal Data Handling (restrict to Admin users; record each removal) | — |
+| Core: Logging | Syslog destinations for security events, system events, and the audit trail | 5.0.0 or earlier | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000515-NDM-000325`; IDPS `SRG-NET-000511-IDPS-00012`; IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog (Protocol: TCP, TLS, Client Certificate) | P13, P16 |
+| Core: Logging | SMTP server and distribution lists (email for security and system events) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00222`; IDPS `SRG-NET-000392-IDPS-00214` | GUI: Profiles > Export settings > SMTP; GUI: Administration > Distribution lists | P15 |
+| Core: Logging | Open Ticket (events sent to Jira, ServiceNow, or another tool by email) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Export settings > Open Ticket | — |
+| Core: Platform | Central Manager, Aggregator, and Core installation and upgrade with Fortinet installer files | 5.0.0 or earlier | NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-000131-NDM-000243` | `fortiedr version` (install the installer files that Fortinet provides, after checking them) | P7 |
+| Core: Platform | The fortiedr command line of the Central Manager, Aggregator, Core, and Repository | 5.0.0 or earlier | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000378-NDM-000302` | `fortiedr status` (restrict root and SSH access to authorized administrators) | P7 |
+| Core: Platform | Date, time, and time zone set by the installer | 5.0.0 or earlier | NDM `SRG-APP-000116-NDM-000234`; NDM `SRG-APP-000374-NDM-000299`; NDM `SRG-APP-000920-NDM-000320` | `fortiedr tzselect` (synchronize the host clock with an authoritative time source) | P7, P14 |
+| Core: Platform | Licensing page and license loading | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Licensing | — |
+| Core: Platform | Collector version updates and automatic Collector updates | 5.0.0 or earlier | UEM-S `SRG-APP-000427-UEM-000299`; NDM `SRG-APP-000378-NDM-000302` | GUI: Administration > Deployment > Collector (Update Collectors) | — |
+| Core: Platform | Content updates (policy rules and built-in exceptions, Content Updates add-on) | 5.0.0 or earlier | IDPS `SRG-NET-000246-IDPS-00205`; IDPS `SRG-NET-000251-IDPS-00178`; IDPS `SRG-NET-000019-IDPS-00187` | GUI: Administration > Licensing (Load Content) | P6 |
+| Core: Platform | Exporting logs of Collectors, Cores, and Aggregators (diagnostics) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Protection | Security policies assigned to Collector groups | 5.0.0 or earlier | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Policies (assign every Collector group a policy set) | P1 |
+| Core: Protection | Protection or Simulation mode of each policy | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Protection) | P1 |
+| Core: Protection | Execution Prevention policy (malicious file detection and blocking, NGAV) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176`; IDPS `SRG-NET-000249-IDPS-00221` | GUI: Profiles > Security > Policies (Execution Prevention) | P1 |
+| Core: Protection | Exfiltration Prevention policy (malicious connection establishment) | 5.0.0 or earlier | IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Exfiltration Prevention) | P1 |
+| Core: Protection | Ransomware Prevention policy | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Ransomware Prevention) | P1 |
+| Core: Protection | Device Control policy (USB devices) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Security > Policies (Device Control) | — |
+| Core: Protection | File Scan (scheduled and on-demand scans) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Administration > Settings > File Scan (Perform scheduled scan) | — |
+| Core: Protection | Exception Manager and Exclusion Manager | 5.0.0 or earlier | IDPS `SRG-NET-000512-IDPS-00194`; NDM `SRG-APP-000380-NDM-000304` | GUI: Profiles > Security > Exception Manager; GUI: Profiles > Security > Exclusion Manager (review exceptions and exclusions) | — |
+| Core: Protection | Device isolation | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Protection | Enabling and disabling a Collector | 5.0.0 or earlier | NDM `SRG-APP-000340-NDM-000288` | GUI: Assets > Inventory > Enabling/disabling a Collector | — |
+| Core: Response | Playbook policies (notifications, isolation, high-security group, remediation) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00222`; IDPS `SRG-NET-000392-IDPS-00219` | GUI: Profiles > Playbooks (Send Email Notification, Send Syslog Notification) | P15, P16 |
+| Core: Response | Remediating a device upon malware detection (delete file, terminate process, clean registry) | 5.0.0 or earlier | IDPS `SRG-NET-000249-IDPS-00221` | GUI: Incidents > Investigation View > Remediating a device upon malware detection | — |
+| Core: Response | Event Viewer (security events, classification, handled status) | 5.0.0 or earlier | IDPS `SRG-NET-000113-IDPS-00013`; IDPS `SRG-NET-000113-IDPS-00082`; IDPS `SRG-NET-000074-IDPS-00059` | GUI: Incidents | — |
+| Core: Response | Forensics (flow analyzer, stack view, compare view, memory retrieval) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Communication control | Application communication control (reputation, vulnerability, allow or deny policies) | 5.0.0 or earlier | IDPS `SRG-NET-000384-IDPS-00209`; IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000018-IDPS-00018` | GUI: Communication control > Policies; GUI: Communication control > Applications | P4, P5 |
+| Core: Integrations | Connectors (firewall, NAC, sandbox, eXtended detection, custom) and Jumpbox Cores | 5.0.0 or earlier | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors | P11, P12, P20, P21, P24 |
+| Core: Integrations | IP sets | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Inventory | Collector inventory, states, and versions | 5.0.0 or earlier | UEM-S `SRG-APP-000472-UEM-000347` | GUI: Assets > Inventory | — |
+| Core: Inventory | Unmanaged devices | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Inventory | IoT device discovery | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > IoT Device Discovery (Perform ongoing device discovery: off) | — |
+| Core: Inventory | Dashboard and executive summary report | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Endpoint | End-user notifications (tray icon and pop-ups) | 5.0.0 or earlier | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| XDR | FortiXDR extended detection, investigation, and response, with the event advanced analysis view of the automated FCS analysis | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Threat hunting | Behavior-based threat hunting with MITRE techniques, collection profiles, and collection exclusions | 5.0.1 and later | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Profiles; GUI: Profiles > EDR > Collection Exclusions | P2, P10 |
+| Threat hunting | Scheduled threat hunting queries, and incident response actions triggered by them | 5.0.1+; 5.2.1+ | IDPS `SRG-NET-000392-IDPS-00214` | GUI: Forensics > Threat Hunting | P2 |
+| Protection | Web filtering powered by FortiGuard | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | Security event exception enhancements (user-based exceptions) | 5.0.1 and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager | — |
+| Platform | Oracle Linux Collector support | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Endpoint | Enhanced end-user notification (recent events, Collector version and state) | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > End Users Notifications (Show system tray icon with collector status) | — |
+| Endpoint | Windows Security Center registration controlled from the console | 5.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > Windows Security Center (Register collectors to Windows Security Center) | — |
+| Console administration | REST API additions (threat hunting, enriched events, unmanaged devices, SAML SSO configuration) | 5.0.1 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: Administration > Users (Rest API: off) (for every user who does not need the API) | — |
+| Communication control | Communication Control free-text search covers process properties | 5.0.3 (CM build 827) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Forensics | Forensics > Events available to every role with Forensics permission, regardless of license type | 5.0.3 (CM build 834)+; 5.2.1+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Inventory | Disabling IoT scans (iot.disabled in application.properties on premises; Fortinet Support for cloud) | 5.0.3 (CM build 834)+; 5.2.0 (CM build 2162)+ | NDM `SRG-APP-000142-NDM-000245` | Set iot.disabled in application.properties | — |
+| Integrations | Custom cross-platform eXtended incident response and pre-canned third-party integrations triggered by playbooks | 5.0.3+; 5.2.0 GA+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors; GUI: Profiles > Playbooks | P11, P12, P20, P24 |
+| Protection | Application Control: blocklist of applications per Collector group, by hash, name, path, or signer, predefined application groups, and the Application Name field | 5.1.0+; 5.2.0 GA+; 6.2 GA+ | IDPS `SRG-NET-000249-IDPS-00176`; IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Application Control | — |
+| Threat hunting | Threat hunting for Linux and macOS | 5.1.0+; 6.0 GA+ | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Profiles | P2, P10 |
+| Protection | Process exclusions and NGAV exclusions, and exporting and importing exclusion lists | 5.1.0+; 6.2 GA+ | IDPS `SRG-NET-000512-IDPS-00194`; NDM `SRG-APP-000380-NDM-000304` | GUI: Profiles > Security > Exclusion Manager (exclude only approved, signed processes and paths) | — |
+| Protection | Keylogging activity detection | 5.1.0 and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies | — |
+| Threat hunting | Enhanced data collection, the Collection Profiles and Collection Exclusions terms, and collection exclusions for macOS | 5.1.0+; 6.0 (CM 6.0.1.0723)+ | UEM-A `SRG-APP-000358-UEM-100013` | GUI: Profiles > EDR > Collection Exclusions | P2, P10 |
+| Platform | FortiEDR serial number on the Licensing page | 5.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Response | FortiEDR Connect (remote shell to Windows devices) | 5.2.0 GA and later | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000408-NDM-000314` | GUI: Administration > Settings > FortiEDR Connect (leave remote shell off unless needed; grant it per user) | — |
+| Threat hunting | Threat hunting data retention visibility | 5.2.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Japanese and Chinese localization of the console | 5.2.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Syslog additions: remediation details, MITRE techniques, event data, deployment, stack hashes, and stack certificates | 5.2.0 GA+; 6.0 (CM 6.0.1.0940)+ | IDPS `SRG-NET-000074-IDPS-00059`; IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog | P16 |
+| Platform | On-premises deployment (Central Manager, Aggregator, Threat Hunting Repository, reputation server, and Core) | 5.2.0 (CM build 2325) and later | NDM `SRG-APP-000516-NDM-000317` | `fortiedr config` (assess each host against DoD guidance) | P7 |
+| Logging | FortiAnalyzer syslog support | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000516-NDM-000350`; IDPS `SRG-NET-000511-IDPS-00012` | GUI: Profiles > Export settings > Syslog (Format: FAZ) | P16 |
+| Logging | Client certificate for TLS syslog servers | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000516-NDM-000350`; NDM `SRG-APP-000516-NDM-000344` | GUI: Profiles > Export settings > Syslog (TLS, Client Certificate) | P13, P16 |
+| Console administration | Idle session timeout (1 to 1440 minutes, 15 by default; Hoster view) | 5.2.0 (CM build 2387) and later | NDM `SRG-APP-000190-NDM-000267` | GUI: Administration > Settings (Session Time Out: 5) | — |
+| Console administration | REST API tokens valid only for the TCP session (60 seconds idle, 4 hours maximum) | 5.2.0 (CM build 2527) and later | NDM `SRG-APP-000190-NDM-000267` | — | — |
+| Protection | Exceptions for specific command execution (enabled by Fortinet Support) | 5.2.0 (Core 5.2.2.2027) and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager | P25 |
+| Threat hunting | Changing the default threat hunting collection profile | 5.2.0 (CM build 3092)+; 6.0 (CM 6.0.1.0723)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Architecture | SSL connection between Collector and Core (enabled by Fortinet Support) | 5.2.0 (CM build 3092) and later | UEM-S `SRG-APP-000191-UEM-000119`; UEM-S `SRG-APP-000395-UEM-000266`; UEM-S `SRG-APP-000439-UEM-000313` | Ask Fortinet Support to enable SSL between Collector and Core | P8, P25 |
+| Architecture | Revoking a compromised registration password | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | UEM-A `SRG-APP-000516-UEM-100011`; UEM-S `SRG-APP-000580-UEM-000398` | GUI: Administration > Settings > Component Authentication (Advanced Password Management) | — |
+| Inventory | Aggregators listed by their machine names | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Creating a syslog destination through the REST API (all fields and notifications enabled by default) | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | NDM `SRG-APP-000516-NDM-000350` | GUI: Profiles > Export settings > Syslog | P16 |
+| Protection | Exceptions based on child processes | 5.2.0 (CM build 3192)+; 6.0 (CM 6.0.1.0723)+ | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Exception Manager | — |
+| Console administration | Admin, Senior Analyst, Analyst, IT, and Read-Only roles, also mapped to LDAP and SAML groups | 5.2.1 and later | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000153-NDM-000249` | GUI: Administration > Users (Role) | P17, P18 |
+| XDR | eXtended detection sources: Google SCC, Amazon GuardDuty, FortiAnalyzer Cloud, FortiSIEM, FortiSIEM Cloud, FortiGate and VDOM filters, and custom external systems | 5.2.1+; 6.2 GA+; 7.0 GA+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors | P3, P11, P12, P22 |
+| Integrations | Zero Trust incident response with FortiClient EMS tags, including the predefined FortiEDR tags | 5.2.1+; 6.0 (CM 6.0.1.0723)+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors | P11, P12, P20 |
+| Integrations | User access incident response (reset a user password, disable an Active Directory account) | 5.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Response | Time filter in the Event Viewer | 5.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Integrations | FortiGate connector with virtual domains, and FortiManager ADOM blocking in workspace mode | 5.2.1+; 6.2 (CM 6.2.4.0026)+ | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors | P11, P12, P20, P21 |
+| Response | Investigation View and its enhancements (stacks view, JSON export, response actions, filters) | 6.0 GA+; 6.2 GA+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Threat hunting | Threat Intelligence Feed integration (STIX/TAXII) and query conversion into Lucene | 6.0 GA and later | IDPS `SRG-NET-000383-IDPS-00208` | GUI: Profiles > Integrations > Connectors | P2, P12, P23 |
+| Console administration | Password policy: minimum length, character types, brute-force protection, required 2FA, and closing open sessions | 6.0 GA and later | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000166-NDM-000254`; NDM `SRG-APP-000167-NDM-000255`; NDM `SRG-APP-000168-NDM-000256`; NDM `SRG-APP-000169-NDM-000257`; NDM `SRG-APP-000065-NDM-000214`; NDM `SRG-APP-000820-NDM-000170` | GUI: Administration > Users (Password Policy, Minimum password length: 15, Brute-force protection, Require 2FA, Close open sessions immediately) | P19 |
+| Architecture | Organization-specific Aggregators | 6.0 (CM 6.0.1.0723) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Getting started videos | 6.0 (CM 6.0.1.0940) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | System event when a Collector becomes Degraded (enabled by Fortinet Support) | 6.0 (CM 6.0.1.0940) and later | UEM-S `SRG-APP-000474-UEM-000349` | Ask Fortinet Support to enable the event | P25 |
+| Architecture | Reputation service: Core and Windows Collector query it directly | 6.0 (Core 6.0.1.0637)+; 6.2 (CM 6.2.3.0036)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > Reputation Service | — |
+| Platform | Core and on-premises components on Ubuntu 22.04 instead of CentOS, and migration | 6.0 (Core 6.0.1.0646)+; 6.2 (CM 6.2.1.0111)+ | NDM `SRG-APP-000516-NDM-000317` | Migrate to Ubuntu 22.04 and assess the host | P7 |
+| Forensics | Forensics moved into the Investigation View, then the Forensics Viewer restored | 6.2 GA+; 7.2.1+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Response | FortiEDR Connect commands recorded in the Audit Trail | 6.2 GA and later | NDM `SRG-APP-000101-NDM-000231`; NDM `SRG-APP-000343-NDM-000289` | GUI: Administration > Settings > Audit Trail | — |
+| Logging | CEF and LEEF syslog formats | 6.2 GA and later | IDPS `SRG-NET-000091-IDPS-00193` | GUI: Profiles > Export settings > Syslog (Format) | P16 |
+| Console administration | Control of access to new license functionality in multi-tenant environments | 6.2 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Certificate field renamed Signature | 6.2 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | New applications not blocked by default, and the Enable Default application state option | 6.2 (CM 6.2.0.0451) and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Administration > Settings > Application Control Manager (Enable Default application state) | — |
+| Platform | HTTPS for the Grafana connection (on-premises) | 6.2 (CM 6.2.1.0111) and later | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000516-NDM-000344` | Enable TLS on Grafana with your own certificate | P7, P13 |
+| Forensics | Legacy Forensics view (enabled by Fortinet Support) | 6.2 (CM 6.2.1.0111) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Endpoint | FortiClient notifications for FortiEndpoint deployments | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Administration > Settings > End Users Notifications (Enable FortiClient notifications) | — |
+| Architecture | Jumpbox change disabled for Cores earlier than 6.0.1.652 | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Architecture | Obfuscation of user names, host names, addresses, and other data sent to FCS | 6.2 (CM 6.2.4.0026) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Deployment URL and reputation service list in Administration > Tools | 6.2 (CM 6.2.5.0052) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | License consolidation for workstations and servers | 6.2 (CM 6.2.5.0052)+; 7.0 (CM 7.0.4.0050)+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Inventory | VDI devices shown as Disconnected (Expired) after 6 hours | 6.2 (CM 6.2.5.0052) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | PUP Prevented rule in the Execution Prevention policy | 6.2 (CM 6.2.6.0097) and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Execution Prevention) | — |
+| Console administration | Login blocked when the license has expired | 6.2 (CM 6.2.6.0097) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | AV Engine 7.0 signatures selected through the Aggregator API | 6.2 (CM 6.2.6.0097) and later | IDPS `SRG-NET-000246-IDPS-00205` | — | — |
+| Platform | Hardening enhancements | 6.2 (CM 6.2.6.0097) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | Cloud workload protection with the node Collector (AWS, Azure, GCP) | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | Mobile device protection (Android and iOS) and the Mobile Devices policy | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Dashboard changes, and PDF reports generated from the dashboard | 7.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Response | Incidents workflow (Event Viewer renamed Incidents), incident entities, and filtering of events older than 30 days | 7.0 GA+; 7.2.0+ | IDPS `SRG-NET-000113-IDPS-00013` | GUI: Incidents | — |
+| Inventory | Security posture indicator (Device Security column) for Windows and macOS endpoints | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Integrations | External attack surface visibility with FortiRecon (NIST and ACI severity) | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | New look and feel and color schemes of the console | 7.0 GA+; 7.2.0+ | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | Administration > Tools renamed Administration > Settings | 7.0 GA and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Communication control | Host firewall policies on Collector groups | 7.2.0 and later | IDPS `SRG-NET-000390-IDPS-00212`; IDPS `SRG-NET-000391-IDPS-00213`; IDPS `SRG-NET-000018-IDPS-00018` | GUI: Communications Control > Host Firewall | P10 |
+| Protection | Disk encryption management for Windows (BitLocker) and macOS (FileVault) endpoints | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Profiles > Disk Encryption | — |
+| Communication control | Exporting Communication Control applications through the notification center | 7.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | Secure browser (disabled by default) | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Inventory | Collector filtering, including devices not seen for more than 30 days | 7.2.1 and later | UEM-S `SRG-APP-000472-UEM-000347` | GUI: Assets > Inventory | — |
+| Console administration | Time zone per organization | 7.2.1 and later | NDM `SRG-APP-000374-NDM-000299` | GUI: Administration > Settings > Time Zone (Ignore data converter) | — |
+| Console administration | Login without the organization name in multi-tenancy | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | GUI enhancements: user field validation (2FA, password, role), exceptions loaded only on supported Collectors, error reporting | 7.2.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | On-premises deployment in air-gapped environments | 7.2.3 and later | NDM `SRG-APP-000516-NDM-000317` | — | P7 |
+| Protection | AV Signature policy and manual content upload in the Update Center | 7.2.3 and later | IDPS `SRG-NET-000246-IDPS-00205`; IDPS `SRG-NET-000251-IDPS-00178`; IDPS `SRG-NET-000019-IDPS-00187` | GUI: Profiles > Security > Security Content Update; GUI: Administration > Deployment > Update Center | P10, P12 |
+| Protection | Collector Settings policy (behavior in operating modes, upgrade schedule) | 7.2.3 and later | IDPS `SRG-NET-000512-IDPS-00194` | GUI: Profiles > Security > Collector Settings | P10 |
+| Response | Inconclusive events sent to FCS before they appear in Incidents | 7.2.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Protection | High-Sensitivity Mode of the File Encryptor rule (Ransomware Prevention) | 7.2.3 and later | IDPS `SRG-NET-000249-IDPS-00176` | GUI: Profiles > Security > Policies (Ransomware Prevention) | P10 |
+| Inventory | System summary and reporting enhancements | 7.2.3 (CM 7.2.3.0302) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Console administration | UX improvements (loading indicator, notification counters, certificate settings navigation) | 7.2.3 (CM 7.2.3.0302) and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
 
 ### Requirement reference
 
