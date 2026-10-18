@@ -5306,7 +5306,12 @@
     "AVDB",
     "selftest",
     "fnac",
-    "globalupdate"
+    "globalupdate",
+    "keytool",
+    "trustcacerts",
+    "glassfish",
+    "cacerts",
+    "fortisiem"
   ],
   "ignorePaths": [
     "node_modules/**",
