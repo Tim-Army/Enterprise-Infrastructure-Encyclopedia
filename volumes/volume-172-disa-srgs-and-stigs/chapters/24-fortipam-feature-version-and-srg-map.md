@@ -321,6 +321,75 @@ another way:
   and the vendor guidance as the baseline, and record the settings that
   differ from it.
 
+### Prerequisites
+
+A FortiPAM feature often meets its requirement only if something else is
+already in place. A **prerequisite** is anything that must exist or be
+configured *before* a row's pane or command can meet the requirement: a
+license, a hardware or platform capability (a TPM or vTPM, the log and
+video disks, enough memory), an operating mode (maintenance mode), a
+certificate from the DoD PKI and its CA certificates and revocation
+data, an external server (a remote LDAP directory, a SAML identity
+provider, RADIUS, a SCIM client, an SMTP or IMAP server, syslog,
+FortiAnalyzer, SFTP or another backup server, NTP, an SNMP manager),
+the other units of an HA cluster, FortiClient EMS and FortiClient or the
+browser extension on the endpoints, secret gateways, Windows targets with
+WinRM, or targets that a password changer can reach. Settings that the
+row's own pane or command already creates are not listed again.
+
+The 32 prerequisites are listed once, with IDs, in *FortiPAM
+prerequisites*, and the feature map names the IDs each row needs in its
+**FortiPAM prerequisites** column. A dash means the feature needs nothing
+beyond the FortiPAM unit itself. "No direct requirement" rows always show
+a dash, because their entry turns the feature off, and so do the seven
+rows whose only requirements are the disable requirements
+(NDM `SRG-APP-000142-NDM-000245`, ASD `APSC-DV-001500`,
+ASD `APSC-DV-001510`). Four conventions keep the column readable:
+
+- **Certificates.** The DoD-issued server certificate (P7) is listed on
+  the rows that assign or replace server certificates, the CA
+  certificates (P8) on the rows that validate a server or a user
+  certificate with them, and the revocation lists (P9) on the
+  certificates row.
+- **Remote users.** The remote user group (P14) is listed on the rows
+  that create remote users or map remote groups to roles; the group
+  itself needs the LDAP, SAML, or RADIUS server (P11 to P13), which are
+  listed on the server rows.
+- **Maintenance mode** (P3) is listed on the rows whose action the guide
+  allows only in maintenance mode: firmware upload, license upload,
+  private data encryption, and disk encryption.
+- **Email** (P17) is listed on the rows that send alerts or notifications
+  by email.
+
+Fortinet publishes no feature matrix for FortiPAM, so the **licenses**
+come from the FortiPAM 7.0.0 Administration Guide: the *Licensing*
+chapter (evaluation mode, the FortiPAM-VM annual subscription license and
+what happens when it expires, the Advanced Malware Protection license for
+antivirus and DLP, the floating license for HA on VMs, and Concurrent
+Logon Licensing, FCLL, SKU-1303, on VMs only), *FortiPAM license* (the
+stackable seat license for the 1000G and 3000G), and *FortiGuard
+Distribution Network* (the FortiToken Cloud license, with a 30-day trial
+of five tokens). The floating, concurrent logon, stackable seat, and
+FortiToken Cloud licenses change the number of users or the token type,
+and no row's setting depends on them. **Model support** is given only
+where the guide states it: the TPM check on hardware and vTPM on KVM,
+VMware, and GCP but not on OCI (P5), no log and video disk encryption on
+OCI, the memory for TPM and disk encryption (P6), the same model,
+version, and platform for HA units (P25), FortiClient EMS and FortiClient
+7.2.0 or later (P26, P27), the client types in *Feature availability*
+(P27, P28), and the gateway devices and versions (P31). Check the
+Licenses widget, the release notes, and the datasheet for your exact
+model and release before you plan on a licensed or model-specific
+feature.
+
+During an assessment, check a row's prerequisites before its pane or
+command: a correctly configured setting with a missing prerequisite (a
+GUI portal on the factory certificate, an LDAPS server without the DoD CA
+certificate, recording enabled without a video disk, an unreachable
+syslog server, ZTNA tags without an EMS, a FortiPAM-VM in evaluation
+mode) does not meet the requirement, and the missing prerequisite is the
+finding.
+
 ## Design Considerations
 
 - **Pick the release first, then the features.** If your design depends
@@ -362,382 +431,428 @@ another way:
 
 ## Implementation and Automation
 
+### FortiPAM prerequisites
+
+What must be in place before the FortiPAM features in the feature map can
+meet their requirements (see *Prerequisites*). The GUI panes and CLI
+commands were verified against the FortiPAM 7.0.0 Administration Guide
+with the same checks as the feature map; entries that are not FortiPAM
+settings are described in words.
+
+[Download the prerequisites as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/24-fortipam-feature-version-and-srg-map-prerequisites.csv) (32 rows).
+
+| ID | Prerequisite | What it enables | How to put it in place | Source |
+| --- | --- | --- | --- | --- |
+| P1 | A valid FortiPAM license: the FortiPAM-VM annual subscription license (the licensed user seats) uploaded to the VM, or the license of a hardware model | Operation beyond evaluation mode (2 users, 15 days, no valid serial number, no FortiCare support); when the subscription expires, only Super Administrators can log in, FortiPAM goes into maintenance mode, and secrets cannot be launched | Register the license registration code on FortiCloud and download the license file; GUI: System > FortiPAM License (Upload License File, in maintenance mode); on the 1000G and 3000G, enter the stackable seat license key in the same pane | FortiPAM 7.0.0 Administration Guide, "Licensing" (evaluation mode, "Registering and downloading your license", "Uploading the license file to FortiPAM-VM", "Subscription license") and "FortiPAM license" (stackable seat license for hardware models) |
+| P2 | An Advanced Malware Protection license (AVDB and DLP), included in the FortiPAM-VM subscription and bought separately as an annual contract for hardware models | Antivirus signature updates and the DLP feature for file transfers and file secrets (DLP stops working when the license expires; antivirus scanning and DLP are not supported under the evaluation license) | Buy the contract and register its code; GUI: System > FortiGuard License (Enter Registration Code) | FortiPAM 7.0.0 Administration Guide, "Licensing" ("Advanced Malware Protection (formerly AntiVirus and DLP license)"; evaluation mode) and "Renewing FortiPAM-VM license" |
+| P3 | Maintenance mode, entered by an administrator whose role has Set Maintenance Mode | Firmware upload, license upload, TPM and private data encryption changes on FortiPAM-VM, and log and video disk encryption, which are allowed only in maintenance mode | `config system maintenance`; `set mode enable`; `end` | FortiPAM 7.0.0 Administration Guide, "FortiPAM installation" (to update a firmware image, enter maintenance mode), "FortiPAM license", "FortiPAM with TPM" (FortiPAM-VM must be in maintenance mode to change TPM settings), and "Configuring log and video disk encryption" (disk operations only in maintenance mode) |
+| P4 | A log disk and a dedicated video disk: on FortiPAM-VM, two hard disks added to the VM before the image is installed | Local log storage, session video recording, live recording, video watermarks, disk usage monitoring, and disk encryption of the log and video disks | Add the two disks in the hypervisor before installation and check their usage (log and video) in the CLI after the first boot; GUI: Log & Report > Disk Usage | FortiPAM 7.0.0 Administration Guide, "FortiPAM appliance setup" (administrators need to configure a dedicated video disk for video recording; two hard disks must be added to the VM) and "Disk usage" |
+| P5 | A TPM on the hardware unit, or a vTPM on FortiPAM-VM (KVM with the vTPM package, VMware, or GCP; vTPM is not supported on OCI) | TPM protection of the private data encryption key for the secret credentials | On hardware, check the TPM with `diagnose tpm selftest`; on FortiPAM-VM, add the vTPM in the hypervisor, then `config system global`; `set v-tpm enable`; `end` | FortiPAM 7.0.0 Administration Guide, "FortiPAM with TPM" (on FortiPAM-VM, TPM can only be enabled after enabling vTPM), "Installing vTPM package on KVM and adding vTPM to FortiPAM-VM", "vTPM for FortiPAM on VMware", "Installation on GCP" (Enabling vTPM), and "Installation on OCI" (vTPM and disk encryption not supported) |
+| P6 | At least 4 GB of memory on a formal license (2 GB on an evaluation license) | TPM or vTPM with private data encryption, and log and video disk encryption | Allocate the memory to the VM in the hypervisor, or use a hardware model that has it | FortiPAM 7.0.0 Administration Guide, "FortiPAM with TPM" and "Configuring log and video disk encryption" (when using TPM or vTPM and disk encryption, use 4 GB of memory on a formal license) |
+| P7 | A server certificate issued by the DoD PKI (or another approved CA) for the FortiPAM FQDN, with its private key, and a DNS name for that FQDN | DoD-issued certificates for the GUI portal and FortiPAM's other HTTPS services, and FIDO2 passkeys, which work only when the GUI is reached through an FQDN with a trusted certificate | GUI: System > Certificates (Create/Import: Generate CSR, have the DoD CA sign it, then import the signed certificate) | FortiPAM 7.0.0 Administration Guide, "Certificates" ("Generating a CSR (Certificate Signing Request)") and "User registering a passkey" (FIDO2 requires an FQDN with a trusted certificate) |
+| P8 | The DoD root and intermediate CA certificates (and the CA certificate of any other server FortiPAM connects to over TLS) imported as CA certificates | Validation of LDAPS and STARTTLS servers, of HTTPS backup servers, and of the user certificates presented for certificate authentication | GUI: System > Certificates (Create/Import: CA Certificate, from a file or online SCEP) | FortiPAM 7.0.0 Administration Guide, "Importing CA certificate", "LDAP servers" (Certificate, when Secure Connection is enabled), and "Authentication settings" (CA Certificate: trusted CA certificates that validate client certificates) |
+| P9 | Current certificate revocation lists of the DoD CAs | Revocation data for the certificates FortiPAM trusts | GUI: System > Certificates (Create/Import: CRL, File Based or Online Updating over HTTP or LDAP) | FortiPAM 7.0.0 Administration Guide, "Importing a CRL (Certificate revocation list)" |
+| P10 | User certificates issued by the DoD PKI (CAC or PIV) to the users who log in with certificates, presented by their browsers | Certificate authentication for FortiPAM login (7.0.0) | Issue the certificates through the DoD PKI and make them available to the users' browsers; FortiPAM validates them with the CA certificates (P8) | FortiPAM 7.0.0 Administration Guide, "Authentication settings" (client certificates presented during certificate authentication) and "What's new in FortiPAM" (certificate authentication for FortiPAM login) |
+| P11 | A remote LDAP directory (such as Microsoft Active Directory) that offers LDAPS or STARTTLS, with a bind account that can search the distinguished name | Remote LDAP users and administrators, LDAP user import, and group matching for authorization | Create the bind account in the directory; GUI: User Management > LDAP Servers (Server IP/name, Secure Connection, Protocol, Certificate, Username, Password; Test connection) | FortiPAM 7.0.0 Administration Guide, "LDAP servers" (setting up remote LDAP authentication) and "Importing LDAP users" |
+| P12 | A SAML identity provider (such as FortiAuthenticator or another IdP) that enforces DoD PKI or MFA, signs its assertions and responses, and sends the user and group attributes | SAML single sign-on for remote users, signed assertion checking, and the SCIM service, which works with SAML and auto provision rules | Register FortiPAM as a service provider on the IdP and exchange metadata; GUI: User Management > Saml Single Sign-On (upload the IdP metadata or enter the IdP entity ID, URLs, and IdP certificate) | FortiPAM 7.0.0 Administration Guide, "SAML Single Sign-On (SSO)" (FortiPAM acts as the SP; IdP metadata; additional SAML attributes) and "SCIM service" |
+| P13 | A RADIUS server, with a shared secret for FortiPAM, that returns the Message-Authenticator attribute | Remote RADIUS users and the Message-Authenticator check | Add FortiPAM as a client on the RADIUS server; GUI: User Management > Radius Servers (IP/Name, Secret, Credential Status test) | FortiPAM 7.0.0 Administration Guide, "RADIUS servers" and "Message-Authenticator support for RADIUS" |
+| P14 | A remote user group that names the LDAP, RADIUS, or SAML server (P11, P12, or P13) where the remote users are found | Remote users and administrators, and auto provision rules that map remote groups to roles | GUI: User Management > User Groups (a remote group with the remote server) | FortiPAM 7.0.0 Administration Guide, "LDAP servers" (adding the LDAP server to a user group), "User groups", "Creating a user" (for Remote User, select a remote group), and "Auto provision rules" |
+| P15 | A SCIM client (the identity provider's provisioning service) that can reach the FortiPAM SCIM port and trusts FortiPAM's SCIM server certificate | SCIM-driven provisioning, updating, and deprovisioning of users and groups | Configure the SCIM URL that FortiPAM generates on the SCIM client; GUI: User Management > SCIM Service (Host, Service port, Server Certificate) | FortiPAM 7.0.0 Administration Guide, "SCIM service" ("Creating a SCIM client": the SCIM URL must be configured on the external SCIM client; the port must be reachable; the server certificate must be trusted by the SCIM client) |
+| P16 | FortiTokens (hard tokens or FortiToken Mobile tokens) added to FortiPAM and assigned to the users; two FortiTokens are available by default | Two-factor authentication with FortiToken for local users | GUI: User Management > FortiTokens (Create: serial numbers of hard tokens, or activation codes of mobile tokens; Activate) | FortiPAM 7.0.0 Administration Guide, "FortiTokens" and "Creating a user" (Token, mandatory when the authentication type is FortiToken) |
+| P17 | An SMTP server that FortiPAM can send through (the Fortinet mail server is used by default), and an email address on each user who receives alerts | Email alerts (critical system, glass breaking, and license expiry), automation stitches that send email, FortiToken activations, and email notifications to users | GUI: System > Settings (Email Settings, Email Service: Use custom settings with the organization's SMTP server, SMTPS, and Sender; Test Connection) | FortiPAM 7.0.0 Administration Guide, "Settings" (Email Service: email alerts, FortiToken activations, and guest management credentials), "Email alert settings" (by default, the Fortinet mail server is used), and "Testing the email service connection" |
+| P18 | A mailbox on an IMAP server (or Microsoft Graph) that FortiPAM can poll for approval reply emails | Approval of secret requests by replying to the approval request email | GUI: System > Settings (Approval Email Server: Email Server Address, Email Pulling Server Address, Email Pulling Service Port, User Name, Email Folder, Server Certificate) | FortiPAM 7.0.0 Administration Guide, "Settings" (Approval Email Server), "Approving secrets by Email", and "Approval email using Microsoft Graph" |
+| P19 | A central syslog server (or SIEM, such as FortiSIEM) reachable from FortiPAM | Off-loading of the system and secret logs to syslog | GUI: Log & Report > Log Settings (Send logs to syslog, IP Address/FQDN; Edit in CLI for mode and port) | FortiPAM 7.0.0 Administration Guide, "Log settings" ("Configuring parameters to send logs to syslog server") |
+| P20 | A FortiAnalyzer, or FortiAnalyzer Cloud, that authorizes FortiPAM | FortiAnalyzer logging, logs stored on FortiAnalyzer with an upload interval, and FortiAnalyzer Cloud logging | GUI: Network > Fabric Connectors (FortiAnalyzer Logging or Cloud Logging: Status Enabled, Server; verify the serial number and authorize FortiPAM on FortiAnalyzer) | FortiPAM 7.0.0 Administration Guide, "Fabric Connectors" ("FortiAnalyzer logging" and "FortiAnalyzer Cloud logging") |
+| P21 | An SFTP server for session videos, with an account (password or key pair) and the storage folder already created | Session videos moved to external storage, with key-based authentication | Create the account and the folder on the server; GUI: System > Backup (Remote Video Storage: Server, Server Port, Username, Authentication Method, Storage Path; Video Storage Mode Rolling) | FortiPAM 7.0.0 Administration Guide, "Backup" (remote video storage: the folder must already exist on the storage server; works only when the Video Storage Mode is Rolling) |
+| P22 | A backup server (SFTP or HTTPS preferred; FTP and HTTP are also supported) with an account for FortiPAM | Automatic configuration backups, with server certificate checking and key-based SFTP authentication | Create the account on the server; GUI: System > Backup (Configuration Backup) | FortiPAM 7.0.0 Administration Guide, "Backup" (automatic and periodic backup to an FTP, SFTP, HTTP, or HTTPS server; "Sending backup file to a server") |
+| P23 | DoD-approved NTP servers reachable from FortiPAM | Time synchronization to authoritative time sources | GUI: System > Settings (Set Time NTP, Select Server Custom); custom NTP server details must be configured in the CLI, and the guide does not print the command | FortiPAM 7.0.0 Administration Guide, "Settings" (System time; custom NTP server details must be configured via the CLI) and "System information widget" |
+| P24 | An SNMP manager that supports SNMP v3 with SHA-2 and AES, with the FortiPAM MIBs, and SNMP management access on the interface it uses | SNMP v3 queries and traps | GUI: Network > Interfaces (Management Access: SNMP on the interface the manager connects to); GUI: System > SNMP (Download FortiPAM MIB File) | FortiPAM 7.0.0 Administration Guide, "SNMP" (the SNMP manager must be listed as a host; SNMP must be selected in the interface's administrative access; Fortinet MIBs) |
+| P25 | One or two more FortiPAM units of the same model and firmware version (VMs on the same platform), with licenses registered to the same account, static interface addresses, and a heartbeat link | An active-passive HA cluster and its cluster password | GUI: System > HA (Mode Active-Passive, Group name, Password, Heartbeat interfaces, on each unit) | FortiPAM 7.0.0 Administration Guide, "High availability" (same device model and version; cross-platform HA is not supported; all nodes' licenses registered to the same account; interfaces must not use DHCP) |
+| P26 | A FortiClient EMS (7.2.0 or later) with Privilege Access Management enabled, connected to FortiPAM and authorizing it | ZTNA tags and ZTNA-based access control to FortiPAM, to secrets, and to folders | GUI: Network > Fabric Connectors (FortiClient EMS: IP/Domain name, HTTPS port; authorize FortiPAM on the EMS); `config endpoint-control fctems`; `edit <EMS_NAME>`; `set server <EMS_ADDRESS>`; `next`; `end` | FortiPAM 7.0.0 Administration Guide, "FortiPAM deployment options" (EMS 7.2.0 or later), "Fabric Connectors", and "ZTNA user control" (the endpoint must connect to the same EMS server) |
+| P27 | Standard FortiClient (7.2.0 or later) with the ZTNA and PAM features on the users' Windows endpoints, registered to the same EMS as FortiPAM | ZTNA endpoint control for logins and secret launches (ZTNA is not available with standalone FortiClient, the browser extension, or no client) | Install FortiClient with ZTNA and PAM enabled, or push the installer package from the EMS | FortiPAM 7.0.0 Administration Guide, "FortiPAM deployment options", "Feature availability" (ZTNA only with standard FortiClient), and "Installing FortiClient with the FortiPAM feature" |
+| P28 | The Fortinet Privileged Access Agent browser extension (Chrome or Edge) or FortiClient on the users' endpoints | Proxy mode and direct mode web browsing through the FortiPAM web proxy, which are not available without a client | Install the extension from the Chrome Web Store or Microsoft Edge Add-ons, or install FortiClient | FortiPAM 7.0.0 Administration Guide, "FortiPAM deployment options" and "Feature availability" (web browsing not available with FortiPAM only) |
+| P29 | Targets reachable from FortiPAM (directly or through a secret gateway) over the protocol of the template's password changer (for example SMB for the Windows Machine template with the SAMBA changer, or LDAPS for Windows AD), with accounts whose passwords FortiPAM may change | Automatic password changing and verification, password change at check-in, and password changing over LDAPS | Open the protocol on the target's firewall and set the target's password policy to accept FortiPAM's changes; GUI: Secret Settings > Password Changers | FortiPAM 7.0.0 Administration Guide, "Automatic password changing" (a password changer linked to a secret template), "Password changers", and "Troubleshooting a secret that uses Windows Machine template" (the target has opened SMB in the firewall; minimum password age) |
+| P30 | WinRM enabled on the Windows targets, and a privileged account secret with WinRM access for each target | RDP event logs, the dependency updater, Windows application filters and Windows Remote App, and JIT privilege scripts on Windows targets | Run the WinRM setup script from FortiPAM on the target (HTTPS listener recommended) and allow ports 5985 or 5986; GUI: Secrets > Secrets (Privileged Account enabled on the secret of the privileged Windows account) | FortiPAM 7.0.0 Administration Guide, "WinRM configuration for Windows server", "Creating a secret" (a privileged account is needed for agentless RDP session log retrieval and the dependency updater), "Dependency updater", "Windows app control" (Prerequisites), and "Just-In-Time (JIT) privilege via Secret checkout/check-in (PowerShell)" |
+| P31 | A secret gateway device: a FortiGate or FortiProxy as a forward gateway, a FortiGate 7.6.3 or later or a FortiPAM as a reverse gateway, or a FortiPAM on the same image version (1.5.0 or later) as a service gateway | Distributed architecture with forward, reverse, and service gateways | GUI: Network > Secret Gateway (create the gateway and configure the gateway device) | FortiPAM 7.0.0 Administration Guide, "Secret gateway" (forward and reverse types; FortiGate 7.6.3 or above as a reverse gateway; not supported on FortiGate hardware models with 2 GB RAM from FortiOS 7.4.4; service gateway requirements) |
+| P32 | An approval profile with approvers other than the requester | Requires Approval to Launch Secret in secret policies | GUI: Secret Settings > Approval Profile | FortiPAM 7.0.0 Administration Guide, "Policies" (Requires Approval to Launch Secret: approvers defined in the approval profile) and "Approval profile" |
+
 ### The FortiPAM feature map
 
 The SRG column uses the abbreviations defined in *Where the SRG data
 comes from*. The requirement titles are listed in the next table. The
 command column follows the conventions in *Where the commands come from*.
+The last column lists the IDs from *FortiPAM prerequisites*.
 
 [Download the feature map as CSV](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/data/volume-172-disa-srgs-and-stigs/24-fortipam-feature-version-and-srg-map-feature-map.csv) (366 rows).
 
-| Category | Feature | Introduced (FortiPAM) | SRG requirement(s) | Command to satisfy the requirement |
-| --- | --- | --- | --- | --- |
-| Core: Management access | Management access on each network interface (PING, SNMP, SCIM, and SSH, with a global SSH port) | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-001510` | GUI: Network > Interfaces (Management Access: SSH only on the interface connected to the management network; PING, SNMP, and SCIM only where they are used) |
-| Core: Management access | Management access from the CLI on an interface | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000408-NDM-000314` | `config system interface`; `edit <PORT>`; `set allowaccess ping ssh`; `next`; `end` |
-| Core: Management access | GUI portal on an interface (external IP, service port, SSL certificate, and minimum SSL version) | 1.0.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; NDM `SRG-APP-000516-NDM-000344`; ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: Network > Interfaces (Service Access Setting, GUI Portal: a DoD-issued SSL certificate; Minimum SSL Version: TLSv1-2 or Follow system global setting) |
-| Core: Management access | Global minimum SSL/TLS version | 1.0.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; NDM `SRG-APP-000172-NDM-000259`; ASD `APSC-DV-002440`; ASD `APSC-DV-001750`; ASD `APSC-DV-001940`; ASD `APSC-DV-001950` | GUI: System > Settings (Security, Minimum SSL Version: TLSv1-2 or TLSv1-3) |
-| Core: Management access | CLI console in the GUI and CLI over SSH | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > Role (Allow CLI Access and Allow CLI Diagnostic Commands only in the roles of administrators who need them) |
-| Core: Management access | GUI session timeout (idle timeout or forced logout) | 1.1.0 or earlier | NDM `SRG-APP-000190-NDM-000267`; NDM `SRG-APP-000220-NDM-000268`; ASD `APSC-DV-000070`; ASD `APSC-DV-000080`; ASD `APSC-DV-002000` | GUI: System > Settings (Other General Settings, GUI Session Timeout: Idle, Idle in 10 minutes or less) |
-| Core: Management access | Idle timeout override and never-timeout options in roles | 1.0.0 | NDM `SRG-APP-000190-NDM-000267`; ASD `APSC-DV-000080`; ASD `APSC-DV-000070` | GUI: User Management > Role (Admin Settings: Override Idle Timeout and Never Timeout disabled) |
-| Core: Management access | Login lockout (Max Retry and Lockout Duration in the user password policy) | 7.0.0 or earlier | NDM `SRG-APP-000065-NDM-000214`; NDM `SRG-APP-000435-NDM-000315`; ASD `APSC-DV-000530` | GUI: System > Settings (User Password Policy: Max Retry 3; Lockout Duration 900 seconds or longer) |
-| Core: Management access | Logout from the Admin menu | 1.0.0 | NDM `SRG-APP-000296-NDM-000280`; NDM `SRG-APP-000220-NDM-000268`; ASD `APSC-DV-000090` | — |
-| Core: Management access | Trusted hosts and login schedule for each user | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000038-NDM-000213`; NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-000490` | GUI: User Management > User List (Restricted Access: IPv4 Trusted Hosts limited to the management network; Login Schedule where access is time-bound) |
-| Core: Management access | Maintenance mode (required for reboot, shutdown, firmware upload, license upload, and configuration restore) | 1.0.0 | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000378-NDM-000302`; ASD `APSC-DV-001410` | GUI: User Management > Role (Admin Settings: Set Maintenance Mode only for the administrators who need it) |
-| Core: Management access | Glass breaking mode (temporary access to all secrets) | 1.0.0 | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: User Management > Role (Admin Settings: Enter Glass Breaking Mode for only a few administrators); GUI: Log & Report > Email Alert Settings (Critical System Notification: alert when glass breaking mode is activated) |
-| Core: Management access | Enforced recording in glass breaking mode | 1.0.0 | NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000590`; ASD `APSC-DV-000840` | GUI: System > Settings (Video Setting: Enforce recording on glass breaking enabled) |
-| Core: Administrator accounts | Default admin account (no password until one is set at the first login) | 1.0.0 | NDM `SRG-APP-000148-NDM-000346`; NDM `SRG-APP-000153-NDM-000249`; ASD `APSC-DV-003280`; ASD `APSC-DV-003270` | GUI: User Management > User List (set a password of 15 or more characters for admin at the first login; keep admin as the account of last resort) |
-| Core: Administrator accounts | Role types (Standard User, Power User, Administrator, and the types added later) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000340-NDM-000288`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: User Management > User List (Role Type: the least-privileged type that fits each user's duties) |
-| Core: Administrator accounts | Roles with None, Read, and Read/Write access to each feature (six default roles) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000231-NDM-000271`; NDM `SRG-APP-000516-NDM-000335`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500`; ASD `APSC-DV-001410` | GUI: User Management > Role (custom roles limited to each administrator's duties; Super Administrator only for the account of last resort and a few administrators) |
-| Core: Administrator accounts | Roles from the CLI (access profiles) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000340-NDM-000288` | `config system accprofile`; `edit <ROLE_NAME>`; `set cli enable`; `set system-diagnostics disable`; `next`; `end` |
-| Core: Administrator accounts | Local, API, JWT, and remote user types | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000148-NDM-000346`; ASD `APSC-DV-001540` | GUI: User Management > User List (User Type: Remote User for administrators, with one Local User as the account of last resort; API and JWT users only for integrations) |
-| Core: Administrator accounts | Local and remote users from the CLI | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000033-NDM-000212` | `config system admin`; `edit <USERNAME>`; `set remote-auth enable`; `set accprofile <ROLE_NAME>`; `set remote-group <GROUP_NAME>`; `next`; `end` |
-| Core: Administrator accounts | User status (enable or disable a user) | 1.0.0 | ASD `APSC-DV-000330`; NDM `SRG-APP-000148-NDM-000346` | GUI: User Management > User List (Status: disabled for users who no longer need access) |
-| Core: Administrator accounts | API users and REST API keys | 1.0.0 | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000408-NDM-000314` | GUI: User Management > User List (API users only for integrations; Re-generate API Key when a key may be exposed) |
-| Core: Authentication | Two-factor authentication for users (Email, FortiToken, FortiToken Cloud, and third-party authenticator) | 1.0.0 | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000825-NDM-000180`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550`; ASD `APSC-DV-001580` | GUI: User Management > User List (Two-Factor Authentication enabled with FortiToken for every local user); `config system admin`; `edit <USERNAME>`; `set two-factor fortitoken`; `set fortitoken <SERIAL_NUMBER>`; `next`; `end` |
-| Core: Authentication | FortiTokens (hard and mobile tokens) | 1.0.0 | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000825-NDM-000180`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > FortiTokens |
-| Core: Authentication | FortiToken Mobile push | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: Network > Interfaces (FortiToken Mobile Push and Push Server Status off unless FortiToken Mobile push is used) |
-| Core: Authentication | LDAP servers (LDAPS or STARTTLS, server identity check, and group matching) | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000172-NDM-000259`; ASD `APSC-DV-001750`; ASD `APSC-DV-002440` | GUI: User Management > LDAP Servers (Secure Connection enabled; Protocol LDAPS or STARTTLS; Certificate: the DoD CA; Server Identity Check enabled) |
-| Core: Authentication | LDAP servers from the CLI | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | `config user ldap`; `edit <NAME>`; `set server <SERVER_IP>`; `set username <LDAP_USERNAME>`; `set password <PASSWORD>`; `next`; `end` |
-| Core: Authentication | SAML single sign-on (FortiPAM as the SAML SP) | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000820-NDM-000170`; ASD `APSC-DV-001550`; ASD `APSC-DV-001580` | GUI: User Management > Saml Single Sign-On (an identity provider that enforces DoD PKI or MFA) |
-| Core: Authentication | RADIUS servers | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > Radius Servers (a long, unique shared secret for each server) |
-| Core: Authentication | User groups (local and remote groups) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000153-NDM-000249`; ASD `APSC-DV-000460` | GUI: User Management > User Groups |
-| Core: Authentication | Login schedules (recurring and one-time) | 1.0.0 | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490`; ASD `APSC-DV-000300` | GUI: User Management > Schedule (One Time schedules for temporary users, with Pre-expiration event log) |
-| Core: Authentication | Authentication scheme and rules for remote servers | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | — |
-| Core: Authentication | User password policy (minimum length, new characters, character requirements, reuse, and expiration) | 1.0.0 | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000170-NDM-000329`; NDM `SRG-APP-000166-NDM-000254`; NDM `SRG-APP-000167-NDM-000255`; NDM `SRG-APP-000168-NDM-000256`; NDM `SRG-APP-000169-NDM-000257`; NDM `SRG-APP-000860-NDM-000250`; ASD `APSC-DV-001680`; ASD `APSC-DV-001690`; ASD `APSC-DV-001700`; ASD `APSC-DV-001710`; ASD `APSC-DV-001720`; ASD `APSC-DV-001730`; ASD `APSC-DV-001770`; ASD `APSC-DV-001780` | GUI: System > Settings (User Password Policy: Password scope enabled; Minimum length 15; Minimum number of new characters 8; Character requirements 1 upper case, 1 lower case, 1 number, 1 special; Allow password reuse disabled; Password expiration 180 days or less) |
-| Core: Authentication | Change Password from the Admin menu (local users only) | 1.0.0 | NDM `SRG-APP-000170-NDM-000329`; ASD `APSC-DV-001730` | — |
-| Core: Logging | Event logging (system activity, user activity, and HA) | 1.0.0 | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000028-NDM-000210`; NDM `SRG-APP-000029-NDM-000211`; NDM `SRG-APP-000319-NDM-000283`; NDM `SRG-APP-000503-NDM-000320`; NDM `SRG-APP-000505-NDM-000322`; NDM `SRG-APP-000343-NDM-000289`; NDM `SRG-APP-000381-NDM-000305`; NDM `SRG-APP-000095-NDM-000225`; NDM `SRG-APP-000100-NDM-000230`; ASD `APSC-DV-000340`; ASD `APSC-DV-000350`; ASD `APSC-DV-000360`; ASD `APSC-DV-000370`; ASD `APSC-DV-000420`; ASD `APSC-DV-000880`; ASD `APSC-DV-000830`; ASD `APSC-DV-000850`; ASD `APSC-DV-000520`; ASD `APSC-DV-001420` | GUI: Log & Report > Log Settings (Event Logging: all events, not Customize) |
-| Core: Logging | System event logs (user events, configuration changes, and logins) | 1.0.0 | NDM `SRG-APP-000096-NDM-000226`; NDM `SRG-APP-000097-NDM-000227`; NDM `SRG-APP-000098-NDM-000228`; NDM `SRG-APP-000099-NDM-000229`; NDM `SRG-APP-000100-NDM-000230`; ASD `APSC-DV-000690`; ASD `APSC-DV-000840` | GUI: Log & Report > System Event |
-| Core: Logging | Secret event and video logs (secret access, launches, password views, and password changes) | 1.0.0 | NDM `SRG-APP-000504-NDM-000321`; ASD `APSC-DV-000860`; ASD `APSC-DV-000960`; ASD `APSC-DV-000970`; ASD `APSC-DV-000590`; ASD `APSC-DV-000950` | GUI: Log & Report > Secret Event & Video |
-| Core: Logging | SSH logging of all shell commands on SSH secrets | 1.0.0 | NDM `SRG-APP-000101-NDM-000231`; ASD `APSC-DV-001030`; ASD `APSC-DV-000590` | GUI: Secret Settings > SSH Filter Profiles (shell commands logged for every SSH secret) |
-| Core: Logging | Local log disk and memory storage | 1.0.0 | NDM `SRG-APP-000357-NDM-000293`; NDM `SRG-APP-000120-NDM-000237` | `config log disk setting`; `set status enable`; `end` |
-| Core: Logging | Remote syslog server (system and secret logs) | 1.0.0 | NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350`; ASD `APSC-DV-001070`; ASD `APSC-DV-001080` | GUI: Log & Report > Log Settings (Send logs to syslog enabled, with the central log server; in Edit in CLI, mode reliable) |
-| Core: Logging | FortiAnalyzer logging | 1.0.0 | NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350`; ASD `APSC-DV-001070`; ASD `APSC-DV-001080` | GUI: Network > Fabric Connectors (FortiAnalyzer logging to the central FortiAnalyzer); `config log fortianalyzer setting`; `set status enable`; `set server <FAZ_ADDRESS>`; `end` |
-| Core: Logging | Email alert settings (critical system, general, and certificate alerts) | 1.0.0 | NDM `SRG-APP-000795-NDM-000130`; NDM `SRG-APP-000360-NDM-000295`; ASD `APSC-DV-001110`; ASD `APSC-DV-003330` | GUI: Log & Report > Email Alert Settings (Enable email notification; Critical System Notification to the SA and ISSO; General: Configuration change and HA status change; Certificate: alerts before expiry) |
-| Core: Logging | Log permissions in roles (View Logs, View Reports, View Secret Log, and View Secret Video) | 1.0.0 | NDM `SRG-APP-000119-NDM-000236`; NDM `SRG-APP-000120-NDM-000237`; NDM `SRG-APP-000121-NDM-000238`; ASD `APSC-DV-001280`; ASD `APSC-DV-001290`; ASD `APSC-DV-001300` | GUI: User Management > Role (Admin Settings: View Logs, View Reports, and View Secret Launching Video only for auditors and administrators who need them) |
-| Core: Logging | Reports (audit reports) | 1.0.0 | ASD `APSC-DV-001180`; ASD `APSC-DV-001140` | GUI: Log & Report > Reports |
-| Core: Logging | User monitor and active sessions | 1.0.0 | NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000850` | GUI: Monitoring > Active Sessions |
-| Core: Logging | Debug settings and trace logs | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-000650` | GUI: Log & Report > Debug Settings (Debug disabled except during troubleshooting) |
-| Core: Time | System time and NTP (FortiGuard or a custom server, sync interval) | 1.0.0 | NDM `SRG-APP-000920-NDM-000320`; NDM `SRG-APP-000925-NDM-000330`; NDM `SRG-APP-000116-NDM-000234`; NDM `SRG-APP-000374-NDM-000299`; ASD `APSC-DV-001250`; ASD `APSC-DV-001260` | GUI: System > Settings (System time: Set Time NTP; Select Server Custom, with DoD-approved NTP servers configured in the CLI) |
-| Core: Time | FortiPAM as a local NTP server | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: System > Settings (Setup device as local NTP server: False unless it is needed) |
-| Core: SNMP | SNMP v1 and v2c communities | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000395-NDM-000310` | GUI: System > SNMP (no SNMP v1 or v2c communities) |
-| Core: SNMP | SNMP v3 users (authentication and privacy) | 1.0.0 | NDM `SRG-APP-000395-NDM-000310`; ASD `APSC-DV-003330` | GUI: System > SNMP (SNMP v3 users with Authentication and Private; SHA256 or stronger; AES or AES256) |
-| Core: SNMP | SNMP agent system information | 1.0.0 | NDM `SRG-APP-000395-NDM-000310` | `config system snmp sysinfo`; `set status enable`; `end` |
-| Core: Certificates | Local, CA, and remote certificates, CSRs, and CRLs | 1.0.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; NDM `SRG-APP-000875-NDM-000280`; NDM `SRG-APP-000175-NDM-000262`; ASD `APSC-DV-002300`; ASD `APSC-DV-001840` | GUI: System > Certificates (server certificates from a DoD CA through a CSR; only DoD root and intermediate CA certificates; current DoD CRLs imported) |
-| Core: Certificates | Self-signed Fortinet_CA_SSL CA for generated certificates | 1.0.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; ASD `APSC-DV-002300` | GUI: System > Certificates (do not use certificates generated by the Fortinet_CA_SSL CA for the GUI) |
-| Core: Availability | Active-passive HA cluster (up to three units) | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070` | GUI: System > HA (Mode Active-Passive; heartbeat interfaces on a dedicated link; override and device priority set on each unit) |
-| Core: Availability | HA cluster password | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000412-NDM-000331` | `config system ha`; `set password <HA_PASSWORD>`; `end` |
-| Core: Backup | Manual configuration backup with encryption | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070`; ASD `APSC-DV-002330` | GUI: System > Backup (manual backups from the Admin menu Configuration > Backup with Encryption enabled) |
-| Core: Backup | Automatic configuration backup to an FTP, SFTP, HTTP, or HTTPS server | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070`; ASD `APSC-DV-002440` | `config system backup`; `set status enable`; `set cipher <PASSWORD>`; `set type change-based`; `set server-type sftp`; `set server-address <STRING>`; `end` |
-| Core: Backup | Configuration revisions and configuration scripts | 1.0.0 | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000516-NDM-000340` | — |
-| Core: Firmware | Firmware upload and upgrade (in maintenance mode) | 1.0.0 | NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000378-NDM-000302`; ASD `APSC-DV-002630`; ASD `APSC-DV-003240` | GUI: System > Firmware (upgrade to each security release within 30 days); GUI: User Management > Role (Allow Firmware Upgrade & Backups only for the administrators who need it) |
-| Core: Firmware | FortiPAM and FortiGuard licenses | 1.0.0 | NDM `SRG-APP-001035-NDM-000340`; ASD `APSC-DV-003240` | GUI: System > FortiPAM License |
-| Core: Secret storage | Private data encryption with a custom key (Secure password storage) | 1.0.0 | NDM `SRG-APP-000171-NDM-000258`; NDM `SRG-APP-000231-NDM-000271`; ASD `APSC-DV-002330`; ASD `APSC-DV-002340`; ASD `APSC-DV-002350` | `config system global`; `set private-data-encryption enable`; `end` |
-| Core: Secret storage | Trusted Platform Module (TPM) and vTPM storage of the encryption password | 1.0.0 | NDM `SRG-APP-000171-NDM-000258`; ASD `APSC-DV-002350` | `config system global`; `set v-tpm enable`; `end` |
-| Core: Secret storage | Viewing secret passwords, passphrases, and SSH keys (View Encrypted Information permission) | 1.0.0 | NDM `SRG-APP-000178-NDM-000264`; ASD `APSC-DV-001850`; ASD `APSC-DV-000960` | GUI: User Management > Role (Secret: View Encrypted Information disabled except for the roles that must see clear text) |
-| Core: Secrets | Credential vault (secrets for servers, network devices, and web accounts) | 1.0.0 | ASD `APSC-DV-001610`; ASD `APSC-DV-001540`; ASD `APSC-DV-002330` | GUI: Secrets > Secrets |
-| Core: Secrets | Secret sharing permissions (user, group, and device tag) | 1.0.0 | ASD `APSC-DV-000470`; ASD `APSC-DV-000460`; NDM `SRG-APP-000329-NDM-000287` | GUI: Secrets > Secrets (Sharing: only the users and groups that need each secret; Owner and Edit permissions kept to a few users) |
-| Core: Secrets | Personal and public folders with inherited secret policies | 1.0.0 | ASD `APSC-DV-000470`; ASD `APSC-DV-000460` | GUI: Secrets > Personal Folder |
-| Core: Secrets | Secret policies (password changing, session recording, proxy mode, tunnel encryption, checkout, approval, clipboard, and SSH filter) | 1.0.0 | ASD `APSC-DV-000590`; ASD `APSC-DV-000290`; ASD `APSC-DV-002440`; ASD `APSC-DV-000460` | GUI: Secret Settings > Policies (Session Recording, Proxy Mode, Tunnel Encryption, Requires Checkout, and Requires Approval to Launch Secret enabled for privileged secrets) |
-| Core: Secrets | Session recording of launched secrets | 1.0.0 | ASD `APSC-DV-000590`; ASD `APSC-DV-000840`; NDM `SRG-APP-000080-NDM-000220` | GUI: Secret Settings > Policies (Session Recording: Enable) |
-| Core: Secrets | Proxy mode and tunnel encryption for launched sessions | 1.0.0 | ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: Secret Settings > Policies (Proxy Mode: Enable; Tunnel Encryption: Enable) |
-| Core: Secrets | Check-out and check-in of secrets (exclusive access) | 1.0.0 | ASD `APSC-DV-000290`; ASD `APSC-DV-000590` | GUI: Secret Settings > Policies (Requires Checkout: Enable; Checkin Password Change enabled) |
-| Core: Secrets | Automatic password changing and verification (password rotation) | 1.0.0 | ASD `APSC-DV-000290` | GUI: Secret Settings > Policies (Automatic Password Changing: Enable, at the organization's rotation interval; Automatic Password Verification: Enable) |
-| Core: Secrets | Password changers, password policies, and character sets for secrets | 1.0.0 | ASD `APSC-DV-000290` | GUI: Secret Settings > Password Changers |
-| Core: Secrets | Approval profiles and approval workflow for secret access | 1.0.0 | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Approval Profile (approvers other than the requester; tiers as required) |
-| Core: Secrets | Secret launchers and templates (native and web launchers) | 1.0.0 | ASD `APSC-DV-001500` | GUI: Secret Settings > Launchers (only the launchers in use) |
-| Core: Secrets | Jobs and job requests on secrets | 1.0.0 | ASD `APSC-DV-000460`; ASD `APSC-DV-000520` | GUI: Secrets > Jobs |
-| Core: Session control | SSH filter profiles (blocked commands and channels) | 1.0.0 | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > SSH Filter Profiles (block channels that are not needed, such as x11, port-forward, tun-forward, and sftp) |
-| Core: Session control | Block RDP clipboard | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > Policies (Block Clipboard: Enable where data transfer is not approved) |
-| Core: Session control | Antivirus scanning of file transfers | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > AntiVirus |
-| Core: Session control | Data leak prevention (DLP) sensors for file transfers | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > Data Leak Prevention |
-| Core: Session control | Maximum launching duration for secret sessions | 1.0.0 | ASD `APSC-DV-002000` | GUI: System > Settings (Other: Max Launching Duration set to the organization's limit) |
-| Core: ZTNA | ZTNA tags and ZTNA-based access control to FortiPAM and to secrets | 1.0.0 | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: System > ZTNA |
-| Core: Network | Static routes | 1.0.0 | NDM `SRG-APP-000880-NDM-000290` | GUI: Network > Static Routes (management traffic routed through the management network) |
-| Core: Network | DNS settings | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: Network > DNS Settings |
-| Core: Network | Packet capture | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-000960` | GUI: User Management > Role (Network: Packet Capture None except for the administrators who troubleshoot) |
-| Core: Platform | Hardware appliances and FortiPAM-VM on KVM and VMware | 1.0.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Core: Platform | FortiClient and the Fortinet Privileged Access Agent browser extension on user endpoints | 1.0.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM 1000G and 3000G hardware platforms | 1.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | CLI commands to check the hard disk and RAID status | 1.0.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `diagnose system raid status` |
-| ZTNA | Simplified ZTNA proxy rule GUI (ZTNA servers and new proxy rules in the CLI only) | 1.1.0 and later | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: System > ZTNA |
-| Backup | Backup server port, server certificate check, server CA certificate, and connectivity test | 1.1.0 and later | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-002440` | `config system backup`; `set server-type https`; `set server-identity-check enable`; `set ca-cert <CA_CERT>`; `end` |
-| Session control | DLP sensors, filter rules, and file patterns in the GUI | 1.1.0 and later | ASD `APSC-DV-002380` | GUI: Secret Settings > Data Leak Prevention |
-| Secrets | Secret GUI updates (template field values, SFTP service toggle, and service toggles for launchers) | 1.1.0 and later | ASD `APSC-DV-001500` | GUI: Secrets > Secrets (Service Setting: only the services in use) |
-| Platform | RAID status and disk health commands on FortiPAM 1000G and 3000G | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `diagnose system disk info` |
-| Platform | FortiPAM on Microsoft Hyper-V | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Antivirus and DLP log pages in Log & Report | 1.1.0 and later | ASD `APSC-DV-002380`; NDM `SRG-APP-000095-NDM-000225` | — |
-| GUI | General GUI reorganization (folders, requests, approvals, and the Secret Settings menu) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Sending, approving, and denying multiple secret and job requests together | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Client software integrity check for launchers | 1.1.0 and later | ASD `APSC-DV-002770`; NDM `SRG-APP-000131-NDM-000243` | GUI: Secret Settings > Client Software (an entry with the approved version for each launcher) |
-| GUI | Secret name shown when editing a secret | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Licensing | Tooltip when the number of users exceeds the licensed seats | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Allowed and blocked addresses for a secret (address filter) | 1.1.0 and later | ASD `APSC-DV-000490`; NDM `SRG-APP-000038-NDM-000213` | GUI: Secrets > Secrets (Address Filter: an allowlist of the approved target addresses) |
-| Platform | FortiPAM on Microsoft Azure | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | TOTP settings for secrets whose targets require TOTP | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Target Only secret template (user-specific login to a credential-less target) | 1.1.0 and later | ASD `APSC-DV-001540`; ASD `APSC-DV-001610` | GUI: Secret Settings > Templates |
-| Launchers and templates | Editable Launcher pane in default secret templates | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | User and group permissions on secret templates | 1.1.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Templates (template access limited to the users and groups that need it) |
-| Launchers and templates | New default secret templates (Cisco XR Router, ESXi Server, Database Server, and others) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | New default launchers (MySQL CLI, Microsoft SQL CLI, MySQL Shell, PostgreSQL CLI, SSH CLI, SecureCRT, and others) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secret Settings > Launchers (remove launchers that are not used) |
-| Logging | Debug log download and the trace logs tool in the GUI | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Log & Report > Debug Settings (Debug disabled except during troubleshooting) |
-| GUI | Only enabled users listed by default | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Secret video download | 1.1.0 and later | ASD `APSC-DV-001280` | GUI: User Management > Role (View Secret Launching Video only for auditors) |
-| Approvals | Timer showing the remaining access time of an approved request | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Token ID for SSH logs and links to the secret log and video | 1.1.0 and later | ASD `APSC-DV-001030`; NDM `SRG-APP-000101-NDM-000231` | — |
-| Secrets | Job status column | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | New default password changers (Cisco XR Router and ESXi) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Customized user role type | 1.1.0 and later | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; ASD `APSC-DV-000460` | GUI: User Management > Role (custom roles with only the pages each user needs) |
-| Logging | Critical system and general email alerts for each user | 1.1.0 and later | NDM `SRG-APP-000795-NDM-000130`; ASD `APSC-DV-001110` | GUI: User Management > User List (Critical System Email Alert enabled for the SA and ISSO accounts) |
-| ZTNA | ZTNA-based access control for folders | 1.1.0 and later | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: Secrets > Personal Folder (ZTNA Control with device tags where endpoint posture is required) |
-| Users and authentication | Default everyone user group | 1.1.0 and later | ASD `APSC-DV-000460` | GUI: User Management > User Groups (do not grant secret permissions to the everyone group) |
-| Secrets | Cloning secret policies | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | System settings divided into General and Advanced tabs (Admin Session Timeout renamed User Session Timeout) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| System | Test email service | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | Login disclaimer in the GUI, with the last successful login | 1.1.0 and later | NDM `SRG-APP-000068-NDM-000215`; NDM `SRG-APP-000069-NDM-000216`; ASD `APSC-DV-000550`; ASD `APSC-DV-000560`; ASD `APSC-DV-000580` | GUI: System > Settings (Other General Settings, Login Disclaimer: enabled, with the Standard Mandatory DoD Notice and Consent Banner); `config system global`; `set post-login-banner enable`; `end` |
-| Secrets | Display number and custom port for the VNC service | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Bypass of the request and approval process by secret owners | 1.1.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Policies (Bypass Approval: Disable for privileged secrets) |
-| Logging | Automation triggers on event logs (CLI) | 1.1.0 and later | ASD `APSC-DV-000380`; ASD `APSC-DV-000390`; ASD `APSC-DV-000400`; ASD `APSC-DV-000410`; ASD `APSC-DV-000430`; NDM `SRG-APP-000795-NDM-000130` | GUI: Log & Report > Automation (stitches that email the SA and ISSO on account creation, change, disabling, enabling, and removal events) |
-| Licensing | Email alerts for license expiry | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Log & Report > Email Alert Settings |
-| Secrets | Secure import of secrets with an encrypted secret upload template | 1.1.0 and later | ASD `APSC-DV-002330` | GUI: Secrets > Secrets (encrypt the secret upload template; delete the file after import) |
-| Session control | Secret launching rate control against DoS attacks | 1.1.2 and later | ASD `APSC-DV-002400`; NDM `SRG-APP-000435-NDM-000315` | — |
-| Session control | DLP filter rule shows the filter type | 1.1.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Secret last launch time column | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Sponsored groups and the sponsor admin role | 1.2.0 and later | NDM `SRG-APP-000033-NDM-000212`; ASD `APSC-DV-000460` | GUI: User Management > Sponsored Groups (sponsor admins only where delegated user management is approved) |
-| Secrets | Secret targets created separately, with mandatory classification tags | 1.2.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Targets |
-| Password changing | Regular expressions for the expect string in password changing procedures | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | AntiVirus and DLP profile access control in roles | 1.2.0 and later | NDM `SRG-APP-000033-NDM-000212`; ASD `APSC-DV-001410` | GUI: User Management > Role |
-| Launchers and templates | New launchers (HeidiSQL, SSMS, MobaXterm, Xshell), templates, and the ESXi Web password changer | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secret Settings > Launchers (remove launchers that are not used) |
-| GUI | Favorite secrets page | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | RDP event filter profiles (logs of events during RDP sessions) | 1.2.0 and later | ASD `APSC-DV-000840`; ASD `APSC-DV-000590` | GUI: Secret Settings > RDP Event Filter Profile |
-| Licensing | Stackable seat license for hardware models | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | System settings GUI reorganization and the Live Recording option | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM on Google Cloud Platform (GCP) | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Minimum SSL/TLS version and port for the LDAPS password changer and verification | 1.2.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001750` | `config secret target`; `edit <TARGET_NAME>`; `set ldaps-min-ssl-version TLSv1.2`; `next`; `end` |
-| Secrets | Button to generate a secret password from the password policy | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Bypass of the SSH command filter by secret owners | 1.2.0 and later | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > Policies (Bypass For Owner disabled for the SSH filter) |
-| Logging | User location and source location in the user monitor and active sessions | 1.2.0 and later | NDM `SRG-APP-000097-NDM-000227`; ASD `APSC-DV-000690` | — |
-| Logging | Report layout customization in the GUI | 1.2.0 and later | ASD `APSC-DV-001180` | GUI: Log & Report > Reports |
-| Logging | Secret access audit report | 1.2.0 and later | ASD `APSC-DV-001180`; ASD `APSC-DV-000860` | GUI: Log & Report > Reports |
-| Users and authentication | User group permissions | 1.2.0 and later | ASD `APSC-DV-000460` | GUI: User Management > User Groups |
-| Platform | FortiPAM on Amazon Web Services (AWS) | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Logs stored on FortiAnalyzer, with the upload interval | 1.2.0 and later | ASD `APSC-DV-001070`; ASD `APSC-DV-001080`; NDM `SRG-APP-000515-NDM-000325` | GUI: Network > Fabric Connectors (FortiAnalyzer upload in real time) |
-| Session control | FortiPAM web proxy for browser extension launches (no credentials delivered to the client) | 1.2.0 and later | ASD `APSC-DV-002330`; ASD `APSC-DV-002440` | GUI: Network > Interfaces (Explicit Web Proxy only on one interface, only when web launches use it) |
-| Management access | Last failed login time in the disclaimer | 1.2.0 and later | ASD `APSC-DV-000580` | — |
-| GUI | Description column in the secret list | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Deauthenticating a user and disconnecting launched secret sessions | 1.2.0 and later | ASD `APSC-DV-001800`; ASD `APSC-DV-002000` | GUI: Monitoring > User Monitor (Terminate: Deauthenticate & Disconnect for users being removed) |
-| Certificates | Download button for the web proxy CA certificate | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | Concurrent log-on option for a user account | 1.2.0 and later | NDM `SRG-APP-000001-NDM-000200`; ASD `APSC-DV-000010` | GUI: System > Settings (Concurrent Log-on: Disable); `config system global`; `set admin-concurrent disable`; `end` |
-| Users and authentication | View Secret Log and View Secret Video permissions in roles | 1.2.0 and later | ASD `APSC-DV-001280`; NDM `SRG-APP-000121-NDM-000238` | GUI: User Management > Role |
-| Session control | Over-the-shoulder monitoring (live recording) | 1.2.0 and later | ASD `APSC-DV-000590`; ASD `APSC-DV-000840` | GUI: System > Settings (Live Recording enabled where live monitoring is required) |
-| Network and gateways | Distributed architecture with network gateways (FortiPAM, FortiGate, or FortiProxy) | 1.3.0 and later | NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-002440` | GUI: Network > Secret Gateway |
-| Users and authentication | Two-factor authentication status column in the user list | 1.3.0 and later | NDM `SRG-APP-000820-NDM-000170`; ASD `APSC-DV-001550` | — |
-| Users and authentication | Automated remote user provisioning with auto provision rules | 1.3.0 and later | ASD `APSC-DV-000330`; NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > Auto Provision Rules (rules that map only approved remote groups to roles) |
-| ZTNA | Inherited ZTNA control settings shown for subfolders | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | vTPM for FortiPAM on GCP | 1.3.0 and later | ASD `APSC-DV-002350` | `config system global`; `set v-tpm enable`; `end` |
-| Logging | Log export as JSON and CSV files | 1.3.0 and later | ASD `APSC-DV-001180` | — |
-| Launchers and templates | Web Telnet launcher | 1.3.0 and later | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-001500` | GUI: Secret Settings > Launchers (Telnet launchers only where the target supports nothing else, with Tunnel Encryption) |
-| Secrets | Password visible only to the user checking out the secret | 1.3.0 and later | ASD `APSC-DV-000290`; ASD `APSC-DV-001850` | GUI: Secret Settings > Policies (Requires Checkout: Enable) |
-| Users and authentication | Import of remote LDAP users | 1.3.0 and later | NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > User List |
-| Users and authentication | Remote server option when creating a remote user | 1.3.0 and later | NDM `SRG-APP-000516-NDM-000336` | — |
-| Management access | Replacement messages (login page, login token page, post-login disclaimer, and DLP pages) | 1.3.0 and later | NDM `SRG-APP-000068-NDM-000215`; ASD `APSC-DV-000550` | GUI: System > Replacement Messages (Login Page: add the Standard Mandatory DoD Notice and Consent Banner text) |
-| Users and authentication | User deletion with transfer of owned resources | 1.3.0 and later | ASD `APSC-DV-000370`; ASD `APSC-DV-000330` | GUI: User Management > User List |
-| Approvals | Minimum secret permission for approvers | 1.3.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile |
-| Approvals | Email notification to approver groups | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| System | Sender address for all emails | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Log and video disk encryption | 1.3.0 and later | ASD `APSC-DV-001280`; ASD `APSC-DV-001290`; ASD `APSC-DV-002350`; NDM `SRG-APP-000119-NDM-000236` | `config system maintenance`; `set mode enable`; `end`; `execute disk encryption enable` |
-| Approvals | Immediate secret access on approval (Start Upon Approval) | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Requester and approver time zones | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Secret creation time column | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Customized email templates for secret requests | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | RDP auto TOTP delivery for the FortiAuthenticator agent | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Auto discovery of accounts and resources (Secret Discovery permission) | 1.3.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Discovery |
-| Platform | Increased secret capacity | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Dependency updater for service account credentials | 1.3.0 and later | ASD `APSC-DV-000290` | GUI: Secret Settings > Dependency Updater |
-| Logging | Service account logs and new secret log columns | 1.3.0 and later | NDM `SRG-APP-000097-NDM-000227`; ASD `APSC-DV-000950` | — |
-| Network and gateways | Reverse gateway mode for distributed architecture | 1.4.0 and later | NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-002440` | GUI: Network > Secret Gateway |
-| Secrets | Launching a target with associated secret credentials on all launchers | 1.4.0 and later | ASD `APSC-DV-001610` | — |
-| Password changing | Maximum credential history in a template | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Active launch monitor replaces the active session monitor | 1.4.0 and later | NDM `SRG-APP-000343-NDM-000289` | GUI: Monitoring > Active Sessions |
-| Secrets | Warning for duplicated credentials | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Launcher (service) permissions in secrets | 1.4.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000470` | GUI: Secrets > Secrets (each user granted only the launchers they need) |
-| Launchers and templates | Microsoft SQL, MySQL, and PostgreSQL secret templates | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Full folder path display | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Website login with TOTP and exact auto filling in the web extension | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | FortiProduct (Web) template and Web API password changer for FortiGate and FortiProxy | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Block copy for web-based launchers | 1.4.0 and later | ASD `APSC-DV-002380` | GUI: Secret Settings > Policies (Block Clipboard: Enable) |
-| Session control | Ctrl+C and Ctrl+V in Web RDP sessions | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Certificate Vault template (certificates and private keys as secrets, with expiry monitoring) | 1.4.0 and later | ASD `APSC-DV-002330` | — |
-| Session control | SSH filter Allow mode (allow listed commands, deny the rest) | 1.4.0 and later | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > SSH Filter Profiles (Allow mode for targets where the permitted commands are known) |
-| Integration | Ansible lookup plugin for API users | 1.4.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > User List (API users only for approved automation, with the narrowest role) |
-| Logging | SQL Server Management Studio (SSMS) monitoring and logging | 1.4.0 and later | ASD `APSC-DV-000960`; ASD `APSC-DV-001030` | GUI: Secrets > Targets (SQL Log enabled for Microsoft SQL targets) |
-| GUI | Launcher buttons shown as icons | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Privileged account display for a target | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | System time watermark on session videos | 1.4.0 and later | ASD `APSC-DV-000590`; NDM `SRG-APP-000096-NDM-000226` | GUI: System > Settings (Video Time Watermark enabled) |
-| Approvals | Approval links in approval request emails, with an expiry time | 1.4.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (Approval Link Expiry Time short, or approval links not used) |
-| Approvals | Custom fields such as a ticket number in secret requests | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Web Telnet service setting in secrets | 1.4.0 and later | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-001500` | GUI: Secrets > Secrets (Telnet service disabled unless the target supports nothing else) |
-| Session control | Windows application filter on Windows targets | 1.4.0 and later | ASD `APSC-DV-000500` | GUI: Secret Settings > Windows App Control |
-| Session control | Launching sessions terminated at the end of a user's login schedule | 1.4.0 and later | ASD `APSC-DV-002000`; ASD `APSC-DV-000490` | GUI: User Management > Schedule (Terminate Launching Session: True) |
-| Secrets | Secret import matched to existing targets | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Creation time column for user groups and sponsored groups | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | Single login per user (Concurrent Log-on disabled) | 1.4.0 and later | NDM `SRG-APP-000001-NDM-000200`; ASD `APSC-DV-000010` | GUI: System > Settings (Concurrent Log-on: Disable) |
-| Backup | Automatic backup of the in-use configuration before a restore | 1.4.0 and later | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070` | — |
-| Secret storage | AES-256 protection of passwords and keys | 1.4.0 and later | ASD `APSC-DV-002350`; NDM `SRG-APP-000171-NDM-000258` | — |
-| Backup | FTP backup and restore of video and log files | 1.4.0 and later | ASD `APSC-DV-001340` | — |
-| Logging | Filters in the report layout | 1.4.0 and later | ASD `APSC-DV-001140`; ASD `APSC-DV-001180` | — |
-| Network | Network interface GUI refactor (Access column and Service Access Setting pane) | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | GUI warnings for log and video disk failure | 1.4.0 and later | ASD `APSC-DV-001110`; NDM `SRG-APP-000360-NDM-000295` | — |
-| Certificates | ACME and Let's Encrypt certificates | 1.4.0 and later | NDM `SRG-APP-000516-NDM-000344`; ASD `APSC-DV-002300` | GUI: System > Certificates (do not use Let's Encrypt certificates on DoD networks; use DoD-issued certificates) |
-| Logging | Automation stitches for email notifications (nine default stitches) | 1.4.0 and later | ASD `APSC-DV-000380`; ASD `APSC-DV-000390`; ASD `APSC-DV-000400`; ASD `APSC-DV-000410`; ASD `APSC-DV-000430`; NDM `SRG-APP-000795-NDM-000130` | GUI: Log & Report > Automation (stitches for account events and secret activity, emailing the SA and ISSO) |
-| Users and authentication | FortiToken Cloud trial | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| System | Private data, vTPM, and disk encryption status in the banner and System > Settings | 1.4.0 and later | ASD `APSC-DV-002350` | GUI: System > Settings (Security: check Private Data Encryption, Virtual TPM, and Disk Encryption) |
-| Logging | Log and video disk usage charts | 1.4.0 and later | ASD `APSC-DV-001090`; NDM `SRG-APP-000357-NDM-000293` | GUI: Log & Report > Disk Usage |
-| Network and gateways | Service gateway mode | 1.5.0 and later | NDM `SRG-APP-000880-NDM-000290` | GUI: Network > Secret Gateway |
-| Session control | Agentless mode for web-based secret launch | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Secret event subscription (email notifications of secret events) | 1.5.0 and later | ASD `APSC-DV-000860` | — |
-| Launchers and templates | New default templates (Azure Credential, Azure AD Account, VNC Server, and others) and a password changer | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | RealVNC Viewer launcher | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Launchers for multiple operating systems | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Launcher start-up timeout | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Certificate authentication for SSH launches | 1.5.0 and later | ASD `APSC-DV-001810` | — |
-| Approvals | Approval by replying to the approval request email | 1.5.0 and later | ASD `APSC-DV-000460` | GUI: System > Settings (Approval Email Server only if email approval is approved) |
-| GUI | Secret creation tabs for remote servers and stored certificates or files | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Network and gateways | Health checks for forward gateways | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | RPC parameter in the SQL Server session log | 1.5.0 and later | ASD `APSC-DV-000960` | — |
-| Password changing | Web API password changer type with web changers and verifiers | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | HTTP PATCH method for the Web API password changer | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Force checkout after an idle time | 1.5.0 and later | ASD `APSC-DV-000290` | GUI: Secret Settings > Policies (Force Checkout Idle time set to the organization's limit) |
-| Logging | Configuration, login, and secret access logs on the user details page | 1.5.0 and later | ASD `APSC-DV-000830`; ASD `APSC-DV-000860` | — |
-| Users and authentication | Third-party authenticators for user two-factor authentication | 1.5.0 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > User List (Third-Party Authenticator only where FortiToken is not used) |
-| Management access | User profile menu (last login time, last login IP, and last failed login) | 1.5.0 and later | ASD `APSC-DV-000580` | — |
-| Users and authentication | A user's related secrets and secret logs | 1.5.0 and later | ASD `APSC-DV-000460` | — |
-| GUI | Multiple language support | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Session videos sent to external storage through SFTP | 1.5.0 and later | ASD `APSC-DV-001340`; ASD `APSC-DV-001070` | `config secret remote-storage`; `set status enable`; `set server <SERVER>`; `end` |
-| Session control | PAC file for the browser extension | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Graphical view in Log & Report | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Licensing | Floating license (VM) | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| System | Setup wizard | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Integration | Terraform provider | 1.5.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > User List (API users only for approved automation) |
-| Platform | FortiPAM on Alibaba Cloud | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM on Proxmox | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Maximum request duration in approval profiles | 1.6.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (Maximum Request Duration set to the organization's limit) |
-| Password changing | vCenter template and Web API password changer | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Unidirectional file transmission control | 1.6.0 and later | ASD `APSC-DV-002380` | GUI: Secrets > Secrets (file transfer only in the approved direction) |
-| Approvals | Request exemption on schedule | 1.6.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (request exemptions only when approved) |
-| Password changing | Renamed FortiProduct templates and password changers | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Key-value pair vault | 1.6.0 and later | ASD `APSC-DV-002330` | — |
-| Secrets | Smart association (account prefix with the logged-in username) | 1.6.0 and later | ASD `APSC-DV-001540` | — |
-| Secrets | Web Launcher access for users with View permission | 1.6.0 and later | ASD `APSC-DV-000460` | — |
-| GUI | Secret template selection page | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Initialization commands in proxy and non-proxy mode | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Password reconciliation for Windows AD over LDAPS | 1.6.0 and later | ASD `APSC-DV-000290`; ASD `APSC-DV-002440` | — |
-| Secrets | Unix and FortiOS discovery | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secrets > Discovery |
-| Network and gateways | Web Launcher through a service gateway | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | File storage in secrets | 1.6.0 and later | ASD `APSC-DV-002330`; ASD `APSC-DV-002380` | GUI: System > Settings (File Setting: Maximum File Size and Block File With No Extension) |
-| Users and authentication | One-time invitation of external users to a secret | 1.6.0 and later | ASD `APSC-DV-000300`; ASD `APSC-DV-001870` | GUI: Monitoring (Invited Users tab: revoke invitations that are no longer needed) |
-| Integration | JSON Web Token (JWT) integration with DevOps platforms | 1.6.0 and later | NDM `SRG-APP-000340-NDM-000288`; ASD `APSC-DV-001540` | GUI: User Management > JWT Key Management |
-| Users and authentication | Simplified interface for guest and invited users | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Italian language | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Certificates | Custom CA certificate for the web proxy | 1.6.0 and later | ASD `APSC-DV-002300`; NDM `SRG-APP-000910-NDM-000300` | GUI: Network > Interfaces (Explicit Web Proxy, CA Certificate: an organization CA) |
-| Logging | FortiAnalyzer Cloud logging | 1.6.0 and later | ASD `APSC-DV-001070` | GUI: Network > Fabric Connectors |
-| Logging | Copy the location of a video stored remotely | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Secret configuration page (Settings, Sharing, and Audit tabs) | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | MobaXterm-sftp launcher | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Antivirus and DLP for secret file uploads | 1.7.0 and later | ASD `APSC-DV-002380` | GUI: Secrets > Secrets (Antivirus Scan and DLP Status enabled for File secrets) |
-| Launchers and templates | Configurable SSH terminal types | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Default maximum delay for the password changer increased | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | SSH algorithm negotiation strength for secrets and policies | 1.7.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001940` | GUI: Secret Settings > Policies (SSH Algorithm Negotiation: high-encryption) |
-| Secrets | Target auto match and creation | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Native RDP connection diagnostics | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | PAN-OS and SSH Password For Root (Unix) password changers | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Network and gateways | Targets with the same IP address behind different gateways | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Discovery auto-onboarding for Windows AD | 1.7.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Discovery (auto-onboarding rules that place accounts in folders with the right policy) |
-| Launchers and templates | OT application launchers (TIA Portal) | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Web Launcher renamed Web Browsing | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | FortiClient script commands, multiprocess mode, and full-screen recording | 1.7.0 and later | ASD `APSC-DV-000590` | — |
-| Launchers and templates | Radmin launcher | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | Restricting a user to console login only | 1.7.0 and later | NDM `SRG-APP-000408-NDM-000314` | `config system admin`; `edit <USERNAME>`; `set login-restriction-console enable`; `next`; `end` |
-| Users and authentication | JWT user type | 1.7.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > JWT Key Management (Lease Duration short) |
-| Platform | Up to 3000 users on FortiPAM 1000G | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | Export of session videos in playable webm format | 1.7.0 and later | ASD `APSC-DV-001340` | — |
-| Logging | SSH log entries linked to the video timestamp | 1.7.0 and later | ASD `APSC-DV-001030`; ASD `APSC-DV-000590` | — |
-| Logging | Secret ID, folder ID, and folder path in secret audit reports | 1.7.0 and later | ASD `APSC-DV-001180` | — |
-| Management access | Single global minimum TLS version (System > Settings), per interface, and per SQL target | 1.7.0 and later | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: System > Settings (Security, Minimum SSL Version: TLSv1-2 or TLSv1-3) |
-| Logging | Video access audit logs | 1.7.0 and later | ASD `APSC-DV-001280`; ASD `APSC-DV-000860` | — |
-| Launchers and templates | Browser extension download from Client Software | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM on Nutanix | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Custom resolution for Web RDP | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | RDP connection failure diagnosis for end users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| GUI | Folder edit refactor | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Logging | DLP log, antivirus log, and requests and jobs tabs on the secret edit page | 1.8.0 and later | ASD `APSC-DV-000860` | — |
-| Password changing | Secret password expiry notification | 1.8.0 and later | ASD `APSC-DV-000290` | GUI: System > Settings (Secret Password Expiration Notification) |
-| Password changing | Credential replacement for Siemens TIA Portal Cloud | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Web API password changer CSRF token extraction and multi-layer JSON bodies | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | SSH password changer for FortiOS 7.6.3 and higher | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | New line mode for SSH script jobs | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | PowerShell jobs | 1.8.0 and later | ASD `APSC-DV-000520` | — |
-| ZTNA | Service Address field type for multiple ZTNA tunnels | 1.8.0 and later | NDM `SRG-APP-000038-NDM-000213` | — |
-| Users and authentication | Regular expression match for JWT users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Concurrent secret launch limit (global and per user) | 1.8.0 and later | ASD `APSC-DV-002400`; NDM `SRG-APP-000435-NDM-000315` | GUI: System > Settings (Max Launched Sessions set to the organization's limit) |
-| Users and authentication | Email address and display name for auto-provisioned SAML users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | User SSO cache (last-selected SSO provider) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Signed SAML assertion and response required | 1.8.0 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000156-NDM-000250` | `config user saml`; `edit <NAME>`; `set require-signed-resp-and-asrt enable`; `next`; `end` |
-| System | Proxy FQDN for request email notifications | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Invited users page and invitation revocation | 1.8.0 and later | ASD `APSC-DV-000300` | GUI: Monitoring (Invited Users tab) |
-| Licensing | Concurrent logon licensing (VM) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Automatic disabling of inactive auto-provisioned remote users | 1.8.0 and later | ASD `APSC-DV-000320`; ASD `APSC-DV-000330` | GUI: System > Settings (Provisioned User Auto-purging, User Max Inactivity Days: 35) |
-| Management access | Allowed roles for the GUI portal of each interface | 1.8.0 and later | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000880-NDM-000290` | `config system interface`; `edit <PORT>`; `set gui-access-role <ROLES>`; `next`; `end` |
-| Logging | Key-based SFTP authentication for remote video storage | 1.8.0 and later | ASD `APSC-DV-001340` | GUI: System > Backup (Remote Video Storage, Authentication Method: Keypair) |
-| Backup | Key-based SFTP authentication for automatic backup | 1.8.0 and later | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Backup (Configuration Backup, Authentication Method: Keypair) |
-| Logging | Session close logs and other secret log enhancements | 1.8.0 and later | ASD `APSC-DV-000850` | — |
-| Logging | System and secret logs pushed to the syslog server | 1.8.0 and later | ASD `APSC-DV-001070`; ASD `APSC-DV-001080`; NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350` | GUI: Log & Report > Log Settings (Send logs to syslog enabled) |
-| Platform | FortiPAM 1100G hardware model | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiSRA consolidated into FortiPAM | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM on Oracle Cloud Infrastructure (OCI) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | TCP forwarding for native RDP launches | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Launcher privilege (user or system level) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Kerberos authentication for native RDP sessions | 1.9.0 and later | ASD `APSC-DV-002440` | — |
-| Network and gateways | Viewer and Owner permissions for secret gateways | 1.9.0 and later | ASD `APSC-DV-000460` | GUI: Network > Secret Gateway |
-| Approvals | Approval email server using Microsoft Graph | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Just-in-time (JIT) privilege through checkout and check-in PowerShell scripts | 1.9.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secrets > JIT Script |
-| Secrets | Additional authentication to access or launch secrets | 1.9.0 and later | ASD `APSC-DV-001520` | GUI: Secret Settings > Policies (Access Authentication: Enable for privileged secrets; Bypass For Owner disabled) |
-| Network and gateways | Secret gateway chaining | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Launcher process matcher | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | One secret for multiple approved target hosts | 1.9.0 and later | ASD `APSC-DV-000490` | — |
-| Approvals | Revoking approved secret access requests | 1.9.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Approvals |
-| Session control | Load balancing information for Web RDP targets | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Email address and display name for auto-provisioned LDAP users | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | Non-TOTP two-factor challenges in WebSSH | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | Wildcard remote users | 1.9.0 and later | ASD `APSC-DV-001540` | GUI: User Management > User List (no wildcard users for administrator roles) |
-| Users and authentication | SCIM service for identity lifecycle management | 1.9.0 and later | ASD `APSC-DV-000330`; NDM `SRG-APP-000142-NDM-000245` | GUI: User Management > SCIM Service |
-| Users and authentication | Message-Authenticator for RADIUS | 1.9.0 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000156-NDM-000250` | `config user radius`; `edit <SERVER>`; `set require-message-authenticator enable`; `next`; `end` |
-| Users and authentication | Automatic purging of disabled auto-provisioned users | 1.9.0 and later | ASD `APSC-DV-000330` | GUI: System > Settings (Provisioned User Auto-purging, User Max Disabled Days) |
-| Secrets | Guest instructions (instruction profiles) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: System > Settings (Guest Instruction Feature disabled unless used) |
-| Availability | FortiPAM-VM active-passive HA on OCI | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM 400G hardware model | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Platform | FortiPAM 100G hardware model (gateway only) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Management access | New login page with clear-text password view during entry | 1.9.0 and later | NDM `SRG-APP-000178-NDM-000264`; ASD `APSC-DV-001850` | — |
-| Network | TCP segmentation offload and generic segmentation offload | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Oracle SQL Developer launcher | 1.9.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Approvals | Blocking self approval | 1.9.1 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Approval Profile (Self Approval disabled) |
-| Secrets | Enforce launching with SSO (the user's own credentials) | 7.0.0 and later | ASD `APSC-DV-001540`; ASD `APSC-DV-001610` | GUI: Secret Settings > Templates (Enforce launching with SSO for domain targets) |
-| Secrets | JIT scripts in the secret request approval workflow | 7.0.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile |
-| Session control | Windows Remote App | 7.0.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Windows App Control |
-| Launchers and templates | SSMS-stable launcher with Windows authentication | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Password changing | Web API password changer for FortiOS 7.6.3 and higher | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Secrets | Associated secrets in the secret upload template | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Session control | SSH host key verification | 7.0.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001940` | — |
-| Password changing | Visual graph editor for SSH password changers and verifiers | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Launchers and templates | Portable Agent (standalone launch client) | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | SAML metadata import and export | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | LDAP servers through a gateway | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Users and authentication | User certificate authentication for FortiPAM login | 7.0.0 and later | NDM `SRG-APP-000149-NDM-000247`; NDM `SRG-APP-000177-NDM-000263`; NDM `SRG-APP-000175-NDM-000262`; ASD `APSC-DV-001560`; ASD `APSC-DV-001570`; ASD `APSC-DV-001810`; ASD `APSC-DV-001830` | GUI: User Management > Authentication Settings (Enable Certificate Authentication; CA Certificate: DoD root and intermediate CAs); GUI: User Management > User List (Certificate Authentication enabled for each user) |
-| Users and authentication | FIDO2 (WebAuthn) passkey sign-in for local users | 7.0.0 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > User List (Passkey only for approved local users) |
-| Users and authentication | RADIUS server page redesign and credential test | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — |
-| Firmware | Dual-signed firmware images | 7.0.0 and later | NDM `SRG-APP-000131-NDM-000243`; ASD `APSC-DV-001430` | — |
-| ZTNA | Custom CA for ZTNA EMS certificates | 7.0.0 and later | NDM `SRG-APP-000910-NDM-000300`; ASD `APSC-DV-002300` | — |
-| Logging | Secret gateway events | 7.0.0 and later | NDM `SRG-APP-000095-NDM-000225` | GUI: Log & Report > Network Event |
-| Management access | Periodic checks for unauthorized configuration changes | 7.0.0 and later | ASD `APSC-DV-002770`; NDM `SRG-APP-000795-NDM-000130` | `config system global`; `set config-period-check enable`; `end` |
+| Category | Feature | Introduced (FortiPAM) | SRG requirement(s) | Command to satisfy the requirement | FortiPAM prerequisites |
+| --- | --- | --- | --- | --- | --- |
+| Core: Management access | Management access on each network interface (PING, SNMP, SCIM, and SSH, with a global SSH port) | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-001510` | GUI: Network > Interfaces (Management Access: SSH only on the interface connected to the management network; PING, SNMP, and SCIM only where they are used) | — |
+| Core: Management access | Management access from the CLI on an interface | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000408-NDM-000314` | `config system interface`; `edit <PORT>`; `set allowaccess ping ssh`; `next`; `end` | — |
+| Core: Management access | GUI portal on an interface (external IP, service port, SSL certificate, and minimum SSL version) | 1.0.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; NDM `SRG-APP-000516-NDM-000344`; ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: Network > Interfaces (Service Access Setting, GUI Portal: a DoD-issued SSL certificate; Minimum SSL Version: TLSv1-2 or Follow system global setting) | P7 |
+| Core: Management access | Global minimum SSL/TLS version | 1.0.0 | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; NDM `SRG-APP-000172-NDM-000259`; ASD `APSC-DV-002440`; ASD `APSC-DV-001750`; ASD `APSC-DV-001940`; ASD `APSC-DV-001950` | GUI: System > Settings (Security, Minimum SSL Version: TLSv1-2 or TLSv1-3) | — |
+| Core: Management access | CLI console in the GUI and CLI over SSH | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > Role (Allow CLI Access and Allow CLI Diagnostic Commands only in the roles of administrators who need them) | — |
+| Core: Management access | GUI session timeout (idle timeout or forced logout) | 1.1.0 or earlier | NDM `SRG-APP-000190-NDM-000267`; NDM `SRG-APP-000220-NDM-000268`; ASD `APSC-DV-000070`; ASD `APSC-DV-000080`; ASD `APSC-DV-002000` | GUI: System > Settings (Other General Settings, GUI Session Timeout: Idle, Idle in 10 minutes or less) | — |
+| Core: Management access | Idle timeout override and never-timeout options in roles | 1.0.0 | NDM `SRG-APP-000190-NDM-000267`; ASD `APSC-DV-000080`; ASD `APSC-DV-000070` | GUI: User Management > Role (Admin Settings: Override Idle Timeout and Never Timeout disabled) | — |
+| Core: Management access | Login lockout (Max Retry and Lockout Duration in the user password policy) | 7.0.0 or earlier | NDM `SRG-APP-000065-NDM-000214`; NDM `SRG-APP-000435-NDM-000315`; ASD `APSC-DV-000530` | GUI: System > Settings (User Password Policy: Max Retry 3; Lockout Duration 900 seconds or longer) | — |
+| Core: Management access | Logout from the Admin menu | 1.0.0 | NDM `SRG-APP-000296-NDM-000280`; NDM `SRG-APP-000220-NDM-000268`; ASD `APSC-DV-000090` | — | — |
+| Core: Management access | Trusted hosts and login schedule for each user | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000038-NDM-000213`; NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-000490` | GUI: User Management > User List (Restricted Access: IPv4 Trusted Hosts limited to the management network; Login Schedule where access is time-bound) | — |
+| Core: Management access | Maintenance mode (required for reboot, shutdown, firmware upload, license upload, and configuration restore) | 1.0.0 | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000378-NDM-000302`; ASD `APSC-DV-001410` | GUI: User Management > Role (Admin Settings: Set Maintenance Mode only for the administrators who need it) | — |
+| Core: Management access | Glass breaking mode (temporary access to all secrets) | 1.0.0 | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: User Management > Role (Admin Settings: Enter Glass Breaking Mode for only a few administrators); GUI: Log & Report > Email Alert Settings (Critical System Notification: alert when glass breaking mode is activated) | P17 |
+| Core: Management access | Enforced recording in glass breaking mode | 1.0.0 | NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000590`; ASD `APSC-DV-000840` | GUI: System > Settings (Video Setting: Enforce recording on glass breaking enabled) | P4 |
+| Core: Administrator accounts | Default admin account (no password until one is set at the first login) | 1.0.0 | NDM `SRG-APP-000148-NDM-000346`; NDM `SRG-APP-000153-NDM-000249`; ASD `APSC-DV-003280`; ASD `APSC-DV-003270` | GUI: User Management > User List (set a password of 15 or more characters for admin at the first login; keep admin as the account of last resort) | — |
+| Core: Administrator accounts | Role types (Standard User, Power User, Administrator, and the types added later) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000340-NDM-000288`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: User Management > User List (Role Type: the least-privileged type that fits each user's duties) | — |
+| Core: Administrator accounts | Roles with None, Read, and Read/Write access to each feature (six default roles) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000231-NDM-000271`; NDM `SRG-APP-000516-NDM-000335`; ASD `APSC-DV-000460`; ASD `APSC-DV-000500`; ASD `APSC-DV-001410` | GUI: User Management > Role (custom roles limited to each administrator's duties; Super Administrator only for the account of last resort and a few administrators) | — |
+| Core: Administrator accounts | Roles from the CLI (access profiles) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000340-NDM-000288` | `config system accprofile`; `edit <ROLE_NAME>`; `set cli enable`; `set system-diagnostics disable`; `next`; `end` | — |
+| Core: Administrator accounts | Local, API, JWT, and remote user types | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000148-NDM-000346`; ASD `APSC-DV-001540` | GUI: User Management > User List (User Type: Remote User for administrators, with one Local User as the account of last resort; API and JWT users only for integrations) | P14 |
+| Core: Administrator accounts | Local and remote users from the CLI | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000033-NDM-000212` | `config system admin`; `edit <USERNAME>`; `set remote-auth enable`; `set accprofile <ROLE_NAME>`; `set remote-group <GROUP_NAME>`; `next`; `end` | P14 |
+| Core: Administrator accounts | User status (enable or disable a user) | 1.0.0 | ASD `APSC-DV-000330`; NDM `SRG-APP-000148-NDM-000346` | GUI: User Management > User List (Status: disabled for users who no longer need access) | — |
+| Core: Administrator accounts | API users and REST API keys | 1.0.0 | NDM `SRG-APP-000340-NDM-000288`; NDM `SRG-APP-000408-NDM-000314` | GUI: User Management > User List (API users only for integrations; Re-generate API Key when a key may be exposed) | — |
+| Core: Authentication | Two-factor authentication for users (Email, FortiToken, FortiToken Cloud, and third-party authenticator) | 1.0.0 | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000825-NDM-000180`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550`; ASD `APSC-DV-001580` | GUI: User Management > User List (Two-Factor Authentication enabled with FortiToken for every local user); `config system admin`; `edit <USERNAME>`; `set two-factor fortitoken`; `set fortitoken <SERIAL_NUMBER>`; `next`; `end` | P16 |
+| Core: Authentication | FortiTokens (hard and mobile tokens) | 1.0.0 | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000825-NDM-000180`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > FortiTokens | P16 |
+| Core: Authentication | FortiToken Mobile push | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: Network > Interfaces (FortiToken Mobile Push and Push Server Status off unless FortiToken Mobile push is used) | — |
+| Core: Authentication | LDAP servers (LDAPS or STARTTLS, server identity check, and group matching) | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000172-NDM-000259`; ASD `APSC-DV-001750`; ASD `APSC-DV-002440` | GUI: User Management > LDAP Servers (Secure Connection enabled; Protocol LDAPS or STARTTLS; Certificate: the DoD CA; Server Identity Check enabled) | P8, P11 |
+| Core: Authentication | LDAP servers from the CLI | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | `config user ldap`; `edit <NAME>`; `set server <SERVER_IP>`; `set username <LDAP_USERNAME>`; `set password <PASSWORD>`; `next`; `end` | P11 |
+| Core: Authentication | SAML single sign-on (FortiPAM as the SAML SP) | 1.0.0 | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000820-NDM-000170`; ASD `APSC-DV-001550`; ASD `APSC-DV-001580` | GUI: User Management > Saml Single Sign-On (an identity provider that enforces DoD PKI or MFA) | P12 |
+| Core: Authentication | RADIUS servers | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > Radius Servers (a long, unique shared secret for each server) | P13 |
+| Core: Authentication | User groups (local and remote groups) | 1.0.0 | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000153-NDM-000249`; ASD `APSC-DV-000460` | GUI: User Management > User Groups | — |
+| Core: Authentication | Login schedules (recurring and one-time) | 1.0.0 | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490`; ASD `APSC-DV-000300` | GUI: User Management > Schedule (One Time schedules for temporary users, with Pre-expiration event log) | — |
+| Core: Authentication | Authentication scheme and rules for remote servers | 1.0.0 | NDM `SRG-APP-000516-NDM-000336` | — | — |
+| Core: Authentication | User password policy (minimum length, new characters, character requirements, reuse, and expiration) | 1.0.0 | NDM `SRG-APP-000164-NDM-000252`; NDM `SRG-APP-000170-NDM-000329`; NDM `SRG-APP-000166-NDM-000254`; NDM `SRG-APP-000167-NDM-000255`; NDM `SRG-APP-000168-NDM-000256`; NDM `SRG-APP-000169-NDM-000257`; NDM `SRG-APP-000860-NDM-000250`; ASD `APSC-DV-001680`; ASD `APSC-DV-001690`; ASD `APSC-DV-001700`; ASD `APSC-DV-001710`; ASD `APSC-DV-001720`; ASD `APSC-DV-001730`; ASD `APSC-DV-001770`; ASD `APSC-DV-001780` | GUI: System > Settings (User Password Policy: Password scope enabled; Minimum length 15; Minimum number of new characters 8; Character requirements 1 upper case, 1 lower case, 1 number, 1 special; Allow password reuse disabled; Password expiration 180 days or less) | — |
+| Core: Authentication | Change Password from the Admin menu (local users only) | 1.0.0 | NDM `SRG-APP-000170-NDM-000329`; ASD `APSC-DV-001730` | — | — |
+| Core: Logging | Event logging (system activity, user activity, and HA) | 1.0.0 | NDM `SRG-APP-000026-NDM-000208`; NDM `SRG-APP-000027-NDM-000209`; NDM `SRG-APP-000028-NDM-000210`; NDM `SRG-APP-000029-NDM-000211`; NDM `SRG-APP-000319-NDM-000283`; NDM `SRG-APP-000503-NDM-000320`; NDM `SRG-APP-000505-NDM-000322`; NDM `SRG-APP-000343-NDM-000289`; NDM `SRG-APP-000381-NDM-000305`; NDM `SRG-APP-000095-NDM-000225`; NDM `SRG-APP-000100-NDM-000230`; ASD `APSC-DV-000340`; ASD `APSC-DV-000350`; ASD `APSC-DV-000360`; ASD `APSC-DV-000370`; ASD `APSC-DV-000420`; ASD `APSC-DV-000880`; ASD `APSC-DV-000830`; ASD `APSC-DV-000850`; ASD `APSC-DV-000520`; ASD `APSC-DV-001420` | GUI: Log & Report > Log Settings (Event Logging: all events, not Customize) | — |
+| Core: Logging | System event logs (user events, configuration changes, and logins) | 1.0.0 | NDM `SRG-APP-000096-NDM-000226`; NDM `SRG-APP-000097-NDM-000227`; NDM `SRG-APP-000098-NDM-000228`; NDM `SRG-APP-000099-NDM-000229`; NDM `SRG-APP-000100-NDM-000230`; ASD `APSC-DV-000690`; ASD `APSC-DV-000840` | GUI: Log & Report > System Event | — |
+| Core: Logging | Secret event and video logs (secret access, launches, password views, and password changes) | 1.0.0 | NDM `SRG-APP-000504-NDM-000321`; ASD `APSC-DV-000860`; ASD `APSC-DV-000960`; ASD `APSC-DV-000970`; ASD `APSC-DV-000590`; ASD `APSC-DV-000950` | GUI: Log & Report > Secret Event & Video | — |
+| Core: Logging | SSH logging of all shell commands on SSH secrets | 1.0.0 | NDM `SRG-APP-000101-NDM-000231`; ASD `APSC-DV-001030`; ASD `APSC-DV-000590` | GUI: Secret Settings > SSH Filter Profiles (shell commands logged for every SSH secret) | — |
+| Core: Logging | Local log disk and memory storage | 1.0.0 | NDM `SRG-APP-000357-NDM-000293`; NDM `SRG-APP-000120-NDM-000237` | `config log disk setting`; `set status enable`; `end` | P4 |
+| Core: Logging | Remote syslog server (system and secret logs) | 1.0.0 | NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350`; ASD `APSC-DV-001070`; ASD `APSC-DV-001080` | GUI: Log & Report > Log Settings (Send logs to syslog enabled, with the central log server; in Edit in CLI, mode reliable) | P19 |
+| Core: Logging | FortiAnalyzer logging | 1.0.0 | NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350`; ASD `APSC-DV-001070`; ASD `APSC-DV-001080` | GUI: Network > Fabric Connectors (FortiAnalyzer logging to the central FortiAnalyzer); `config log fortianalyzer setting`; `set status enable`; `set server <FAZ_ADDRESS>`; `end` | P20 |
+| Core: Logging | Email alert settings (critical system, general, and certificate alerts) | 1.0.0 | NDM `SRG-APP-000795-NDM-000130`; NDM `SRG-APP-000360-NDM-000295`; ASD `APSC-DV-001110`; ASD `APSC-DV-003330` | GUI: Log & Report > Email Alert Settings (Enable email notification; Critical System Notification to the SA and ISSO; General: Configuration change and HA status change; Certificate: alerts before expiry) | P17 |
+| Core: Logging | Log permissions in roles (View Logs, View Reports, View Secret Log, and View Secret Video) | 1.0.0 | NDM `SRG-APP-000119-NDM-000236`; NDM `SRG-APP-000120-NDM-000237`; NDM `SRG-APP-000121-NDM-000238`; ASD `APSC-DV-001280`; ASD `APSC-DV-001290`; ASD `APSC-DV-001300` | GUI: User Management > Role (Admin Settings: View Logs, View Reports, and View Secret Launching Video only for auditors and administrators who need them) | — |
+| Core: Logging | Reports (audit reports) | 1.0.0 | ASD `APSC-DV-001180`; ASD `APSC-DV-001140` | GUI: Log & Report > Reports | — |
+| Core: Logging | User monitor and active sessions | 1.0.0 | NDM `SRG-APP-000343-NDM-000289`; ASD `APSC-DV-000850` | GUI: Monitoring > Active Sessions | — |
+| Core: Logging | Debug settings and trace logs | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-000650` | GUI: Log & Report > Debug Settings (Debug disabled except during troubleshooting) | — |
+| Core: Time | System time and NTP (FortiGuard or a custom server, sync interval) | 1.0.0 | NDM `SRG-APP-000920-NDM-000320`; NDM `SRG-APP-000925-NDM-000330`; NDM `SRG-APP-000116-NDM-000234`; NDM `SRG-APP-000374-NDM-000299`; ASD `APSC-DV-001250`; ASD `APSC-DV-001260` | GUI: System > Settings (System time: Set Time NTP; Select Server Custom, with DoD-approved NTP servers configured in the CLI) | P23 |
+| Core: Time | FortiPAM as a local NTP server | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: System > Settings (Setup device as local NTP server: False unless it is needed) | — |
+| Core: SNMP | SNMP v1 and v2c communities | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; NDM `SRG-APP-000395-NDM-000310` | GUI: System > SNMP (no SNMP v1 or v2c communities) | — |
+| Core: SNMP | SNMP v3 users (authentication and privacy) | 1.0.0 | NDM `SRG-APP-000395-NDM-000310`; ASD `APSC-DV-003330` | GUI: System > SNMP (SNMP v3 users with Authentication and Private; SHA256 or stronger; AES or AES256) | P24 |
+| Core: SNMP | SNMP agent system information | 1.0.0 | NDM `SRG-APP-000395-NDM-000310` | `config system snmp sysinfo`; `set status enable`; `end` | P24 |
+| Core: Certificates | Local, CA, and remote certificates, CSRs, and CRLs | 1.0.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; NDM `SRG-APP-000875-NDM-000280`; NDM `SRG-APP-000175-NDM-000262`; ASD `APSC-DV-002300`; ASD `APSC-DV-001840` | GUI: System > Certificates (server certificates from a DoD CA through a CSR; only DoD root and intermediate CA certificates; current DoD CRLs imported) | P7, P8, P9 |
+| Core: Certificates | Self-signed Fortinet_CA_SSL CA for generated certificates | 1.0.0 | NDM `SRG-APP-000516-NDM-000344`; NDM `SRG-APP-000910-NDM-000300`; ASD `APSC-DV-002300` | GUI: System > Certificates (do not use certificates generated by the Fortinet_CA_SSL CA for the GUI) | P7 |
+| Core: Availability | Active-passive HA cluster (up to three units) | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070` | GUI: System > HA (Mode Active-Passive; heartbeat interfaces on a dedicated link; override and device priority set on each unit) | P25 |
+| Core: Availability | HA cluster password | 1.0.0 | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000412-NDM-000331` | `config system ha`; `set password <HA_PASSWORD>`; `end` | P25 |
+| Core: Backup | Manual configuration backup with encryption | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070`; ASD `APSC-DV-002330` | GUI: System > Backup (manual backups from the Admin menu Configuration > Backup with Encryption enabled) | — |
+| Core: Backup | Automatic configuration backup to an FTP, SFTP, HTTP, or HTTPS server | 1.0.0 | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070`; ASD `APSC-DV-002440` | `config system backup`; `set status enable`; `set cipher <PASSWORD>`; `set type change-based`; `set server-type sftp`; `set server-address <STRING>`; `end` | P22 |
+| Core: Backup | Configuration revisions and configuration scripts | 1.0.0 | NDM `SRG-APP-000380-NDM-000304`; NDM `SRG-APP-000516-NDM-000340` | — | — |
+| Core: Firmware | Firmware upload and upgrade (in maintenance mode) | 1.0.0 | NDM `SRG-APP-000457-NDM-000352`; NDM `SRG-APP-001035-NDM-000340`; NDM `SRG-APP-000378-NDM-000302`; ASD `APSC-DV-002630`; ASD `APSC-DV-003240` | GUI: System > Firmware (upgrade to each security release within 30 days); GUI: User Management > Role (Allow Firmware Upgrade & Backups only for the administrators who need it) | P3 |
+| Core: Firmware | FortiPAM and FortiGuard licenses | 1.0.0 | NDM `SRG-APP-001035-NDM-000340`; ASD `APSC-DV-003240` | GUI: System > FortiPAM License | P1, P3 |
+| Core: Secret storage | Private data encryption with a custom key (Secure password storage) | 1.0.0 | NDM `SRG-APP-000171-NDM-000258`; NDM `SRG-APP-000231-NDM-000271`; ASD `APSC-DV-002330`; ASD `APSC-DV-002340`; ASD `APSC-DV-002350` | `config system global`; `set private-data-encryption enable`; `end` | P3, P5, P6 |
+| Core: Secret storage | Trusted Platform Module (TPM) and vTPM storage of the encryption password | 1.0.0 | NDM `SRG-APP-000171-NDM-000258`; ASD `APSC-DV-002350` | `config system global`; `set v-tpm enable`; `end` | P5, P6 |
+| Core: Secret storage | Viewing secret passwords, passphrases, and SSH keys (View Encrypted Information permission) | 1.0.0 | NDM `SRG-APP-000178-NDM-000264`; ASD `APSC-DV-001850`; ASD `APSC-DV-000960` | GUI: User Management > Role (Secret: View Encrypted Information disabled except for the roles that must see clear text) | — |
+| Core: Secrets | Credential vault (secrets for servers, network devices, and web accounts) | 1.0.0 | ASD `APSC-DV-001610`; ASD `APSC-DV-001540`; ASD `APSC-DV-002330` | GUI: Secrets > Secrets | — |
+| Core: Secrets | Secret sharing permissions (user, group, and device tag) | 1.0.0 | ASD `APSC-DV-000470`; ASD `APSC-DV-000460`; NDM `SRG-APP-000329-NDM-000287` | GUI: Secrets > Secrets (Sharing: only the users and groups that need each secret; Owner and Edit permissions kept to a few users) | — |
+| Core: Secrets | Personal and public folders with inherited secret policies | 1.0.0 | ASD `APSC-DV-000470`; ASD `APSC-DV-000460` | GUI: Secrets > Personal Folder | — |
+| Core: Secrets | Secret policies (password changing, session recording, proxy mode, tunnel encryption, checkout, approval, clipboard, and SSH filter) | 1.0.0 | ASD `APSC-DV-000590`; ASD `APSC-DV-000290`; ASD `APSC-DV-002440`; ASD `APSC-DV-000460` | GUI: Secret Settings > Policies (Session Recording, Proxy Mode, Tunnel Encryption, Requires Checkout, and Requires Approval to Launch Secret enabled for privileged secrets) | P4, P32 |
+| Core: Secrets | Session recording of launched secrets | 1.0.0 | ASD `APSC-DV-000590`; ASD `APSC-DV-000840`; NDM `SRG-APP-000080-NDM-000220` | GUI: Secret Settings > Policies (Session Recording: Enable) | P4 |
+| Core: Secrets | Proxy mode and tunnel encryption for launched sessions | 1.0.0 | ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: Secret Settings > Policies (Proxy Mode: Enable; Tunnel Encryption: Enable) | — |
+| Core: Secrets | Check-out and check-in of secrets (exclusive access) | 1.0.0 | ASD `APSC-DV-000290`; ASD `APSC-DV-000590` | GUI: Secret Settings > Policies (Requires Checkout: Enable; Checkin Password Change enabled) | P29 |
+| Core: Secrets | Automatic password changing and verification (password rotation) | 1.0.0 | ASD `APSC-DV-000290` | GUI: Secret Settings > Policies (Automatic Password Changing: Enable, at the organization's rotation interval; Automatic Password Verification: Enable) | P29 |
+| Core: Secrets | Password changers, password policies, and character sets for secrets | 1.0.0 | ASD `APSC-DV-000290` | GUI: Secret Settings > Password Changers | — |
+| Core: Secrets | Approval profiles and approval workflow for secret access | 1.0.0 | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Approval Profile (approvers other than the requester; tiers as required) | — |
+| Core: Secrets | Secret launchers and templates (native and web launchers) | 1.0.0 | ASD `APSC-DV-001500` | GUI: Secret Settings > Launchers (only the launchers in use) | — |
+| Core: Secrets | Jobs and job requests on secrets | 1.0.0 | ASD `APSC-DV-000460`; ASD `APSC-DV-000520` | GUI: Secrets > Jobs | — |
+| Core: Session control | SSH filter profiles (blocked commands and channels) | 1.0.0 | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > SSH Filter Profiles (block channels that are not needed, such as x11, port-forward, tun-forward, and sftp) | — |
+| Core: Session control | Block RDP clipboard | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > Policies (Block Clipboard: Enable where data transfer is not approved) | — |
+| Core: Session control | Antivirus scanning of file transfers | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > AntiVirus | P2 |
+| Core: Session control | Data leak prevention (DLP) sensors for file transfers | 1.0.0 | ASD `APSC-DV-002380` | GUI: Secret Settings > Data Leak Prevention | P2 |
+| Core: Session control | Maximum launching duration for secret sessions | 1.0.0 | ASD `APSC-DV-002000` | GUI: System > Settings (Other: Max Launching Duration set to the organization's limit) | — |
+| Core: ZTNA | ZTNA tags and ZTNA-based access control to FortiPAM and to secrets | 1.0.0 | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: System > ZTNA | P26, P27 |
+| Core: Network | Static routes | 1.0.0 | NDM `SRG-APP-000880-NDM-000290` | GUI: Network > Static Routes (management traffic routed through the management network) | — |
+| Core: Network | DNS settings | 1.0.0 | NDM `SRG-APP-000142-NDM-000245` | GUI: Network > DNS Settings | — |
+| Core: Network | Packet capture | 1.0.0 | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-000960` | GUI: User Management > Role (Network: Packet Capture None except for the administrators who troubleshoot) | — |
+| Core: Platform | Hardware appliances and FortiPAM-VM on KVM and VMware | 1.0.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Core: Platform | FortiClient and the Fortinet Privileged Access Agent browser extension on user endpoints | 1.0.0 | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM 1000G and 3000G hardware platforms | 1.0.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | CLI commands to check the hard disk and RAID status | 1.0.3 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `diagnose system raid status` | — |
+| ZTNA | Simplified ZTNA proxy rule GUI (ZTNA servers and new proxy rules in the CLI only) | 1.1.0 and later | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: System > ZTNA | P26, P27 |
+| Backup | Backup server port, server certificate check, server CA certificate, and connectivity test | 1.1.0 and later | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-002440` | `config system backup`; `set server-type https`; `set server-identity-check enable`; `set ca-cert <CA_CERT>`; `end` | P8, P22 |
+| Session control | DLP sensors, filter rules, and file patterns in the GUI | 1.1.0 and later | ASD `APSC-DV-002380` | GUI: Secret Settings > Data Leak Prevention | P2 |
+| Secrets | Secret GUI updates (template field values, SFTP service toggle, and service toggles for launchers) | 1.1.0 and later | ASD `APSC-DV-001500` | GUI: Secrets > Secrets (Service Setting: only the services in use) | — |
+| Platform | RAID status and disk health commands on FortiPAM 1000G and 3000G | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | `diagnose system disk info` | — |
+| Platform | FortiPAM on Microsoft Hyper-V | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Antivirus and DLP log pages in Log & Report | 1.1.0 and later | ASD `APSC-DV-002380`; NDM `SRG-APP-000095-NDM-000225` | — | — |
+| GUI | General GUI reorganization (folders, requests, approvals, and the Secret Settings menu) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Sending, approving, and denying multiple secret and job requests together | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Client software integrity check for launchers | 1.1.0 and later | ASD `APSC-DV-002770`; NDM `SRG-APP-000131-NDM-000243` | GUI: Secret Settings > Client Software (an entry with the approved version for each launcher) | — |
+| GUI | Secret name shown when editing a secret | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Licensing | Tooltip when the number of users exceeds the licensed seats | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Allowed and blocked addresses for a secret (address filter) | 1.1.0 and later | ASD `APSC-DV-000490`; NDM `SRG-APP-000038-NDM-000213` | GUI: Secrets > Secrets (Address Filter: an allowlist of the approved target addresses) | — |
+| Platform | FortiPAM on Microsoft Azure | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | TOTP settings for secrets whose targets require TOTP | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Target Only secret template (user-specific login to a credential-less target) | 1.1.0 and later | ASD `APSC-DV-001540`; ASD `APSC-DV-001610` | GUI: Secret Settings > Templates | — |
+| Launchers and templates | Editable Launcher pane in default secret templates | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | User and group permissions on secret templates | 1.1.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Templates (template access limited to the users and groups that need it) | — |
+| Launchers and templates | New default secret templates (Cisco XR Router, ESXi Server, Database Server, and others) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | New default launchers (MySQL CLI, Microsoft SQL CLI, MySQL Shell, PostgreSQL CLI, SSH CLI, SecureCRT, and others) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secret Settings > Launchers (remove launchers that are not used) | — |
+| Logging | Debug log download and the trace logs tool in the GUI | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Log & Report > Debug Settings (Debug disabled except during troubleshooting) | — |
+| GUI | Only enabled users listed by default | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Secret video download | 1.1.0 and later | ASD `APSC-DV-001280` | GUI: User Management > Role (View Secret Launching Video only for auditors) | — |
+| Approvals | Timer showing the remaining access time of an approved request | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Token ID for SSH logs and links to the secret log and video | 1.1.0 and later | ASD `APSC-DV-001030`; NDM `SRG-APP-000101-NDM-000231` | — | — |
+| Secrets | Job status column | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | New default password changers (Cisco XR Router and ESXi) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Customized user role type | 1.1.0 and later | NDM `SRG-APP-000033-NDM-000212`; NDM `SRG-APP-000329-NDM-000287`; ASD `APSC-DV-000460` | GUI: User Management > Role (custom roles with only the pages each user needs) | — |
+| Logging | Critical system and general email alerts for each user | 1.1.0 and later | NDM `SRG-APP-000795-NDM-000130`; ASD `APSC-DV-001110` | GUI: User Management > User List (Critical System Email Alert enabled for the SA and ISSO accounts) | P17 |
+| ZTNA | ZTNA-based access control for folders | 1.1.0 and later | NDM `SRG-APP-000038-NDM-000213`; ASD `APSC-DV-000490` | GUI: Secrets > Personal Folder (ZTNA Control with device tags where endpoint posture is required) | P26, P27 |
+| Users and authentication | Default everyone user group | 1.1.0 and later | ASD `APSC-DV-000460` | GUI: User Management > User Groups (do not grant secret permissions to the everyone group) | — |
+| Secrets | Cloning secret policies | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | System settings divided into General and Advanced tabs (Admin Session Timeout renamed User Session Timeout) | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| System | Test email service | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | Login disclaimer in the GUI, with the last successful login | 1.1.0 and later | NDM `SRG-APP-000068-NDM-000215`; NDM `SRG-APP-000069-NDM-000216`; ASD `APSC-DV-000550`; ASD `APSC-DV-000560`; ASD `APSC-DV-000580` | GUI: System > Settings (Other General Settings, Login Disclaimer: enabled, with the Standard Mandatory DoD Notice and Consent Banner); `config system global`; `set post-login-banner enable`; `end` | — |
+| Secrets | Display number and custom port for the VNC service | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Bypass of the request and approval process by secret owners | 1.1.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Policies (Bypass Approval: Disable for privileged secrets) | — |
+| Logging | Automation triggers on event logs (CLI) | 1.1.0 and later | ASD `APSC-DV-000380`; ASD `APSC-DV-000390`; ASD `APSC-DV-000400`; ASD `APSC-DV-000410`; ASD `APSC-DV-000430`; NDM `SRG-APP-000795-NDM-000130` | GUI: Log & Report > Automation (stitches that email the SA and ISSO on account creation, change, disabling, enabling, and removal events) | P17 |
+| Licensing | Email alerts for license expiry | 1.1.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Log & Report > Email Alert Settings | — |
+| Secrets | Secure import of secrets with an encrypted secret upload template | 1.1.0 and later | ASD `APSC-DV-002330` | GUI: Secrets > Secrets (encrypt the secret upload template; delete the file after import) | — |
+| Session control | Secret launching rate control against DoS attacks | 1.1.2 and later | ASD `APSC-DV-002400`; NDM `SRG-APP-000435-NDM-000315` | — | — |
+| Session control | DLP filter rule shows the filter type | 1.1.2 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Secret last launch time column | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Sponsored groups and the sponsor admin role | 1.2.0 and later | NDM `SRG-APP-000033-NDM-000212`; ASD `APSC-DV-000460` | GUI: User Management > Sponsored Groups (sponsor admins only where delegated user management is approved) | — |
+| Secrets | Secret targets created separately, with mandatory classification tags | 1.2.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Targets | — |
+| Password changing | Regular expressions for the expect string in password changing procedures | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | AntiVirus and DLP profile access control in roles | 1.2.0 and later | NDM `SRG-APP-000033-NDM-000212`; ASD `APSC-DV-001410` | GUI: User Management > Role | — |
+| Launchers and templates | New launchers (HeidiSQL, SSMS, MobaXterm, Xshell), templates, and the ESXi Web password changer | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secret Settings > Launchers (remove launchers that are not used) | — |
+| GUI | Favorite secrets page | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | RDP event filter profiles (logs of events during RDP sessions) | 1.2.0 and later | ASD `APSC-DV-000840`; ASD `APSC-DV-000590` | GUI: Secret Settings > RDP Event Filter Profile | P30 |
+| Licensing | Stackable seat license for hardware models | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | System settings GUI reorganization and the Live Recording option | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM on Google Cloud Platform (GCP) | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Minimum SSL/TLS version and port for the LDAPS password changer and verification | 1.2.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001750` | `config secret target`; `edit <TARGET_NAME>`; `set ldaps-min-ssl-version TLSv1.2`; `next`; `end` | P29 |
+| Secrets | Button to generate a secret password from the password policy | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Bypass of the SSH command filter by secret owners | 1.2.0 and later | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > Policies (Bypass For Owner disabled for the SSH filter) | — |
+| Logging | User location and source location in the user monitor and active sessions | 1.2.0 and later | NDM `SRG-APP-000097-NDM-000227`; ASD `APSC-DV-000690` | — | — |
+| Logging | Report layout customization in the GUI | 1.2.0 and later | ASD `APSC-DV-001180` | GUI: Log & Report > Reports | — |
+| Logging | Secret access audit report | 1.2.0 and later | ASD `APSC-DV-001180`; ASD `APSC-DV-000860` | GUI: Log & Report > Reports | — |
+| Users and authentication | User group permissions | 1.2.0 and later | ASD `APSC-DV-000460` | GUI: User Management > User Groups | — |
+| Platform | FortiPAM on Amazon Web Services (AWS) | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Logs stored on FortiAnalyzer, with the upload interval | 1.2.0 and later | ASD `APSC-DV-001070`; ASD `APSC-DV-001080`; NDM `SRG-APP-000515-NDM-000325` | GUI: Network > Fabric Connectors (FortiAnalyzer upload in real time) | P20 |
+| Session control | FortiPAM web proxy for browser extension launches (no credentials delivered to the client) | 1.2.0 and later | ASD `APSC-DV-002330`; ASD `APSC-DV-002440` | GUI: Network > Interfaces (Explicit Web Proxy only on one interface, only when web launches use it) | P28 |
+| Management access | Last failed login time in the disclaimer | 1.2.0 and later | ASD `APSC-DV-000580` | — | — |
+| GUI | Description column in the secret list | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Deauthenticating a user and disconnecting launched secret sessions | 1.2.0 and later | ASD `APSC-DV-001800`; ASD `APSC-DV-002000` | GUI: Monitoring > User Monitor (Terminate: Deauthenticate & Disconnect for users being removed) | — |
+| Certificates | Download button for the web proxy CA certificate | 1.2.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | Concurrent log-on option for a user account | 1.2.0 and later | NDM `SRG-APP-000001-NDM-000200`; ASD `APSC-DV-000010` | GUI: System > Settings (Concurrent Log-on: Disable); `config system global`; `set admin-concurrent disable`; `end` | — |
+| Users and authentication | View Secret Log and View Secret Video permissions in roles | 1.2.0 and later | ASD `APSC-DV-001280`; NDM `SRG-APP-000121-NDM-000238` | GUI: User Management > Role | — |
+| Session control | Over-the-shoulder monitoring (live recording) | 1.2.0 and later | ASD `APSC-DV-000590`; ASD `APSC-DV-000840` | GUI: System > Settings (Live Recording enabled where live monitoring is required) | P4 |
+| Network and gateways | Distributed architecture with network gateways (FortiPAM, FortiGate, or FortiProxy) | 1.3.0 and later | NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-002440` | GUI: Network > Secret Gateway | P31 |
+| Users and authentication | Two-factor authentication status column in the user list | 1.3.0 and later | NDM `SRG-APP-000820-NDM-000170`; ASD `APSC-DV-001550` | — | — |
+| Users and authentication | Automated remote user provisioning with auto provision rules | 1.3.0 and later | ASD `APSC-DV-000330`; NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > Auto Provision Rules (rules that map only approved remote groups to roles) | P14 |
+| ZTNA | Inherited ZTNA control settings shown for subfolders | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | vTPM for FortiPAM on GCP | 1.3.0 and later | ASD `APSC-DV-002350` | `config system global`; `set v-tpm enable`; `end` | P5, P6 |
+| Logging | Log export as JSON and CSV files | 1.3.0 and later | ASD `APSC-DV-001180` | — | — |
+| Launchers and templates | Web Telnet launcher | 1.3.0 and later | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-001500` | GUI: Secret Settings > Launchers (Telnet launchers only where the target supports nothing else, with Tunnel Encryption) | — |
+| Secrets | Password visible only to the user checking out the secret | 1.3.0 and later | ASD `APSC-DV-000290`; ASD `APSC-DV-001850` | GUI: Secret Settings > Policies (Requires Checkout: Enable) | — |
+| Users and authentication | Import of remote LDAP users | 1.3.0 and later | NDM `SRG-APP-000516-NDM-000336` | GUI: User Management > User List | P11 |
+| Users and authentication | Remote server option when creating a remote user | 1.3.0 and later | NDM `SRG-APP-000516-NDM-000336` | — | — |
+| Management access | Replacement messages (login page, login token page, post-login disclaimer, and DLP pages) | 1.3.0 and later | NDM `SRG-APP-000068-NDM-000215`; ASD `APSC-DV-000550` | GUI: System > Replacement Messages (Login Page: add the Standard Mandatory DoD Notice and Consent Banner text) | — |
+| Users and authentication | User deletion with transfer of owned resources | 1.3.0 and later | ASD `APSC-DV-000370`; ASD `APSC-DV-000330` | GUI: User Management > User List | — |
+| Approvals | Minimum secret permission for approvers | 1.3.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile | — |
+| Approvals | Email notification to approver groups | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| System | Sender address for all emails | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Log and video disk encryption | 1.3.0 and later | ASD `APSC-DV-001280`; ASD `APSC-DV-001290`; ASD `APSC-DV-002350`; NDM `SRG-APP-000119-NDM-000236` | `config system maintenance`; `set mode enable`; `end`; `execute disk encryption enable` | P3, P4, P6 |
+| Approvals | Immediate secret access on approval (Start Upon Approval) | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Requester and approver time zones | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Secret creation time column | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Customized email templates for secret requests | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | RDP auto TOTP delivery for the FortiAuthenticator agent | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Auto discovery of accounts and resources (Secret Discovery permission) | 1.3.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Discovery | — |
+| Platform | Increased secret capacity | 1.3.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Dependency updater for service account credentials | 1.3.0 and later | ASD `APSC-DV-000290` | GUI: Secret Settings > Dependency Updater | P30 |
+| Logging | Service account logs and new secret log columns | 1.3.0 and later | NDM `SRG-APP-000097-NDM-000227`; ASD `APSC-DV-000950` | — | — |
+| Network and gateways | Reverse gateway mode for distributed architecture | 1.4.0 and later | NDM `SRG-APP-000880-NDM-000290`; ASD `APSC-DV-002440` | GUI: Network > Secret Gateway | P31 |
+| Secrets | Launching a target with associated secret credentials on all launchers | 1.4.0 and later | ASD `APSC-DV-001610` | — | — |
+| Password changing | Maximum credential history in a template | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Active launch monitor replaces the active session monitor | 1.4.0 and later | NDM `SRG-APP-000343-NDM-000289` | GUI: Monitoring > Active Sessions | — |
+| Secrets | Warning for duplicated credentials | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Launcher (service) permissions in secrets | 1.4.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000470` | GUI: Secrets > Secrets (each user granted only the launchers they need) | — |
+| Launchers and templates | Microsoft SQL, MySQL, and PostgreSQL secret templates | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Full folder path display | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Website login with TOTP and exact auto filling in the web extension | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | FortiProduct (Web) template and Web API password changer for FortiGate and FortiProxy | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Block copy for web-based launchers | 1.4.0 and later | ASD `APSC-DV-002380` | GUI: Secret Settings > Policies (Block Clipboard: Enable) | — |
+| Session control | Ctrl+C and Ctrl+V in Web RDP sessions | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Certificate Vault template (certificates and private keys as secrets, with expiry monitoring) | 1.4.0 and later | ASD `APSC-DV-002330` | — | — |
+| Session control | SSH filter Allow mode (allow listed commands, deny the rest) | 1.4.0 and later | ASD `APSC-DV-000500`; ASD `APSC-DV-001030` | GUI: Secret Settings > SSH Filter Profiles (Allow mode for targets where the permitted commands are known) | — |
+| Integration | Ansible lookup plugin for API users | 1.4.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > User List (API users only for approved automation, with the narrowest role) | — |
+| Logging | SQL Server Management Studio (SSMS) monitoring and logging | 1.4.0 and later | ASD `APSC-DV-000960`; ASD `APSC-DV-001030` | GUI: Secrets > Targets (SQL Log enabled for Microsoft SQL targets) | — |
+| GUI | Launcher buttons shown as icons | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Privileged account display for a target | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | System time watermark on session videos | 1.4.0 and later | ASD `APSC-DV-000590`; NDM `SRG-APP-000096-NDM-000226` | GUI: System > Settings (Video Time Watermark enabled) | P4 |
+| Approvals | Approval links in approval request emails, with an expiry time | 1.4.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (Approval Link Expiry Time short, or approval links not used) | — |
+| Approvals | Custom fields such as a ticket number in secret requests | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Web Telnet service setting in secrets | 1.4.0 and later | NDM `SRG-APP-000142-NDM-000245`; ASD `APSC-DV-001500` | GUI: Secrets > Secrets (Telnet service disabled unless the target supports nothing else) | — |
+| Session control | Windows application filter on Windows targets | 1.4.0 and later | ASD `APSC-DV-000500` | GUI: Secret Settings > Windows App Control | P30 |
+| Session control | Launching sessions terminated at the end of a user's login schedule | 1.4.0 and later | ASD `APSC-DV-002000`; ASD `APSC-DV-000490` | GUI: User Management > Schedule (Terminate Launching Session: True) | — |
+| Secrets | Secret import matched to existing targets | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Creation time column for user groups and sponsored groups | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | Single login per user (Concurrent Log-on disabled) | 1.4.0 and later | NDM `SRG-APP-000001-NDM-000200`; ASD `APSC-DV-000010` | GUI: System > Settings (Concurrent Log-on: Disable) | — |
+| Backup | Automatic backup of the in-use configuration before a restore | 1.4.0 and later | NDM `SRG-APP-000516-NDM-000340`; ASD `APSC-DV-003070` | — | — |
+| Secret storage | AES-256 protection of passwords and keys | 1.4.0 and later | ASD `APSC-DV-002350`; NDM `SRG-APP-000171-NDM-000258` | — | — |
+| Backup | FTP backup and restore of video and log files | 1.4.0 and later | ASD `APSC-DV-001340` | — | — |
+| Logging | Filters in the report layout | 1.4.0 and later | ASD `APSC-DV-001140`; ASD `APSC-DV-001180` | — | — |
+| Network | Network interface GUI refactor (Access column and Service Access Setting pane) | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | GUI warnings for log and video disk failure | 1.4.0 and later | ASD `APSC-DV-001110`; NDM `SRG-APP-000360-NDM-000295` | — | — |
+| Certificates | ACME and Let's Encrypt certificates | 1.4.0 and later | NDM `SRG-APP-000516-NDM-000344`; ASD `APSC-DV-002300` | GUI: System > Certificates (do not use Let's Encrypt certificates on DoD networks; use DoD-issued certificates) | P7 |
+| Logging | Automation stitches for email notifications (nine default stitches) | 1.4.0 and later | ASD `APSC-DV-000380`; ASD `APSC-DV-000390`; ASD `APSC-DV-000400`; ASD `APSC-DV-000410`; ASD `APSC-DV-000430`; NDM `SRG-APP-000795-NDM-000130` | GUI: Log & Report > Automation (stitches for account events and secret activity, emailing the SA and ISSO) | P17 |
+| Users and authentication | FortiToken Cloud trial | 1.4.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| System | Private data, vTPM, and disk encryption status in the banner and System > Settings | 1.4.0 and later | ASD `APSC-DV-002350` | GUI: System > Settings (Security: check Private Data Encryption, Virtual TPM, and Disk Encryption) | — |
+| Logging | Log and video disk usage charts | 1.4.0 and later | ASD `APSC-DV-001090`; NDM `SRG-APP-000357-NDM-000293` | GUI: Log & Report > Disk Usage | P4 |
+| Network and gateways | Service gateway mode | 1.5.0 and later | NDM `SRG-APP-000880-NDM-000290` | GUI: Network > Secret Gateway | P31 |
+| Session control | Agentless mode for web-based secret launch | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Secret event subscription (email notifications of secret events) | 1.5.0 and later | ASD `APSC-DV-000860` | — | — |
+| Launchers and templates | New default templates (Azure Credential, Azure AD Account, VNC Server, and others) and a password changer | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | RealVNC Viewer launcher | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Launchers for multiple operating systems | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Launcher start-up timeout | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Certificate authentication for SSH launches | 1.5.0 and later | ASD `APSC-DV-001810` | — | — |
+| Approvals | Approval by replying to the approval request email | 1.5.0 and later | ASD `APSC-DV-000460` | GUI: System > Settings (Approval Email Server only if email approval is approved) | P18 |
+| GUI | Secret creation tabs for remote servers and stored certificates or files | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Network and gateways | Health checks for forward gateways | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | RPC parameter in the SQL Server session log | 1.5.0 and later | ASD `APSC-DV-000960` | — | — |
+| Password changing | Web API password changer type with web changers and verifiers | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | HTTP PATCH method for the Web API password changer | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Force checkout after an idle time | 1.5.0 and later | ASD `APSC-DV-000290` | GUI: Secret Settings > Policies (Force Checkout Idle time set to the organization's limit) | — |
+| Logging | Configuration, login, and secret access logs on the user details page | 1.5.0 and later | ASD `APSC-DV-000830`; ASD `APSC-DV-000860` | — | — |
+| Users and authentication | Third-party authenticators for user two-factor authentication | 1.5.0 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > User List (Third-Party Authenticator only where FortiToken is not used) | — |
+| Management access | User profile menu (last login time, last login IP, and last failed login) | 1.5.0 and later | ASD `APSC-DV-000580` | — | — |
+| Users and authentication | A user's related secrets and secret logs | 1.5.0 and later | ASD `APSC-DV-000460` | — | — |
+| GUI | Multiple language support | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Session videos sent to external storage through SFTP | 1.5.0 and later | ASD `APSC-DV-001340`; ASD `APSC-DV-001070` | `config secret remote-storage`; `set status enable`; `set server <SERVER>`; `end` | P21 |
+| Session control | PAC file for the browser extension | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Graphical view in Log & Report | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Licensing | Floating license (VM) | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| System | Setup wizard | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Integration | Terraform provider | 1.5.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > User List (API users only for approved automation) | — |
+| Platform | FortiPAM on Alibaba Cloud | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM on Proxmox | 1.5.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Maximum request duration in approval profiles | 1.6.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (Maximum Request Duration set to the organization's limit) | — |
+| Password changing | vCenter template and Web API password changer | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Unidirectional file transmission control | 1.6.0 and later | ASD `APSC-DV-002380` | GUI: Secrets > Secrets (file transfer only in the approved direction) | — |
+| Approvals | Request exemption on schedule | 1.6.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile (request exemptions only when approved) | — |
+| Password changing | Renamed FortiProduct templates and password changers | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Key-value pair vault | 1.6.0 and later | ASD `APSC-DV-002330` | — | — |
+| Secrets | Smart association (account prefix with the logged-in username) | 1.6.0 and later | ASD `APSC-DV-001540` | — | — |
+| Secrets | Web Launcher access for users with View permission | 1.6.0 and later | ASD `APSC-DV-000460` | — | — |
+| GUI | Secret template selection page | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Initialization commands in proxy and non-proxy mode | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Password reconciliation for Windows AD over LDAPS | 1.6.0 and later | ASD `APSC-DV-000290`; ASD `APSC-DV-002440` | — | — |
+| Secrets | Unix and FortiOS discovery | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: Secrets > Discovery | — |
+| Network and gateways | Web Launcher through a service gateway | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | File storage in secrets | 1.6.0 and later | ASD `APSC-DV-002330`; ASD `APSC-DV-002380` | GUI: System > Settings (File Setting: Maximum File Size and Block File With No Extension) | — |
+| Users and authentication | One-time invitation of external users to a secret | 1.6.0 and later | ASD `APSC-DV-000300`; ASD `APSC-DV-001870` | GUI: Monitoring (Invited Users tab: revoke invitations that are no longer needed) | — |
+| Integration | JSON Web Token (JWT) integration with DevOps platforms | 1.6.0 and later | NDM `SRG-APP-000340-NDM-000288`; ASD `APSC-DV-001540` | GUI: User Management > JWT Key Management | — |
+| Users and authentication | Simplified interface for guest and invited users | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Italian language | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Certificates | Custom CA certificate for the web proxy | 1.6.0 and later | ASD `APSC-DV-002300`; NDM `SRG-APP-000910-NDM-000300` | GUI: Network > Interfaces (Explicit Web Proxy, CA Certificate: an organization CA) | — |
+| Logging | FortiAnalyzer Cloud logging | 1.6.0 and later | ASD `APSC-DV-001070` | GUI: Network > Fabric Connectors | P20 |
+| Logging | Copy the location of a video stored remotely | 1.6.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Secret configuration page (Settings, Sharing, and Audit tabs) | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | MobaXterm-sftp launcher | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Antivirus and DLP for secret file uploads | 1.7.0 and later | ASD `APSC-DV-002380` | GUI: Secrets > Secrets (Antivirus Scan and DLP Status enabled for File secrets) | P2 |
+| Launchers and templates | Configurable SSH terminal types | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Default maximum delay for the password changer increased | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | SSH algorithm negotiation strength for secrets and policies | 1.7.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001940` | GUI: Secret Settings > Policies (SSH Algorithm Negotiation: high-encryption) | — |
+| Secrets | Target auto match and creation | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Native RDP connection diagnostics | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | PAN-OS and SSH Password For Root (Unix) password changers | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Network and gateways | Targets with the same IP address behind different gateways | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Discovery auto-onboarding for Windows AD | 1.7.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Discovery (auto-onboarding rules that place accounts in folders with the right policy) | — |
+| Launchers and templates | OT application launchers (TIA Portal) | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Web Launcher renamed Web Browsing | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | FortiClient script commands, multiprocess mode, and full-screen recording | 1.7.0 and later | ASD `APSC-DV-000590` | — | — |
+| Launchers and templates | Radmin launcher | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | Restricting a user to console login only | 1.7.0 and later | NDM `SRG-APP-000408-NDM-000314` | `config system admin`; `edit <USERNAME>`; `set login-restriction-console enable`; `next`; `end` | — |
+| Users and authentication | JWT user type | 1.7.0 and later | NDM `SRG-APP-000340-NDM-000288` | GUI: User Management > JWT Key Management (Lease Duration short) | — |
+| Platform | Up to 3000 users on FortiPAM 1000G | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | Export of session videos in playable webm format | 1.7.0 and later | ASD `APSC-DV-001340` | — | — |
+| Logging | SSH log entries linked to the video timestamp | 1.7.0 and later | ASD `APSC-DV-001030`; ASD `APSC-DV-000590` | — | — |
+| Logging | Secret ID, folder ID, and folder path in secret audit reports | 1.7.0 and later | ASD `APSC-DV-001180` | — | — |
+| Management access | Single global minimum TLS version (System > Settings), per interface, and per SQL target | 1.7.0 and later | NDM `SRG-APP-000412-NDM-000331`; NDM `SRG-APP-000411-NDM-000330`; ASD `APSC-DV-002440`; ASD `APSC-DV-001950` | GUI: System > Settings (Security, Minimum SSL Version: TLSv1-2 or TLSv1-3) | — |
+| Logging | Video access audit logs | 1.7.0 and later | ASD `APSC-DV-001280`; ASD `APSC-DV-000860` | — | — |
+| Launchers and templates | Browser extension download from Client Software | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM on Nutanix | 1.7.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Custom resolution for Web RDP | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | RDP connection failure diagnosis for end users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| GUI | Folder edit refactor | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Logging | DLP log, antivirus log, and requests and jobs tabs on the secret edit page | 1.8.0 and later | ASD `APSC-DV-000860` | — | — |
+| Password changing | Secret password expiry notification | 1.8.0 and later | ASD `APSC-DV-000290` | GUI: System > Settings (Secret Password Expiration Notification) | — |
+| Password changing | Credential replacement for Siemens TIA Portal Cloud | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Web API password changer CSRF token extraction and multi-layer JSON bodies | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | SSH password changer for FortiOS 7.6.3 and higher | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | New line mode for SSH script jobs | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | PowerShell jobs | 1.8.0 and later | ASD `APSC-DV-000520` | — | — |
+| ZTNA | Service Address field type for multiple ZTNA tunnels | 1.8.0 and later | NDM `SRG-APP-000038-NDM-000213` | — | — |
+| Users and authentication | Regular expression match for JWT users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Concurrent secret launch limit (global and per user) | 1.8.0 and later | ASD `APSC-DV-002400`; NDM `SRG-APP-000435-NDM-000315` | GUI: System > Settings (Max Launched Sessions set to the organization's limit) | — |
+| Users and authentication | Email address and display name for auto-provisioned SAML users | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | User SSO cache (last-selected SSO provider) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Signed SAML assertion and response required | 1.8.0 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000156-NDM-000250` | `config user saml`; `edit <NAME>`; `set require-signed-resp-and-asrt enable`; `next`; `end` | P12 |
+| System | Proxy FQDN for request email notifications | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Invited users page and invitation revocation | 1.8.0 and later | ASD `APSC-DV-000300` | GUI: Monitoring (Invited Users tab) | — |
+| Licensing | Concurrent logon licensing (VM) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Automatic disabling of inactive auto-provisioned remote users | 1.8.0 and later | ASD `APSC-DV-000320`; ASD `APSC-DV-000330` | GUI: System > Settings (Provisioned User Auto-purging, User Max Inactivity Days: 35) | — |
+| Management access | Allowed roles for the GUI portal of each interface | 1.8.0 and later | NDM `SRG-APP-000408-NDM-000314`; NDM `SRG-APP-000880-NDM-000290` | `config system interface`; `edit <PORT>`; `set gui-access-role <ROLES>`; `next`; `end` | — |
+| Logging | Key-based SFTP authentication for remote video storage | 1.8.0 and later | ASD `APSC-DV-001340` | GUI: System > Backup (Remote Video Storage, Authentication Method: Keypair) | P21 |
+| Backup | Key-based SFTP authentication for automatic backup | 1.8.0 and later | NDM `SRG-APP-000516-NDM-000340` | GUI: System > Backup (Configuration Backup, Authentication Method: Keypair) | P22 |
+| Logging | Session close logs and other secret log enhancements | 1.8.0 and later | ASD `APSC-DV-000850` | — | — |
+| Logging | System and secret logs pushed to the syslog server | 1.8.0 and later | ASD `APSC-DV-001070`; ASD `APSC-DV-001080`; NDM `SRG-APP-000515-NDM-000325`; NDM `SRG-APP-000516-NDM-000350` | GUI: Log & Report > Log Settings (Send logs to syslog enabled) | P19 |
+| Platform | FortiPAM 1100G hardware model | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiSRA consolidated into FortiPAM | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM on Oracle Cloud Infrastructure (OCI) | 1.8.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | TCP forwarding for native RDP launches | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Launcher privilege (user or system level) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Kerberos authentication for native RDP sessions | 1.9.0 and later | ASD `APSC-DV-002440` | — | — |
+| Network and gateways | Viewer and Owner permissions for secret gateways | 1.9.0 and later | ASD `APSC-DV-000460` | GUI: Network > Secret Gateway | P31 |
+| Approvals | Approval email server using Microsoft Graph | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Just-in-time (JIT) privilege through checkout and check-in PowerShell scripts | 1.9.0 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secrets > JIT Script | P30 |
+| Secrets | Additional authentication to access or launch secrets | 1.9.0 and later | ASD `APSC-DV-001520` | GUI: Secret Settings > Policies (Access Authentication: Enable for privileged secrets; Bypass For Owner disabled) | — |
+| Network and gateways | Secret gateway chaining | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Launcher process matcher | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | One secret for multiple approved target hosts | 1.9.0 and later | ASD `APSC-DV-000490` | — | — |
+| Approvals | Revoking approved secret access requests | 1.9.0 and later | ASD `APSC-DV-000460` | GUI: Secrets > Approvals | — |
+| Session control | Load balancing information for Web RDP targets | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Email address and display name for auto-provisioned LDAP users | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | Non-TOTP two-factor challenges in WebSSH | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | Wildcard remote users | 1.9.0 and later | ASD `APSC-DV-001540` | GUI: User Management > User List (no wildcard users for administrator roles) | — |
+| Users and authentication | SCIM service for identity lifecycle management | 1.9.0 and later | ASD `APSC-DV-000330`; NDM `SRG-APP-000142-NDM-000245` | GUI: User Management > SCIM Service | P12, P15 |
+| Users and authentication | Message-Authenticator for RADIUS | 1.9.0 and later | NDM `SRG-APP-000516-NDM-000336`; NDM `SRG-APP-000156-NDM-000250` | `config user radius`; `edit <SERVER>`; `set require-message-authenticator enable`; `next`; `end` | P13 |
+| Users and authentication | Automatic purging of disabled auto-provisioned users | 1.9.0 and later | ASD `APSC-DV-000330` | GUI: System > Settings (Provisioned User Auto-purging, User Max Disabled Days) | — |
+| Secrets | Guest instructions (instruction profiles) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | GUI: System > Settings (Guest Instruction Feature disabled unless used) | — |
+| Availability | FortiPAM-VM active-passive HA on OCI | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM 400G hardware model | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Platform | FortiPAM 100G hardware model (gateway only) | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Management access | New login page with clear-text password view during entry | 1.9.0 and later | NDM `SRG-APP-000178-NDM-000264`; ASD `APSC-DV-001850` | — | — |
+| Network | TCP segmentation offload and generic segmentation offload | 1.9.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Oracle SQL Developer launcher | 1.9.1 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Approvals | Blocking self approval | 1.9.1 and later | ASD `APSC-DV-000460`; ASD `APSC-DV-000500` | GUI: Secret Settings > Approval Profile (Self Approval disabled) | — |
+| Secrets | Enforce launching with SSO (the user's own credentials) | 7.0.0 and later | ASD `APSC-DV-001540`; ASD `APSC-DV-001610` | GUI: Secret Settings > Templates (Enforce launching with SSO for domain targets) | — |
+| Secrets | JIT scripts in the secret request approval workflow | 7.0.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Approval Profile | P30 |
+| Session control | Windows Remote App | 7.0.0 and later | ASD `APSC-DV-000460` | GUI: Secret Settings > Windows App Control | P30 |
+| Launchers and templates | SSMS-stable launcher with Windows authentication | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Password changing | Web API password changer for FortiOS 7.6.3 and higher | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Secrets | Associated secrets in the secret upload template | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Session control | SSH host key verification | 7.0.0 and later | ASD `APSC-DV-002440`; ASD `APSC-DV-001940` | — | — |
+| Password changing | Visual graph editor for SSH password changers and verifiers | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Launchers and templates | Portable Agent (standalone launch client) | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | SAML metadata import and export | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | LDAP servers through a gateway | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Users and authentication | User certificate authentication for FortiPAM login | 7.0.0 and later | NDM `SRG-APP-000149-NDM-000247`; NDM `SRG-APP-000177-NDM-000263`; NDM `SRG-APP-000175-NDM-000262`; ASD `APSC-DV-001560`; ASD `APSC-DV-001570`; ASD `APSC-DV-001810`; ASD `APSC-DV-001830` | GUI: User Management > Authentication Settings (Enable Certificate Authentication; CA Certificate: DoD root and intermediate CAs); GUI: User Management > User List (Certificate Authentication enabled for each user) | P8, P10 |
+| Users and authentication | FIDO2 (WebAuthn) passkey sign-in for local users | 7.0.0 and later | NDM `SRG-APP-000820-NDM-000170`; NDM `SRG-APP-000156-NDM-000250`; ASD `APSC-DV-001550` | GUI: User Management > User List (Passkey only for approved local users) | P7 |
+| Users and authentication | RADIUS server page redesign and credential test | 7.0.0 and later | No direct requirement; if unused, disable (NDM `SRG-APP-000142-NDM-000245`) | — | — |
+| Firmware | Dual-signed firmware images | 7.0.0 and later | NDM `SRG-APP-000131-NDM-000243`; ASD `APSC-DV-001430` | — | — |
+| ZTNA | Custom CA for ZTNA EMS certificates | 7.0.0 and later | NDM `SRG-APP-000910-NDM-000300`; ASD `APSC-DV-002300` | — | — |
+| Logging | Secret gateway events | 7.0.0 and later | NDM `SRG-APP-000095-NDM-000225` | GUI: Log & Report > Network Event | — |
+| Management access | Periodic checks for unauthorized configuration changes | 7.0.0 and later | ASD `APSC-DV-002770`; NDM `SRG-APP-000795-NDM-000130` | `config system global`; `set config-period-check enable`; `end` | — |
 
 ### Requirement reference
 

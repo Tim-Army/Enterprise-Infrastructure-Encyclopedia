@@ -5301,7 +5301,10 @@
     "CALLC",
     "memberof",
     "fortitokenmobile",
-    "Safenet"
+    "Safenet",
+    "FCLL",
+    "AVDB",
+    "selftest"
   ],
   "ignorePaths": [
     "node_modules/**",
