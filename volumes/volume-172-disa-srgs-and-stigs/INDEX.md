@@ -4,6 +4,7 @@ Alphabetized topical index for **Volume CLXXII — DISA SRGs and STIGs**.
 See also the [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
+- **/srg-mapping-for command (how the vendor chapters are built)** — [Chapter 39](chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md)
 - **AAA Services SRG applied to an authentication server** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 23](chapters/23-fortiauthenticator-feature-version-and-srg-map.md)
 - **Account of last resort** — [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **Agentless Application Gateway (AAG) and the VPN SRG** — [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
@@ -113,6 +114,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **PPSM Category Assurance List** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md)
 - **Privileged access management (PAM) assessment** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 24](chapters/24-fortipam-feature-version-and-srg-map.md)
 - **Quarterly release cycle and sunset STIGs** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md)
+- **Registration and check scripts (register.py, check.sh, stigs.py)** — [Chapter 39](chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md)
 - **Risk Management Framework (RMF)** — [Chapter 01](chapters/01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md), [Chapter 09](chapters/09-running-a-stig-compliance-program.md)
 - **Router and Firewall SRGs** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **SCAP benchmark versus manual STIG** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 04](chapters/04-stig-tooling-stig-viewer-checklists-and-scap-scanning.md)

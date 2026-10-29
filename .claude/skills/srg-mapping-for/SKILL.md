@@ -23,6 +23,16 @@ Paths used below:
 
 The argument is the vendor name. If it is missing, ask for it.
 
+## Keep Chapter 39 current
+
+`VOL/chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md`
+explains this command step by step. Whenever this skill, a playbook, a helper
+script, or `scripts/python/export_srg_tables.py` changes, or a change is made
+to the volume's map or crosswalk chapters outside this workflow (list it under
+"Changes made outside the command"), update Chapter 39 in the same commit.
+Also update its model-chapter ranges when new vendor, product, or crosswalk
+chapters are added.
+
 ## What the workflow produces
 
 1. **A vendor overview chapter** (model: Chapter 10 for a vendor with few

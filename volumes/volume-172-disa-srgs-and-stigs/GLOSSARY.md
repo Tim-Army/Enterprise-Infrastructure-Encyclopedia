@@ -24,6 +24,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
 - **Comply-to-Connect (C2C)** — the DoD network access control program whose steps the Cisco ISE NAC STIG rules reference.
 - **Control plane policing (CoPP)** — an IOS XE QoS policy attached to the control plane that rate-limits traffic to the route processor by class; routers attach an MQC policy with `control-plane` and `service-policy input`, while Catalyst 9000 switches apply `cpp system-default`.
+- **Coordinator** — In this volume's build workflow, the Claude Code session that runs `/srg-mapping-for`, reviews each agent's chapter, and registers, commits, and publishes it (Chapter 39).
 - **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
 - **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.

@@ -1,0 +1,505 @@
+# Chapter 39: How This Volume Is Built — The /srg-mapping-for Command
+
+## Learning Objectives
+
+- Explain what the `/srg-mapping-for` command builds and which chapters of
+  this volume it produced.
+- Follow the command step by step, from the DISA library download to a
+  published chapter.
+- Describe the three playbooks it hands to its agents (product maps,
+  crosswalks, and prerequisites) and what each one requires.
+- Use the helper scripts (`stigs.py`, `register.py`, `check.sh`, and the CSV
+  exporter) on their own.
+- Check a chapter the command produced, and know which later changes were made
+  outside the command.
+
+## Theory and Architecture
+
+Chapters 10 to 38 of this volume were not written by hand, one cell at a
+time. They were built by one repeatable workflow, the `/srg-mapping-for`
+command, a Claude Code skill stored in the repository at
+`.claude/skills/srg-mapping-for/`. The command takes a vendor name (for
+example `/srg-mapping-for Cisco`) and produces that vendor's overview chapter
+and one requirement map chapter per product, each checked, committed, and
+published. The same skill also documents the crosswalk chapters (33 to 38) and
+the prerequisites tables added to every map and crosswalk chapter.
+
+This chapter explains the command so that a reader can judge how far to trust
+the chapters it built, and so that a maintainer can run it again for another
+vendor or a new quarterly DISA release. It describes the command as it stands
+in the repository; when the skill changes, this chapter is updated with it.
+
+### What the command produces
+
+| Output | Model chapters | What it contains |
+| --- | --- | --- |
+| Vendor overview chapter | [Chapter 10](10-fortinet-products-stigs-and-srg-mapping.md) (few STIGs), [Chapter 31](31-cisco-products-stigs-and-srg-mapping.md) (many STIGs) | The vendor's STIGs in the DISA library, what they require, and the SRGs for every product without a STIG |
+| Product map chapter, one per product | [Chapters 11 to 30](11-fortiswitch-feature-version-and-srg-map.md) and [Chapter 32](32-cisco-catalyst-switch-feature-version-and-stig-map.md) | Every feature, the release that introduced it, the STIG rule or SRG requirement it relates to, the verified command, a requirement reference table, and a prerequisites table |
+| Crosswalk chapter, one per product pair | [Chapters 33 to 38](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md) | Every rule of one vendor's STIG aligned, through its SRG ID, with the comparable product's setting |
+| CSV downloads | Every map and crosswalk chapter | One CSV file per table, linked on the line before the table |
+| Overview and README updates | Chapter 10, "What the product maps found" | A summary of each product's requirements and gaps, and the volume README entries |
+
+A product with a STIG gets a **STIG map** (file name ending
+`-feature-version-and-stig-map.md`, every STIG rule mapped). A product without
+one gets an **SRG map** (ending `-feature-version-and-srg-map.md`), mapped to
+the SRGs that [Chapter 03](03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md)
+says apply to its technology class.
+
+### The parts of the skill
+
+| File | Used by | Purpose |
+| --- | --- | --- |
+| `SKILL.md` | The coordinator | The workflow: steps 1 to 6, crosswalks, and prerequisites |
+| `PLAYBOOK.txt` | Each product agent | How to write one product map chapter |
+| `CROSSWALK-PLAYBOOK.txt` | Each crosswalk agent | How to write one crosswalk chapter |
+| `PREREQ-PLAYBOOK.txt` | Each prerequisites agent, and the other two playbooks | What a prerequisite is and how to add the table and column |
+| `stigs.py` | The coordinator | Inventories every XCCDF STIG under a folder into `stigs.json` |
+| `register.py` | The coordinator | Registers a finished chapter in the book, counts, index, glossary, and spelling dictionary |
+| `check.sh` | The coordinator | Regenerates the CSV files and runs every repository check on a chapter |
+
+Two roles run the workflow. The **coordinator** is the Claude Code session the
+user started the command in. It inventories the vendor, writes the overview
+chapter, reviews every result, registers, commits, and publishes. The
+**agents** are background sessions the coordinator starts, one per chapter,
+each following a playbook. Agents write exactly one chapter file and never
+commit; the coordinator owns every shared file.
+
+### Paths the command uses
+
+| Name | Path |
+| --- | --- |
+| `VOL` | `volumes/volume-172-disa-srgs-and-stigs` |
+| `SKILL` | `.claude/skills/srg-mapping-for` |
+| `LIB` | The newest dated folder under `imports/` holding the DISA STIG library download (for example `imports/2026-10-06`) |
+| Scratch | `temp/<vendor-slug>/` and `temp/<product-slug>/`, which git ignores |
+
+Everything happens inside the repository folder. No `.md` file is ever written
+under `temp/`, because the internal link checker scans that folder.
+
+## Design Considerations
+
+Several choices shape every chapter the command builds:
+
+- **No fabrication.** Every version, requirement ID, and command must come
+  from a source file the agent downloaded and read. When something cannot be
+  verified, the cell says so (for example "— (no setting found in the 7.6 CLI
+  Reference)") instead of guessing.
+- **Commands are machine-checked.** Every command is tested by a script
+  against the extracted vendor command reference: the command path must exist,
+  each option must exist in that context, and each literal value must be a
+  documented value. The verifier is itself tested with deliberately wrong
+  commands to prove it catches them.
+- **DISA fix text is checked, not copied.** Fix text is the starting point for
+  a STIG row, but it sometimes contains syntax that does not parse or was
+  removed in newer releases. Every correction is listed in the chapter.
+- **One agent at a time.** Product agents run sequentially, and the
+  coordinator reviews each result before starting the next. This keeps one
+  review in focus and lets a lesson from one product (for example a new
+  requirement ID format) reach the next agent's prompt.
+- **Chapters can be rebuilt.** Each agent generates its chapter from a
+  template (`chapter-template.txt`) and a build script in its scratch folder,
+  so a chapter can be regenerated when a source changes.
+- **Tables are found by heading.** The CSV exporter locates tables by their
+  exact headings ("### The <Product> feature map", "### Requirement
+  reference", "### <Product> prerequisites", "### The crosswalk table", and
+  "### <Product> requirements with no <Vendor> rule"), so the playbooks fix
+  those headings and forbid hand-written download links.
+- **Publishing is authorized by the command.** Running the command authorizes
+  committing and pushing each finished chapter to `main`. If the user says
+  otherwise, the coordinator stops before committing and asks.
+
+## Implementation and Automation
+
+The command runs in six steps.
+
+```text
+/srg-mapping-for <vendor>
+  1. Inventory the vendor       stigs.py -> temp/<vendor>/stigs.json
+  2. Confirm scope with user    the one question asked up front
+  3. Write the overview chapter coordinator; register, check, commit, push
+  4. Product chapters           one agent per product, one at a time (PLAYBOOK.txt)
+  5. Register, check, publish   register.py, check.sh, commit, push, watch
+  6. Finish                     overview "What the product maps found", README
+```
+
+### Step 1: Inventory the vendor
+
+The coordinator finds the vendor's STIG packages in `LIB` by the vendor's name
+and its usual file prefix (for example `FN_` for Fortinet or `PAN_` for Palo
+Alto Networks), and also searches the listing of DISA's compilation ZIP,
+because some content appears only there. If no library folder exists, or the
+newest one is older than the current quarter, it asks the user before
+downloading a new one.
+
+It unzips the packages, including nested ZIPs, into `temp/<vendor-slug>/` and
+runs the inventory script:
+
+```bash
+python .claude/skills/srg-mapping-for/stigs.py temp/cisco
+```
+
+`stigs.py` parses every XCCDF file under the folder. For each STIG it records
+the title, version, release line (release and benchmark date), the rule count
+by severity, the rule-ID prefixes, and every rule with its SRG ID (the Group
+title), severity, title, and fix text. It writes them to `stigs.json` and
+prints one summary line per STIG:
+
+```text
+<title> | V<version> | <release line> | <rules> (<high>/<medium>/<low>) | <prefixes>
+<n> STIGs, <total> rules
+```
+
+The coordinator then reads each package's overview PDF for its scope
+statement, and lists the vendor's products: the ones with a STIG, plus the
+main products without one, from the vendor's documentation site and the
+encyclopedia's own vendor volumes.
+
+### Step 2: Confirm scope with the user
+
+The coordinator shows the planned chapter list (the overview chapter number,
+then one chapter per product, marked STIG or SRG) and asks the user to confirm
+or trim it. This is the only question the workflow asks before building.
+
+### Step 3: Write the overview chapter
+
+The coordinator writes the overview itself rather than giving it to an agent,
+following the standard chapter template and Chapter 10 or Chapter 31. Every
+figure (releases, dates, rule counts, CAT I lists) comes from `stigs.json`, and
+every scope claim comes from the overview PDFs. Summaries of rule content are
+checked against the rule titles, and fix-text commands are quoted only after
+they are checked, with a note wherever DISA's fix text will not parse as
+written. The overview is registered and committed (step 5) before any product
+chapter starts.
+
+### Step 4: Build the product chapters, one agent at a time
+
+For each product the coordinator starts one background agent and waits for it
+to finish. The prompt names the product, chapter number, file name, title,
+and scratch folder; the STIG (with its unzipped path) or the SRGs to use, with
+an abbreviation for each; the rule or requirement to cite for "no direct
+requirement" rows (the non-essential-capabilities requirement); the likely
+version and command sources; and an instruction to follow `PLAYBOOK.txt`
+exactly. The agent then works through the playbook's steps:
+
+1. **Sources.** Download the documents into the scratch folder. The version
+   source is, in order of preference, a per-release feature matrix, a New
+   Features Guide per release train, the release notes' new-features sections,
+   or (only if nothing better exists, and the chapter says so) the
+   administration guide contents for the oldest and newest train. The command
+   source is the newest CLI reference, or "GUI: <pane>" entries checked
+   against the administration guide for a product without one. The
+   requirements come from the XCCDF files in `LIB`.
+2. **Feature list.** Every feature from the version source, with truncated
+   titles repaired, sub-topics folded into their parent, and duplicates across
+   trains merged (for example "7.4.3+; 7.6.0+"). Long-standing capabilities
+   the requirements depend on become "Core: ..." rows dated "<oldest release>
+   or earlier". The version column uses the source's own wording: "First
+   listed" for a feature matrix, "Introduced" for a New Features Guide.
+3. **Requirement mapping.** In a STIG map, every rule must appear, and the
+   build fails if one is unmapped. In an SRG map, only the SRGs the
+   coordinator named are used, unless a clearly better one exists and the
+   chapter justifies it. Each row either implements a requirement, must be
+   configured to meet one, or has no direct requirement, which renders as "No
+   direct requirement; if unused, disable" with the named rule.
+4. **Commands.** One command cell per feature, statements separated by "; ",
+   placeholders in `<ANGLE_BRACKETS>`, and no raw pipe character in a cell.
+   The verifier checks every command; failures are fixed or replaced with an
+   honest "—" or "GUI:" entry. Requirements the product cannot meet with its
+   own settings are documented as product limitations, each with a
+   mitigation.
+5. **Prerequisites.** A "### Prerequisites" prose section, a
+   "### <Product> prerequisites" table (P1, P2, ...), and a prerequisites
+   column in the feature map, as `PREREQ-PLAYBOOK.txt` describes (see
+   [Prerequisites](#prerequisites) below).
+6. **Chapter.** The standard sections, the feature map columns
+   `| Category | Feature | First listed or Introduced | STIG rule(s) or SRG requirement(s) | Command to satisfy the requirement |`,
+   and relative links to Chapter 03, the vendor overview, and the most similar
+   earlier map chapter. No labs.
+7. **Checks.** markdownlint, cspell, and the internal link check, all clean.
+   The agent does not edit `cspell.json`; it reports the unknown words.
+
+The agent's final report gives the chapter path, row counts, the number of
+requirement IDs (and confirmation that every STIG rule is mapped), the
+sources, the verifier result, fix-text corrections and product limitations,
+the cspell words, a volume README line, and suggested index and glossary
+lines.
+
+If an agent stops on a usage limit, the coordinator resumes the same agent
+once the limit resets, telling it where it stopped, rather than starting a new
+one for the same product.
+
+When the report arrives, the coordinator:
+
+1. spot-checks the chapter: standard sections present, sample rows sensible,
+   and, for a STIG chapter, the number of distinct rule IDs in the chapter
+   equal to the number in `stigs.json`;
+2. re-runs the agent's verifier itself (`temp/<product-slug>/verify.py`) and
+   confirms 0 failures;
+3. questions anything odd in the report (for example an unfamiliar requirement
+   ID format, or a row with no requirement that plainly needs one) and checks
+   it against the source before accepting it.
+
+### Step 5: Register, check, commit, push, and watch
+
+For each finished chapter, the coordinator writes a small spec file and runs
+the registration script:
+
+```json
+{
+  "nn": 39,
+  "file": "39-example-chapter.md",
+  "title": "Example Chapter Title",
+  "readme_line": "39. [Example Chapter Title](chapters/39-example-chapter.md) — summary.",
+  "index": [["Example topic", ""]],
+  "glossary": [["Example term", "Definition."]],
+  "words": "Junos Mist"
+}
+```
+
+```bash
+python .claude/skills/srg-mapping-for/register.py temp/cisco/spec39.json
+```
+
+`register.py` adds the chapter to `book.yml` and its chapter count, raises the
+chapter counts in the root `README.md` and `PROJECT_STATUS.md`, appends the
+chapter-list line to the volume README and updates its index wording, inserts
+the index and glossary lines alphabetically, optionally replaces a row in the
+vendor overview chapter (`overview_file`, `overview_old`, `overview_new`), and
+adds the spelling words to `cspell.json`. It prepares every edit first and
+stops before writing anything if one fails, so a corrected spec can be run
+again safely. It does not write the volume README's overview prose; the
+coordinator edits that by hand so the new chapter is described in context.
+
+Then the coordinator runs the check script:
+
+```bash
+bash .claude/skills/srg-mapping-for/check.sh 39-example-chapter.md
+```
+
+`check.sh` regenerates the CSV downloads with
+`scripts/python/export_srg_tables.py`, then runs markdownlint on the chapter
+and the volume's top-level files, cspell, the internal link check, and the
+`book.yml` check, and shows `git status`. Every failure is fixed before
+committing.
+
+The exporter recognizes map chapters (`*-feature-version-and-s*-map.md`) and
+crosswalks (`*-crosswalk.md`), finds each table by its heading, writes it to
+`data/<chapter>-<suffix>.csv` (UTF-8 with a byte-order mark, so spreadsheet
+programs show dashes correctly), and inserts or refreshes the download link on
+the line before the table. The links point at the published portal, which
+copies the CSV files at build time.
+
+Finally the coordinator commits with a message in the volume's style (subject
+`Vol CLXXII Ch NN: <Product> feature, version, and STIG|SRG map`; a body
+giving counts, sources, and requirements; and the attribution line), pushes to
+`main` (retrying on GitHub server errors), and watches the Pages build until
+it succeeds. It does not push while an earlier build is still running if that
+build carries something the user is waiting to see, because the workflow
+cancels an in-progress run when a newer push arrives.
+
+### Step 6: Finish
+
+After the last product chapter, the coordinator adds "The product map
+chapters" and "What the product maps found" sections to the overview chapter
+(the model is Chapter 10's section of that name), summarizing each product's
+requirements, command source, and main gaps, and the gaps that recur across
+the vendor's products, each claim checked against the map chapters. It
+updates the volume README, runs the checks, commits, pushes, and watches. Its
+last message to the user lists the chapters added, anything left out and why,
+and follow-ups such as fix text that no longer matches the vendor's CLI.
+
+### Crosswalks between vendors
+
+When the user asks to compare comparable products from two vendors, the
+coordinator builds one crosswalk chapter per product pair instead of a map
+chapter, following `CROSSWALK-PLAYBOOK.txt`. Chapters 33 to 38 were built this
+way.
+
+1. **Pick the pairs.** The reference product has a STIG; the comparison
+   product has a map chapter in this volume. The user confirms the list.
+2. **Align through the SRG ID.** Every STIG rule names the SRG requirement it
+   implements (the XCCDF Group title). A comparison-product row with the same
+   SRG ID is "Same requirement"; for the rest, the agent finds the setting
+   that meets the same requirement in the comparison product's command
+   reference. CCI matches are not used without reading the requirement text,
+   because the catch-all CCI-000366 links unrelated requirements. Rules citing
+   SRG IDs retired from current SRGs are pointed at the current requirement
+   for the same topic.
+3. **Build the tables.** "### The crosswalk table" has one row per reference
+   rule, all of them, with the reference command and version, the comparison
+   setting, command, version, and prerequisites, and an alignment: Same
+   requirement, Equivalent setting, Partial, Not supported, Not applicable, or
+   By procedure. A second table, "### <Comparison> requirements with no
+   <Reference> rule", lists the comparison product's requirements that no
+   reference rule cites. Where the comparison product has its own STIG (as
+   FortiGate does in Chapter 34), a column shows its rule for the same SRG ID.
+4. **Versions.** Reference-product versions come from the "Command History"
+   table of each command's entry in the vendor's command reference; a command
+   without history says which reference release verified it. Comparison
+   versions come from that product's map chapter; a setting outside its
+   version source reads "Not in the <source>", never a guessed release.
+5. **Verify.** Both sides' commands are checked against saved command
+   reference text, the build fails if any reference rule is missing or
+   duplicated, and every reused command must appear in its source chapter for
+   the same rule.
+
+The coordinator reviews, registers, checks, and publishes each crosswalk as in
+step 5, and fixes any error a crosswalk exposes in an earlier chapter (the
+Cisco crosswalks found DISA fix text that Chapter 31 had quoted without
+correcting).
+
+### Prerequisites
+
+Every map and crosswalk chapter has a prerequisites table and column.
+`PREREQ-PLAYBOOK.txt` defines a prerequisite as anything that must exist or be
+configured before a row's setting can meet its requirement: an external server
+(RADIUS, TACACS+, LDAP, syslog, NTP, SNMP manager, backup server, SIEM,
+identity provider), a group or role, a certificate, a license, a model or
+hardware capability, an operating mode (FIPS-CC, FortiLink-managed, HA), a
+managing system, a configured interface or VLAN, or an earlier setting the row
+depends on.
+
+The table, "### <Product> prerequisites", has the columns
+`| ID | Prerequisite | What it enables | How to put it in place | Source |` and
+sits just before the chapter's main table. Each "How to put it in place"
+command is verified like every other command. The column lists the IDs each
+row needs, or "—". Licenses and model support come only from the product's
+own documentation, cited by section; nothing is inferred. Chapters about the
+same product (its map chapter and the crosswalks built on it) share one list
+with the same IDs, wording, and commands, and the build fails on an unknown,
+unused, or misplaced ID.
+
+For chapters built before this step existed, the coordinator confirmed the
+chapter list with the user and ran one prerequisites agent per chapter, one at
+a time, each changing the chapter's own build pipeline (or, where that could
+not regenerate the chapter exactly, a small script that edits the committed
+chapter). After each report it re-ran the build and verifier, confirmed the row
+count was unchanged, compared the table with any chapter that shares it, ran
+`check.sh` to add the table's CSV download, and published. This pass also
+checked every license and model claim against Fortinet's documentation and
+corrected Chapter 11's license list.
+
+### Changes made outside the command
+
+Some later changes were made directly, from sources the user supplied, rather
+than by the command:
+
+- **Reference and Page columns** in [Chapter 11](11-fortiswitch-feature-version-and-srg-map.md),
+  [Chapter 33](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md),
+  and [Chapter 37](37-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md)
+  say where each FortiSwitchOS command is documented in the FortiSwitchOS
+  7.6.7 CLI Reference, the 7.6.7 Administration Guide (Standalone Mode), or
+  the FortiLink Guide (FortiOS 7.6.7), with PDF page numbers. They come from a
+  feature-map workbook the user filled in. A locator script found the pages
+  for the remaining commands (the CLI Reference syntax sections first, then
+  the rest of that reference, then the Administration Guide; the FortiLink
+  Guide for FortiGate commands), the user's own page choices were applied to
+  the same commands in all three chapters, and a consistency check confirmed
+  that each command has one Reference and Page everywhere.
+- Where those 7.6.7 documents disagree with the chapter's command (for example
+  `detect-ip-conflict`, which the CLI Reference syntax prints with
+  underscores), the chapter notes the difference.
+
+These changes keep the chapters' existing rows and commands; they are not yet
+part of the skill, so a rebuild from an agent's original pipeline would not
+reproduce them.
+
+## Validation and Troubleshooting
+
+To check a chapter the command built:
+
+- **Row and rule counts.** For a STIG map or crosswalk, count the distinct
+  rule IDs in the chapter and compare them with `stigs.json` (or the XCCDF):
+  they must be equal.
+- **Commands.** Re-run the chapter's verifier from its scratch folder; it must
+  report 0 failures. If the scratch folder is gone, check a sample of commands
+  against the vendor's command reference by hand.
+- **CSV files.** Run `python scripts/python/export_srg_tables.py`; a clean
+  tree afterward means the CSV files match the chapter tables.
+- **Repository checks.** `bash .claude/skills/srg-mapping-for/check.sh <file>`
+  must report clean markdownlint, cspell, link, and `book.yml` results.
+
+Common problems:
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `register.py: no change made to ...` | A spec field does not match the file (for example `overview_old` text) | Correct the spec and run it again; nothing was written |
+| `register.py: chapter already in book.yml` | The chapter was registered before | Do not register it twice; edit the files by hand if needed |
+| A table has no CSV link | Its heading does not match the exporter's patterns, or the file name does not end in `-map.md` or `-crosswalk.md` | Use the exact heading and file-name suffix |
+| The link check fails on `temp/` | A `.md` file was written under `temp/` | Rename it to `.txt` |
+| A pushed change is not on the site | A newer push cancelled the Pages build in progress | Check that the newest build succeeded |
+| An agent stopped part way | A usage limit was reached | Resume the same agent with a message saying where it stopped |
+
+## Security and Best Practices
+
+- **Use the newest DISA library.** A map built from an old library cites
+  retired rules and misses new ones. Refresh `LIB` each quarter and re-check
+  the chapters against it.
+- **Trust verified commands, not fix text.** The volume's corrections to DISA
+  fix text show why each command is checked against the vendor's reference.
+- **Read the version source's wording.** "First listed" in a feature matrix is
+  not the same claim as "Introduced" in a New Features Guide.
+- **Treat "—" as information.** A dash means no verified setting was found,
+  not that the requirement is met.
+- **Confirm prerequisites for your exact model and release.** The tables cite
+  the documentation they come from; licenses and hardware support differ by
+  model.
+- **Keep this chapter current.** When the skill, a playbook, or a helper
+  script changes, or a new kind of change is made to the volume's chapters,
+  update this chapter in the same commit.
+
+## References and Knowledge Checks
+
+**References:**
+
+- The skill: `.claude/skills/srg-mapping-for/SKILL.md`, `PLAYBOOK.txt`,
+  `CROSSWALK-PLAYBOOK.txt`, `PREREQ-PLAYBOOK.txt`, `stigs.py`, `register.py`,
+  and `check.sh` in this repository.
+- `scripts/python/export_srg_tables.py`, `check_internal_links.py`, and
+  `check_book_yml.py` in this repository.
+- [Chapter 02](02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md)
+  for the XCCDF fields `stigs.py` reads, and
+  [Chapter 03](03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md)
+  for choosing SRGs for a product without a STIG.
+- DISA STIG library, DoD Cyber Exchange (`public.cyber.mil/stigs`).
+
+**Knowledge checks:**
+
+1. What does `/srg-mapping-for <vendor>` produce, and which chapter types
+   are the models for each output?
+2. Why does the coordinator write the overview chapter itself, but give each
+   product chapter to an agent?
+3. What does `stigs.py` read from each XCCDF Group and Rule?
+4. List the version sources a product agent may use, in order of preference.
+5. What three relationships can a feature row have to a requirement, and how
+   is the third rendered?
+6. Why are agents forbidden to add CSV download links or change table
+   headings?
+7. How does a crosswalk align a Cisco rule with a FortiSwitch setting, and
+   why are CCI matches not enough?
+8. What does `register.py` change, and what does it leave for the coordinator
+   to write by hand?
+9. Which changes to Chapters 11, 33, and 37 were made outside the command, and
+   what would a rebuild lose?
+
+## Summary and Completion Checklist
+
+The `/srg-mapping-for` command builds this volume's vendor chapters with one
+repeatable method. It inventories a vendor's STIGs from the DISA library,
+confirms the chapter list with the user, writes the overview chapter, and then
+builds one product chapter at a time through an agent that follows a strict
+playbook: documented sources, every rule mapped, every command machine-checked,
+honest dashes where nothing can be verified, and a prerequisites table. The
+coordinator reviews each result, registers it with `register.py`, checks it
+with `check.sh`, which also writes the CSV downloads, and publishes it. The
+same skill builds crosswalks between vendors and adds prerequisites to older
+chapters. Changes made outside the command, such as the FortiSwitchOS 7.6.7
+Reference and Page columns, are listed here so that readers know where they
+came from.
+
+- [ ] Can name the outputs of the command and their model chapters.
+- [ ] Can follow steps 1 to 6 from library download to published chapter.
+- [ ] Can explain what each playbook requires of its agent.
+- [ ] Can run `stigs.py`, `register.py`, `check.sh`, and the CSV exporter.
+- [ ] Can check a chapter's rule counts, commands, and CSV files.
+- [ ] Knows which changes were made outside the command.

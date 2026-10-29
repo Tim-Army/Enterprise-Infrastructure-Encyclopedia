@@ -5927,7 +5927,7 @@ volumes:
     number: "CLXXII"
     slug: volume-172-disa-srgs-and-stigs
     title: "DISA SRGs and STIGs"
-    chapter_count: 38
+    chapter_count: 39
     build_eligible: true
     chapters:
       - id: 01
@@ -6044,6 +6044,9 @@ volumes:
       - id: 38
         title: "Chapter 38: FortiAnalyzer and Cisco STIG Crosswalk"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/38-fortianalyzer-and-cisco-stig-crosswalk.md
+      - id: 39
+        title: "Chapter 39: How This Volume Is Built — The /srg-mapping-for Command"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

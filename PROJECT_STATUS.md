@@ -181,7 +181,7 @@ does not by itself verify every technical claim in it.
 | CLXIX — Hitachi Vantara Certification Tracks | 9 | Drafted |
 | CLXX — Teradata Certification Tracks | 9 | Drafted |
 | CLXXI — Alpine Linux | 7 | Drafted |
-| CLXXII — DISA SRGs and STIGs | 38 | Drafted |
+| CLXXII — DISA SRGs and STIGs | 39 | Drafted |
 | CLXXIII — Integrated Master Schedule (IMS) | 10 | Drafted |
 | CLXXIV — NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only) | 12 | Drafted |
 | CM — Tim's Lab Gear | 3 | Drafted |
@@ -189,7 +189,7 @@ does not by itself verify every technical claim in it.
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1720 of 1720 drafted (100%). Every volume has a
+**Total declared chapters:** 1721 of 1721 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
