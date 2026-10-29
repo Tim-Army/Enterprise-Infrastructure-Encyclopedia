@@ -14,6 +14,10 @@ Spec (JSON):
   overview_new  optional: replacement text
   words         space-separated words to add to cspell.json
 
+Chapter 90 is the volume's as-built chapter and stays last: a new chapter goes
+before it in book.yml and the volume README, and chapter_count is the number of
+chapter entries, not nn.
+
 It updates book.yml (entry and chapter_count), the root README.md and
 PROJECT_STATUS.md counts, the volume README chapter list and index count,
 INDEX.md and GLOSSARY.md (alphabetically), the overview chapter row, and
@@ -69,9 +73,13 @@ def book(s):
         sys.exit("register.py: chapter already in book.yml")
     i = s.index("slug: volume-172-disa-srgs-and-stigs")
     j = s.index("\n  - id: volume-", i)
-    blk = re.sub(r"chapter_count: \d+", f"chapter_count: {nn}", s[i:j])
-    blk = blk.rstrip("\n") + (f'\n      - id: {nn}\n        title: "Chapter {nn}: {spec["title"]}"'
-                              f"\n        path: {V}chapters/{f}")
+    blk = s[i:j].rstrip("\n")
+    new = (f'\n      - id: {nn}\n        title: "Chapter {nn}: {spec["title"]}"'
+           f"\n        path: {V}chapters/{f}")
+    k = blk.find("\n      - id: 90\n")  # the as-built chapter stays last
+    blk = blk + new if k < 0 else blk[:k] + new + blk[k:]
+    count = len(re.findall(r"\n      - id: ", blk))
+    blk = re.sub(r"chapter_count: \d+", f"chapter_count: {count}", blk)
     return s[:i] + blk + s[j:]
 
 
@@ -85,9 +93,15 @@ edit("PROJECT_STATUS.md", lambda s: bump(bump(bump(
 
 
 def vreadme(s):
-    k = s.index("\n## Volume resources")
-    s = s[:k].rstrip("\n") + "\n" + spec["readme_line"] + "\n" + s[k:]
-    return s.replace(f"across all {words(nn - 1)} chapters", f"across all {words(nn)} chapters")
+    k = s.find("\n90. [")  # the as-built chapter stays last
+    if k < 0:
+        k = s.index("\n## Volume resources")
+        s = s[:k].rstrip("\n") + "\n" + spec["readme_line"] + "\n" + s[k:]
+    else:
+        s = s[:k] + "\n" + spec["readme_line"] + s[k:]
+    listed = s[s.index("\n## Chapters"):s.index("\n## Volume resources")]
+    count = len(re.findall(r"^\d+\. \[", listed, re.M))
+    return s.replace(f"across all {words(count - 1)} chapters", f"across all {words(count)} chapters")
 
 
 edit(V + "README.md", vreadme)

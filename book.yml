@@ -6044,9 +6044,9 @@ volumes:
       - id: 38
         title: "Chapter 38: FortiAnalyzer and Cisco STIG Crosswalk"
         path: volumes/volume-172-disa-srgs-and-stigs/chapters/38-fortianalyzer-and-cisco-stig-crosswalk.md
-      - id: 39
-        title: "Chapter 39: How This Volume Is Built — The /srg-mapping-for Command"
-        path: volumes/volume-172-disa-srgs-and-stigs/chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md
+      - id: 90
+        title: "Chapter 90: As-Built — How This Volume Was Built"
+        path: volumes/volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md
   - id: volume-173
     number: "CLXXIII"
     slug: volume-173-integrated-master-schedule

@@ -8,6 +8,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **Account of last resort** — the single local administrator account on a network device, used only when centralized authentication servers are unreachable.
 - **Agentless Application Gateway (AAG)** — the FortiADC 8.0 web portal that gives remote users browser-based access to internal RDP, VDI, SSH, and web applications.
 - **Application delivery controller (ADC)** — a reverse-proxy appliance that load balances application traffic and adds SSL offloading, a WAF, and global server load balancing.
+- **As-built chapter** — A volume's Chapter 90: the record of how the volume was actually built, which chapters were written directly or generated, from which sources, and what changed later; it stays last and is updated with the volume (Chapter 90).
 - **ASA FirePOWER module** — the IPS and file-inspection module for ASA 5500-X firewalls, configured in ASDM, which the Cisco ASA IPS STIG covers; it is not Firepower Threat Defense (FTD), which has no STIG.
 - **ASD STIG (Application Security and Development)** — DISA's STIG for applications in general; its rules have IDs of the form APSC-DV-nnnnnn, and most are developer obligations rather than configuration settings.
 - **ATO (Authorization to Operate)** — the Authorizing Official's formal decision that a system's residual risk is acceptable and it may operate.
@@ -24,7 +25,7 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms.
 - **ComplianceAsCode** — the open-source project that produces the SCAP Security Guide content, including a STIG-aligned profile and remediation scripts, used by OpenSCAP.
 - **Comply-to-Connect (C2C)** — the DoD network access control program whose steps the Cisco ISE NAC STIG rules reference.
 - **Control plane policing (CoPP)** — an IOS XE QoS policy attached to the control plane that rate-limits traffic to the route processor by class; routers attach an MQC policy with `control-plane` and `service-policy input`, while Catalyst 9000 switches apply `cpp system-default`.
-- **Coordinator** — In this volume's build workflow, the Claude Code session that runs `/srg-mapping-for`, reviews each agent's chapter, and registers, commits, and publishes it (Chapter 39).
+- **Coordinator** — In this volume's build workflow, the Claude Code session that runs `/srg-mapping-for`, reviews each agent's chapter, and registers, commits, and publishes it (Chapter 90).
 - **DISA (Defense Information Systems Agency)** — the DoD combat support agency that develops and publishes SRGs and STIGs.
 - **DoD Cyber Exchange** — the DoD website that distributes STIGs, SRGs, SCAP benchmarks, and related tools.
 - **DoDIN Approved Products List (APL)** — the DoD list of products, at specific models and firmware versions, approved for use on the DoD Information Network after testing that includes the applicable STIGs and SRGs.

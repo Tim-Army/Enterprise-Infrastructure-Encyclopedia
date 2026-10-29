@@ -4,7 +4,7 @@ Alphabetized topical index for **Volume CLXXII — DISA SRGs and STIGs**.
 See also the [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
-- **/srg-mapping-for command (how the vendor chapters are built)** — [Chapter 39](chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md)
+- **/srg-mapping-for command (how the vendor chapters are built)** — [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **AAA Services SRG applied to an authentication server** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 23](chapters/23-fortiauthenticator-feature-version-and-srg-map.md)
 - **Account of last resort** — [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **Agentless Application Gateway (AAG) and the VPN SRG** — [Chapter 19](chapters/19-fortiadc-feature-version-and-srg-map.md)
@@ -13,6 +13,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Application Layer Gateway (ALG) SRG** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **Application Security and Development (ASD) STIG** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 08](chapters/08-applications-databases-web-servers-containers-and-cloud.md)
 - **Application Security and Development (ASD) STIG, administrator-configurable rules** — [Chapter 24](chapters/24-fortipam-feature-version-and-srg-map.md)
+- **As-built record of the volume (how each chapter was built)** — [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **ASA fix text corrections (DH groups removed in 9.15(1))** — [Chapter 31](chapters/31-cisco-products-stigs-and-srg-mapping.md), [Chapter 34](chapters/34-cisco-asa-and-fortigate-stig-crosswalk.md)
 - **CAT I / CAT II / CAT III** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 09](chapters/09-running-a-stig-compliance-program.md)
 - **Catalyst 9300 IOS XE release notes version map (17.1 to 26.2)** — [Chapter 32](chapters/32-cisco-catalyst-switch-feature-version-and-stig-map.md)
@@ -114,7 +115,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **PPSM Category Assurance List** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md)
 - **Privileged access management (PAM) assessment** — [Chapter 10](chapters/10-fortinet-products-stigs-and-srg-mapping.md), [Chapter 24](chapters/24-fortipam-feature-version-and-srg-map.md)
 - **Quarterly release cycle and sunset STIGs** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md)
-- **Registration and check scripts (register.py, check.sh, stigs.py)** — [Chapter 39](chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md)
+- **Registration and check scripts (register.py, check.sh, stigs.py)** — [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **Risk Management Framework (RMF)** — [Chapter 01](chapters/01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md), [Chapter 09](chapters/09-running-a-stig-compliance-program.md)
 - **Router and Firewall SRGs** — [Chapter 03](chapters/03-the-srg-catalog-how-stigs-are-built-and-what-to-do-without-one.md), [Chapter 07](chapters/07-network-device-stigs-management-routing-and-filtering.md)
 - **SCAP benchmark versus manual STIG** — [Chapter 02](chapters/02-anatomy-of-a-stig-xccdf-identifiers-severity-and-versioning.md), [Chapter 04](chapters/04-stig-tooling-stig-viewer-checklists-and-scap-scanning.md)

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Non-networked structural validation: every volume has README/INDEX/GLOSSARY,
-# a contiguous chapters/ sequence, book.yml matches the chapters on disk, and
+# a contiguous chapters/ sequence (plus an optional 90-as-built-*.md), book.yml matches the chapters on disk, and
 # every relative Markdown link resolves to a real file.
 set -euo pipefail
 
@@ -29,6 +29,8 @@ for volume_dir in volumes/*/; do
     [[ -e "$chapter" ]] || continue
     base="$(basename "$chapter")"
     number="${base%%-*}"
+    # 90-as-built-*.md is a volume's as-built chapter: reserved, always last.
+    [[ "$base" == 90-as-built-*.md ]] && continue
     printf -v want "%02d" "$expected"
     if [[ "$number" != "$want" ]]; then
       echo "GAP: $volume/chapters expected ${want}-*.md next, found $base"

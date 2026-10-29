@@ -23,15 +23,19 @@ Paths used below:
 
 The argument is the vendor name. If it is missing, ask for it.
 
-## Keep Chapter 39 current
+## Keep Chapter 90 current
 
-`VOL/chapters/39-how-this-volume-is-built-the-srg-mapping-for-command.md`
-explains this command step by step. Whenever this skill, a playbook, a helper
+`VOL/chapters/90-as-built-how-this-volume-was-built.md` is the volume's
+as-built chapter: how each part of the volume was built, and this command
+step by step. It is reserved as Chapter 90 and stays last; new chapters take
+the next number after the last regular chapter (`register.py` inserts them
+before Chapter 90). Whenever this skill, a playbook, a helper
 script, or `scripts/python/export_srg_tables.py` changes, or a change is made
 to the volume's map or crosswalk chapters outside this workflow (list it under
-"Changes made outside the command"), update Chapter 39 in the same commit.
-Also update its model-chapter ranges when new vendor, product, or crosswalk
-chapters are added.
+"Changes made outside the command"), update Chapter 90 in the same commit.
+Also update its "How each part of the volume was built" table and its
+model-chapter ranges when new vendor, product, or crosswalk chapters are
+added.
 
 ## What the workflow produces
 
