@@ -176,6 +176,18 @@ the chapter notes the difference. These changes keep the chapters' existing
 rows and commands. They are not part of the skill, so a rebuild from an agent's
 original pipeline would not reproduce them.
 
+### The Lab column in Chapters 01 to 03
+
+On 2026-11-04 each SRG table in Chapters 01 to 03 gained a final **Lab** column
+that links an SRG ID to the lab in Chapters 04 to 07 that proves it: the
+feature map and requirement reference in Chapter 01, and the crosswalk and
+unmatched-requirement tables in Chapters 02 and 03. A row with several SRG IDs
+lists each lab once. A row whose SRG ID is not one of the 169 workbook
+requirements, or that cites no SRG ID, shows a dash. The links were added by a
+script that matches IDs, so a lab that is renamed or renumbered needs the
+column regenerated, and `export_srg_tables.py` carries the column into the CSV
+files.
+
 ### The CSV files and the interactive table
 
 Two scripts write the downloads:
