@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Export the FortiSwitch SRG mapping workbook to CSV files and an interactive page.
 
-Reads the workbook saved in volumes/volume-172-disa-srgs-and-stigs/data/ and writes:
+Reads the workbook saved in volumes/volume-201-fortiswitch-stig-and-srg-mapping/data/ and writes:
 
 - three CSV files beside it (UTF-8 with a byte-order mark and CRLF line ends, like
   the CSV files that export_srg_tables.py writes):
-    11-fortiswitch-srg-workbook-crosswalk.csv      sheet "Fortiswitch vs Cisco"
-    11-fortiswitch-srg-workbook-prerequisites.csv  sheet "Prerequisites"
-    11-fortiswitch-srg-workbook-model-support.csv  sheet "Model Support 7.6.7"
+    01-fortiswitch-srg-workbook-crosswalk.csv      sheet "Fortiswitch vs Cisco"
+    01-fortiswitch-srg-workbook-prerequisites.csv  sheet "Prerequisites"
+    01-fortiswitch-srg-workbook-model-support.csv  sheet "Model Support 7.6.7"
 - publishing/interactive/fortiswitch-srg-crosswalk.html, a self-contained,
   offline page with a searchable, sortable, filterable table for each sheet.
 
@@ -27,17 +27,17 @@ import os
 
 import openpyxl
 
-VOLUME = "volume-172-disa-srgs-and-stigs"
+VOLUME = "volume-201-fortiswitch-stig-and-srg-mapping"
 DATA = os.path.join("volumes", VOLUME, "data")
-DEFAULT_WORKBOOK = os.path.join(DATA, "11-fortiswitch-feature-version-and-srg-map-feature-map-20261103.xlsx")
+DEFAULT_WORKBOOK = os.path.join(DATA, "01-fortiswitch-feature-version-and-srg-map-feature-map-20261103.xlsx")
 TEMPLATE = os.path.join("scripts", "python", "srg_workbook_page.html.tpl")
 PAGE = os.path.join("publishing", "interactive", "fortiswitch-srg-crosswalk.html")
 
 # (key in the page data, worksheet name, CSV file name)
 SHEETS = [
-    ("crosswalk", "Fortiswitch vs Cisco", "11-fortiswitch-srg-workbook-crosswalk.csv"),
-    ("prerequisites", "Prerequisites", "11-fortiswitch-srg-workbook-prerequisites.csv"),
-    ("model", "Model Support 7.6.7", "11-fortiswitch-srg-workbook-model-support.csv"),
+    ("crosswalk", "Fortiswitch vs Cisco", "01-fortiswitch-srg-workbook-crosswalk.csv"),
+    ("prerequisites", "Prerequisites", "01-fortiswitch-srg-workbook-prerequisites.csv"),
+    ("model", "Model Support 7.6.7", "01-fortiswitch-srg-workbook-model-support.csv"),
 ]
 
 

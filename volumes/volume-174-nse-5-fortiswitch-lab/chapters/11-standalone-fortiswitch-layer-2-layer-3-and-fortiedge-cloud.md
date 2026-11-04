@@ -115,7 +115,7 @@ switch is cabled to anything but the console.
 Both rows come from the Administration Guide (pp. 17–21). The second matches
 Chapter 02, which reached `internal` through `port3` while upgrading firmware.
 On a model without a management port, keeping management in VLAN 1 would put it
-in the VLAN that every unused port is in; Volume CLXXII's prerequisite P10 asks
+in the VLAN that every unused port is in; Volume CCI's prerequisite P10 asks
 for management on its own VLAN, so Lab 11.1 moves `internal` and `port3` to VLAN
 99 (the same number as the Nexus access VLAN, which is only a convenience: the
 Nexus port is an access port and does not see the switch's VLAN tags).
@@ -523,7 +523,7 @@ Chapter 03. The Nexus lines follow Chapter 02, and the endpoint commands follow
   handed to a FortiGate.
 - **Keep management out of the default VLAN.** On models without a management
   port, put `internal` and the management uplink in a VLAN that no user port is
-  in (Volume CLXXII P10); leave unused ports in a VLAN that reaches nothing.
+  in (Volume CCI P10); leave unused ports in a VLAN that reaches nothing.
 - **Limit administrative access in three places**: `allowaccess` per interface
   (no HTTP or Telnet), trusted hosts per administrator, and lockout and idle
   timeout globally. Keep console access as the recovery path.
@@ -585,7 +585,7 @@ Chapter 03. The Nexus lines follow Chapter 02, and the endpoint commands follow
 - FortiSwitchOS 7.6.7 feature matrix (`temp/fsw/FSW-7.6.7-Feature-Matrix.pdf`)
   — the System, Layer 2, Layer 3, Security, and Quality of Service rows used in
   the model table; notes 9, 11, 16, and 19.
-- [Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md)
+- [Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md)
   — prerequisites P10 (management interface), P13 (VLANs), and P16 (FortiEdge
   Cloud or FortiSwitch Manager).
 - [`picocom(1)`](https://manpages.ubuntu.com/manpages/noble/man1/picocom.1.html),

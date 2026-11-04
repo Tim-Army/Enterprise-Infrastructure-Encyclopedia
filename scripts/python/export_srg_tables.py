@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Export the SRG tables of Volume CLXXII's map and crosswalk chapters to CSV.
+"""Export the SRG tables of the map and crosswalk chapters to CSV.
 
-For every chapter in volumes/volume-172-disa-srgs-and-stigs/chapters/ that
+For every chapter in the VOLUMES below (Volume CLXXII, DISA SRGs and STIGs,
+and Volume CCI, FortiSwitch STIG and SRG Mapping) that
 matches one of the KINDS below (product maps: NN-*-feature-version-and-s*-map.md;
 crosswalks: NN-*-crosswalk.md), this script:
 
@@ -25,7 +26,7 @@ import glob
 import os
 import re
 
-VOLUME = "volume-172-disa-srgs-and-stigs"
+VOLUMES = ["volume-172-disa-srgs-and-stigs", "volume-201-fortiswitch-stig-and-srg-mapping"]
 PORTAL = "https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia"
 # Per chapter kind: (file glob, [(heading prefix, csv suffix, link text), ...]).
 KINDS = [
@@ -55,7 +56,7 @@ def plain(cell):
     return cell.replace("`", "")
 
 
-def process(path, tables):
+def process(volume, path, tables):
     stem = os.path.basename(path)[:-3]
     lines = open(path, encoding="utf-8").read().split("\n")
     out, i, written = [], 0, []
@@ -79,11 +80,11 @@ def process(path, tables):
                     rows.append(split_row(lines[j]))
                 j += 1
             name = f"{stem}-{suffix}.csv"
-            os.makedirs(f"volumes/{VOLUME}/data", exist_ok=True)
-            with open(f"volumes/{VOLUME}/data/{name}", "w", encoding="utf-8-sig", newline="") as fh:
+            os.makedirs(f"volumes/{volume}/data", exist_ok=True)
+            with open(f"volumes/{volume}/data/{name}", "w", encoding="utf-8-sig", newline="") as fh:
                 csv.writer(fh).writerows(rows)
             written.append((name, len(rows) - 1))
-            out.append(f"[{text}]({PORTAL}/data/{VOLUME}/{name}) ({len(rows) - 1} rows).")
+            out.append(f"[{text}]({PORTAL}/data/{volume}/{name}) ({len(rows) - 1} rows).")
             out.append("")
             out.extend(lines[i:j])
             i = j
@@ -98,10 +99,11 @@ def process(path, tables):
 
 
 def main():
-    for pattern, tables in KINDS:
-        for path in sorted(glob.glob(f"volumes/{VOLUME}/chapters/{pattern}")):
-            for name, n in process(path, tables):
-                print(f"{name}: {n} rows")
+    for volume in VOLUMES:
+        for pattern, tables in KINDS:
+            for path in sorted(glob.glob(f"volumes/{volume}/chapters/{pattern}")):
+                for name, n in process(volume, path, tables):
+                    print(f"{name}: {n} rows")
 
 
 if __name__ == "__main__":

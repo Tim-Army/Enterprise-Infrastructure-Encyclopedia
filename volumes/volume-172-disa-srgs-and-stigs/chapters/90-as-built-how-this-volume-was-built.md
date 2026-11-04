@@ -35,6 +35,11 @@ and one requirement map chapter per product, each checked, committed, and
 published. The same skill also documents the crosswalk chapters (33 to 38) and
 the prerequisites tables added to every map and crosswalk chapter.
 
+The FortiSwitch chapters (11, 33, and 37) moved on 2026-11-04 to
+[Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md), where they are Chapters 01 to 03; the pointer pages
+at their old numbers remain here, and their build record is in that volume's
+Chapter 90.
+
 This chapter lets a reader judge how far to trust each part of the volume, and
 lets a maintainer run the workflow again for another vendor or a new quarterly
 DISA release. It describes the volume and the command as they stand in the
@@ -46,11 +51,11 @@ repository; when either changes, this chapter is updated with it.
 | --- | --- | --- | --- |
 | [01 to 09](01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md), the framework | 2026-10-06 | Written directly in one session as a vendor-neutral standards volume, with no labs by design, then checked the same day against DISA's October 2026 SRG-STIG Library Compilation: Chapters 01 and 02 note the new download site and date-named packages, and Chapter 03's SRG table was matched to DISA's 21 SRGs | Chapter 07 gained pointers to Chapters 10 and 31 |
 | [10](10-fortinet-products-stigs-and-srg-mapping.md), Fortinet overview | 2026-10-06 | Written directly: the two FortiGate STIGs, then the October 2026 library check updated it to the current releases (NDM V1R6, Firewall V1R5) | 2026-10-09: "The product map chapters" and "What the product maps found" sections, from the map chapters |
-| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26) |
+| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26). Chapter 11 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-04 |
 | [31](31-cisco-products-stigs-and-srg-mapping.md), Cisco overview | 2026-10-14 | Written directly from the inventory of the ten Cisco STIG packages | Fix text corrections found by the crosswalks |
 | — | 2026-10-14 | The workflow written down as the `/srg-mapping-for` skill, from the Fortinet and Cisco runs | Crosswalk playbook (with Chapter 37) and prerequisites playbook (with Chapter 11's prerequisites) |
 | [32](32-cisco-catalyst-switch-feature-version-and-stig-map.md), Cisco Catalyst map | 2026-10-14 | The first chapter built by the skill | Prerequisites (2026-10-18) |
-| [33 to 38](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md), crosswalks | 2026-10-14 to 2026-10-15 | One agent per product pair, following the crosswalk method | Chapter 33's OS version columns; prerequisites (2026-10-16 to 2026-10-26), with corrected model-support entries in Chapters 33 and 37; Reference and Page columns in Chapters 33 and 37 (2026-10-26) |
+| [33 to 38](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md), crosswalks | 2026-10-14 to 2026-10-15 | One agent per product pair, following the crosswalk method | Chapter 33's OS version columns; prerequisites (2026-10-16 to 2026-10-26), with corrected model-support entries in Chapters 33 and 37; Reference and Page columns in Chapters 33 and 37 (2026-10-26). Chapters 33 and 37 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapters 02 and 03 on 2026-11-04 |
 | 90, this chapter | 2026-10-29 | Written directly from the skill files and the repository history | Updated whenever the skill or the volume's chapters change |
 
 Each row's dates and changes come from the repository's commit history, where
@@ -430,21 +435,11 @@ corrected Chapter 11's license list.
 Some later changes were made directly, from sources the user supplied, rather
 than by the command:
 
-- **Reference and Page columns** in [Chapter 11](11-fortiswitch-feature-version-and-srg-map.md),
-  [Chapter 33](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md),
-  and [Chapter 37](37-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md)
-  say where each FortiSwitchOS command is documented in the FortiSwitchOS
-  7.6.7 CLI Reference, the 7.6.7 Administration Guide (Standalone Mode), or
-  the FortiLink Guide (FortiOS 7.6.7), with PDF page numbers. They come from a
-  feature-map workbook the user filled in. A locator script found the pages
-  for the remaining commands (the CLI Reference syntax sections first, then
-  the rest of that reference, then the Administration Guide; the FortiLink
-  Guide for FortiGate commands), the user's own page choices were applied to
-  the same commands in all three chapters, and a consistency check confirmed
-  that each command has one Reference and Page everywhere.
-- Where those 7.6.7 documents disagree with the chapter's command (for example
-  `detect-ip-conflict`, which the CLI Reference syntax prints with
-  underscores), the chapter notes the difference.
+- **Reference and Page columns** in the FortiSwitch chapters, which now live in
+  [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapters 01, 02, and 03. How they were filled in
+  and checked, and the later FortiSwitchOS 7.6.7 workbook, CSV files, and
+  interactive table, are recorded in
+  [Volume CCI, Chapter 90](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md).
 
 These changes keep the chapters' existing rows and commands; they are not yet
 part of the skill, so a rebuild from an agent's original pipeline would not
@@ -529,8 +524,8 @@ Common problems:
    why are CCI matches not enough?
 9. What does `register.py` change, and what does it leave for the coordinator
    to write by hand?
-10. Which changes to Chapters 11, 33, and 37 were made outside the command, and
-    what would a rebuild lose?
+10. Which changes to the FortiSwitch chapters (now Chapters 01 to 03 of Volume
+    CCI) were made outside the command, and what would a rebuild lose?
 
 ## Summary and Completion Checklist
 
@@ -546,8 +541,8 @@ coordinator reviews each result, registers it with `register.py`, checks it
 with `check.sh`, which also writes the CSV downloads, and publishes it. The
 same skill builds crosswalks between vendors and adds prerequisites to older
 chapters. Changes made outside the command, such as the FortiSwitchOS 7.6.7
-Reference and Page columns, are listed here so that readers know where they
-came from.
+Reference and Page columns, are recorded in Volume CCI's Chapter 90 so that
+readers know where they came from.
 
 - [ ] Can say how each part of the volume was built, and when.
 - [ ] Can name the outputs of the command and their model chapters.

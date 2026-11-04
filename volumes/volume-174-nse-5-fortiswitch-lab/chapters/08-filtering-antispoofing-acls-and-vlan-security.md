@@ -493,7 +493,7 @@ Administration Guide). The endpoint commands follow `dnsmasq(8)`, `tcpdump(8)`,
   proxy ARP entries and the policy as narrow as the need.
 - **Keep the default VLAN off host and unused ports.** Give host ports a user
   VLAN, discard tagged frames on access ports, and shut unused ports, as the
-  Volume CLXXII crosswalks require (Lab 8.5 Part D).
+  Volume CCI crosswalks require (Lab 8.5 Part D).
 
 ## References and Knowledge Checks
 
@@ -536,10 +536,10 @@ Administration Guide). The endpoint commands follow `dnsmasq(8)`, `tcpdump(8)`,
 - FortiSwitchOS 7.6.7 feature matrix (`temp/fsw/FSW-7.6.7-Feature-Matrix.pdf`)
   — the security, ACL, storm control, and private VLAN rows; notes 7, 15, 16,
   and 21.
-- [Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md),
-  [Chapter 33](../../volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md),
+- [Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md),
+  [Chapter 02](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md),
   and
-  [Chapter 37](../../volume-172-disa-srgs-and-stigs/chapters/37-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md)
+  [Chapter 03](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md)
   — the SRG requirements and STIG rules behind Lab 8.5 Part D, and the
   prerequisites P12 (DHCP snooping before DAI), P13 (VLANs), and P14 (IP source
   guard bindings).
@@ -878,7 +878,7 @@ source guard); the rest is read-and-predict.
 
 **Track 1, Part A — DAI:**
 
-1. Turn snooping back on (DAI needs it, prerequisite P12 in Volume CLXXII),
+1. Turn snooping back on (DAI needs it, prerequisite P12 in Volume CCI),
    renew endpoint A, and confirm its binding:
 
    ```text
@@ -1609,7 +1609,7 @@ that endpoint A reaches `10.174.41.1`.
 again only through the FortiGate (proxy ARP, `allow-traffic-redirect disable`,
 and policy P3), apply native VLAN hygiene to an access port and an unused port,
 predict private VLAN behavior, and map this chapter's controls to the Volume
-CLXXII hardening requirements.
+CCI hardening requirements.
 
 **Platform notes:** Parts A and B are hands-on on C1, C2, and C3 with S1, S2,
 or S3 (on S3, `FSW-A`): blocking intra-VLAN traffic is chain in both columns
@@ -1776,7 +1776,7 @@ read-and-predict.
    **Answer:** every front port the labs have not changed: `port3`, `port4`,
    `port5`, `port6`, and the unused ports above them, apart from
    `<FSW_FL_PORT>` (`port1` and, for now, `port2` are in `fsw-users`); a line
-   that `show` omits is at its default. Those are the ports the Volume CLXXII crosswalk rules
+   that `show` omits is at its default. Those are the ports the Volume CCI crosswalk rules
    `CISC-L2-000210` and `CISC-L2-000220` care about.
 
 10. Shut an unused port and mark it. `port4` is unused on every switch option
@@ -1869,11 +1869,11 @@ read-and-predict.
     in Part A: there every host is effectively isolated and the FortiGate is the
     only "promiscuous" peer, and policy decides exceptions.
 
-**Track 1, Part D — mapping to the Volume CLXXII requirements:**
+**Track 1, Part D — mapping to the Volume CCI requirements:**
 
 13. Fill in the last column from your results. The rules and SRG IDs are from
-    [Volume CLXXII, Chapter 33](../../volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md)
-    (Chapter 37 aligns the NX-OS rules the same way); that crosswalk gives the
+    [Volume CCI, Chapter 02](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md)
+    (Chapter 03 aligns the NX-OS rules the same way); that crosswalk gives the
     **standalone** FortiSwitchOS commands, and the middle column gives this
     chapter's FortiLink-mode equivalent:
 
@@ -1889,7 +1889,7 @@ read-and-predict.
     | `CISC-L2-000250` (`SRG-NET-000512-L2S-000011`) | Host ports as access ports | `discard-mode all-tagged` (Lab 8.5 step 11) | |
 
     Block intra-VLAN traffic itself maps to `SRG-NET-000715-L2S-000120` in
-    [Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md).
+    [Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md).
     Lab 12.5 applies the hardening set; this table is its rehearsal.
 
 **Track 2:** Run steps 2, 4 (with `10.174.41.100` in place of `<LEASE_A>`), 6,

@@ -101,12 +101,12 @@
 <div class="wrap">
   <header class="hd">
     <button id="themeBtn" type="button">Toggle theme</button>
-    <div class="eyebrow">Volume CLXXII · DISA SRGs and STIGs</div>
+    <div class="eyebrow">Volume CCI · FortiSwitch STIG and SRG Mapping</div>
     <h1>FortiSwitch SRG Crosswalk</h1>
     <p class="sub">FortiSwitch 2048F and 648F-FPOE on FortiSwitchOS 7.6.7, mapped to the Layer 2 Switch, Network Device Management and Router SRGs.
       Search, filter and sort the crosswalk, its prerequisites and the per-model support check; open a row for every column.
-      Companion to <a href="../html/volume-172-disa-srgs-and-stigs/Enterprise-Infrastructure-Encyclopedia.html">Volume CLXXII</a>.
-      Download the data as CSV with the buttons below or from the <a href="../data/volume-172-disa-srgs-and-stigs/">data folder</a>.</p>
+      Companion to <a href="../html/volume-201-fortiswitch-stig-and-srg-mapping/Enterprise-Infrastructure-Encyclopedia.html">Volume CCI</a>.
+      Download the data as CSV with the buttons below or from the <a href="../data/volume-201-fortiswitch-stig-and-srg-mapping/">data folder</a>.</p>
   </header>
 
   <div class="stats" id="stats"></div>
@@ -259,7 +259,7 @@ function Grid(root, cfg) {
 
 const col = (d, name) => d.columns.indexOf(name);
 const unique = (d, i) => [...new Set(d.rows.map(r => r[i]).filter(Boolean))].sort(collator.compare);
-const BASE = '../data/volume-172-disa-srgs-and-stigs/';
+const BASE = '../data/volume-201-fortiswitch-stig-and-srg-mapping/';
 
 // ---- Crosswalk ----
 const X = DATA.crosswalk;

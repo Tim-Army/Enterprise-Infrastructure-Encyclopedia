@@ -55,7 +55,7 @@ added.
    Every map chapter also has a **prerequisites** table ("### <Product>
    prerequisites": P1, P2, ... with what each enables, how to put it in place,
    and its source) and a prerequisites column in the feature map listing the
-   IDs each row needs (model: Chapter 33).
+   IDs each row needs (model: Volume CCI Chapter 02 (was Volume CLXXII Chapter 33)).
 3. **CSV downloads** before every table of every map chapter (feature map,
    requirement reference, and prerequisites), from
    `scripts/python/export_srg_tables.py`.
@@ -192,7 +192,7 @@ chapters that were built before this step existed:
   download), then commit, push, and watch as in step 5.
 - Check every license or model-support claim against the product's own
   documentation before accepting it, and fix any chapter whose prose
-  disagrees (the FortiSwitch work corrected Chapter 11's license list).
+  disagrees (the FortiSwitch work corrected Volume CCI Chapter 01 (was Volume CLXXII Chapter 11)'s license list).
 
 ### 6. Finish
 

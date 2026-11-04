@@ -15,7 +15,7 @@
   detection changed, switch deauthorized, inter-switch link member lost),
   record each fault's signature, and predict the signatures of the faults you
   do not induce (wrong VDOM, incompatible firmware).
-- Harden the managed switch against the Volume CLXXII FortiSwitch
+- Harden the managed switch against the Volume CCI FortiSwitch
   prerequisites (remote logging, NTP, SNMPv3, management access, DHCP snooping
   and VLAN hygiene, flow collection, image integrity) and collect evidence for
   each row, including the rows FortiLink mode cannot meet.
@@ -37,7 +37,7 @@ domain (monitoring and troubleshooting) and ends the volume.
 | 12.2 | 4.3 | SNMP, sFlow, and flow export to `ubuntu-ws` | Hands-on (sFlow and flow export not on S1) | Build + predict |
 | 12.3 | 4.1 | FortiGate sniffer, on-switch capture, SPAN, RSPAN | Hands-on (on-switch capture not on S1; RSPAN S3 only) | FortiGate sniffer live + predict |
 | 12.4 | 4.2 | FortiLink fault clinic | Hands-on (two faults predict only) | Read-and-predict |
-| 12.5 | Hardening (Volume CLXXII) | Remote log, NTP, SNMPv3, access, snooping, hygiene, evidence | Hands-on | Build (controller side only) |
+| 12.5 | Hardening (Volume CCI) | Remote log, NTP, SNMPv3, access, snooping, hygiene, evidence | Hands-on | Build (controller side only) |
 | 12.6 | Teardown | Switches retired, controllers restored, Proxmox, Nexus, and VMs returned | Hands-on | Hands-on (controller and hypervisor) |
 
 ### Two views of one switch
@@ -177,7 +177,7 @@ because the feature matrix marks them standalone only (a check mark):
 | Flow collection | `sflow`, `flow-tracking` | sFlow and flow export as in the telemetry table |
 | Image integrity | Switch `get system status` (`Firmware Signature`), `diagnose sys firmware info`, `execute verify image` | OS image signature verification chain in both, except the FS-224D-FPOE and FS-248D (note 17); the "CLI command reports if BIOS and firmware signatures are valid" row is a check in both, with the same two 200 Series models excluded |
 
-[Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md)
+[Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md)
 wrote its prerequisites P1–P18 for standalone FortiSwitchOS 8.0.0 and FortiOS
 8.0.1. Lab 12.5 maps each row this chapter can meet to its FortiLink-mode
 equivalent, re-checked against the 7.6 references, and records the rows it
@@ -244,7 +244,7 @@ misprint for the FortiOS `config system interface` that Chapter 02 used).
 | `switch-on-deauth` | Guide documents it (p. 43) | Not in the 7.6.0 CLI Reference | Checks with `?` only |
 | Status and fan commands | Guide: FortiOS 7.6.3 and later (p. 332) | FortiOS 8.0.1 reference lists them | Read-only on FGT-1 7.6.2 |
 | Image delete on the controller | Not in the FortiLink Guide 7.6.7 | FortiOS 8.0.1: `switch-software delete <all>\|<image-name>` | Check with `?` first |
-| Vol CLXXII image check | Vol CLXXII Ch 11 (8.0.0): `diagnose sys firmware info` | FortiSwitchOS 7.6.7 CLI Reference: the same command (p. 389) | Uses it, plus `execute verify image` |
+| Vol CCI image check | Vol CCI Ch 01 (8.0.0): `diagnose sys firmware info` | FortiSwitchOS 7.6.7 CLI Reference: the same command (p. 389) | Uses it, plus `execute verify image` |
 
 ### Model support for this chapter
 
@@ -413,9 +413,9 @@ log the console to a file with `picocom --logfile` before each lab, so that a
 fault you induce leaves a record even if the controller loses the switch.
 
 **Keep an evidence file per hardening row.** Lab 12.5 asks for the output of a
-`show` or `diagnose` command for each Volume CLXXII row. Paste each output
+`show` or `diagnose` command for each Volume CCI row. Paste each output
 under the row's ID in your lab notes, with the date and the controller and
-switch builds, the way Volume CLXXII collects evidence.
+switch builds, the way Volume CCI collects evidence.
 
 The FortiOS configuration commands in this chapter were checked against the
 FortiOS 7.6.0 CLI Reference with `temp/nse5fsw/verify.py` (`fos76blocks.json`),
@@ -471,7 +471,7 @@ NX-OS pattern, and the host commands their manual pages.
 
 - **Prefer SNMPv3 with authentication and privacy.** SNMPv1 and v2c send the
   community in clear text; use them only as briefly as Lab 12.2 does, and
-  remove the community afterwards. Volume CLXXII asks for SHA-2 authentication
+  remove the community afterwards. Volume CCI asks for SHA-2 authentication
   and AES privacy (its row uses AES-256); the controller offers `aes256` as well
   (FortiLink Guide, p. 304), so use it if your SNMP manager supports it.
 - **Open only the path you need.** An SNMP poller needs one policy from the
@@ -545,9 +545,9 @@ NX-OS pattern, and the host commands their manual pages.
   `execute restore config`, `diagnose sys cmdb refcnt`.
 - FortiSwitchOS 7.6.7 feature matrix (`temp/fsw/FSW-7.6.7-Feature-Matrix.pdf`)
   — the rows in this chapter's model table; note 17.
-- [Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md)
+- [Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md)
   — prerequisites P1, P4–P7, P10, P12, P13, P18, and the feature-row commands
-  that Lab 12.5 re-checks; [Chapter 33](../../volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md)
+  that Lab 12.5 re-checks; [Chapter 02](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md)
   — the Layer 2 rules of Lab 8.5 Part D.
 - [Proxmox VE, *PCI(e) Passthrough*](https://pve.proxmox.com/wiki/PCI(e)_Passthrough)
   and the [`qm(1)` manual](https://pve.proxmox.com/pve-docs/qm.1.html) —
@@ -581,7 +581,7 @@ NX-OS pattern, and the host commands their manual pages.
 6. You change the FortiLink interface's neighbor detection while a switch is
    managed. What did you record about the switch's session, and why is that a
    recorded result rather than a documented one?
-7. Which Volume CLXXII prerequisites cannot be met in FortiLink mode on this
+7. Which Volume CCI prerequisites cannot be met in FortiLink mode on this
    volume's switches, and which feature matrix marks say so?
 8. Why does the teardown retire `FSW-B` before `FSW-A` on S3?
 9. What is the difference between restoring `fgt1-pre-174.conf` and removing the
@@ -1636,7 +1636,7 @@ the entry itself was damaged.
 ### Lab 12.5 — Harden the managed switch and collect the evidence
 
 **Objective:** Apply the hardening that FortiLink mode allows against the
-Volume CLXXII FortiSwitch prerequisites and Lab 8.5 Part D's Layer 2 rules,
+Volume CCI FortiSwitch prerequisites and Lab 8.5 Part D's Layer 2 rules,
 record the rows that FortiLink mode cannot meet, and collect one piece of
 evidence per row.
 
@@ -1779,7 +1779,7 @@ entry only if Lab 2.2's third outcome applies.
 
    Evidence for P6: no community, user `snmp-174` with `security-level
    auth-priv`, `auth-proto sha256`, and a privacy protocol, and a working
-   `snmpwalk -v3`. The Volume CLXXII row asks for AES-256: if `snmpwalk` on
+   `snmpwalk -v3`. The Volume CCI row asks for AES-256: if `snmpwalk` on
    `ubuntu-ws` lists AES-256 among its `-x` choices, set `priv-proto aes256`
    on the controller, poll with the matching `-x` value, and record it;
    otherwise record AES-128 as a lab deviation.
@@ -1883,7 +1883,7 @@ entry only if Lab 2.2's third outcome applies.
     FGT # execute switch-controller switch-software list-available
     ```
 
-    Evidence for image integrity (Volume CLXXII, OS image signature
+    Evidence for image integrity (Volume CCI, OS image signature
     verification row): `Firmware Signature` not `invalid`, `BIOS Signature` and
     `Firmware Signature` valid in `diagnose sys firmware info`, and "No issue
     found!" for the primary image (the CLI Reference's example wording, p. 464).
@@ -1894,7 +1894,7 @@ entry only if Lab 2.2's third outcome applies.
 **Track 1, Part G — the evidence table:**
 
 13. Fill in the last column from Parts A to F. The SRG IDs are those of the
-    Volume CLXXII, Chapter 11 rows, and the rules those of Lab 8.5 Part D:
+    Volume CCI, Chapter 11 rows, and the rules those of Lab 8.5 Part D:
 
     | Row | Requirement | FortiLink-mode setting in this lab | Your evidence |
     | --- | --- | --- | --- |

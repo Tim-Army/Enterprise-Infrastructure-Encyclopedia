@@ -8,7 +8,7 @@ You are writing ONE chapter for ONE product. Read these chapters first and copy
 their structure, tone, and conventions closely:
 
   chapters/12-fortianalyzer-feature-version-and-srg-map.md   SRG map, New Features Guide version source (primary model)
-  chapters/11-fortiswitch-feature-version-and-srg-map.md     SRG map, feature-matrix version source
+  ../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md     SRG map, feature-matrix version source
   chapters/30-fortigate-feature-version-and-stig-map.md      STIG map: every STIG rule mapped, fix text checked
   chapters/24-fortipam-feature-version-and-srg-map.md        STIG rule IDs with an SRG ID column
   chapters/10-fortinet-products-stigs-and-srg-mapping.md     vendor overview (which SRGs apply to which product)
@@ -117,7 +117,7 @@ STEP 4. Commands
 STEP 4b. Prerequisites
 - Build a prerequisites list for the product and a prerequisites column in the
   feature map, as .claude/skills/srg-mapping-for/PREREQ-PLAYBOOK.txt describes
-  (sections WHAT A PREREQUISITE IS and WHAT TO ADD), with Chapter 33 as the
+  (sections WHAT A PREREQUISITE IS and WHAT TO ADD), with Volume CCI Chapter 02 (was Volume CLXXII Chapter 33) as the
   model: a "### Prerequisites" prose section after the last "Where ... comes
   from" section, a "### <Product> prerequisites" table (P1, P2, ...) just
   before "### The <Product> feature map", and a "<Product> prerequisites"

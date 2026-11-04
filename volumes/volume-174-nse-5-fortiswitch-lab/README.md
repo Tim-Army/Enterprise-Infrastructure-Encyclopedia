@@ -15,7 +15,7 @@
 Volume CLXXIV is a **certification lab volume**, not a segmentation lab. It pairs
 with [Volume XIX](../volume-019-fortinet-network-security/README.md), which places
 NSE 5 in the restored NSE program, and with
-[Volume CLXXII](../volume-172-disa-srgs-and-stigs/README.md), whose FortiSwitch SRG
+[Volume CCI](../volume-201-fortiswitch-stig-and-srg-mapping/README.md), whose FortiSwitch SRG
 map and crosswalks supply commands that the hardening lab reuses. It follows the
 exam's four domains: FortiSwitch concepts, deployment and management, Layer 2
 control and security, and monitoring and troubleshooting.
@@ -87,8 +87,8 @@ option runs hands-on, and every lab opens with a platform note.
 - [Volume XIX — Fortinet NSE Certification Program](../volume-019-fortinet-network-security/README.md),
   Chapter 10 (the restored NSE program and tracks) and Chapter 11 (Secure
   Networking upper levels; Lab 11.1, FortiSwitch over FortiLink).
-- [Volume CLXXII — DISA SRGs and STIGs](../volume-172-disa-srgs-and-stigs/README.md),
-  [Chapter 11](../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md)
+- [Volume CCI — FortiSwitch STIG and SRG Mapping](../volume-201-fortiswitch-stig-and-srg-mapping/README.md),
+  [Chapter 01](../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md)
   (FortiSwitch feature, version, and SRG map).
 - [Volume CIX — Fortinet ISFW and VDOM Lab](../volume-109-fortinet-isfw-vdom-lab/README.md)
   — FortiGate-VM evaluation caveats and VDOMs.

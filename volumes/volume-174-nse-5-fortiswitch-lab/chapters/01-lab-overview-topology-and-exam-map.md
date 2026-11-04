@@ -232,7 +232,7 @@ a design exercise.
 | 12.2 | SNMP, sFlow, flow export | SNMP Live; sFlow and flow export predict | Live | Live | Build + predict | SNMP OID chain in both; sFlow chain, 1xx cell "124F, 148E, 148F"; flow export chain, 1xx cell "124F, 148F"; both chain in 200 Series |
 | 12.3 | Packet capture: FortiGate sniffer, on-switch capture, RSPAN/ERSPAN, port mirror | FortiGate sniffer and SPAN Live; on-switch capture and RSPAN predict | FortiGate sniffer, on-switch capture, SPAN Live; RSPAN predict | Live | Predict | Packet capture chain, 1xx cell "124F, 148E, 148F", chain in 200 Series; SPAN chain in both; RSPAN and ERSPAN dash in 1xxE/1xxF, chain in 200 Series |
 | 12.4 | FortiLink fault clinic | Live | Live | Live | Predict | Not a matrix row (troubleshooting) |
-| 12.5–12.6 | Hardening against Volume CLXXII, teardown | Live | Live | Live | Build (FortiGate side only) | Syslog collection chain in both |
+| 12.5–12.6 | Hardening against Volume CCI, teardown | Live | Live | Live | Build (FortiGate side only) | Syslog collection chain in both |
 
 Three details are easy to miss. The FS-108F and FS-124F share a column, so they
 differ only where a cell names models (sFlow, flow export, packet capture) or a
@@ -246,7 +246,7 @@ on the topology and the controller, so Chapter 06 and Chapter 10 verify them
 against the FortiLink Guide 7.6.7.
 
 For the model-by-model SRG view of the same features, see
-[Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md).
+[Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md).
 
 ## Topology and Addressing
 
@@ -486,7 +486,7 @@ used only as a cross-check, and any 8.0-only syntax is flagged.
   [Lab 11.1](../../volume-019-fortinet-network-security/chapters/11-secure-networking-upper-levels-switching-wireless-and-management.md#lab-111--fortiswitch-managed-over-fortilink-topic-fortiswitch)
   adopts a FortiSwitch over FortiLink in a few commands; this volume expands that
   lab into a full exam lab.
-- [Volume CLXXII, Chapter 11](../../volume-172-disa-srgs-and-stigs/chapters/11-fortiswitch-feature-version-and-srg-map.md)
+- [Volume CCI, Chapter 01](../../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md)
   maps FortiSwitch features to DISA SRG requirements; Lab 12.5 reuses its
   commands after re-checking them against 7.6.7.
 - [Volume CM](../../volume-900-tims-lab-gear/README.md) describes the physical

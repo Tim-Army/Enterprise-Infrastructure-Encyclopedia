@@ -5,8 +5,8 @@ Repository: D:\Documents\claude\Enterprise-Infrastructure-Encyclopedia
 Volume:     volumes/volume-172-disa-srgs-and-stigs (DISA SRGs and STIGs)
 
 You are adding prerequisites to ONE chapter that is already committed and
-live. Model: Chapter 33
-(chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md): read
+live. Model: Volume CCI Chapter 02 (was Volume CLXXII Chapter 33)
+(volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md): read
 its "### Prerequisites" prose section, its "### FortiSwitch prerequisites"
 table, and its "FortiSwitch prerequisites" column, and copy their form.
 

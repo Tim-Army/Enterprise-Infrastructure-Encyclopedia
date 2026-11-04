@@ -6127,6 +6127,25 @@ volumes:
       - id: 12
         title: "Chapter 12: Monitoring, Troubleshooting, Hardening, and Teardown"
         path: volumes/volume-174-nse-5-fortiswitch-lab/chapters/12-monitoring-troubleshooting-hardening-and-teardown.md
+  - id: volume-201
+    number: "CCI"
+    slug: volume-201-fortiswitch-stig-and-srg-mapping
+    title: "FortiSwitch STIG and SRG Mapping"
+    chapter_count: 4
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: FortiSwitch Feature, Version, and SRG Map"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md
+      - id: 02
+        title: "Chapter 02: FortiSwitch and Cisco Catalyst Switch STIG Crosswalk"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md
+      - id: 03
+        title: "Chapter 03: Cisco NX-OS Switch and FortiSwitch STIG Crosswalk"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md
+      - id: 90
+        title: "Chapter 90: As-Built — How This Volume Was Built"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear

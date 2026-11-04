@@ -10,7 +10,7 @@ on a comparable product from another vendor (the "comparison" product, for
 example FortiGate) that meets the same SRG requirement.
 
 Model chapter (read it first and copy its structure, wording, and conventions):
-  volumes/volume-172-disa-srgs-and-stigs/chapters/33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md
+  volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md
 Its build scripts, if still present, are in temp/xwalk/ (load.py, build.py,
 verify.py, fswblocks.py, chapter-template.txt) and are good models.
 
@@ -76,7 +76,7 @@ WHAT TO BUILD
    Alignment is one of: Same requirement, Equivalent setting, Partial (say
    what is missing), Not supported (say so), Not applicable (the rule targets a
    role, protocol, or component the comparison product does not have), or By
-   procedure. Define them in the chapter, as Chapter 33 does.
+   procedure. Define them in the chapter, as Volume CCI Chapter 02 (was Volume CLXXII Chapter 33) does.
 2. "### <Cmp> requirements with no <Ref> rule": the comparison product's mapped
    requirements that no reference rule cites, with its setting, command, and
    version.
@@ -84,17 +84,17 @@ WHAT TO BUILD
    placed just before "### The crosswalk table", plus a "<Cmp> prerequisites"
    column right after "<Cmp> version" in the crosswalk table and at the end of
    the unmatched table, as .claude/skills/srg-mapping-for/PREREQ-PLAYBOOK.txt
-   describes (model: Chapter 33). If the comparison product's map chapter
+   describes (model: Volume CCI Chapter 02 (was Volume CLXXII Chapter 33)). If the comparison product's map chapter
    already has a prerequisites table, reuse its IDs, wording, and commands
    exactly, and make the build confirm they match.
 3. "### Alignment summary": counts by STIG and category, and prose on the main
    differences (stricter or weaker on each side, unsupported capabilities,
    managed modes).
-4. Standard sections as in Chapter 33, including "Why this is a crosswalk",
+4. Standard sections as in Volume CCI Chapter 02 (was Volume CLXXII Chapter 33), including "Why this is a crosswalk",
    "How the rules are aligned", "Where the version columns come from", and
    "Collecting evidence" for a mixed estate. No labs. Link Chapters 03, 07,
    the reference vendor's overview chapter, both products' map chapters (where
-   they exist), and Chapter 33.
+   they exist), and Volume CCI Chapter 02 (was Volume CLXXII Chapter 33).
 
 VERIFY
 - Verify every comparison-product command against its command reference text
