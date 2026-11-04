@@ -20,7 +20,7 @@ The three content chapters here were Chapters 11, 33, and 37 of that volume and
 moved on 2026-11-04. Volume CLXXII keeps a short pointer page at each old
 chapter number, so earlier links still work.
 
-The volume has four chapters:
+The volume has five chapters:
 
 - **Chapter 01** is the **FortiSwitch feature, version, and SRG map**: all 235
   FortiSwitchOS 8.0.0 features, the release that first lists each one, the
@@ -38,6 +38,11 @@ The volume has four chapters:
 - **Chapter 90**, the as-built chapter, records how Chapters 01 to 03 and the
   workbook were built, when, and from which sources, and what changed after the
   first build.
+- **Chapter 999**, the **shared lab infrastructure**, defines the lab that
+  every requirement lab in this volume runs in: the address plan (`10.201.0.0/16`
+  for IPv4 and `fd00:db8:201::/112` for IPv6), the hosts and services that
+  satisfy the workbook's prerequisites P1 to P17, and the baseline of the two
+  switches under test. It is numbered 999 so that it stays last.
 
 The Cisco side of the crosswalks lives in Volume CLXXII: the
 [Cisco overview](../volume-172-disa-srgs-and-stigs/chapters/31-cisco-products-stigs-and-srg-mapping.md)
@@ -74,10 +79,11 @@ own files.
 2. [FortiSwitch and Cisco Catalyst Switch STIG Crosswalk](chapters/02-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md) — all 152 Cisco IOS XE Switch STIG rules aligned, through the SRG requirement each implements, with the FortiSwitch setting and verified FortiSwitchOS 8.0.0 command that meets it (31 same requirement, 55 equivalent setting, 16 partial, 28 not supported, 20 not applicable, 2 by procedure), plus the 26 FortiSwitch SRG requirements no Cisco rule covers.
 3. [Cisco NX-OS Switch and FortiSwitch STIG Crosswalk](chapters/03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md) — all 142 Cisco NX-OS Switch STIG rules (NDM, L2S, RTR) aligned through their SRG IDs with a corrected, script-verified Nexus 9000 NX-OS 10.5(x) command and the FortiSwitch setting and FortiSwitchOS 8.0.0 command that meet the same requirement (30 same requirement, 57 equivalent setting, 17 partial, 19 not supported, 17 not applicable, 2 by procedure; 120 rows reuse Chapter 02's FortiSwitch side), with vPC, VXLAN EVPN, and CoPP notes and the 25 FortiSwitch SRG requirements no NX-OS rule covers.
 90. [As-Built — How This Volume Was Built](chapters/90-as-built-how-this-volume-was-built.md) — how and when Chapters 01 to 03 and the SRG mapping workbook were built, from which sources, and what changed after the first build, including the move from Volume CLXXII.
+999. [Shared Lab Infrastructure](chapters/999-shared-lab-infrastructure.md) — the lab network for this volume's requirement labs: the `10.201.0.0/16` and `fd00:db8:201::/112` address plans split into segments, the routed links and routing peers, the service hosts behind prerequisites P1 to P17, and six labs that build and baseline the gateway, services, and both switches.
 
 ## Volume resources
 
-- [Index](INDEX.md) — alphabetized topical index across all four chapters.
+- [Index](INDEX.md) — alphabetized topical index across all five chapters.
 - [Glossary](GLOSSARY.md) — definitions for terms used in this volume.
 
 ## Related volumes
@@ -92,11 +98,13 @@ own files.
 
 ## Lab coverage
 
-This volume has **no hands-on labs**, by design. It is a reference. Each
-chapter keeps its implementation examples (commands and configuration
-snippets) and its knowledge checks, but omits the Hands-On Lab and Lab
-Verification sections of the standard chapter template. For hands-on practice
-on a real FortiSwitch, see Volume CLXXIV.
+Chapters 01 to 03 and 90 have **no hands-on labs**, by design: they are
+reference chapters that map requirements and record how the volume was built.
+Chapter 999 has the volume's hands-on labs (Labs 999.1 to 999.6), which build
+the shared lab network and baseline both switches. Requirement labs that use
+that network refer to it by segment, host, and prerequisite. For a
+FortiLink-managed FortiSwitch lab built around an exam blueprint, see Volume
+CLXXIV.
 
 ## Software and platform baseline
 

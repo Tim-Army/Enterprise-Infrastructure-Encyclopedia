@@ -5,12 +5,16 @@ See the [master glossary](../../GLOSSARY.md) for cross-volume terms and the
 [Volume CLXXII glossary](../volume-172-disa-srgs-and-stigs/GLOSSARY.md) for
 the SRG and STIG terms this volume builds on.
 
+- **/112 lab block** — the IPv6 prefix `fd00:db8:201::/112` that holds the lab's IPv6 addresses; its last 16 bits are the segment and host, so it splits into /120 segments and cannot support SLAAC.
 - **Advanced Features License** — the Fortinet license (FS-SW-LIC-600 for the FS-648F-FPOE, FS-SW-LIC-2000 for the FS-2048F) that enables Layer 3 features such as OSPF and BGP on a FortiSwitch; rows that need it list it as a prerequisite.
+- **Baseline snapshot** — the saved state of every lab virtual machine and of both switch configurations that each requirement lab starts from and returns to.
 - **FIPS-CC mode** — the FortiSwitchOS operating mode that restricts the switch to FIPS 140 and Common Criteria validated behavior; the mapped release is the FIPS-CC image.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Interactive crosswalk table** — the self-contained web page generated from the SRG mapping workbook, with search, filters, sorting, and CSV download for the crosswalk, prerequisites, and model-support sheets.
 - **Model support sheet** — the workbook sheet that records, for each FortiSwitchOS 7.6.7 feature, whether the FS-648F-FPOE and FS-2048F support it.
+- **Routed link** — a point-to-point link (L1 to L5) between two routers in the lab, addressed with a /31 in IPv4 and a /127 in IPv6.
+- **Segment (lab)** — one /24 IPv4 network and one /120 IPv6 network whose number is shared by the VLAN ID, the third octet, and the IPv6 address group.
 - **SRG mapping workbook** — the Excel workbook that holds the FortiSwitch crosswalk of SRG requirements to FortiSwitch settings, commands, documentation references, and verification status.
 - **STIG crosswalk** — an alignment of one vendor's STIG rules with another platform's settings through the SRG requirement each rule implements, used where the second platform, such as FortiSwitch, has no STIG of its own.
 - **vPC (virtual port channel)** — a Cisco Nexus feature that lets two switches present one port channel to a downstream device; FortiSwitch provides the same function with MCLAG.

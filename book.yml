@@ -6131,7 +6131,7 @@ volumes:
     number: "CCI"
     slug: volume-201-fortiswitch-stig-and-srg-mapping
     title: "FortiSwitch STIG and SRG Mapping"
-    chapter_count: 4
+    chapter_count: 5
     build_eligible: true
     chapters:
       - id: 01
@@ -6146,6 +6146,9 @@ volumes:
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
+      - id: 999
+        title: "Chapter 999: Shared Lab Infrastructure"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/999-shared-lab-infrastructure.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
