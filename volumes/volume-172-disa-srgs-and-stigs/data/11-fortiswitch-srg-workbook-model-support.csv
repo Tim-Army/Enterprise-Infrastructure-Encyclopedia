@@ -1,0 +1,236 @@
+﻿Category,Feature,First listed,7.6.7 matrix row,648F-FPOE (6xxF),2048F
+Security Fabric,Centralized configuration,7.0.0 or earlier,Centralized configuration,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Centralized firmware management,7.0.0 or earlier,Centralized firmware management,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Automated detection and recommendations,7.0.0 or earlier,Automated detection and recommendations,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Syslog collection,7.0.0 or earlier,Syslog collection,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Device detection,7.0.0 or earlier,Device detection,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Network device detection,7.0.0 or earlier,Network device detection,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Block intra-VLAN traffic,7.0.0 or earlier,Block intra-VLAN traffic (See note 7.),Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Host quarantine,7.0.0 or earlier,Host quarantine,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Automation stitches (zero-touch provisioning automation),7.4.3 and later,Automation stitches (zero- touch provisioning automation),Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Integrated FortiGate network access control (NAC) function,7.0.0 or earlier,Integrated FortiGate network access control (NAC) function,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,NAC LAN segments,7.0.1 and later,NAC LAN segments (See note 12.),Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,FortiGuard IoT identification,7.0.0 or earlier,FortiGuard IoT identification,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Matching FortiClient EMS tags in NAC policies,7.0.0 or earlier,Support of matching FortiClient EMS tags in NAC policies,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Matching IoT/OT vulnerabilities in NAC policies,7.4.0 and later,Support of matching IoT/OT vulnerabilities in NAC policies,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Matching FortiVoice tags in NAC policies,7.4.3 and later,Support of matching FortiVoice tags in NAC policies,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,NAC: control of how long matched devices are kept,7.4.3 and later,NAC: control of how long matched devices are kept,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,NAC and 802.1X on same port,7.6.4 and later,NAC and 802.1X on same port,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Dynamic port policies (DPP),7.0.0 or earlier,,No matching row in the 7.6.7 matrix,No matching row in the 7.6.7 matrix
+Security Fabric,DPP: control of how long matched devices are kept,7.4.3 and later,DPP: control of how long matched devices are kept,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,FortiSwitch VLANs over VXLAN,7.2.1 and later,FortiSwitch VLANs over VXLAN,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,FortiLink management over VXLAN,7.2.1 and later,FortiLink management over VXLAN,Not supported,Supported (standalone and managed)
+Security Fabric,FortiView Internal Hubs,7.2.3 and later,FortiView Internal Hubs,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,NAC device telemetry,7.2.3 and later,NAC device telemetry,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,Inter-VLAN routing offload,7.4.1 and later,Inter-VLAN routing offload (See note 19.),Not supported,Supported (standalone and managed)
+Security Fabric,FortiLink Secure Fabric authentication,7.4.1 and later,FortiLink Secure Fabric authentication,Supported (standalone and managed),Supported (standalone and managed)
+Security Fabric,FortiLink Secure Fabric encryption,7.4.1 and later,FortiLink Secure Fabric encryption,Not supported,Not supported
+Security Fabric,FortiLink using HTTPS,7.4.2 and later,FortiLink using HTTPS,Supported (standalone and managed),Supported (standalone and managed)
+Management and Configuration,CPLD software upgrade support for OS,7.0.0 or earlier,CPLD software upgrade support for OS,Supported (standalone),Not supported
+Management and Configuration,Firmware image rotation (dual-firmware image support),7.0.0 or earlier,Firmware image rotation (dual-firmware image support),Supported (standalone),Supported (standalone)
+Management and Configuration,HTTP REST APIs for configuration and monitoring,7.0.0 or earlier,HTTP REST APIs for configuration and monitoring,Supported (standalone),Supported (standalone)
+Management and Configuration,Support for switch SNMP OID,7.0.0 or earlier,Support for switch SNMP OID,Supported (standalone and managed),Supported (standalone and managed)
+Management and Configuration,IP conflict detection and notification,7.0.0 or earlier,IP conflict detection and notification,Supported (standalone),Supported (standalone)
+Management and Configuration,FortiEdge Cloud configuration,7.0.0 or earlier,FortiEdge Cloud configuration,Supported (standalone),Supported (standalone)
+Management and Configuration,FortiSwitch Manager configuration,7.2.1 and later,FortiSwitch Manager configuration,Supported (standalone),Supported (standalone)
+Management and Configuration,Auto topology,7.0.0 or earlier,Auto topology,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,RADIUS for administrative authentication,7.2.0 and later,RADIUS for administrative authentication,Supported (standalone),Supported (standalone)
+Security and Visibility,TACACS+ for administrative authentication,7.2.0 and later,TACACS+ for administrative authentication,Supported (standalone),Supported (standalone)
+Security and Visibility,802.1X port mode,7.0.0 or earlier,802.1X port mode,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X MAC-based mode,7.0.0 or earlier,802.1X MAC-based mode,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X MAC-based mode: Wake-on-LAN,7.2.2 and later,802.1X MAC-based mode: Wake- on-LAN,Supported (standalone),Supported (standalone)
+Security and Visibility,User-based (802.1X) VLAN assignment,7.0.0 or earlier,User-based (802.1X) VLAN assignment,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X: priority for dynamic or egress VLAN assignment,7.4.2 and later,802.1x: priority for dynamic or egress VLAN assignment,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X: MAB,7.0.0 or earlier,802.1X: MAB,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X: MAB entry aging,7.4.1 and later,802.1X: MAB entry aging,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X: limiting the number of MAB sessions,7.4.7+; 7.6.2+,802.1X: limiting the number of MAB sessions,Supported (standalone),Supported (standalone)
+Security and Visibility,Tagged VLAN support for authserver-timeout,7.2.7+; 7.4.3+; 7.6.0+,Tagged VLAN support for authserver-timeout,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,open-auth mode,7.0.0 or earlier,open-auth mode,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,MAC move,7.0.1 and later,MAC move,Not supported,Supported (standalone)
+Security and Visibility,802.1X/MAB priority,7.2.1 and later,802.1X/MAB priority,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,RADIUS accounting server support,7.0.0 or earlier,Support of the RADIUS accounting server,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,RADIUS CoA and disconnect messages,7.0.0 or earlier,Support of RADIUS CoA and disconnect messages,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,802.1X: RadSec (IPv4),7.6.4 and later,802.1X: RadSec (IPv4),Supported (standalone),Supported (standalone)
+Security and Visibility,EAP pass-through,7.0.0 or earlier,EAP pass-through,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,IP-MAC binding (IPv4),7.0.0 or earlier,IP-MAC binding (IPv4),Not supported,Supported (standalone and managed)
+Security and Visibility,sFlow (IPv4),7.0.0 or earlier,sFlow (IPv4),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,Flow export (IPv4),7.0.0 or earlier,Flow export (IPv4),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,ACL (IPv4 ingress),7.0.0 or earlier,ACL (IPv4 ingress) (See note 16.),Supported (standalone),Supported (standalone and managed)
+Security and Visibility,ACL (IPv6 ingress),7.2.3 and later,ACL (IPv6 ingress),Not supported,Supported (standalone)
+Security and Visibility,Multistage ACL (IPv4),7.0.0 or earlier,Multistage ACL (IPv4),Not supported,Supported (standalone)
+Security and Visibility,Multiple ingress ACLs (IPv4),7.0.0 or earlier,Multiple ingress ACLs (IPv4),Not supported,Supported (standalone)
+Security and Visibility,ACL (IPv4 prelookup),7.4.3 and later,ACL (IPv4 prelookup),Not supported,Supported (standalone)
+Security and Visibility,ACL (IPv4 egress),7.4.3 and later,ACL (IPv4 egress),Supported (standalone),Supported (standalone)
+Security and Visibility,ACL service (IPv4),7.4.3 and later,ACL service (IPv4),Supported (standalone),Supported (standalone)
+Security and Visibility,Schedule for ACLs (IPv4),7.0.0 or earlier,Schedule for ACLs (IPv4),Not supported,Supported (standalone)
+Security and Visibility,Dynamic ACLs (IPv4),7.2.2 and later,Dynamic ACLs (IPv4),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,Dynamic ACLs: CoA (IPv4),7.4.7 and later,Dynamic ACLs: CoA (IPv4),Not supported,Supported (standalone and managed)
+Security and Visibility,ACL: color marking (IPv4),7.2.0 and later,ACL: color marking (IPv4),Not supported,Supported (standalone)
+Security and Visibility,ACL: enhanced classifiers,7.6.1 and later,ACL: enhanced classifiers,Not supported,Supported (standalone)
+Security and Visibility,ACL mirror,7.6.0 and later,ACL mirror,Not supported,Supported (standalone)
+Security and Visibility,DHCP snooping,7.0.0 or earlier,DHCP snooping (See note 15.),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,DHCPv6 snooping,7.0.0 or earlier,DHCPv6 snooping,Supported (standalone),Supported (standalone)
+Security and Visibility,DHCP-snooping static entries (IPv4),7.2.2 and later,DHCP-snooping static entries (IPv4),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,DHCP-snooping option 82,7.4.0 and later,DHCP-snooping option 82,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,DHCP-snooping monitor mode,7.4.3 and later,DHCP-snooping monitor mode,Not supported,Not supported
+Security and Visibility,Allowed DHCP server list,7.0.0 or earlier,Allowed DHCP server list,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,Flap guard,7.2.0 and later,Flap guard,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,IP source guard (IPv4),7.0.0 or earlier,IP source guard (IPv4),Not supported,Not supported
+Security and Visibility,IP source-guard violation log (IPv4),7.0.0 or earlier,IP source-guard violation log (IPv4),Not supported,Not supported
+Security and Visibility,Dynamic ARP inspection (IPv4),7.0.0 or earlier,Dynamic ARP inspection (IPv4),Not supported,Supported (standalone and managed)
+Security and Visibility,ARP timeout value,7.0.0 or earlier,ARP timeout value,Supported (standalone),Supported (standalone)
+Security and Visibility,DAI: monitor ARP packets,7.4.3 and later,DAI: monitor ARP packets,Not supported,Supported (standalone and managed)
+Security and Visibility,RMON group 1,7.0.0 or earlier,RMON group 1,Supported (standalone),Supported (standalone)
+Security and Visibility,Reliable syslog,7.0.0 or earlier,Reliable syslog,Supported (standalone),Supported (standalone)
+Security and Visibility,Packet capture,7.0.0 or earlier,Packet capture,Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,MACsec: PSK mode,7.0.0 or earlier,MACsec: PSK mode (See note 6.),Supported (standalone),Not supported
+Security and Visibility,MACsec: Dynamic-CAK mode,7.2.1 and later,MACsec: Dynamic-CAK mode (See note 6.),Supported (standalone),Not supported
+Security and Visibility,MACsec: AWS Direct Connect support,7.4.4 and later,MACsec: AWS Direct Connect support,Supported (standalone),Not supported
+Security and Visibility,LINCE support,7.0.10+; 7.2.8+; 7.4.3+; 7.6.0+,LINCE support,Not supported,Not supported
+Security and Visibility,OS image signature verification,7.4.0 and later,OS image signature verification (See note 17.),Supported (standalone and managed),Supported (standalone and managed)
+Security and Visibility,Configuration file verification,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Security and Visibility,Network monitor,7.4.1 and later,Network monitor,Not supported,Supported (standalone)
+Security and Visibility,FIPS 140-3 (Level 1) and CC support,7.6.4 and later,FIPS 140-3 (Level 1) and CC support (See note 27.),Supported (standalone),Supported (standalone)
+Security and Visibility,FedRAMP support,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Security and Visibility,OpenSSL security level for applications,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Security and Visibility,DNS over TLS,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 2,Link aggregation group size,7.0.0 or earlier,Link aggregation group size (maximum number of ports) (See note 2.),Note: 28/56,Note: 48
+Layer 2,LAG min-max bundle,7.0.0 or earlier,LAG min-max bundle,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,LACP fallback mode,7.4.0 and later,LACP fallback mode,Not supported,Supported (standalone and managed)
+Layer 2,IPv6 RA guard,7.0.0 or earlier,IPv6 RA guard,Supported (standalone),Supported (standalone)
+Layer 2,IGMP snooping,7.0.0 or earlier,IGMP snooping (See note 23.),Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,IGMP proxy,7.0.0 or earlier,IGMP proxy,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,IGMP querier,7.0.0 or earlier,IGMP querier,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,MLD snooping,7.0.0 or earlier,MLD snooping,Not supported,Supported (standalone)
+Layer 2,MLD proxy,7.0.0 or earlier,MLD proxy,Not supported,Supported (standalone)
+Layer 2,MLD querier,7.0.0 or earlier,MLD querier,Not supported,Supported (standalone)
+Layer 2,LLDP transmit,7.0.0 or earlier,LLDP transmit,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,LLDP-MED,7.0.0 or earlier,LLDP-MED,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,LLDP-MED: ELIN support,7.0.0 or earlier,LLDP-MED: ELIN support,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,MAC learning limit,7.0.0 or earlier,MAC learning limit (See note 3.),Supported (standalone and managed),Not supported
+Layer 2,Learning-limit violation log,7.0.0 or earlier,Learning-limit violation log (See note 3.),Supported (standalone),Not supported
+Layer 2,Learning-limit violation action,7.0.2 and later,Learning-limit violation action,Supported (standalone),Not supported
+Layer 2,set mac-violation-timer,7.0.0 or earlier,set mac-violation-timer,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Sticky MAC,7.0.0 or earlier,Sticky MAC,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Warning when the layer-2 table is getting full,7.0.0 or earlier,Warning when the layer-2 table is getting full,Not supported,Not supported
+Layer 2,MSTP instances,7.0.0 or earlier,MSTP instances,Note: 0-63,Note: 0-63
+Layer 2,STP root guard,7.0.0 or earlier,STP root guard,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,STP BPDU guard,7.0.0 or earlier,STP BPDU guard,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Rapid PVST interoperation,7.0.0 or earlier,Rapid PVST interoperation,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,VLANs supported by RPVST+,7.4.3 and later,VLANs supported by RPVST+,Note: 128,Note: 256
+Layer 2,forced-untagged or force-tagged setting on switch interfaces,7.0.0 or earlier,'forced-untagged' or 'force- tagged' setting on switch interfaces,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Private VLANs,7.0.0 or earlier,Private VLANs,Not supported,Supported (standalone)
+Layer 2,Multi-stage load balancing,7.0.0 or earlier,Multi-stage load balancing,Not supported,Supported (standalone)
+Layer 2,Priority-based Flow Control,7.0.0 or earlier,Priority-based flow control,Not supported,Supported (standalone)
+Layer 2,Enhanced Transmission Selection (ETS),Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 2,DCBX,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 2,Ingress pause metering,7.0.0 or earlier,Ingress pause metering,Not supported,Supported (standalone and managed)
+Layer 2,Storm control,7.0.0 or earlier,Storm control,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Per-port storm control,7.0.0 or earlier,Per-port storm control,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Global burst-size control,7.0.0 or earlier,Global burst-size control,Not supported,Supported (standalone and managed)
+Layer 2,Storm-control monitoring,7.4.3 and later,Storm-control monitoring (See note 21.),Supported (standalone),Supported (standalone)
+Layer 2,MAC/IP/protocol-based VLAN assignment,7.0.0 or earlier,MAC/IP/protocol-based VLAN assignment,Supported (standalone),Supported (standalone)
+Layer 2,Virtual wire,7.0.0 or earlier,Virtual wire,Not supported,Supported (standalone)
+Layer 2,Loop guard,7.0.0 or earlier,Loop guard,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Percentage rate control,7.0.0 or earlier,Percentage rate control,Not supported,Supported (standalone and managed)
+Layer 2,VLAN stacking (QinQ),7.0.0 or earlier,VLAN stacking (QinQ),Not supported,Supported (standalone and managed)
+Layer 2,VLAN mapping,7.0.0 or earlier,VLAN mapping (See note 13.),Not supported,Supported (standalone)
+Layer 2,VLAN pruning,7.6.1 and later,VLAN pruning,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,SPAN,7.0.0 or earlier,SPAN,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,RSPAN and ERSPAN (IPv4),7.0.0 or earlier,RSPAN and ERSPAN (IPv4),Note: (RSPAN),Supported (standalone and managed)
+Layer 2,FortiOS one-arm sniffer,7.4.1 and later,FortiOS one-arm sniffer,Note: (RSPAN),Supported (standalone and managed)
+Layer 2,Traffic policy (policer),7.2.3 and later,Traffic policy (policer),Not supported,Supported (standalone and managed)
+Layer 2,Flow control,7.0.0 or earlier,Flow control,Supported (standalone and managed),Supported (standalone and managed)
+Layer 2,Layer-2 NAT (IPv4),Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 3,VXLAN (hardware based),7.4.2 and later,VXLAN (hardware based) (See note 26.),Supported (standalone),Supported (standalone)
+Layer 3,VXLAN: STP virtual root,7.2.1 and later,VXLAN: STP virtual root,Not supported,Supported (standalone)
+Layer 3,VXLAN: ECMP,7.4.1 and later,VXLAN: ECMP,Not supported,Supported (standalone)
+Layer 3,VXLAN: DHCP snooping,7.4.3 and later,VXLAN: DHCP snooping,Not supported,Supported (standalone)
+Layer 3,VXLAN: DHCPv6 snooping,7.4.3 and later,VXLAN: DHCPv6 snooping,Not supported,Supported (standalone)
+Layer 3,VXLAN: QoS,7.4.3 and later,VXLAN: QoS,Not supported,Supported (standalone)
+Layer 3,VXLAN: IGMP snooping (IPv4),7.6.0 and later,VXLAN: IGMP snooping (IPv4),Not supported,Supported (standalone)
+Layer 3,SVI,7.6.4 and later,SVI,Supported (standalone and managed),Supported (standalone and managed)
+Layer 3,RVI,7.0.0 or earlier,RVI,Supported (standalone and managed),Supported (standalone and managed)
+Layer 3,Link monitor (IPv4/IPv6),7.0.0 or earlier,Link monitor (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3,Static routing (IPv4/IPv6),7.0.0 or earlier,Static routing (IPv4/IPv6) (See note 9.),Supported (standalone and managed),Supported (standalone and managed)
+Layer 3,Software-based routing only (IPv4/IPv6),7.0.0 or earlier,Software-based routing only (IPv4/IPv6),Supported (standalone),Not supported
+Layer 3,Hardware-based routing (IPv4/IPv6),7.0.0 or earlier,Hardware-based routing (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3,ECMP with hardware-based routing,7.2.2 and later,ECMP with hardware-based routing (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3,Static BFD (IPv4/IPv6),7.0.0 or earlier,Static BFD (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3,uRPF,7.0.0 or earlier,uRPF,Not supported,Supported (standalone)
+Layer 3,DHCP relay (IPv4),7.0.0 or earlier,DHCP relay (IPv4),Supported (standalone),Supported (standalone)
+Layer 3,DHCP server (IPv4),7.0.0 or earlier,DHCP server (IPv4),Supported (standalone and managed),Supported (standalone and managed)
+Layer 3 (Advanced Features license),Policy-based routing (IPv4),7.0.1 and later,Policy-based routing (IPv4),Not supported,Supported (standalone)
+Layer 3 (Advanced Features license),VRF (IPv4/IPv6),7.0.0 or earlier,VRF (IPv4/IPv6),Supported (standalone and managed),Supported (standalone and managed)
+Layer 3 (Advanced Features license),OSPF (IPv4/IPv6),7.0.0 or earlier,OSPF (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BFD for OSPF,7.2.2 and later,BFD for OSPF (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),OSPF database overflow protection (IPv4),7.0.0 or earlier,OSPF database overflow protection (IPv4),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),OSPF graceful restart (helper mode only),7.0.0 or earlier,"OSPF graceful restart (IPv4, helper mode only)",Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),OSPF: VRF support (IPv4),7.0.0 or earlier,OSPF: VRF support (IPv4),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),OSPF reference bandwidth,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 3 (Advanced Features license),OSPF network type,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 3 (Advanced Features license),RIP (IPv4/IPv6),7.0.0 or earlier,RIP (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BFD for RIP,7.0.0 or earlier,BFD for RIP (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),VRRP (IPv4/IPv6),7.0.0 or earlier,VRRP (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BGP (IPv4/IPv6),7.0.0 or earlier,BGP (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BFD for BGP,7.0.0 or earlier,BFD for BGP (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BGP: simplified fabric configuration,7.6.0 and later,BGP: simplified fabric configuration,Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BGP: local AS,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Layer 3 (Advanced Features license),IS-IS (IPv4/IPv6),7.0.0 or earlier,IS-IS (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),BFD for IS-IS,7.2.2 and later,BFD for IS-IS (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),PIM-SSM (IPv4),7.2.8 and later,PIM-SSM (IPv4) (See note 24.),Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),VXLAN: BGP EVPN,7.4.0 and later,VXLAN: BGP EVPN,Supported (standalone),Supported (standalone)
+Layer 3 (Advanced Features license),VXLAN: BGP EVPN multihoming,7.6.2 and later,VXLAN: BGP EVPN multihoming (See note 25.),Not supported,Supported (standalone)
+Layer 3 (Advanced Features license),VXLAN: Duplicate address detection,7.4.1 and later,VXLAN: Duplicate address detection,Not supported,Supported (standalone)
+Layer 3 (Advanced Features license),VXLAN: ARP/ND suppression,7.4.0 and later,VXLAN: ARP/ND suppression,Not supported,Supported (standalone)
+High Availability,MCLAG (multichassis link aggregation group),7.0.0 or earlier,MCLAG (multichassis link aggregation group),Supported (standalone and managed),Supported (standalone and managed)
+High Availability,STP supported in MCLAGs,7.0.0 or earlier,STP supported in MCLAGs,Supported (standalone and managed),Supported (standalone and managed)
+High Availability,IGMP snooping support in MCLAG,7.0.0 or earlier,IGMP snooping support in MCLAG,Supported (standalone and managed),Supported (standalone and managed)
+High Availability,Layer-3 routing in MCLAG,7.0.1 and later,Layer-3 (IPv4) routing in MCLAG,Not supported,Supported (standalone)
+High Availability,High-Availability Seamless Redundancy (HSR),7.4.0 and later,High-Availability Seamless Redundancy (HSR) (See note 20.),Not supported,Not supported
+High Availability,Parallel Redundancy Protocol (PRP),7.4.0 and later,Parallel Redundancy Protocol (PRP) (See note 20.),Not supported,Not supported
+High Availability,MRP,7.0.0 or earlier,MRP (See note 28.),Not supported,Not supported
+High Availability,MRP: 2 rings supported,7.4.4 and later,MRP: 2 rings supported,Not supported,Not supported
+Quality of Service,"802.1p support, including priority queuing trunk and WRED",7.0.0 or earlier,"802.1p support, including priority queuing trunk and WRED (See note 18.)",Supported (standalone and managed),Supported (standalone and managed)
+Quality of Service,QoS queue counters,7.0.0 or earlier,QoS queue counters,Supported (standalone and managed),Supported (standalone and managed)
+Quality of Service,Tail-drop policy,7.0.1 and later,Tail-drop policy,Supported (standalone and managed),Supported (standalone)
+Quality of Service,RED drop policy,7.0.1 and later,RED drop policy,Not supported,Not supported
+Quality of Service,WRED drop policy,7.0.1 and later,WRED drop policy,Supported (standalone and managed),Supported (standalone)
+Quality of Service,Egress drop mode,7.0.1 and later,Egress drop mode,Not supported,Supported (standalone)
+Quality of Service,QoS marking (IPv4/IPv6),7.0.0 or earlier,QoS marking (IPv4/IPv6),Supported (standalone and managed),Supported (standalone)
+Quality of Service,Summary of configured queue mappings,7.0.0 or earlier,Summary of configured queue mappings,Supported (standalone and managed),Supported (standalone and managed)
+Quality of Service,Egress priority tagging,7.0.0 or earlier,Egress priority tagging (IPv4/IPv6),Not supported,Supported (standalone and managed)
+Quality of Service,ECN (IPv4/IPv6),7.0.0 or earlier,ECN (IPv4/IPv6),Not supported,Supported (standalone and managed)
+Quality of Service,Real-time egress queue rates,7.0.0 or earlier,Real-time egress queue rates (See note 11.),Supported (standalone and managed),Supported (standalone)
+Miscellaneous,PoE pre-standard detection,7.0.0 or earlier,PoE pre-standard detection (PoE models) (See note 1.),Not supported,Not supported
+Miscellaneous,"PoE modes: first come, first served or priority based",7.0.0 or earlier,"PoE modes support: first come, first served or priority based (PoE models)",Supported (standalone and managed),Not supported
+Miscellaneous,Perpetual PoE,7.2.1 and later,Perpetual PoE (PoE models) (See notes 1 and 14.),Supported (standalone and managed),Not supported
+Miscellaneous,PoE disconnection type,7.2.2 and later,PoE disconnection type (PoE models),Not supported,Not supported
+Miscellaneous,PoE max power mode,7.0.11+; 7.2.10+; 7.4.7+; 7.6.2+,PoE max power mode (PoE models) (See note 22.),Supported (standalone),Not supported
+Miscellaneous,Split port,7.0.0 or earlier,Split port (See note 5.),Not supported,Not supported
+Miscellaneous,TDR (time-domain reflectometer)/cable diagnostics,7.0.0 or earlier,TDR (time-domain reflectometer)/cable diagnostics support,Supported (standalone and managed),Not supported
+Miscellaneous,Detect-by-module max speed detection and notification,7.0.0 or earlier,Detect-by-module max speed detection and notification,Supported (standalone),Supported (standalone)
+Miscellaneous,Monitor system temperature (threshold and SNMP trap),7.0.0 or earlier,Monitor system temperature (threshold configuration and SNMP trap support) (See note 10.),Supported (standalone),Supported (standalone)
+Miscellaneous,MAC notification SNMP trap,7.2.0 and later,MAC notification SNMP trap,Supported (standalone and managed),Supported (standalone and managed)
+Miscellaneous,CLI to show the details of port statistics,7.0.0 or earlier,Add CLI to show the details of port statistics,Supported (standalone and managed),Supported (standalone and managed)
+Miscellaneous,Configuration of the QSFP low-power mode,7.0.0 or earlier,Configuration of the QSFP low- power mode,Not supported,Supported (standalone)
+Miscellaneous,Energy-efficient Ethernet,7.0.0 or earlier,Energy-efficient Ethernet,Supported (standalone),Not supported
+Miscellaneous,PHY Forward Error Correction (FEC),7.0.0 or earlier,PHY Forward Error Correction (See note 4.),Supported (standalone),Supported (standalone)
+Miscellaneous,PTP version-2 transparent clock,7.0.0 or earlier,PTP version-2 transparent clock (IPv4/IPv6) (See note 8.),Not supported,Supported (standalone and managed)
+Miscellaneous,PTP layer-2 boundary clock,7.4.3 and later,PTP layer-2 boundary clock (See note 8.),Not supported,Not supported
+Miscellaneous,Layer-3 PTP,8.0.0 and later (7.6.7 has PTP transparent clock only; see note 8 of the feature matrix),,No separate row; see PTP version-2 transparent clock and note 8,No separate row; see PTP version-2 transparent clock and note 8
+Miscellaneous,Use PTP to synchronize system clock,7.6.2 and later,Use PTP to synchronize system clock,Not supported,Not supported
+Miscellaneous,Automatically select system clock source,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
+Miscellaneous,Alias commands,7.0.0 or earlier,Alias commands,Supported (standalone),Supported (standalone)
+Miscellaneous,Automation stitches,7.2.0 and later,Automation stitches,Supported (standalone),Supported (standalone)
+Miscellaneous,Automation stitches: triggered by storm-control drop rate,7.4.3 and later,Automation stitches: triggered by storm-control drop rate,Supported (standalone),Supported (standalone)
+Miscellaneous,Automation stitches: custom automation actions,7.4.3 and later,Automation stitches: custom automation actions,Supported (standalone),Supported (standalone)
+Miscellaneous,Multiple path traceroute,7.2.0 and later,Multiple path traceroute,Supported (standalone),Supported (standalone)
+Miscellaneous,Wake-on-LAN packets,7.2.0 and later,Wake-on-LAN packets,Supported (standalone),Supported (standalone)
+Miscellaneous,Save event log in flash memory,7.2.0 and later,Save event log in flash memory,Not supported,Supported (standalone)
+Miscellaneous,max-frame-size,7.4.3 and later,max-frame-size (in bytes),Note: 68-9412,Note: 68-9412
+Miscellaneous,Support of 128 ports plus internal and mgmt,7.6.0 and later,Support of 128 ports plus internal and mgmt,Not supported,Not supported
+Miscellaneous,NTP server (IPv4/IPv6),7.6.2 and later,NTP server (IPv4/IPv6),Supported (standalone),Supported (standalone)
+Miscellaneous,CLI reports if BIOS and firmware signatures are valid,7.6.2 and later,CLI command reports if BIOS and firmware signatures are valid,Supported (standalone),Supported (standalone)
+Miscellaneous,Airflow shown in GUI,7.4.7+; 7.6.2+,Airflow shown in GUI,Not supported,Supported (standalone)
+Miscellaneous,Turn off front-panel LEDs,Only in version 8 and onward (8.0.0 and later); not in 7.6.x,,Not in 7.6.7,Not in 7.6.7
