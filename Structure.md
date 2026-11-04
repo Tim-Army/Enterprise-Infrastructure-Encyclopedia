@@ -75,6 +75,11 @@ Enterprise-Infrastructure-Encyclopedia/
   lexicographic directory listing purely on its numeric value —
   `volume-997-...` follows `volume-092-...` — which is what keeps the build's
   `volumes/*/` glob emitting them at the end of the series.
+- Volume numbers **200 to 299** are reserved for Fortinet STIG work. Do not
+  assign them to any other topic. Volumes in this block use the same
+  three-digit slug format and sort after the instructional volumes and before
+  `volume-900-...` (`volume-200-...` follows `volume-174-...`). Existing
+  Fortinet STIG material in volume 172 stays where it is.
 - The reserved block was renumbered from 97/98/99 to 997/998/999 so the
   instructional sequence can grow past 92 without colliding with it. The
   instructional volumes were subsequently widened from two digits to three so
