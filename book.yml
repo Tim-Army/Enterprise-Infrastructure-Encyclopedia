@@ -6131,7 +6131,7 @@ volumes:
     number: "CCI"
     slug: volume-201-fortiswitch-stig-and-srg-mapping
     title: "FortiSwitch STIG and SRG Mapping"
-    chapter_count: 5
+    chapter_count: 9
     build_eligible: true
     chapters:
       - id: 01
@@ -6143,6 +6143,18 @@ volumes:
       - id: 03
         title: "Chapter 03: Cisco NX-OS Switch and FortiSwitch STIG Crosswalk"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md
+      - id: 04
+        title: "Chapter 04: Layer 2 Switch SRG Requirement Labs"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/04-layer-2-switch-srg-requirement-labs.md
+      - id: 05
+        title: "Chapter 05: Network Device Management SRG Requirement Labs"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/05-network-device-management-srg-requirement-labs.md
+      - id: 06
+        title: "Chapter 06: Router SRG Requirement Labs"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/06-router-srg-requirement-labs.md
+      - id: 07
+        title: "Chapter 07: AAA Services SRG Requirement Labs"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/07-aaa-services-srg-requirement-labs.md
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md

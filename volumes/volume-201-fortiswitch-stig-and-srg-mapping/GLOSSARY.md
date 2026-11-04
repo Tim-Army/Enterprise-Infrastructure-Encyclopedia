@@ -11,8 +11,12 @@ the SRG and STIG terms this volume builds on.
 - **FIPS-CC mode** — the FortiSwitchOS operating mode that restricts the switch to FIPS 140 and Common Criteria validated behavior; the mapped release is the FIPS-CC image.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
+- **Gap lab** — a lab for an SRG requirement that FortiSwitch cannot meet: it proves the setting is absent, applies the nearest compensating control, and records the disposition and residual risk.
 - **Interactive crosswalk table** — the self-contained web page generated from the SRG mapping workbook, with search, filters, sorting, and CSV download for the crosswalk, prerequisites, and model-support sheets.
 - **Model support sheet** — the workbook sheet that records, for each FortiSwitchOS 7.6.7 feature, whether the FS-648F-FPOE and FS-2048F support it.
+- **Negative test** — a test that tries to break a control and shows that it blocks what it should; it pairs with a positive test that shows the control permits what it should.
+- **RadSec** — RADIUS carried inside a TLS session (RFC 6614), used to encrypt credentials between a switch and a RADIUS server.
+- **Requirement lab** — a lab that configures the FortiSwitch setting for an SRG requirement and proves it with a positive and a negative test.
 - **Routed link** — a point-to-point link (L1 to L5) between two routers in the lab, addressed with a /31 in IPv4 and a /127 in IPv6.
 - **Segment (lab)** — one /24 IPv4 network and one /120 IPv6 network whose number is shared by the VLAN ID, the third octet, and the IPv6 address group.
 - **SRG mapping workbook** — the Excel workbook that holds the FortiSwitch crosswalk of SRG requirements to FortiSwitch settings, commands, documentation references, and verification status.

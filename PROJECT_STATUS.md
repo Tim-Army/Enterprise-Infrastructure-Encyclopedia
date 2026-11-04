@@ -184,13 +184,13 @@ does not by itself verify every technical claim in it.
 | CLXXII — DISA SRGs and STIGs | 39 | Drafted |
 | CLXXIII — Integrated Master Schedule (IMS) | 10 | Drafted |
 | CLXXIV — NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only) | 12 | Drafted |
-| CCI — FortiSwitch STIG and SRG Mapping | 5 | Drafted |
+| CCI — FortiSwitch STIG and SRG Mapping | 9 | Drafted |
 | CM — Tim's Lab Gear | 3 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1726 of 1726 drafted (100%). Every volume has a
+**Total declared chapters:** 1730 of 1730 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting
