@@ -2948,6 +2948,8 @@
     "hping",
     "mausezahn",
     "spoofer",
+    "tcpreplay",
+    "radacct",
     "gnutls",
     "imtcp",
     "gtls",

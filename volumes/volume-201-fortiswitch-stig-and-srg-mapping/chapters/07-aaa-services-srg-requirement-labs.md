@@ -2,24 +2,25 @@
 
 ## Learning Objectives
 
-- Prove both AAA Services SRG requirements in the crosswalk on the Chapter 999 lab.
+- Prove all seven AAA Services SRG requirements in the crosswalk on the Chapter 999 lab.
 - Explain why AAA Services requirements are met by the authentication system, with the switch as a client.
 - Configure RadSec (RADIUS over TLS) on FortiSwitchOS and the RADIUS server, with certificate validation.
 - Show with a capture that credentials are encrypted in transit and that an untrusted server is refused.
 
 ## Theory and Architecture
 
-The AAA Services SRG applies to the authentication, authorization, and accounting service itself, for example a RADIUS or TACACS+ server, not to the network device that uses it. Chapters 01 and 02 decided that AAA Services is **inherited**: the authentication system is assessed on its own, and a FortiSwitch inherits its controls. Two crosswalk requirements still land on the switch, because the switch is the client that sends credentials to the server: they ask that credentials are encrypted in transit using FIPS-validated cryptography, and that protocols which encrypt credentials are used.
-
-FortiSwitchOS meets both with RadSec, which carries RADIUS inside a TLS session. This chapter proves the switch side and the server side together on the lab from [Chapter 999](999-shared-lab-infrastructure.md).
+The AAA Services SRG applies to the authentication, authorization, and accounting service itself, for example a RADIUS or TACACS+ server, not to the network device that uses it. Chapters 01 and 02 decided that AAA Services is **inherited**: the authentication system is assessed on its own, and a FortiSwitch inherits its controls. Seven crosswalk requirements still land on the switch, because the switch is the client that sends credentials to the server and the authenticator for 802.1X. Two ask that credentials are encrypted in transit using FIPS-validated cryptography and with a protocol that encrypts them; FortiSwitchOS meets both with RadSec, which carries RADIUS inside a TLS session (Lab 7.1). Three ask that 802.1X identify and authenticate each endpoint before it connects, using a secure EAP type (Lab 7.2). One asks for automated account management, which RADIUS accounting supports (Lab 7.3), and one asks for a unique shared secret for each client (Lab 7.4). This chapter proves the switch side and the server side together on the lab from [Chapter 999](999-shared-lab-infrastructure.md).
 
 ### Requirements and labs
 
-The crosswalk lists 2 distinct AAA Services SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
+The crosswalk lists 7 distinct AAA Services SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
 
 | Lab | Requirements | Kind |
 | --- | --- | --- |
 | 7.1 | 2 | Requirement lab: Encrypt RADIUS credentials with RadSec (TLS) |
+| 7.2 | 3 | Requirement lab: 802.1X on the authentication server: unique identification, authentication, and EAP type |
+| 7.3 | 1 | Requirement lab: Automated account management with RADIUS accounting |
+| 7.4 | 1 | Requirement lab: Unique shared secret for each RADIUS and TACACS+ client |
 
 Every requirement here has a FortiSwitch setting or a procedure behind it, so this chapter has requirement labs only. Each lab configures the setting, proves it with a positive test, and proves the control with a negative test.
 
@@ -64,7 +65,7 @@ Before the lab, confirm that a UDP RADIUS login works (Lab 999.4). After it, res
 
 **Knowledge checks:**
 
-1. Why is the AAA Services SRG inherited by the switch, and which two requirements still apply to it?
+1. Why is the AAA Services SRG inherited by the switch, and which seven requirements still apply to it?
 2. What does RadSec add to RADIUS?
 3. What does the switch validate about the server, and what does the server validate about the switch?
 4. What can the lab CA prove, and what can it not?
@@ -113,16 +114,163 @@ AAA Services requirements are met by the authentication system, not by the switc
 
 **Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
 
+### Lab 7.2 — 802.1X on the authentication server: unique identification, authentication, and EAP type
+
+**Goal.** Show that the switch and the RADIUS service identify each endpoint uniquely and authenticate it before any connection is established, and that the server accepts only a secure EAP method (EAP-TLS, EAP-TTLS, or PEAP).
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000158-AAA-000420` | II | AAA Services used for 802.1x must be configured to uniquely identify network endpoints (supplicants) before the authenticator establishes any connection. | feature row (no Cisco rule) | FortiSwitchOS 7.6.7 CLI Reference p127 |
+| `SRG-APP-000394-AAA-000430` | II | AAA Services used for 802.1x must be configured to authenticate network endpoint devices (supplicants) before the authenticator establishes any connection. | feature row (no Cisco rule) | FortiSwitchOS 7.6.7 CLI Reference p127 |
+| `SRG-APP-000516-AAA-000440` | II | AAA Services used for 802.1x must be configured to use secure Extensible Authentication Protocol (EAP), such as EAP-TLS, EAP-TTLS, and PEAP. | feature row (no Cisco rule) | FortiSwitchOS 7.6.7 CLI Reference p127 |
+
+**Uses.** `sw-648f-1`, `radius-201a` and `radius-201b` (P1, P2), `ca-201` (P3) for the server and client certificates, a laptop with a supplicant on `<PORT_EP1>`, and a second host on `<PORT_EP2>` for the MAC-based test. Workbook prerequisites: P1, P2 (P1 Reachable RADIUS or TACACS+ servers; P2 User group that lists the authentication servers).
+
+The authenticator (the switch) and the authentication server (FreeRADIUS) share these requirements. Lab 4.1 proves the port behavior; this lab proves the server side and the choice of EAP method. `eap-passthru` lets the switch pass the EAP exchange to the server, which then decides the method. The lab CA stands in for the DoD CA, so the lab proves the mechanism and not DoD trust.
+
+**Configure.**
+
+1. Enable 802.1X port mode on the supplicant port, so no traffic passes until authentication succeeds.
+
+   ```text
+   config switch interface
+       edit <PORT_EP1>
+           config port-security
+               set port-security-mode 802.1X
+           end
+           set security-groups lab-radius
+   end
+   ```
+
+2. Enable MAC-based mode on the second port, so each endpoint is identified by its own address and a second device on the same port authenticates separately.
+
+   ```text
+   config switch interface
+       edit <PORT_EP1>
+           config port-security
+               set port-security-mode 802.1X-mac-based
+           end
+           set security-groups lab-radius
+   end
+   ```
+
+3. Let the switch pass the EAP exchange to the server.
+
+   ```text
+   config switch interface
+       edit <PORT_EP1>
+           config port-security
+               set eap-passthru enable
+           end
+   end
+   ```
+
+4. On `radius-201a` and `radius-201b`, permit only secure EAP types: in `/etc/freeradius/3.0/mods-enabled/eap`, set `default_eap_type = tls`, keep the `tls-config`, `ttls`, and `peap` blocks, and remove or comment the `md5`, `leap`, and `gtc` blocks. Restart `freeradius`.
+
+5. Issue a client certificate for the laptop from `ca-201` and set up the supplicant (`wpa_supplicant` with `eap=TLS`, or the operating system's 802.1X settings) to use it.
+
+**Positive test.** Connect the laptop. `diagnose switch 802-1x status` lists the port as authorized only after the exchange, the FreeRADIUS log shows `EAP-TLS` and an Access-Accept, and the laptop receives a DHCP address. Before authentication, `ping` from the laptop to any host fails. On the MAC-based port, connect two hosts through a small switch: each is listed under its own MAC address.
+
+**Negative test.** Configure a supplicant for EAP-MD5 or LEAP: the server rejects the method and the port stays unauthorized. Present a certificate from a different CA: Access-Reject. Connect a host without a supplicant: no traffic passes. Before any of these, confirm with a capture that no frame other than EAPOL reaches the network.
+
+**Evidence.** `diagnose switch 802-1x status` before and after, the FreeRADIUS lines for the accepted and rejected methods, the EAPOL-only capture, and the list of EAP blocks that remain enabled.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 7.3 — Automated account management with RADIUS accounting
+
+**Goal.** Show that the switch sends accounting records to the RADIUS server, so the server can record when remote accounts are used, and that account creation and removal happen on the server and take effect on the switch without a manual step.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000023-AAA-000030` | II | AAA Services must be configured to provide automated account management functions. | feature row (no Cisco rule) | FortiSwitchOS 7.6.7 CLI Reference p289 |
+
+**Uses.** `sw-648f-1`, `radius-201a` and `radius-201b` (P1), `syslog-201a`. Workbook prerequisites: P1 (P1 Reachable RADIUS or TACACS+ servers).
+
+Account management is automated on the server: a user created, disabled, or removed in the directory behind RADIUS takes effect at the next logon with no change on the switch. The switch side proves that it sends the accounting records.
+
+**Configure.**
+
+1. Add the accounting server to the RADIUS entry.
+
+   ```text
+   config user radius
+       edit radius-201a
+           config acct-server
+               edit 1
+                   set status enable
+                   set server 10.201.10.10
+                   set secret <KEY_1>
+           end
+   end
+   ```
+
+2. On `radius-201a`, confirm that the detail accounting file is on (`/var/log/freeradius/radacct/<switch-ip>/detail-<date>`).
+
+**Positive test.** Log in as a RADIUS administrator. The Accounting-Start record appears in the detail file with the user name and the switch address, and the Accounting-Stop record appears after logout. Create a new user on the server and log in with it with no change on the switch.
+
+**Negative test.** Disable the new user on the server: the next logon fails, with no change on the switch. Stop `freeradius` accounting and log in again: the switch records no accounting for that session, which shows the server holds the record.
+
+**Evidence.** The accounting detail records for one session, the user created and then disabled on the server, and the switch configuration unchanged between the two.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 7.4 — Unique shared secret for each RADIUS and TACACS+ client
+
+**Goal.** Show that each switch uses its own shared secret with the authentication servers, and that one switch's secret does not work for another.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000516-AAA-000640` | II | AAA Services must be configured to use a unique shared secret for communication (i.e. RADIUS, TACACS+) with clients requesting authentication services. | feature row (no Cisco rule) | FortiSwitchOS 7.6.7 CLI Reference p289 |
+
+**Uses.** `sw-648f-1`, `sw-2048f-1`, `radius-201a` (P1, P2), and the secret rule from Chapter 999 (one key per lab, never reused). Workbook prerequisites: P1, P2 (P1 Reachable RADIUS or TACACS+ servers; P2 User group that lists the authentication servers).
+
+**Configure.**
+
+1. Generate two different secrets, one per switch. On `radius-201a`, add each switch as a separate client in `clients.conf`, each with its own `secret`.
+
+   ```text
+   openssl rand -base64 24
+   ```
+
+2. On each switch, set that switch's secret on the RADIUS entry and then use the entry for administrator logins.
+
+   ```text
+   config user radius
+       edit radius-201a
+           set server 10.201.10.10
+           set secret <KEY_1>
+   end
+   ```
+
+3. Bind remote administrator logins to the server group.
+
+   ```text
+   config system admin
+       edit admin-lab
+           set remote-auth enable
+           set remote-group lab-radius
+   end
+   ```
+
+**Positive test.** Log in with a RADIUS administrator on both switches. The FreeRADIUS log shows each request under its own client name.
+
+**Negative test.** Copy `sw-648f-1`'s secret to `sw-2048f-1` and log in: the server answers with a message authenticator error and the login fails. Set the same secret for both clients in `clients.conf` and note that the server cannot tell which switch is which, so the requirement is not met; restore the unique secrets.
+
+**Evidence.** The two `clients.conf` entries with the secrets masked, the log lines for each client, and the failed login with the wrong secret.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
 ## Lab Verification
 
-Complete this sign-off once Labs 7.1 to 7.1 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
+Complete this sign-off once Labs 7.1 to 7.4 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*
 
 ## Summary and Completion Checklist
 
-This chapter proves the two AAA Services SRG requirements that land on a FortiSwitch by running RADIUS over TLS between the switch and `radius-201a`, with certificate validation on both ends and a capture that shows the credentials are encrypted.
+This chapter proves the seven AAA Services SRG requirements that land on a FortiSwitch: RADIUS over TLS with certificate validation and a capture that shows the credentials are encrypted, 802.1X with a secure EAP type, RADIUS accounting for automated account management, and a unique shared secret for each client.
 
 - [ ] Has a working RadSec login.
 - [ ] Has a capture showing no clear-text RADIUS.

@@ -182,8 +182,13 @@ On 2026-11-04 each SRG table in Chapters 01 to 03 gained a final **Lab** column
 that links an SRG ID to the lab in Chapters 04 to 07 that proves it: the
 feature map and requirement reference in Chapter 01, and the crosswalk and
 unmatched-requirement tables in Chapters 02 and 03. A row with several SRG IDs
-lists each lab once. A row whose SRG ID is not one of the 169 workbook
-requirements, or that cites no SRG ID, shows a dash. The links were added by a
+lists each lab once. A row that cites no SRG ID shows a dash. Two stale Cisco-rule IDs
+(`SRG-APP-000373-NDM-000298` and `SRG-APP-000516-NDM-000351`) have no lab of their own,
+because Chapter 01 maps their rules to the current IDs, whose labs the row links. On 2026-11-05 the 16 requirements that the first pass had left without a lab
+(the three 802.1X, accounting, and shared-secret AAA requirements, five NDM, two
+Layer 2 Switch, and four Router requirements cited by the chapter tables) gained
+nine labs: 4.8, 5.10 to 5.12, 6.9, 6.10, and 7.2 to 7.4. The Layer 2 and Router gap
+labs moved to 4.9 and 6.11 to 6.16. The links were added by a
 script that matches IDs, so a lab that is renamed or renumbered needs the
 column regenerated, and `export_srg_tables.py` carries the column into the CSV
 files.

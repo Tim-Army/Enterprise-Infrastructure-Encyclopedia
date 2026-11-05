@@ -19,7 +19,7 @@ The requirements fall into five groups. *Identification and access control* deci
 
 ### Requirements and labs
 
-The crosswalk lists 31 distinct Layer 2 Switch SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
+The crosswalk lists 33 distinct Layer 2 Switch SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
 
 | Lab | Requirements | Kind |
 | --- | --- | --- |
@@ -30,7 +30,8 @@ The crosswalk lists 31 distinct Layer 2 Switch SRG requirements. Each one has a 
 | 4.5 | 3 | Requirement lab: DHCP snooping, dynamic ARP inspection, and IP source guard |
 | 4.6 | 8 | Requirement lab: VLAN hygiene: access ports, native VLANs, trunk pruning, unused ports, and management VLAN |
 | 4.7 | 5 | Requirement lab: Fail secure, alternate paths, non-essential capabilities, and secure settings |
-| 4.8 | 2 | Gap lab: Gaps: VTP and UDLD |
+| 4.8 | 2 | Requirement lab: Session capture and real-time viewing with port mirroring (SPAN) |
+| 4.9 | 2 | Gap lab: Gaps: VTP and UDLD |
 
 A **requirement lab** configures the FortiSwitch setting, proves it with a positive test, and proves the control with a negative test. A **gap lab** covers requirements that FortiSwitch cannot meet (alignment *Not supported* or *Not applicable* in the crosswalk): it proves the setting is absent, applies the nearest compensating control, and records the disposition and residual risk.
 
@@ -283,7 +284,7 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
            config storm-control
                set broadcast enable
                set unknown-unicast enable
-               set rate <PPS>
+               set rate 1000
            end
    end
    ```
@@ -552,7 +553,47 @@ The row for the DoD security configuration settings (`SRG-NET-000512-L2S-000100`
 
 **Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
 
-### Lab 4.8 — Gaps: VTP and UDLD
+### Lab 4.8 — Session capture and real-time viewing with port mirroring (SPAN)
+
+**Goal.** Show that an authorized administrator can select one user's session, capture it, and watch it in real time from a separate monitoring component.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-NET-000331-L2S-000001` | II | Let authorized users select a user session to capture | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p148 |
+| `SRG-NET-000332-L2S-000002` | II | Let authorized users view a user session in real time from a separate component | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p148 |
+
+**Uses.** `sw-648f-1`, `admin-201` as the capture host on `<PORT_MON>`, an endpoint on `<PORT_EP1>` that generates traffic, and `nms-201` for the real-time view.
+
+Both requirements come from the Cisco rules `CISC-L2-000060` and `CISC-L2-000070`. Their SRG IDs are not in Layer 2 Switch SRG V3R4, so the lab proves the function the rules describe and records that mapping caveat.
+
+**Configure.**
+
+1. Mirror the user's port to the monitoring port. Use ingress and egress so the capture holds both directions.
+
+   ```text
+   config switch mirror
+       edit mirror-201
+           set mode SPAN
+           set dst <PORT_MON>
+           set src-ingress <PORT_EP1>
+           set src-egress <PORT_EP1>
+           set status active
+   end
+   ```
+
+2. Limit who can change the mirror session: create an access profile with `set netgrp read-write` and `set mntgrp none` (read which group covers `config switch mirror` in the CLI Reference and record it), assign it to a `capture-admin` account, and confirm that the read-only audit account cannot edit the session.
+
+3. On `admin-201`, start the capture: `sudo tcpdump -i <NIC_MON> -w evidence/capture.pcap`. For the real-time view, open the same interface in Wireshark on `nms-201` or stream it with `ssh admin-201 'tcpdump -U -i <NIC_MON> -w -' | wireshark -k -i -`.
+
+**Positive test.** Ping and browse from the endpoint. `capture.pcap` holds both directions of the endpoint's traffic, and the stream on `nms-201` shows the packets while they are sent.
+
+**Negative test.** Log in as the read-only audit account and try to create or change the mirror session: the switch refuses. Set `set status inactive` on the session and repeat the traffic: nothing reaches the monitoring port. Send traffic from a different endpoint on the same switch: it is not in the capture.
+
+**Evidence.** The `config switch mirror` entry, the refused-change log line for the read-only account, `capture.pcap`, and a screenshot of the live view.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 4.9 — Gaps: VTP and UDLD
 
 **Goal.** Confirm that FortiSwitchOS has no VTP and no UDLD, apply the nearest compensating control, and record the disposition.
 
@@ -604,7 +645,7 @@ The row for the DoD security configuration settings (`SRG-NET-000512-L2S-000100`
 
 ## Lab Verification
 
-Complete this sign-off once Labs 4.1 to 4.8 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
+Complete this sign-off once Labs 4.1 to 4.9 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

@@ -36,10 +36,10 @@ The volume has nine chapters:
   all 142 Cisco NX-OS Switch STIG rules aligned the same way, reusing Chapter
   02's FortiSwitch side where the requirements match.
 - **Chapters 04 to 07** are the **requirement labs**, one chapter per SRG
-  family, covering all 169 distinct requirements in the crosswalk. Chapter 04
-  covers the Layer 2 Switch SRG (31 requirements), Chapter 05 the Network Device
-  Management SRG (48), Chapter 06 the Router SRG (88), and Chapter 07 the AAA
-  Services SRG (2). A requirement FortiSwitch can meet gets a lab with a positive
+  family, covering all 185 distinct requirements in the crosswalk. Chapter 04
+  covers the Layer 2 Switch SRG (33 requirements), Chapter 05 the Network Device
+  Management SRG (53), Chapter 06 the Router SRG (92), and Chapter 07 the AAA
+  Services SRG (7). A requirement FortiSwitch can meet gets a lab with a positive
   and a negative test. A requirement it cannot meet gets a gap lab that proves
   the setting is absent, applies the nearest compensating control, and records
   the disposition. Every lab runs on the network from Chapter 999.

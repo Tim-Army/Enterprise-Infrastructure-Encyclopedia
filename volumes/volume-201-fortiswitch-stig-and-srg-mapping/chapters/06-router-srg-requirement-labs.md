@@ -11,15 +11,15 @@
 
 ## Theory and Architecture
 
-The Router SRG applies to a device that routes packets between networks. A FortiSwitch with the Advanced Features License routes IPv4 and IPv6, runs OSPF, BGP, RIP, IS-IS, VRRP, PIM-SSM, VRFs, and VXLAN, so the Router SRG applies to it wherever it routes. It is the largest family in the crosswalk (88 requirements) and the one where FortiSwitch meets the least: 42 requirements have a setting or a procedure behind them, and 46 describe features that FortiSwitchOS does not have, such as MPLS, VPLS, a rendezvous point, and MSDP.
+The Router SRG applies to a device that routes packets between networks. A FortiSwitch with the Advanced Features License routes IPv4 and IPv6, runs OSPF, BGP, RIP, IS-IS, VRRP, PIM-SSM, VRFs, and VXLAN, so the Router SRG applies to it wherever it routes. It is the largest family in the crosswalk (92 requirements) and the one where FortiSwitch meets the least: 46 requirements have a setting or a procedure behind them, and 46 describe features that FortiSwitchOS does not have, such as MPLS, VPLS, a rendezvous point, and MSDP.
 
-The first eight labs prove the 42 requirements FortiSwitch can meet. The last six are gap labs for the other 46: each one proves that the setting is absent, applies the nearest compensating control where one exists, and records the disposition so an assessor can see what was tested.
+The first ten labs prove the 46 requirements FortiSwitch can meet. The last six are gap labs for the other 46: each one proves that the setting is absent, applies the nearest compensating control where one exists, and records the disposition so an assessor can see what was tested.
 
 All labs use the routed links and peers from [Chapter 999](999-shared-lab-infrastructure.md): L1 to L5, `rtr-peer-1` (AS 65202), `rtr-peer-2` (AS 65203), and the loopbacks. The Advanced Features License must be installed on both switches.
 
 ### Requirements and labs
 
-The crosswalk lists 88 distinct Router SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
+The crosswalk lists 92 distinct Router SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
 
 | Lab | Requirements | Kind |
 | --- | --- | --- |
@@ -31,12 +31,14 @@ The crosswalk lists 88 distinct Router SRG requirements. Each one has a lab or a
 | 6.6 | 12 | Requirement lab: BGP session and route protection |
 | 6.7 | 1 | Requirement lab: VRF separation |
 | 6.8 | 3 | Requirement lab: Multicast routing: PIM interfaces, neighbor filters, and boundaries |
-| 6.9 | 7 | Gap lab: Gaps: ICMP and ARP behavior, auxiliary port, forwarding architecture, and IP options |
-| 6.10 | 7 | Gap lab: Gaps: IPv6 extension-header filtering |
-| 6.11 | 5 | Gap lab: Gaps: MPLS, LDP, and RSVP-TE |
-| 6.12 | 13 | Gap lab: Gaps: provider-edge L3VPN, L2VPN, VPLS, and provider QoS roles |
-| 6.13 | 8 | Gap lab: Gaps: rendezvous-point and designated-router multicast controls |
-| 6.14 | 6 | Gap lab: Gaps: MSDP |
+| 6.9 | 2 | Requirement lab: Hashed routing authentication with key lifetimes of 180 days or less |
+| 6.10 | 2 | Requirement lab: Turn off call-home and drop fragmented ICMP |
+| 6.11 | 7 | Gap lab: Gaps: ICMP and ARP behavior, auxiliary port, forwarding architecture, and IP options |
+| 6.12 | 7 | Gap lab: Gaps: IPv6 extension-header filtering |
+| 6.13 | 5 | Gap lab: Gaps: MPLS, LDP, and RSVP-TE |
+| 6.14 | 13 | Gap lab: Gaps: provider-edge L3VPN, L2VPN, VPLS, and provider QoS roles |
+| 6.15 | 8 | Gap lab: Gaps: rendezvous-point and designated-router multicast controls |
+| 6.16 | 6 | Gap lab: Gaps: MSDP |
 
 A **requirement lab** configures the FortiSwitch setting, proves it with a positive test, and proves the control with a negative test. A **gap lab** covers requirements that FortiSwitch cannot meet (alignment *Not supported* or *Not applicable* in the crosswalk): it proves the setting is absent, applies the nearest compensating control, and records the disposition and residual risk.
 
@@ -443,7 +445,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
        end
    end
    config router key-chain
-       edit <KEYCHAIN>
+       edit lab-keys
            config key
                edit 1
                    set key-string <KEY>
@@ -744,7 +746,117 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
 
-### Lab 6.9 — Gaps: ICMP and ARP behavior, auxiliary port, forwarding architecture, and IP options
+### Lab 6.9 — Hashed routing authentication with key lifetimes of 180 days or less
+
+**Goal.** Show that OSPF and BGP use hashed (MD5) authentication, never plain text, and that keys carry lifetimes of 180 days or less where the protocol supports them.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-NET-000168-RTR-000077` | II | Use hashed (MD5) rather than plain-text routing protocol authentication | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p70 |
+| `SRG-NET-000230-RTR-000003` | II | Use routing protocol keys with lifetimes of no more than 180 days | Partial | FortiSwitchOS 7.6.7 CLI Reference p66 |
+
+**Uses.** `sw-648f-1`, `sw-2048f-1` (OSPF on L5), `rtr-peer-1` (BGP on L1), `ntp-201a` (P5), Advanced Features License (P8). Workbook prerequisites: P5, P8, P9, P11 (P5 Authoritative NTP servers and their authentication keys; P8 FortiSwitch Advanced Features license; P9 A switch model series that supports the feature; P11 Routing protocol configured with its neighbors).
+
+Lifetimes are partial on FortiSwitchOS: key chains with send and accept lifetimes serve RIP and IS-IS, while OSPF MD5 keys and BGP passwords have no lifetime. The lab sets the lifetime where it is available and, for OSPF and BGP, adds a rotation by procedure that you record with its date.
+
+**Configure.**
+
+1. Authenticate OSPF with MD5 on L5 (`10.201.200.8/31` to `10.201.200.9/31`).
+
+   ```text
+   config router ospf
+       config interface
+           edit l5-ospf
+               set interface vlan2005
+               set authentication md5
+               config md5-keys
+                   edit 1
+                       set key <KEY_1>
+                   next
+               end
+           next
+       end
+   end
+   ```
+
+2. Authenticate the BGP session to `rtr-peer-1` (AS 65202) with a TCP MD5 password.
+
+   ```text
+   config router bgp
+       set as 65201
+       config neighbor
+           edit 10.201.200.1
+               set remote-as 65202
+               set password <KEY_2>
+           next
+       end
+   end
+   ```
+
+3. Create the key chain with a lifetime of 180 days (15 552 000 seconds) or less, for the protocols that use one.
+
+   ```text
+   config router key-chain
+       edit lab-keys
+           config key
+               edit 1
+                   set key-string <KEY>
+                   set accept-lifetime <START> <END>
+                   set send-lifetime <START> <END>
+           end
+   end
+   ```
+
+4. For OSPF and BGP, write the rotation in the lab notes: new key, date, and the date the next rotation is due, no more than 180 days away.
+
+**Positive test.** `get router info ospf neighbor` shows Full and `get router info bgp summary` shows Established. `get router info ospf interface` shows MD5 authentication.
+
+**Negative test.** Set a different key on `rtr-peer-1` for each protocol: the OSPF adjacency and the BGP session drop and the log names the authentication failure. Set the OSPF interface to `authentication none` on one end only: the adjacency does not form. Set the key-chain accept lifetime in the past and confirm the key is rejected.
+
+**Evidence.** The two neighbor tables before and after each change, the interface authentication line, the key-chain lifetimes, and the written rotation record.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 6.10 — Turn off call-home and drop fragmented ICMP
+
+**Goal.** Show that the switch does not call home to the vendor, and that fragmented ICMP packets addressed to it are dropped.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-NET-000131-RTR-000083` | II | Disable any feature that calls home to the vendor | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p230 |
+| `SRG-NET-000205-RTR-000002` | II | Drop fragmented ICMP packets destined to the switch | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p173 |
+
+**Uses.** `sw-648f-1`, `gw-201` with a packet capture, `attacker-201` with `hping3`.
+
+The fragmented-ICMP check drops all ICMP fragments on models that support it, not only those addressed to the switch. Record that difference from the Cisco rule.
+
+**Configure.**
+
+1. Disable the FortiEdge Cloud (FortiLAN Cloud) connection.
+
+   ```text
+   config system flan-cloud
+       set status disable
+   end
+   ```
+
+2. Turn on the fragmented-ICMP hardware check.
+
+   ```text
+   config switch security-feature
+       set icmp-frag enable
+   end
+   ```
+
+**Positive test.** `get system flan-cloud-mgr connection-info` shows no connection and `get system flan-cloud` shows the setting disabled, and a 10-minute capture on the switch's uplink at `gw-201` shows no connection to a vendor address.
+
+**Negative test.** Enable the cloud setting briefly: the capture shows the connection attempt, which proves the capture would have seen a call home. Turn it off again. From `attacker-201`, `hping3 --icmp -f 10.201.30.11 -c 50`: the switch drops the fragments and its counter rises, then disable the check and confirm the fragments arrive.
+
+**Evidence.** The cloud setting, both captures, and the drop counters with the check on and off.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 6.11 — Gaps: ICMP and ARP behavior, auxiliary port, forwarding architecture, and IP options
 
 **Goal.** Confirm that FortiSwitchOS has no setting for these Cisco-specific behaviors, observe the behavior, and record the compensating control and residual risk.
 
@@ -788,7 +900,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Remove the upstream ACL and restore the baseline.
 
-### Lab 6.10 — Gaps: IPv6 extension-header filtering
+### Lab 6.12 — Gaps: IPv6 extension-header filtering
 
 **Goal.** Confirm that FortiSwitchOS ACLs cannot match IPv6 extension headers, show the traffic passing, and record the mitigation.
 
@@ -828,7 +940,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Restore the baseline.
 
-### Lab 6.11 — Gaps: MPLS, LDP, and RSVP-TE
+### Lab 6.13 — Gaps: MPLS, LDP, and RSVP-TE
 
 **Goal.** Confirm that FortiSwitchOS has no MPLS, LDP, or RSVP-TE, and record why these requirements are not applicable to the product.
 
@@ -858,7 +970,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Restore the baseline.
 
-### Lab 6.12 — Gaps: provider-edge L3VPN, L2VPN, VPLS, and provider QoS roles
+### Lab 6.14 — Gaps: provider-edge L3VPN, L2VPN, VPLS, and provider QoS roles
 
 **Goal.** Confirm that FortiSwitch cannot take the provider-edge or provider-core role these requirements describe, apply the nearest per-port controls where the same intent exists, and record the disposition.
 
@@ -914,7 +1026,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Restore the baseline.
 
-### Lab 6.13 — Gaps: rendezvous-point and designated-router multicast controls
+### Lab 6.15 — Gaps: rendezvous-point and designated-router multicast controls
 
 **Goal.** Confirm that FortiSwitchOS runs PIM-SSM only, with no rendezvous point, and has no IGMP/MLD join or source filter or per-interface state limit; apply SSM and snooping controls and record the residual gap.
 
@@ -951,7 +1063,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Return to baseline.** Restore the baseline.
 
-### Lab 6.14 — Gaps: MSDP
+### Lab 6.16 — Gaps: MSDP
 
 **Goal.** Confirm that FortiSwitchOS does not run MSDP and record why the MSDP requirements are not applicable.
 
@@ -984,14 +1096,14 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 ## Lab Verification
 
-Complete this sign-off once Labs 6.1 to 6.14 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
+Complete this sign-off once Labs 6.1 to 6.16 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*
 
 ## Summary and Completion Checklist
 
-This chapter proves the 42 Router SRG requirements that FortiSwitch can meet and documents the 46 it cannot, in eight requirement labs and six gap labs. Each lab ends with evidence and a return to the baseline.
+This chapter proves the 46 Router SRG requirements that FortiSwitch can meet and documents the 46 it cannot, in ten requirement labs and six gap labs. Each lab ends with evidence and a return to the baseline.
 
 - [ ] Has run each requirement lab and its negative test.
 - [ ] Has captured the evidence of absence for each gap lab.

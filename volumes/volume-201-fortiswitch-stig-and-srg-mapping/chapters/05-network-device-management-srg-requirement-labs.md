@@ -11,15 +11,15 @@
 
 ## Theory and Architecture
 
-The Network Device Management SRG covers how an administrator reaches, authenticates to, and is held accountable on a network device: access control, logon behavior, passwords, audit records, time, cryptography, and software integrity. It applies to any network device, whatever its forwarding role, so it is the largest SRG family in the crosswalk: 48 requirements. Chapters 01 and 02 map each one to a FortiSwitch setting. This chapter proves them.
+The Network Device Management SRG covers how an administrator reaches, authenticates to, and is held accountable on a network device: access control, logon behavior, passwords, audit records, time, cryptography, and software integrity. It applies to any network device, whatever its forwarding role, so it is one of the largest SRG families in the crosswalk: 53 requirements. Chapters 01 and 02 map each one to a FortiSwitch setting. This chapter proves them.
 
-The labs follow the lifecycle of an administrator session. Lab 5.1 decides who may connect and with what privilege. Lab 5.2 limits what a connection can do before and after logon. Lab 5.3 sets the password rules. Labs 5.4 to 5.6 produce, time-stamp, store, and off-load the audit records. Lab 5.7 secures the channel. Lab 5.8 moves authentication and certificates to central services. Lab 5.9 keeps the configuration backed up and the software supportable.
+The labs follow the lifecycle of an administrator session. Lab 5.1 decides who may connect and with what privilege. Lab 5.2 limits what a connection can do before and after logon. Lab 5.3 sets the password rules. Labs 5.4 to 5.6 produce, time-stamp, store, and off-load the audit records. Lab 5.7 secures the channel. Lab 5.8 moves authentication and certificates to central services. Lab 5.9 keeps the configuration backed up and the software supportable. Labs 5.10 to 5.12 cover requirements that the Cisco rules cite: the audit of privileged functions and session times, replay-resistant access, and denial-of-service safeguards.
 
 All labs run on the network from [Chapter 999](999-shared-lab-infrastructure.md): the management SVI on segment 30, the admin host on segment 20, and the services on segment 10.
 
 ### Requirements and labs
 
-The crosswalk lists 48 distinct Network Device Management SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
+The crosswalk lists 53 distinct Network Device Management SRG requirements. Each one has a lab or a gap lab in this chapter, so none is left without a test.
 
 | Lab | Requirements | Kind |
 | --- | --- | --- |
@@ -32,6 +32,9 @@ The crosswalk lists 48 distinct Network Device Management SRG requirements. Each
 | 5.7 | 4 | Requirement lab: Cryptography and remote maintenance: FIPS mode, strong ciphers, and SNMPv3 |
 | 5.8 | 2 | Requirement lab: Authentication servers and public key certificates |
 | 5.9 | 4 | Requirement lab: Configuration backup, supported releases, and firmware integrity |
+| 5.10 | 3 | Requirement lab: Audit of privileged functions, privilege changes, and session start and end |
+| 5.11 | 1 | Requirement lab: Replay-resistant management access |
+| 5.12 | 1 | Requirement lab: Denial-of-service safeguards for the switch |
 
 Every requirement here has a FortiSwitch setting or a procedure behind it, so this chapter has requirement labs only. Each lab configures the setting, proves it with a positive test, and proves the control with a negative test.
 
@@ -115,7 +118,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 
    ```text
    config system interface
-       edit <MGMT>
+       edit mgmt-svi
            set allowaccess https ssh
    end
    config system global
@@ -127,7 +130,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 
    ```text
    config system admin
-       edit <ADMIN>
+       edit admin-lab
            set trusthost1 10.201.20.0 <MASK>
    end
    config system interface
@@ -562,7 +565,7 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
            set member radius-201a radius-201b
    end
    config system admin
-       edit <ADMIN>
+       edit admin-lab
            set remote-auth enable
            set remote-group <ADMIN_GROUP>
            set wildcard enable
@@ -646,16 +649,134 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
 
 **Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
 
+### Lab 5.10 — Audit of privileged functions, privilege changes, and session start and end
+
+**Goal.** Show that the switch records each use of a privileged function, each change to an administrator's privileges, and the start and end time of each administrator session.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000343-NDM-000289` | II | Audit the execution of privileged functions | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p24 |
+| `SRG-APP-000495-NDM-000318` | II | Log the modification of administrator privileges | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p24 |
+| `SRG-APP-000505-NDM-000322` | II | Record the start and end time of each administrator session | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p24 |
+
+**Uses.** `sw-648f-1`, `syslog-201a` (P4), `admin-201`.
+
+These three requirements come from Cisco rules (`CISC-ND-000940`, `CISC-ND-001240`, `CISC-ND-001280`) whose SRG IDs are not among the current NDM requirements in Chapter 01. FortiSwitchOS meets them with its event logs; the lab proves each record exists and carries a user name and a time.
+
+**Configure.**
+
+1. Turn on system and user event logging so configuration changes, account changes, and logons and logouts are recorded.
+
+   ```text
+   config log eventfilter
+       set event enable
+       set system enable
+       set user enable
+   end
+   ```
+
+2. Forward the events to `syslog-201a` over the P4 path from Lab 999.4, so a record survives a change to the switch.
+
+**Positive test.** Log in as `admin-lab`, run a privileged `config` command, log out, and log in again. The log shows the logon, the command's configuration change with the user name, and the logout, each with a time stamp. Change the access profile of a test account from read-only to read-write: the log shows who changed it and the account affected. Subtract the logon time from the logout time to get the session length.
+
+**Negative test.** Turn off `set system enable` and repeat the privilege change: no record is written, which shows the setting is what produces the evidence. Turn it back on. Close the SSH client without a clean logout and confirm that the session still ends in the log when the idle timeout expires.
+
+**Evidence.** The three log lines (privileged change, privilege modification, session start and end) from the switch and from `syslog-201a`, and the setting before and after.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 5.11 — Replay-resistant management access
+
+**Goal.** Show that privileged management sessions use only protocols whose per-session keys and message authentication resist replay, and that a captured session cannot be played back.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000156-NDM-000250` | II | Use replay-resistant authentication for privileged network access | Equivalent setting | FortiSwitchOS 7.6.7 Administration Guide (Standalone Mode) p17 |
+
+**Uses.** `sw-648f-1`, `admin-201`, `attacker-201` on the management path. Workbook prerequisites: P10 (P10 A management interface with an address: the management port or a management SVI on a dedicated VLAN).
+
+**Configure.**
+
+1. Allow only HTTPS and SSH on the management interface and turn on strong cryptography.
+
+   ```text
+   config system interface
+       edit mgmt-svi
+           set allowaccess https ssh
+   end
+   ```
+
+2. Enforce strong cryptography globally.
+
+   ```text
+   config system global
+       set strong-crypto enable
+   end
+   ```
+
+**Positive test.** `ssh admin-lab@10.201.30.11` and `https://10.201.30.11` both work. `nmap -p 22,23,80,443 10.201.30.11` from `admin-201` shows only 22 and 443 open.
+
+**Negative test.** Capture an SSH login with `tcpdump -w replay.pcap` on `attacker-201`, then replay the file with `tcpreplay -i <NIC_ATK> replay.pcap`. The switch does not log anyone in, because each session has its own key and sequence numbers. Try `telnet 10.201.30.11` and `curl http://10.201.30.11`: both are refused.
+
+**Evidence.** The `nmap` result, the capture and the failed replay, and the refused Telnet and HTTP attempts.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
+### Lab 5.12 — Denial-of-service safeguards for the switch
+
+**Goal.** Show that the switch drops known denial-of-service packet patterns in hardware and limits broadcast storms, and record that FortiSwitchOS has no configurable control-plane policing.
+
+| SRG ID | CAT | Requirement | Alignment in Chapter 02 or 03 | Workbook reference |
+| --- | --- | --- | --- | --- |
+| `SRG-APP-000435-NDM-000315` | II | Protect against known denial-of-service attacks with organization-defined safeguards | Partial | FortiSwitchOS 7.6.7 CLI Reference p173 |
+
+**Uses.** `sw-648f-1`, `attacker-201` with `hping3` and `scapy`, and `flow-201` (P17) to watch the rates.
+
+This requirement is *Partial*: the hardware checks and storm control are real, but the switch has no equivalent of a configurable control-plane policy. The lab records both facts. Which `security-feature` checks exist depends on the model, so run `config switch security-feature` and `set ?` first and record the list.
+
+**Configure.**
+
+1. Turn on the hardware DoS checks and storm control on the host port.
+
+   ```text
+   config switch security-feature
+       set sip-eq-dip enable
+       set ip-pod enable
+       set icmp-frag enable
+   end
+   ```
+
+2. Limit broadcast traffic on the host port.
+
+   ```text
+   config switch physical-port
+       edit <PORT_EP1>
+           set storm-control-mode override
+           config storm-control
+               set broadcast enable
+               set rate 1000
+           end
+   end
+   ```
+
+**Positive test.** Send normal traffic from the endpoint. It passes, and the management session stays responsive.
+
+**Negative test.** From `attacker-201`, send a packet whose source and destination address are the same (`hping3 --spoof 10.201.30.11 -a 10.201.30.11 10.201.30.11 -c 100`) and fragmented ICMP (`hping3 --icmp -f 10.201.30.11 -c 100`): the switch drops them and the counters rise. Send a broadcast flood above the rate: the port stops passing the excess. Record that no setting limits packets sent to the switch's own CPU, and note the compensating control (an upstream filter).
+
+**Evidence.** The `config switch security-feature` output with the model's list of checks, the packet captures before and after, and the counters.
+
+**Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
+
 ## Lab Verification
 
-Complete this sign-off once Labs 5.1 to 5.9 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
+Complete this sign-off once Labs 5.1 to 5.12 have been run end to end, including each negative test. Until then, the labs are unverified, and the commands in this chapter come from the workbook's CLI-checked syntax and have not been run in this lab.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*
 
 ## Summary and Completion Checklist
 
-This chapter proves the Network Device Management SRG requirements on FortiSwitch in nine labs that follow an administrator session from access, through logon, passwords, audit records, time, and cryptography, to central authentication and software integrity.
+This chapter proves the Network Device Management SRG requirements on FortiSwitch in twelve labs that follow an administrator session from access, through logon, passwords, audit records, time, and cryptography, to central authentication and software integrity.
 
 - [ ] Has run each NDM lab and its negative test.
 - [ ] Has confirmed audit records on the switch and both log servers.

@@ -52,10 +52,10 @@ RTR,SRG-NET-000230-RTR-000001,CAT II,The router must be configured to implement 
 RTR,SRG-NET-000362-RTR-000110,CAT II,The router must be configured to protect against or limit the effects of denial-of-service (DoS) attacks by employing control plane protection.,Lab 6.4
 RTR,SRG-NET-000512-RTR-000005,CAT I,The PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.,Lab 6.7
 RTR,SRG-NET-000512-RTR-000014,CAT II,The perimeter router must be configured to suppress Router Advertisements on all external IPv6-enabled interfaces.,Lab 6.3
-AAA,SRG-APP-000023-AAA-000030,CAT II,AAA Services must be configured to provide automated account management functions.,—
+AAA,SRG-APP-000023-AAA-000030,CAT II,AAA Services must be configured to provide automated account management functions.,Lab 7.3
 AAA,SRG-APP-000142-AAA-000020,CAT I,"AAA Services must be configured to use protocols that encrypt credentials when authenticating clients, as defined in the PPSM CAL and vulnerability assessments.",Lab 7.1
-AAA,SRG-APP-000158-AAA-000420,CAT II,AAA Services used for 802.1x must be configured to uniquely identify network endpoints (supplicants) before the authenticator establishes any connection.,—
+AAA,SRG-APP-000158-AAA-000420,CAT II,AAA Services used for 802.1x must be configured to uniquely identify network endpoints (supplicants) before the authenticator establishes any connection.,Lab 7.2
 AAA,SRG-APP-000172-AAA-000520,CAT I,AAA Services must be configured to encrypt transmitted credentials using a FIPS-validated cryptographic module.,Lab 7.1
-AAA,SRG-APP-000394-AAA-000430,CAT II,AAA Services used for 802.1x must be configured to authenticate network endpoint devices (supplicants) before the authenticator establishes any connection.,—
-AAA,SRG-APP-000516-AAA-000440,CAT II,"AAA Services used for 802.1x must be configured to use secure Extensible Authentication Protocol (EAP), such as EAP-TLS, EAP-TTLS, and PEAP.",—
-AAA,SRG-APP-000516-AAA-000640,CAT II,"AAA Services must be configured to use a unique shared secret for communication (i.e. RADIUS, TACACS+) with clients requesting authentication services.",—
+AAA,SRG-APP-000394-AAA-000430,CAT II,AAA Services used for 802.1x must be configured to authenticate network endpoint devices (supplicants) before the authenticator establishes any connection.,Lab 7.2
+AAA,SRG-APP-000516-AAA-000440,CAT II,"AAA Services used for 802.1x must be configured to use secure Extensible Authentication Protocol (EAP), such as EAP-TLS, EAP-TTLS, and PEAP.",Lab 7.2
+AAA,SRG-APP-000516-AAA-000640,CAT II,"AAA Services must be configured to use a unique shared secret for communication (i.e. RADIUS, TACACS+) with clients requesting authentication services.",Lab 7.4
