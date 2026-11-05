@@ -34,10 +34,10 @@ The IM7216-2-DAC-LMV belongs to Opengear's IM7200 infrastructure manager family.
 | Network ports | NET1 and NET2. Each is a logical port with a copper 10/100/1000 connection and an SFP slot. Only one of the two is active at a time: with no SFP module the copper port works, and inserting an SFP module activates the SFP and turns the copper port off. |
 | Other connectors | A local console port, two USB ports (USB consoles, or flash drives for firmware and configuration files), a modem connector, and SMA antenna connectors for the cellular modem. |
 | Power | Two internal universal AC supplies with automatic failover. |
-| Storage | Retailer listings and Opengear's IM7200 data sheet list 16 GB of internal flash. |
+| Storage | Opengear's IM7200 data sheet lists 16 GB of internal flash. The user manual, though, says port logs are kept on a remote server or on USB flash, with only a small cache (8 KB per serial port) held on the device. |
 | Cellular | An internal LTE modem for out-of-band access and failover. It needs a SIM and a carrier plan. |
 
-Hardware details above come from the IM7200 Quick Start (revision 1.5) and from retailer listings, not from a unit in this lab. Check each one against your device and its data sheet.
+Hardware details above come from the IM7200 Quick Start (revision 1.5), the data sheet, and retailer listings, not from a unit in this lab. Check each one against your device and its data sheet.
 
 ### What firmware 5.5.3 is
 
@@ -64,18 +64,40 @@ Earlier 5.x releases matter for upgrades:
 
 ### What the console server does
 
-The device does the following, according to the Quick Start, the 5.5.3 release notes, and the product family manuals. Menu names and some options vary by release, so confirm each against the 5.5.3 web UI.
+The list below follows the [Console Server User Guide 5.3.1](https://ftp.opengear.com/download/documentation/manual/current/IM_ACM_and_CM7100/Opengear%20User%20Manual.pdf) (December 2025), which covers the IM7200, ACM7000, and CM7100. It is the newest user guide Opengear publishes for this family, and it is older than firmware 5.5.3, so menu names and some options may differ on your unit. Confirm each setting in the 5.5.3 web UI.
 
-1. **Serial console access.** Each serial port is set to a mode (the default is Infrastructure Manager mode), a baud rate, parity, data bits, stop bits, and flow control. A port is offered over SSH, Telnet, a web terminal, and RFC 2217. SSH to TCP port `3000` plus the port number (for example `3001` for port 1), or add the port to the user name, such as `user:port01`. Telnet uses `2000` plus the port number.
+1. **Serial console access.** Each serial port has a mode (the default is Infrastructure Manager mode), a baud rate, parity, data bits, stop bits, and flow control. A port is offered over Telnet at TCP `2000` plus the port number, SSH at `3000` plus the port number (for example `3001` for port 1), raw TCP at `4000` plus the port number, and RFC 2217 at `5000` plus the port number. A web terminal is also available. You can add the port to the user name instead, such as `user:port01`.
 2. **Access control.** Local users and groups, and a list of ports each user may reach. The `admin` group grants the management UI and CLI.
-3. **Remote authentication.** Local, RADIUS, TACACS+, and LDAP, with group support. The ACM7000 manual, for the same software family, also covers Kerberos.
-4. **Port logging.** A logging level per port records the data sent in each direction.
-5. **Firewall and services.** A built-in firewall. By default only HTTPS and SSH reach the device itself, and the Service Access settings control the rest.
-6. **Management LAN.** NET2 can serve as a separate management LAN gateway, a failover or out-of-band interface, or a redundant link that shares NET1's settings through interface aggregation.
-7. **Out-of-band and failover.** Cellular failover, and dial-in access through the modem connector on models that have one.
-8. **Monitoring and time.** NTP, remote syslog, SNMP (v1, v2c, v3), and Nagios-style checks.
-9. **Tunnels and fleet management.** IPsec and OpenVPN, and enrollment in Opengear Lighthouse.
-10. **Automation.** A REST API, USB-stick configuration loading, and configuration backup and restore.
+3. **Remote authentication.** Local, RADIUS, TACACS+, LDAP, and Kerberos, in several orders (remote only, local first, remote first with local fallback, or remote first with local only when the servers are down). RADIUS, TACACS+, and LDAP can supply a second factor.
+4. **Port logging.** A logging level per serial port, from 0 (off) to 4. Port logs go to a remote server or to USB flash, and an 8 KB cache per port stays on the device.
+5. **Firewall and services.** A built-in firewall and a Service Access page. By default only HTTPS and SSH reach the device itself.
+6. **Management LAN.** NET2 can serve as a separate management LAN gateway with firewall, router, and DHCP server features, a failover or out-of-band interface, or a redundant link that shares NET1's settings through interface aggregation.
+7. **Out-of-band and failover.** Dial-in and dial-out modem access, broadband failover, and cellular failover.
+8. **Tunnels and fleet management.** IPsec, OpenVPN, and PPTP VPN, Call Home, configuration over DHCP (ZTP), and enrollment into Opengear Lighthouse.
+9. **Power and environment.** Remote power control, UPS control, environmental monitoring, and digital I/O.
+10. **Automation.** A REST API, configuration loading from a USB stick, configuration backup and restore, and a delayed configuration commit.
+
+### Which services it provides, and which it only uses
+
+A console server is mainly a **client** of the services a lab provides. The table separates what it offers to other devices from what it only consumes. It is based on the 5.3.1 user guide and the 5.5.3 release notes.
+
+| Service | As a client of the lab's server | As a server for other devices |
+| --- | --- | --- |
+| **Syslog** | Yes. The system log goes to one remote syslog server (address and port). Each serial port can send its traffic to a syslog server with a facility and a priority you set. | Not documented. The guide describes no way to receive syslog from other devices, so do not use it as a central log server. |
+| **Port logs** | Stored on a remote server or on USB flash, which you choose under *Alerts & Logging > Port Log* before logging starts. | Not applicable. |
+| **RADIUS** | Yes, as a client. It accepts several servers, separate accounting servers, MS-CHAPv2 (the default for new configurations) or PAP, and a *Require Message-Authenticator* check against the BlastRADIUS attack. | No. It does not serve RADIUS. |
+| **TACACS+, LDAP, Kerberos** | Yes, as a client. | No. |
+| **SNMP** | Yes. It sends traps to a primary and a secondary SNMP manager, in versions 1, 2c, or 3. | It runs an SNMP agent that answers polls. The service is off by default. It does not collect traps or poll other devices (apart from network power distribution units and UPS hardware). |
+| **NTP** | Yes. One remote NTP server, with an optional key and key index. | Limited. With NTP enabled and the right networks chosen on the Service Access page, it shares its time with connected devices (a peering model). The guide states no stratum or authentication for these clients. |
+| **DHCP** | Yes. A DHCP client is on by default, and it can relay DHCPv4. | Yes, on the management LAN (NET2), with address pools and fixed addresses by MAC. |
+| **DNS** | Uses the DNS server you configure. | Yes. It can relay DNS queries for clients on its network. |
+| **TFTP and FTP** | Not applicable. | Yes. An optional server on the USB flash holds configuration files and logs. |
+| **Routing and firewall** | Not applicable. | Yes, as a gateway for the management LAN, with forwarding rules. |
+| **Nagios** | Yes. It sends alerts to a central Nagios server and answers NRPE checks. | No. It does not collect other hosts' data. |
+
+Console servers can also chain together. A primary console server can **cascade** the serial ports of other console servers, and the PortShare client can redirect a serial port to a remote computer.
+
+None of these rows has been tested on a unit in this lab.
 
 ### Where it fits in the SRG labs
 
@@ -99,6 +121,7 @@ This volume maps FortiSwitch to the SRGs. It does not assess the console server.
 - **Segment 0 stays out of band.** Chapter 999 says segment 0 carries no test traffic. The console server adds only management and console traffic there.
 - **Unique secrets.** The console server is a RADIUS client, so it gets its own shared secret in `clients.conf`, never the one a switch uses (Lab 7.4).
 - **A local emergency account.** Remote authentication fails when RADIUS is unreachable, which is the situation the console server exists for. Keep one local administrator, stored offline, and test it (Lab 8.3).
+- **Not a central service host.** The console server uses the lab's RADIUS, syslog, NTP, and SNMP hosts on segment 10. It does not replace any of them: it has no documented syslog or RADIUS server, its SNMP and NTP roles are limited, and Lab 5.6 needs two log servers.
 - **Pinout is per cable.** Console cables vary by vendor. Start with `X2` and switch a port to `X1` if the terminal stays silent.
 
 ## Implementation and Automation
@@ -116,7 +139,7 @@ All settings come from the 5.5.3 web UI. The Quick Start for the IM7200 names th
 | Serial port 3 | `fgt-201` console, only if the FortiGate is hardware |
 | Serial port 16 | Loopback test cable |
 | Console speed | `115200` baud, 8 data bits, no parity, 1 stop bit, no flow control (FortiSwitchOS 7.6.7 default for `config system console`) |
-| Services | RADIUS `10.201.10.10` and `.11`; syslog `.20`; NTP `.30` and `.31`; SNMPv3 manager `10.201.10.40` |
+| Services | RADIUS `10.201.10.10` and `.11`; syslog `.20`; NTP `.30` (the one NTP server field, with its key); SNMPv3 manager `10.201.10.40` |
 
 Automation is limited on purpose. The REST API and a configuration file loaded from a USB stick can repeat a build, but this chapter configures the device by hand so each setting is visible. Save the exported configuration after each lab (Lab 8.7) so the baseline can return.
 
@@ -132,6 +155,9 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 | SSH to `3001` times out | The firewall or Service Access blocks the source, or SSH is off | Allow SSH from the admin network (Lab 8.5) |
 | RADIUS logins fail | The shared secret differs, or gw-201 blocks the path | Match the secret in `clients.conf`, and allow UDP 1812 and 1813 from `10.201.0.13` |
 | Logins work with RADIUS up and fail with it down | No local fallback | Keep the local administrator and test it (Lab 8.3) |
+| Port logging is on but no log appears | No port-log storage target is set | Set the server type under *Alerts & Logging > Port Log* before the logging level, or attach a USB flash drive |
+| RADIUS logins fail with a Message-Authenticator error | *Require Message-Authenticator* is on and the server does not send it | Turn the attribute on in FreeRADIUS, or confirm the server version sends it |
+| SNMP polls and traps get no answer | The SNMP service is off (the default) or Service Access blocks it | Enable the SNMP service and allow it on the interface |
 | The copper port stopped working | An SFP module is in the same NET port | Remove the module, or move the cable to the SFP |
 | No cellular registration | No SIM, no plan, or no antenna | Install the SIM and antennas, and check carrier status |
 
@@ -140,7 +166,8 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 - Change the factory password at the first login and create a named administrator for daily use. Release 5.5.3 does not let you set the password `default` or close variants (a restriction listed in the 5.5.0 release notes).
 - Keep the console server off any production network. Segment 0 and segment 100 are lab segments.
 - Turn off Telnet and any other clear-text service. Allow SSH and HTTPS only from the admin network and segment 100.
-- Give the device a unique RADIUS secret and a unique SNMPv3 user. Do not reuse a switch's secret.
+- Give the device a unique RADIUS secret and a unique SNMPv3 user. Do not reuse a switch's secret. Turn on *Require Message-Authenticator* so a forged RADIUS reply is rejected.
+- Use SNMPv3 at `authPriv`. In FIPS mode the device replaces an MD5 SNMPv3 setting with SHA, and the guide recommends `authPriv`.
 - Turn on the password complexity policy in 5.5.3 and the configuration-secret obfuscation on the System page.
 - A console log can hold secrets that appear on the console. Send port logs to the lab log server and protect them like an audit log.
 - Back up the configuration before every firmware change and after every successful upgrade, and apply the 4.13.3 or later 4.13.x step before any move to 5.x from 4.x.
@@ -152,6 +179,7 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 **References:**
 
 - Opengear, [firmware 5.5.3 release notes](https://ftp.opengear.com/download/opengear_appliances/ACM/current/release-notes.pdf) (IM7200, CM7100, CM7196, ACM700x), October 2026 revision.
+- Opengear, [Console Server User Guide 5.3.1](https://ftp.opengear.com/download/documentation/manual/current/IM_ACM_and_CM7100/Opengear%20User%20Manual.pdf) (December 2025; IM7200, ACM7000, CM7100). No 5.5.x user guide was available when this chapter was written.
 - Opengear, [IM7200 Quick Start](https://ftp.opengear.com/download/documentation/quickstart/x-quickstart/IM7200%20Quick%20Start.pdf), revision 1.5 (older than 5.5.3).
 - Opengear, [IM7200 Infrastructure Manager data sheet](https://opengear.com/wp-content/uploads/2020/07/Spanish-Mexico_IM7200_Infrastructure_Manager-Data_Sheet-1.pdf) (Spanish edition).
 - Opengear documentation, [opengear.com/documentation](https://opengear.com/documentation), for the current user manual and Knowledge Base.
@@ -166,6 +194,8 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 4. Why must the console server keep a local administrator when it uses RADIUS?
 5. What is the upgrade path from firmware 4.x to 5.5.3, and what happens to a 4.x backup file on 5.x?
 6. Which two things in the 5.5.3 release notes change how stored secrets and passwords are protected?
+7. Why does the lab keep `syslog-201a` and `radius-201a` as the servers instead of using the console server for them?
+8. Where do port logs go, and what must you set before logging starts?
 
 ## Hands-On Lab
 
@@ -212,7 +242,7 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 **Configure.**
 
 1. Cable serial port 1 to the console port of `sw-648f-1`, port 2 to `sw-2048f-1`, and port 3 to `fgt-201` if it is hardware. Plug the loopback cable into port 16.
-2. For each port, open the serial port settings and set:
+2. Set the port-log storage target first, under *Alerts & Logging > Port Log* (a remote server or a USB flash drive), because logging stays off without one. For this lab use the lab syslog server in Lab 8.4 and keep the 8 KB local cache for the evidence. Then, for each port, open the serial port settings and set:
 
    ```text
    Label:           sw-648f-1          (port 1)
@@ -226,10 +256,10 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
    Stop bits:       1
    Flow control:    none
    Protocols:       SSH
-   Logging level:   all data
+   Logging level:   2 (all data to and from the port, plus connection events)
    ```
 
-3. Confirm the switch side. On each switch run `show system console` (or `get system console`) and write down the baud rate. If it differs from `115200`, either set the port to match or change the switch with `config system console` and `set baudrate 115200`.
+3. Confirm the switch side. On each switch run `show system console` and write down the baud rate. If it differs from `115200`, either set the port to match or change the switch with `config system console` and `set baudrate 115200`.
 4. Turn off Telnet and web terminal on each port if you do not need them.
 
 **Positive test.** From `admin-201`:
@@ -269,8 +299,17 @@ Press Enter at the console. The FortiSwitchOS login prompt appears. Log in, run 
    Restart `freeradius` on both servers. On `gw-201`, allow UDP 1812 and 1813 from `10.201.0.13` to `10.201.10.10` and `10.201.10.11`.
 
 2. On the console server, create groups named `netops` (access to ports 1 and 2) and `audit` (no ports). Keep the built-in `admin` group for the administrators.
-3. Under the authentication settings, set the method to RADIUS first with local as the fallback. Enter both servers, the secret, the authentication port 1812, and the accounting port 1813.
-4. Create two RADIUS users, `lab-netops` and `lab-audit`, and map them to the groups (the device maps a RADIUS user to a group by user name or by a returned group attribute; use the method your 5.5.3 UI offers and note which one).
+3. Under *Serial & Network > Authentication*, choose the *RADIUSDownLocal* method: remote first, and local only when the RADIUS servers are down. Enter both servers as a comma-separated list (each is tried in turn), the shared secret, and, if you want a separate accounting list, the accounting servers (otherwise the same servers are used). Choose **MS-CHAPv2**, the default for new configurations, and tick **Require Message-Authenticator**, which blocks a forged reply (the BlastRADIUS attack).
+4. Create two RADIUS users, `lab-netops` and `lab-audit`, and give each its group with the standard `Framed-Filter-Id` attribute, which the console server reads in the form `:group_name=<group>:`. In FreeRADIUS `users` (or `mods-config/files/authorize`):
+
+   ```text
+   lab-netops  Cleartext-Password := "<PASS>"
+               Framed-Filter-Id = ":group_name=netops:"
+   lab-audit   Cleartext-Password := "<PASS>"
+               Framed-Filter-Id = ":group_name=audit:"
+   ```
+
+   A RADIUS user added to the `admin` group gets all resources, so keep that for the administrators only. Restart `freeradius` on both servers.
 5. Keep one local administrator and store its password offline. Do not rely on it for daily work.
 
 **Positive test.** Sign in as `lab-netops` over SSH. Open port 1 and port 2: both open. Sign in as `lab-audit`: the console server accepts the login but offers no serial ports. The FreeRADIUS log shows each request from `og-201` with an Access-Accept.
@@ -283,28 +322,29 @@ Press Enter at the console. The FortiSwitchOS login prompt appears. Log in, run 
 
 ### Lab 8.4 — Logs, time, and SNMP
 
-**Goal.** Send the console server's logs and each port's console log to the lab syslog server, set its clock from the lab NTP servers, and let `nms-201` read it with SNMPv3.
+**Goal.** Send the console server's logs and each port's console log to the lab syslog server, set its clock from the lab NTP server, and let `nms-201` read it with SNMPv3 and receive its traps.
 
-**Uses.** `og-201`, `syslog-201a` (P4), `ntp-201a` and `ntp-201b` (P5), `nms-201` (P6).
+**Uses.** `og-201`, `syslog-201a` (P4), `ntp-201a` (P5), `nms-201` (P6). The console server accepts one remote syslog server and one NTP server, so it cannot use the second server of each pair. That is a limit of the device, and the lab records it.
 
 **Configure.**
 
-1. Set the time zone and enter both NTP servers, `10.201.10.30` and `10.201.10.31`, with the authentication keys from Chapter 999 if the device supports keyed NTP.
-2. Set the remote syslog server to `10.201.10.20` and use TCP if the 5.5.3 UI offers it. On `gw-201`, allow the syslog port from `10.201.0.13`.
-3. On each serial port, keep the logging level at all data and send the log to syslog.
-4. Under SNMP, enable SNMPv3 and create one user with authentication and privacy keys (generate unique keys per Chapter 999). Disable SNMPv1 and v2c. Allow `10.201.10.40` to query.
+1. Under *System > Date & Time*, set the time zone, tick **Enable NTP**, enter `10.201.10.30` as the NTP server, and enter the authentication key and key index from Chapter 999. The user guide shows one NTP server field, so `ntp-201b` is not used here. Click Apply NTP Settings.
+2. Under *Status > Syslog*, set the remote syslog server address `10.201.10.20` and its port (the guide does not describe a TCP option, so use the default and record what the 5.5.3 screen offers). On `gw-201`, allow the syslog port from `10.201.0.13`.
+3. On each serial port, keep logging level 2 and set a syslog **facility and priority** for the port (for example `local0` and `info`), so the port's traffic reaches `syslog-201a`. Confirm that the storage target from Lab 8.2 is still set.
+4. Under *Alerts & Logging > SNMP*, tick **Enable the SNMP service** (it is off by default) and allow SNMP in Service Access for NET1. Create one SNMPv3 user at the `authPriv` level with SHA and AES and unique keys of at least 8 characters (generate them per Chapter 999). Create no community string, so v1 and v2c have nothing to answer with.
+5. On the *Primary SNMP Manager* tab, add `10.201.10.40` as the manager, choose version 3, and enter the user, engine ID, security level, and keys. On `nms-201`, create the matching v3 user with that engine ID. A v3 trap is rejected if the user does not already exist on the manager.
 
-**Positive test.** The console server's time matches `ntp-201a` (compare `date -u` on both). Open and close a session on port 1: `/var/log/lab201/` on `syslog-201a` holds the login, logout, and console lines. From `nms-201`:
+**Positive test.** The console server's time matches `ntp-201a` (compare `date -u` on both), and the status page shows the NTP server as in use. Open and close a session on port 1: `/var/log/lab201/` on `syslog-201a` holds the login, logout, and console lines. From `nms-201`:
 
 ```text
 snmpwalk -v3 -l authPriv -u <SNMP_USER> -a SHA -A <AUTH_KEY> -x AES -X <PRIV_KEY> 10.201.0.13 system
 ```
 
-The walk returns the system group. Also walk the power-supply table (the 5.5.3 release notes record a fix so `ogPowerSupplyTable` returns supply status).
+The walk returns the system group. Also walk the power-supply table (the 5.5.3 release notes record a fix so `ogPowerSupplyTable` returns supply status). Then trigger an event that sends a trap (for example, set an Auto-Response with an SNMP trap action on a serial pattern or a login) and confirm `snmptrapd` on `nms-201` receives it.
 
-**Negative test.** Query with SNMPv2c and a community string: no answer. Query with a wrong privacy key: authentication error. Block UDP 514 or the syslog TCP port on `gw-201` briefly: the device logs locally, and the evidence shows the gap, which you close by restoring the rule.
+**Negative test.** Query with SNMPv2c and a community string: no answer, because no community exists. Query with a wrong privacy key: authentication error. Delete the v3 user on `nms-201` and trigger the trap again: the manager rejects it. Block UDP 514 or the syslog TCP port on `gw-201` briefly: the device logs locally, and the evidence shows the gap, which you close by restoring the rule.
 
-**Evidence.** The time comparison, the syslog lines, the successful and failed SNMP queries, and the power-supply table output.
+**Evidence.** The time comparison, the syslog lines, the successful and failed SNMP queries, the received and rejected trap, and the power-supply table output.
 
 **Return to baseline.** Keep NTP and syslog settings. Restore the SNMP settings from the saved configuration if you changed them.
 
@@ -316,13 +356,13 @@ The walk returns the system group. Also walk the power-supply table (the 5.5.3 r
 
 **Configure.**
 
-1. Under service access, leave HTTPS and SSH enabled and turn off Telnet, HTTP, and any other service you do not need (including serial-port Telnet and RFC 2217 unless a lab uses them).
+1. Under service access, leave HTTPS and SSH enabled and turn off Telnet, HTTP, and any other service you do not need (including serial-port Telnet, raw TCP, and RFC 2217 unless a lab uses them). Leave SNMP allowed only on NET1, from `10.201.10.40`, and turn off the TFTP and FTP service, the DNS relay, and the DHCP server, which the lab does not use.
 2. Restrict the source of SSH and HTTPS to `10.201.20.0/24` and, after Lab 8.6, `10.201.100.0/24`. Use the device's firewall rules for this.
 3. Set a web session timeout and an SSH idle timeout, and add a login banner.
 4. Turn on the password complexity policy that 5.5.3 adds under the authentication settings (length, character classes), and turn on configuration-secret obfuscation on the System page.
 5. Check the web certificate. If the default certificate is in use, replace it with one signed by `ca-201` (the lab CA from P3). A certificate request in FIPS mode produces a 2048-bit key at minimum.
 
-**Positive test.** From `admin-201`, `nmap -p 22,23,80,443 10.201.0.13` shows 22 and 443 open and 23 and 80 closed. The banner appears on SSH login.
+**Positive test.** From `admin-201`, `nmap -p 22,23,53,80,443 10.201.0.13` shows 22 and 443 open and the rest closed, and `nmap -sU -p 53,67,69,123 10.201.0.13` shows no open UDP service except the ones you chose to allow. The banner appears on SSH login.
 
 **Negative test.** Run the same scan from `attacker-201` on segment 42: the console server drops the traffic. Try to set a short password for a test user: the policy refuses it. Let an SSH session sit past the idle timeout: the device closes it.
 
