@@ -6131,7 +6131,7 @@ volumes:
     number: "CCI"
     slug: volume-201-fortiswitch-stig-and-srg-mapping
     title: "FortiSwitch STIG and SRG Mapping"
-    chapter_count: 9
+    chapter_count: 10
     build_eligible: true
     chapters:
       - id: 01
@@ -6155,6 +6155,9 @@ volumes:
       - id: 07
         title: "Chapter 07: AAA Services SRG Requirement Labs"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/07-aaa-services-srg-requirement-labs.md
+      - id: 08
+        title: "Chapter 08: OpenGear IM7216-2-DAC-LMV Console Server (Firmware 5.5.3) and Optional Console Lab"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/08-opengear-im7216-console-server-and-optional-console-lab.md
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md

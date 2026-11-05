@@ -1,0 +1,97 @@
+<svg viewBox="0 0 960 680" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+<title>Chapter 08 console access: OpenGear IM7216-2-DAC-LMV serial, management, out-of-band, and cellular paths</title>
+<desc>The optional OpenGear console server og-201 connects NET1 (10.201.0.13) to segment 0, the out-of-band management network that also holds gw-201 and the management ports of the two FortiSwitches. Administrators on segment 20 reach og-201 through gw-201 and use SSH to TCP port 3000 plus the serial port number. og-201 reaches RADIUS, syslog, NTP, and SNMP hosts on segment 10 through gw-201. NET2 (10.201.100.2) joins segment 100, an isolated break-glass network with no gateway, where oob-admin-201 (10.201.100.10) sits. Serial port 1 connects to the console of sw-648f-1, port 2 to sw-2048f-1, and port 3 to the optional fgt-201. An optional cellular LTE link provides a failover path when an active SIM is installed.</desc>
+<rect x="0" y="0" width="960" height="680" fill="#ffffff"/>
+<text x="480" y="24" font-size="15" font-weight="bold" text-anchor="middle" fill="#1f2937">Console access (Chapter 08): optional OpenGear og-201 on the Chapter 999 lab</text>
+<rect x="20" y="40" width="620" height="110" rx="6" fill="#f8fafc" stroke="#475569" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="32" y="56" font-size="11" font-weight="bold" text-anchor="start" fill="#1f2937">Hypervisor (virtual machines)</text>
+<rect x="36" y="66" width="120" height="74" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="96" y="82" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">gw-201</text>
+<text x="96" y="97" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">gateway and firewall</text>
+<text x="96" y="111" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">.1 on segments</text>
+<text x="96" y="125" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">0, 10, 20, 30 ...</text>
+<rect x="170" y="66" width="250" height="74" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="295" y="82" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">Segment 10 services (10.201.10.0/24)</text>
+<text x="295" y="97" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">radius-201a/b .10 .11   syslog-201a/b .20 .21</text>
+<text x="295" y="111" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">ntp-201a/b .30 .31   nms-201 (SNMPv3) .40</text>
+<rect x="434" y="66" width="190" height="74" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.5"/>
+<text x="529" y="82" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">admin-201 (segment 20)</text>
+<text x="529" y="97" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">10.201.20.10</text>
+<text x="529" y="111" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">SSH to og-201 on TCP 3000 + port</text>
+<path d="M60,215 H760" fill="none" stroke="#0f172a" stroke-width="4"/>
+<rect x="150.0" y="196" width="360" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="330" y="207" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Segment 0  OOB-Mgmt  10.201.0.0/24   (fd00:db8:201::/120)</text>
+<path d="M96,140 V215" fill="none" stroke="#0f172a" stroke-width="3"/>
+<text x="110" y="200" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">.1</text>
+<path d="M295,140 V170 H96" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="2 4"/>
+<path d="M529,140 V170 H96" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="2 4"/>
+<rect x="275.0" y="163" width="110" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="330" y="174" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">routed by gw-201</text>
+<rect x="40" y="420" width="190" height="96" rx="6" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<text x="135" y="438" font-size="13" font-weight="bold" text-anchor="middle" fill="#1f2937">sw-648f-1</text>
+<text x="135" y="454" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">FS-648F-FPOE</text>
+<text x="135" y="468" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">Mgmt port 10.201.0.11</text>
+<text x="135" y="482" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">Console: 115200 8N1</text>
+<rect x="250" y="420" width="190" height="96" rx="6" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+<text x="345" y="438" font-size="13" font-weight="bold" text-anchor="middle" fill="#1f2937">sw-2048f-1</text>
+<text x="345" y="454" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">FS-2048F</text>
+<text x="345" y="468" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">Mgmt port 10.201.0.12</text>
+<text x="345" y="482" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">Console: 115200 8N1</text>
+<rect x="460" y="420" width="170" height="96" rx="6" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="545" y="438" font-size="12" font-weight="bold" text-anchor="middle" fill="#1f2937">fgt-201 (optional)</text>
+<text x="545" y="454" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">FortiGate, if hardware</text>
+<text x="545" y="468" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">Console on serial port 3</text>
+<path d="M135,420 V215" fill="none" stroke="#0f172a" stroke-width="3"/>
+<path d="M345,420 V215" fill="none" stroke="#0f172a" stroke-width="3"/>
+<rect x="118.0" y="319" width="34" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="135" y="330" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">.11</text>
+<rect x="328.0" y="319" width="34" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="345" y="330" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">.12</text>
+<rect x="660" y="250" width="260" height="150" rx="6" fill="#fef3c7" stroke="#b45309" stroke-width="2.5"/>
+<text x="790" y="270" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">og-201</text>
+<text x="790" y="285" font-size="10.5" font-weight="normal" text-anchor="middle" fill="#1f2937">OpenGear IM7216-2-DAC-LMV, firmware 5.5.3</text>
+<text x="672" y="304" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">NET1  10.201.0.13/24   fd00:db8:201::d</text>
+<text x="672" y="318" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">NET2  10.201.100.2/24   fd00:db8:201::6402</text>
+<text x="672" y="332" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Serial 1-16 (RJ45, RS-232), console, USB x2</text>
+<text x="672" y="346" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Dual AC power, 16 GB flash, internal LTE modem</text>
+<text x="672" y="370" font-size="9.5" font-weight="normal" text-anchor="start" fill="#1f2937">Default web UI 192.168.0.1 (change at first boot)</text>
+<path d="M720,250 V215" fill="none" stroke="#0f172a" stroke-width="3"/>
+<rect x="688.0" y="225" width="64" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="720" y="236" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">NET1 .13</text>
+<rect x="700" y="40" width="230" height="80" rx="6" fill="#fce7f3" stroke="#9d174d" stroke-width="1.5"/>
+<text x="815" y="58" font-size="11.5" font-weight="bold" text-anchor="middle" fill="#1f2937">oob-admin-201 (break-glass laptop)</text>
+<text x="815" y="74" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Segment 100 Console-OOB</text>
+<text x="815" y="88" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">10.201.100.10   fd00:db8:201::640a</text>
+<text x="815" y="102" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">No gateway; reaches og-201 only</text>
+<path d="M880,120 V250" fill="none" stroke="#0f172a" stroke-width="3"/>
+<rect x="815.0" y="179" width="130" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="880" y="190" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">NET2 .2  Segment 100</text>
+<text x="886" y="138" font-size="9.5" font-weight="normal" text-anchor="start" fill="#1f2937">10.201.100.0/24</text>
+<path d="M700,400 V570 H545 V516" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-dasharray="3 3"/>
+<rect x="590.0" y="555" width="60" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="620" y="566" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Serial 3</text>
+<path d="M730,400 V585 H345 V516" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-dasharray="3 3"/>
+<rect x="380.0" y="570" width="100" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="430" y="581" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Serial 2  RJ45</text>
+<path d="M760,400 V600 H135 V516" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-dasharray="3 3"/>
+<rect x="200.0" y="585" width="100" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="250" y="596" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Serial 1  RJ45</text>
+<rect x="790" y="450" width="140" height="64" rx="6" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="860" y="468" font-size="11" font-weight="bold" text-anchor="middle" fill="#1f2937">Cellular LTE (optional)</text>
+<text x="860" y="483" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">Carrier network</text>
+<text x="860" y="497" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">needs an active SIM</text>
+<path d="M860,400 V450" fill="none" stroke="#6d28d9" stroke-width="2.5" stroke-dasharray="8 4"/>
+<rect x="830.0" y="419" width="60" height="15" rx="3" fill="#ffffff" stroke="#9ca3af" stroke-width="0.8"/>
+<text x="860" y="430" font-size="10" font-weight="normal" text-anchor="middle" fill="#1f2937">failover</text>
+<rect x="460" y="530" width="170" height="20" rx="6" fill="#ffffff" stroke="#ffffff" stroke-width="1.5"/>
+<rect x="20" y="628" width="920" height="44" rx="4" fill="#ffffff" stroke="#9ca3af" stroke-width="1"/>
+<path d="M34,644 H74" fill="none" stroke="#0f172a" stroke-width="3"/>
+<text x="80" y="648" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Ethernet (IP)</text>
+<path d="M190,644 H230" fill="none" stroke="#7c2d12" stroke-width="2.5" stroke-dasharray="3 3"/>
+<text x="236" y="648" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Serial console cable (RJ45)</text>
+<path d="M430,644 H470" fill="none" stroke="#6d28d9" stroke-width="2.5" stroke-dasharray="8 4"/>
+<text x="476" y="648" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Cellular failover (optional)</text>
+<path d="M660,644 H700" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="2 4"/>
+<text x="706" y="648" font-size="10" font-weight="normal" text-anchor="start" fill="#1f2937">Routed path through gw-201</text>
+<text x="34" y="664" font-size="9.5" font-weight="normal" text-anchor="start" fill="#1f2937">og-201 sends RADIUS, syslog, NTP, and SNMP traffic to segment 10 through gw-201. Segment 100 is new in this chapter.</text>
+</svg>

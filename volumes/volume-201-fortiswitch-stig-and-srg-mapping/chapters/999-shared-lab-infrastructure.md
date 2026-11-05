@@ -97,6 +97,7 @@ number in IPv4 and IPv6 (`.10` is `::a` in the host group).
 | 50 | 50 | Guest-AuthFail | `10.201.50.0/24` | `fd00:db8:201::3200/120` | .1 gw-201 | Guest and authentication-failure VLAN |
 | 60 | 60 | Unused | `10.201.60.0/24` | `fd00:db8:201::3c00/120` | none | Parking VLAN for unused ports; no hosts, no gateway |
 | 99 | 99 | Native-Dead | `10.201.99.0/24` | `fd00:db8:201::6300/120` | none | Native VLAN on trunks; no hosts, no gateway |
+| 100 | none (isolated LAN) | Console-OOB | `10.201.100.0/24` | `fd00:db8:201::6400/120` | none | Optional: break-glass network for the console server's NET2 and `oob-admin-201` (Chapter 08) |
 | 200 | 2001-2005 | Routed-Links | `10.201.200.0/24` | `fd00:db8:201::c800/120` | none | Point-to-point links, one /31 (IPv4) and /127 (IPv6) each |
 | 210 | behind rtr-peer-1 | Peer1-Nets | `10.201.210.0/24` | `fd00:db8:201::d200/120` | rtr-peer-1 | Prefixes advertised by rtr-peer-1 (AS 65202) |
 | 211 | behind rtr-peer-2 | Peer2-Nets | `10.201.211.0/24` | `fd00:db8:201::d300/120` | rtr-peer-2 | Prefixes advertised by rtr-peer-2 (AS 65203) |
@@ -106,7 +107,9 @@ number in IPv4 and IPv6 (`.10` is `::a` in the host group).
 | 254 | FortiLink | FortiLink | `10.201.254.0/24` | `fd00:db8:201::fe00/120` | .1 fgt-201 | FortiLink interface of fgt-201 (managed-mode labs only) |
 
 Segment 0 is the out-of-band network: it is reached through the switches'
-management ports and never carries test traffic. Segments 100 to 199 are
+management ports (and, in the optional console lab of
+[Chapter 08](08-opengear-im7216-console-server-and-optional-console-lab.md),
+the console server's NET1) and never carries test traffic. Segments 100 to 199 are
 reserved for lab-specific segments: a lab that needs its own VLAN takes the
 next free number in that range (VLAN ID equal to the third octet) and records it
 in its own chapter. Every other number outside 100 to 199 that is not in the table is unassigned,
@@ -152,6 +155,9 @@ so a shared segment can be added without renumbering.
 | static-1 | Statically addressed host | P14 | 42 | `10.201.42.10` | `fd00:db8:201::2a0a` |
 | static-2 | Statically addressed host | P14 | 42 | `10.201.42.11` | `fd00:db8:201::2a0b` |
 | attacker-201 | Test host for spoofing and flooding tests |  | 42 | `10.201.42.200` | `fd00:db8:201::2ac8` |
+| og-201 | Optional OpenGear console server (Chapter 08) |  | 0 (NET1) | `10.201.0.13` | `fd00:db8:201::d` |
+|  |  |  | 100 (NET2) | `10.201.100.2` | `fd00:db8:201::6402` |
+| oob-admin-201 | Optional break-glass laptop (Chapter 08) |  | 100 | `10.201.100.10` | `fd00:db8:201::640a` |
 | mcast-src-201 | Multicast source behind rtr-peer-1 |  | 220 | `10.201.220.10` | `fd00:db8:201::dc0a` |
 | vx-host-a | VXLAN tenant host on sw-648f-1 |  | 230 | `10.201.230.10` | `fd00:db8:201::e60a` |
 | vx-host-b | VXLAN tenant host on sw-2048f-1 |  | 230 | `10.201.230.11` | `fd00:db8:201::e60b` |

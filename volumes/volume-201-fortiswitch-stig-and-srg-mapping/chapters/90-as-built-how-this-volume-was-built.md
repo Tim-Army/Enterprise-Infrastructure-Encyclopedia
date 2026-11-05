@@ -193,6 +193,17 @@ script that matches IDs, so a lab that is renamed or renumbered needs the
 column regenerated, and `export_srg_tables.py` carries the column into the CSV
 files.
 
+### Chapter 08 and the console diagram
+
+On 2026-11-05 Chapter 08 added an optional OpenGear IM7216-2-DAC-LMV lab on
+firmware 5.5.3. It uses the existing address plans: the console server takes
+`.13` on segment 0, and one new lab segment, 100, carries its NET2 break-glass
+network. The firmware facts come from Opengear's 5.5.3 release notes and the
+IM7200 Quick Start (revision 1.5); hardware details come from the Quick Start
+and retailer listings. No unit was available, so the chapter's Lab Verification
+is pending. The console diagram, `chapter-08-console-access-topology.svg`, sits
+in `diagrams/` beside the Chapter 999 topology.
+
 ### The Word and PDF downloads
 
 Each build of the site also writes the whole volume as a Word file and a PDF to
