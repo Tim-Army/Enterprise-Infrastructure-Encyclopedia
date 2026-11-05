@@ -74,6 +74,8 @@ Before the lab, confirm that a UDP RADIUS login works (Lab 999.4). After it, res
 
 **Shared prerequisites.** The infrastructure from Chapter 999, the RADIUS servers from Lab 999.2, and the certificate authority `ca-201`. `tcpdump` on `radius-201a`. **Cost:** none beyond the Chapter 999 lab.
 
+![Shared lab network from Chapter 999. Two FortiSwitches, sw-648f-1 and sw-2048f-1, are joined by routed link L5 and each has an 802.1Q trunk to a hypervisor that hosts the gateway, service hosts, certificate authority, DHCP server, administrator workstation, and two routing peers. Routed links L1 to L4 join each switch to each peer, an out-of-band management network joins the switch management ports to the gateway, and test endpoints connect directly to the switches.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg)
+
 ### Lab 7.1 — Encrypt RADIUS credentials with RadSec (TLS)
 
 **Goal.** Show that the switch sends authentication traffic to the RADIUS servers inside a TLS session with certificate validation, and refuses a server it cannot validate.

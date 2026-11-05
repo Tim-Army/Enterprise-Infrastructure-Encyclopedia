@@ -99,6 +99,8 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 **Shared prerequisites.** The infrastructure from Chapter 999 (Labs 999.1 to 999.6) including the routed links L1 to L5 and both routing peers, the Advanced Features License on both switches, and the `baseline-201` snapshot. On the peers: FRR with `vtysh`, `scapy`, and `tcpdump`. **Cost:** none beyond the Chapter 999 lab.
 
+![Shared lab network from Chapter 999. Two FortiSwitches, sw-648f-1 and sw-2048f-1, are joined by routed link L5 and each has an 802.1Q trunk to a hypervisor that hosts the gateway, service hosts, certificate authority, DHCP server, administrator workstation, and two routing peers. Routed links L1 to L4 join each switch to each peer, an out-of-band management network joins the switch management ports to the gateway, and test endpoints connect directly to the switches.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg)
+
 ### Lab 6.1 — Interface and IPv6 hygiene
 
 **Goal.** Show that unused Layer 3 interfaces are down, ICMP redirects and directed broadcasts are not used, IPv6 advertisements carry a safe hop limit, site-local addresses are absent, zero-touch provisioning is off, and LLDP is off on external ports.

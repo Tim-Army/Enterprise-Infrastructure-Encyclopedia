@@ -95,6 +95,8 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 
 **Shared prerequisites.** The infrastructure from Chapter 999 (Labs 999.1 to 999.6) and the `baseline-201` snapshot. A console connection to each switch. A local test account, a RADIUS administrator, and an SSH client on `admin-201`. **Cost:** none beyond the Chapter 999 lab. A firmware image is needed only for the upgrade check in Lab 5.9.
 
+![Shared lab network from Chapter 999. Two FortiSwitches, sw-648f-1 and sw-2048f-1, are joined by routed link L5 and each has an 802.1Q trunk to a hypervisor that hosts the gateway, service hosts, certificate authority, DHCP server, administrator workstation, and two routing peers. Routed links L1 to L4 join each switch to each peer, an out-of-band management network joins the switch management ports to the gateway, and test endpoints connect directly to the switches.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg)
+
 ### Lab 5.1 — Administrator access control: roles, trusted hosts, services, and the local account
 
 **Goal.** Show that only authorized administrators reach management from approved networks over approved protocols, with the least privilege their role needs, and that one local account remains for emergencies.

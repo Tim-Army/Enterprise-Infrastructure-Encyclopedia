@@ -92,6 +92,8 @@ Before each lab, confirm the baseline: `execute ping 10.201.10.10` from the swit
 
 **Shared prerequisites.** The infrastructure from Chapter 999 (Labs 999.1 to 999.6), the `baseline-201` snapshot, and a console connection to each switch. Test tools on `attacker-201`: a packet generator (`hping3` or `mausezahn`), a bridge tool that can send spanning tree BPDUs, and `tcpdump`. Port names are those you recorded in your lab notes. **Cost:** none beyond the Chapter 999 lab.
 
+![Shared lab network from Chapter 999. Two FortiSwitches, sw-648f-1 and sw-2048f-1, are joined by routed link L5 and each has an 802.1Q trunk to a hypervisor that hosts the gateway, service hosts, certificate authority, DHCP server, administrator workstation, and two routing peers. Routed links L1 to L4 join each switch to each peer, an out-of-band management network joins the switch management ports to the gateway, and test endpoints connect directly to the switches.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg)
+
 ### Lab 4.1 — Authenticate every endpoint (802.1X and MAC authentication bypass)
 
 **Goal.** Show that a host port admits an endpoint only after 802.1X, or MAC authentication bypass for a device that cannot run a supplicant, succeeds against RADIUS.

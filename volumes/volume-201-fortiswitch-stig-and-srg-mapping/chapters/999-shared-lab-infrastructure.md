@@ -48,30 +48,12 @@ else in the lab can be virtual.
 
 ### Topology
 
-```text
-   Virtual machines on one hypervisor:
-   gw-201, svc-201a, svc-201b, ca-201, dhcp-201, admin-201,
-   rtr-peer-1, rtr-peer-2, static-1, static-2, attacker-201
-        |                                          |
-        | 802.1Q trunk                             | 802.1Q trunk
-        | VLANs 10,20,30,40,41,42,50 (native 99)   | (same VLANs)
-        |                                          |
-   +----+------------+   L5 (VLAN 2005)   +--------+-----------+
-   |   sw-648f-1     +--------------------+    sw-2048f-1      |
-   |   FS-648F-FPOE  |                    |    FS-2048F        |
-   +-+-----+-----+---+                    +---+-----+------+---+
-     |     |     |                            |     |      |
-    L1    L2   test endpoints,               L3    L4   vx-host-b
-     |     |   vx-host-a                      |     |
-   rtr-peer-1 (L1, L3)             rtr-peer-2 (L2, L4)
-   AS 65202                        AS 65203
-
-   Out of band: each switch's management port -> gw-201 (segment 0)
-```
+![Shared lab network. Two FortiSwitches, sw-648f-1 (FS-648F-FPOE) and sw-2048f-1 (FS-2048F), are joined by routed link L5 (VLAN 2005). Each has an 802.1Q trunk to one hypervisor that hosts the gateway gw-201, the service hosts svc-201a and svc-201b, ca-201, dhcp-201, admin-201, the segment 42 hosts, an optional FortiGate fgt-201, and the routing peers rtr-peer-1 (AS 65202) and rtr-peer-2 (AS 65203). Routed links L1 and L2 join sw-648f-1 to the peers, and L3 and L4 join sw-2048f-1 to the peers. Test endpoints connect directly to the switches, and a dashed out-of-band management network joins each switch's management port to gw-201.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg)
 
 Everything above the switches is virtual and runs on one hypervisor. Each
-switch needs one trunk to the hypervisor, its management port, one port for each
-routed link (L1 to L5), and one port for each physical test endpoint.
+switch needs one trunk to the hypervisor (T1 and T2 in the diagram), its
+management port, one port for each routed link (L1 to L5), and one port for
+each physical test endpoint.
 
 ### Address plan
 
