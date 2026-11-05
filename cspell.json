@@ -2950,6 +2950,7 @@
     "spoofer",
     "tcpreplay",
     "radacct",
+    "librsvg",
     "gnutls",
     "imtcp",
     "gtls",

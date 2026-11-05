@@ -193,6 +193,18 @@ script that matches IDs, so a lab that is renamed or renumbered needs the
 column regenerated, and `export_srg_tables.py` carries the column into the CSV
 files.
 
+### The Word and PDF downloads
+
+Each build of the site also writes the whole volume as a Word file and a PDF to
+`downloads/volume-201-fortiswitch-stig-and-srg-mapping/` on the portal, and the
+README links to both at the top. `build-book.sh` makes them for the volumes
+listed in `download_volumes`: Pandoc writes the `.docx` on an A4 landscape page
+(`make_landscape_reference_docx.py`), and headless Chrome prints a light-themed
+copy of the volume (`publishing/print.css`) to the PDF. The workflow installs
+`librsvg2-bin` so the diagram appears in the Word file. The files are rebuilt on
+every deploy, so they always match the Markdown. To add another volume, add its
+folder name to `download_volumes` and link the files from its README.
+
 ### The CSV files and the interactive table
 
 Two scripts write the downloads:

@@ -1,5 +1,7 @@
 # Volume CCI — FortiSwitch STIG and SRG Mapping
 
+**Download this volume:** [Word (.docx)](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.docx) · [PDF](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.pdf)
+
 > A requirement-by-requirement map of **Fortinet FortiSwitch** to the DISA
 > Security Requirements Guides (SRGs) that apply to it, and two crosswalks that
 > align the Cisco switch STIGs with FortiSwitch settings. DISA publishes no

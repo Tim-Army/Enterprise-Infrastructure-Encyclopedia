@@ -1,0 +1,68 @@
+/* Print and PDF stylesheet. Loaded after web.css only when a volume's PDF is
+   built (see build_volume_downloads in scripts/bash/build-book.sh): it forces
+   the light palette, drops the on-screen controls, and lets wide tables wrap
+   so they fit on a landscape page. */
+@page {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #ffffff;
+  color: #222222;
+  max-width: none;
+  padding: 0;
+  font-size: 9.5pt;
+  line-height: 1.4;
+  --eie-link: #1d4f91;
+  --eie-rule: #bbbbbb;
+  --eie-code-bg: #f3f3f3;
+  --eie-code-fg: #7a1f1f;
+}
+
+#theme-toggle,
+#repo-link {
+  display: none;
+}
+
+h2 {
+  break-before: page;
+}
+
+h2, h3, h4 {
+  break-after: avoid;
+}
+
+table {
+  font-size: 7pt;
+  overflow-wrap: anywhere;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tr {
+  break-inside: avoid;
+}
+
+th, td {
+  padding: 2px 4px;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 7.5pt;
+  break-inside: avoid;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  break-inside: avoid;
+}

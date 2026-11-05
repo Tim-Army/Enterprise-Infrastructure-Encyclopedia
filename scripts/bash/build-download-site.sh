@@ -41,6 +41,13 @@ cp publishing/web.css "$output/web.css"
 cp -R output/html "$output/html"
 cp -R output/epub "$output/epub"
 
+# Whole-volume Word and PDF copies, written by build-book.sh for the volumes
+# it lists in download_volumes. Published at downloads/<volume>/<volume>.docx
+# and .pdf, linked from the volume's README and its portal index page.
+if [[ -d output/downloads ]]; then
+  cp -R output/downloads "$output/downloads"
+fi
+
 # Self-contained interactive companion pages (searchable/sortable catalogs
 # and the like). These are hand-authored, fully offline HTML — served as-is
 # alongside the Pandoc output and linked from the portal and their volume.
@@ -137,6 +144,12 @@ for volume_dir in volumes/*/; do
     echo "<ul>"
     echo "<li><a href=\"Enterprise-Infrastructure-Encyclopedia.html\">Read online (HTML)</a></li>"
     echo "<li><a href=\"../../epub/Enterprise-Infrastructure-Encyclopedia.epub\">Download the complete encyclopedia (EPUB)</a></li>"
+    if [[ -f "$output/downloads/$slug/$slug.docx" ]]; then
+      echo "<li><a href=\"../../downloads/$slug/$slug.docx\">Download this volume (Word, .docx)</a></li>"
+    fi
+    if [[ -f "$output/downloads/$slug/$slug.pdf" ]]; then
+      echo "<li><a href=\"../../downloads/$slug/$slug.pdf\">Download this volume (PDF)</a></li>"
+    fi
     echo "</ul>"
     echo "<h2>Chapters</h2>"
     echo "<ul>"

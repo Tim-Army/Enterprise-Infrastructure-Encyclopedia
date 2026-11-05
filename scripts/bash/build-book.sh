@@ -327,6 +327,77 @@ build_chapter_html() {
     "Volume Table of Contents|Enterprise-Infrastructure-Encyclopedia.html#TOC"
 }
 
+# Volumes that also publish a Word (.docx) and PDF copy of the whole volume,
+# written to output/downloads/<slug>/. The PDF is the print-styled HTML
+# (publishing/print.css) rendered by headless Chrome, so it needs Chrome or
+# Chromium; the .docx comes straight from Pandoc.
+download_volumes=(volume-201-fortiswitch-stig-and-srg-mapping)
+
+is_download_volume() {
+  local slug="$1" v
+  for v in "${download_volumes[@]}"; do
+    [[ "$v" == "$slug" ]] && return 0
+  done
+  return 1
+}
+
+find_chrome() {
+  local c
+  for c in google-chrome google-chrome-stable chromium chromium-browser \
+           "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+           "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; do
+    if command -v "$c" >/dev/null 2>&1 || [[ -x "$c" ]]; then
+      printf '%s' "$c"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# build_volume_downloads <slug> <title> <resource-path> <title-page> <readme> <chapters...>
+build_volume_downloads() {
+  local slug="$1" title="$2" respath="$3" title_page="$4" readme="$5"
+  shift 5
+  local outdir="output/downloads/$slug" print_html chrome url
+  mkdir -p "$outdir"
+
+  pandoc --print-default-data-file reference.docx \
+    | python3 "$repo_root/scripts/python/make_landscape_reference_docx.py" "$link_tmp/reference-landscape.docx"
+  pandoc "$title_page" "$readme" "$@" \
+    -f markdown-implicit_figures \
+    --resource-path="$respath" \
+    --reference-doc="$link_tmp/reference-landscape.docx" \
+    --toc --toc-depth=2 \
+    --metadata "title=$title" \
+    --metadata "author=$author" \
+    -o "$outdir/$slug.docx"
+
+  print_html="$link_tmp/print-$slug.html"
+  pandoc "$title_page" "$readme" "$@" \
+    -f markdown-implicit_figures \
+    --standalone --embed-resources \
+    --resource-path="$respath" \
+    --css=publishing/web.css --css=publishing/print.css \
+    --toc --toc-depth=2 \
+    --metadata "title=$title" \
+    --metadata "author=$author" \
+    -o "$print_html"
+
+  if ! chrome="$(find_chrome)"; then
+    if [[ -n "${CI:-}" ]]; then
+      echo "build-book.sh: ERROR — Chrome or Chromium is required to build $slug.pdf" >&2
+      return 1
+    fi
+    echo "build-book.sh: warning — no Chrome or Chromium found; skipping $slug.pdf" >&2
+    return 0
+  fi
+  url="$print_html"
+  if command -v cygpath >/dev/null 2>&1; then url="$(cygpath -m "$print_html")"; fi
+  "$chrome" --headless=new --no-sandbox --disable-gpu --no-pdf-header-footer \
+    --print-to-pdf="$(cd "$outdir" && pwd)/$slug.pdf" "file://${url#file://}" >/dev/null 2>&1
+  [[ -s "$outdir/$slug.pdf" ]] || { echo "build-book.sh: ERROR — $slug.pdf was not produced" >&2; return 1; }
+}
+
 build_volume_html() {
   local volume_dir="$1" volume_slug title chapters ch rewritten_readme rewritten_chapters rewritten_title_page
   volume_dir="${1%/}"
@@ -358,6 +429,9 @@ build_volume_html() {
     --metadata "title=$title" \
     --metadata "author=$author" \
     -o "output/html/$volume_slug/Enterprise-Infrastructure-Encyclopedia.html"
+  if is_download_volume "$volume_slug"; then
+    build_volume_downloads "$volume_slug" "$title"       "$(resource_path_for "$rewritten_readme" "${rewritten_chapters[@]}")"       "$rewritten_title_page" "$rewritten_readme" "${rewritten_chapters[@]}"
+  fi
 }
 
 build_series_epub() {

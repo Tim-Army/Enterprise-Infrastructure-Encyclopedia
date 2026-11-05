@@ -54,6 +54,16 @@ jobs:
           pandoc --version | head -1
           test "$(pandoc --version | head -1)" = "pandoc ${PANDOC_VERSION}"
 
+      - name: Install tools for the volume Word and PDF downloads
+        run: |
+          # librsvg2-bin lets Pandoc turn the SVG diagrams into images in the
+          # .docx; the runner image already provides Google Chrome, which
+          # renders the PDF. Fail now if Chrome is missing.
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq librsvg2-bin
+          command -v rsvg-convert
+          command -v google-chrome || command -v chromium || command -v chromium-browser
+
       - name: Build the download and reading portal
         run: |
           scripts/bash/build-book.sh --format all
