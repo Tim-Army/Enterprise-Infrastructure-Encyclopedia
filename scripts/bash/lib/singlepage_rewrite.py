@@ -114,6 +114,48 @@ def rewrite_pure_fragments(content: str, ns: str) -> str:
     return PURE_FRAG_RE.sub(lambda m: f"](#{ns}-{m.group(1)})", content)
 
 
+def github_slug(text: str) -> str:
+    """GitHub's heading anchor: lowercase, drop punctuation other than hyphens
+    and underscores, each space becomes one hyphen (no collapsing)."""
+    t = re.sub(r"[^\w\s-]", "", text.lower())
+    return re.sub(r"\s", "-", t)
+
+
+_FRAG_MAPS = {}
+
+
+def fragment_map(path: str) -> dict:
+    """Map each GitHub-style heading anchor of a chapter to the Pandoc-style
+    slug that inject_heading_ids gives the same heading, so a link written
+    for GitHub (#lab-41--title) still lands on the combined page (#c04-lab-4.1-title)."""
+    if path in _FRAG_MAPS:
+        return _FRAG_MAPS[path]
+    mapping = {}
+    try:
+        with open(path, encoding="utf-8") as fh:
+            lines = fh.read().split(chr(10))
+    except OSError:
+        lines = []
+    gh_seen, pd_seen, in_fence, first = {}, {}, False, True
+    for line in lines:
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        m = None if in_fence else HEADING_RE.match(line)
+        if not m:
+            continue
+        text = md_stringify(re.sub(r"\s*\{#[^}]*\}\s*$", "", m.group(2)))
+        g, p = github_slug(text), pandoc_slug(text)
+        gn, pn = gh_seen.get(g, 0), pd_seen.get(p, 0)
+        gh_seen[g], pd_seen[p] = gn + 1, pn + 1
+        if first:
+            first = False
+            continue
+        mapping.setdefault(g if gn == 0 else f"{g}-{gn}", p if pn == 0 else f"{p}-{pn}")
+    _FRAG_MAPS[path] = mapping
+    return mapping
+
+
 def rewrite_links(content: str, source_file: str, current_volume: str) -> str:
     source_dir = os.path.dirname(source_file)
 
@@ -129,6 +171,7 @@ def rewrite_links(content: str, source_file: str, current_volume: str) -> str:
         cm = CHAPTER_RE.match(resolved)
         if cm:
             vol, num = cm.group(1), cm.group(2)
+            frag = fragment_map(resolved).get(frag, frag)
             anchor = f"c{num}-{frag}" if frag else f"c{num}"
             if vol == current_volume:
                 return f"](#{anchor})"
