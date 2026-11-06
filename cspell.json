@@ -5354,7 +5354,8 @@
     "yersinia",
     "xorriso",
     "smcroute",
-    "dhcpdump"
+    "dhcpdump",
+    "rsvg"
   ],
   "ignorePaths": [
     "node_modules/**",

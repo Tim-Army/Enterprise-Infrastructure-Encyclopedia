@@ -250,7 +250,9 @@ and 8 (Chapter 10), VMware Workstation Pro for Windows (Chapter 11), Proxmox VE
 `lab-scripts/` folder, and the site build publishes them. Each build writes the
 folder and a zip, `volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip`,
 under `downloads/<volume>/`, with a `SHA256SUMS` file, through
-`scripts/python/package_lab_scripts.py`. The volume's portal page and README link
+`scripts/python/package_lab_scripts.py`. The same step copies the Chapter 999
+network diagram into the folder and the zip as `diagrams/lab-topology.svg`, and
+as a PNG when `rsvg-convert` is installed. The volume's portal page and README link
 to the zip, and each chapter links to the files it uses.
 
 The design choices that the five chapters share:

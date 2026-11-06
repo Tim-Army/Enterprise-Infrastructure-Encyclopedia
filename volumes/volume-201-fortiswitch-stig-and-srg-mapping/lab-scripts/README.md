@@ -32,6 +32,8 @@ explains it, and all of them read the same manifest.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.
 
+The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder.
+
 Check the downloaded files against `SHA256SUMS` in this folder.
 
 ## What these scripts do not do

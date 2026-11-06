@@ -51,11 +51,18 @@ fi
 # Lab automation scripts. A volume that keeps a lab-scripts folder gets it
 # published as plain files plus one zip at
 # downloads/<volume>/lab-scripts/ and downloads/<volume>/<volume>-lab-scripts.zip.
+# The volume's shared lab topology diagram (diagrams/<volume>/chapter-999-shared-lab-topology.svg)
+# is added as diagrams/lab-topology.svg, with a PNG copy when rsvg-convert is installed.
 for scripts_dir in volumes/*/lab-scripts; do
   [[ -d "$scripts_dir" ]] || continue
   vol="$(basename "$(dirname "$scripts_dir")")"
   mkdir -p "$output/downloads/$vol"
-  python3 scripts/python/package_lab_scripts.py "$scripts_dir" "$output/downloads/$vol" "$vol-lab-scripts.zip"
+  extra_args=()
+  topology="diagrams/$vol/chapter-999-shared-lab-topology.svg"
+  if [[ -f "$topology" ]]; then
+    extra_args+=(--add "$topology=diagrams/lab-topology.svg")
+  fi
+  python3 scripts/python/package_lab_scripts.py "$scripts_dir" "$output/downloads/$vol" "$vol-lab-scripts.zip" ${extra_args[@]+"${extra_args[@]}"}
 done
 
 # Self-contained interactive companion pages (searchable/sortable catalogs
