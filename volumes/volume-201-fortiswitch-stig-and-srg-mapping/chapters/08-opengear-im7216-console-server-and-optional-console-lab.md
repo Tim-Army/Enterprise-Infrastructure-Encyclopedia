@@ -39,6 +39,23 @@ The IM7216-2-DAC-LMV belongs to Opengear's IM7200 infrastructure manager family.
 
 Hardware details above come from the IM7200 Quick Start (revision 1.5), the data sheet, and retailer listings, not from a unit in this lab. Check each one against your device and its data sheet.
 
+### Antenna ports
+
+The front panel of the cellular IM7200 has SMA antenna connectors. Some units also have two Wi-Fi connectors, labeled `WIFI (MAIN)` and `WIFI (AUX)`. A unit photographed for this chapter had only the three below. Read the labels printed above the connectors on your unit before you attach anything.
+
+| Connector | What it is for | What to attach |
+| --- | --- | --- |
+| `CELL (MAIN)` | The LTE antenna that transmits and receives | One of the two cellular antennas from the kit (part 569017, or the blade style 569028) |
+| `CELL (AUX)` | A receive-only diversity antenna | The second cellular antenna from the kit |
+| `GPS` | The internal GPS receiver | Nothing in the kit. Opengear lists an active GPS antenna, part 569018, for the IM7200 |
+
+Four points to know before the optional cellular step:
+
+- **Connect both cellular antennas.** The Opengear Knowledge Base says `-Lx` models need both `MAIN` and `AUX` connected for full speed. The two antennas are interchangeable, and the modem uses both as needed. A unit with one antenna still works, at reduced performance.
+- **Placement matters.** A rack full of metal blocks the signal. The optional extender (part 449041, a 10 ft cable with a magnetic base) lets you mount the antenna on top of the rack, but the cable costs about 6 dB of signal. Check the signal strength after you move it.
+- **Insert the SIM with the unit powered off.** The SIM seats with a click that does not lock it. Tape it down if the unit might be bumped.
+- **The GPS port is unconfirmed.** A 2016 Opengear article says the IM7200-Lx streams NMEA position data as a virtual serial port (port 17 on a 16-port unit) when an active GPS antenna is on the `GPS` connector. A 2025 article says "the GPS antenna is not currently used by Opengear firmware." The two disagree. The second is newer but sits under a different product family, and no source covers firmware 5.5.3. Treat GPS as unverified. No lab in this chapter uses it. If you attach an antenna, look for an extra serial port in the serial port list and record what you see.
+
 ### What firmware 5.5.3 is
 
 Firmware 5.5.3 was released in October 2026. Opengear classifies it as a **patch release**: it carries security and defect fixes and no new feature set. The same 5.x firmware supports the IM7200, CM7100, CM7196, and ACM700x families. The release notes list no known issues for 5.5.3.
@@ -160,6 +177,8 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 | SNMP polls and traps get no answer | The SNMP service is off (the default) or Service Access blocks it | Enable the SNMP service and allow it on the interface |
 | The copper port stopped working | An SFP module is in the same NET port | Remove the module, or move the cable to the SFP |
 | No cellular registration | No SIM, no plan, or no antenna | Install the SIM and antennas, and check carrier status |
+| Weak or slow cellular | Only one antenna, or a poor location | Connect both `CELL (MAIN)` and `CELL (AUX)`, move the antenna out of the rack, and check the signal strength |
+| Cellular connects but SSH over it fails | The carrier gave a private or shared address | Use Call Home with Lighthouse, a VPN, or a plan with a static public address |
 
 ## Security and Best Practices
 
@@ -182,6 +201,9 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 - Opengear, [Console Server User Guide 5.3.1](https://ftp.opengear.com/download/documentation/manual/current/IM_ACM_and_CM7100/Opengear%20User%20Manual.pdf) (December 2025; IM7200, ACM7000, CM7100). No 5.5.x user guide was available when this chapter was written.
 - Opengear, [IM7200 Quick Start](https://ftp.opengear.com/download/documentation/quickstart/x-quickstart/IM7200%20Quick%20Start.pdf), revision 1.5 (older than 5.5.3).
 - Opengear, [IM7200 Infrastructure Manager data sheet](https://opengear.com/wp-content/uploads/2020/07/Spanish-Mexico_IM7200_Infrastructure_Manager-Data_Sheet-1.pdf) (Spanish edition).
+- Opengear, [IM7200-L Quick Start Guide Addendum](https://opengear.com/wp-content/uploads/2017/10/im7200-l-quick-start-addendum-520064.pdf) (revision 1.3.4), for the cellular models, the antenna connectors, the APN setup, failover mode, and signal strength.
+- Opengear Knowledge Base, [Cellular antenna selection and connection](https://portal.opengear.com/s/article/Cellularantennaselectionandconnection661d321013159) (last published 2022-08-30), for the antenna parts and the MAIN and AUX requirement.
+- Opengear Knowledge Base, "GPS NMEA support" (last published 2016-10-31) and "Opengear How-To Video Series: Episode – Initial Setup" (2025-02-26). They disagree about whether the GPS antenna is used. Search the Knowledge Base at [portal.opengear.com](https://portal.opengear.com/s/knowledgebase) for the titles.
 - Opengear documentation, [opengear.com/documentation](https://opengear.com/documentation), for the current user manual and Knowledge Base.
 - [Chapter 999](999-shared-lab-infrastructure.md) for the address plan, hosts, and baseline. [Chapter 05](05-network-device-management-srg-requirement-labs.md) and [Chapter 07](07-aaa-services-srg-requirement-labs.md) for the matching SRG labs.
 - FortiSwitchOS 7.6.7 CLI Reference, `config system console`.
@@ -389,7 +411,7 @@ The walk returns the system group. Also walk the power-supply table (the 5.5.3 r
    Keep NET2 as an interface of its own. Do not turn on aggregation with NET1, and do not enable forwarding between NET1 and NET2.
 3. On `oob-admin-201`, set `10.201.100.10/24` and `fd00:db8:201::640a/120`.
 4. Allow SSH on NET2 from `10.201.100.0/24` in the firewall rules from Lab 8.5.
-5. **Optional cellular.** Install the SIM and antennas, enter the carrier's APN under the cellular settings, and set the failover to use the cellular interface with a probe address of `10.201.0.1` (gw-201). Verify the carrier's data plan allows a management connection before you enable it.
+5. **Optional cellular.** With the unit powered off, insert the SIM. Screw one antenna onto `CELL (MAIN)` and the second onto `CELL (AUX)`. Power on, then enter the carrier's APN under System > Dial > Internal Cellular Modem (usually the APN is the only field needed) and check the signal strength under Status > Statistics > Cellular. Opengear rates -89 to -70 dBm as medium-to-strong and -100 dBm as unacceptable, so move the antenna or use the extender if it is weak. Set the failover to use the cellular interface with a probe address of `10.201.0.1` (gw-201), so the modem stays idle until the probe fails. The default mode keeps the cellular link always on, which is not what this lab wants. Verify the carrier's data plan allows a management connection before you enable it. Many plans give a private or shared address (the `100.64.0.0/10` range) that the internet cannot reach, so the SSH test below may need Call Home with Lighthouse or a VPN. The keep-alive watchdog pings use about 50 MB a month, and the carrier may charge for them.
 
 **Positive test.** Disconnect the NET1 cable. From `oob-admin-201`:
 
@@ -449,7 +471,7 @@ The session opens the `sw-648f-1` console even though NET1 is down. Run `get sys
 
 ## Lab Verification
 
-Complete this sign-off once Labs 8.1 to 8.7 have been run end to end, including each negative test, on a real IM7216-2-DAC-LMV running firmware 5.5.3. Until then, the labs are unverified. The hardware facts in this chapter come from Opengear's release notes, the IM7200 Quick Start (revision 1.5), and retailer listings, and menu names may differ in 5.5.3. The optional cellular step is not verified at all.
+Complete this sign-off once Labs 8.1 to 8.7 have been run end to end, including each negative test, on a real IM7216-2-DAC-LMV running firmware 5.5.3. Until then, the labs are unverified. The hardware facts in this chapter come from Opengear's release notes, the IM7200 Quick Start (revision 1.5), and retailer listings, and menu names may differ in 5.5.3. The optional cellular step and the GPS port are not verified at all.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

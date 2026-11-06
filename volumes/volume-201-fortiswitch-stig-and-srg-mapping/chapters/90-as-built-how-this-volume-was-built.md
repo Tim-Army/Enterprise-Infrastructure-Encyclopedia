@@ -205,6 +205,42 @@ details come from the IM7200 Quick Start (revision 1.5) and retailer listings. N
 is pending. The console diagram, `chapter-08-console-access-topology.svg`, sits
 in `diagrams/` beside the Chapter 999 topology.
 
+### Lessons learned from the Chapter 08 research
+
+Checking the console server's hardware against the vendor's own sources, over
+several rounds on 2026-11-06, changed the chapter more than the first draft
+suggested. The lessons apply to any chapter written without the device in hand.
+
+- **A first answer from a search snippet or a family manual is a guess.** The
+  first GPS answers used a manual for a different model, a retailer listing, and
+  a port number from the 24-USB variant. Each was wrong or unconfirmed for the
+  IM7216. Find a source that names the exact model, and say so when none does.
+- **Vendor articles can disagree, and the date does not settle it.** A 2016
+  Knowledge Base article says the IM7200-Lx streams GPS data on a serial port.
+  A 2025 article says the firmware does not use the GPS antenna. The newer one
+  sits under a different product family, so Chapter 08 records both and calls
+  GPS unverified, instead of picking one.
+- **Look at the device.** The datasheet said nothing about antenna connectors.
+  A product photo gave the labels, and a photo from the owner showed that the
+  unit has three antenna connectors, not the five in the stock photo. The
+  quick start guide also lists a Wi-Fi antenna, which the owner's unit does not
+  have.
+- **Kit contents are part of the design.** The kit holds two cellular antennas
+  and no GPS antenna. Opengear says both cellular connectors must be used for
+  full speed, so Lab 8.6 now connects both.
+- **Read the cellular defaults before you plan a failover lab.** The default
+  mode keeps the link always on, many carrier plans give an address the
+  internet cannot reach, and the keep-alive pings use about 50 MB a month. Lab
+  8.6 now sets idle failover and warns about the address.
+- **Portal pages need a real browser.** The Opengear Knowledge Base returned
+  only an error page to the plain page fetch tool and rendered fully in the
+  browser pane, after a short wait. When a download fails on the owner's side,
+  the pasted article text is an acceptable source if its title, dates, and
+  category are kept.
+- **Record the source date next to every vendor claim.** The chapter's
+  reference list now shows when each article was last published, so a reader
+  can judge which statement to trust.
+
 ### The Word and PDF downloads
 
 Each build of the site also writes the whole volume as a Word file and a PDF to
