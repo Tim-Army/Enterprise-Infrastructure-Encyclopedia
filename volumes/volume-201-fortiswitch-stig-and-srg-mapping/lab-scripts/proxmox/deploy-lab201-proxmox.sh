@@ -36,7 +36,7 @@ Usage: $0 [options]
   --storage NAME         storage for disks and cloud-init drives (default $storage)
   --snippets-storage NAME  storage with the "snippets" content type (default $snip_storage)
   --bridge-wan|oob|t1|t2|lan220 NAME   bridge for each lab network
-  --vmid-base N          first VM ID; gw-201 gets N+1 (default $vmid_base)
+  --vmid-base N          first VM ID; the first machine (the gateway in the default manifest) gets N+1 (default $vmid_base)
   --workdir DIR          download and render directory (default $workdir)
   --dry-run              print what would run
 EOF
@@ -82,7 +82,7 @@ plan() {
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
 for i, vm in enumerate(m["vms"]):
-    print("VM|%s|%d|%d|%d|%d" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"]))
+    print("VM|%s|%d|%d|%d|%d|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", "")))
     for n, nic in enumerate(vm["nics"]):
         mac = "%s:%02x:%02x" % (m["mac_prefix"], i + 1, n)
         print("NIC|%s|%d|%s|%s|%s|%s" % (vm["name"], n, nic["net"], nic.get("vlan", ""),
@@ -186,10 +186,12 @@ create_vm() {
     --cicustom "user=$snip_storage:snippets/lab201-$name-user.yml,network=$snip_storage:snippets/lab201-$name-network.yml,meta=$snip_storage:snippets/lab201-$name-meta.yml"
 }
 
+gateway_name=""
 while IFS='|' read -r kind a b c d e f; do
   if [[ "$kind" == VM ]]; then
     [[ -z "$current" ]] || create_vm "$current"
     current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; nic_args=()
+    [[ "$f" != gateway ]] || gateway_name="$a"
   else
     # NIC|name|index|net|vlan|trunk|mac
     br="$(bridge_of "$c")"
@@ -202,8 +204,9 @@ done < <(plan)
 [[ -z "$current" ]] || create_vm "$current"
 
 # Start the gateway first, then the rest.
-order=(gw-201)
-for name in "${!vm_idx[@]}"; do [[ "$name" == gw-201 ]] || order+=("$name"); done
+order=()
+[[ -z "$gateway_name" ]] || order+=("$gateway_name")
+for name in "${!vm_idx[@]}"; do [[ "$name" == "$gateway_name" ]] || order+=("$name"); done
 for name in "${order[@]}"; do
   id="$(vmid_of "${vm_idx[$name]}")"
   if qm status "$id" 2>/dev/null | grep -q running; then continue; fi

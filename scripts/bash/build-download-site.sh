@@ -170,6 +170,9 @@ for volume_dir in volumes/*/; do
     if [[ -f "$output/downloads/$slug/$slug-lab-scripts.zip" ]]; then
       echo "<li><a href=\"../../downloads/$slug/$slug-lab-scripts.zip\">Download the lab automation scripts (.zip)</a></li>"
     fi
+    if [[ -f "$output/downloads/$slug/lab-scripts/builder/lab-builder.html" ]]; then
+      echo "<li><a href=\"../../downloads/$slug/lab-scripts/builder/lab-builder.html\">Lab Builder: choose a platform and options, get the manifest, command, and checklist</a></li>"
+    fi
     echo "</ul>"
     echo "<h2>Chapters</h2>"
     echo "<ul>"

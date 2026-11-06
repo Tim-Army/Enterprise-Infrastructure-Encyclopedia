@@ -12,6 +12,11 @@ explains it, and all of them read the same manifest.
 | `proxmox/` | Proxmox VE 8.1 or later | 12 | Bash, as root on the node |
 | `wsl/` | WSL 2 on Windows 11 (service hosts only) | 13 | PowerShell |
 | `common/` | The manifest and the cloud-init seed tool | 09 | Used by all of them |
+| `builder/` | The Lab Builder page | 09 | A web browser |
+
+## The Lab Builder
+
+`builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key.
 
 ## Before you run anything
 

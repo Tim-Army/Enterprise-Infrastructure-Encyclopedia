@@ -24,6 +24,7 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+V4_PREFIX = "10.201"
 V6_PREFIX = "fd00:db8:201::"
 V6_LEN = {24: 120, 31: 127, 32: 128}
 
@@ -52,6 +53,17 @@ table inet lab201 {
 """
 
 SYSCTL_FORWARD = "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1\n"
+
+
+def configure(manifest):
+    """Take the address blocks from the manifest (the defaults are the Chapter 999 plan)."""
+    global V4_PREFIX, V6_PREFIX
+    V4_PREFIX = manifest.get("ipv4_prefix", V4_PREFIX)
+    V6_PREFIX = manifest.get("ipv6_prefix", V6_PREFIX)
+
+
+def nft_rules():
+    return NFT_RULES.replace("10.201.", V4_PREFIX + ".").replace("fd00:db8:201::", V6_PREFIX)
 
 
 def q(value):
@@ -130,7 +142,7 @@ def network_config(manifest, vm_index, vm, tagging):
                         "      parameters:", "        stp: false", "      dhcp4: false", "      dhcp6: false",
                         "      accept-ra: false", "      link-local: []"])
         for vid in trunk["vlans"]:
-            v4 = "10.201.%d.1/24" % vid
+            v4 = "%s.%d.1/24" % (V4_PREFIX, vid)
             vlans.append(["    vlan%d:" % vid, "      id: %d" % vid, "      link: %s" % trunk["name"],
                           "      dhcp6: false", "      accept-ra: false", "      addresses:"]
                          + [x.rstrip("\n") for x in yaml_list(addresses_of([v4]), 8).splitlines()])
@@ -197,8 +209,8 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash):
     files = []
     if vm.get("forwarding"):
         files.append(("/etc/sysctl.d/60-lab201.conf", SYSCTL_FORWARD))
-    if vm["name"] == "gw-201":
-        files.append(("/etc/nftables.conf", NFT_RULES))
+    if vm.get("role") == "gateway":
+        files.append(("/etc/nftables.conf", nft_rules()))
     files.append(("/etc/lab201-vm", "name=%s\nrole=%s\n" % (vm["name"], vm["role"])))
     L.append("write_files:")
     for path, content in files:
@@ -206,7 +218,7 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash):
     run = []
     if vm.get("forwarding"):
         run.append("sysctl --system")
-    if vm["name"] == "gw-201":
+    if vm.get("role") == "gateway":
         run.append("systemctl enable --now nftables")
     if guest_agent == "qemu":
         run.append("systemctl enable --now qemu-guest-agent")
@@ -339,6 +351,7 @@ def main():
 
     with open(a.manifest, "r", encoding="utf-8") as fh:
         manifest = json.load(fh)
+    configure(manifest)
     if a.list:
         print("\n".join(v["name"] for v in manifest["vms"]))
         return 0

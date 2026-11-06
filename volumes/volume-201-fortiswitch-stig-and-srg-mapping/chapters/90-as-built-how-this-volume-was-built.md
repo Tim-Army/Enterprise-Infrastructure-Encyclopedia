@@ -291,6 +291,22 @@ dry run against stubs; and the Ubuntu image name, its checksum lookup, and the
 WSL image selection ran against Canonical's sites. Every chapter's Lab
 Verification block is pending.
 
+The Lab Builder, `lab-scripts/builder/lab-builder.html`, was added on
+2026-11-06. It is one page of plain HTML, CSS, and JavaScript with no
+libraries, and it runs from the published `downloads/<volume>/lab-scripts/`
+folder so it can fetch the scripts beside it. To make renames and address
+blocks work, the scripts changed too: they find the gateway by its `role`
+instead of the name `gw-201`, and the manifest carries `ipv4_prefix`,
+`ipv6_prefix`, and a proposed `min` size for each machine. `make-seed.py`
+rewrites the addresses and the gateway firewall sets from the prefixes. The
+page's manifest copy is kept in step by `scripts/python/sync_lab_builder.py`,
+which `validate.sh` runs with `--check`. Its self-test (`?selftest=1`) was run
+in headless Chrome: 32 checks of the logic and of the page controls pass, the
+zip it writes unpacks with a standard tool and passes the CRC check, and the zip
+build fetched the script, `make-seed.py`, and README over HTTP. It has not been
+used from the published site yet, and the scripts it points at have not run on
+real hosts. Licensing keys are not collected, on purpose: nothing applies them yet.
+
 Lessons from this work:
 
 - **Test the download code, not just its syntax.** `Invoke-WebRequest` returned

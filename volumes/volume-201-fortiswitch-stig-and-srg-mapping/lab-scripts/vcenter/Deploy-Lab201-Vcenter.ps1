@@ -230,7 +230,8 @@ try {
   }
   Remove-PSDrive -Name lab201ds -ErrorAction SilentlyContinue
 
-  $order = @('gw-201') + ($lab.vms.name | Where-Object { $_ -ne 'gw-201' })
+  $gwName = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
+  $order = @($gwName) + ($lab.vms.name | Where-Object { $_ -ne $gwName })
   foreach ($name in $order) {
     $vm = Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue
     if ($vm -and $vm.PowerState -ne 'PoweredOn' -and $PSCmdlet.ShouldProcess($name, 'Power on')) { Start-VM -VM $vm | Out-Null }

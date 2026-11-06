@@ -160,7 +160,8 @@ foreach ($vmDef in $lab.vms) {
   & $vdisk -x "$($vmDef.disk_gb)GB" (Join-Path $dir $disk) | Out-Null
 }
 
-$order = @('gw-201') + ($lab.vms.name | Where-Object { $_ -ne 'gw-201' })
+$gwName = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
+$order = @($gwName) + ($lab.vms.name | Where-Object { $_ -ne $gwName })
 foreach ($name in $order) {
   $vmx = Join-Path $VmRoot "$name\$name.vmx"
   if ((Test-Path $vmx) -and $PSCmdlet.ShouldProcess($name, 'Start')) { & $vmrun -T ws start $vmx nogui }

@@ -40,10 +40,26 @@ The scripts are in one folder and are downloadable as a unit.
 | --- | --- |
 | `common/lab201-vms.json` | The manifest: networks, machines, sizes, adapters, and IPv4 addresses. The IPv6 address of each IPv4 address is derived (`fd00:db8:201::` plus the third and fourth octets in hexadecimal), so the two families cannot drift apart. |
 | `common/make-seed.py` | Renders the cloud-init files for each machine and, with `--iso`, writes a seed ISO labeled `cidata`. |
+| `builder/lab-builder.html` | The [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html), a page that runs in your browser. It writes a manifest for your choices, the commands for each platform, and a checklist, and downloads them as a zip. |
 | `diagrams/lab-topology.svg` and `.png` | The Chapter 999 network diagram, copied into the zip when the site is built, so the scripts and the picture of what they build travel together. |
 | `esxi/Deploy-Lab201-Esxi.ps1` | This chapter's script. |
 
 [Download the whole set as one zip](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip), or fetch single files from the [lab-scripts folder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/common/lab201-vms.json). A `SHA256SUMS` file in the folder lists the checksum of every script.
+
+### The Lab Builder
+
+The [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) is one HTML page that runs in your browser, with the manifest built into it. You choose a platform and version, fill in the names of your hosts, storage, and network connections, and change what to build. It then writes three things: a copy of the manifest that holds your changes, the commands to run for your platform (a preview, the build, the removal of the build adapters, and the baseline snapshots), and a checklist of what the scripts cannot do. A zip button bundles them with the platform's script, `make-seed.py`, the README, and the network diagram. The page has to be opened from the published site for the zip to include the scripts, because a page opened from a local file cannot fetch them.
+
+What you can change:
+
+- **Machines.** Leave any machine out (the gateway always stays), rename it, and change its vCPUs, memory, and disk. Each machine has a proposed minimum size, and a value below it is refused, with the default kept, unless you tick that machine's **Override** box. The minimums are the `min` values in the manifest. They are proposals, and each needs a test build before you rely on it.
+- **Names.** A name uses lowercase letters, digits, and hyphens, and must be unique. The scripts find the gateway by its `role`, not its name, so it can be renamed. Chapter 999 and the requirement labs use the default names, so keep a note of your renames.
+- **Address block.** Move the lab to another private block (the first two octets of IPv4, and a unique local IPv6 prefix). The manifest holds the two prefixes (`ipv4_prefix` and `ipv6_prefix`), and `make-seed.py` rewrites every address, the gateway's VLAN interfaces, and its firewall sets. The page writes a `CHANGES.md` that lists the changes you must repeat on the switches.
+- **Licensing.** The page lists the products your choices need a license for, and records where you keep each key, as a note in the checklist. It does not accept keys, because the scripts do not apply them, and a key typed into a page has no safe place to go. Applying license keys from a secret file is a planned addition.
+
+What is not there yet: flavors other than Ubuntu 24.04 LTS (Red Hat, Debian, the hardened STIG flavors, Windows, and the others are marked planned, and the page shows a proposed support table), Dell VxRail and KVM, renumbering a segment's VLAN, and editing one machine's address. The page refuses nothing silently: a rejected value is marked, the default stays in use, and the reason is listed.
+
+The page keeps its own copy of the manifest so that it works with no server. After you change `lab201-vms.json`, run `python scripts/python/sync_lab_builder.py` to copy it into the page. `validate.sh` fails if the two differ. The page also has a self-test: add `?selftest=1` to its address, and it runs 32 checks of its logic and its controls, and shows the results at the bottom.
 
 ### How a machine gets its identity
 

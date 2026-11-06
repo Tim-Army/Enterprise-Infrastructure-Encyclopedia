@@ -18,10 +18,12 @@ the SRG and STIG terms this volume builds on.
 - **Gap lab** — a lab for an SRG requirement that FortiSwitch cannot meet: it proves the setting is absent, applies the nearest compensating control, and records the disposition and residual risk.
 - **Guest tagging (VGT)** — VLAN tagging done by the guest operating system, which sees tagged frames; on ESXi it is a port group with VLAN ID 4095.
 - **Interactive crosswalk table** — the self-contained web page generated from the SRG mapping workbook, with search, filters, sorting, and CSV download for the crosswalk, prerequisites, and model-support sheets.
+- **Lab Builder** — the browser page in the lab-scripts folder that turns your choices (platform, machine names and sizes, address block) into a manifest, the commands to run, and a checklist.
 - **Manifest (lab201-vms.json)** — the one file that lists the lab machines, their sizes, networks, and IPv4 addresses, read by every platform script in Chapters 09 to 13.
 - **Model support sheet** — the workbook sheet that records, for each FortiSwitchOS 7.6.7 feature, whether the FS-648F-FPOE and FS-2048F support it.
 - **Negative test** — a test that tries to break a control and shows that it blocks what it should; it pairs with a positive test that shows the control permits what it should.
 - **Out-of-band management** — management access over a network or link that carries no production traffic; segment 0 and the console server's serial and cellular paths are examples.
+- **Override (Lab Builder)** — the per-machine box that lets a size go below its proposed minimum.
 - **RadSec** — RADIUS carried inside a TLS session (RFC 6614), used to encrypt credentials between a switch and a RADIUS server.
 - **Requirement lab** — a lab that configures the FortiSwitch setting for an SRG requirement and proves it with a positive and a negative test.
 - **Routed link** — a point-to-point link (L1 to L5) between two routers in the lab, addressed with a /31 in IPv4 and a /127 in IPv6.

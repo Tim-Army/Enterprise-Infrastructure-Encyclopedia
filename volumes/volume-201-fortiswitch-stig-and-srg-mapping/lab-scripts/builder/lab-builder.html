@@ -1,0 +1,1487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab Builder</title>
+<style>
+:root{
+  --bg:#f5f6f8;--panel:#fff;--ink:#1c2430;--muted:#5d6b7d;--line:#d9dee6;
+  --accent:#1f5fbf;--accent-ink:#fff;--accent-soft:#e6efff;
+  --ok:#17794a;--ok-soft:#e3f5ec;--warn:#8a5a00;--warn-soft:#fff3d6;--bad:#b3261e;--bad-soft:#fde8e6;
+  --plan:#6b4aa3;--plan-soft:#efe8fb;--code-bg:#0f1722;--code-ink:#d7e2f0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0e131a;--panel:#161d27;--ink:#e6ebf2;--muted:#9aa8b9;--line:#2a3544;
+  --accent:#5b9cff;--accent-ink:#06101f;--accent-soft:#1a2c4a;--ok:#5ad19a;--ok-soft:#12301f;--warn:#f0c060;--warn-soft:#33270b;
+  --bad:#ff9f98;--bad-soft:#3a1512;--plan:#b79cf0;--plan-soft:#2a2144}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 28px}
+header h1{font-size:19px;margin:0}
+header .sub{color:var(--muted);font-size:13px}
+main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;padding:18px 28px 28px;max-width:1500px;margin:0 auto}
+@media (max-width:980px){main{grid-template-columns:1fr;padding:14px 16px}header{padding:12px 16px}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
+.card h2{font-size:14px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.card h2 .n{background:var(--accent);color:var(--accent-ink);border-radius:99px;width:20px;height:20px;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.hint{margin:0 0 12px;color:var(--muted);font-size:12.5px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.opt{border:1.5px solid var(--line);border-radius:8px;padding:9px 11px;background:var(--panel);text-align:left;font:inherit;color:inherit;cursor:pointer}
+.opt b{display:block;font-size:13px}.opt span{color:var(--muted);font-size:12px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt[disabled]{opacity:.6;cursor:not-allowed;background:transparent}
+.badge{display:inline-block;font-size:10.5px;border-radius:99px;padding:1px 8px;margin-left:6px;font-weight:600;background:var(--plan-soft);color:var(--plan)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1.5px solid var(--line);border-radius:99px;padding:5px 15px;font:inherit;font-weight:600;font-size:13px;background:var(--panel);color:inherit;cursor:pointer}
+.pill.sel{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:4px 6px}
+td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tr.off td{opacity:.5}
+input[type=text],input[type=number],select{font:12.5px ui-monospace,Consolas,monospace;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--ink);max-width:100%}
+input.num{width:74px;text-align:right}
+input.name{width:150px}
+input.wide{width:100%}
+input.err{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+input.chg{border-color:var(--accent)}
+input.ovr{border-color:var(--warn);background:var(--warn-soft)}
+.small{font-size:12px;color:var(--muted)}
+.minl{display:block;font-size:10.5px;color:var(--muted);text-align:right}
+.minl.bad{color:var(--bad);font-weight:600}.minl.warn{color:var(--warn);font-weight:600}
+.msg{display:block;font-size:11px;margin-top:2px}.msg.bad{color:var(--bad);font-weight:600}.msg.warn{color:var(--warn);font-weight:600}
+.field{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:7px 12px;align-items:center;font-size:13px}
+.field label{color:var(--ink)}
+.note{border-radius:8px;padding:8px 11px;font-size:12.5px;margin-top:8px}
+.note.warn{background:var(--warn-soft);color:var(--warn)}.note.ok{background:var(--ok-soft);color:var(--ok)}
+.note.bad{background:var(--bad-soft);color:var(--bad)}.note.info{background:var(--accent-soft);color:var(--ink)}
+.note ul{margin:4px 0 0;padding-left:18px}
+.right{position:sticky;top:12px;align-self:start;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:980px){.right{position:static;max-height:none}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--bg);border-radius:8px;padding:8px 10px}.stat b{font-size:18px;display:block}.stat span{font-size:11.5px;color:var(--muted)}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:0 0 10px;flex-wrap:wrap}
+.tabs button{padding:7px 13px;font:inherit;font-size:12.5px;color:var(--muted);border:0;border-bottom:2px solid transparent;background:none;cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
+pre{margin:0;background:var(--code-bg);color:var(--code-ink);border-radius:8px;padding:13px 15px;font:12px/1.55 ui-monospace,Consolas,monospace;overflow:auto;white-space:pre;max-height:460px}
+.actions{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.btn{border:1.5px solid var(--accent);border-radius:8px;padding:8px 16px;font:inherit;font-weight:600;font-size:13px;background:var(--panel);color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.diag{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px}.diag img{display:block;width:100%;height:auto}
+details{margin-top:10px}summary{cursor:pointer;font-weight:600;font-size:12.5px}
+.mx td,.mx th{text-align:center;font-size:11.5px;padding:4px}.mx td:first-child,.mx th:first-child{text-align:left}
+.y{color:var(--ok);font-weight:700}.s{color:var(--warn);font-weight:700}.nn{color:var(--muted)}
+footer{max-width:1500px;margin:0 auto;padding:0 28px 22px;color:var(--muted);font-size:12px}
+#selftest{white-space:pre-wrap;font:12px ui-monospace,monospace;padding:12px 28px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lab Builder</h1>
+  <div class="sub">Volume CCI: pick a platform and options, then get a manifest, a command, and a checklist for the lab machines in Chapter 999. Everything runs in this page. Nothing is sent anywhere.</div>
+</header>
+<main>
+  <section id="left"></section>
+  <aside class="right" id="right"></aside>
+</main>
+<footer>The scripts behind this page have not been run on real hosts, and the minimum sizes are proposals that still need a test build. Chapters 09 to 13 explain each platform. Flavors marked "planned" have no script support yet.</footer>
+<div id="selftest" hidden></div>
+
+<script id="lab201-manifest" type="application/json">
+{
+  "lab": "lab201",
+  "description": "Virtual machines of the Volume CCI shared lab (Chapter 999). IPv6 addresses are derived from the IPv4 addresses: fd00:db8:201::<third octet><fourth octet> in hexadecimal. Each machine has a proposed minimum size (min), which the Lab Builder enforces unless a machine is marked override. The minimums are proposals that still need a test build.",
+  "image": {
+    "release": "noble",
+    "base_url": "https://cloud-images.ubuntu.com/noble/current/",
+    "img": "noble-server-cloudimg-amd64.img",
+    "ova": "noble-server-cloudimg-amd64.ova",
+    "wsl_release_url": "https://releases.ubuntu.com/noble/",
+    "wsl_pattern": "ubuntu-24\\.04\\.\\d+-wsl-amd64\\.wsl"
+  },
+  "admin_user": "labadmin",
+  "mac_prefix": "00:50:56:2d",
+  "ipv4_prefix": "10.201",
+  "ipv6_prefix": "fd00:db8:201::",
+  "networks": [
+    {
+      "name": "lab201-wan",
+      "kind": "uplink",
+      "note": "Internet-facing network. gw-201 uses it for its uplink, and every VM has a build NIC on it for package installs. Remove the build NICs when the build is done."
+    },
+    {
+      "name": "lab201-oob",
+      "kind": "uplink",
+      "note": "Segment 0. Connect its uplink to the switches' management ports."
+    },
+    {
+      "name": "lab201-t1",
+      "kind": "trunk",
+      "note": "Trunk T1 to sw-648f-1. Carries VLANs 10, 20, 30, 40, 41, 42, 50 and links L1 and L2."
+    },
+    {
+      "name": "lab201-t2",
+      "kind": "trunk",
+      "note": "Trunk T2 to sw-2048f-1. Carries links L3 and L4. gw-201 bridges T1 and T2 so one set of .1 gateway addresses serves both switches."
+    },
+    {
+      "name": "lab201-lan220",
+      "kind": "internal",
+      "note": "Segment 220 behind rtr-peer-1. No uplink."
+    }
+  ],
+  "vms": [
+    {
+      "name": "gw-201",
+      "role": "gateway",
+      "vcpu": 2,
+      "memory_mb": 2048,
+      "disk_gb": 20,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 10
+      },
+      "packages": [
+        "nftables"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-oob",
+          "ipv4": [
+            "10.201.0.1/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "trunk": true
+        },
+        {
+          "net": "lab201-t2",
+          "trunk": true
+        }
+      ],
+      "bridge_trunks": {
+        "name": "br-trunk",
+        "ports": [
+          "lab201-t1",
+          "lab201-t2"
+        ],
+        "vlans": [
+          10,
+          20,
+          30,
+          40,
+          41,
+          42,
+          50
+        ]
+      },
+      "forwarding": true
+    },
+    {
+      "name": "svc-201a",
+      "wsl": true,
+      "role": "services",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "chrony",
+        "rsyslog",
+        "rsyslog-gnutls",
+        "freeradius",
+        "snmp",
+        "snmptrapd"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.10/24",
+            "10.201.10.12/24",
+            "10.201.10.20/24",
+            "10.201.10.30/24",
+            "10.201.10.40/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
+      ]
+    },
+    {
+      "name": "svc-201b",
+      "wsl": true,
+      "role": "services",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "chrony",
+        "rsyslog",
+        "rsyslog-gnutls",
+        "freeradius",
+        "openssh-server",
+        "tftpd-hpa",
+        "nfdump",
+        "sflowtool"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.11/24",
+            "10.201.10.21/24",
+            "10.201.10.31/24",
+            "10.201.10.50/24",
+            "10.201.10.60/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
+      ]
+    },
+    {
+      "name": "ca-201",
+      "wsl": true,
+      "role": "certificate authority",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "openssl"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.70/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
+      ]
+    },
+    {
+      "name": "dhcp-201",
+      "wsl": true,
+      "role": "DHCP server",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "kea-dhcp4-server"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.80/24"
+          ],
+          "gateway4": "10.201.10.1"
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 40,
+          "ipv4": [
+            "10.201.40.2/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 41,
+          "ipv4": [
+            "10.201.41.2/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 50,
+          "ipv4": [
+            "10.201.50.2/24"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admin-201",
+      "wsl": true,
+      "role": "administrator workstation",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "tcpdump",
+        "nmap",
+        "snmp",
+        "freeradius-utils",
+        "openssh-client",
+        "curl",
+        "jq"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 20,
+          "ipv4": [
+            "10.201.20.10/24"
+          ],
+          "gateway4": "10.201.20.1"
+        }
+      ]
+    },
+    {
+      "name": "rtr-peer-1",
+      "role": "routing peer 1 (AS 65202)",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "frr"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 2001,
+          "ipv4": [
+            "10.201.200.1/31"
+          ]
+        },
+        {
+          "net": "lab201-t2",
+          "vlan": 2003,
+          "ipv4": [
+            "10.201.200.5/31"
+          ]
+        },
+        {
+          "net": "lab201-lan220",
+          "ipv4": [
+            "10.201.220.1/24"
+          ]
+        }
+      ],
+      "dummies": [
+        {
+          "name": "loop0",
+          "ipv4": [
+            "10.201.250.21/32"
+          ]
+        },
+        {
+          "name": "stub0",
+          "ipv4": [
+            "10.201.210.1/24"
+          ]
+        }
+      ],
+      "forwarding": true
+    },
+    {
+      "name": "rtr-peer-2",
+      "role": "routing peer 2 (AS 65203)",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "frr"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 2002,
+          "ipv4": [
+            "10.201.200.3/31"
+          ]
+        },
+        {
+          "net": "lab201-t2",
+          "vlan": 2004,
+          "ipv4": [
+            "10.201.200.7/31"
+          ]
+        }
+      ],
+      "dummies": [
+        {
+          "name": "loop0",
+          "ipv4": [
+            "10.201.250.22/32"
+          ]
+        },
+        {
+          "name": "stub0",
+          "ipv4": [
+            "10.201.211.1/24"
+          ]
+        }
+      ],
+      "forwarding": true
+    },
+    {
+      "name": "mcast-src-201",
+      "role": "multicast source",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "iperf3",
+        "smcroute"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-lan220",
+          "ipv4": [
+            "10.201.220.10/24"
+          ],
+          "gateway4": "10.201.220.1"
+        }
+      ]
+    },
+    {
+      "name": "static-1",
+      "wsl": true,
+      "role": "static host",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "tcpdump",
+        "arping"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.10/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
+      ]
+    },
+    {
+      "name": "static-2",
+      "wsl": true,
+      "role": "static host",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "tcpdump",
+        "arping"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.11/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
+      ]
+    },
+    {
+      "name": "attacker-201",
+      "wsl": true,
+      "role": "spoofing and flooding test host",
+      "vcpu": 2,
+      "memory_mb": 2048,
+      "disk_gb": 20,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 10
+      },
+      "packages": [
+        "tcpdump",
+        "hping3",
+        "nmap",
+        "python3-scapy",
+        "arping",
+        "dhcpdump",
+        "yersinia"
+      ],
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.200/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
+      ]
+    }
+  ],
+  "not_automated": [
+    {
+      "name": "fgt-201",
+      "reason": "A FortiGate-VM image comes from Fortinet under a license and cannot be downloaded by a script. Chapter 999 lets gw-201 be a Linux router instead."
+    },
+    {
+      "name": "og-201",
+      "reason": "The OpenGear console server is hardware (Chapter 08)."
+    },
+    {
+      "name": "oob-admin-201",
+      "reason": "A break-glass laptop, not a virtual machine (Chapter 08)."
+    },
+    {
+      "name": "vx-host-a, vx-host-b",
+      "reason": "VXLAN tenant hosts attach to switch ports, so they are physical endpoints."
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------------------------------------------------------- data */
+  var BASE = JSON.parse(document.getElementById('lab201-manifest').textContent);
+  var OLD_V4 = BASE.ipv4_prefix || '10.201';
+  var OLD_V6 = BASE.ipv6_prefix || 'fd00:db8:201::';
+
+  var FLAVORS = [
+    { id: 'ubuntu-24.04', name: 'Ubuntu 24.04 LTS', sub: 'noble, apt', ok: true },
+    { id: 'ubuntu-26.04', name: 'Ubuntu 26.04 LTS', sub: 'apt' },
+    { id: 'debian-13', name: 'Debian 13', sub: 'apt' },
+    { id: 'rocky-10', name: 'Rocky Linux 10', sub: 'dnf' },
+    { id: 'alma-10', name: 'AlmaLinux 10', sub: 'dnf' },
+    { id: 'rhel-10', name: 'Red Hat Enterprise Linux 10', sub: 'dnf, subscription' },
+    { id: 'fedora', name: 'Fedora Server', sub: 'dnf' },
+    { id: 'mint-22', name: 'Linux Mint 22', sub: 'desktop, ISO install' },
+    { id: 'tinycore', name: 'Tiny Core Linux', sub: 'no cloud-init' },
+    { id: 'ubuntu-stig', name: 'Ubuntu 24.04 LTS, DoW STIG', sub: 'Ubuntu Pro and USG' },
+    { id: 'rhel-stig', name: 'RHEL 10, DoW STIG', sub: 'SCAP Security Guide' },
+    { id: 'win-11', name: 'Windows 11', sub: 'ISO, unattended install' },
+    { id: 'win-2025', name: 'Windows Server 2025', sub: 'ISO, unattended install' },
+    { id: 'win-2022', name: 'Windows Server 2022', sub: 'ISO, unattended install' }
+  ];
+
+  // Proposed support of each flavor group for each machine type: y = yes, x = needs extra steps, n = not offered.
+  var MATRIX = [
+    ['Gateway', 'yyyyynn'], ['Service hosts', 'yyxxxnn'], ['Certificate authority', 'yyyyynn'],
+    ['DHCP server', 'yyyyynn'], ['Administrator workstation', 'yyyyyxn'], ['Routing peers', 'yyxxynn'],
+    ['Multicast source', 'yyxxynx'], ['Static hosts', 'yyyyyxx'], ['Attacker host', 'yyxxxxn']
+  ];
+  var MATRIX_HEAD = ['Ubuntu 24.04', 'Debian 13', 'Rocky / Alma', 'RHEL 10', 'Fedora', 'Mint 22', 'Tiny Core'];
+
+  var DEFAULT_KEY_WIN = '~\\.ssh\\id_ed25519.pub';
+
+  var PLATFORMS = {
+    esxi: {
+      name: 'VMware ESXi', sub: 'Standalone host, PowerCLI', shell: 'ps',
+      versions: [['7', 'ESXi 7.0'], ['8', 'ESXi 8.0'], ['9', 'ESXi 9.0']], defVersion: '8',
+      script: 'esxi/Deploy-Lab201-Esxi.ps1', exe: 'Deploy-Lab201-Esxi.ps1', dir: 'esxi',
+      fields: [
+        { id: 'host', label: 'ESXi host', ph: '<ESXI_HOST>', flag: '-EsxiHost' },
+        { id: 'datastore', label: 'Datastore', ph: '<DATASTORE>', flag: '-Datastore' },
+        { id: 't1', label: 'Trunk T1 uplink (to sw-648f-1)', def: 'vmnic1', flag: '-Trunk1Nic' },
+        { id: 't2', label: 'Trunk T2 uplink (to sw-2048f-1)', def: 'vmnic2', flag: '-Trunk2Nic' },
+        { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
+        { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
+        { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'skipcert', label: 'Accept the host certificate', type: 'check', flag: '-SkipCertificateCheck', help: 'Only for a first run on a lab network' }
+      ],
+      versionFlag: '-VsphereVersion'
+    },
+    vcenter: {
+      name: 'VMware vCenter', sub: 'Template, clones, folders', shell: 'ps',
+      versions: [['7', 'vCenter 7.0'], ['8', 'vCenter 8.0'], ['9', 'vCenter 9.0']], defVersion: '8',
+      script: 'vcenter/Deploy-Lab201-Vcenter.ps1', exe: 'Deploy-Lab201-Vcenter.ps1', dir: 'vcenter',
+      fields: [
+        { id: 'vc', label: 'vCenter Server', ph: '<VCENTER>', flag: '-VcenterServer' },
+        { id: 'dc', label: 'Datacenter', ph: '<DATACENTER>', flag: '-Datacenter' },
+        { id: 'vmhost', label: 'Host that owns the trunk NICs', ph: '<HOST>', flag: '-VMHostName' },
+        { id: 'datastore', label: 'Datastore', ph: '<DATASTORE>', flag: '-Datastore' },
+        { id: 'nettype', label: 'Switch type', type: 'select', options: ['Standard', 'Distributed'], def: 'Standard', flag: '-NetworkType' },
+        { id: 't1', label: 'Trunk T1 uplink (to sw-648f-1)', def: 'vmnic1', flag: '-Trunk1Nic' },
+        { id: 't2', label: 'Trunk T2 uplink (to sw-2048f-1)', def: 'vmnic2', flag: '-Trunk2Nic' },
+        { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
+        { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
+        { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'skipcert', label: 'Accept the vCenter certificate', type: 'check', flag: '-SkipCertificateCheck' }
+      ],
+      versionFlag: '-VsphereVersion'
+    },
+    workstation: {
+      name: 'VMware Workstation Pro', sub: 'Windows, vmrun and ovftool', shell: 'ps',
+      versions: [['17', 'Workstation Pro 17'], ['25H2', 'Workstation Pro 25H2']], defVersion: '25H2',
+      script: 'workstation/Deploy-Lab201-Workstation.ps1', exe: 'Deploy-Lab201-Workstation.ps1', dir: 'workstation',
+      fields: [
+        { id: 'vmroot', label: 'Folder for the machines', def: 'D:\\VMs\\lab201', flag: '-VmRoot' },
+        { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 't1', label: 'Trunk T1 network (bridged)', def: 'vmnet2', flag: '-T1Vmnet' },
+        { id: 't2', label: 'Trunk T2 network (bridged)', def: 'vmnet3', flag: '-T2Vmnet' },
+        { id: 'oob', label: 'Out-of-band network (bridged)', def: 'vmnet4', flag: '-OobVmnet' },
+        { id: 'lan', label: 'Segment 220 network (host-only)', def: 'vmnet5', flag: '-Lan220Vmnet' },
+        { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' }
+      ]
+    },
+    proxmox: {
+      name: 'Proxmox VE', sub: 'qm and cloud-init snippets', shell: 'sh',
+      versions: [['8', 'Proxmox VE 8.1 or later'], ['9', 'Proxmox VE 9']], defVersion: '8',
+      script: 'proxmox/deploy-lab201-proxmox.sh', exe: 'deploy-lab201-proxmox.sh', dir: 'proxmox',
+      fields: [
+        { id: 'key', label: 'SSH public key file', def: '~/.ssh/id_ed25519.pub', flag: '--ssh-key' },
+        { id: 'storage', label: 'Disk storage', def: 'local-lvm', flag: '--storage' },
+        { id: 'snip', label: 'Snippets storage', def: 'local', flag: '--snippets-storage' },
+        { id: 'wan', label: 'Build bridge (internet)', def: 'vmbr0', flag: '--bridge-wan' },
+        { id: 'oob', label: 'Out-of-band bridge', def: 'vmbr1', flag: '--bridge-oob' },
+        { id: 't1', label: 'Trunk T1 bridge (VLAN-aware)', def: 'vmbr2', flag: '--bridge-t1' },
+        { id: 't2', label: 'Trunk T2 bridge (VLAN-aware)', def: 'vmbr3', flag: '--bridge-t2' },
+        { id: 'lan', label: 'Segment 220 bridge (no ports)', def: 'vmbr4', flag: '--bridge-lan220' },
+        { id: 'vmid', label: 'First VM ID', def: '20100', flag: '--vmid-base' }
+      ]
+    },
+    wsl: {
+      name: 'WSL 2', sub: 'Linux service hosts only', shell: 'ps',
+      versions: [['2', 'WSL 2 on Windows 11']], defVersion: '2',
+      script: 'wsl/Deploy-Lab201-Wsl.ps1', exe: 'Deploy-Lab201-Wsl.ps1', dir: 'wsl',
+      fields: [
+        { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'root', label: 'Folder for the distributions', def: '', ph: '(default: %USERPROFILE%\\wsl-lab201)', flag: '-InstallRoot', optional: true }
+      ],
+      wslOnly: true
+    }
+  };
+  var PLANNED = [
+    ['Dell VxRail', 'Needs script options to reuse the VxRail switch and make no uplink changes'],
+    ['KVM and libvirt', 'virt-install']
+  ];
+
+  /* --------------------------------------------------------------- state */
+  var state = {
+    platform: 'vcenter', version: '8', params: {},
+    v4: OLD_V4, v6: OLD_V6,
+    vms: {}, licRefs: {}
+  };
+  function resetVms() {
+    state.vms = {};
+    BASE.vms.forEach(function (vm) {
+      state.vms[vm.name] = {
+        include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024),
+        disk: String(vm.disk_gb), override: false, flavor: 'ubuntu-24.04'
+      };
+    });
+  }
+  function resetParams() {
+    state.params = {};
+    PLATFORMS[state.platform].fields.forEach(function (f) { state.params[f.id] = f.type === 'check' ? false : (f.def || ''); });
+  }
+  resetVms(); resetParams();
+
+  /* ---------------------------------------------------------------- core */
+  var NAME_RE = /^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/;
+
+  function parseNum(text) {
+    var t = String(text).trim();
+    if (t === '' || !/^\d+(\.\d+)?$/.test(t)) return NaN;
+    return parseFloat(t);
+  }
+
+  function validIpv4Prefix(p) {
+    var m = /^(\d{1,3})\.(\d{1,3})$/.exec(p);
+    if (!m) return false;
+    var a = +m[1], b = +m[2];
+    if (a > 255 || b > 255) return false;
+    return a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168);
+  }
+  function validIpv6Prefix(p) {
+    return /^f[cd][0-9a-f]{2}(:[0-9a-f]{1,4}){0,5}::$/i.test(p) && p.split(':').length <= 8;
+  }
+
+  function vmRows() { return BASE.vms.map(function (vm) { return { base: vm, row: state.vms[vm.name] }; }); }
+
+  function rowAvailable(base) {
+    return !(PLATFORMS[state.platform].wslOnly && !base.wsl);
+  }
+  function rowIncluded(base, row) {
+    if (base.role === 'gateway' && !PLATFORMS[state.platform].wslOnly) return true;
+    return rowAvailable(base) && row.include;
+  }
+
+  // Check one machine. Returns the effective sizes and messages for each field.
+  function checkRow(base, row) {
+    var res = { name: { err: '' }, vcpu: {}, mem: {}, disk: {}, eff: {} };
+    var items = [
+      ['vcpu', parseNum(row.vcpu), base.vcpu, base.min.vcpu, 'vCPUs', true],
+      ['mem', parseNum(row.mem) * 1024, base.memory_mb, base.min.memory_mb, 'GB of memory', false],
+      ['disk', parseNum(row.disk), base.disk_gb, base.min.disk_gb, 'GB of disk', true]
+    ];
+    items.forEach(function (it) {
+      var key = it[0], val = it[1], def = it[2], min = it[3], integerOnly = it[5];
+      var r = res[key];
+      r.changed = false;
+      if (isNaN(val) || val <= 0 || (integerOnly && Math.floor(val) !== val)) {
+        r.err = integerOnly ? 'Enter a whole number' : 'Enter a number of GB';
+        res.eff[key] = def;
+      } else if (val < min && !row.override) {
+        r.err = 'Minimum ' + (key === 'mem' ? min / 1024 + ' GB' : min) + '. Tick Override to go lower';
+        res.eff[key] = def;
+      } else {
+        res.eff[key] = val;
+        r.changed = val !== def;
+        r.below = val < min;
+      }
+    });
+    res.eff.memory_mb = Math.round(res.eff.mem);
+    return res;
+  }
+
+  function validateAll() {
+    var out = { errors: [], warnings: [], rows: {}, names: {}, included: [] };
+    var seen = {};
+    vmRows().forEach(function (e) {
+      var b = e.base, r = e.row, res = checkRow(b, r);
+      out.rows[b.name] = res;
+      if (!rowIncluded(b, r)) return;
+      out.included.push(b.name);
+      var nm = r.name.trim();
+      if (!NAME_RE.test(nm)) {
+        res.name.err = 'Use lowercase letters, digits, and hyphens. The default name is kept';
+        nm = b.name;
+      } else if (seen[nm]) {
+        res.name.err = 'Another machine already uses this name. The default name is kept';
+        nm = b.name;
+      }
+      seen[nm] = true;
+      out.names[b.name] = nm;
+      if (res.name.err) out.errors.push(b.name + ': ' + res.name.err);
+      ['vcpu', 'mem', 'disk'].forEach(function (k) { if (res[k].err) out.errors.push(nm + ': ' + res[k].err); });
+      if (r.override && (res.vcpu.below || res.mem.below || res.disk.below)) {
+        out.warnings.push(nm + ' is below its proposed minimum by Override. Package installs may fail or run out of memory.');
+      }
+    });
+    if (!validIpv4Prefix(state.v4)) out.errors.push('IPv4 block ' + state.v4 + '. Use the first two octets of a private range, such as 10.77');
+    if (!validIpv6Prefix(state.v6)) out.errors.push('IPv6 prefix ' + state.v6 + '. Use a unique local prefix that ends in ::, such as fd00:db8:201::');
+    var peers = ['rtr-peer-1', 'rtr-peer-2'].filter(function (n) { return out.included.indexOf(n) < 0; });
+    if (peers.length && !PLATFORMS[state.platform].wslOnly) out.warnings.push('Routing peers left out (' + peers.join(', ') + '). The routing labs in Chapters 05 and 06 need both.');
+    return out;
+  }
+
+  function rewriteAddresses(node, from, to) {
+    if (Array.isArray(node)) return node.map(function (x) { return rewriteAddresses(x, from, to); });
+    if (node && typeof node === 'object') {
+      var o = {};
+      Object.keys(node).forEach(function (k) { o[k] = rewriteAddresses(node[k], from, to); });
+      return o;
+    }
+    if (typeof node === 'string' && node.indexOf(from + '.') === 0) return to + node.slice(from.length);
+    return node;
+  }
+
+  function buildManifest(v) {
+    v = v || validateAll();
+    var m = JSON.parse(JSON.stringify(BASE));
+    var validV4 = validIpv4Prefix(state.v4) ? state.v4 : OLD_V4;
+    var validV6 = validIpv6Prefix(state.v6) ? state.v6 : OLD_V6;
+    m.vms = [];
+    vmRows().forEach(function (e) {
+      if (!rowIncluded(e.base, e.row)) return;
+      var res = v.rows[e.base.name];
+      var vm = JSON.parse(JSON.stringify(e.base));
+      vm.name = v.names[e.base.name] || e.base.name;
+      vm.vcpu = res.eff.vcpu;
+      vm.memory_mb = res.eff.memory_mb;
+      vm.disk_gb = res.eff.disk;
+      m.vms.push(vm);
+    });
+    m = rewriteAddresses(m, OLD_V4, validV4);
+    m.ipv4_prefix = validV4;
+    m.ipv6_prefix = validV6;
+    return m;
+  }
+
+  function totals(m) {
+    var t = { n: m.vms.length, cpu: 0, mem: 0, disk: 0 };
+    m.vms.forEach(function (vm) { t.cpu += vm.vcpu; t.mem += vm.memory_mb; t.disk += vm.disk_gb; });
+    return t;
+  }
+
+  /* ------------------------------------------------------------ commands */
+  function psQuote(v) { return /^[\w.:\\\/~<>@%$()-]+$/.test(v) ? v : "'" + v.replace(/'/g, "''") + "'"; }
+  function shQuote(v) { return /^[\w.:\/~<>@%=,+-]+$/.test(v) ? v : "'" + v.replace(/'/g, "'\\''") + "'"; }
+
+  function commandBlocks(m) {
+    var p = PLATFORMS[state.platform];
+    var args = [];
+    if (p.versionFlag) args.push([p.versionFlag, state.version]);
+    p.fields.forEach(function (f) {
+      var v = state.params[f.id];
+      if (f.type === 'check') { if (v) args.push([f.flag, null]); return; }
+      if (!v && f.optional) return;
+      args.push([f.flag, v || f.ph || '']);
+    });
+    var names = m.vms.map(function (x) { return x.name; });
+    var blocks = [];
+    function line(extra) {
+      var q = p.shell === 'ps' ? psQuote : shQuote;
+      var head = p.shell === 'ps' ? '.\\' + p.exe : './' + p.exe;
+      var cont = p.shell === 'ps' ? ' `' : ' \\';
+      var parts = args.map(function (a) { return a[1] === null ? a[0] : a[0] + ' ' + q(a[1]); }).concat(extra);
+      return head + cont + '\n' + parts.map(function (x, i) { return '  ' + x + (i < parts.length - 1 ? cont : ''); }).join('\n');
+    }
+    var preview = p.shell === 'ps' ? '-WhatIf' : '--dry-run';
+    blocks.push(['1. Preview. This changes nothing.', line([preview])]);
+    blocks.push(['2. Build the machines.', line([])]);
+    if (p.shell === 'ps') {
+      var common = args.filter(function (a) { return a[0] === '-EsxiHost' || a[0] === '-VcenterServer' || a[0] === '-VsphereVersion' || a[0] === '-VmRoot'; });
+      var tail = common.map(function (a) { return a[0] + ' ' + psQuote(a[1]); }).join(' ');
+      if (state.platform !== 'wsl') {
+        blocks.push(['3. When the packages are installed, remove the build adapters.', '.\\' + p.exe + ' -Action RemoveBuildNics ' + tail]);
+      } else {
+        blocks.push(['3. Check the hosts.', '.\\' + p.exe + ' -Action Status']);
+      }
+    } else {
+      var vm = args.filter(function (a) { return a[0] === '--vmid-base'; }).map(function (a) { return ' --vmid-base ' + shQuote(a[1]); }).join('');
+      blocks.push(['3. When the packages are installed, remove the build NICs.', './' + p.exe + ' --action remove-build-nics' + vm]);
+    }
+    var snap = '';
+    var list = names.map(function (n) { return "'" + n + "'"; }).join(', ');
+    if (state.platform === 'esxi' || state.platform === 'vcenter') {
+      snap = 'Get-VM -Name ' + names.map(psQuote).join(', ') + ' | New-Snapshot -Name baseline-201';
+    } else if (state.platform === 'workstation') {
+      snap = 'foreach ($n in ' + list + ') { & \'C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\' -T ws snapshot "' + psQuoteRoot() + '\\$n\\$n.vmx" baseline-201 }';
+    } else if (state.platform === 'proxmox') {
+      var base = parseInt(state.params.vmid || '20100', 10);
+      var ids = names.map(function (n, i) { return base + i + 1; });
+      snap = 'for id in ' + ids.join(' ') + '; do qm snapshot "$id" baseline-201; done';
+    } else {
+      snap = '# WSL has no snapshots. Export a distribution with: wsl --export lab201-<host> <file>.tar';
+    }
+    blocks.push(['4. Take the baseline (Lab 999.6).', snap]);
+    return blocks;
+  }
+  function psQuoteRoot() { return (state.params.vmroot || 'D:\\VMs\\lab201'); }
+
+  function commandText(m) {
+    return commandBlocks(m).map(function (b) { return '# ' + b[0] + '\n' + b[1]; }).join('\n\n') + '\n';
+  }
+
+  /* ---------------------------------------------------- notes and licenses */
+  function platformNotes() {
+    var v = state.version, n = [];
+    switch (state.platform) {
+      case 'esxi':
+        n.push('The free ESXi license makes the host API read-only, so PowerCLI cannot change anything on it. Use an evaluation or paid license.');
+        if (v === '7') n.push('vSphere 7 reached end of general support on 2 October 2025. Isolate the lab.');
+        if (v === '9') n.push('ESXi 9 is licensed only through vSphere Foundation or Cloud Foundation, and there is no free ESXi 9. Virtual hardware version vmx-22 is used.');
+        if (v === '8') n.push('Virtual hardware version vmx-20 (8.0, 8.0 U1) or vmx-21 (8.0 U2, U3) is chosen for you.');
+        break;
+      case 'vcenter':
+        n.push('All machines run on one host, the one that owns the trunk NICs. Keep them there with a VM-Host rule, and never vMotion them.');
+        n.push('Distributed switch version used: ' + ({ '7': '7.0.3', '8': '8.0.0', '9': '9.0.0' })[v] + '.');
+        if (v === '7') n.push('vSphere 7 reached end of general support on 2 October 2025. Isolate the lab.');
+        if (v === '9') n.push('vSphere 9 is licensed only through vSphere Foundation or Cloud Foundation.');
+        break;
+      case 'workstation':
+        n.push('Workstation has no VLAN-aware switch, so the guests tag VLANs. Test that your Windows adapters pass 802.1Q tags (Lab 11.2).');
+        n.push('Create the five networks in the Virtual Network Editor first. Check that your Workstation release includes OVF Tool, or pass -OvfToolPath.');
+        break;
+      case 'proxmox':
+        n.push('Create the bridges first, and make the two trunk bridges VLAN-aware. Do not put both trunk NICs in one host bridge: gw-201 bridges them.');
+        n.push('The storage for snippets needs the Snippets content type. The script was written for Proxmox VE 8.1 and later.');
+        break;
+      case 'wsl':
+        n.push('WSL builds only the eight Linux service hosts. All distributions share one kernel and one network, and no 802.1Q trunk can reach a hardware switch.');
+        n.push('Bind each service to its own address, because two copies of a service collide on the shared network.');
+        break;
+    }
+    n.push('The scripts have not been run on real hosts. Run the preview first.');
+    return n;
+  }
+
+  function licenseRows() {
+    var rows = [], p = state.platform, v = state.version;
+    if (p === 'esxi') rows.push(['esx', 'VMware ESXi ' + v + ' host', 'A license key that allows API writes (not the free license)']);
+    if (p === 'vcenter') {
+      rows.push(['vc', 'VMware vCenter Server ' + v, 'vCenter license key']);
+      rows.push(['esx', 'VMware ESXi ' + v + ' host', 'Host license key']);
+    }
+    if (p === 'workstation') rows.push(['ws', 'VMware Workstation Pro', 'No key in current releases. Check Broadcom\'s terms for commercial use']);
+    if (p === 'proxmox') rows.push(['pve', 'Proxmox VE', 'Optional subscription key. The no-subscription repository works without one']);
+    if (p === 'wsl') rows.push(['wsl', 'WSL and Ubuntu', 'No key']);
+    rows.push(['fsw', 'FortiSwitch Advanced Features licenses', 'FS-SW-LIC-600 and FS-SW-LIC-2000 for the two hardware switches. Not applied by these scripts']);
+    return rows;
+  }
+
+  /* ------------------------------------------------------ checklist files */
+  function changesText(m, v) {
+    var lines = [];
+    if (m.ipv4_prefix !== OLD_V4) lines.push('IPv4 block: ' + OLD_V4 + '.0.0/16 is now ' + m.ipv4_prefix + '.0.0/16. Every address starting with ' + OLD_V4 + '. starts with ' + m.ipv4_prefix + '. instead.');
+    if (m.ipv6_prefix !== OLD_V6) lines.push('IPv6 prefix: ' + OLD_V6 + ' is now ' + m.ipv6_prefix + '. Every IPv6 address of the lab uses the new prefix and keeps its last two groups.');
+    var renamed = [];
+    vmRows().forEach(function (e) {
+      if (v.names[e.base.name] && v.names[e.base.name] !== e.base.name) renamed.push(e.base.name + ' is now ' + v.names[e.base.name]);
+    });
+    if (renamed.length) lines.push('Renamed machines: ' + renamed.join('; ') + '.');
+    var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0; }).map(function (e) { return e.base.name; });
+    if (left.length) lines.push('Machines left out: ' + left.join(', ') + '.');
+    if (!lines.length) return '';
+    return '# Changes from the Chapter 999 defaults\n\n' +
+      lines.map(function (l) { return '- ' + l; }).join('\n') +
+      '\n\nChapter 999, the requirement labs in Chapters 04 to 07, and the switch baselines use the default names and addresses. ' +
+      'Apply the same changes in your lab notes and in the FortiSwitch configuration (VLAN interfaces, management addresses, routed links, and syslog, RADIUS, NTP, and SNMP server addresses).\n';
+  }
+
+  function checklistText(m, v) {
+    var p = PLATFORMS[state.platform];
+    var t = totals(m);
+    var L = [];
+    L.push('# Lab checklist: ' + p.name + (p.versions.length > 1 ? ' ' + state.version : ''));
+    L.push('');
+    L.push('Machines: ' + t.n + '. vCPUs: ' + t.cpu + '. Memory: ' + (t.mem / 1024) + ' GB. Disk: up to ' + t.disk + ' GB (thin).');
+    L.push('');
+    L.push('## Before you run the script');
+    platformNotes().forEach(function (n) { L.push('- ' + n); });
+    L.push('- Python 3.8 or later is installed' + (state.platform === 'proxmox' || state.platform === 'wsl' ? '.' : ', and pycdlib is installed (pip install pycdlib).'));
+    L.push('- You have an SSH key pair, and the public key path is in the command.');
+    L.push('- The hardware switches are cabled to the lab networks, and their trunks allow the lab VLANs (Chapter 999, Lab 999.3).');
+    L.push('');
+    L.push('## Run it');
+    L.push('Use the commands in RUN.txt. Run the preview first.');
+    L.push('');
+    L.push('## Licenses to arrange yourself');
+    L.push('These scripts do not apply license keys. Keep each key in a password manager, never in these files.');
+    licenseRows().forEach(function (r) {
+      var ref = (state.licRefs[r[0]] || '').trim();
+      L.push('- ' + r[1] + ': ' + r[2] + '. Where it is kept: ' + (ref || '(not recorded)') + '.');
+    });
+    if (v.warnings.length) {
+      L.push('');
+      L.push('## Warnings from the Builder');
+      v.warnings.forEach(function (w) { L.push('- ' + w); });
+    }
+    L.push('');
+    L.push('## After the build');
+    L.push('- Check each machine: cloud-init status --long, hostnamectl, ip -br addr.');
+    L.push('- Remove the build adapters, then take the baseline snapshots (RUN.txt, steps 3 and 4).');
+    L.push('- Build the services and the switch baselines: Chapter 999, Labs 999.1 to 999.6.');
+    L.push('');
+    return L.join('\n');
+  }
+
+  /* ----------------------------------------------------------------- zip */
+  var CRC_TABLE = (function () {
+    var t = [], c, n, k;
+    for (n = 0; n < 256; n++) { c = n; for (k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+    return t;
+  })();
+  function crc32(bytes) {
+    var c = 0xFFFFFFFF;
+    for (var i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+  function makeZip(files) {
+    var enc = new TextEncoder(), chunks = [], central = [], offset = 0, total = 0;
+    var dosDate = ((2026 - 1980) << 9) | (1 << 5) | 1, dosTime = 0;
+    files.forEach(function (f) {
+      var name = enc.encode(f.path), data = f.bytes, crc = crc32(data);
+      var lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, dosTime, true); lh.setUint16(12, dosDate, true); lh.setUint32(14, crc, true);
+      lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+      chunks.push(new Uint8Array(lh.buffer), name, data);
+      var ch = new DataView(new ArrayBuffer(46));
+      var exec = /\.(sh|py)$/.test(f.path);
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, (3 << 8) | 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
+      ch.setUint16(10, 0, true); ch.setUint16(12, dosTime, true); ch.setUint16(14, dosDate, true); ch.setUint32(16, crc, true);
+      ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true); ch.setUint16(28, name.length, true);
+      ch.setUint16(30, 0, true); ch.setUint16(32, 0, true); ch.setUint16(34, 0, true); ch.setUint16(36, 0, true);
+      ch.setUint32(38, ((exec ? 0o100755 : 0o100644) << 16) >>> 0, true); ch.setUint32(42, offset, true);
+      central.push(new Uint8Array(ch.buffer), name);
+      offset += 30 + name.length + data.length;
+    });
+    var csize = 0;
+    central.forEach(function (c) { csize += c.length; });
+    var end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+    end.setUint32(12, csize, true); end.setUint32(16, offset, true);
+    return new Blob(chunks.concat(central, [new Uint8Array(end.buffer)]), { type: 'application/zip' });
+  }
+
+  function fetchBytes(url) {
+    return fetch(url).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.arrayBuffer();
+    }).then(function (b) { return new Uint8Array(b); });
+  }
+
+  function buildZip() {
+    var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder();
+    var root = 'lab201-build/';
+    var files = [
+      { path: root + 'common/lab201-vms.json', bytes: enc.encode(JSON.stringify(m, null, 2) + '\n') },
+      { path: root + 'RUN.txt', bytes: enc.encode(commandText(m)) },
+      { path: root + 'CHECKLIST.md', bytes: enc.encode(checklistText(m, v)) }
+    ];
+    var ch = changesText(m, v);
+    if (ch) files.push({ path: root + 'CHANGES.md', bytes: enc.encode(ch) });
+    var wanted = [
+      ['../' + p.script, p.script], ['../common/make-seed.py', 'common/make-seed.py'], ['../README.md', 'README.md'],
+      ['../diagrams/lab-topology.svg', 'diagrams/lab-topology.svg'], ['../diagrams/lab-topology.png', 'diagrams/lab-topology.png']
+    ];
+    var missing = [];
+    return Promise.all(wanted.map(function (w) {
+      return fetchBytes(w[0]).then(function (b) { files.push({ path: root + w[1], bytes: b }); }, function () { missing.push(w[1]); });
+    })).then(function () {
+      if (missing.length) {
+        files.push({
+          path: root + 'MISSING-FILES.txt',
+          bytes: enc.encode('This page could not fetch these files from the site:\n' + missing.map(function (x) { return '  ' + x; }).join('\n') +
+            '\n\nDownload the lab-scripts zip from the Volume CCI page and copy them next to common/lab201-vms.json.\n' +
+            'Opening the page from a local file blocks the fetch. Open it from the published site instead.\n')
+        });
+      }
+      return { blob: makeZip(files), missing: missing, count: files.length };
+    });
+  }
+
+  /* ------------------------------------------------------------------ UI */
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]; }); }
+  var activeTab = 'command';
+
+  function renderStatic() {
+    var h = '';
+    // 1 platform
+    h += '<div class="card"><h2><span class="n">1</span> Platform</h2><p class="hint">Where the machines will run.</p><div class="opts" id="platforms"></div></div>';
+    // 2 version
+    h += '<div class="card"><h2><span class="n">2</span> Version</h2><p class="hint" id="verhint"></p><div class="pills" id="versions"></div></div>';
+    // 3 platform settings
+    h += '<div class="card"><h2><span class="n">3</span> Platform settings</h2><p class="hint">Names of the hosts, storage, and network connections the script needs. Empty fields show a placeholder in the command.</p><div class="field" id="params"></div></div>';
+    // 4 linux flavor
+    h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The cloud image every Linux machine starts from. Only Ubuntu 24.04 LTS has script support today. The other flavors are planned.</p><div class="opts" id="flavors"></div>';
+    h += '<details><summary>Which flavors could run which machines (proposed)</summary><table class="mx"><tr><th>Machine type</th>' + MATRIX_HEAD.map(function (x) { return '<th>' + x + '</th>'; }).join('') + '</tr>';
+    MATRIX.forEach(function (r) {
+      h += '<tr><td>' + r[0] + '</td>' + r[1].split('').map(function (c) {
+        return '<td>' + (c === 'y' ? '<span class="y">&#10003;</span>' : c === 'x' ? '<span class="s">&#10003;*</span>' : '<span class="nn">no</span>') + '</td>';
+      }).join('') + '</tr>';
+    });
+    h += '</table><p class="small">* needs extra steps, such as packages from another repository or an ISO install. These ratings are proposals. Hardened (STIG) and Windows flavors are not in this table and are planned too.</p></details></div>';
+    // 5 machines
+    h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name or a size by typing. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
+    h += '<table id="machines"><tr><th>Machine</th><th style="text-align:right">vCPU</th><th style="text-align:right">Memory (GB)</th><th style="text-align:right">Disk (GB)</th><th>Override</th></tr></table></div>';
+    // 6 addressing
+    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. You can move the whole plan to another block.</p>';
+    h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
+    h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
+    h += '<p class="small" id="addrpreview"></p><p class="small">Changing a segment\'s VLAN number or one machine\'s address is planned. The gateway is always .1.</p></div>';
+    // 7 licenses
+    h += '<div class="card"><h2><span class="n">7</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts do not apply keys, so this page records only where you keep each one, and puts that note in the checklist.</p><table id="lics"><tr><th>Product</th><th>What it needs</th><th>Where you keep it</th></tr></table></div>';
+    $('left').innerHTML = h;
+
+    // right column
+    var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div>';
+    r += '<div id="issues"></div><div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden></div><p class="small" id="zipnote"></p></div>';
+    $('right').innerHTML = r;
+
+    var tabs = [['command', 'Command'], ['manifest', 'Manifest'], ['checklist', 'Checklist'], ['changes', 'Changes'], ['diagram', 'Diagram']];
+    $('tabs').innerHTML = tabs.map(function (t) { return '<button data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('');
+  }
+
+  function renderPlatforms() {
+    var h = '';
+    Object.keys(PLATFORMS).forEach(function (id) {
+      var p = PLATFORMS[id];
+      h += '<button class="opt' + (state.platform === id ? ' sel' : '') + '" data-platform="' + id + '"><b>' + p.name + '</b><span>' + p.sub + '</span></button>';
+    });
+    PLANNED.forEach(function (x) { h += '<button class="opt" disabled><b>' + x[0] + '<span class="badge">planned</span></b><span>' + x[1] + '</span></button>'; });
+    $('platforms').innerHTML = h;
+    var p = PLATFORMS[state.platform];
+    $('versions').innerHTML = p.versions.map(function (x) { return '<button class="pill' + (state.version === x[0] ? ' sel' : '') + '" data-version="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+    $('verhint').textContent = state.platform === 'esxi' || state.platform === 'vcenter' ? 'The script checks that the host reports this major version, and sets the virtual hardware version for it.' : 'Chapter ' + ({ workstation: '11', proxmox: '12', wsl: '13' })[state.platform] + ' covers this platform.';
+    var f = '';
+    p.fields.forEach(function (fd) {
+      var id = 'p_' + fd.id;
+      if (fd.type === 'check') {
+        f += '<label for="' + id + '">' + fd.label + '</label><div><input type="checkbox" id="' + id + '" data-param="' + fd.id + '"' + (state.params[fd.id] ? ' checked' : '') + '> <span class="small">' + esc(fd.help || '') + '</span></div>';
+      } else if (fd.type === 'select') {
+        f += '<label for="' + id + '">' + fd.label + '</label><div><select id="' + id + '" data-param="' + fd.id + '">' + fd.options.map(function (o) { return '<option' + (state.params[fd.id] === o ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select></div>';
+      } else {
+        f += '<label for="' + id + '">' + fd.label + '</label><div><input type="text" class="wide" id="' + id + '" data-param="' + fd.id + '" placeholder="' + esc(fd.ph || fd.def || '') + '" value="' + esc(state.params[fd.id]) + '"></div>';
+      }
+    });
+    $('params').innerHTML = f;
+  }
+
+  function renderFlavors() {
+    $('flavors').innerHTML = FLAVORS.map(function (fl) {
+      return '<button class="opt' + (fl.ok ? ' sel' : '') + '"' + (fl.ok ? '' : ' disabled') + '><b>' + fl.name + (fl.ok ? '' : '<span class="badge">planned</span>') + '</b><span>' + fl.sub + '</span></button>';
+    }).join('');
+  }
+
+  function renderMachines() {
+    var t = $('machines'), h = '<tr><th>Machine</th><th style="text-align:right">vCPU</th><th style="text-align:right">Memory (GB)</th><th style="text-align:right">Disk (GB)</th><th>Override</th></tr>';
+    vmRows().forEach(function (e) {
+      var b = e.base, r = e.row, k = esc(b.name);
+      h += '<tr data-vm="' + k + '"><td><input type="checkbox" data-f="include" data-vm="' + k + '" aria-label="Include ' + k + '"> ' +
+        '<input type="text" class="name" data-f="name" data-vm="' + k + '" aria-label="Name of ' + k + '" value="' + esc(r.name) + '">' +
+        '<span class="msg" data-m="name"></span><span class="small">' + esc(b.role) + '. Flavor: Ubuntu 24.04 LTS</span><span class="msg warn" data-m="avail"></span></td>' +
+        '<td style="text-align:right"><input type="text" class="num" data-f="vcpu" data-vm="' + k + '" value="' + esc(r.vcpu) + '" aria-label="vCPUs of ' + k + '"><span class="minl" data-m="vcpu">min ' + b.min.vcpu + '</span></td>' +
+        '<td style="text-align:right"><input type="text" class="num" data-f="mem" data-vm="' + k + '" value="' + esc(r.mem) + '" aria-label="Memory of ' + k + '"><span class="minl" data-m="mem">min ' + b.min.memory_mb / 1024 + ' GB</span></td>' +
+        '<td style="text-align:right"><input type="text" class="num" data-f="disk" data-vm="' + k + '" value="' + esc(r.disk) + '" aria-label="Disk of ' + k + '"><span class="minl" data-m="disk">min ' + b.min.disk_gb + '</span></td>' +
+        '<td><input type="checkbox" data-f="override" data-vm="' + k + '" aria-label="Override minimums for ' + k + '"></td></tr>';
+    });
+    t.innerHTML = h;
+    syncMachineInputs();
+  }
+  function syncMachineInputs() {
+    vmRows().forEach(function (e) {
+      var tr = document.querySelector('tr[data-vm="' + e.base.name + '"]');
+      if (!tr) return;
+      tr.querySelector('[data-f=include]').checked = rowIncluded(e.base, e.row);
+      tr.querySelector('[data-f=override]').checked = e.row.override;
+    });
+  }
+
+  function renderLicenses() {
+    var t = $('lics'), h = '<tr><th>Product</th><th>What it needs</th><th>Where you keep it (a note, not the key)</th></tr>';
+    licenseRows().forEach(function (r) {
+      h += '<tr><td><b>' + esc(r[1]) + '</b></td><td>' + esc(r[2]) + '</td><td><input type="text" class="wide" data-lic="' + r[0] + '" placeholder="for example: password manager entry name" value="' + esc(state.licRefs[r[0]] || '') + '"></td></tr>';
+    });
+    t.innerHTML = h;
+  }
+
+  // Update the parts that depend on the current values, without touching the inputs being typed in.
+  function refresh() {
+    var v = validateAll(), m = buildManifest(v), tt = totals(m);
+    vmRows().forEach(function (e) {
+      var b = e.base, r = e.row, res = v.rows[b.name];
+      var tr = document.querySelector('tr[data-vm="' + b.name + '"]');
+      if (!tr) return;
+      var inc = rowIncluded(b, r), avail = rowAvailable(b);
+      tr.className = inc ? '' : 'off';
+      var cb = tr.querySelector('[data-f=include]');
+      cb.checked = inc; cb.disabled = !avail || (b.role === 'gateway' && !PLATFORMS[state.platform].wslOnly);
+      tr.querySelector('[data-m=avail]').textContent = avail ? '' : 'Not built on WSL';
+      var nameIn = tr.querySelector('[data-f=name]');
+      nameIn.className = 'name' + (res.name.err && inc ? ' err' : (inc && r.name.trim() !== b.name ? ' chg' : ''));
+      tr.querySelector('[data-m=name]').className = 'msg bad';
+      tr.querySelector('[data-m=name]').textContent = inc ? res.name.err : '';
+      [['vcpu', b.min.vcpu, 'vcpu'], ['mem', b.min.memory_mb / 1024 + ' GB', 'mem'], ['disk', b.min.disk_gb, 'disk']].forEach(function (x) {
+        var key = x[0], input = tr.querySelector('[data-f=' + key + ']'), lab = tr.querySelector('[data-m=' + key + ']'), st = res[key];
+        input.disabled = !inc;
+        var cls = 'num';
+        if (inc && st.err) cls += ' err'; else if (inc && st.below) cls += ' ovr'; else if (inc && st.changed) cls += ' chg';
+        input.className = cls;
+        lab.className = 'minl' + (inc && st.err ? ' bad' : inc && st.below ? ' warn' : '');
+        lab.textContent = inc && st.err ? st.err : inc && st.below ? 'below min ' + x[1] + ' (override)' : 'min ' + x[1];
+      });
+    });
+    var v4ok = validIpv4Prefix(state.v4), v6ok = validIpv6Prefix(state.v6);
+    $('v4').className = 'wide' + (v4ok ? (state.v4 !== OLD_V4 ? ' chg' : '') : ' err');
+    $('v6').className = 'wide' + (v6ok ? (state.v6 !== OLD_V6 ? ' chg' : '') : ' err');
+    $('v4note').textContent = v4ok ? 'was ' + OLD_V4 + '. Private ranges only: 10.x, 172.16 to 172.31, 192.168' : 'Not a private two-octet block. The default is used';
+    $('v6note').textContent = v6ok ? 'was ' + OLD_V6 : 'Use a unique local prefix ending in ::. The default is used';
+    $('addrpreview').textContent = 'Example: segment 10 is ' + m.ipv4_prefix + '.10.0/24, the gateway is ' + m.ipv4_prefix + '.10.1 and ' + m.ipv6_prefix + 'a01, and the first service host is ' + m.ipv4_prefix + '.10.10 and ' + m.ipv6_prefix + 'a0a.';
+    $('stats').innerHTML = [[tt.n, 'machines'], [tt.cpu, 'vCPU'], [(tt.mem / 1024) + ' GB', 'memory'], [tt.disk + ' GB', 'disk, thin']].map(function (s) { return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
+    var tabs = document.querySelectorAll('#tabs button');
+    Array.prototype.forEach.call(tabs, function (b) { b.className = b.getAttribute('data-tab') === activeTab ? 'on' : ''; });
+    var body = '';
+    if (activeTab === 'command') body = '<pre>' + esc(commandText(m)) + '</pre>';
+    else if (activeTab === 'manifest') body = '<pre>' + esc(JSON.stringify(m, null, 2)) + '</pre>';
+    else if (activeTab === 'checklist') body = '<pre>' + esc(checklistText(m, v)) + '</pre>';
+    else if (activeTab === 'changes') body = '<pre>' + esc(changesText(m, v) || 'No changes from the Chapter 999 defaults.') + '</pre>';
+    else body = '<div class="diag"><img alt="Shared lab network diagram" src="../diagrams/lab-topology.svg" onerror="this.parentNode.innerHTML=\'<p class=small>The diagram is added when the site is built, so it appears on the published page and in the zip.</p>\'"></div><p class="small">This is the default lab. The generated zip includes the same picture.</p>';
+    $('tabbody').innerHTML = body;
+    var iss = '';
+    if (v.errors.length) iss += '<div class="note bad"><b>Refused changes (defaults kept)</b><ul>' + v.errors.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+    var notes = platformNotes().concat(v.warnings);
+    iss += '<div class="note warn"><b>Check before you run</b><ul>' + notes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+    $('issues').innerHTML = iss;
+    $('zipnote').textContent = '';
+    return { v: v, m: m };
+  }
+
+  function download(name, blob) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  function bind() {
+    document.addEventListener('click', function (ev) {
+      var t = ev.target.closest('[data-platform],[data-version],[data-tab]');
+      if (t) {
+        if (t.hasAttribute('data-platform')) {
+          state.platform = t.getAttribute('data-platform'); state.version = PLATFORMS[state.platform].defVersion;
+          resetParams(); renderPlatforms(); renderLicenses();
+        } else if (t.hasAttribute('data-version')) { state.version = t.getAttribute('data-version'); renderPlatforms(); renderLicenses(); }
+        else { activeTab = t.getAttribute('data-tab'); }
+        syncMachineInputs(); refresh();
+      }
+    });
+    document.addEventListener('input', function (ev) {
+      var t = ev.target;
+      if (t.hasAttribute('data-param')) {
+        state.params[t.getAttribute('data-param')] = t.type === 'checkbox' ? t.checked : t.value;
+      } else if (t.hasAttribute('data-vm')) {
+        var row = state.vms[t.getAttribute('data-vm')], f = t.getAttribute('data-f');
+        if (f === 'include' || f === 'override') row[f] = t.checked; else row[f] = t.value;
+      } else if (t.id === 'v4') { state.v4 = t.value.trim(); }
+      else if (t.id === 'v6') { state.v6 = t.value.trim(); }
+      else if (t.hasAttribute('data-lic')) { state.licRefs[t.getAttribute('data-lic')] = t.value; }
+      else return;
+      refresh();
+    });
+    $('copy').addEventListener('click', function () {
+      var r = refresh(), text = activeTab === 'manifest' ? JSON.stringify(r.m, null, 2) : activeTab === 'checklist' ? checklistText(r.m, r.v) : commandText(r.m);
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { $('zipnote').textContent = 'Copied.'; }, function () { $('zipnote').textContent = 'Copy failed. Select the text and copy it by hand.'; });
+    });
+    $('dlmanifest').addEventListener('click', function () {
+      var r = refresh(); download('lab201-vms.json', new Blob([JSON.stringify(r.m, null, 2) + '\n'], { type: 'application/json' }));
+    });
+    $('dlzip').addEventListener('click', function () {
+      $('zipnote').textContent = 'Building the zip...';
+      buildZip().then(function (z) {
+        download('lab201-build.zip', z.blob);
+        $('zipnote').textContent = z.missing.length ? 'The zip has ' + z.count + ' files. ' + z.missing.length + ' could not be fetched (see MISSING-FILES.txt in the zip). Open this page from the published site to include them.' : 'The zip has ' + z.count + ' files.';
+      });
+    });
+    $('save').addEventListener('click', function () {
+      download('lab-builder-choices.json', new Blob([JSON.stringify({ platform: state.platform, version: state.version, params: state.params, v4: state.v4, v6: state.v6, vms: state.vms, licRefs: state.licRefs }, null, 2)], { type: 'application/json' }));
+    });
+    $('load').addEventListener('click', function () { $('loadfile').click(); });
+    $('loadfile').addEventListener('change', function (ev) {
+      var f = ev.target.files[0]; if (!f) return;
+      f.text().then(function (txt) {
+        var s = JSON.parse(txt);
+        if (!PLATFORMS[s.platform]) throw new Error('Unknown platform');
+        state.platform = s.platform; state.version = String(s.version); state.params = s.params || {}; state.v4 = s.v4 || OLD_V4; state.v6 = s.v6 || OLD_V6;
+        Object.keys(state.vms).forEach(function (k) { if (s.vms && s.vms[k]) state.vms[k] = Object.assign(state.vms[k], s.vms[k]); });
+        state.licRefs = s.licRefs || {};
+        renderPlatforms(); renderLicenses(); renderMachines(); $('v4').value = state.v4; $('v6').value = state.v6; refresh();
+      }).catch(function () { $('zipnote').textContent = 'That file is not a Lab Builder choices file.'; });
+    });
+  }
+
+  function start() {
+    renderStatic(); renderPlatforms(); renderFlavors(); renderMachines(); renderLicenses();
+    $('v4').value = state.v4; $('v6').value = state.v6;
+    bind(); refresh();
+  }
+
+  /* ----------------------------------------------------------- self test */
+  function selftest() {
+    var out = [], fails = 0;
+    function ok(c, msg) { out.push((c ? 'PASS ' : 'FAIL ') + msg); if (!c) fails++; }
+    function reset() { resetVms(); state.platform = 'proxmox'; state.version = '8'; state.v4 = OLD_V4; state.v6 = OLD_V6; resetParams(); }
+    reset();
+    var v = validateAll(), m = buildManifest(v);
+    ok(m.vms.length === 12 && v.errors.length === 0, 'default build has 12 machines and no errors');
+    ok(JSON.stringify(m.vms.map(function (x) { return [x.name, x.vcpu, x.memory_mb, x.disk_gb]; })) === JSON.stringify(BASE.vms.map(function (x) { return [x.name, x.vcpu, x.memory_mb, x.disk_gb]; })), 'default sizes match the manifest');
+    var t = totals(m);
+    ok(t.cpu === 17 && t.mem === 22016 && t.disk === 248, 'default totals are 17 vCPU, 21.5 GB, 248 GB');
+    state.vms['svc-201b'].mem = '1';
+    v = validateAll(); m = buildManifest(v);
+    ok(v.rows['svc-201b'].mem.err && m.vms.filter(function (x) { return x.name === 'svc-201b'; })[0].memory_mb === 4096, 'memory below the minimum is refused and the default stays');
+    state.vms['svc-201b'].override = true;
+    v = validateAll(); m = buildManifest(v);
+    ok(!v.rows['svc-201b'].mem.err && m.vms.filter(function (x) { return x.name === 'svc-201b'; })[0].memory_mb === 1024, 'Override allows a value below the minimum');
+    ok(v.warnings.some(function (w) { return w.indexOf('svc-201b') === 0; }), 'Override raises a warning');
+    reset();
+    state.vms['gw-201'].name = 'edge-fw';
+    v = validateAll(); m = buildManifest(v);
+    ok(m.vms[0].name === 'edge-fw' && m.vms[0].role === 'gateway', 'the gateway can be renamed and keeps its role');
+    state.vms['svc-201a'].name = 'Svc_A';
+    v = validateAll();
+    ok(v.rows['svc-201a'].name.err && v.names['svc-201a'] === 'svc-201a', 'an invalid name is refused and the default stays');
+    state.vms['svc-201a'].name = 'edge-fw';
+    v = validateAll();
+    ok(v.rows['svc-201a'].name.err || v.rows['gw-201'].name.err, 'a duplicate name is refused');
+    reset();
+    state.v4 = '10.77'; state.v6 = 'fd12:3456:789a::';
+    v = validateAll(); m = buildManifest(v);
+    var allStr = JSON.stringify(m);
+    ok(v.errors.length === 0 && allStr.indexOf('"10.201.') < 0 && allStr.indexOf('10.77.10.10/24') > 0 && m.ipv6_prefix === 'fd12:3456:789a::', 'a new address block rewrites every IPv4 address');
+    state.v4 = '8.8'; v = validateAll(); m = buildManifest(v);
+    ok(v.errors.length === 1 && m.ipv4_prefix === OLD_V4, 'a public block is refused and the default stays');
+    state.v4 = '172.20'; ok(validIpv4Prefix('172.20') && !validIpv4Prefix('172.40') && validIpv4Prefix('192.168') && !validIpv4Prefix('192.169'), 'private block check');
+    reset();
+    state.platform = 'wsl'; state.version = '2'; resetParams();
+    v = validateAll(); m = buildManifest(v);
+    ok(m.vms.length === 8 && m.vms.every(function (x) { return x.wsl; }), 'WSL builds only the eight WSL hosts');
+    reset();
+    state.vms['rtr-peer-2'].include = false;
+    v = validateAll(); m = buildManifest(v);
+    ok(m.vms.length === 11 && v.warnings.some(function (w) { return w.indexOf('Routing peers') === 0; }), 'a machine can be left out, with a warning for the peers');
+    state.vms['gw-201'].include = false;
+    ok(buildManifest(validateAll()).vms[0].role === 'gateway', 'the gateway cannot be left out');
+    reset();
+    state.params.key = '~/.ssh/my key.pub';
+    ok(commandText(buildManifest(validateAll())).indexOf("--ssh-key '~/.ssh/my key.pub'") > 0, 'values with spaces are quoted');
+    state.platform = 'vcenter'; state.version = '9'; resetParams();
+    var cmd = commandText(buildManifest(validateAll()));
+    ok(cmd.indexOf('-VsphereVersion 9') > 0 && cmd.indexOf('-WhatIf') > 0 && cmd.indexOf('<VCENTER>') > 0, 'vCenter 9 command has the version, the preview flag, and placeholders');
+    var z = makeZip([{ path: 'a/b.txt', bytes: new TextEncoder().encode('hello') }]);
+    ok(z.size === 30 + 7 + 5 + 46 + 7 + 22, 'zip size is as expected for one stored file');
+    ok(crc32(new TextEncoder().encode('123456789')) === 0xCBF43926, 'CRC-32 check value');
+    reset();
+    return { fails: fails, text: out.join('\n') };
+  }
+
+  function uitest() {
+    var out = [], fails = 0;
+    function ok(c, msg) { out.push((c ? 'PASS ' : 'FAIL ') + 'UI: ' + msg); if (!c) fails++; }
+    function type(sel, value) { var el = document.querySelector(sel); el.value = value; el.dispatchEvent(new Event('input', { bubbles: true })); return el; }
+    function stat(i) { return document.querySelectorAll('#stats .stat b')[i].textContent; }
+    resetVms(); state.platform = 'vcenter'; state.version = '8'; resetParams(); state.v4 = OLD_V4; state.v6 = OLD_V6;
+    renderPlatforms(); renderMachines(); renderLicenses(); $('v4').value = state.v4; $('v6').value = state.v6; refresh();
+    ok(stat(0) === '12' && stat(1) === '17', 'the page starts with 12 machines and 17 vCPUs');
+    var mem = type('input[data-vm="svc-201b"][data-f="mem"]', '1');
+    ok(/err/.test(mem.className) && stat(2) === '21.5 GB', 'typing a memory size below the minimum shows an error and keeps the total');
+    document.querySelector('input[data-vm="svc-201b"][data-f="override"]').click();
+    ok(!/err/.test(document.querySelector('input[data-vm="svc-201b"][data-f="mem"]').className) && stat(2) === '18.5 GB', 'ticking Override accepts it and lowers the total');
+    var nm = type('input[data-vm="static-2"][data-f="name"]', 'Static_2');
+    ok(/err/.test(nm.className), 'an invalid name is marked');
+    type('input[data-vm="static-2"][data-f="name"]', 'edge-host');
+    ok(!/err/.test(document.querySelector('input[data-vm="static-2"][data-f="name"]').className), 'a valid name is accepted');
+    document.querySelector('[data-tab="manifest"]').click();
+    ok(document.getElementById('tabbody').textContent.indexOf('"edge-host"') > 0, 'the manifest tab shows the new name');
+    type('#v4', '10.77');
+    ok(document.getElementById('tabbody').textContent.indexOf('10.77.10.10/24') > 0, 'a new IPv4 block appears in the manifest');
+    document.querySelector('[data-platform="wsl"]').click();
+    ok(stat(0) === '8', 'choosing WSL leaves eight machines');
+    document.querySelector('[data-tab="command"]').click();
+    ok(document.getElementById('tabbody').textContent.indexOf('Deploy-Lab201-Wsl.ps1') > 0, 'the command names the WSL script');
+    document.querySelector('[data-platform="esxi"]').click();
+    document.querySelector('[data-version="9"]').click();
+    ok(document.getElementById('tabbody').textContent.indexOf('-VsphereVersion 9') > 0, 'choosing ESXi 9 changes the command');
+    ok(document.querySelectorAll('#platforms button[disabled]').length === 2, 'the planned platforms are disabled');
+    ok(document.querySelectorAll('#flavors button[disabled]').length === 13, 'every flavor except Ubuntu 24.04 is disabled');
+    type('input[data-lic="esx"]', 'password manager: lab ESXi');
+    document.querySelector('[data-tab="checklist"]').click();
+    ok(document.getElementById('tabbody').textContent.indexOf('password manager: lab ESXi') > 0, 'a license note reaches the checklist');
+    return { fails: fails, text: out.join('\n') };
+  }
+
+  function boot() {
+    start();
+    if (/[?&]selftest=1/.test(location.search)) {
+      var r = selftest();
+      var ui = uitest();
+      r.fails += ui.fails; r.text += '\n' + ui.text;
+      resetVms(); state.platform = 'vcenter'; state.version = '8'; resetParams(); state.v4 = OLD_V4; state.v6 = OLD_V6;
+      renderPlatforms(); renderMachines(); renderLicenses(); $('v4').value = state.v4; $('v6').value = state.v6; refresh();
+      var zb = makeZip([{ path: 'lab201-build/a.txt', bytes: new TextEncoder().encode('hello') }, { path: 'lab201-build/run.sh', bytes: new TextEncoder().encode('#!/bin/sh\necho hi\n') }, { path: 'lab201-build/é.txt', bytes: new Uint8Array(0) }]);
+      zb.arrayBuffer().then(function (ab) { var u = new Uint8Array(ab), bin = ''; for (var i = 0; i < u.length; i++) bin += String.fromCharCode(u[i]); document.getElementById('selftest').setAttribute('data-zip', btoa(bin)); });
+      var el = $('selftest'); el.hidden = false; el.textContent = 'SELFTEST ' + (r.fails ? 'FAILED ' + r.fails : 'PASSED') + '\n' + r.text;
+      document.title = 'selftest ' + (r.fails ? 'FAILED' : 'PASSED');
+    }
+  }
+  if (/[?&]ziptest=1/.test(location.search)) {
+    buildZip().then(function (z) { document.title = 'ziptest ' + z.count + ' files, missing ' + z.missing.join(',') ; z.blob.arrayBuffer().then(function (ab) { var u = new Uint8Array(ab), bin = ''; for (var i = 0; i < u.length; i++) bin += String.fromCharCode(u[i]); document.getElementById('selftest').hidden = false; document.getElementById('selftest').setAttribute('data-zip', btoa(bin)); }); });
+  }
+  boot();
+})();
+</script>
+</body>
+</html>

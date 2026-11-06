@@ -1,6 +1,6 @@
 {
   "lab": "lab201",
-  "description": "Virtual machines of the Volume CCI shared lab (Chapter 999). IPv6 addresses are derived from the IPv4 addresses: fd00:db8:201::<third octet><fourth octet> in hexadecimal.",
+  "description": "Virtual machines of the Volume CCI shared lab (Chapter 999). IPv6 addresses are derived from the IPv4 addresses: fd00:db8:201::<third octet><fourth octet> in hexadecimal. Each machine has a proposed minimum size (min), which the Lab Builder enforces unless a machine is marked override. The minimums are proposals that still need a test build.",
   "image": {
     "release": "noble",
     "base_url": "https://cloud-images.ubuntu.com/noble/current/",
@@ -11,140 +11,535 @@
   },
   "admin_user": "labadmin",
   "mac_prefix": "00:50:56:2d",
+  "ipv4_prefix": "10.201",
+  "ipv6_prefix": "fd00:db8:201::",
   "networks": [
-    { "name": "lab201-wan",   "kind": "uplink",   "note": "Internet-facing network. gw-201 uses it for its uplink, and every VM has a build NIC on it for package installs. Remove the build NICs when the build is done." },
-    { "name": "lab201-oob",   "kind": "uplink",   "note": "Segment 0. Connect its uplink to the switches' management ports." },
-    { "name": "lab201-t1",    "kind": "trunk",    "note": "Trunk T1 to sw-648f-1. Carries VLANs 10, 20, 30, 40, 41, 42, 50 and links L1 and L2." },
-    { "name": "lab201-t2",    "kind": "trunk",    "note": "Trunk T2 to sw-2048f-1. Carries links L3 and L4. gw-201 bridges T1 and T2 so one set of .1 gateway addresses serves both switches." },
-    { "name": "lab201-lan220","kind": "internal", "note": "Segment 220 behind rtr-peer-1. No uplink." }
+    {
+      "name": "lab201-wan",
+      "kind": "uplink",
+      "note": "Internet-facing network. gw-201 uses it for its uplink, and every VM has a build NIC on it for package installs. Remove the build NICs when the build is done."
+    },
+    {
+      "name": "lab201-oob",
+      "kind": "uplink",
+      "note": "Segment 0. Connect its uplink to the switches' management ports."
+    },
+    {
+      "name": "lab201-t1",
+      "kind": "trunk",
+      "note": "Trunk T1 to sw-648f-1. Carries VLANs 10, 20, 30, 40, 41, 42, 50 and links L1 and L2."
+    },
+    {
+      "name": "lab201-t2",
+      "kind": "trunk",
+      "note": "Trunk T2 to sw-2048f-1. Carries links L3 and L4. gw-201 bridges T1 and T2 so one set of .1 gateway addresses serves both switches."
+    },
+    {
+      "name": "lab201-lan220",
+      "kind": "internal",
+      "note": "Segment 220 behind rtr-peer-1. No uplink."
+    }
   ],
   "vms": [
     {
-      "name": "gw-201", "role": "gateway", "vcpu": 2, "memory_mb": 2048, "disk_gb": 20,
-      "packages": ["nftables"],
-      "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-oob", "ipv4": ["10.201.0.1/24"] },
-        { "net": "lab201-t1", "trunk": true },
-        { "net": "lab201-t2", "trunk": true }
+      "name": "gw-201",
+      "role": "gateway",
+      "vcpu": 2,
+      "memory_mb": 2048,
+      "disk_gb": 20,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 10
+      },
+      "packages": [
+        "nftables"
       ],
-      "bridge_trunks": { "name": "br-trunk", "ports": ["lab201-t1", "lab201-t2"],
-        "vlans": [10, 20, 30, 40, 41, 42, 50] },
+      "nics": [
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-oob",
+          "ipv4": [
+            "10.201.0.1/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "trunk": true
+        },
+        {
+          "net": "lab201-t2",
+          "trunk": true
+        }
+      ],
+      "bridge_trunks": {
+        "name": "br-trunk",
+        "ports": [
+          "lab201-t1",
+          "lab201-t2"
+        ],
+        "vlans": [
+          10,
+          20,
+          30,
+          40,
+          41,
+          42,
+          50
+        ]
+      },
       "forwarding": true
     },
     {
-      "name": "svc-201a", "wsl": true, "role": "services", "vcpu": 2, "memory_mb": 4096, "disk_gb": 40,
-      "packages": ["chrony", "rsyslog", "rsyslog-gnutls", "freeradius", "snmp", "snmptrapd"],
+      "name": "svc-201a",
+      "wsl": true,
+      "role": "services",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "chrony",
+        "rsyslog",
+        "rsyslog-gnutls",
+        "freeradius",
+        "snmp",
+        "snmptrapd"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 10,
-          "ipv4": ["10.201.10.10/24", "10.201.10.12/24", "10.201.10.20/24", "10.201.10.30/24", "10.201.10.40/24"],
-          "gateway4": "10.201.10.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.10/24",
+            "10.201.10.12/24",
+            "10.201.10.20/24",
+            "10.201.10.30/24",
+            "10.201.10.40/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
       ]
     },
     {
-      "name": "svc-201b", "wsl": true, "role": "services", "vcpu": 2, "memory_mb": 4096, "disk_gb": 40,
-      "packages": ["chrony", "rsyslog", "rsyslog-gnutls", "freeradius", "openssh-server", "tftpd-hpa", "nfdump", "sflowtool"],
+      "name": "svc-201b",
+      "wsl": true,
+      "role": "services",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "chrony",
+        "rsyslog",
+        "rsyslog-gnutls",
+        "freeradius",
+        "openssh-server",
+        "tftpd-hpa",
+        "nfdump",
+        "sflowtool"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 10,
-          "ipv4": ["10.201.10.11/24", "10.201.10.21/24", "10.201.10.31/24", "10.201.10.50/24", "10.201.10.60/24"],
-          "gateway4": "10.201.10.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.11/24",
+            "10.201.10.21/24",
+            "10.201.10.31/24",
+            "10.201.10.50/24",
+            "10.201.10.60/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
       ]
     },
     {
-      "name": "ca-201", "wsl": true, "role": "certificate authority", "vcpu": 1, "memory_mb": 1024, "disk_gb": 16,
-      "packages": ["openssl"],
+      "name": "ca-201",
+      "wsl": true,
+      "role": "certificate authority",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "openssl"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 10, "ipv4": ["10.201.10.70/24"], "gateway4": "10.201.10.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.70/24"
+          ],
+          "gateway4": "10.201.10.1"
+        }
       ]
     },
     {
-      "name": "dhcp-201", "wsl": true, "role": "DHCP server", "vcpu": 1, "memory_mb": 1024, "disk_gb": 16,
-      "packages": ["kea-dhcp4-server"],
+      "name": "dhcp-201",
+      "wsl": true,
+      "role": "DHCP server",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "kea-dhcp4-server"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 10, "ipv4": ["10.201.10.80/24"], "gateway4": "10.201.10.1" },
-        { "net": "lab201-t1", "vlan": 40, "ipv4": ["10.201.40.2/24"] },
-        { "net": "lab201-t1", "vlan": 41, "ipv4": ["10.201.41.2/24"] },
-        { "net": "lab201-t1", "vlan": 50, "ipv4": ["10.201.50.2/24"] }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 10,
+          "ipv4": [
+            "10.201.10.80/24"
+          ],
+          "gateway4": "10.201.10.1"
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 40,
+          "ipv4": [
+            "10.201.40.2/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 41,
+          "ipv4": [
+            "10.201.41.2/24"
+          ]
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 50,
+          "ipv4": [
+            "10.201.50.2/24"
+          ]
+        }
       ]
     },
     {
-      "name": "admin-201", "wsl": true, "role": "administrator workstation", "vcpu": 2, "memory_mb": 4096, "disk_gb": 40,
-      "packages": ["tcpdump", "nmap", "snmp", "freeradius-utils", "openssh-client", "curl", "jq"],
+      "name": "admin-201",
+      "wsl": true,
+      "role": "administrator workstation",
+      "vcpu": 2,
+      "memory_mb": 4096,
+      "disk_gb": 40,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 2048,
+        "disk_gb": 20
+      },
+      "packages": [
+        "tcpdump",
+        "nmap",
+        "snmp",
+        "freeradius-utils",
+        "openssh-client",
+        "curl",
+        "jq"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 20, "ipv4": ["10.201.20.10/24"], "gateway4": "10.201.20.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 20,
+          "ipv4": [
+            "10.201.20.10/24"
+          ],
+          "gateway4": "10.201.20.1"
+        }
       ]
     },
     {
-      "name": "rtr-peer-1", "role": "routing peer 1 (AS 65202)", "vcpu": 1, "memory_mb": 1024, "disk_gb": 16,
-      "packages": ["frr"],
+      "name": "rtr-peer-1",
+      "role": "routing peer 1 (AS 65202)",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "frr"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 2001, "ipv4": ["10.201.200.1/31"] },
-        { "net": "lab201-t2", "vlan": 2003, "ipv4": ["10.201.200.5/31"] },
-        { "net": "lab201-lan220", "ipv4": ["10.201.220.1/24"] }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 2001,
+          "ipv4": [
+            "10.201.200.1/31"
+          ]
+        },
+        {
+          "net": "lab201-t2",
+          "vlan": 2003,
+          "ipv4": [
+            "10.201.200.5/31"
+          ]
+        },
+        {
+          "net": "lab201-lan220",
+          "ipv4": [
+            "10.201.220.1/24"
+          ]
+        }
       ],
       "dummies": [
-        { "name": "loop0", "ipv4": ["10.201.250.21/32"] },
-        { "name": "stub0", "ipv4": ["10.201.210.1/24"] }
+        {
+          "name": "loop0",
+          "ipv4": [
+            "10.201.250.21/32"
+          ]
+        },
+        {
+          "name": "stub0",
+          "ipv4": [
+            "10.201.210.1/24"
+          ]
+        }
       ],
       "forwarding": true
     },
     {
-      "name": "rtr-peer-2", "role": "routing peer 2 (AS 65203)", "vcpu": 1, "memory_mb": 1024, "disk_gb": 16,
-      "packages": ["frr"],
+      "name": "rtr-peer-2",
+      "role": "routing peer 2 (AS 65203)",
+      "vcpu": 1,
+      "memory_mb": 1024,
+      "disk_gb": 16,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 8
+      },
+      "packages": [
+        "frr"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 2002, "ipv4": ["10.201.200.3/31"] },
-        { "net": "lab201-t2", "vlan": 2004, "ipv4": ["10.201.200.7/31"] }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 2002,
+          "ipv4": [
+            "10.201.200.3/31"
+          ]
+        },
+        {
+          "net": "lab201-t2",
+          "vlan": 2004,
+          "ipv4": [
+            "10.201.200.7/31"
+          ]
+        }
       ],
       "dummies": [
-        { "name": "loop0", "ipv4": ["10.201.250.22/32"] },
-        { "name": "stub0", "ipv4": ["10.201.211.1/24"] }
+        {
+          "name": "loop0",
+          "ipv4": [
+            "10.201.250.22/32"
+          ]
+        },
+        {
+          "name": "stub0",
+          "ipv4": [
+            "10.201.211.1/24"
+          ]
+        }
       ],
       "forwarding": true
     },
     {
-      "name": "mcast-src-201", "role": "multicast source", "vcpu": 1, "memory_mb": 512, "disk_gb": 8,
-      "packages": ["iperf3", "smcroute"],
+      "name": "mcast-src-201",
+      "role": "multicast source",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "iperf3",
+        "smcroute"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-lan220", "ipv4": ["10.201.220.10/24"], "gateway4": "10.201.220.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-lan220",
+          "ipv4": [
+            "10.201.220.10/24"
+          ],
+          "gateway4": "10.201.220.1"
+        }
       ]
     },
     {
-      "name": "static-1", "wsl": true, "role": "static host", "vcpu": 1, "memory_mb": 512, "disk_gb": 8,
-      "packages": ["tcpdump", "arping"],
+      "name": "static-1",
+      "wsl": true,
+      "role": "static host",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "tcpdump",
+        "arping"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 42, "ipv4": ["10.201.42.10/24"], "gateway4": "10.201.42.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.10/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
       ]
     },
     {
-      "name": "static-2", "wsl": true, "role": "static host", "vcpu": 1, "memory_mb": 512, "disk_gb": 8,
-      "packages": ["tcpdump", "arping"],
+      "name": "static-2",
+      "wsl": true,
+      "role": "static host",
+      "vcpu": 1,
+      "memory_mb": 512,
+      "disk_gb": 8,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 4
+      },
+      "packages": [
+        "tcpdump",
+        "arping"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 42, "ipv4": ["10.201.42.11/24"], "gateway4": "10.201.42.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.11/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
       ]
     },
     {
-      "name": "attacker-201", "wsl": true, "role": "spoofing and flooding test host", "vcpu": 2, "memory_mb": 2048, "disk_gb": 20,
-      "packages": ["tcpdump", "hping3", "nmap", "python3-scapy", "arping", "dhcpdump", "yersinia"],
+      "name": "attacker-201",
+      "wsl": true,
+      "role": "spoofing and flooding test host",
+      "vcpu": 2,
+      "memory_mb": 2048,
+      "disk_gb": 20,
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 1024,
+        "disk_gb": 10
+      },
+      "packages": [
+        "tcpdump",
+        "hping3",
+        "nmap",
+        "python3-scapy",
+        "arping",
+        "dhcpdump",
+        "yersinia"
+      ],
       "nics": [
-        { "net": "lab201-wan", "build": true },
-        { "net": "lab201-t1", "vlan": 42, "ipv4": ["10.201.42.200/24"], "gateway4": "10.201.42.1" }
+        {
+          "net": "lab201-wan",
+          "build": true
+        },
+        {
+          "net": "lab201-t1",
+          "vlan": 42,
+          "ipv4": [
+            "10.201.42.200/24"
+          ],
+          "gateway4": "10.201.42.1"
+        }
       ]
     }
   ],
   "not_automated": [
-    { "name": "fgt-201", "reason": "A FortiGate-VM image comes from Fortinet under a license and cannot be downloaded by a script. Chapter 999 lets gw-201 be a Linux router instead." },
-    { "name": "og-201", "reason": "The OpenGear console server is hardware (Chapter 08)." },
-    { "name": "oob-admin-201", "reason": "A break-glass laptop, not a virtual machine (Chapter 08)." },
-    { "name": "vx-host-a, vx-host-b", "reason": "VXLAN tenant hosts attach to switch ports, so they are physical endpoints." }
+    {
+      "name": "fgt-201",
+      "reason": "A FortiGate-VM image comes from Fortinet under a license and cannot be downloaded by a script. Chapter 999 lets gw-201 be a Linux router instead."
+    },
+    {
+      "name": "og-201",
+      "reason": "The OpenGear console server is hardware (Chapter 08)."
+    },
+    {
+      "name": "oob-admin-201",
+      "reason": "A break-glass laptop, not a virtual machine (Chapter 08)."
+    },
+    {
+      "name": "vx-host-a, vx-host-b",
+      "reason": "VXLAN tenant hosts attach to switch ports, so they are physical endpoints."
+    }
   ]
 }

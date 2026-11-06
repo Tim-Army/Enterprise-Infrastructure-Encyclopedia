@@ -48,6 +48,11 @@ fi
 
 python3 scripts/python/check_internal_links.py || fail=1
 
+# The Lab Builder page carries a copy of the lab manifest. It must match lab201-vms.json.
+if [[ -f scripts/python/sync_lab_builder.py ]]; then
+  python3 scripts/python/sync_lab_builder.py --check || fail=1
+fi
+
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
   pnpm exec markdownlint-cli2 "**/*.md" || fail=1
   pnpm exec cspell lint --no-progress "**/*.md" || fail=1

@@ -88,7 +88,7 @@ try {
   }
 
   if ($Action -eq 'Status') {
-    Get-VM -Server $server -Name 'gw-201', 'svc-*', 'ca-201', 'dhcp-201', 'admin-201', 'rtr-peer-*', 'mcast-src-201', 'static-*', 'attacker-201' -ErrorAction SilentlyContinue |
+    Get-VM -Server $server -Name $lab.vms.name -ErrorAction SilentlyContinue |
       Select-Object Name, PowerState, NumCpu, MemoryGB, @{n = 'IPs'; e = { $_.Guest.IPAddress -join ' ' } } | Format-Table -AutoSize
     return
   }
@@ -187,7 +187,8 @@ try {
   Remove-PSDrive -Name lab201ds -ErrorAction SilentlyContinue
 
   # Power on the gateway first, then the rest.
-  $order = @('gw-201') + ($lab.vms.name | Where-Object { $_ -ne 'gw-201' })
+  $gwName = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
+  $order = @($gwName) + ($lab.vms.name | Where-Object { $_ -ne $gwName })
   foreach ($name in $order) {
     $vm = Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue
     if ($vm -and $vm.PowerState -ne 'PoweredOn' -and $PSCmdlet.ShouldProcess($name, 'Power on')) { Start-VM -VM $vm | Out-Null }
