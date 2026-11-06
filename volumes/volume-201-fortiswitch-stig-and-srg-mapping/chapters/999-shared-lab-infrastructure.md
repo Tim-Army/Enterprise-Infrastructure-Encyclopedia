@@ -384,6 +384,13 @@ Placeholders used below: `<SECRET>` is a value you generate for this lab.
 names; read them with `get switch interface status` and write them in your
 lab notes before you start.
 
+**Automated build.** [Chapters 09 to 13](09-esxi-7-and-8-lab-virtual-machine-automation.md)
+script the creation of the virtual machines below (not their service
+configuration) on ESXi, vCenter, Workstation Pro, Proxmox VE, and WSL. They give
+each machine its name, addresses, and packages, and `gw-201` its VLAN interfaces
+and the baseline policy of this lab, so you can skip the netplan and `nftables`
+steps of Lab 999.1 for the gateway if you use them.
+
 ### Lab 999.1 — Build the gateway and the VLANs
 
 Goal: a gateway that holds `.1` on every shared segment, routes between them,

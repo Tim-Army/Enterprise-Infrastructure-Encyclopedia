@@ -11,3 +11,6 @@ dist/
 .cache/
 temp/
 imports/
+
+# Output of the lab automation scripts (Volume CCI)
+volumes/*/lab-scripts/**/work/

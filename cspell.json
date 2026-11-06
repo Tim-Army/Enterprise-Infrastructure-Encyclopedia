@@ -5340,7 +5340,21 @@
     "fortiav",
     "FAIS",
     "FSAC",
-    "FSAP"
+    "FSAP",
+    "cidata",
+    "pycdlib",
+    "vmrun",
+    "vmnet",
+    "vmnets",
+    "vdiskmanager",
+    "nogui",
+    "cicustom",
+    "USERPROFILE",
+    "wslconfig",
+    "yersinia",
+    "xorriso",
+    "smcroute",
+    "dhcpdump"
   ],
   "ignorePaths": [
     "node_modules/**",

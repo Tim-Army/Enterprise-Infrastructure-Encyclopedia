@@ -241,6 +241,72 @@ suggested. The lessons apply to any chapter written without the device in hand.
   reference list now shows when each article was last published, so a reader
   can judge which statement to trust.
 
+### Chapters 09 to 13 and the lab scripts
+
+On 2026-11-06 the volume gained five chapters that automate building the
+Chapter 999 virtual machines: VMware ESXi 7 and 8 (Chapter 09), VMware vCenter 7
+and 8 (Chapter 10), VMware Workstation Pro for Windows (Chapter 11), Proxmox VE
+(Chapter 12), and WSL (Chapter 13). The scripts are in the volume's
+`lab-scripts/` folder, and the site build publishes them. Each build writes the
+folder and a zip, `volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip`,
+under `downloads/<volume>/`, with a `SHA256SUMS` file, through
+`scripts/python/package_lab_scripts.py`. The volume's portal page and README link
+to the zip, and each chapter links to the files it uses.
+
+The design choices that the five chapters share:
+
+- **One manifest, derived IPv6.** `common/lab201-vms.json` lists twelve machines
+  and only their IPv4 addresses. `common/make-seed.py` derives each IPv6 address
+  (`fd00:db8:201::` plus the third and fourth octets in hexadecimal). The
+  derived addresses were compared with the Chapter 999 host table: all 30
+  addresses that table lists match, and the seven it does not list (the peer
+  link ends, the stub networks, and segment 220) follow the same rule.
+- **Fixed MAC addresses.** Every adapter has `00:50:56:2d:<machine>:<adapter>`, a
+  range both VMware products accept for manual addresses, and the seed matches
+  adapters by MAC address, so interface names never matter.
+- **A build adapter instead of masquerading.** Each machine has a DHCP adapter
+  on a WAN network so cloud-init can install packages, and a script action
+  removes it. Machines such as `rtr-peer-1` have no route to the internet
+  through `gw-201`, so masquerading would not have reached them.
+- **The gateway bridges the two trunks.** Chapter 999 draws two trunks and one
+  gateway holding `.1` on every segment. An ESXi virtual switch cannot join two
+  uplinks, so `gw-201` makes a Linux bridge of its two trunk adapters and puts
+  the VLAN interfaces on it. The same design runs on all platforms.
+- **Tagging follows the platform.** ESXi, vCenter, and Proxmox tag in the
+  switch, Workstation and WSL tag in the guest, and `make-seed.py --tagging`
+  renders either.
+- **Not automated.** `fgt-201` needs a Fortinet-licensed image, and `og-201`,
+  `oob-admin-201`, `vx-host-a`, and `vx-host-b` are hardware or laptops.
+
+What was and was not tested. No script was run against a hypervisor, because
+none was available. These checks ran: the PowerShell scripts parse without
+errors; `shellcheck` and `bash -n` pass for the Proxmox script and the
+generated WSL provisioning scripts; the seed files for all twelve machines are
+valid YAML, and a seed ISO read back with the label `cidata` and Joliet names
+`user-data`, `meta-data`, and `network-config`; the Workstation `.vmx`
+rewriting ran on a sample file; the Proxmox machine and adapter planning ran as a
+dry run against stubs; and the Ubuntu image name, its checksum lookup, and the
+WSL image selection ran against Canonical's sites. Every chapter's Lab
+Verification block is pending.
+
+Lessons from this work:
+
+- **Test the download code, not just its syntax.** `Invoke-WebRequest` returned
+  the `SHA256SUMS` file as a byte array, so a comparison written against text
+  would have failed every download. Running the checksum lookup against the real
+  site caught it before publishing, and all four scripts now decode the bytes.
+- **Check a URL before you write it into a manifest.** The first WSL image URL
+  returned 404. Canonical publishes the WSL image as a `.wsl` file under
+  `releases.ubuntu.com`, with its sum in the same folder, so the script now finds
+  the newest one by pattern.
+- **Say what a platform cannot do.** WSL shares one kernel and one network
+  namespace, so it cannot build the gateway or the peers, and a second FreeRADIUS
+  collides with the first on its port. Writing that into Chapter 13 is more
+  useful than a script that appears to build everything.
+- **Describe vendor licensing from the vendor's own article.** The free ESXi
+  license makes the host API read-only, which makes PowerCLI unusable on it. That
+  is a hard limit and belongs at the top of Chapter 09.
+
 ### The Word and PDF downloads
 
 Each build of the site also writes the whole volume as a Word file and a PDF to

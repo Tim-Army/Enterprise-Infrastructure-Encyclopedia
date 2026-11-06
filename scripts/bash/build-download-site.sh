@@ -48,6 +48,16 @@ if [[ -d output/downloads ]]; then
   cp -R output/downloads "$output/downloads"
 fi
 
+# Lab automation scripts. A volume that keeps a lab-scripts folder gets it
+# published as plain files plus one zip at
+# downloads/<volume>/lab-scripts/ and downloads/<volume>/<volume>-lab-scripts.zip.
+for scripts_dir in volumes/*/lab-scripts; do
+  [[ -d "$scripts_dir" ]] || continue
+  vol="$(basename "$(dirname "$scripts_dir")")"
+  mkdir -p "$output/downloads/$vol"
+  python3 scripts/python/package_lab_scripts.py "$scripts_dir" "$output/downloads/$vol" "$vol-lab-scripts.zip"
+done
+
 # Self-contained interactive companion pages (searchable/sortable catalogs
 # and the like). These are hand-authored, fully offline HTML — served as-is
 # alongside the Pandoc output and linked from the portal and their volume.
@@ -149,6 +159,9 @@ for volume_dir in volumes/*/; do
     fi
     if [[ -f "$output/downloads/$slug/$slug.pdf" ]]; then
       echo "<li><a href=\"../../downloads/$slug/$slug.pdf\">Download this volume (PDF)</a></li>"
+    fi
+    if [[ -f "$output/downloads/$slug/$slug-lab-scripts.zip" ]]; then
+      echo "<li><a href=\"../../downloads/$slug/$slug-lab-scripts.zip\">Download the lab automation scripts (.zip)</a></li>"
     fi
     echo "</ul>"
     echo "<h2>Chapters</h2>"
