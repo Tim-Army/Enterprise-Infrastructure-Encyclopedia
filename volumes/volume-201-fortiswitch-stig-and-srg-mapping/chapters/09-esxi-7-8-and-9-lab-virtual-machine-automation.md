@@ -188,7 +188,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 
 ### Lab 9.1: Preview the build
 
-1. Download and unpack the lab-scripts zip. Open PowerShell in the `esxi` folder.
+1. Download and unpack the lab-scripts zip. Open PowerShell in the `esxi` folder. If you want to change machine names or sizes, leave machines out, or move the lab to another address block, open the Lab Builder first (`builder/lab-builder.html` on the published site), choose ESXi and your version, and download its zip. It gives you a manifest to put in `common/` and the command to use in the next step.
 2. Run the script with `-WhatIf` and read every line it prints:
 
    ```powershell
