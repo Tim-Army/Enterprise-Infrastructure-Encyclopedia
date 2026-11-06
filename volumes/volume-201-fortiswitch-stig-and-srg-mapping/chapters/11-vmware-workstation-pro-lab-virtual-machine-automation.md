@@ -12,7 +12,7 @@
 
 ### What Workstation changes
 
-The twelve machines, their addresses, and their cloud-init seeds are the same as in [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md). Read the machine table and the seed description there. Workstation differs in three ways.
+The twelve machines, their addresses, and their cloud-init seeds are the same as in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md). Read the machine table and the seed description there. Workstation differs in three ways.
 
 1. **No VLAN-aware switch.** An ESXi port group, a Proxmox VLAN-aware bridge, and a vSphere distributed port group all add and remove VLAN tags for a machine. A Workstation virtual network (a *vmnet*) is a plain Layer 2 switch with no VLAN setting. The **guests** therefore create the VLAN interfaces themselves. The script renders the seeds with `--tagging guest`, so `svc-201a`'s adapter on trunk T1 gets a netplan VLAN interface (`nic1v10`) for VLAN 10, and the adapter itself carries tagged frames.
 2. **Bridged networks reach the cable.** A vmnet bridged to a physical Windows adapter connects the machines to that adapter's cable. Each trunk is one vmnet bridged to the adapter that cables to a switch.
@@ -34,7 +34,7 @@ Create these in the Virtual Network Editor (Edit, Virtual Network Editor, then *
 
 ### A caution about VLAN tags on Windows
 
-For a trunk to work, 802.1Q tags must pass between the guest, the vmnet, the Windows adapter's driver, and the cable. Many Windows network drivers remove or block tags, and a driver setting (often called *Priority & VLAN*, or a registry value that stops VLAN stripping) controls it. This book has not tested which adapters pass tags, so treat the trunks as unproven until you run the test in Lab 11.2. If no adapter you own passes tags, use a USB or PCIe adapter whose driver does, or build the lab on [Chapter 12](12-proxmox-ve-lab-virtual-machine-automation.md) or [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md).
+For a trunk to work, 802.1Q tags must pass between the guest, the vmnet, the Windows adapter's driver, and the cable. Many Windows network drivers remove or block tags, and a driver setting (often called *Priority & VLAN*, or a registry value that stops VLAN stripping) controls it. This book has not tested which adapters pass tags, so treat the trunks as unproven until you run the test in Lab 11.2. If no adapter you own passes tags, use a USB or PCIe adapter whose driver does, or build the lab on [Chapter 12](12-proxmox-ve-lab-virtual-machine-automation.md) or [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md).
 
 ### Workstation versions
 
@@ -108,7 +108,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 - Broadcom, [VMware Workstation Pro 25H2 release information](https://www.neowin.net/amp/vmware-workstation-pro-25h2-is-out-with-new-command-line-tool-usb-32-support-and-more/) (a news summary; check Broadcom's release notes for the exact tools included).
 - Broadcom, OVF Tool documentation.
 - Canonical, [Ubuntu cloud images](https://cloud-images.ubuntu.com/noble/current/).
-- [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md) for the manifest and seeds, [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
+- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest and seeds, [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
 
 **Knowledge checks:**
 

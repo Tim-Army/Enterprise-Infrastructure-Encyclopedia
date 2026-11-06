@@ -6159,11 +6159,11 @@ volumes:
         title: "Chapter 08: OpenGear IM7216-2-DAC-LMV Console Server (Firmware 5.5.3) and Optional Console Lab"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/08-opengear-im7216-console-server-and-optional-console-lab.md
       - id: 09
-        title: "Chapter 09: Automating the Lab Virtual Machines on VMware ESXi 7 and 8"
-        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/09-esxi-7-and-8-lab-virtual-machine-automation.md
+        title: "Chapter 09: Automating the Lab Virtual Machines on VMware ESXi 7, 8, and 9"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md
       - id: 10
-        title: "Chapter 10: Automating the Lab Virtual Machines Through VMware vCenter 7 and 8"
-        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/10-vcenter-7-and-8-lab-virtual-machine-automation.md
+        title: "Chapter 10: Automating the Lab Virtual Machines Through VMware vCenter 7, 8, and 9"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/10-vcenter-7-8-and-9-lab-virtual-machine-automation.md
       - id: 11
         title: "Chapter 11: Automating the Lab Virtual Machines in VMware Workstation Pro for Windows"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/11-vmware-workstation-pro-lab-virtual-machine-automation.md

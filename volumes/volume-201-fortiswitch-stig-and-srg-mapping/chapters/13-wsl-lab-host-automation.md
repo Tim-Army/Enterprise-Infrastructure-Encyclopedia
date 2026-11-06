@@ -24,7 +24,7 @@ This rules out most of the lab and keeps a useful part.
 | `gw-201` | No | A gateway needs separate interfaces and a firewall of its own, and the shared namespace has neither |
 | `rtr-peer-1`, `rtr-peer-2`, `mcast-src-201` | No | They need routed links to the hardware switches, and WSL cannot carry an 802.1Q trunk to a switch |
 
-The manifest marks the eight built hosts with `"wsl": true`. Everything else in [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md)'s machine table needs another platform.
+The manifest marks the eight built hosts with `"wsl": true`. Everything else in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)'s machine table needs another platform.
 
 ### What it is good for
 
@@ -120,7 +120,7 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 - Microsoft Learn, Windows Subsystem for Linux: basic commands (`wsl --import`, `--terminate`, `--unregister`), the `wsl.conf` and `.wslconfig` settings, and accessing network applications and networking modes.
 - Canonical, [Ubuntu 24.04 releases](https://releases.ubuntu.com/noble/), for the `.wsl` image and `SHA256SUMS`.
 - GitHub, microsoft/WSL issue tracker, for the reports of problems with bridged and mirrored networking.
-- [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md) for the manifest, and [Chapter 999](999-shared-lab-infrastructure.md), Lab 999.2, for the service configuration the hosts are for.
+- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest, and [Chapter 999](999-shared-lab-infrastructure.md), Lab 999.2, for the service configuration the hosts are for.
 
 **Knowledge checks:**
 

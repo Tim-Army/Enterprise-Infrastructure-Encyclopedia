@@ -6,8 +6,8 @@ explains it, and all of them read the same manifest.
 
 | Folder | Platform | Chapter | Run it with |
 | --- | --- | --- | --- |
-| `esxi/` | VMware ESXi 7 and 8, standalone host | 09 | PowerShell and PowerCLI |
-| `vcenter/` | VMware vCenter Server 7 and 8 | 10 | PowerShell and PowerCLI |
+| `esxi/` | VMware ESXi 7, 8, and 9, standalone host | 09 | PowerShell and PowerCLI |
+| `vcenter/` | VMware vCenter Server 7, 8, and 9 | 10 | PowerShell and PowerCLI |
 | `workstation/` | VMware Workstation Pro for Windows | 11 | PowerShell |
 | `proxmox/` | Proxmox VE 8.1 or later | 12 | Bash, as root on the node |
 | `wsl/` | WSL 2 on Windows 11 (service hosts only) | 13 | PowerShell |

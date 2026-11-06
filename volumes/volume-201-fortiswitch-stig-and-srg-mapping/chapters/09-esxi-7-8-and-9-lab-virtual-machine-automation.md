@@ -1,11 +1,11 @@
-# Chapter 09: Automating the Lab Virtual Machines on VMware ESXi 7 and 8
+# Chapter 09: Automating the Lab Virtual Machines on VMware ESXi 7, 8, and 9
 
 ## Learning Objectives
 
 - Name the twelve virtual machines of the Chapter 999 lab, the network each one attaches to, and the cloud-init seed that gives each its hostname, addresses, and packages.
-- Build the virtual switches and port groups the lab needs on a standalone ESXi 7 or ESXi 8 host, including the trunk port groups that `gw-201` bridges.
+- Build the virtual switches and port groups the lab needs on a standalone ESXi 7, 8, or 9 host, including the trunk port groups that `gw-201` bridges.
 - Run `Deploy-Lab201-Esxi.ps1` against an ESXi host, check each machine, remove the build network adapters, and take the `baseline-201` snapshots.
-- Say which differences between ESXi 7 and ESXi 8 change the script's behavior: the virtual hardware version, the license that allows API writes, and the support status.
+- Say which differences between ESXi 7, 8, and 9 change the script's behavior: the virtual hardware version, the license that allows API writes, and the support status.
 - Recognize the cases where the script cannot work (free license, missing uplinks) and what to do instead.
 
 ## Theory and Architecture
@@ -58,24 +58,25 @@ Chapter 999 shows two trunks, T1 to `sw-648f-1` and T2 to `sw-2048f-1`, and a ga
 
 A bridge inside a guest sees frames whose source MAC address is not its own. ESXi rejects those unless the port group allows them, so the script sets **promiscuous mode, forged transmits, and MAC address changes** to *accept* on the two trunk virtual switches, and nowhere else.
 
-### ESXi 7 and ESXi 8
+### ESXi 7, 8, and 9
 
-The same script runs against both. The differences it handles, and the ones it cannot, are these.
+The same script runs against all three. The differences it handles, and the ones it cannot, are these.
 
-| Item | ESXi 7.0 | ESXi 8.0 |
-| --- | --- | --- |
-| Virtual hardware version the script sets | `vmx-19` (7.0 U2 and later; `vmx-17` on older builds) | `vmx-20` (8.0 and U1), `vmx-21` (8.0 U2 and U3) |
-| Support status | End of general support was 2 October 2025, so it receives no new fixes | Supported |
-| Free license | Broadcom's free-hypervisor article does not cover ESXi 7 | ESXi 8.0 U3e returned as a free hypervisor (2025); its license makes the API read-only |
-| `-VsphereVersion` check | The host must report `7.*` | The host must report `8.*` |
+| Item | ESXi 7.0 | ESXi 8.0 | ESXi 9.0 |
+| --- | --- | --- | --- |
+| Virtual hardware version the script sets | `vmx-19` (7.0 U2 and later; `vmx-17` on older builds) | `vmx-20` (8.0 and U1), `vmx-21` (8.0 U2 and U3) | `vmx-22` |
+| Support status | End of general support was 2 October 2025, so it receives no new fixes | Supported | Current release (general availability June 2025) |
+| Free license | Broadcom's free-hypervisor article does not cover ESXi 7 | ESXi 8.0 U3e returned as a free hypervisor (2025); its license makes the API read-only | None. Sources report no free ESXi 9, and vSphere 9 is sold only inside vSphere Foundation and Cloud Foundation |
+| `-VsphereVersion` check | The host must report `7.*` | The host must report `8.*` | The host must report `9.*` |
+| PowerCLI | 13.3 | 13.3 | The release that supports vSphere 9 (Broadcom now calls the product VCF PowerCLI) |
 
-Pass `-HardwareVersion` to override the choice, for example to keep machines at `vmx-19` so an ESXi 7 host can still run them. A machine at a higher hardware version does not start on a host that does not support it.
+Hardware version 22 runs only on ESXi 9.0. Pass `-HardwareVersion` to override the choice, for example to keep machines at `vmx-19` so an ESXi 7 host can still run them. A machine at a higher hardware version does not start on a host that does not support it.
 
 **The license decides whether this script can work at all.** The free ESXi license allows only read-only API access. Broadcom's article on the free 8.0 U3e hypervisor says API use for host management "is not supported" and may return read-only information. PowerCLI makes its changes through that API, so on a free license the script stops at the first change with the message "Current license or ESXi version prohibits execution of the requested operation," which the script turns into a plain explanation. Use an evaluation license, a paid license, or a program license you hold. Otherwise follow the manifest by hand in the host client, or use [Chapter 12](12-proxmox-ve-lab-virtual-machine-automation.md) or [Chapter 11](11-vmware-workstation-pro-lab-virtual-machine-automation.md).
 
 ## Design Considerations
 
-- **One import for each machine.** A standalone ESXi host cannot clone a virtual machine through PowerCLI (cloning is a vCenter feature), so the script imports the OVA once for each machine. It downloads the OVA once and reuses the local copy, but ESXi still receives about 600 MB twelve times. [Chapter 10](10-vcenter-7-and-8-lab-virtual-machine-automation.md) imports it once and clones.
+- **One import for each machine.** A standalone ESXi host cannot clone a virtual machine through PowerCLI (cloning is a vCenter feature), so the script imports the OVA once for each machine. It downloads the OVA once and reuses the local copy, but ESXi still receives about 600 MB twelve times. [Chapter 10](10-vcenter-7-8-and-9-lab-virtual-machine-automation.md) imports it once and clones.
 - **Uplinks are yours to name.** A network without `-Trunk1Nic`, `-Trunk2Nic`, `-OobNic`, or `-WanNic` becomes an internal-only virtual switch and the script warns. That is useful for a dry run with no hardware switches, because the machines still start and cloud-init still runs on any network that has an uplink.
 - **Do not move the management uplink.** Give each network a spare physical NIC. Taking `vmnic0` away from the management virtual switch cuts off the host.
 - **Thin disks.** The script imports with thin provisioning, so the 248 GB maximum is not allocated up front. A datastore that cannot hold the maximum can still run the lab until the guests fill their disks.
@@ -131,7 +132,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 | Interface names do not matter, but an address is missing | The MAC address in the manifest and the adapter differ | Compare `ip link` with `Get-NetworkAdapter` output; the manifest MAC formula must match |
 | `gw-201` bridge passes no frames | Trunk port group security policy was not applied | Check promiscuous mode, forged transmits, and MAC changes are `Accept` on both trunk switches |
 | Packages missing | The build adapter had no DHCP lease | Check the `lab201-wan` uplink and DHCP; `cloud-init` logs are in `/var/log/cloud-init-output.log` |
-| The OVA import is very slow | One OVA upload for each machine | Import once, then clone: use [Chapter 10](10-vcenter-7-and-8-lab-virtual-machine-automation.md) if you have vCenter |
+| The OVA import is very slow | One OVA upload for each machine | Import once, then clone: use [Chapter 10](10-vcenter-7-8-and-9-lab-virtual-machine-automation.md) if you have vCenter |
 
 ## Security and Best Practices
 
@@ -148,6 +149,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 **References:**
 
 - Broadcom, [VMware ESXi 8.0 Update 3e now available as a Free Hypervisor](https://knowledge.broadcom.com/external/article/399823), for the license and the read-only API.
+- Broadcom, VMware Cloud Foundation 9.0 release information and the [StarWind overview of virtual hardware version 22](https://www.starwindsoftware.com/blog/vmware-virtual-hardware-version-22-vsphere-9/), for the vSphere 9 hardware version and its availability only through vSphere Foundation and Cloud Foundation. Confirm both against Broadcom's current pages.
 - Broadcom, [End of General Support for vSphere 7.0](https://knowledge.broadcom.com/external/article/415405/end-of-general-support-for-vsphere.html), for the 2 October 2025 date.
 - Broadcom, VMware PowerCLI downloads and release notes ([PowerCLI 13.3 release notes](https://docs.vmware.com/en/VMware-PowerCLI/latest/rn/powercli-133-release-notes.html)); the product is now also called VCF PowerCLI.
 - Broadcom, VMware Product Interoperability Matrix, to confirm which PowerCLI release supports your ESXi build, and the virtual hardware versions article, to confirm the version numbers above for your build.
@@ -165,7 +167,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 
 ## Hands-On Lab
 
-**Prerequisites.** An ESXi 7 or 8 host with a license that allows API writes, a datastore with 250 GB free (less if you accept thin disks filling slowly), up to four spare physical NICs for the uplinks (T1, T2, out-of-band, WAN), a Windows, macOS, or Linux computer with PowerShell 7, PowerCLI, Python 3.8 or later with `pip install pycdlib`, and an SSH key pair (`ssh-keygen -t ed25519`). Switch-side configuration (the trunk ports and VLANs) is Chapter 999, Lab 999.3 and later.
+**Prerequisites.** An ESXi 7, 8, or 9 host with a license that allows API writes, a datastore with 250 GB free (less if you accept thin disks filling slowly), up to four spare physical NICs for the uplinks (T1, T2, out-of-band, WAN), a Windows, macOS, or Linux computer with PowerShell 7, PowerCLI, Python 3.8 or later with `pip install pycdlib`, and an SSH key pair (`ssh-keygen -t ed25519`). Switch-side configuration (the trunk ports and VLANs) is Chapter 999, Lab 999.3 and later.
 
 ### Lab 9.1: Preview the build
 
@@ -215,7 +217,7 @@ Complete this sign-off once Labs 9.1 to 9.3 have been run end to end against a r
 
 ## Summary and Completion Checklist
 
-This chapter built the twelve lab machines on a standalone ESXi host from one manifest and one seed tool. The script creates a virtual switch for each trunk, bridges the trunks inside `gw-201`, gives every machine a fixed MAC address and a cloud-init seed, and handles the differences between ESXi 7 and 8 in the virtual hardware version. The free license makes the API read-only, so the script needs a license that allows writes.
+This chapter built the twelve lab machines on a standalone ESXi host from one manifest and one seed tool. The script creates a virtual switch for each trunk, bridges the trunks inside `gw-201`, gives every machine a fixed MAC address and a cloud-init seed, and handles the differences between ESXi 7, 8, and 9 in the virtual hardware version. The free license makes the API read-only, so the script needs a license that allows writes.
 
 - [ ] Can name the twelve machines and the networks each one uses.
 - [ ] Can explain why `gw-201` bridges the two trunks and why that needs promiscuous mode.

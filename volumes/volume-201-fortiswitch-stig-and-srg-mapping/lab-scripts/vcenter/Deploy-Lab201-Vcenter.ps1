@@ -9,7 +9,7 @@
   it, sets its hardware, network adapters, and cloud-init seed ISO, and powers
   it on.
 
-  Needs PowerShell 5.1 or 7, VMware PowerCLI 13 (Install-Module VMware.PowerCLI),
+  Needs PowerShell 5.1 or 7, PowerCLI (Install-Module VMware.PowerCLI; use the release that supports your vSphere version, 13.3 for 7 and 8, and Broadcom's newer VCF PowerCLI for 9),
   and Python 3 with pycdlib (pip install pycdlib) for the seed ISOs.
 
 .EXAMPLE
@@ -26,7 +26,7 @@ param(
   [string] $VMHostName,
   [string] $Datastore,
   [string] $FolderName = 'lab201',
-  [ValidateSet(7, 8)] [int] $VsphereVersion = 8,
+  [ValidateSet(7, 8, 9)] [int] $VsphereVersion = 8,
   [ValidateSet('Standard', 'Distributed')] [string] $NetworkType = 'Standard',
   [ValidateSet('Deploy', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
   [string[]] $SshKeyFile,
@@ -49,8 +49,9 @@ function Get-WebText {
 }
 
 function Get-DefaultHardwareVersion {
-  # vSphere 7.0 U2 and later: vmx-19. vSphere 8.0 and 8.0 U1: vmx-20. vSphere 8.0 U2 and U3: vmx-21.
+  # vSphere 7.0 U2 and later: vmx-19. vSphere 8.0 and 8.0 U1: vmx-20. vSphere 8.0 U2 and U3: vmx-21. vSphere 9.0: vmx-22.
   param([version] $HostVersion, [int] $Major)
+  if ($Major -eq 9) { return 'vmx-22' }
   if ($Major -eq 7) { if ($HostVersion -ge [version]'7.0.2') { return 'vmx-19' } else { return 'vmx-17' } }
   if ($HostVersion -ge [version]'8.0.2') { return 'vmx-21' } else { return 'vmx-20' }
 }
@@ -121,7 +122,7 @@ try {
   $vmhost = Get-VMHost -Server $server -Name $VMHostName -Location $dc
   $ds = Get-Datastore -Server $server -Name $Datastore -Location $dc
   if (-not $HardwareVersion) { $HardwareVersion = Get-DefaultHardwareVersion -HostVersion ([version]$vmhost.Version) -Major $VsphereVersion }
-  if (-not $VdsVersion) { $VdsVersion = if ($VsphereVersion -eq 7) { '7.0.3' } else { '8.0.0' } }
+  if (-not $VdsVersion) { $VdsVersion = switch ($VsphereVersion) { 7 { '7.0.3' } 8 { '8.0.0' } default { '9.0.0' } } }
   Write-Host "vCenter $($server.Version), host $($vmhost.Name) ESXi $($vmhost.Version), virtual hardware $HardwareVersion"
   New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
 

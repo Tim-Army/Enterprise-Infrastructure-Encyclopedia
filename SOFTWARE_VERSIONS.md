@@ -13,7 +13,7 @@ rewritten against a newer release, and record the date of the change.
 | DISA STIG and SRG content | 2026-10 quarterly release; STIG Viewer 3.x, SCAP Compliance Checker 5.x, OpenSCAP 1.3+ | 2026-10 |
 | VMware vSphere / ESXi / vCenter | vSphere 9.x | 2026-07 |
 | VMware NSX | NSX 4.x | 2026-07 |
-| Volume CCI lab automation (Chapters 09 to 13) | VMware ESXi and vCenter 7.0 and 8.0 (PowerCLI 13.3), VMware Workstation Pro 17 and 25H2, Proxmox VE 8.1 and later, WSL 2, Ubuntu Server 24.04 LTS cloud image | 2026-11 |
+| Volume CCI lab automation (Chapters 09 to 13) | VMware ESXi and vCenter 7.0, 8.0, and 9.0 (PowerCLI 13.3 for 7 and 8), VMware Workstation Pro 17 and 25H2, Proxmox VE 8.1 and later, WSL 2, Ubuntu Server 24.04 LTS cloud image | 2026-11 |
 | Cisco IOS XE | 17.x (Catalyst 9000 series) | 2026-07 |
 | Cisco Catalyst Center | Current SD-Access release | 2026-07 |
 | Cisco IOS XR (ASR 9000 / NCS) | 7.x | 2026-07 |

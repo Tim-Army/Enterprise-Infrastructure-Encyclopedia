@@ -1,8 +1,8 @@
-# Chapter 10: Automating the Lab Virtual Machines Through VMware vCenter 7 and 8
+# Chapter 10: Automating the Lab Virtual Machines Through VMware vCenter 7, 8, and 9
 
 ## Learning Objectives
 
-- Explain what vCenter adds to the build in [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md): templates and clones, folders, and distributed switches.
+- Explain what vCenter adds to the build in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md): templates and clones, folders, and distributed switches.
 - Choose between standard and distributed switches for the lab trunks, and set the distributed switch version that matches vCenter 7 or vCenter 8.
 - Run `Deploy-Lab201-Vcenter.ps1` against a vCenter Server, then check, adjust, and snapshot the twelve lab machines.
 - Keep the lab machines on the one host that owns the trunk NICs, and prevent a cluster from moving them.
@@ -12,7 +12,7 @@
 
 ### What changes when vCenter manages the host
 
-[Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md) builds the lab on a standalone host. The manifest, the machine list, the MAC addresses, the cloud-init seeds, and the gateway that bridges the two trunks are the same here, so this chapter covers only what vCenter changes. Read Chapter 09 first for those.
+[Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) builds the lab on a standalone host. The manifest, the machine list, the MAC addresses, the cloud-init seeds, and the gateway that bridges the two trunks are the same here, so this chapter covers only what vCenter changes. Read Chapter 09 first for those.
 
 | Item | Standalone ESXi (Chapter 09) | Through vCenter (this chapter) |
 | --- | --- | --- |
@@ -41,17 +41,19 @@ With `-NetworkType Distributed` it creates one distributed switch for each netwo
 | --- | --- | --- |
 | vCenter 7.0 | `7.0.3` | Supported by vCenter 7.0 U3 and ESXi 7.0 U3 hosts. Use `7.0.0` for an earlier update |
 | vCenter 8.0 | `8.0.0` | Works with every 8.0 update. Newer versions exist in later updates, so raise it only if you need a feature |
+| vCenter 9.0 | `9.0.0` | Version 9.0.0 needs ESX 9.0 hosts. Broadcom's article on distributed switch versions lists the features of each version |
 
 Pass `-VdsVersion` to override. A lower version is always safe, and a higher one than the hosts support fails at the `New-VDSwitch` step.
 
-### vCenter 7 and vCenter 8
+### vCenter 7, 8, and 9
 
-| Item | vCenter 7.0 | vCenter 8.0 |
-| --- | --- | --- |
-| `-VsphereVersion` check | vCenter must report `7.*` | vCenter must report `8.*` |
-| Virtual hardware version | `vmx-19` (7.0 U2 and later) | `vmx-20` (8.0 and U1), `vmx-21` (8.0 U2 and U3) |
-| Distributed switch version | `7.0.3` | `8.0.0` |
-| Support status | End of general support 2 October 2025 | Supported |
+| Item | vCenter 7.0 | vCenter 8.0 | vCenter 9.0 |
+| --- | --- | --- | --- |
+| `-VsphereVersion` check | vCenter must report `7.*` | vCenter must report `8.*` | vCenter must report `9.*` |
+| Virtual hardware version | `vmx-19` (7.0 U2 and later) | `vmx-20` (8.0 and U1), `vmx-21` (8.0 U2 and U3) | `vmx-22` |
+| Distributed switch version | `7.0.3` | `8.0.0` | `9.0.0` |
+| Support status | End of general support 2 October 2025 | Supported | Current release; licensed only through vSphere Foundation or Cloud Foundation |
+| PowerCLI | 13.3 | 13.3 | The release that supports vSphere 9 (VCF PowerCLI) |
 
 A vCenter of one major version can manage hosts of the previous version, so the script checks the **vCenter** version against `-VsphereVersion` and takes the hardware version from the **host** it deploys to. Do not mix: deploy ESXi 7 hosts under a vCenter 8 only if you pass a `-HardwareVersion` the host supports.
 
@@ -135,8 +137,9 @@ Everything in Chapter 09's security section applies. In addition:
 - Broadcom, [End of General Support for vSphere 7.0](https://knowledge.broadcom.com/external/article/415405/end-of-general-support-for-vsphere.html).
 - Broadcom, VMware PowerCLI documentation and [PowerCLI 13.3 release notes](https://docs.vmware.com/en/VMware-PowerCLI/latest/rn/powercli-133-release-notes.html); `New-VDSwitch`, `New-VDPortgroup`, `Import-VApp`, and `New-VM` cmdlet references.
 - Broadcom, VMware Product Interoperability Matrix, for the vCenter and ESXi combinations you run, and the virtual hardware versions article.
+- Broadcom, [VDS Improvements and Features per Version](https://knowledge.broadcom.com/external/article/416520), for the distributed switch versions through 9.0.0.
 - Broadcom, vSphere documentation on distributed switch versions and VLAN trunking on distributed port groups.
-- [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md) for the manifest, seeds, and gateway design, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab itself.
+- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest, seeds, and gateway design, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab itself.
 
 **Knowledge checks:**
 
@@ -148,7 +151,7 @@ Everything in Chapter 09's security section applies. In addition:
 
 ## Hands-On Lab
 
-**Prerequisites.** A vCenter Server 7 or 8, one ESXi host it manages with four spare physical NICs, a datastore with 250 GB free, the account and role described above, and the same client tools as Chapter 09 (PowerShell 7, PowerCLI, Python with `pycdlib`, an SSH key pair).
+**Prerequisites.** A vCenter Server 7, 8, or 9, one ESXi host it manages with four spare physical NICs, a datastore with 250 GB free, the account and role described above, and the same client tools as Chapter 09 (PowerShell 7, PowerCLI, Python with `pycdlib`, an SSH key pair).
 
 ### Lab 10.1: Preview the build
 
@@ -196,7 +199,7 @@ Complete this sign-off once Labs 10.1 to 10.3 have been run end to end under a r
 This chapter built the same twelve lab machines through vCenter. The script imports the cloud image once as a template, clones each machine into a `lab201` folder on the one host that owns the trunk NICs, and builds standard or distributed switches, with the distributed switch version matched to vCenter 7 or 8. The host-pinning rule matters more than the switch type, because a cluster that moves a machine breaks its trunk without an error.
 
 - [ ] Can say what vCenter adds to the Chapter 09 build.
-- [ ] Can choose standard or distributed switches and set the distributed switch version for vCenter 7 and 8.
+- [ ] Can choose standard or distributed switches and set the distributed switch version for vCenter 7, 8, and 9.
 - [ ] Has built the lab through vCenter and confirmed the machines stay on one host.
 - [ ] Has removed the build adapters and taken the `baseline-201` snapshots.
 - [ ] Can explain why vSphere 7's support status changes how the lab should be isolated.

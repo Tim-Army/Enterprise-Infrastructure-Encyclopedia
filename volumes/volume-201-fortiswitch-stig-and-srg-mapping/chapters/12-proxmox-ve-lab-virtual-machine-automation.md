@@ -12,7 +12,7 @@
 
 ### What is the same and what is different
 
-The twelve machines, their sizes, addresses, and cloud-init content are the same as in [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md), and the script reads the same manifest and uses the same seed tool. Proxmox VE differs in how it does the work.
+The twelve machines, their sizes, addresses, and cloud-init content are the same as in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md), and the script reads the same manifest and uses the same seed tool. Proxmox VE differs in how it does the work.
 
 | Item | VMware chapters | Proxmox VE |
 | --- | --- | --- |
@@ -156,7 +156,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 - Proxmox VE documentation, Network Configuration: Linux bridges, VLAN-aware bridges, and `ifreload`.
 - Canonical, [Ubuntu cloud images](https://cloud-images.ubuntu.com/noble/current/) (the qcow2 `.img` and `SHA256SUMS`).
 - Cloud-init documentation, NoCloud data source and network configuration version 2.
-- [Chapter 09](09-esxi-7-and-8-lab-virtual-machine-automation.md) for the manifest, seeds, and the gateway bridge, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
+- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest, seeds, and the gateway bridge, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
 
 **Knowledge checks:**
 

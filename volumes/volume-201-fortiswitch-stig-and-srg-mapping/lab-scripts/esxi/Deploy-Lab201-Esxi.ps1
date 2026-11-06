@@ -7,10 +7,12 @@
   imports the Ubuntu cloud image OVA once for each virtual machine, sets its
   hardware, network adapters, and cloud-init seed ISO, and powers it on.
 
-  Needs PowerShell 5.1 or 7, VMware PowerCLI 13 (Install-Module VMware.PowerCLI),
+  Needs PowerShell 5.1 or 7, PowerCLI (Install-Module VMware.PowerCLI; use the release that supports your vSphere version, 13.3 for 7 and 8, and Broadcom's newer VCF PowerCLI for 9),
   and Python 3 with pycdlib (pip install pycdlib) for the seed ISOs. The host
   needs a license that allows the API to write. The free ESXi license makes the
   API read-only, so this script stops with a clear message on that license.
+  ESXi 9 is licensed only through vSphere Foundation or Cloud Foundation and has no
+  free edition.
 
 .EXAMPLE
   .\Deploy-Lab201-Esxi.ps1 -EsxiHost esxi01.example.net -Datastore datastore1 `
@@ -25,7 +27,7 @@ param(
   [Parameter(Mandatory)] [string] $EsxiHost,
   [PSCredential] $Credential,
   [string] $Datastore,
-  [ValidateSet(7, 8)] [int] $VsphereVersion = 8,
+  [ValidateSet(7, 8, 9)] [int] $VsphereVersion = 8,
   [ValidateSet('Deploy', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
   [string[]] $SshKeyFile,
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
@@ -46,8 +48,9 @@ function Get-WebText {
 }
 
 function Get-DefaultHardwareVersion {
-  # ESXi 7.0 U2 and later: vmx-19. ESXi 8.0 and 8.0 U1: vmx-20. ESXi 8.0 U2 and U3: vmx-21.
+  # ESXi 7.0 U2 and later: vmx-19. ESXi 8.0 and 8.0 U1: vmx-20. ESXi 8.0 U2 and U3: vmx-21. ESXi 9.0: vmx-22.
   param([version] $HostVersion, [int] $Major)
+  if ($Major -eq 9) { return 'vmx-22' }
   if ($Major -eq 7) { if ($HostVersion -ge [version]'7.0.2') { return 'vmx-19' } else { return 'vmx-17' } }
   if ($HostVersion -ge [version]'8.0.2') { return 'vmx-21' } else { return 'vmx-20' }
 }

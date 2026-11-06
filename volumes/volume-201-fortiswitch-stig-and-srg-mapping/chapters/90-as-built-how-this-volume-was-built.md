@@ -244,7 +244,7 @@ suggested. The lessons apply to any chapter written without the device in hand.
 ### Chapters 09 to 13 and the lab scripts
 
 On 2026-11-06 the volume gained five chapters that automate building the
-Chapter 999 virtual machines: VMware ESXi 7 and 8 (Chapter 09), VMware vCenter 7
+Chapter 999 virtual machines: VMware ESXi 7, 8, and 9 (Chapter 09), VMware vCenter 7
 and 8 (Chapter 10), VMware Workstation Pro for Windows (Chapter 11), Proxmox VE
 (Chapter 12), and WSL (Chapter 13). The scripts are in the volume's
 `lab-scripts/` folder, and the site build publishes them. Each build writes the
