@@ -142,6 +142,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | A machine boots with the wrong network settings | A custom snippet was ignored or overridden | Compare `qm cloudinit dump` with the snippet; clear fields in the web interface's Cloud-Init tab |
 | `gw-201` passes no tagged frames | `trunks=` did not apply, or the bridge is not VLAN-aware | Run `bridge vlan show dev tap20101i2`; check the NIC line with `qm config 20101` |
 | The lab loops or floods | Both trunk NICs were put in one host bridge | Give each NIC its own bridge |
+| A machine has its lab addresses but never installs its packages, and the guest agent never starts | The build NIC has no DHCP or no internet. With the lab default route ahead of the build NIC's, a machine also sends package traffic to a gateway that is not built yet | Point `--bridge-wan` at a bridge with DHCP and internet (the host's management bridge works). The build NIC's default route has metric 50, so it wins until you remove it |
 
 ## Security and Best Practices
 
@@ -214,7 +215,7 @@ Run `./deploy-lab201-proxmox.sh --action remove`, delete the snippet files (`/va
 
 ## Lab Verification
 
-Complete this sign-off once Labs 12.1 to 12.3 have been run end to end on a real Proxmox VE node with a real switch trunk. Until then the script is unverified. It passes `shellcheck`, and its machine and adapter planning was run as a dry run against stubs, but it has not been run on a node. The `import-from` form, the `trunks=2-4094` range, and the interaction of `--cicustom` with the cloud-init drive are the first things to confirm.
+Complete this sign-off once Labs 12.1 to 12.3 have been run end to end on a real Proxmox VE node with a real switch trunk. One machine (`ca-201`) has been built, checked, and removed with the script on Proxmox VE 9.2.9. That test confirmed the `import-from` disk import, the `--cicustom` snippets, the cloud-init drive, the guest agent, the lab addresses (IPv4 and IPv6), and the `status`, `remove-build-nics`, and `remove` actions. It used the host's management bridge for the build NIC and an isolated bridge for the lab NIC, so it did not test the gateway, the `trunks=2-4094` range, VLANs on a real trunk, the other eleven machines, or any other flavor.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

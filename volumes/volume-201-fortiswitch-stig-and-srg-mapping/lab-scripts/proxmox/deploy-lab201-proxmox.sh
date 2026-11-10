@@ -132,13 +132,21 @@ case "$action" in
     done < <(plan)
     exit 0 ;;
   remove)
+    snip_dir="$(pvesm path "$snip_storage:snippets/probe" 2>/dev/null | sed 's#/probe$##')" || true
+    iso_dir="$(pvesm path "$iso_storage:iso/probe" 2>/dev/null | sed 's#/probe$##')" || true
     while IFS='|' read -r kind name idx _; do
       [[ "$kind" == VM ]] || continue
       id="$(vmid_of "$idx")"
-      qm status "$id" >/dev/null 2>&1 || continue
-      echo "Destroying $name ($id)"
-      run qm stop "$id" --skiplock 1 || true
-      run qm destroy "$id" --purge 1
+      if qm status "$id" >/dev/null 2>&1; then
+        echo "Destroying $name ($id)"
+        run qm stop "$id" --skiplock 1 || true
+        run qm destroy "$id" --purge 1
+      fi
+      # The files the deploy left behind: the cloud-init snippets and the ISO flavors' answer CD.
+      if [[ -n "${snip_dir:-}" ]]; then
+        for f in user network meta; do run rm -f "$snip_dir/lab201-$name-$f.yml"; done
+      fi
+      if [[ -n "${iso_dir:-}" ]]; then run rm -f "$iso_dir/lab201-$name-seed.iso"; fi
     done < <(plan)
     exit 0 ;;
   deploy) ;;

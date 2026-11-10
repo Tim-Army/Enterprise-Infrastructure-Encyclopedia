@@ -185,7 +185,7 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
                 "      set-name: %s" % name]
         if nic.get("build"):
             body += ["      dhcp4: true", "      dhcp6: false", "      accept-ra: false",
-                     "      dhcp4-overrides:", "        route-metric: 200"]
+                     "      dhcp4-overrides:", "        route-metric: 50"]
         elif nic.get("trunk"):
             body += ["      dhcp4: false", "      dhcp6: false", "      accept-ra: false", "      link-local: []"]
         else:
@@ -541,7 +541,7 @@ def mint_firstlogin(manifest, vm_index, vm, flavor, ssh_keys):
     for n, nic in enumerate(nic_plan(manifest, vm_index, vm)):
         con = "lab201-%d" % n
         if nic["build"]:
-            L.append("nmcli connection add type ethernet con-name %s ifname '*' 802-3-ethernet.mac-address %s ipv4.method auto ipv6.method disabled ipv4.route-metric 200" % (con, nic["mac"]))
+            L.append("nmcli connection add type ethernet con-name %s ifname '*' 802-3-ethernet.mac-address %s ipv4.method auto ipv6.method disabled ipv4.route-metric 50" % (con, nic["mac"]))
             continue
         v4 = ",".join(a for a in nic["addrs"] if ":" not in a)
         v6 = ",".join(a for a in nic["addrs"] if ":" in a)

@@ -353,6 +353,15 @@ Lessons from this work:
 - **Describe vendor licensing from the vendor's own article.** The free ESXi
   license makes the host API read-only, which makes PowerCLI unusable on it. That
   is a hard limit and belongs at the top of Chapter 09.
+- **Run the script on a real host, even for one machine.** The first Proxmox VE
+  test built `ca-201` and found two bugs that a dry run could not. The lab default
+  route (metric 100) was preferred over the build NIC's (metric 200), so first-boot
+  package installs went to a gateway that did not exist yet and the guest agent
+  never started. The build NIC's route now has metric 50. The `remove` action also
+  left the cloud-init snippets behind, and now deletes them. The same test showed
+  that a build NIC needs a bridge with DHCP and internet, and that the machine's
+  serial console cannot be read from a script, so SSH through the host is the way
+  to inspect a guest.
 
 ### The Word and PDF downloads
 
