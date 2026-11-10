@@ -36,6 +36,7 @@ param(
   [string] $HardwareVersion,
   [string] $LicenseFile,
   [hashtable] $FlavorImages = @{},
+  [hashtable] $IsoImages = @{},
   [switch] $SkipCertificateCheck
 )
 
@@ -112,6 +113,19 @@ function Set-LabVsphereLicense {
     }
   }
   catch { throw 'A vSphere license key was not accepted. Check the key and the license file.' }
+}
+
+function Get-IsoPath {
+  # Flavors that install from an ISO (Windows, Linux Mint, Tiny Core) need the ISO on a datastore, passed with -IsoImages.
+  param([string] $Id, [hashtable] $Supplied)
+  if ($Supplied -and $Supplied.ContainsKey($Id)) { return [string]$Supplied[$Id] }
+  throw "The flavor $Id installs from an ISO. Upload the ISO to a datastore and pass its path: -IsoImages @{ '$Id' = '[datastore] folder/file.iso' }."
+}
+
+function Get-IsoNicType {
+  param([string] $Id)
+  if ((Get-FlavorRecord $Id).family -eq 'windows') { return 'e1000e' }
+  return 'Vmxnet3'
 }
 
 function Get-DefaultHardwareVersion {
@@ -219,6 +233,7 @@ try {
   $imageOf = @{}
   foreach ($vmDef in $lab.vms) {
     $fid = Get-FlavorId $vmDef $lab
+    if ((Get-FlavorRecord $fid).iso) { $null = Get-IsoPath -Id $fid -Supplied $IsoImages; continue }
     if (-not $imageOf.ContainsKey($fid)) { $imageOf[$fid] = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages }
   }
   Set-LabVsphereLicense -Server $server -VmHost $vmhost -Path $LicenseFile -IsVcenter $false
@@ -239,16 +254,26 @@ try {
     if (-not $PSCmdlet.ShouldProcess($name, 'Import the cloud image and configure the virtual machine')) { continue }
     Write-Host "Creating $name"
     $fid = Get-FlavorId $vmDef $lab
-    $vm = Import-VApp -Source $imageOf[$fid] -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
-    Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
-    Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
+    $isIso = [bool](Get-FlavorRecord $fid).iso
+    if ($isIso) {
+      # An empty machine. The install ISO and the answer or first-login CD are attached below.
+      $vm = New-VM -Name $name -VMHost $vmhost -Datastore $ds -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -DiskGB $vmDef.disk_gb -DiskStorageFormat Thin -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion
+      $nicType = Get-IsoNicType $fid
+    }
+    else {
+      $vm = Import-VApp -Source $imageOf[$fid] -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
+      Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
+      Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
+      $nicType = 'Vmxnet3'
+    }
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false
     for ($n = 0; $n -lt $vmDef.nics.Count; $n++) {
-      New-NetworkAdapter -VM $vm -NetworkName (& $pgOf $vmDef.nics[$n]) -Type Vmxnet3 -MacAddress (& $macOf $name $n) -StartConnected | Out-Null
+      New-NetworkAdapter -VM $vm -NetworkName (& $pgOf $vmDef.nics[$n]) -Type $nicType -MacAddress (& $macOf $name $n) -StartConnected | Out-Null
     }
     $iso = Join-Path $seedDir "$name-seed.iso"
     Copy-DatastoreItem -Item $iso -Destination 'lab201ds:\lab201-seeds\' -Force
     Get-CDDrive -VM $vm | Remove-CDDrive -Confirm:$false
+    if ($isIso) { New-CDDrive -VM $vm -IsoPath (Get-IsoPath -Id $fid -Supplied $IsoImages) -StartConnected | Out-Null }
     New-CDDrive -VM $vm -IsoPath "[$($ds.Name)] lab201-seeds/$name-seed.iso" -StartConnected | Out-Null
   }
   Remove-PSDrive -Name lab201ds -ErrorAction SilentlyContinue

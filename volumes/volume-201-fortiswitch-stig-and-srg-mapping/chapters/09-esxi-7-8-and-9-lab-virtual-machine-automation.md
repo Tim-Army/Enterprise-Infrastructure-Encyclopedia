@@ -57,14 +57,14 @@ What you can change:
 
 - **Machines.** Leave any machine out (the gateway always stays), rename it, and change its vCPUs, memory, and disk. Each machine has a proposed minimum size, and a value below it is refused, with the default kept, unless you tick that machine's **Override** box. The minimums are the `min` values in the manifest. They are proposals, and each needs a test build before you rely on it.
 - **Names.** A name uses lowercase letters, digits, and hyphens, and must be unique. The scripts find the gateway by its `role`, not its name, so it can be renamed. Chapter 999 and the requirement labs use the default names, so keep a note of your renames.
-- **Linux flavors.** A default flavor for every Linux machine, and a flavor for each machine. A flavor that cannot run a machine type is left out of that machine's list, with a note that names what was left out. Planned flavors are listed and disabled. See *Linux flavors* below.
+- **Linux flavors.** A default flavor for every machine, and a flavor for each machine. A flavor that cannot run a machine type is left out of that machine's list, with a note that names what was left out. See *Linux flavors* below.
 - **Address block, VLANs, and addresses.** Move the lab to another private block (the first two octets of IPv4, and a unique local IPv6 prefix), give any of the seven shared segments another VLAN ID, and change a machine's address inside its own segment. The manifest holds the prefixes (`ipv4_prefix`, `ipv6_prefix`) and a map from each changed VLAN to its segment (`vlan_segments`). `make-seed.py` rewrites the addresses, the gateway's VLAN interfaces, and its firewall sets. The page refuses a VLAN that is reserved, used twice, or out of range, and an address that is outside its segment, used twice, or the gateway's `.1`. It writes a `CHANGES.md` that lists what to repeat on the switches.
 - **Platforms.** Each platform has its own settings. Dell VxRail uses the vCenter script with an existing distributed switch, no uplink changes, and one trunk (see [Chapter 10](10-vcenter-7-8-and-9-lab-virtual-machine-automation.md)). KVM uses [Chapter 14](14-kvm-libvirt-lab-virtual-machine-automation.md).
 - **Licensing.** The page lists the products your choices need a license for, says which ones the scripts apply, and writes a template for the license file. See *License keys* below. It does not accept keys.
 
-What is not there yet: Linux Mint, Tiny Core Linux, Windows 11, and Windows Server 2022 and 2025. They are listed as planned, each with its reason, and no script supports them.
+Every flavor is now built or buildable. Windows, Linux Mint, and Tiny Core install from an ISO you supply (see *ISO-based flavors* below), and a flavor's own minimum size can raise a machine's default size, as Windows 11 raises a small host to 4 GB and 64 GB.
 
-The page keeps its own copy of the manifest and the flavor catalog so that it works with no server. After you change `lab201-vms.json` or `flavors.json`, run `python scripts/python/sync_lab_builder.py` to copy them into the page. `validate.sh` fails if the copies differ. The page also has a self-test: add `?selftest=1` to its address, and it runs 64 checks of its logic and its controls, and shows the results at the bottom.
+The page keeps its own copy of the manifest and the flavor catalog so that it works with no server. After you change `lab201-vms.json` or `flavors.json`, run `python scripts/python/sync_lab_builder.py` to copy them into the page. `validate.sh` fails if the copies differ. The page also has a self-test: add `?selftest=1` to its address, and it runs 79 checks of its logic and its controls, and shows the results at the bottom.
 
 ### Linux flavors
 
@@ -80,9 +80,27 @@ Each machine can use its own Linux flavor. `flavors.json` lists them, and the ma
 | Red Hat Enterprise Linux 10 | Experimental | You download it (subscription needed) | Registered with an activation key and organization, if you give them |
 | Ubuntu 24.04 LTS, DoW STIG hardened | Experimental | The Ubuntu 24.04 image | Ubuntu Pro token; the seed runs the Ubuntu Security Guide's `disa_stig` fix and reboots once |
 | RHEL 10, DoW STIG hardened | Experimental | The RHEL 10 image | The seed runs `oscap` with the `stig` profile and reboots once |
-| Linux Mint 22, Tiny Core Linux, Windows 11, Windows Server 2022 and 2025 | Planned | None | No script support. Each has its reason in `flavors.json` |
+| Windows 11, Windows Server 2022 and 2025 | Experimental | An ISO you supply | Unattended install on Proxmox VE, ESXi, vCenter, and VxRail |
+| Linux Mint 22, Tiny Core Linux | Experimental | An ISO you supply | A person runs part of the install |
 
-**Experimental** means the seed is generated and passes its checks (valid YAML, the right packages, the right groups), but no machine has been built from it, so expect fixes on the first real build. The ratings of which machine types a flavor can run (`roles` in `flavors.json`) are proposals. The seed tool refuses a planned flavor, and refuses a machine type a flavor is rated `n` for, such as a hardened flavor for `attacker-201`.
+**Experimental** means the files are generated and pass their checks (valid YAML or XML, the right packages, the right groups, scripts that parse), but no machine has been built from them, so expect fixes on the first real build. The ratings of which machine types a flavor can run (`roles` in `flavors.json`) are proposals. The seed tool refuses a machine type a flavor is rated `n` for, such as a hardened flavor for `attacker-201`.
+
+### ISO-based flavors
+
+Windows 11, Windows Server 2022 and 2025, Linux Mint 22, and Tiny Core Linux have no cloud image, so they install from an ISO you supply. The platform script makes an empty machine, attaches the install ISO, and attaches a second CD (labeled `LAB201`) that `make-seed.py` fills for the flavor. They are available on Proxmox VE, ESXi, vCenter, and VxRail, where the hypervisor tags VLANs: a Windows guest cannot tag the trunks itself, so Workstation, KVM, and WSL do not offer them.
+
+| Flavor | What the second CD holds | What you still do |
+| --- | --- | --- |
+| Windows 11 | `autounattend.xml` and `lab201-setup.ps1` | Nothing during the install. Remove both CDs afterwards |
+| Windows Server 2022 and 2025 | The same | The same |
+| Linux Mint 22 | `lab201-firstlogin.sh` | Run the Mint installer, then run the script as `root` |
+| Tiny Core Linux | `lab201-tc.sh` | Boot the ISO, mount the second CD, and run the script |
+
+**Windows.** The answer file partitions the disk, picks the image by index (1 for Windows 11 and 2 for Windows Server, which is usually Standard with Desktop Experience on Microsoft's ISOs; check yours), sets the computer name, creates `labadmin` and the built-in administrator with the password from `LAB201_WINDOWS_ADMIN_PASSWORD`, and logs on once to run `lab201-setup.ps1`. That script sets each adapter's addresses by MAC address, allows ping, installs OpenSSH Server with your key, and, on Windows Server, installs the role that stands in for the lab service: Certificate Services as a standalone root CA for `ca-201`, and the DHCP role with a scope for each user segment for `dhcp-201`. The product key comes from the `windows` section of the license file. Microsoft's evaluation ISOs need none (90 days for Windows 11 Enterprise, 180 days for Windows Server). Windows 11 is installed with the TPM, Secure Boot, RAM, and CPU checks bypassed through registry values in the answer file, so no virtual TPM is needed. Microsoft does not support that. The disk uses a SATA controller and the adapters use the Intel e1000e model, because Windows has drivers for both, so no driver disk is needed. The admin password sits in the answer file, so remove the CD after the install.
+
+**Linux Mint and Tiny Core.** Mint's installer and Tiny Core's boot cannot be driven without a person, so the second CD holds a script that does the rest: set the name, the addresses (Mint with NetworkManager, Tiny Core with `ip`), your key and the tools. Tiny Core runs from memory, so save its changes with `filetool.sh -b` if you want them to last.
+
+The platform scripts take the ISO paths with `-IsoImages @{ 'win-2025' = '[datastore1] iso/Server2025.iso' }` (ESXi and vCenter, a path on a datastore) or `--iso win-2025=local:iso/Server2025.iso` (Proxmox VE, a storage volume). These flavors have the largest unknowns. Nothing here has installed on a real hypervisor, so expect first-run fixes, especially in the answer file's image selection and the first-logon timing.
 
 **Hardened flavors.** The STIG forbids passwordless `sudo`, so a hardened machine asks for a password, and the seed tool refuses to build one unless `LAB201_ADMIN_PASSWORD_HASH` is set (make a hash with `openssl passwd -6`). The machine reboots once after hardening, and `/root/LAB201-STIG-NOTES.txt` lists the findings the lab accepts because it needs the behavior: IP forwarding on the gateway and peers, and the services on the service hosts. Whether Ubuntu's `disa_stig` profile has shipped for 24.04 was not confirmed.
 
@@ -96,6 +114,7 @@ The scripts that can apply a license read it from a JSON file you keep on your o
 | --- | --- | --- |
 | `redhat` (`activation_key`, `org`) | The seed tool, on every platform except WSL | Registers a Red Hat machine on its first boot (cloud-init's subscription module) |
 | `ubuntu_pro` (`token`) | The seed tool | Attaches Ubuntu Pro on the hardened Ubuntu machines |
+| `windows` (`product_key`) | The seed tool, for the Windows flavors | Written into the answer file. Leave it out for an evaluation ISO |
 | `vsphere` (`esxi`, `vcenter`) | The ESXi and vCenter scripts | Adds the license and assigns it to the host and to vCenter |
 | `proxmox` (`subscription_key`) | The Proxmox script | Runs `pvesubscription set` |
 
@@ -169,6 +188,7 @@ Every action in step 3 and later honors `-WhatIf`.
 | `-SkipCertificateCheck` | Accept the host's self-signed certificate for this session. Use it only on a lab network. |
 | `-FlavorImages` | A hashtable of OVA paths for flavors that publish no OVA (`@{ 'debian-13' = 'C:\images\debian.ova' }`). |
 | `-LicenseFile` | The JSON license file (see *License keys*). |
+| `-IsoImages` | A hashtable of install ISO paths on a datastore, for the ISO-based flavors (`@{ 'win-2025' = '[datastore1] iso/Server2025.iso' }`). |
 
 ## Validation and Troubleshooting
 

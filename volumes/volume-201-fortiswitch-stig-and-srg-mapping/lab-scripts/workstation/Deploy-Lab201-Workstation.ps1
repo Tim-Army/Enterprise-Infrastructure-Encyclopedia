@@ -157,6 +157,12 @@ if ($Action -eq 'RemoveBuildNics') {
 if (-not $SshKeyFile) { throw '-SshKeyFile is required for -Action Deploy.' }
 New-Item -ItemType Directory -Force -Path $WorkDir, $VmRoot | Out-Null
 
+foreach ($vmDef in $lab.vms) {
+  if ((Get-FlavorRecord (Get-FlavorId $vmDef $lab)).iso) {
+    throw "$($vmDef.name) uses an ISO-based flavor (Windows, Linux Mint, or Tiny Core). Workstation has no VLAN-aware switch, and these guests cannot tag VLANs for the trunks. Use the Proxmox, ESXi, or vCenter script for them."
+  }
+}
+
 # One base machine for each image flavor in use (Ubuntu publishes OVAs; pass others with -FlavorImages).
 $baseOf = @{}
 foreach ($vmDef in $lab.vms) {

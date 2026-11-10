@@ -68,7 +68,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | `-SshKeyFile` | Public key files for `labadmin`. |
 | `-T1Vmnet`, `-T2Vmnet`, `-OobVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The vmnet for each lab network. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
-| `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. |
+| `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available here, because Workstation has no VLAN-aware switch and those guests cannot tag the trunks. |
 | `-Action` | `Deploy` (default), `Status`, `RemoveBuildNics`, or `Remove`. |
 
 `-WhatIf` is supported for every action that changes something.

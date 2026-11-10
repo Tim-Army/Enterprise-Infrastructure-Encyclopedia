@@ -30,6 +30,8 @@ dry_run=0
 ssh_keys=()
 license_file=""
 rhel_image=""
+iso_storage=local
+declare -A iso_vol
 
 usage() {
   cat <<EOF
@@ -43,6 +45,9 @@ Usage: $0 [options]
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (needed for rhel-10 flavors)
   --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro, Proxmox subscription)
+  --iso FLAVOR=VOLUME    the install ISO for a Windows, Linux Mint, or Tiny Core flavor, as a Proxmox volume
+                         (repeatable), for example win-2025=local:iso/Server2025.iso
+  --iso-storage NAME     storage with the "iso" content type for the answer-file CDs (default $iso_storage)
   --dry-run              print what would run
 EOF
 }
@@ -62,6 +67,8 @@ while [[ $# -gt 0 ]]; do
     --workdir) workdir="$2"; shift 2 ;;
     --rhel-image) rhel_image="$2"; shift 2 ;;
     --license-file) license_file="$2"; shift 2 ;;
+    --iso) iso_vol["${2%%=*}"]="${2#*=}"; shift 2 ;;
+    --iso-storage) iso_storage="$2"; shift 2 ;;
     --dry-run) dry_run=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
@@ -85,12 +92,15 @@ bridge_of() {
 
 # One line per VM and per NIC, in the order of the manifest.
 plan() {
-  python3 - "$manifest" <<'PY'
+  python3 - "$manifest" "$here/../common/flavors.json" <<'PY'
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
+fl = dict((f["id"], f) for f in json.load(open(sys.argv[2], encoding="utf-8"))["flavors"])
 for i, vm in enumerate(m["vms"]):
     flavor = vm.get("flavor") or m.get("default_flavor") or "ubuntu-24.04"
-    print("VM|%s|%d|%d|%d|%d|%s|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", ""), flavor))
+    f = fl[flavor]
+    print("VM|%s|%d|%d|%d|%d|%s|%s|%d|%s|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", ""), flavor,
+                                           1 if f.get("iso") else 0, f["family"], f.get("proxmox_ostype", "l26")))
     for n, nic in enumerate(vm["nics"]):
         mac = "%s:%02x:%02x" % (m["mac_prefix"], i + 1, n)
         print("NIC|%s|%d|%s|%s|%s|%s" % (vm["name"], n, nic["net"], nic.get("vlan", ""),
@@ -155,8 +165,14 @@ run mkdir -p "$snip_dir" "$workdir"
 # and checks it against the publisher's checksum. Hardened flavors use their base flavor's image.
 resolver="$here/../common/resolve-image.py"
 declare -A flavor_img
-while IFS='|' read -r kind _ _ _ _ _ _ flv; do
+any_iso=0
+while IFS='|' read -r kind _ _ _ _ _ _ flv isflag _; do
   [[ "$kind" == VM ]] || continue
+  if [[ "$isflag" == 1 ]]; then
+    any_iso=1
+    [[ -n "${iso_vol[$flv]:-}" ]] || { echo "$flv installs from an ISO. Pass --iso $flv=<volume>, for example $flv=local:iso/file.iso." >&2; exit 2; }
+    continue
+  fi
   [[ -z "${flavor_img[$flv]:-}" ]] || continue
   img_args=(--flavor "$flv" --out "$workdir/images")
   case "$flv" in
@@ -181,17 +197,42 @@ fi
 # Seeds.
 key_args=(); for key in "${ssh_keys[@]}"; do key_args+=(--ssh-key "$key"); done
 seed_args=(--manifest "$manifest" --out "$workdir/seeds" --tagging hypervisor --guest-agent qemu)
+iso_dir=""
+if [[ "$any_iso" == 1 ]]; then
+  seed_args+=(--iso)
+  iso_dir="$(pvesm path "$iso_storage:iso/probe" 2>/dev/null | sed 's#/probe$##')" || true
+  [[ -n "$iso_dir" ]] || { echo "Storage $iso_storage has no iso content type." >&2; exit 1; }
+fi
 [[ -z "$license_file" ]] || seed_args+=(--license-file "$license_file")
 run python3 "$seedtool" "${seed_args[@]}" "${key_args[@]}"
 
 # Machines.
-declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor
+declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor vm_iso vm_family vm_ostype
 nic_args=()
 current=""
+create_iso_vm() {
+  # A machine that installs from an ISO: an empty disk, the install ISO, and a CD with the answer file or first-login script.
+  local name="$1" id="$2" flv disk_opt boot
+  flv="${vm_flavor[$name]}"
+  echo "Creating $name ($id) from an ISO"
+  if [[ "${vm_family[$name]}" == windows ]]; then disk_opt=(--sata0 "$storage:${vm_disk[$name]}"); boot="order=sata0;ide2"
+  else disk_opt=(--scsi0 "$storage:${vm_disk[$name]}"); boot="order=scsi0;ide2"; fi
+  run cp "$workdir/seeds/$name-seed.iso" "$iso_dir/lab201-$name-seed.iso"
+  run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu x86-64-v2-AES \
+    --ostype "${vm_ostype[$name]}" --scsihw virtio-scsi-single "${nic_args[@]}" "${disk_opt[@]}"
+  run qm set "$id" --ide2 "${iso_vol[$flv]},media=cdrom" --ide3 "$iso_storage:iso/lab201-$name-seed.iso,media=cdrom" --boot "$boot"
+  case "${vm_family[$name]}" in
+    mint) echo "  $name: run the Linux Mint installer on its console, then run lab201-firstlogin.sh from the second CD as root." ;;
+    tce) echo "  $name: boot Tiny Core, mount the second CD, and run: sh lab201-tc.sh" ;;
+    windows) echo "  $name: Windows installs unattended and reboots. Remove both CDs when it has finished." ;;
+  esac
+}
+
 create_vm() {
   local name="$1" id
   id="$(vmid_of "${vm_idx[$name]}")"
   if qm status "$id" >/dev/null 2>&1; then echo "$name ($id) exists. Skipped."; return; fi
+  if [[ "${vm_iso[$name]}" == 1 ]]; then create_iso_vm "$name" "$id"; return; fi
   echo "Creating $name ($id)"
   local f src
   for f in user network meta; do
@@ -211,15 +252,17 @@ create_vm() {
 }
 
 gateway_name=""
-while IFS='|' read -r kind a b c d e f g; do
+nic_model=virtio
+while IFS='|' read -r kind a b c d e f g h i j; do
   if [[ "$kind" == VM ]]; then
     [[ -z "$current" ]] || create_vm "$current"
-    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; vm_flavor[$a]="$g"; nic_args=()
+    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; vm_flavor[$a]="$g"; vm_iso[$a]="$h"; vm_family[$a]="$i"; vm_ostype[$a]="$j"; nic_args=()
+    nic_model=virtio; [[ "$i" != windows ]] || nic_model=e1000e
     [[ "$f" != gateway ]] || gateway_name="$a"
   else
     # NIC|name|index|net|vlan|trunk|mac
     br="$(bridge_of "$c")"
-    opt="virtio=$f,bridge=$br,firewall=0"
+    opt="$nic_model=$f,bridge=$br,firewall=0"
     [[ -z "$d" ]] || opt="$opt,tag=$d"
     [[ "$e" != 1 ]] || opt="$opt,trunks=2-4094"
     nic_args+=("--net$b" "$opt")

@@ -45,6 +45,7 @@ param(
   [string] $VdsVersion,
   [string] $LicenseFile,
   [hashtable] $FlavorImages = @{},
+  [hashtable] $IsoImages = @{},
   [switch] $SkipCertificateCheck
 )
 
@@ -121,6 +122,19 @@ function Set-LabVsphereLicense {
     }
   }
   catch { throw 'A vSphere license key was not accepted. Check the key and the license file.' }
+}
+
+function Get-IsoPath {
+  # Flavors that install from an ISO (Windows, Linux Mint, Tiny Core) need the ISO on a datastore, passed with -IsoImages.
+  param([string] $Id, [hashtable] $Supplied)
+  if ($Supplied -and $Supplied.ContainsKey($Id)) { return [string]$Supplied[$Id] }
+  throw "The flavor $Id installs from an ISO. Upload the ISO to a datastore and pass its path: -IsoImages @{ '$Id' = '[datastore] folder/file.iso' }."
+}
+
+function Get-IsoNicType {
+  param([string] $Id)
+  if ((Get-FlavorRecord $Id).family -eq 'windows') { return 'e1000e' }
+  return 'Vmxnet3'
 }
 
 function Get-DefaultHardwareVersion {
@@ -289,6 +303,7 @@ try {
   $templateOf = @{}
   foreach ($vmDef in $lab.vms) {
     $fid = Get-FlavorId $vmDef $lab
+    if ((Get-FlavorRecord $fid).iso) { $null = Get-IsoPath -Id $fid -Supplied $IsoImages; continue }
     $imageId = Get-ImageFlavorId $fid
     if ($templateOf.ContainsKey($imageId)) { continue }
     $tplName = "lab201-$imageId-template"
@@ -316,23 +331,34 @@ try {
     if (Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue) { Write-Host "$name exists. Skipped."; continue }
     if (-not $PSCmdlet.ShouldProcess($name, 'Clone from the template and configure')) { continue }
     Write-Host "Creating $name"
-    $vm = New-VM -Name $name -Template $templateOf[(Get-ImageFlavorId (Get-FlavorId $vmDef $lab))] @placement -Datastore $ds -Location $folder -DiskStorageFormat Thin
-    Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -Confirm:$false | Out-Null
-    Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
+    $fid = Get-FlavorId $vmDef $lab
+    $isIso = [bool](Get-FlavorRecord $fid).iso
+    if ($isIso) {
+      # An empty machine. The install ISO and the answer or first-login CD are attached below.
+      $vm = New-VM -Name $name @placement -Datastore $ds -Location $folder -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -DiskGB $vmDef.disk_gb -DiskStorageFormat Thin -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion
+      $nicType = Get-IsoNicType $fid
+    }
+    else {
+      $vm = New-VM -Name $name -Template $templateOf[(Get-ImageFlavorId $fid)] @placement -Datastore $ds -Location $folder -DiskStorageFormat Thin
+      Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -Confirm:$false | Out-Null
+      Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
+      $nicType = 'Vmxnet3'
+    }
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false
     for ($n = 0; $n -lt $vmDef.nics.Count; $n++) {
       $pg = & $pgOf $vmDef.nics[$n]
       $mac = & $macOf $name $n
       if ($NetworkType -eq 'Standard') {
-        New-NetworkAdapter -VM $vm -NetworkName $pg -Type Vmxnet3 -MacAddress $mac -StartConnected | Out-Null
+        New-NetworkAdapter -VM $vm -NetworkName $pg -Type $nicType -MacAddress $mac -StartConnected | Out-Null
       }
       else {
         $vdpg = Get-VDPortgroup -Server $server -Name $pg
-        New-NetworkAdapter -VM $vm -Portgroup $vdpg -Type Vmxnet3 -MacAddress $mac -StartConnected | Out-Null
+        New-NetworkAdapter -VM $vm -Portgroup $vdpg -Type $nicType -MacAddress $mac -StartConnected | Out-Null
       }
     }
     Copy-DatastoreItem -Item (Join-Path $seedDir "$name-seed.iso") -Destination 'lab201ds:\lab201-seeds\' -Force
     Get-CDDrive -VM $vm | Remove-CDDrive -Confirm:$false
+    if ($isIso) { New-CDDrive -VM $vm -IsoPath (Get-IsoPath -Id $fid -Supplied $IsoImages) -StartConnected | Out-Null }
     New-CDDrive -VM $vm -IsoPath "[$($ds.Name)] lab201-seeds/$name-seed.iso" -StartConnected | Out-Null
   }
   Remove-PSDrive -Name lab201ds -ErrorAction SilentlyContinue

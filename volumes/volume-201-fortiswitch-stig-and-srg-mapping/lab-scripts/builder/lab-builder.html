@@ -97,7 +97,7 @@ details summary.small{margin-top:4px}
   <section id="left"></section>
   <aside class="right" id="right"></aside>
 </main>
-<footer>The scripts behind this page have not been run on real hosts, and the minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have a seed that is generated and checked, but no machine has been built from them. Planned flavors (Linux Mint, Tiny Core, Windows) have no script support.</footer>
+<footer>The scripts behind this page have not been run on real hosts, and the minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply, and Mint and Tiny Core still need a person to run part of the install.</footer>
 <div id="selftest" hidden></div>
 
 <script id="lab201-manifest" type="application/json">
@@ -650,7 +650,7 @@ details summary.small{margin-top:4px}
 
 <script id="lab201-flavors" type="application/json">
 {
-  "description": "Linux flavors the lab scripts know. status ready means a script can build it (experimental flavors are untested). roles rates each machine type: y works, x needs extra steps (another repository, an accepted STIG finding, or an image you supply), n is not offered. The ratings are proposals that need a test build.",
+  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but no machine has been built from them. iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
   "default": "ubuntu-24.04",
   "role_keys": [
     "gateway",
@@ -690,6 +690,26 @@ details summary.small{margin-top:4px}
         "python3-scapy",
         "frr"
       ]
+    },
+    "mint": {
+      "install": "apt",
+      "admin_group": "sudo",
+      "map": {}
+    },
+    "tce": {
+      "install": "tce",
+      "admin_group": "staff",
+      "map": {
+        "arping": "iputils",
+        "smcroute": null,
+        "qemu-guest-agent": null,
+        "open-vm-tools": "open-vm-tools"
+      }
+    },
+    "windows": {
+      "install": "windows",
+      "admin_group": "Administrators",
+      "map": {}
     }
   },
   "flavors": [
@@ -932,13 +952,12 @@ details summary.small{margin-top:4px}
     },
     {
       "id": "mint-22",
-      "guest_id": "otherLinux64Guest",
+      "guest_id": "ubuntu64Guest",
       "name": "Linux Mint 22",
       "short": "Mint 22",
-      "family": "apt",
-      "status": "planned",
-      "sub": "desktop, no cloud image, ISO install",
-      "why": "Mint ships only as a desktop installer ISO. There is no cloud image or cloud-init, so an unattended install and first-login script would have to be written and tested on a real install.",
+      "family": "mint",
+      "status": "experimental",
+      "sub": "desktop, ISO install, you run the installer",
       "roles": [
         "n",
         "n",
@@ -949,7 +968,25 @@ details summary.small{margin-top:4px}
         "n",
         "x",
         "x"
-      ]
+      ],
+      "iso": true,
+      "manual": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "l26",
+      "note": "Linux Mint ships only as a desktop installer ISO. The script creates the machine with the ISO and a second CD that holds lab201-firstlogin.sh. You run the Mint installer, then run that script as root to set the name, addresses, key, and packages.",
+      "image": {
+        "user_supplied": "Download the Linux Mint 22 Cinnamon ISO from linuxmint.com."
+      },
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 4096,
+        "disk_gb": 25
+      }
     },
     {
       "id": "tinycore",
@@ -957,9 +994,8 @@ details summary.small{margin-top:4px}
       "name": "Tiny Core Linux",
       "short": "Tiny Core",
       "family": "tce",
-      "status": "planned",
-      "sub": "no cloud-init",
-      "why": "Tiny Core has no cloud-init, no netplan, and none of the service packages the lab needs. It would need its own boot-time configuration scripts.",
+      "status": "experimental",
+      "sub": "ISO boot, you run one script",
       "roles": [
         "n",
         "n",
@@ -970,17 +1006,34 @@ details summary.small{margin-top:4px}
         "x",
         "x",
         "n"
-      ]
+      ],
+      "iso": true,
+      "manual": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "l26",
+      "note": "Tiny Core runs from memory and has no cloud-init. The script creates the machine with the ISO and a second CD that holds lab201-tc.sh. After it boots, you mount that CD and run the script to set the name, addresses, and tools. Save the changes with filetool.sh -b if you want them to persist.",
+      "image": {
+        "user_supplied": "Download CorePlus (or Core) from tinycorelinux.net."
+      },
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 512,
+        "disk_gb": 1
+      }
     },
     {
       "id": "win-11",
-      "guest_id": "otherLinux64Guest",
+      "guest_id": "windows9_64Guest",
       "name": "Windows 11",
       "short": "Windows 11",
       "family": "windows",
-      "status": "planned",
-      "sub": "ISO, unattended install, vTPM",
-      "why": "Windows installs from an ISO you license, with an answer file, drivers for the virtual disk and network, and (for Windows 11) a virtual TPM. Each platform handles those differently, and none could be tested.",
+      "status": "experimental",
+      "sub": "ISO, unattended install",
       "roles": [
         "n",
         "n",
@@ -991,17 +1044,38 @@ details summary.small{margin-top:4px}
         "n",
         "x",
         "n"
-      ]
+      ],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows installs unattended from an ISO you supply, with an answer file on a second CD. The answer file bypasses the TPM and Secure Boot checks, so no virtual TPM is needed. The first-logon script sets the addresses and OpenSSH, and the machine reboots at least once.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows 11 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": true,
+        "image_index": 1,
+        "bypass_checks": true
+      },
+      "min": {
+        "vcpu": 2,
+        "memory_mb": 4096,
+        "disk_gb": 64
+      }
     },
     {
       "id": "win-2025",
-      "guest_id": "otherLinux64Guest",
+      "guest_id": "windows2019srv_64Guest",
       "name": "Windows Server 2025",
       "short": "Windows Server 2025",
       "family": "windows",
-      "status": "planned",
+      "status": "experimental",
       "sub": "ISO, unattended install",
-      "why": "Same as Windows 11: a licensed ISO, an answer file, and drivers, and the Windows equivalents of the lab services (Certificate Services for the CA, the DHCP role for Kea) would have to be built and tested.",
       "roles": [
         "n",
         "n",
@@ -1012,17 +1086,38 @@ details summary.small{margin-top:4px}
         "n",
         "x",
         "n"
-      ]
+      ],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows Server installs unattended from an ISO you supply, with an answer file on a second CD. The first-logon script sets the addresses and OpenSSH, and installs the Windows role that stands in for the lab service (Certificate Services for the CA, the DHCP role for Kea). The image index defaults to 2, which is usually Standard with Desktop Experience. Check it for your ISO.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows Server 2025 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": false,
+        "image_index": 2,
+        "bypass_checks": false
+      },
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 2048,
+        "disk_gb": 32
+      }
     },
     {
       "id": "win-2022",
-      "guest_id": "otherLinux64Guest",
+      "guest_id": "windows2019srv_64Guest",
       "name": "Windows Server 2022",
       "short": "Windows Server 2022",
       "family": "windows",
-      "status": "planned",
+      "status": "experimental",
       "sub": "ISO, unattended install",
-      "why": "Same as Windows Server 2025.",
       "roles": [
         "n",
         "n",
@@ -1033,7 +1128,29 @@ details summary.small{margin-top:4px}
         "n",
         "x",
         "n"
-      ]
+      ],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows Server installs unattended from an ISO you supply, with an answer file on a second CD. The first-logon script sets the addresses and OpenSSH, and installs the Windows role that stands in for the lab service (Certificate Services for the CA, the DHCP role for Kea). The image index defaults to 2, which is usually Standard with Desktop Experience. Check it for your ISO.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows Server 2022 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": false,
+        "image_index": 2,
+        "bypass_checks": false
+      },
+      "min": {
+        "vcpu": 1,
+        "memory_mb": 2048,
+        "disk_gb": 32
+      }
     }
   ]
 }
@@ -1163,12 +1280,12 @@ details summary.small{margin-top:4px}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vms: {}, images: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
   };
   function resetVms() {
     state.vms = {};
     BASE.vms.forEach(function (vm) {
-      state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {} };
+      state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
     SEGMENTS.forEach(function (s) { state.vlans[s] = String(s); });
   }
@@ -1201,11 +1318,15 @@ details summary.small{margin-top:4px}
   function imageFlavorId(fid) { var f = FLAVOR[fid]; while (f.base && !f.image) f = FLAVOR[f.base]; return f.id; }
   function imageOf(fid) { return FLAVOR[imageFlavorId(fid)].image || {}; }
   function hasOva(fid) { return !!imageOf(fid).ova; }
+  function isIso(fid) { return !!FLAVOR[fid].iso; }
+  function needsRhelImage(fid) { return userSupplied(fid) && !isIso(fid); }
+  function flavorMin(fid) { return FLAVOR[fid].min || null; }
   function userSupplied(fid) { return !!imageOf(fid).user_supplied; }
   // Can this flavor run on the platform? ok, image (needs an OVA you supply), or no.
   function flavorOnPlatform(fid, platform) {
     var p = PLATFORMS[platform];
     if (p.wslOnly) return fid === 'ubuntu-24.04' ? 'ok' : 'no';
+    if (isIso(fid)) return (FLAVOR[fid].iso_platforms || []).indexOf(platform) >= 0 ? 'iso' : 'no';
     if (p.vmware) return hasOva(fid) ? 'ok' : 'image';
     return 'ok';
   }
@@ -1238,15 +1359,28 @@ details summary.small{margin-top:4px}
   }
 
   function checkRow(base, row) {
-    var res = { name: { err: '' }, vcpu: {}, mem: {}, disk: {}, flavor: {}, eff: {} };
+    var res = { name: { err: '' }, vcpu: {}, mem: {}, disk: {}, flavor: {}, eff: {}, mins: {}, defs: {} };
+    var f = effectiveFlavor(row);
+    if (!offered(f, base.role, state.platform)) {
+      res.flavor.err = FLAVOR[f].name + ' is not offered for this machine on ' + PLATFORMS[state.platform].name + '. Ubuntu 24.04 LTS is used';
+      f = 'ubuntu-24.04';
+    }
+    res.eff.flavor = f;
+    var fm = flavorMin(f) || { vcpu: 0, memory_mb: 0, disk_gb: 0 };
+    // The flavor can raise a minimum (Windows needs more than a small Linux host). The default rises with it.
+    var minv = { vcpu: Math.max(base.min.vcpu, fm.vcpu), mem: Math.max(base.min.memory_mb, fm.memory_mb), disk: Math.max(base.min.disk_gb, fm.disk_gb) };
+    var defv = { vcpu: Math.max(base.vcpu, minv.vcpu), mem: Math.max(base.memory_mb, minv.mem), disk: Math.max(base.disk_gb, minv.disk) };
+    res.mins = minv; res.defs = defv;
     var items = [
-      ['vcpu', parseNum(row.vcpu), base.vcpu, base.min.vcpu, true],
-      ['mem', parseNum(row.mem) * 1024, base.memory_mb, base.min.memory_mb, false],
-      ['disk', parseNum(row.disk), base.disk_gb, base.min.disk_gb, true]
+      ['vcpu', parseNum(row.vcpu), defv.vcpu, minv.vcpu, true],
+      ['mem', parseNum(row.mem) * 1024, defv.mem, minv.mem, false],
+      ['disk', parseNum(row.disk), defv.disk, minv.disk, true]
     ];
     items.forEach(function (it) {
       var key = it[0], val = it[1], def = it[2], min = it[3], integerOnly = it[4], r = res[key];
-      r.changed = false;
+      r.changed = false; r.raised = def !== (key === 'mem' ? base.memory_mb : key === 'vcpu' ? base.vcpu : base.disk_gb);
+      var untouched = !(row.touched && row.touched[key]);
+      if (untouched) { val = def; }
       if (isNaN(val) || val <= 0 || (integerOnly && Math.floor(val) !== val)) {
         r.err = integerOnly ? 'Enter a whole number' : 'Enter a number of GB';
         res.eff[key] = def;
@@ -1254,16 +1388,10 @@ details summary.small{margin-top:4px}
         r.err = 'Minimum ' + (key === 'mem' ? min / 1024 + ' GB' : min) + '. Tick Override to go lower';
         res.eff[key] = def;
       } else {
-        res.eff[key] = val; r.changed = val !== def; r.below = val < min;
+        res.eff[key] = val; r.changed = val !== def || r.raised; r.below = val < min;
       }
     });
     res.eff.memory_mb = Math.round(res.eff.mem);
-    var f = effectiveFlavor(row);
-    if (!offered(f, base.role, state.platform)) {
-      res.flavor.err = FLAVOR[f].name + ' is not offered for this machine on ' + PLATFORMS[state.platform].name + '. Ubuntu 24.04 LTS is used';
-      f = 'ubuntu-24.04';
-    }
-    res.eff.flavor = f;
     return res;
   }
 
@@ -1368,6 +1496,8 @@ details summary.small{margin-top:4px}
       if (f.status === 'experimental') out.warnings.push(f.name + ' is experimental: its seed is generated and checked, but no machine has been built from it.');
       if (f.needs_password) out.warnings.push(f.name + ' is hardened, so sudo asks for a password. Set LAB201_ADMIN_PASSWORD_HASH to a crypt hash before building.');
       if (flavorOnPlatform(fid, state.platform) === 'image' && !userSupplied(fid)) out.warnings.push(f.name + ' has no OVA to download. Convert its qcow2 image to an OVA and give the path below.');
+      if (f.iso) out.warnings.push(f.name + ' installs from an ISO you supply. ' + (f.manual ? 'A person still runs part of the install (see the checklist).' : 'The answer file holds the admin password, so delete the answer CD after the first boot.'));
+      if (fid === 'win-11') out.warnings.push('Windows 11 is installed with the TPM and Secure Boot checks bypassed (a registry setting in the answer file), so no virtual TPM is needed. Microsoft does not support that.');
     });
     return out;
   }
@@ -1456,6 +1586,7 @@ details summary.small{margin-top:4px}
     }
     if (p === 'workstation') needs.rows.push(['ws', 'VMware Workstation Pro', 'No key in current releases. Check Broadcom\'s terms for commercial use', false]);
     if (p === 'proxmox') { needs.file.proxmox = { subscription_key: '' }; needs.rows.push(['pve', 'Proxmox VE', 'Optional subscription key. The no-subscription repository works without one', true]); }
+    if (fl.some(function (f) { return FLAVOR[f].family === 'windows'; })) { needs.file.windows = { product_key: '' }; needs.rows.push(['win', 'Windows', 'A product key written into the answer file, or none if you use Microsoft\'s evaluation ISO', true]); }
     if (fl.some(function (f) { return FLAVOR[f].subscription; })) { needs.file.redhat = { activation_key: '', org: '' }; needs.rows.push(['rh', 'Red Hat Enterprise Linux 10', 'An activation key and organization ID, so the machines can register and install packages', true]); }
     if (fl.some(function (f) { return FLAVOR[f].ubuntu_pro; })) { needs.file.ubuntu_pro = { token: '' }; needs.rows.push(['pro', 'Ubuntu Pro', 'A Pro token, for the STIG hardening tools', true]); }
     if (p !== 'wsl') needs.rows.push(['fsw', 'FortiSwitch Advanced Features licenses', 'FS-SW-LIC-600 and FS-SW-LIC-2000 for the two hardware switches. Not applied by these scripts', false]);
@@ -1478,6 +1609,7 @@ details summary.small{margin-top:4px}
     });
     return out;
   }
+  function isoFlavorsNeeded(m) { return usedFlavors(m).filter(function (f) { return isIso(f) && flavorOnPlatform(f, state.platform) === 'iso'; }); }
 
   function commandBlocks(m) {
     var p = PLATFORMS[state.platform], args = [], needs = licenseNeeds(m), ps = p.shell === 'ps';
@@ -1497,11 +1629,16 @@ details summary.small{margin-top:4px}
       }
     }
     if (state.platform === 'proxmox' || state.platform === 'kvm') {
-      if (usedFlavors(m).some(function (f) { return userSupplied(f); })) args.push(['--rhel-image', state.rhelImage || '<PATH_TO_RHEL_10_QCOW2>']);
+      if (usedFlavors(m).some(needsRhelImage)) args.push(['--rhel-image', state.rhelImage || '<PATH_TO_RHEL_10_QCOW2>']);
     }
+    var isos = isoFlavorsNeeded(m);
+    if (isos.length && state.platform === 'proxmox') isos.forEach(function (id) { args.push(['--iso', id + '=' + (state.isos[id] || '<' + id.toUpperCase().replace(/[^A-Z0-9]/g, '_') + '_ISO_VOLUME>')]); });
+    else if (isos.length && p.vmware) args.push(['-IsoImages', '@{ ' + isos.map(function (id) { return "'" + id + "' = " + (state.isos[id] ? psQuote(state.isos[id]) : "'<[DATASTORE] FOLDER/" + id + ".iso>'"); }).join('; ') + ' }', true]);
     if (Object.keys(needs.file).length && state.platform !== 'wsl') args.push([ps ? '-LicenseFile' : '--license-file', state.licFile]);
     var names = m.vms.map(function (x) { return x.name; });
     var blocks = [];
+    var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
+    if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', ps ? "$env:LAB201_WINDOWS_ADMIN_PASSWORD = '<LAB_ONLY_PASSWORD>'" : "export LAB201_WINDOWS_ADMIN_PASSWORD='<LAB_ONLY_PASSWORD>'"]);
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
     if (hardened) {
       blocks.push(['0. A hardened flavor needs the admin password hash (make one with: openssl passwd -6).', ps ? "$env:LAB201_ADMIN_PASSWORD_HASH = '<CRYPT_HASH>'" : "export LAB201_ADMIN_PASSWORD_HASH='<CRYPT_HASH>'"]);
@@ -1620,7 +1757,9 @@ details summary.small{margin-top:4px}
     L.push('- The hardware switches are cabled to the lab networks, and their trunks allow the lab VLANs (Chapter 999, Lab 999.3).');
     var imgs = imageFlavorsNeedingFile(m);
     if (imgs.length) L.push('- Images you must supply as OVA files (VMware imports OVAs, and these flavors publish none): ' + imgs.join(', ') + '. Convert the qcow2 image to a stream-optimized VMDK with qemu-img, then wrap it in an OVA, and give the path in -FlavorImages.');
-    if (usedFlavors(m).some(userSupplied)) L.push('- Download the Red Hat Enterprise Linux 10 image from the Red Hat Customer Portal (a subscription is needed).');
+    if (usedFlavors(m).some(needsRhelImage)) L.push('- Download the Red Hat Enterprise Linux 10 image from the Red Hat Customer Portal (a subscription is needed).');
+    isoFlavorsNeeded(m).forEach(function (id) { L.push('- ' + FLAVOR[id].name + ': ' + (FLAVOR[id].image && FLAVOR[id].image.user_supplied || '') + ' ' + FLAVOR[id].note); });
+    if (isoFlavorsNeeded(m).some(function (id) { return FLAVOR[id].family === 'windows'; })) L.push('- Windows: remove the install ISO and the answer CD when the install finishes, and delete the answer CD file, because it holds the admin password. Check the image index in the answer file against your ISO (the default is 1 for Windows 11 and 2 for Windows Server).');
     if (usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; })) L.push('- Hardened flavors: set LAB201_ADMIN_PASSWORD_HASH to a crypt hash first. The machines reboot once after hardening, and each has /root/LAB201-STIG-NOTES.txt that lists the findings the lab accepts.');
     L.push('');
     L.push('## Run it');
@@ -1714,7 +1853,7 @@ details summary.small{margin-top:4px}
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
-    usedFlavors: usedFlavors, roleKey: roleKey
+    usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso
   };
 })();
 </script>
@@ -1732,8 +1871,8 @@ details summary.small{margin-top:4px}
     h += '<div class="card"><h2><span class="n">1</span> Platform</h2><p class="hint">Where the machines will run.</p><div class="opts" id="platforms"></div></div>';
     h += '<div class="card"><h2><span class="n">2</span> Version</h2><p class="hint" id="verhint"></p><div class="pills" id="versions"></div></div>';
     h += '<div class="card"><h2><span class="n">3</span> Platform settings</h2><p class="hint">Names of the hosts, storage, and network connections the script needs. Empty fields show a placeholder in the command.</p><div class="field" id="params"></div></div>';
-    h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Flavors marked planned have no script support.</p>';
-    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div></div><div class="opts" id="flavors"></div><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
+    h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
+    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<table id="machines"></table></div>';
     h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. Move the plan to another block, give a segment another VLAN ID, or change a machine\'s address in step 5. The gateway is always .1.</p>';
@@ -1754,7 +1893,7 @@ details summary.small{margin-top:4px}
     C.FL.role_keys.forEach(function (rk, i) {
       mx += '<tr><td>' + esc(rk) + '</td>' + heads.map(function (f) { var c = f.roles[i]; return '<td>' + (c === 'y' ? '<span class="y">&#10003;</span>' : c === 'x' ? '<span class="s">&#10003;*</span>' : '<span class="nn">no</span>') + '</td>'; }).join('') + '</tr>';
     });
-    mx += '</table><p class="small">* needs extra steps: packages from another repository (EPEL), an accepted STIG finding, or an image you supply. These ratings are proposals that need a test build. Mint, Tiny Core, and Windows are planned and not listed: ';
+    mx += '</table><p class="small">* needs extra steps: packages from another repository (EPEL), an accepted STIG finding, or an image you supply. These ratings are proposals that need a test build. Mint, Tiny Core, and Windows install from an ISO and are rated here too: ';
     mx += C.FLAVORS.filter(function (f) { return f.status === 'planned'; }).map(function (f) { return esc(f.name) + ' (' + esc(f.why || '') + ')'; }).join(' ') + '</p>';
     $('matrix').innerHTML = mx;
   }
@@ -1785,8 +1924,11 @@ details summary.small{margin-top:4px}
     $('flavors').innerHTML = C.FLAVORS.map(function (f) {
       var on = f.status !== 'planned' && C.flavorOnPlatform(f.id, S.platform) !== 'no';
       var badge = f.status === 'planned' ? '<span class="badge">planned</span>' : f.status === 'experimental' ? '<span class="badge exp">experimental</span>' : '';
-      return '<button class="opt' + (f.id === S.defaultFlavor ? ' sel' : '') + '"' + (on ? ' data-flavor="' + f.id + '"' : ' disabled') + ' title="' + esc(f.why || '') + '"><b>' + esc(f.name) + badge + '</b><span>' + esc(f.sub) + '</span></button>';
+      if (f.iso) badge += '<span class="badge">' + (f.manual ? 'manual steps' : 'ISO') + '</span>';
+      return '<button class="opt' + (f.id === S.defaultFlavor ? ' sel' : '') + '"' + (on ? ' data-flavor="' + f.id + '"' : ' disabled') + ' title="' + esc(f.note || f.why || '') + '"><b>' + esc(f.name) + badge + '</b><span>' + esc(f.sub) + '</span></button>';
     }).join('');
+    var isoOff = C.FLAVORS.filter(function (f) { return f.iso && C.flavorOnPlatform(f.id, S.platform) === 'no'; });
+    $('flavornote').textContent = isoOff.length && S.platform !== 'wsl' ? 'Not available on ' + P[S.platform].name + ': ' + isoOff.map(function (f) { return f.name; }).join(', ') + '. They install from an ISO and need the hypervisor to tag VLANs (Proxmox VE, ESXi, vCenter, and VxRail do).' : (S.platform === 'wsl' ? 'WSL builds Ubuntu 24.04 only.' : '');
     C.vmRows().forEach(function (e) {
       var sel = document.querySelector('select[data-f="flavor"][data-vm="' + e.base.name + '"]'); if (!sel) return;
       var opts = '<option value="">Default (' + esc(FLAVOR[S.defaultFlavor].short || FLAVOR[S.defaultFlavor].name) + ')</option>', omitted = [];
@@ -1835,17 +1977,20 @@ details summary.small{margin-top:4px}
   function renderDependent(m, v) {
     // Images you supply, and licenses. Rebuilt only when what they depend on changes, so typing is not interrupted.
     var needFiles = C.imageFlavorsNeedingFile(m), needs = C.licenseNeeds(m);
-    var rhel = (S.platform === 'proxmox' || S.platform === 'kvm') && C.usedFlavors(m).some(function (f) { return C.FLAVOR[f].image && C.imageFlavorId(f) && FLAVOR[C.imageFlavorId(f)].image.user_supplied; });
-    var sig = [S.platform, S.version, needFiles.join(','), rhel, needs.rows.map(function (r) { return r[0]; }).join(','), Object.keys(needs.file).join(',')].join('|');
+    var rhel = (S.platform === 'proxmox' || S.platform === 'kvm') && C.usedFlavors(m).some(C.needsRhelImage), isos = C.isoFlavorsNeeded(m);
+    var sig = [S.platform, S.version, needFiles.join(','), isos.join(','), rhel, needs.rows.map(function (r) { return r[0]; }).join(','), Object.keys(needs.file).join(',')].join('|');
     if (sig === sigDeps) return;
     sigDeps = sig;
     var card = $('imagecard'), f = '';
     needFiles.forEach(function (id) {
       f += '<label for="img_' + id + '">' + esc(FLAVOR[id].name) + ' (OVA)</label><div><input type="text" class="wide" id="img_' + id + '" data-image="' + id + '" placeholder="path to the .ova file" value="' + esc(S.images[id] || '') + '"></div>';
     });
+    isos.forEach(function (id) {
+      f += '<label for="iso_' + id + '">' + esc(FLAVOR[id].name) + ' (install ISO)</label><div><input type="text" class="wide" id="iso_' + id + '" data-iso="' + id + '" placeholder="' + (S.platform === 'proxmox' ? 'local:iso/file.iso (a Proxmox volume)' : '[datastore] folder/file.iso') + '" value="' + esc(S.isos[id] || '') + '"></div>';
+    });
     if (rhel) f += '<label for="rhelimg">Red Hat Enterprise Linux 10 image (qcow2)</label><div><input type="text" class="wide" id="rhelimg" placeholder="path to the qcow2 file from the Red Hat Customer Portal" value="' + esc(S.rhelImage) + '"></div>';
-    $('imagehint').textContent = needFiles.length ? 'VMware imports OVA files, and these flavors publish none. Convert the flavor\'s qcow2 image to a stream-optimized VMDK with qemu-img, wrap it in an OVA, and give the path. Ubuntu publishes OVAs, so the script downloads those itself.' : 'Red Hat does not publish its image without a login, so download it from the Red Hat Customer Portal and give the path.';
-    $('images').innerHTML = f; card.hidden = !(needFiles.length || rhel);
+    $('imagehint').textContent = isos.length && !needFiles.length && !rhel ? 'These flavors install from an ISO you supply (your licensed ISO, or the vendor\'s free download). Upload it to storage the platform can read, and give its path.' : needFiles.length ? 'VMware imports OVA files, and these flavors publish none. Convert the flavor\'s qcow2 image to a stream-optimized VMDK with qemu-img, wrap it in an OVA, and give the path. Ubuntu publishes OVAs, so the script downloads those itself.' : 'Red Hat does not publish its image without a login, so download it from the Red Hat Customer Portal and give the path.';
+    $('images').innerHTML = f; card.hidden = !(needFiles.length || rhel || isos.length);
     var t = '<tr><th>Product</th><th>What it needs</th><th>The script applies it</th><th>Where you keep it (a note, not the key)</th></tr>';
     needs.rows.forEach(function (r) {
       t += '<tr><td><b>' + esc(r[1]) + '</b></td><td>' + esc(r[2]) + '</td><td>' + (r[3] ? 'Yes, from the license file' : 'No, apply it by hand') + '</td><td><input type="text" class="wide" data-lic="' + r[0] + '" placeholder="for example: password manager entry name" value="' + esc(S.licRefs[r[0]] || '') + '"></td></tr>';
@@ -1868,12 +2013,17 @@ details summary.small{margin-top:4px}
       var fsel = tr.querySelector('[data-f=flavor]'); fsel.disabled = !inc;
       fsel.className = res.flavor.err && inc ? 'err' : (inc && r.flavor ? 'chg' : '');
       var fm = tr.querySelector('[data-m=flavor]'); fm.className = 'msg bad'; fm.textContent = inc ? (res.flavor.err || '') : '';
-      [['vcpu', b.min.vcpu], ['mem', b.min.memory_mb / 1024 + ' GB'], ['disk', b.min.disk_gb]].forEach(function (x) {
+      [['vcpu', res.mins.vcpu], ['mem', res.mins.mem / 1024 + ' GB'], ['disk', res.mins.disk]].forEach(function (x) {
         var key = x[0], input = tr.querySelector('[data-f=' + key + ']'), lab = tr.querySelector('[data-m=' + key + ']'), st = res[key];
         input.disabled = !inc;
+        if (!(r.touched && r.touched[key]) && document.activeElement !== input) {
+          // An untouched size follows the default, which a flavor can raise.
+          var shown = key === 'mem' ? String(res.defs.mem / 1024) : String(res.defs[key]);
+          if (input.value !== shown) input.value = shown;
+        }
         var cls = 'num'; if (inc && st.err) cls += ' err'; else if (inc && st.below) cls += ' ovr'; else if (inc && st.changed) cls += ' chg';
         input.className = cls; lab.className = 'minl' + (inc && st.err ? ' bad' : inc && st.below ? ' warn' : '');
-        lab.textContent = inc && st.err ? st.err : inc && st.below ? 'below min ' + x[1] + ' (override)' : 'min ' + x[1];
+        lab.textContent = inc && st.err ? st.err : inc && st.below ? 'below min ' + x[1] + ' (override)' : 'min ' + x[1] + (st.raised ? ' (raised by the flavor)' : '');
       });
       C.addrSlots(b).forEach(function (sl) {
         var inp = tr.querySelector('[data-f=addr][data-slot="' + sl.key + '"]'), msg = tr.querySelector('[data-m=addr][data-slot="' + sl.key + '"]');
@@ -1943,7 +2093,7 @@ details summary.small{margin-top:4px}
         var row = S.vms[t.getAttribute('data-vm')], f = t.getAttribute('data-f');
         if (f === 'include' || f === 'override') row[f] = t.checked;
         else if (f === 'addr') { var slot = t.getAttribute('data-slot'); if (t.value.trim()) row.addr[slot] = t.value; else delete row.addr[slot]; }
-        else row[f] = t.value;
+        else { row[f] = t.value; if (f === 'vcpu' || f === 'mem' || f === 'disk') row.touched[f] = true; }
       }
       else if (t.id === 'defflavor') { S.defaultFlavor = t.value; renderFlavors(); }
       else if (t.id === 'v4') S.v4 = t.value.trim();
@@ -1951,6 +2101,7 @@ details summary.small{margin-top:4px}
       else if (t.id === 'licfile') S.licFile = t.value;
       else if (t.id === 'rhelimg') S.rhelImage = t.value;
       else if (t.hasAttribute('data-image')) S.images[t.getAttribute('data-image')] = t.value;
+      else if (t.hasAttribute('data-iso')) S.isos[t.getAttribute('data-iso')] = t.value;
       else if (t.hasAttribute('data-vlan')) S.vlans[t.getAttribute('data-vlan')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
@@ -2004,7 +2155,7 @@ details summary.small{margin-top:4px}
     ok(m.vms.length === 12 && v.errors.length === 0, 'default build has 12 machines and no errors');
     ok(t.cpu === 17 && t.mem === 22016 && t.disk === 248, 'default totals are 17 vCPU, 21.5 GB, 248 GB');
     ok(m.vms.every(function (x) { return !x.flavor; }), 'default flavor leaves the machines without a flavor field');
-    S.vms['svc-201b'].mem = '1'; v = C.validateAll(); m = C.buildManifest(v);
+    S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; v = C.validateAll(); m = C.buildManifest(v);
     ok(v.rows['svc-201b'].mem.err && vm(m, 'svc-201b').memory_mb === 4096, 'memory below the minimum is refused and the default stays');
     S.vms['svc-201b'].override = true; v = C.validateAll(); m = C.buildManifest(v);
     ok(!v.rows['svc-201b'].mem.err && vm(m, 'svc-201b').memory_mb === 1024 && v.warnings.some(function (w) { return w.indexOf('svc-201b') === 0; }), 'Override allows a smaller size, with a warning');
@@ -2023,7 +2174,7 @@ details summary.small{margin-top:4px}
     S.vms['attacker-201'].flavor = 'rhel-10-stig'; v = C.validateAll(); m = C.buildManifest(v);
     ok(!!v.rows['attacker-201'].flavor.err && vm(m, 'attacker-201').flavor === undefined, 'a flavor not offered for a machine type is refused and the default Ubuntu is used');
     ok(!C.offered('ubuntu-24.04-stig', 'spoofing and flooding test host', 'proxmox') && C.offered('ubuntu-24.04-stig', 'DHCP server', 'proxmox'), 'the STIG flavor is left out for the attacker host only');
-    S.vms['attacker-201'].flavor = 'win-2025'; v = C.validateAll(); ok(!!v.rows['attacker-201'].flavor.err, 'a planned flavor is never accepted');
+    S.vms['attacker-201'].flavor = 'win-2025'; v = C.validateAll(); ok(!!v.rows['attacker-201'].flavor.err, 'a flavor rated not offered for the machine type is refused');
     reset(); S.defaultFlavor = 'debian-13'; m = man();
     ok(m.default_flavor === 'debian-13' && m.vms.every(function (x) { return x.flavor === 'debian-13'; }), 'a new default flavor is written on every machine');
     reset('wsl'); S.version = '2'; S.vms['svc-201a'].flavor = 'debian-13'; v = C.validateAll(); ok(!!v.rows['svc-201a'].flavor.err, 'WSL accepts Ubuntu 24.04 only');
@@ -2054,6 +2205,20 @@ details summary.small{margin-top:4px}
     reset('vxrail'); m = man(); cmd = C.commandText(m);
     ok(JSON.stringify(m).indexOf('lab201-t2') < 0 && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1 && vm(m, 'gw-201').bridge_trunks.ports.join() === 'lab201-t1', 'VxRail builds the lab with one trunk');
     ok(cmd.indexOf('-UseExistingSwitch <VXRAIL_VDS>') > 0 && cmd.indexOf('-NoUplinkChanges') > 0 && cmd.indexOf('-ClusterName') > 0, 'VxRail command reuses the switch and changes no uplinks');
+    // ISO-based flavors
+    reset('proxmox'); S.vms['dhcp-201'].flavor = 'win-2025'; S.vms['admin-201'].flavor = 'win-11'; v = C.validateAll(); m = C.buildManifest(v); cmd = C.commandText(m);
+    ok(vm(m, 'dhcp-201').flavor === 'win-2025' && vm(m, 'dhcp-201').memory_mb === 2048 && vm(m, 'dhcp-201').disk_gb === 32, 'Windows Server raises the default size to its minimum');
+    ok(vm(m, 'admin-201').vcpu === 2 && vm(m, 'admin-201').memory_mb === 4096 && vm(m, 'admin-201').disk_gb === 64, 'Windows 11 raises the default size to its minimum');
+    ok(cmd.indexOf('--iso win-2025=<WIN_2025_ISO_VOLUME>') > 0 && cmd.indexOf('--iso win-11=') > 0 && cmd.indexOf('LAB201_WINDOWS_ADMIN_PASSWORD') > 0 && cmd.indexOf('--rhel-image') < 0, 'Proxmox asks for the Windows ISOs and the admin password, and not for a Red Hat image');
+    ok(C.licenseNeeds(m).file.windows !== undefined, 'Windows adds a product-key section to the license file');
+    S.vms['dhcp-201'].mem = '1'; S.vms['dhcp-201'].touched.mem = true; v = C.validateAll(); ok(!!v.rows['dhcp-201'].mem.err, 'a size below the flavor minimum is refused without Override');
+    reset('workstation'); S.vms['dhcp-201'].flavor = 'win-2025'; v = C.validateAll(); ok(!!v.rows['dhcp-201'].flavor.err && !C.offered('win-2025', 'DHCP server', 'workstation'), 'Windows is not offered on Workstation');
+    reset('kvm'); ok(!C.offered('mint-22', 'static host', 'kvm'), 'ISO flavors are not offered on KVM');
+    reset('vcenter'); S.vms['static-1'].flavor = 'tinycore'; S.vms['static-2'].flavor = 'mint-22'; m = man(); cmd = C.commandText(m);
+    ok(cmd.indexOf("-IsoImages @{ 'tinycore' = '<[DATASTORE] FOLDER/tinycore.iso>'; 'mint-22' =") > 0 || cmd.indexOf("-IsoImages @{ 'mint-22'") > 0, 'vCenter asks for the install ISOs on a datastore');
+    ok(vm(m, 'static-2').disk_gb === 25 && vm(m, 'static-2').memory_mb === 4096 && vm(m, 'static-1').disk_gb === 8, 'Mint raises the default size and Tiny Core keeps its own');
+    reset('vcenter'); S.vms['dhcp-201'].flavor = 'mint-22'; v = C.validateAll(); ok(!!v.rows['dhcp-201'].flavor.err, 'Mint is not offered for the DHCP server');
+    reset('vxrail'); S.vms['admin-201'].flavor = 'win-11'; ok(C.offered('win-11', 'administrator workstation', 'vxrail'), 'VxRail offers Windows');
     // licenses
     reset('vcenter'); m = man(); var ln = C.licenseNeeds(m);
     ok(ln.file.vsphere && 'vcenter' in ln.file.vsphere && 'esxi' in ln.file.vsphere && C.commandText(m).indexOf('-LicenseFile') > 0, 'vCenter uses a license file with vSphere keys');
@@ -2087,7 +2252,8 @@ details summary.small{margin-top:4px}
     var sel = document.querySelector('select[data-f="flavor"][data-vm="attacker-201"]');
     ok(Array.prototype.every.call(sel.options, function (o) { return o.value !== 'ubuntu-24.04-stig'; }), 'the STIG flavor is not in the attacker host list');
     ok(document.querySelector('[data-m="omit"][data-vm="attacker-201"]').textContent.indexOf('STIG') > 0, 'the page says which flavors are not offered');
-    ok(Array.prototype.some.call(sel.options, function (o) { return /planned/.test(o.textContent) && o.disabled; }), 'planned flavors are listed and disabled');
+    ok(Array.prototype.some.call(sel.options, function (o) { return o.value === 'win-2025'; }) === false, 'Windows Server is not in the attacker host list');
+    ok(Array.prototype.some.call(document.querySelector('select[data-f="flavor"][data-vm="admin-201"]').options, function (o) { return o.value === 'win-11'; }), 'Windows 11 is in the admin workstation list on vCenter');
     pick('select[data-f="flavor"][data-vm="dhcp-201"]', 'rocky-10');
     document.querySelector('[data-tab="manifest"]').click();
     ok(/"flavor": "rocky-10"/.test(body()), 'choosing a flavor for one machine reaches the manifest');
@@ -2095,6 +2261,13 @@ details summary.small{margin-top:4px}
     ok(body().indexOf("-FlavorImages @{ 'rocky-10' =") > 0 && !document.getElementById('imagecard').hidden, 'a flavor with no OVA shows the image field and the command flag');
     type('input[data-image="rocky-10"]', 'C:\\images\\rocky10.ova');
     ok(body().indexOf("'rocky-10' = C:\\images\\rocky10.ova") > 0, 'the OVA path appears in the command');
+    // ISO flavors raise sizes and ask for ISO paths
+    pick('select[data-f="flavor"][data-vm="static-1"]', 'win-11');
+    ok(document.querySelector('input[data-vm="static-1"][data-f="mem"]').value === '4' && /raised by the flavor/.test(document.querySelector('tr[data-vm="static-1"] [data-m="mem"]').textContent), 'choosing Windows 11 raises the memory shown and says why');
+    ok(!!document.querySelector('input[data-iso="win-11"]') && body().indexOf("-IsoImages @{") > 0, 'an ISO path field and the -IsoImages flag appear');
+    type('input[data-iso="win-11"]', '[datastore1] iso/Win11.iso');
+    ok(body().indexOf("'win-11' = '[datastore1] iso/Win11.iso'") > 0 || body().indexOf("[datastore1] iso/Win11.iso") > 0, 'the ISO path appears in the command');
+    pick('select[data-f="flavor"][data-vm="static-1"]', '');
     // addressing
     type('#v4', '10.77');
     document.querySelector('[data-tab="manifest"]').click();
@@ -2151,6 +2324,12 @@ details summary.small{margin-top:4px}
       var el2 = $('selftest'); el2.hidden = false; el2.setAttribute('data-manifest', btoa(unescape(encodeURIComponent(JSON.stringify(m)))));
       var m2 = (function () { S.platform = 'vxrail'; S.version = '9'; C.resetParams(); return C.buildManifest(C.validateAll()); })();
       el2.setAttribute('data-vxrail', btoa(unescape(encodeURIComponent(JSON.stringify(m2)))));
+      var m3 = (function () {
+        C.resetVms(); S.platform = 'proxmox'; S.version = '8'; C.resetParams(); S.v4 = C.OLD_V4; S.v6 = C.OLD_V6; S.vlans = { 10: '10', 20: '20', 30: '30', 40: '40', 41: '41', 42: '42', 50: '50' };
+        S.vms['dhcp-201'].flavor = 'win-2025'; S.vms['ca-201'].flavor = 'win-2022'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-1'].flavor = 'tinycore'; S.vms['static-2'].flavor = 'mint-22';
+        return C.buildManifest(C.validateAll());
+      })();
+      el2.setAttribute('data-iso', btoa(unescape(encodeURIComponent(JSON.stringify(m3)))));
       document.title = 'exporttest';
     }
     if (/[?&]ziptest=1/.test(q)) {

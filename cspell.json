@@ -5358,7 +5358,15 @@
     "rsvg",
     "pvesubscription",
     "virbr",
-    "libosinfo"
+    "libosinfo",
+    "unattended",
+    "sysprep",
+    "udhcpc",
+    "filetool",
+    "tcz",
+    "e1000e",
+    "OOBE",
+    "firstlogin"
   ],
   "ignorePaths": [
     "node_modules/**",

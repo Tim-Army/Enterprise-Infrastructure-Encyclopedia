@@ -17,6 +17,14 @@ family (apt or dnf), and which machine types each flavor can run. With
 and organization, an Ubuntu Pro token) is read and written into the seeds of the
 machines that need them. The file is never printed.
 
+Flavors that install from an ISO (Windows, Linux Mint, Tiny Core) get different
+media instead of cloud-init files: Windows gets autounattend.xml and
+lab201-setup.ps1 (the admin password comes from LAB201_WINDOWS_ADMIN_PASSWORD
+and is written into the answer file, so delete the media after the first boot),
+Linux Mint gets lab201-firstlogin.sh, and Tiny Core gets lab201-tc.sh. With --iso
+these go on a CD labeled LAB201 that the platform script attaches beside the
+install ISO.
+
 Only the Python standard library is needed, except for --iso, which uses the
 pycdlib package (pip install pycdlib) or, if it is missing, xorriso,
 genisoimage, or mkisofs from the PATH.
@@ -26,9 +34,11 @@ import argparse
 import ipaddress
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
+from xml.sax.saxutils import escape as xml_escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 V4_PREFIX = "10.201"
@@ -348,40 +358,243 @@ def meta_data(vm):
     return "instance-id: lab201-%s\nlocal-hostname: %s\n" % (vm["name"], vm["name"])
 
 
-def build_iso_external(out_iso, files):
+def build_iso_external(out_iso, files, label="cidata"):
     """Write the seed ISO with xorriso, genisoimage, or mkisofs."""
     for tool in ("xorriso", "genisoimage", "mkisofs"):
         exe = shutil.which(tool)
         if exe:
             cmd = [exe] + (["-as", "mkisofs"] if tool == "xorriso" else []) + [
-                "-quiet", "-output", out_iso, "-volid", "cidata", "-joliet", "-rock"] + list(files.values())
+                "-quiet", "-output", out_iso, "-volid", label, "-joliet", "-rock"] + list(files.values())
             subprocess.run(cmd, check=True)
             return
     raise SystemExit("make-seed: --iso needs pycdlib (pip install pycdlib), xorriso, genisoimage, or mkisofs")
 
 
-def write_iso(out_iso, files):
+def iso_name(fname):
+    """An ISO 9660 name for a file. The real name is kept for Rock Ridge and Joliet."""
+    base = re.sub(r"[^A-Z0-9_.]", "_", fname.upper())
+    if "." not in base:
+        base += "."
+    return "/%s;1" % base
+
+
+def write_iso(out_iso, files, label="cidata"):
     """Write the seed ISO with pycdlib, or with an external tool."""
     try:
         import pycdlib
     except ImportError:
         pycdlib = None
     if not pycdlib:
-        return build_iso_external(out_iso, files)
+        return build_iso_external(out_iso, files, label)
     iso = pycdlib.PyCdlib()
-    iso.new(interchange_level=3, joliet=3, rock_ridge="1.09", vol_ident="cidata")
-    names = {"user-data": "USERDATA", "meta-data": "METADATA", "network-config": "NETCONF"}
+    iso.new(interchange_level=3, joliet=3, rock_ridge="1.09", vol_ident=label)
     handles = []
     try:
         for fname, path in files.items():
             fh = open(path, "rb")
             handles.append(fh)
-            iso.add_fp(fh, os.path.getsize(path), "/%s.;1" % names[fname], rr_name=fname, joliet_path="/" + fname)
+            iso.add_fp(fh, os.path.getsize(path), iso_name(fname), rr_name=fname, joliet_path="/" + fname)
         iso.write(out_iso)
     finally:
         iso.close()
         for fh in handles:
             fh.close()
+
+
+def nic_plan(manifest, vm_index, vm):
+    """For the ISO-based flavors: each adapter's MAC address, kind, and addresses (IPv4 and IPv6)."""
+    out = []
+    for n, nic in enumerate(vm["nics"]):
+        if nic.get("trunk"):
+            continue
+        out.append({"mac": mac_of(manifest, vm_index, n), "build": bool(nic.get("build")), "vlan": nic.get("vlan"),
+                    "addrs": addresses_of(nic.get("ipv4", [])), "gw4": nic.get("gateway4"),
+                    "gw6": gateway_v6(nic["gateway4"]) if nic.get("gateway4") else None})
+    return out
+
+
+def windows_setup_script(manifest, vm_index, vm, flavor, ssh_keys):
+    L = ["# Written by make-seed.py. Runs once, at the first logon, from the answer-file CD.",
+         "$ErrorActionPreference = 'Continue'",
+         "Start-Transcript -Path C:\\lab201-setup.log -Append | Out-Null",
+         "function Set-LabAdapter {",
+         "  param([string] $Mac, [string[]] $Addresses, [string] $Gw4, [string] $Gw6, [switch] $Dhcp)",
+         "  $a = Get-NetAdapter | Where-Object { ($_.MacAddress -replace '-', ':') -ieq $Mac } | Select-Object -First 1",
+         "  if (-not $a) { Write-Warning \"No adapter has MAC $Mac\"; return }",
+         "  if ($Dhcp) { Set-NetIPInterface -InterfaceIndex $a.ifIndex -Dhcp Enabled; return }",
+         "  Set-NetIPInterface -InterfaceIndex $a.ifIndex -Dhcp Disabled",
+         "  foreach ($c in $Addresses) { $ip, $len = $c.Split('/'); New-NetIPAddress -InterfaceIndex $a.ifIndex -IPAddress $ip -PrefixLength ([int]$len) | Out-Null }",
+         "  if ($Gw4) { New-NetRoute -InterfaceIndex $a.ifIndex -DestinationPrefix 0.0.0.0/0 -NextHop $Gw4 -RouteMetric 100 | Out-Null }",
+         "  if ($Gw6) { New-NetRoute -InterfaceIndex $a.ifIndex -DestinationPrefix ::/0 -NextHop $Gw6 -RouteMetric 100 | Out-Null }",
+         "}"]
+    for nic in nic_plan(manifest, vm_index, vm):
+        if nic["build"]:
+            L.append("Set-LabAdapter -Mac %s -Dhcp" % "'%s'" % nic["mac"])
+        else:
+            addrs = ", ".join("'%s'" % x for x in nic["addrs"])
+            line = "Set-LabAdapter -Mac '%s' -Addresses @(%s)" % (nic["mac"], addrs)
+            if nic["gw4"]:
+                line += " -Gw4 '%s' -Gw6 '%s'" % (nic["gw4"], nic["gw6"])
+            L.append(line)
+    L += ["New-NetFirewallRule -Name lab201-icmp4 -DisplayName 'Lab ICMPv4' -Protocol ICMPv4 -IcmpType 8 -Direction Inbound -Action Allow | Out-Null",
+          "New-NetFirewallRule -Name lab201-icmp6 -DisplayName 'Lab ICMPv6' -Protocol ICMPv6 -IcmpType 128 -Direction Inbound -Action Allow | Out-Null",
+          "# OpenSSH server, with your key. It needs the build adapter to reach Windows Update, so it retries.",
+          "for ($i = 0; $i -lt 10; $i++) {",
+          "  Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0 -ErrorAction SilentlyContinue | Out-Null",
+          "  if (Get-Service sshd -ErrorAction SilentlyContinue) { break }",
+          "  Start-Sleep -Seconds 30",
+          "}"]
+    if ssh_keys:
+        L += ["$keys = @(" + ", ".join("'%s'" % k.replace("'", "''") for k in ssh_keys) + ")",
+              "$keyFile = 'C:\\ProgramData\\ssh\\administrators_authorized_keys'",
+              "New-Item -ItemType Directory -Force -Path (Split-Path $keyFile) | Out-Null",
+              "Set-Content -Path $keyFile -Value $keys -Encoding ascii",
+              "icacls.exe $keyFile /inheritance:r /grant 'Administrators:F' /grant 'SYSTEM:F' | Out-Null"]
+    L += ["if (Get-Service sshd -ErrorAction SilentlyContinue) { Set-Service sshd -StartupType Automatic; Start-Service sshd; Enable-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue }"]
+    if not (flavor.get("windows") or {}).get("client"):
+        role = vm.get("role")
+        if role == "certificate authority":
+            L += ["Install-WindowsFeature -Name ADCS-Cert-Authority -IncludeManagementTools | Out-Null",
+                  "Install-AdcsCertificationAuthority -CAType StandaloneRootCa -CACommonName '%s' -ValidityPeriod Years -ValidityPeriodUnits 5 -Force | Out-Null" % vm["name"]]
+        if role == "DHCP server":
+            L.append("Install-WindowsFeature -Name DHCP -IncludeManagementTools | Out-Null")
+            for nic in nic_plan(manifest, vm_index, vm):
+                if nic["build"] or not nic["vlan"] or nic["vlan"] == 10 or not nic["addrs"]:
+                    continue
+                seg = nic["addrs"][0].split("/")[0].split(".")[2]
+                pre = V4_PREFIX
+                L += ["Add-DhcpServerv4Scope -Name 'lab201-seg%s' -StartRange %s.%s.100 -EndRange %s.%s.199 -SubnetMask 255.255.255.0 -State Active" % (seg, pre, seg, pre, seg),
+                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.10.1" % (pre, seg, pre, seg, pre)]
+    L += ["Write-Host 'Lab 201 setup finished.'", "Stop-Transcript | Out-Null"]
+    return "\r\n".join(L) + "\r\n"
+
+
+def windows_unattend(vm, flavor, password, product_key, image_index):
+    pw = xml_escape(password)
+    ns = ('xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" '
+          'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+    comp = 'processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" ' + ns
+    bypass = ""
+    if (flavor.get("windows") or {}).get("bypass_checks"):
+        keys = ("BypassTPMCheck", "BypassSecureBootCheck", "BypassRAMCheck", "BypassCPUCheck")
+        bypass = "<RunSynchronous>" + "".join(
+            '<RunSynchronousCommand wcm:action="add"><Order>%d</Order><Path>reg add HKLM\\SYSTEM\\Setup\\LabConfig /v %s /t REG_DWORD /d 1 /f</Path></RunSynchronousCommand>' % (i + 1, k)
+            for i, k in enumerate(keys)) + "</RunSynchronous>"
+    key_xml = "<ProductKey><Key>%s</Key></ProductKey>" % xml_escape(product_key) if product_key else ""
+    find = ('Get-PSDrive -PSProvider FileSystem | ForEach-Object { Join-Path $_.Root \'lab201-setup.ps1\' } | '
+            'Where-Object { Test-Path $_ } | Select-Object -First 1 | ForEach-Object { . $_ }')
+    return """<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+  <settings pass="windowsPE">
+    <component name="Microsoft-Windows-International-Core-WinPE" %(comp)s>
+      <SetupUILanguage><UILanguage>en-US</UILanguage></SetupUILanguage>
+      <InputLocale>en-US</InputLocale><SystemLocale>en-US</SystemLocale><UILanguage>en-US</UILanguage><UserLocale>en-US</UserLocale>
+    </component>
+    <component name="Microsoft-Windows-Setup" %(comp)s>
+      %(bypass)s
+      <DiskConfiguration>
+        <Disk wcm:action="add"><DiskID>0</DiskID><WillWipeDisk>true</WillWipeDisk>
+          <CreatePartitions><CreatePartition wcm:action="add"><Order>1</Order><Type>Primary</Type><Extend>true</Extend></CreatePartition></CreatePartitions>
+          <ModifyPartitions><ModifyPartition wcm:action="add"><Order>1</Order><PartitionID>1</PartitionID><Format>NTFS</Format><Label>Windows</Label><Letter>C</Letter><Active>true</Active></ModifyPartition></ModifyPartitions>
+        </Disk>
+      </DiskConfiguration>
+      <ImageInstall><OSImage>
+        <InstallFrom><MetaData wcm:action="add"><Key>/IMAGE/INDEX</Key><Value>%(index)d</Value></MetaData></InstallFrom>
+        <InstallTo><DiskID>0</DiskID><PartitionID>1</PartitionID></InstallTo>
+      </OSImage></ImageInstall>
+      <UserData><AcceptEula>true</AcceptEula>%(key)s</UserData>
+    </component>
+  </settings>
+  <settings pass="specialize">
+    <component name="Microsoft-Windows-Shell-Setup" %(comp)s>
+      <ComputerName>%(name)s</ComputerName><TimeZone>UTC</TimeZone>
+    </component>
+  </settings>
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-Shell-Setup" %(comp)s>
+      <OOBE><HideEULAPage>true</HideEULAPage><HideLocalAccountScreen>true</HideLocalAccountScreen><HideOnlineAccountScreens>true</HideOnlineAccountScreens><HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE><ProtectYourPC>3</ProtectYourPC><SkipMachineOOBE>true</SkipMachineOOBE><SkipUserOOBE>true</SkipUserOOBE></OOBE>
+      <UserAccounts>
+        <AdministratorPassword><Value>%(pw)s</Value><PlainText>true</PlainText></AdministratorPassword>
+        <LocalAccounts><LocalAccount wcm:action="add"><Name>labadmin</Name><Group>Administrators</Group><Password><Value>%(pw)s</Value><PlainText>true</PlainText></Password></LocalAccount></LocalAccounts>
+      </UserAccounts>
+      <AutoLogon><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>labadmin</Username><Password><Value>%(pw)s</Value><PlainText>true</PlainText></Password></AutoLogon>
+      <FirstLogonCommands>
+        <SynchronousCommand wcm:action="add"><Order>1</Order><CommandLine>%(cmd)s</CommandLine><Description>Lab 201 setup</Description></SynchronousCommand>
+      </FirstLogonCommands>
+    </component>
+  </settings>
+</unattend>
+""" % {"comp": comp, "bypass": bypass, "index": image_index, "key": key_xml, "name": xml_escape(vm["name"][:15]), "pw": pw,
+       "cmd": xml_escape('powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "%s"' % find)}
+
+
+def mint_firstlogin(manifest, vm_index, vm, flavor, ssh_keys):
+    user = manifest["admin_user"]
+    pkgs, _, missing = map_packages(vm.get("packages", []), flavor)
+    L = ["#!/bin/sh", "# Written by make-seed.py. Run as root after the Linux Mint installer finishes.", "set -eu",
+         "hostnamectl set-hostname %s" % vm["name"],
+         "id %s >/dev/null 2>&1 || useradd -m -s /bin/bash -G sudo %s" % (user, user),
+         "install -d -m 700 -o %s -g %s /home/%s/.ssh" % (user, user, user)]
+    if ssh_keys:
+        L += ["cat > /home/%s/.ssh/authorized_keys <<'LAB201_KEYS'" % user] + ssh_keys + ["LAB201_KEYS",
+              "chown %s:%s /home/%s/.ssh/authorized_keys && chmod 600 /home/%s/.ssh/authorized_keys" % (user, user, user, user)]
+    for n, nic in enumerate(nic_plan(manifest, vm_index, vm)):
+        con = "lab201-%d" % n
+        if nic["build"]:
+            L.append("nmcli connection add type ethernet con-name %s ifname '*' 802-3-ethernet.mac-address %s ipv4.method auto ipv6.method disabled ipv4.route-metric 200" % (con, nic["mac"]))
+            continue
+        v4 = ",".join(a for a in nic["addrs"] if ":" not in a)
+        v6 = ",".join(a for a in nic["addrs"] if ":" in a)
+        cmd = "nmcli connection add type ethernet con-name %s ifname '*' 802-3-ethernet.mac-address %s ipv4.method manual ipv4.addresses '%s' ipv6.method manual ipv6.addresses '%s'" % (con, nic["mac"], v4, v6)
+        if nic["gw4"]:
+            cmd += " ipv4.gateway %s ipv6.gateway %s ipv4.route-metric 100" % (nic["gw4"], nic["gw6"])
+        L.append(cmd)
+    L.append("nmcli connection reload || true")
+    if pkgs:
+        L += ["apt-get update", "apt-get install -y %s" % " ".join(pkgs)]
+    L.append("echo 'Lab 201 first-login setup finished.'")
+    return "\n".join(L) + "\n"
+
+
+def tc_script(manifest, vm_index, vm, flavor):
+    pkgs, _, missing = map_packages(vm.get("packages", []), flavor)
+    L = ["#!/bin/sh", "# Written by make-seed.py. Run as root on Tiny Core: mount the lab CD, then sh lab201-tc.sh",
+         "hostname %s" % vm["name"],
+         "devfor() { for d in /sys/class/net/*; do [ \"$(cat \"$d\"/address)\" = \"$1\" ] && basename \"$d\" && return; done; }"]
+    for n, nic in enumerate(nic_plan(manifest, vm_index, vm)):
+        L.append("D=$(devfor %s)" % nic["mac"])
+        L.append("ip link set \"$D\" up")
+        if nic["build"]:
+            L.append("udhcpc -i \"$D\" -n -q || true")
+            continue
+        for a in nic["addrs"]:
+            L.append("ip addr add %s dev \"$D\"" % a)
+        if nic["gw4"]:
+            L.append("ip route add default via %s metric 100 || true" % nic["gw4"])
+    if pkgs:
+        L.append("su tc -c 'tce-load -wi %s' || true" % " ".join(p.replace("tcpdump", "tcpdump") for p in pkgs))
+    if missing:
+        L.append("# Not available on Tiny Core: %s" % " ".join(missing))
+    L.append("echo 'Lab 201 Tiny Core setup finished. Save it with: filetool.sh -b'")
+    return "\n".join(L) + "\n"
+
+
+def iso_media(manifest, vm_index, vm, flavor, ssh_keys, licenses, windows_password):
+    """The files for a flavor that installs from an ISO. Returns {file name: text}."""
+    fam = flavor["family"]
+    if fam == "windows":
+        if not windows_password:
+            raise SystemExit("make-seed: %s is a Windows machine, so the admin password is needed. Set LAB201_WINDOWS_ADMIN_PASSWORD." % vm["name"])
+        w = flavor.get("windows") or {}
+        key = (licenses.get("windows") or {}).get("product_key", "")
+        index = int(vm.get("image_index") or (licenses.get("windows") or {}).get("image_index") or w.get("image_index", 1))
+        return {"autounattend.xml": windows_unattend(vm, flavor, windows_password, key, index),
+                "lab201-setup.ps1": windows_setup_script(manifest, vm_index, vm, flavor, ssh_keys)}
+    if fam == "mint":
+        return {"lab201-firstlogin.sh": mint_firstlogin(manifest, vm_index, vm, flavor, ssh_keys)}
+    if fam == "tce":
+        return {"lab201-tc.sh": tc_script(manifest, vm_index, vm, flavor)}
+    raise SystemExit("make-seed: no ISO media for the flavor family %s" % fam)
 
 
 def wsl_net_script(vm):
@@ -463,6 +676,7 @@ def main():
     ap.add_argument("--list", action="store_true", help="print the VM names and exit")
     ap.add_argument("--flavors", default=os.path.join(HERE, "flavors.json"), help="flavor catalog (default: flavors.json beside this script)")
     ap.add_argument("--license-file", help="JSON file with keys to apply (never printed or copied elsewhere)")
+    ap.add_argument("--windows-password-env", default="LAB201_WINDOWS_ADMIN_PASSWORD", help="environment variable that holds the Windows admin password")
     a = ap.parse_args()
 
     with open(a.manifest, "r", encoding="utf-8") as fh:
@@ -502,6 +716,20 @@ def main():
             raise SystemExit("make-seed: %s uses %s, which is planned and has no script support. %s" % (vm["name"], flavor["name"], flavor.get("why", "")))
         if rating(flavor, vm["role"]) == "n":
             raise SystemExit("make-seed: %s cannot run %s (%s). Pick another flavor for it." % (flavor["name"], vm["name"], vm["role"]))
+        if flavor.get("iso"):
+            media = iso_media(manifest, i, vm, flavor, keys, licenses, os.environ.get(a.windows_password_env))
+            d = os.path.join(a.out, vm["name"])
+            os.makedirs(d, exist_ok=True)
+            files = {}
+            for fname, text in media.items():
+                path = os.path.join(d, fname)
+                with open(path, "w", encoding="utf-8", newline="") as fh:
+                    fh.write(text)
+                files[fname] = path
+            if a.iso:
+                write_iso(os.path.join(a.out, "%s-seed.iso" % vm["name"]), files, "LAB201")
+            print("rendered %s (%s)" % (vm["name"], flavor["name"]))
+            continue
         if flavor.get("needs_password") and not pw:
             raise SystemExit("make-seed: %s is hardened, so sudo needs a password. Set %s to a crypt hash (openssl passwd -6)." % (vm["name"], a.password_hash_env))
         if flavor.get("subscription") and not (licenses.get("redhat") or {}).get("activation_key"):

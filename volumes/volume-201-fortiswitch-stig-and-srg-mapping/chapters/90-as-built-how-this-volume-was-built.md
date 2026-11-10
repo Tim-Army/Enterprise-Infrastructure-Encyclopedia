@@ -323,9 +323,15 @@ VxRail, and the Builder builds VxRail with one trunk. The scripts can apply vSph
 and Proxmox keys from the license file, and `-FlavorImages` takes OVA paths for
 flavors VMware cannot download. VLAN renumbering (`vlan_segments`) and per-machine
 address edits work in the manifest, the seeds, and the page. Linux Mint, Tiny
-Core, and Windows are still planned, with the reason for each in `flavors.json`,
-because they need unattended installs from licensed ISOs that could not be tested.
-The page's self-test now runs 64 checks, and the manifests the page produces for a
+Core, and Windows were added the same day as ISO-based flavors, because they have no
+cloud image: `make-seed.py` writes an `autounattend.xml` and a first-logon script
+for Windows, a first-login script for Mint, and a script for Tiny Core onto a second
+CD, and the Proxmox, ESXi, and vCenter scripts create an empty machine with the
+install ISO and that CD. The Windows answer files parse as XML, the generated
+PowerShell parses with the PowerShell parser, and the shell scripts pass `sh -n`
+and `shellcheck`, but nothing was installed, so the Windows image index, the
+first-logon timing, and the Windows 11 check bypass are untested.
+The page's self-test now runs 79 checks, and the manifests the page produces for a
 mixed configuration (a renamed Rocky gateway, five other flavors, a new address
 block, a changed VLAN, an edited address) and for VxRail were run through
 `make-seed.py` and gave valid seeds. Nothing has been built on a real host.

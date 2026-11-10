@@ -118,7 +118,9 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `--vmid-base` | The ID offset (default 20100). |
 | `--workdir` | Where the images and the rendered seeds go (default `/var/tmp/lab201`). |
 | `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image, needed for the `rhel-10` flavors. |
-| `--license-file FILE` | JSON file with keys to apply: Red Hat, Ubuntu Pro, and a Proxmox subscription key (Chapter 09). |
+| `--license-file FILE` | JSON file with keys to apply: Red Hat, Ubuntu Pro, a Windows product key, and a Proxmox subscription key (Chapter 09). |
+| `--iso FLAVOR=VOLUME` | The install ISO of a Windows, Linux Mint, or Tiny Core flavor, as a Proxmox volume such as `local:iso/Server2025.iso` (repeatable). |
+| `--iso-storage NAME` | Storage with the `iso` content type, where the script puts each machine's answer-file CD (default `local`). |
 | `--dry-run` | Print each command instead of running it. |
 
 ## Validation and Troubleshooting

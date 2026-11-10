@@ -57,7 +57,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 - **Generic OS variant.** The script passes `--os-variant generic`, which every libosinfo release knows. A specific variant can give better virtual hardware defaults, and you can change the line.
 - **Names and MAC addresses.** Machine names are the libvirt domain names, and the MAC addresses are the manifest's, so the seeds match each adapter.
 - **The build adapter.** Every machine has one on the build bridge for package installs. Remove them when the build is done: `--action remove-build-nics` detaches them live and in the saved configuration.
-- **Flavors.** Each machine can use its own Linux flavor (`flavor` in the manifest, or `default_flavor`). Chapter 09 explains the catalog, the hardened flavors, and the license file.
+- **Flavors.** Each machine can use its own Linux flavor (`flavor` in the manifest, or `default_flavor`). Chapter 09 explains the catalog, the hardened flavors, and the license file. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available on KVM, because this script has the guests tag VLANs and those guests cannot.
 
 ## Implementation and Automation
 

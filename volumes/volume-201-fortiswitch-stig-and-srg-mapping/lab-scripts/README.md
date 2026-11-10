@@ -35,7 +35,7 @@ explains it, and all of them read the same manifest.
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
   addresses. The IPv6 addresses are derived from the IPv4 addresses.
-- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Mint, Tiny Core, and Windows are listed as planned.
+- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Windows 11, Windows Server, Linux Mint, and Tiny Core install from an ISO you supply, and are available on Proxmox VE, ESXi, vCenter, and VxRail.
 - `resolve-image.py` finds, downloads, and checks the cloud image for a flavor.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.

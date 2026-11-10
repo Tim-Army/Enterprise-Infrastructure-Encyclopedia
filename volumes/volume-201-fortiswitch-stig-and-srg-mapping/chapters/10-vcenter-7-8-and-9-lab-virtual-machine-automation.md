@@ -99,7 +99,7 @@ Storage goes on the vSAN datastore, and with the default mirroring policy the th
 | `-NetworkType` | `Standard` (default) or `Distributed`. |
 | `-VdsVersion` | Distributed switch version, if you need to override the default. |
 | `-ClusterName`, `-UseExistingSwitch`, `-NoUplinkChanges` | Dell VxRail and other managed clusters (see above). |
-| `-LicenseFile`, `-FlavorImages` | The license file, and OVA paths for flavors that publish none (Chapter 09). |
+| `-LicenseFile`, `-FlavorImages`, `-IsoImages` | The license file, OVA paths for flavors that publish none, and datastore paths of install ISOs for Windows, Linux Mint, and Tiny Core (Chapter 09). Those machines are created empty, with the install ISO and the answer CD attached, and use the Intel e1000e adapter for Windows. |
 
 The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Status`, `RemoveBuildNics`, and `Remove` do the same.
 

@@ -81,11 +81,14 @@ bridge_of() {
 
 # One line for each machine: name|vcpu|memory_mb|disk_gb|role|flavor|net,mac;net,mac;...
 plan() {
-  python3 - "$manifest" <<'PY'
+  python3 - "$manifest" "$here/../common/flavors.json" <<'PY'
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
 for i, vm in enumerate(m["vms"]):
     flavor = vm.get("flavor") or m.get("default_flavor") or "ubuntu-24.04"
+    fl = dict((f["id"], f) for f in json.load(open(sys.argv[2], encoding="utf-8"))["flavors"])
+    if fl[flavor].get("iso"):
+        sys.exit("%s uses %s, which installs from an ISO. The KVM script guest-tags VLANs, which these guests cannot do. Use the Proxmox script for them." % (vm["name"], flavor))
     nics = ";".join("%s,%s:%02x:%02x" % (n["net"], m["mac_prefix"], i + 1, k) for k, n in enumerate(vm["nics"]))
     print("|".join([vm["name"], str(vm["vcpu"]), str(vm["memory_mb"]), str(vm["disk_gb"]), vm.get("role", ""), flavor, nics]))
 PY

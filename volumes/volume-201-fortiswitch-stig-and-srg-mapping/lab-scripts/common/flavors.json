@@ -1,7 +1,17 @@
 {
-  "description": "Linux flavors the lab scripts know. status ready means a script can build it (experimental flavors are untested). roles rates each machine type: y works, x needs extra steps (another repository, an accepted STIG finding, or an image you supply), n is not offered. The ratings are proposals that need a test build.",
+  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but no machine has been built from them. iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
   "default": "ubuntu-24.04",
-  "role_keys": ["gateway", "services", "certificate authority", "DHCP server", "administrator workstation", "routing peer", "multicast source", "static host", "spoofing and flooding test host"],
+  "role_keys": [
+    "gateway",
+    "services",
+    "certificate authority",
+    "DHCP server",
+    "administrator workstation",
+    "routing peer",
+    "multicast source",
+    "static host",
+    "spoofing and flooding test host"
+  ],
   "families": {
     "apt": {
       "install": "apt",
@@ -22,95 +32,314 @@
         "dhcpdump": null,
         "yersinia": null
       },
-      "epel_packages": ["nfdump", "smcroute", "hping3", "python3-scapy", "frr"]
+      "epel_packages": [
+        "nfdump",
+        "smcroute",
+        "hping3",
+        "python3-scapy",
+        "frr"
+      ]
+    },
+    "mint": {
+      "install": "apt",
+      "admin_group": "sudo",
+      "map": {}
+    },
+    "tce": {
+      "install": "tce",
+      "admin_group": "staff",
+      "map": {
+        "arping": "iputils",
+        "smcroute": null,
+        "qemu-guest-agent": null,
+        "open-vm-tools": "open-vm-tools"
+      }
+    },
+    "windows": {
+      "install": "windows",
+      "admin_group": "Administrators",
+      "map": {}
     }
   },
   "flavors": [
     {
-      "id": "ubuntu-24.04", "guest_id": "ubuntu64Guest", "name": "Ubuntu 24.04 LTS", "short": "Ubuntu 24.04", "family": "apt", "status": "ready", "renderer": "networkd",
+      "id": "ubuntu-24.04",
+      "guest_id": "ubuntu64Guest",
+      "name": "Ubuntu 24.04 LTS",
+      "short": "Ubuntu 24.04",
+      "family": "apt",
+      "status": "ready",
+      "renderer": "networkd",
       "sub": "noble, apt",
-      "image": { "base": "https://cloud-images.ubuntu.com/noble/current/", "pattern": "noble-server-cloudimg-amd64\\.img", "ova": "noble-server-cloudimg-amd64.ova", "sums": "SHA256SUMS", "algo": "sha256" },
+      "image": {
+        "base": "https://cloud-images.ubuntu.com/noble/current/",
+        "pattern": "noble-server-cloudimg-amd64\\.img",
+        "ova": "noble-server-cloudimg-amd64.ova",
+        "sums": "SHA256SUMS",
+        "algo": "sha256"
+      },
       "roles": ["y", "y", "y", "y", "y", "y", "y", "y", "y"]
     },
     {
-      "id": "ubuntu-26.04", "guest_id": "ubuntu64Guest", "name": "Ubuntu 26.04 LTS", "short": "Ubuntu 26.04", "family": "apt", "status": "experimental", "renderer": "networkd",
+      "id": "ubuntu-26.04",
+      "guest_id": "ubuntu64Guest",
+      "name": "Ubuntu 26.04 LTS",
+      "short": "Ubuntu 26.04",
+      "family": "apt",
+      "status": "experimental",
+      "renderer": "networkd",
       "sub": "resolute, apt",
-      "image": { "base": "https://cloud-images.ubuntu.com/resolute/current/", "pattern": "resolute-server-cloudimg-amd64\\.img", "ova": "resolute-server-cloudimg-amd64.ova", "sums": "SHA256SUMS", "algo": "sha256" },
+      "image": {
+        "base": "https://cloud-images.ubuntu.com/resolute/current/",
+        "pattern": "resolute-server-cloudimg-amd64\\.img",
+        "ova": "resolute-server-cloudimg-amd64.ova",
+        "sums": "SHA256SUMS",
+        "algo": "sha256"
+      },
       "roles": ["y", "y", "y", "y", "y", "y", "y", "y", "y"]
     },
     {
-      "id": "debian-13", "guest_id": "otherLinux64Guest", "name": "Debian 13", "short": "Debian 13", "family": "apt", "status": "experimental",
+      "id": "debian-13",
+      "guest_id": "otherLinux64Guest",
+      "name": "Debian 13",
+      "short": "Debian 13",
+      "family": "apt",
+      "status": "experimental",
       "sub": "trixie, apt",
-      "image": { "base": "https://cloud.debian.org/images/cloud/trixie/latest/", "pattern": "debian-13-genericcloud-amd64\\.qcow2", "sums": "SHA512SUMS", "algo": "sha512" },
+      "image": {
+        "base": "https://cloud.debian.org/images/cloud/trixie/latest/",
+        "pattern": "debian-13-genericcloud-amd64\\.qcow2",
+        "sums": "SHA512SUMS",
+        "algo": "sha512"
+      },
       "roles": ["y", "y", "y", "y", "y", "y", "y", "y", "y"]
     },
     {
-      "id": "rocky-10", "guest_id": "otherLinux64Guest", "name": "Rocky Linux 10", "short": "Rocky 10", "family": "dnf", "status": "experimental", "epel": "epel-release",
+      "id": "rocky-10",
+      "guest_id": "otherLinux64Guest",
+      "name": "Rocky Linux 10",
+      "short": "Rocky 10",
+      "family": "dnf",
+      "status": "experimental",
+      "epel": "epel-release",
       "sub": "dnf, EPEL for some tools",
-      "image": { "base": "https://dl.rockylinux.org/pub/rocky/10/images/x86_64/", "pattern": "Rocky-10-GenericCloud-Base\\.latest\\.x86_64\\.qcow2", "sums": "CHECKSUM", "algo": "sha256" },
+      "image": {
+        "base": "https://dl.rockylinux.org/pub/rocky/10/images/x86_64/",
+        "pattern": "Rocky-10-GenericCloud-Base\\.latest\\.x86_64\\.qcow2",
+        "sums": "CHECKSUM",
+        "algo": "sha256"
+      },
       "roles": ["y", "x", "y", "y", "y", "x", "x", "y", "x"]
     },
     {
-      "id": "alma-10", "guest_id": "otherLinux64Guest", "name": "AlmaLinux 10", "short": "Alma 10", "family": "dnf", "status": "experimental", "epel": "epel-release",
+      "id": "alma-10",
+      "guest_id": "otherLinux64Guest",
+      "name": "AlmaLinux 10",
+      "short": "Alma 10",
+      "family": "dnf",
+      "status": "experimental",
+      "epel": "epel-release",
       "sub": "dnf, EPEL for some tools",
-      "image": { "base": "https://repo.almalinux.org/almalinux/10/cloud/x86_64/images/", "pattern": "AlmaLinux-10-GenericCloud-latest\\.x86_64\\.qcow2", "sums": "CHECKSUM", "algo": "sha256" },
+      "image": {
+        "base": "https://repo.almalinux.org/almalinux/10/cloud/x86_64/images/",
+        "pattern": "AlmaLinux-10-GenericCloud-latest\\.x86_64\\.qcow2",
+        "sums": "CHECKSUM",
+        "algo": "sha256"
+      },
       "roles": ["y", "x", "y", "y", "y", "x", "x", "y", "x"]
     },
     {
-      "id": "fedora-43", "guest_id": "otherLinux64Guest", "name": "Fedora Cloud 43", "short": "Fedora 43", "family": "dnf", "status": "experimental",
+      "id": "fedora-43",
+      "guest_id": "otherLinux64Guest",
+      "name": "Fedora Cloud 43",
+      "short": "Fedora 43",
+      "family": "dnf",
+      "status": "experimental",
       "sub": "dnf",
-      "image": { "base": "https://dl.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/", "pattern": "Fedora-Cloud-Base-Generic-43-[0-9.]+\\.x86_64\\.qcow2", "sums_pattern": "Fedora-Cloud-43-[0-9.]+-x86_64-CHECKSUM", "algo": "sha256" },
+      "image": {
+        "base": "https://dl.fedoraproject.org/pub/fedora/linux/releases/43/Cloud/x86_64/images/",
+        "pattern": "Fedora-Cloud-Base-Generic-43-[0-9.]+\\.x86_64\\.qcow2",
+        "sums_pattern": "Fedora-Cloud-43-[0-9.]+-x86_64-CHECKSUM",
+        "algo": "sha256"
+      },
       "roles": ["y", "x", "y", "y", "y", "y", "y", "y", "x"]
     },
     {
-      "id": "rhel-10", "guest_id": "otherLinux64Guest", "name": "Red Hat Enterprise Linux 10", "short": "RHEL 10", "family": "dnf", "status": "experimental", "subscription": true,
+      "id": "rhel-10",
+      "guest_id": "otherLinux64Guest",
+      "name": "Red Hat Enterprise Linux 10",
+      "short": "RHEL 10",
+      "family": "dnf",
+      "status": "experimental",
+      "subscription": true,
       "epel": "https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm",
       "sub": "dnf, subscription, image you supply",
-      "image": { "user_supplied": "Download the RHEL 10 KVM guest image (qcow2) from the Red Hat Customer Portal and pass its path." },
+      "image": {
+        "user_supplied": "Download the RHEL 10 KVM guest image (qcow2) from the Red Hat Customer Portal and pass its path."
+      },
       "roles": ["y", "x", "y", "y", "y", "x", "x", "y", "x"]
     },
     {
-      "id": "ubuntu-24.04-stig", "guest_id": "ubuntu64Guest", "name": "Ubuntu 24.04 LTS, DoW STIG hardened", "short": "Ubuntu 24.04 STIG", "family": "apt", "status": "experimental", "renderer": "networkd",
-      "base": "ubuntu-24.04", "stig": "ubuntu-usg", "needs_password": true, "ubuntu_pro": true,
+      "id": "ubuntu-24.04-stig",
+      "guest_id": "ubuntu64Guest",
+      "name": "Ubuntu 24.04 LTS, DoW STIG hardened",
+      "short": "Ubuntu 24.04 STIG",
+      "family": "apt",
+      "status": "experimental",
+      "renderer": "networkd",
+      "base": "ubuntu-24.04",
+      "stig": "ubuntu-usg",
+      "needs_password": true,
+      "ubuntu_pro": true,
       "sub": "Ubuntu Pro and USG",
       "roles": ["x", "x", "y", "y", "y", "x", "y", "y", "n"]
     },
     {
-      "id": "rhel-10-stig", "guest_id": "otherLinux64Guest", "name": "RHEL 10, DoW STIG hardened", "short": "RHEL 10 STIG", "family": "dnf", "status": "experimental", "subscription": true,
-      "base": "rhel-10", "stig": "rhel-oscap", "needs_password": true,
+      "id": "rhel-10-stig",
+      "guest_id": "otherLinux64Guest",
+      "name": "RHEL 10, DoW STIG hardened",
+      "short": "RHEL 10 STIG",
+      "family": "dnf",
+      "status": "experimental",
+      "subscription": true,
+      "base": "rhel-10",
+      "stig": "rhel-oscap",
+      "needs_password": true,
       "epel": "https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm",
       "sub": "SCAP Security Guide",
       "roles": ["x", "x", "y", "y", "y", "x", "y", "y", "n"]
     },
     {
-      "id": "mint-22", "guest_id": "otherLinux64Guest", "name": "Linux Mint 22", "short": "Mint 22", "family": "apt", "status": "planned",
-      "sub": "desktop, no cloud image, ISO install",
-      "why": "Mint ships only as a desktop installer ISO. There is no cloud image or cloud-init, so an unattended install and first-login script would have to be written and tested on a real install.",
-      "roles": ["n", "n", "n", "n", "x", "n", "n", "x", "x"]
+      "id": "mint-22",
+      "guest_id": "ubuntu64Guest",
+      "name": "Linux Mint 22",
+      "short": "Mint 22",
+      "family": "mint",
+      "status": "experimental",
+      "sub": "desktop, ISO install, you run the installer",
+      "roles": ["n", "n", "n", "n", "x", "n", "n", "x", "x"],
+      "iso": true,
+      "manual": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "l26",
+      "note": "Linux Mint ships only as a desktop installer ISO. The script creates the machine with the ISO and a second CD that holds lab201-firstlogin.sh. You run the Mint installer, then run that script as root to set the name, addresses, key, and packages.",
+      "image": {
+        "user_supplied": "Download the Linux Mint 22 Cinnamon ISO from linuxmint.com."
+      },
+      "min": { "vcpu": 2, "memory_mb": 4096, "disk_gb": 25 }
     },
     {
-      "id": "tinycore", "guest_id": "otherLinux64Guest", "name": "Tiny Core Linux", "short": "Tiny Core", "family": "tce", "status": "planned",
-      "sub": "no cloud-init",
-      "why": "Tiny Core has no cloud-init, no netplan, and none of the service packages the lab needs. It would need its own boot-time configuration scripts.",
-      "roles": ["n", "n", "n", "n", "n", "n", "x", "x", "n"]
+      "id": "tinycore",
+      "guest_id": "otherLinux64Guest",
+      "name": "Tiny Core Linux",
+      "short": "Tiny Core",
+      "family": "tce",
+      "status": "experimental",
+      "sub": "ISO boot, you run one script",
+      "roles": ["n", "n", "n", "n", "n", "n", "x", "x", "n"],
+      "iso": true,
+      "manual": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "l26",
+      "note": "Tiny Core runs from memory and has no cloud-init. The script creates the machine with the ISO and a second CD that holds lab201-tc.sh. After it boots, you mount that CD and run the script to set the name, addresses, and tools. Save the changes with filetool.sh -b if you want them to persist.",
+      "image": {
+        "user_supplied": "Download CorePlus (or Core) from tinycorelinux.net."
+      },
+      "min": { "vcpu": 1, "memory_mb": 512, "disk_gb": 1 }
     },
     {
-      "id": "win-11", "guest_id": "otherLinux64Guest", "name": "Windows 11", "short": "Windows 11", "family": "windows", "status": "planned",
-      "sub": "ISO, unattended install, vTPM",
-      "why": "Windows installs from an ISO you license, with an answer file, drivers for the virtual disk and network, and (for Windows 11) a virtual TPM. Each platform handles those differently, and none could be tested.",
-      "roles": ["n", "n", "n", "n", "x", "n", "n", "x", "n"]
-    },
-    {
-      "id": "win-2025", "guest_id": "otherLinux64Guest", "name": "Windows Server 2025", "short": "Windows Server 2025", "family": "windows", "status": "planned",
+      "id": "win-11",
+      "guest_id": "windows9_64Guest",
+      "name": "Windows 11",
+      "short": "Windows 11",
+      "family": "windows",
+      "status": "experimental",
       "sub": "ISO, unattended install",
-      "why": "Same as Windows 11: a licensed ISO, an answer file, and drivers, and the Windows equivalents of the lab services (Certificate Services for the CA, the DHCP role for Kea) would have to be built and tested.",
-      "roles": ["n", "n", "x", "x", "x", "n", "n", "x", "n"]
+      "roles": ["n", "n", "n", "n", "x", "n", "n", "x", "n"],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows installs unattended from an ISO you supply, with an answer file on a second CD. The answer file bypasses the TPM and Secure Boot checks, so no virtual TPM is needed. The first-logon script sets the addresses and OpenSSH, and the machine reboots at least once.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows 11 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": true,
+        "image_index": 1,
+        "bypass_checks": true
+      },
+      "min": { "vcpu": 2, "memory_mb": 4096, "disk_gb": 64 }
     },
     {
-      "id": "win-2022", "guest_id": "otherLinux64Guest", "name": "Windows Server 2022", "short": "Windows Server 2022", "family": "windows", "status": "planned",
+      "id": "win-2025",
+      "guest_id": "windows2019srv_64Guest",
+      "name": "Windows Server 2025",
+      "short": "Windows Server 2025",
+      "family": "windows",
+      "status": "experimental",
       "sub": "ISO, unattended install",
-      "why": "Same as Windows Server 2025.",
-      "roles": ["n", "n", "x", "x", "x", "n", "n", "x", "n"]
+      "roles": ["n", "n", "x", "x", "x", "n", "n", "x", "n"],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows Server installs unattended from an ISO you supply, with an answer file on a second CD. The first-logon script sets the addresses and OpenSSH, and installs the Windows role that stands in for the lab service (Certificate Services for the CA, the DHCP role for Kea). The image index defaults to 2, which is usually Standard with Desktop Experience. Check it for your ISO.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows Server 2025 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": false,
+        "image_index": 2,
+        "bypass_checks": false
+      },
+      "min": { "vcpu": 1, "memory_mb": 2048, "disk_gb": 32 }
+    },
+    {
+      "id": "win-2022",
+      "guest_id": "windows2019srv_64Guest",
+      "name": "Windows Server 2022",
+      "short": "Windows Server 2022",
+      "family": "windows",
+      "status": "experimental",
+      "sub": "ISO, unattended install",
+      "roles": ["n", "n", "x", "x", "x", "n", "n", "x", "n"],
+      "iso": true,
+      "iso_platforms": [
+        "proxmox",
+        "esxi",
+        "vcenter",
+        "vxrail"
+      ],
+      "proxmox_ostype": "win11",
+      "note": "Windows Server installs unattended from an ISO you supply, with an answer file on a second CD. The first-logon script sets the addresses and OpenSSH, and installs the Windows role that stands in for the lab service (Certificate Services for the CA, the DHCP role for Kea). The image index defaults to 2, which is usually Standard with Desktop Experience. Check it for your ISO.",
+      "image": {
+        "user_supplied": "Use your own licensed Windows Server 2022 ISO, or the Microsoft Evaluation Center ISO."
+      },
+      "windows": {
+        "client": false,
+        "image_index": 2,
+        "bypass_checks": false
+      },
+      "min": { "vcpu": 1, "memory_mb": 2048, "disk_gb": 32 }
     }
   ]
 }
