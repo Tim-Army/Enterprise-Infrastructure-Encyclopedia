@@ -142,6 +142,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | A machine boots with the wrong network settings | A custom snippet was ignored or overridden | Compare `qm cloudinit dump` with the snippet; clear fields in the web interface's Cloud-Init tab |
 | `gw-201` passes no tagged frames | `trunks=` did not apply, or the bridge is not VLAN-aware | Run `bridge vlan show dev tap20101i2`; check the NIC line with `qm config 20101` |
 | The lab loops or floods | Both trunk NICs were put in one host bridge | Give each NIC its own bridge |
+| A Rocky, AlmaLinux, or RHEL 10 machine shows nothing after `Probing EDD` and never boots | The CPU model is below x86-64-v3, which Red Hat 10 requires | The script sets `x86-64-v3` for these flavors. Check `qm config` for `cpu:`, and use `host` if the physical CPU is older than v3 |
 | A machine has its lab addresses but never installs its packages, and the guest agent never starts | The build NIC has no DHCP or no internet. With the lab default route ahead of the build NIC's, a machine also sends package traffic to a gateway that is not built yet | Point `--bridge-wan` at a bridge with DHCP and internet (the host's management bridge works). The build NIC's default route has metric 50, so it wins until you remove it |
 
 ## Security and Best Practices
@@ -215,7 +216,7 @@ Run `./deploy-lab201-proxmox.sh --action remove`, delete the snippet files (`/va
 
 ## Lab Verification
 
-Complete this sign-off once Labs 12.1 to 12.3 have been run end to end on a real Proxmox VE node with a real switch trunk. One machine (`ca-201`) has been built, checked, and removed with the script on Proxmox VE 9.2.9. That test confirmed the `import-from` disk import, the `--cicustom` snippets, the cloud-init drive, the guest agent, the lab addresses (IPv4 and IPv6), and the `status`, `remove-build-nics`, and `remove` actions. It used the host's management bridge for the build NIC and an isolated bridge for the lab NIC, so it did not test the gateway, the `trunks=2-4094` range, VLANs on a real trunk, the other eleven machines, or any other flavor.
+Complete this sign-off once Labs 12.1 to 12.3 have been run end to end on a real Proxmox VE node with a real switch trunk. One machine (`ca-201`) was built, checked, and removed with the script on Proxmox VE 9.2.9 for Ubuntu 24.04 and 26.04, Debian 13, Rocky 10, AlmaLinux 10, and Fedora 43. Those tests confirmed the `import-from` disk import, the `--cicustom` snippets, the cloud-init drive, the guest agent, the lab addresses (IPv4 and IPv6), and the `status`, `remove-build-nics`, and `remove` actions. It used the host's management bridge for the build NIC and an isolated bridge for the lab NIC, so it did not test the gateway, the `trunks=2-4094` range, VLANs on a real trunk, the other eleven machines, or the hardened, Red Hat subscription, and ISO flavors.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

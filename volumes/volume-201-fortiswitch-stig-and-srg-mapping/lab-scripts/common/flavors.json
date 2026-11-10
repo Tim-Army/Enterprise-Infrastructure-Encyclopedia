@@ -116,6 +116,7 @@
     },
     {
       "id": "rocky-10",
+      "proxmox_cpu": "x86-64-v3",
       "guest_id": "otherLinux64Guest",
       "name": "Rocky Linux 10",
       "short": "Rocky 10",
@@ -133,6 +134,7 @@
     },
     {
       "id": "alma-10",
+      "proxmox_cpu": "x86-64-v3",
       "guest_id": "otherLinux64Guest",
       "name": "AlmaLinux 10",
       "short": "Alma 10",
@@ -166,6 +168,7 @@
     },
     {
       "id": "rhel-10",
+      "proxmox_cpu": "x86-64-v3",
       "guest_id": "otherLinux64Guest",
       "name": "Red Hat Enterprise Linux 10",
       "short": "RHEL 10",
@@ -196,6 +199,7 @@
     },
     {
       "id": "rhel-10-stig",
+      "proxmox_cpu": "x86-64-v3",
       "guest_id": "otherLinux64Guest",
       "name": "RHEL 10, DoW STIG hardened",
       "short": "RHEL 10 STIG",

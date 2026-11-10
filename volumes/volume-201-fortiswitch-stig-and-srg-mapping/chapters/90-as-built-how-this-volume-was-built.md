@@ -362,6 +362,16 @@ Lessons from this work:
   that a build NIC needs a bridge with DHCP and internet, and that the machine's
   serial console cannot be read from a script, so SSH through the host is the way
   to inspect a guest.
+- **Build one machine of every flavor, not just the default.** Ubuntu and Debian
+  passed at once, and the Red Hat family and Fedora each failed differently. Rocky
+  and AlmaLinux 10 hung after GRUB because the script's default CPU model is
+  below the x86-64-v3 level Red Hat 10 requires. All three failed to apply the
+  network, because their cloud-init renders it with NetworkManager, which raised
+  `KeyError: 'ipv6'` on a netplan route list holding both default routes (and
+  rejected `to: default` before that). The routes are now `0.0.0.0/0` and `::/0`,
+  and the Red Hat family sets them with `nmcli`. The Red Hat guest agent also blocks
+  `guest-exec`, so a script cannot check those machines through it. SSH through
+  the host works for every flavor.
 
 ### The Word and PDF downloads
 

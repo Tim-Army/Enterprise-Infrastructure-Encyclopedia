@@ -99,8 +99,8 @@ fl = dict((f["id"], f) for f in json.load(open(sys.argv[2], encoding="utf-8"))["
 for i, vm in enumerate(m["vms"]):
     flavor = vm.get("flavor") or m.get("default_flavor") or "ubuntu-24.04"
     f = fl[flavor]
-    print("VM|%s|%d|%d|%d|%d|%s|%s|%d|%s|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", ""), flavor,
-                                           1 if f.get("iso") else 0, f["family"], f.get("proxmox_ostype", "l26")))
+    print("VM|%s|%d|%d|%d|%d|%s|%s|%d|%s|%s|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", ""), flavor,
+                                           1 if f.get("iso") else 0, f["family"], f.get("proxmox_ostype", "l26"), f.get("proxmox_cpu", "x86-64-v2-AES")))
     for n, nic in enumerate(vm["nics"]):
         mac = "%s:%02x:%02x" % (m["mac_prefix"], i + 1, n)
         print("NIC|%s|%d|%s|%s|%s|%s" % (vm["name"], n, nic["net"], nic.get("vlan", ""),
@@ -215,7 +215,7 @@ fi
 run python3 "$seedtool" "${seed_args[@]}" "${key_args[@]}"
 
 # Machines.
-declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor vm_iso vm_family vm_ostype
+declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor vm_iso vm_family vm_ostype vm_cputype
 nic_args=()
 current=""
 create_iso_vm() {
@@ -226,7 +226,7 @@ create_iso_vm() {
   if [[ "${vm_family[$name]}" == windows ]]; then disk_opt=(--sata0 "$storage:${vm_disk[$name]}"); boot="order=sata0;ide2"
   else disk_opt=(--scsi0 "$storage:${vm_disk[$name]}"); boot="order=scsi0;ide2"; fi
   run cp "$workdir/seeds/$name-seed.iso" "$iso_dir/lab201-$name-seed.iso"
-  run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu x86-64-v2-AES \
+  run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu "${vm_cputype[$name]}" \
     --ostype "${vm_ostype[$name]}" --scsihw virtio-scsi-single "${nic_args[@]}" "${disk_opt[@]}"
   run qm set "$id" --ide2 "${iso_vol[$flv]},media=cdrom" --ide3 "$iso_storage:iso/lab201-$name-seed.iso,media=cdrom" --boot "$boot"
   case "${vm_family[$name]}" in
@@ -251,7 +251,7 @@ create_vm() {
     esac
     run cp "$src" "$snip_dir/lab201-$name-$f.yml"
   done
-  run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu x86-64-v2-AES \
+  run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu "${vm_cputype[$name]}" \
     --ostype l26 --scsihw virtio-scsi-single --agent enabled=1 --serial0 socket --vga serial0 "${nic_args[@]}"
   run qm set "$id" --scsi0 "$storage:0,import-from=${flavor_img[${vm_flavor[$name]}]},discard=on"
   run qm resize "$id" scsi0 "${vm_disk[$name]}G"
@@ -261,10 +261,10 @@ create_vm() {
 
 gateway_name=""
 nic_model=virtio
-while IFS='|' read -r kind a b c d e f g h i j; do
+while IFS='|' read -r kind a b c d e f g h i j k; do
   if [[ "$kind" == VM ]]; then
     [[ -z "$current" ]] || create_vm "$current"
-    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; vm_flavor[$a]="$g"; vm_iso[$a]="$h"; vm_family[$a]="$i"; vm_ostype[$a]="$j"; nic_args=()
+    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; vm_flavor[$a]="$g"; vm_iso[$a]="$h"; vm_family[$a]="$i"; vm_ostype[$a]="$j"; vm_cputype[$a]="$k"; nic_args=()
     nic_model=virtio; [[ "$i" != windows ]] || nic_model=e1000e
     [[ "$f" != gateway ]] || gateway_name="$a"
   else

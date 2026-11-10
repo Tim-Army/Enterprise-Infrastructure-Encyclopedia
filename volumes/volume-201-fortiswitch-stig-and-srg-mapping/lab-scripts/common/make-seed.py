@@ -172,7 +172,15 @@ def yaml_list(items, indent):
     return "".join("%s- %s\n" % (pad, q(i)) for i in items)
 
 
+def routes_in_netplan(flavor):
+    """Red Hat family images render the network with NetworkManager, whose cloud-init renderer
+    fails on a netplan route that has both an IPv4 and an IPv6 default (KeyError: ipv6), so
+    those flavors get their default routes from nmcli in user-data instead."""
+    return not (flavor and flavor.get("family") == "dnf")
+
+
 def network_config(manifest, vm_index, vm, tagging, flavor=None):
+    routes = routes_in_netplan(flavor)
     lines = ["network:", "  version: 2"]
     if flavor is None or flavor.get("renderer") == "networkd":
         lines.append("  renderer: networkd")
@@ -197,10 +205,10 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
                 vname = "%sv%d" % (name, vlan)
                 vbody = ["    %s:" % vname, "      id: %d" % vlan, "      link: %s" % name,
                          "      dhcp6: false", "      accept-ra: false"]
-                vbody += address_block(nic)
+                vbody += address_block(nic, routes)
                 vlans.append(vbody)
             else:
-                body += address_block(nic)
+                body += address_block(nic, routes)
         eth.append(body)
     trunk = vm.get("bridge_trunks")
     if trunk:
@@ -238,16 +246,16 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
     return "\n".join(lines) + "\n"
 
 
-def address_block(nic):
+def address_block(nic, routes=True):
     out = []
     if nic.get("ipv4"):
         out += ["      dhcp4: false", "      addresses:"]
         out += yaml_list(addresses_of(nic["ipv4"]), 8).splitlines()
     gw = nic.get("gateway4")
-    if gw:
+    if gw and routes:
         out += ["      routes:",
-                "        - to: default", "          via: %s" % q(gw), "          metric: 100",
-                "        - to: default", "          via: %s" % q(gateway_v6(gw)), "          metric: 100"]
+                "        - to: 0.0.0.0/0", "          via: %s" % q(gw), "          metric: 100",
+                "        - to: \"::/0\"", "          via: %s" % q(gateway_v6(gw)), "          metric: 100"]
     return out
 
 
@@ -306,6 +314,14 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     for path, content in files:
         L += ["  - path: %s" % path, "    permissions: \"0644\"", "    content: %s" % q(content)]
     run = []
+    if not routes_in_netplan(flavor):
+        for n, nic in enumerate(vm["nics"]):
+            if nic.get("build"):
+                run.append('c=$(nmcli -g GENERAL.CONNECTION dev show nic%d) && nmcli con mod "$c" ipv4.route-metric 50 && nmcli con up "$c" || true' % n)
+            if nic.get("gateway4") and not nic.get("build"):
+                dev = "nic%d" % n
+                run.append('c=$(nmcli -g GENERAL.CONNECTION dev show %s) && nmcli con mod "$c" ipv4.gateway %s ipv4.route-metric 100 ipv6.gateway %s ipv6.route-metric 100 && nmcli con up "$c" || true'
+                           % (dev, nic["gateway4"], gateway_v6(nic["gateway4"])))
     if fam.get("install") == "dnf" and install:
         if needs_epel:
             epel = flavor["epel"]
