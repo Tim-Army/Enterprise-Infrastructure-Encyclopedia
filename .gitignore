@@ -14,3 +14,6 @@ imports/
 
 # Output of the lab automation scripts (Volume CCI)
 volumes/*/lab-scripts/**/work/
+# License keys for the Volume CCI lab scripts. Never commit them.
+licenses.local.json
+**/licenses.local.json

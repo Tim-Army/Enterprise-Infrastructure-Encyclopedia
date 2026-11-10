@@ -12,6 +12,11 @@
   Needs PowerShell 5.1 or 7, PowerCLI (Install-Module VMware.PowerCLI; use the release that supports your vSphere version, 13.3 for 7 and 8, and Broadcom's newer VCF PowerCLI for 9),
   and Python 3 with pycdlib (pip install pycdlib) for the seed ISOs.
 
+  For a managed cluster such as Dell VxRail, use -ClusterName, -UseExistingSwitch with the
+  name of the existing distributed switch, and -NoUplinkChanges. The script then adds only
+  port groups, and changes no switch, uplink, or physical NIC. Build the lab with one trunk
+  (the Lab Builder does this for you), because the VxRail switch has one set of uplinks.
+
 .EXAMPLE
   .\Deploy-Lab201-Vcenter.ps1 -VcenterServer vc01.example.net -Datacenter DC1 `
     -VMHostName esxi01.example.net -Datastore datastore1 -VsphereVersion 8 `
@@ -24,6 +29,9 @@ param(
   [PSCredential] $Credential,
   [string] $Datacenter,
   [string] $VMHostName,
+  [string] $ClusterName,
+  [string] $UseExistingSwitch,
+  [switch] $NoUplinkChanges,
   [string] $Datastore,
   [string] $FolderName = 'lab201',
   [ValidateSet(7, 8, 9)] [int] $VsphereVersion = 8,
@@ -35,6 +43,8 @@ param(
   [string] $Trunk1Nic, [string] $Trunk2Nic, [string] $OobNic, [string] $WanNic,
   [string] $HardwareVersion,
   [string] $VdsVersion,
+  [string] $LicenseFile,
+  [hashtable] $FlavorImages = @{},
   [switch] $SkipCertificateCheck
 )
 
@@ -46,6 +56,71 @@ function Get-WebText {
   $r = Invoke-WebRequest -Uri $Uri
   if ($r.Content -is [byte[]]) { return [System.Text.Encoding]::UTF8.GetString($r.Content) }
   return [string]$r.Content
+}
+
+$flavorCatalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
+
+function Get-FlavorId {
+  param($Vm, $Lab)
+  if ($Vm.flavor) { return [string]$Vm.flavor }
+  if ($Lab.default_flavor) { return [string]$Lab.default_flavor }
+  return [string]$flavorCatalog.default
+}
+
+function Get-FlavorRecord {
+  param([string] $Id)
+  $f = $flavorCatalog.flavors | Where-Object { $_.id -eq $Id } | Select-Object -First 1
+  if (-not $f) { throw "Unknown flavor $Id" }
+  return $f
+}
+
+function Get-ImageFlavorId {
+  # A hardened (STIG) flavor uses the image of its base flavor.
+  param([string] $Id)
+  $f = Get-FlavorRecord $Id
+  while ($f.base -and -not $f.image) { $f = Get-FlavorRecord $f.base }
+  return [string]$f.id
+}
+
+function Resolve-FlavorOva {
+  # An OVA you pass in -FlavorImages wins. Otherwise resolve-image.py finds, downloads, and checks the published OVA.
+  param([string] $Id, [string] $WorkDir, [hashtable] $Supplied)
+  $imageId = Get-ImageFlavorId $Id
+  foreach ($k in $Id, $imageId) {
+    if ($Supplied -and $Supplied.ContainsKey($k)) { return (Resolve-Path $Supplied[$k]).Path }
+  }
+  $out = & python (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out (Join-Path $WorkDir 'images')
+  if ($LASTEXITCODE -ne 0) {
+    throw "No OVA is available for the flavor $imageId. Make one from its qcow2 image, then pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
+  }
+  return [string]($out | Select-Object -Last 1)
+}
+
+function Set-LabVsphereLicense {
+  # Applies the vSphere license keys in the license file. The keys are never printed.
+  param($Server, $VmHost, [string] $Path, [bool] $IsVcenter)
+  if (-not $Path) { return }
+  $lic = Get-Content -Raw -Path $Path | ConvertFrom-Json
+  if (-not $lic.vsphere) { return }
+  $si = Get-View ServiceInstance -Server $Server
+  $lm = Get-View $si.Content.LicenseManager -Server $Server
+  try {
+    if ($IsVcenter) {
+      $lam = Get-View $lm.LicenseAssignmentManager -Server $Server
+      if ($lic.vsphere.vcenter) {
+        $null = $lm.AddLicense([string]$lic.vsphere.vcenter, $null)
+        $null = $lam.UpdateAssignedLicense($si.Content.About.InstanceUuid, [string]$lic.vsphere.vcenter, $null)
+      }
+      if ($lic.vsphere.esxi) {
+        $null = $lm.AddLicense([string]$lic.vsphere.esxi, $null)
+        $null = $lam.UpdateAssignedLicense($VmHost.ExtensionData.MoRef.Value, [string]$lic.vsphere.esxi, $null)
+      }
+    }
+    elseif ($lic.vsphere.esxi) {
+      $null = $lm.UpdateLicense([string]$lic.vsphere.esxi, $null)
+    }
+  }
+  catch { throw 'A vSphere license key was not accepted. Check the key and the license file.' }
 }
 
 function Get-DefaultHardwareVersion {
@@ -60,6 +135,7 @@ if (-not (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) {
   throw 'VMware PowerCLI is not installed. Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
 }
 Import-Module VMware.VimAutomation.Core -ErrorAction Stop | Out-Null
+if ($UseExistingSwitch) { $NetworkType = 'Distributed' }
 if ($NetworkType -eq 'Distributed') { Import-Module VMware.VimAutomation.Vds -ErrorAction Stop | Out-Null }
 if ($SkipCertificateCheck) {
   Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false | Out-Null
@@ -114,12 +190,24 @@ try {
   }
 
   # ---- Deploy ----
-  foreach ($need in 'Datacenter', 'VMHostName', 'Datastore') {
+  foreach ($need in 'Datacenter', 'Datastore') {
     if (-not (Get-Variable $need -ValueOnly)) { throw "-$need is required for -Action Deploy." }
   }
+  if (-not $VMHostName -and -not $ClusterName) { throw '-VMHostName or -ClusterName is required for -Action Deploy.' }
+  if ($UseExistingSwitch -and -not $NoUplinkChanges) { throw '-UseExistingSwitch changes no uplinks. Add -NoUplinkChanges to confirm that you want that.' }
   if (-not $SshKeyFile) { throw '-SshKeyFile is required for -Action Deploy.' }
   $dc = Get-Datacenter -Server $server -Name $Datacenter
-  $vmhost = Get-VMHost -Server $server -Name $VMHostName -Location $dc
+  $cluster = $null
+  if ($ClusterName) {
+    # A cluster (for example VxRail): the machines can run on any host. Templates are imported through the first connected host.
+    $cluster = Get-Cluster -Server $server -Name $ClusterName -Location $dc
+    $vmhost = Get-VMHost -Server $server -Location $cluster | Where-Object { $_.ConnectionState -eq 'Connected' } | Select-Object -First 1
+    $placement = @{ ResourcePool = $cluster }
+  }
+  else {
+    $vmhost = Get-VMHost -Server $server -Name $VMHostName -Location $dc
+    $placement = @{ VMHost = $vmhost }
+  }
   $ds = Get-Datastore -Server $server -Name $Datastore -Location $dc
   if (-not $HardwareVersion) { $HardwareVersion = Get-DefaultHardwareVersion -HostVersion ([version]$vmhost.Version) -Major $VsphereVersion }
   if (-not $VdsVersion) { $VdsVersion = switch ($VsphereVersion) { 7 { '7.0.3' } 8 { '8.0.0' } default { '9.0.0' } } }
@@ -135,6 +223,22 @@ try {
   $uplink = @{ 'lab201-t1' = $Trunk1Nic; 'lab201-t2' = $Trunk2Nic; 'lab201-oob' = $OobNic; 'lab201-wan' = $WanNic }
   $portGroups = @{}
   foreach ($vmDef in $lab.vms) { foreach ($nic in $vmDef.nics) { $portGroups[(& $pgOf $nic)] = $nic } }
+  if ($UseExistingSwitch) {
+    # Reuse an existing distributed switch (for example the VxRail switch). No switch, uplink, or physical NIC changes.
+    # Only port groups are added. The switch's uplinks must already reach the hardware switches.
+    $vds = Get-VDSwitch -Server $server -Name $UseExistingSwitch
+    foreach ($pg in @($portGroups.Keys)) {
+      if (Get-VDPortgroup -VDSwitch $vds -Name $pg -ErrorAction SilentlyContinue) { continue }
+      if (-not $PSCmdlet.ShouldProcess($pg, "Create the distributed port group on $UseExistingSwitch")) { continue }
+      if ($portGroups[$pg].trunk) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanTrunkRange '0-4094' }
+      elseif ($portGroups[$pg].vlan) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanId ([int]$portGroups[$pg].vlan) }
+      else { $new = New-VDPortgroup -VDSwitch $vds -Name $pg }
+      if ($portGroups[$pg].trunk) {
+        Get-VDSecurityPolicy -VDPortgroup $new | Set-VDSecurityPolicy -AllowPromiscuous $true -ForgedTransmits $true -MacChanges $true | Out-Null
+      }
+    }
+  }
+  else {
   foreach ($net in $lab.networks) {
     $swName = if ($NetworkType -eq 'Standard') { "vSwitch-$($net.name)" } else { "dvs-$($net.name)" }
     if ($NetworkType -eq 'Standard') {
@@ -178,28 +282,31 @@ try {
       }
     }
   }
-
-  # Image and template
-  $ova = Join-Path $WorkDir $lab.image.ova
-  if (-not (Test-Path $ova)) {
-    Invoke-WebRequest -Uri ($lab.image.base_url + $lab.image.ova) -OutFile $ova
-    $sums = (Get-WebText ($lab.image.base_url + 'SHA256SUMS')) -split "`n"
-    $want = ($sums | Where-Object { $_ -match [regex]::Escape($lab.image.ova) } | Select-Object -First 1) -replace '\s.*', ''
-    $got = (Get-FileHash -Algorithm SHA256 -Path $ova).Hash.ToLower()
-    if ($want -ne $got) { Remove-Item $ova; throw "SHA-256 mismatch for $($lab.image.ova): expected $want, got $got" }
   }
-  $tplName = 'lab201-ubuntu-template'
-  $tpl = Get-Template -Server $server -Name $tplName -ErrorAction SilentlyContinue
-  if (-not $tpl -and $PSCmdlet.ShouldProcess($tplName, 'Import the cloud image as a template')) {
-    $base = Import-VApp -Source $ova -VMHost $vmhost -Datastore $ds -Location $folder -Name $tplName -DiskStorageFormat Thin -Force
-    Set-VM -VM $base -GuestId 'ubuntu64Guest' -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
-    $tpl = Set-VM -VM $base -ToTemplate -Confirm:$false
+
+  # Images and templates: one template for each image flavor in use (hardened flavors share their base's template).
+  Set-LabVsphereLicense -Server $server -VmHost $vmhost -Path $LicenseFile -IsVcenter $true
+  $templateOf = @{}
+  foreach ($vmDef in $lab.vms) {
+    $fid = Get-FlavorId $vmDef $lab
+    $imageId = Get-ImageFlavorId $fid
+    if ($templateOf.ContainsKey($imageId)) { continue }
+    $tplName = "lab201-$imageId-template"
+    $tpl = Get-Template -Server $server -Name $tplName -ErrorAction SilentlyContinue
+    if (-not $tpl -and $PSCmdlet.ShouldProcess($tplName, 'Import the cloud image as a template')) {
+      $ova = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages
+      $base = Import-VApp -Source $ova -VMHost $vmhost -Datastore $ds -Location $folder -Name $tplName -DiskStorageFormat Thin -Force
+      Set-VM -VM $base -GuestId (Get-FlavorRecord $imageId).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
+      $tpl = Set-VM -VM $base -ToTemplate -Confirm:$false
+    }
+    $templateOf[$imageId] = $tpl
   }
 
   # Seeds
+  $licenseArgs = @(); if ($LicenseFile) { $licenseArgs = '--license-file', (Resolve-Path $LicenseFile).Path }
   $keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
   $seedDir = Join-Path $WorkDir 'seeds'
-  & python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging hypervisor @keys
+  & python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging hypervisor @keys @licenseArgs
   if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }
   $psDrive = New-PSDrive -Name lab201ds -PSProvider VimDatastore -Root '\' -Location $ds
   New-Item -Path 'lab201ds:\lab201-seeds' -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
@@ -209,7 +316,7 @@ try {
     if (Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue) { Write-Host "$name exists. Skipped."; continue }
     if (-not $PSCmdlet.ShouldProcess($name, 'Clone from the template and configure')) { continue }
     Write-Host "Creating $name"
-    $vm = New-VM -Name $name -Template $tpl -VMHost $vmhost -Datastore $ds -Location $folder -DiskStorageFormat Thin
+    $vm = New-VM -Name $name -Template $templateOf[(Get-ImageFlavorId (Get-FlavorId $vmDef $lab))] @placement -Datastore $ds -Location $folder -DiskStorageFormat Thin
     Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -Confirm:$false | Out-Null
     Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false

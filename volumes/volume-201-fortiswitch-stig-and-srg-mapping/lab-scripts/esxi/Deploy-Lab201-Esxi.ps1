@@ -34,6 +34,8 @@ param(
   [string] $WorkDir = (Join-Path $PSScriptRoot 'work'),
   [string] $Trunk1Nic, [string] $Trunk2Nic, [string] $OobNic, [string] $WanNic,
   [string] $HardwareVersion,
+  [string] $LicenseFile,
+  [hashtable] $FlavorImages = @{},
   [switch] $SkipCertificateCheck
 )
 
@@ -45,6 +47,71 @@ function Get-WebText {
   $r = Invoke-WebRequest -Uri $Uri
   if ($r.Content -is [byte[]]) { return [System.Text.Encoding]::UTF8.GetString($r.Content) }
   return [string]$r.Content
+}
+
+$flavorCatalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
+
+function Get-FlavorId {
+  param($Vm, $Lab)
+  if ($Vm.flavor) { return [string]$Vm.flavor }
+  if ($Lab.default_flavor) { return [string]$Lab.default_flavor }
+  return [string]$flavorCatalog.default
+}
+
+function Get-FlavorRecord {
+  param([string] $Id)
+  $f = $flavorCatalog.flavors | Where-Object { $_.id -eq $Id } | Select-Object -First 1
+  if (-not $f) { throw "Unknown flavor $Id" }
+  return $f
+}
+
+function Get-ImageFlavorId {
+  # A hardened (STIG) flavor uses the image of its base flavor.
+  param([string] $Id)
+  $f = Get-FlavorRecord $Id
+  while ($f.base -and -not $f.image) { $f = Get-FlavorRecord $f.base }
+  return [string]$f.id
+}
+
+function Resolve-FlavorOva {
+  # An OVA you pass in -FlavorImages wins. Otherwise resolve-image.py finds, downloads, and checks the published OVA.
+  param([string] $Id, [string] $WorkDir, [hashtable] $Supplied)
+  $imageId = Get-ImageFlavorId $Id
+  foreach ($k in $Id, $imageId) {
+    if ($Supplied -and $Supplied.ContainsKey($k)) { return (Resolve-Path $Supplied[$k]).Path }
+  }
+  $out = & python (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out (Join-Path $WorkDir 'images')
+  if ($LASTEXITCODE -ne 0) {
+    throw "No OVA is available for the flavor $imageId. Make one from its qcow2 image, then pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
+  }
+  return [string]($out | Select-Object -Last 1)
+}
+
+function Set-LabVsphereLicense {
+  # Applies the vSphere license keys in the license file. The keys are never printed.
+  param($Server, $VmHost, [string] $Path, [bool] $IsVcenter)
+  if (-not $Path) { return }
+  $lic = Get-Content -Raw -Path $Path | ConvertFrom-Json
+  if (-not $lic.vsphere) { return }
+  $si = Get-View ServiceInstance -Server $Server
+  $lm = Get-View $si.Content.LicenseManager -Server $Server
+  try {
+    if ($IsVcenter) {
+      $lam = Get-View $lm.LicenseAssignmentManager -Server $Server
+      if ($lic.vsphere.vcenter) {
+        $null = $lm.AddLicense([string]$lic.vsphere.vcenter, $null)
+        $null = $lam.UpdateAssignedLicense($si.Content.About.InstanceUuid, [string]$lic.vsphere.vcenter, $null)
+      }
+      if ($lic.vsphere.esxi) {
+        $null = $lm.AddLicense([string]$lic.vsphere.esxi, $null)
+        $null = $lam.UpdateAssignedLicense($VmHost.ExtensionData.MoRef.Value, [string]$lic.vsphere.esxi, $null)
+      }
+    }
+    elseif ($lic.vsphere.esxi) {
+      $null = $lm.UpdateLicense([string]$lic.vsphere.esxi, $null)
+    }
+  }
+  catch { throw 'A vSphere license key was not accepted. Check the key and the license file.' }
 }
 
 function Get-DefaultHardwareVersion {
@@ -148,20 +215,19 @@ try {
     }
   }
 
-  # Image: download the Ubuntu cloud image OVA once and check its SHA-256 sum.
-  $ova = Join-Path $WorkDir $lab.image.ova
-  if (-not (Test-Path $ova)) {
-    Invoke-WebRequest -Uri ($lab.image.base_url + $lab.image.ova) -OutFile $ova
-    $sums = (Get-WebText ($lab.image.base_url + 'SHA256SUMS')) -split "`n"
-    $want = ($sums | Where-Object { $_ -match [regex]::Escape($lab.image.ova) } | Select-Object -First 1) -replace '\s.*', ''
-    $got = (Get-FileHash -Algorithm SHA256 -Path $ova).Hash.ToLower()
-    if ($want -ne $got) { Remove-Item $ova; throw "SHA-256 mismatch for $($lab.image.ova): expected $want, got $got" }
+  # Images: one OVA for each flavor in use (Ubuntu publishes OVAs; pass others with -FlavorImages).
+  $imageOf = @{}
+  foreach ($vmDef in $lab.vms) {
+    $fid = Get-FlavorId $vmDef $lab
+    if (-not $imageOf.ContainsKey($fid)) { $imageOf[$fid] = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages }
   }
+  Set-LabVsphereLicense -Server $server -VmHost $vmhost -Path $LicenseFile -IsVcenter $false
 
   # Seeds: one ISO per virtual machine, rendered by the shared tool.
+  $licenseArgs = @(); if ($LicenseFile) { $licenseArgs = '--license-file', (Resolve-Path $LicenseFile).Path }
   $keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
   $seedDir = Join-Path $WorkDir 'seeds'
-  & python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging hypervisor @keys
+  & python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging hypervisor @keys @licenseArgs
   if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }
 
   $psDrive = New-PSDrive -Name lab201ds -PSProvider VimDatastore -Root '\' -Location $ds
@@ -172,8 +238,9 @@ try {
     if (Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue) { Write-Host "$name exists. Skipped."; continue }
     if (-not $PSCmdlet.ShouldProcess($name, 'Import the cloud image and configure the virtual machine')) { continue }
     Write-Host "Creating $name"
-    $vm = Import-VApp -Source $ova -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
-    Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId 'ubuntu64Guest' -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
+    $fid = Get-FlavorId $vmDef $lab
+    $vm = Import-VApp -Source $imageOf[$fid] -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
+    Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
     Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false
     for ($n = 0; $n -lt $vmDef.nics.Count; $n++) {

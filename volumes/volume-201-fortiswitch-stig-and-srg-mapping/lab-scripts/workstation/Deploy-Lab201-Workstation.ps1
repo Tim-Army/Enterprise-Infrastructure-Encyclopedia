@@ -36,7 +36,9 @@ param(
   [ValidatePattern('^vmnet\d+$')] [string] $OobVmnet = 'vmnet4',
   [ValidatePattern('^vmnet\d+$')] [string] $Lan220Vmnet = 'vmnet5',
   [ValidatePattern('^vmnet\d+$')] [string] $WanVmnet = 'vmnet8',
-  [string] $OvfToolPath
+  [string] $OvfToolPath,
+  [string] $LicenseFile,
+  [hashtable] $FlavorImages = @{}
 )
 
 $ErrorActionPreference = 'Stop'
@@ -58,6 +60,44 @@ $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
 $names = @{}; $i = 0
 foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
 $vmnetOf = @{ 'lab201-t1' = $T1Vmnet; 'lab201-t2' = $T2Vmnet; 'lab201-oob' = $OobVmnet; 'lab201-lan220' = $Lan220Vmnet; 'lab201-wan' = $WanVmnet }
+
+$flavorCatalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
+
+function Get-FlavorId {
+  param($Vm, $Lab)
+  if ($Vm.flavor) { return [string]$Vm.flavor }
+  if ($Lab.default_flavor) { return [string]$Lab.default_flavor }
+  return [string]$flavorCatalog.default
+}
+
+function Get-FlavorRecord {
+  param([string] $Id)
+  $f = $flavorCatalog.flavors | Where-Object { $_.id -eq $Id } | Select-Object -First 1
+  if (-not $f) { throw "Unknown flavor $Id" }
+  return $f
+}
+
+function Get-ImageFlavorId {
+  # A hardened (STIG) flavor uses the image of its base flavor.
+  param([string] $Id)
+  $f = Get-FlavorRecord $Id
+  while ($f.base -and -not $f.image) { $f = Get-FlavorRecord $f.base }
+  return [string]$f.id
+}
+
+function Resolve-FlavorOva {
+  # An OVA you pass in -FlavorImages wins. Otherwise resolve-image.py finds, downloads, and checks the published OVA.
+  param([string] $Id, [string] $WorkDir, [hashtable] $Supplied)
+  $imageId = Get-ImageFlavorId $Id
+  foreach ($k in $Id, $imageId) {
+    if ($Supplied -and $Supplied.ContainsKey($k)) { return (Resolve-Path $Supplied[$k]).Path }
+  }
+  $out = & python (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out (Join-Path $WorkDir 'images')
+  if ($LASTEXITCODE -ne 0) {
+    throw "No OVA is available for the flavor $imageId. Make one from its qcow2 image, then pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
+  }
+  return [string]($out | Select-Object -Last 1)
+}
 
 function Get-NicLines {
   param([int] $Index, [string] $Vmnet, [string] $Mac, [bool] $Present = $true)
@@ -117,25 +157,27 @@ if ($Action -eq 'RemoveBuildNics') {
 if (-not $SshKeyFile) { throw '-SshKeyFile is required for -Action Deploy.' }
 New-Item -ItemType Directory -Force -Path $WorkDir, $VmRoot | Out-Null
 
-$ova = Join-Path $WorkDir $lab.image.ova
-if (-not (Test-Path $ova)) {
-  Invoke-WebRequest -Uri ($lab.image.base_url + $lab.image.ova) -OutFile $ova
-  $sums = (Get-WebText ($lab.image.base_url + 'SHA256SUMS')) -split "`n"
-  $want = ($sums | Where-Object { $_ -match [regex]::Escape($lab.image.ova) } | Select-Object -First 1) -replace '\s.*', ''
-  $got = (Get-FileHash -Algorithm SHA256 -Path $ova).Hash.ToLower()
-  if ($want -ne $got) { Remove-Item $ova; throw "SHA-256 mismatch for $($lab.image.ova): expected $want, got $got" }
+# One base machine for each image flavor in use (Ubuntu publishes OVAs; pass others with -FlavorImages).
+$baseOf = @{}
+foreach ($vmDef in $lab.vms) {
+  $fid = Get-FlavorId $vmDef $lab
+  $imageId = Get-ImageFlavorId $fid
+  if ($baseOf.ContainsKey($imageId)) { continue }
+  $ova = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages
+  $baseVmx = Join-Path $VmRoot "lab201-base-$imageId\lab201-base-$imageId.vmx"
+  if (-not (Test-Path $baseVmx) -and $PSCmdlet.ShouldProcess("lab201-base-$imageId", 'Import the cloud image with ovftool')) {
+    & $ovftool --acceptAllEulas --allowExtraConfig "--name=lab201-base-$imageId" $ova $VmRoot
+    if ($LASTEXITCODE -ne 0) { throw 'ovftool failed.' }
+  }
+  $baseOf[$imageId] = $baseVmx
 }
 
+$licenseArgs = @(); if ($LicenseFile) { $licenseArgs = '--license-file', (Resolve-Path $LicenseFile).Path }
 $keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
 $seedDir = Join-Path $WorkDir 'seeds'
-& python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging guest @keys
+& python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging guest @keys @licenseArgs
 if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }
 
-$baseVmx = Join-Path $VmRoot 'lab201-base\lab201-base.vmx'
-if (-not (Test-Path $baseVmx) -and $PSCmdlet.ShouldProcess('lab201-base', 'Import the cloud image with ovftool')) {
-  & $ovftool --acceptAllEulas --allowExtraConfig '--name=lab201-base' $ova $VmRoot
-  if ($LASTEXITCODE -ne 0) { throw 'ovftool failed.' }
-}
 
 foreach ($vmDef in $lab.vms) {
   $name = $vmDef.name
@@ -144,10 +186,10 @@ foreach ($vmDef in $lab.vms) {
   if (Test-Path $vmx) { Write-Host "$name exists. Skipped."; continue }
   if (-not $PSCmdlet.ShouldProcess($name, 'Clone and configure the virtual machine')) { continue }
   Write-Host "Creating $name"
-  & $vmrun -T ws clone $baseVmx $vmx full "-cloneName=$name"
+  & $vmrun -T ws clone $baseOf[(Get-ImageFlavorId (Get-FlavorId $vmDef $lab))] $vmx full "-cloneName=$name"
   if ($LASTEXITCODE -ne 0) { throw "vmrun clone failed for $name." }
 
-  $add = @("displayName = `"$name`"", "memsize = `"$($vmDef.memory_mb)`"", "numvcpus = `"$($vmDef.vcpu)`"", 'guestOS = "ubuntu-64"')
+  $add = @("displayName = `"$name`"", "memsize = `"$($vmDef.memory_mb)`"", "numvcpus = `"$($vmDef.vcpu)`"", $(if ((Get-FlavorRecord (Get-FlavorId $vmDef $lab)).guest_id -eq 'ubuntu64Guest') { 'guestOS = "ubuntu-64"' } else { 'guestOS = "other5xlinux-64"' }))
   for ($n = 0; $n -lt $vmDef.nics.Count; $n++) {
     $mac = '{0}:{1:x2}:{2:x2}' -f $lab.mac_prefix, $names[$name], $n
     $add += Get-NicLines -Index $n -Vmnet $vmnetOf[$vmDef.nics[$n].net] -Mac $mac

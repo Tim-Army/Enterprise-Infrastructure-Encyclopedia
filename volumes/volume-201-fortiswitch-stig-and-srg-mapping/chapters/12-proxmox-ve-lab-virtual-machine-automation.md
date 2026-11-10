@@ -92,7 +92,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 - **Firewall.** The script sets `firewall=0` on every NIC. The Proxmox firewall's MAC and IP filters would block the gateway's bridging. Use the lab's own `nftables` on `gw-201` for filtering.
 - **CPU type.** The machines use `x86-64-v2-AES`, which Ubuntu 24.04 needs or better, and which lets them move between nodes of different generations. Use `host` for speed if you do not migrate.
 - **Storage.** `--storage` receives the disks and the cloud-init drives. `local-lvm` is typical. Use a directory or ZFS storage if you prefer.
-- **Image checks.** The script downloads `noble-server-cloudimg-amd64.img` and compares its SHA-256 sum with Canonical's `SHA256SUMS`, and removes the file on a mismatch.
+- **Images and flavors.** Each machine can use its own Linux flavor. `resolve-image.py` finds the newest published image for each flavor in use, downloads it, and checks it against the publisher's checksum, removing the file on a mismatch. Proxmox VE imports qcow2 images directly, so every published flavor works here without conversion.
 - **Idempotence.** A machine whose ID exists is skipped. A rerun after a failure carries on.
 
 ## Implementation and Automation
@@ -116,7 +116,9 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `--storage`, `--snippets-storage` | Storage for disks and storage for snippets. |
 | `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-lan220` | The bridge for each network. |
 | `--vmid-base` | The ID offset (default 20100). |
-| `--workdir` | Where the image and the rendered seeds go (default `/var/tmp/lab201`). |
+| `--workdir` | Where the images and the rendered seeds go (default `/var/tmp/lab201`). |
+| `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image, needed for the `rhel-10` flavors. |
+| `--license-file FILE` | JSON file with keys to apply: Red Hat, Ubuntu Pro, and a Proxmox subscription key (Chapter 09). |
 | `--dry-run` | Print each command instead of running it. |
 
 ## Validation and Troubleshooting

@@ -6131,7 +6131,7 @@ volumes:
     number: "CCI"
     slug: volume-201-fortiswitch-stig-and-srg-mapping
     title: "FortiSwitch STIG and SRG Mapping"
-    chapter_count: 15
+    chapter_count: 16
     build_eligible: true
     chapters:
       - id: 01
@@ -6173,6 +6173,9 @@ volumes:
       - id: 13
         title: "Chapter 13: Automating the Lab Service Hosts in WSL"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/13-wsl-lab-host-automation.md
+      - id: 14
+        title: "Chapter 14: Automating the Lab Virtual Machines on KVM and libvirt"
+        path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/14-kvm-libvirt-lab-virtual-machine-automation.md
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md

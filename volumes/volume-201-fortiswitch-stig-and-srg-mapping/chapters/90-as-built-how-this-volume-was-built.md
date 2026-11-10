@@ -307,6 +307,29 @@ build fetched the script, `make-seed.py`, and README over HTTP. It has not been
 used from the published site yet, and the scripts it points at have not run on
 real hosts. Licensing keys are not collected, on purpose: nothing applies them yet.
 
+The Lab Builder was extended on 2026-11-09 to cover everything its first version
+listed as planned, as far as it could be built and checked without hosts. The
+manifest and `flavors.json` now carry each machine's Linux flavor. `make-seed.py`
+translates package names for `apt` and `dnf` families, enables EPEL where a
+flavor needs it, registers Red Hat machines and attaches Ubuntu Pro from a
+license file, and applies the DISA STIG on the hardened flavors. `resolve-image.py`
+finds, downloads, and checks the cloud image for a flavor; its discovery and
+checksum parsing ran against the live Ubuntu (24.04 and 26.04), Debian 13,
+Rocky 10, Alma 10, and Fedora 43 sites, and one full download (Debian, 341 MB)
+passed its SHA-512 check. The Proxmox script picks an image for each flavor.
+A new KVM and libvirt script and chapter (14) were added. The vCenter script
+gained `-ClusterName`, `-UseExistingSwitch`, and `-NoUplinkChanges` for Dell
+VxRail, and the Builder builds VxRail with one trunk. The scripts can apply vSphere
+and Proxmox keys from the license file, and `-FlavorImages` takes OVA paths for
+flavors VMware cannot download. VLAN renumbering (`vlan_segments`) and per-machine
+address edits work in the manifest, the seeds, and the page. Linux Mint, Tiny
+Core, and Windows are still planned, with the reason for each in `flavors.json`,
+because they need unattended installs from licensed ISOs that could not be tested.
+The page's self-test now runs 64 checks, and the manifests the page produces for a
+mixed configuration (a renamed Rocky gateway, five other flavors, a new address
+block, a changed VLAN, an edited address) and for VxRail were run through
+`make-seed.py` and gave valid seeds. Nothing has been built on a real host.
+
 Lessons from this work:
 
 - **Test the download code, not just its syntax.** `Invoke-WebRequest` returned

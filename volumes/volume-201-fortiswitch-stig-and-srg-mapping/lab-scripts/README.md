@@ -11,12 +11,13 @@ explains it, and all of them read the same manifest.
 | `workstation/` | VMware Workstation Pro for Windows | 11 | PowerShell |
 | `proxmox/` | Proxmox VE 8.1 or later | 12 | Bash, as root on the node |
 | `wsl/` | WSL 2 on Windows 11 (service hosts only) | 13 | PowerShell |
-| `common/` | The manifest and the cloud-init seed tool | 09 | Used by all of them |
+| `kvm/` | KVM and libvirt on Linux | 14 | Bash, as root or a libvirt user |
+| `common/` | The manifest, the Linux flavor catalog, the seed tool, and the image resolver | 09 | Used by all of them |
 | `builder/` | The Lab Builder page | 09 | A web browser |
 
 ## The Lab Builder
 
-`builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key.
+`builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
 
 ## Before you run anything
 
@@ -34,6 +35,8 @@ explains it, and all of them read the same manifest.
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
   addresses. The IPv6 addresses are derived from the IPv4 addresses.
+- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Mint, Tiny Core, and Windows are listed as planned.
+- `resolve-image.py` finds, downloads, and checks the cloud image for a flavor.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.
 

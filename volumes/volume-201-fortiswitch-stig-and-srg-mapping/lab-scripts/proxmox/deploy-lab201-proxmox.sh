@@ -3,8 +3,9 @@
 #
 # Run as root on the node (Proxmox VE 8.1 or later, because the script imports
 # disks with "qm set ... import-from"). It reads ../common/lab201-vms.json,
-# downloads and checks the Ubuntu cloud image, renders a cloud-init seed for each
-# machine with ../common/make-seed.py, and creates and starts the machines.
+# downloads and checks the cloud image for each Linux flavor the machines use
+# (../common/resolve-image.py), renders a cloud-init seed for each machine with
+# ../common/make-seed.py, and creates and starts the machines.
 #
 # Before you run it, create these Linux bridges in the node's network
 # configuration (the script does not change the host network):
@@ -27,6 +28,8 @@ vmid_base=20100
 workdir=/var/tmp/lab201
 dry_run=0
 ssh_keys=()
+license_file=""
+rhel_image=""
 
 usage() {
   cat <<EOF
@@ -38,6 +41,8 @@ Usage: $0 [options]
   --bridge-wan|oob|t1|t2|lan220 NAME   bridge for each lab network
   --vmid-base N          first VM ID; the first machine (the gateway in the default manifest) gets N+1 (default $vmid_base)
   --workdir DIR          download and render directory (default $workdir)
+  --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (needed for rhel-10 flavors)
+  --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro, Proxmox subscription)
   --dry-run              print what would run
 EOF
 }
@@ -55,6 +60,8 @@ while [[ $# -gt 0 ]]; do
     --bridge-lan220) bridge_lan220="$2"; shift 2 ;;
     --vmid-base) vmid_base="$2"; shift 2 ;;
     --workdir) workdir="$2"; shift 2 ;;
+    --rhel-image) rhel_image="$2"; shift 2 ;;
+    --license-file) license_file="$2"; shift 2 ;;
     --dry-run) dry_run=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
@@ -82,7 +89,8 @@ plan() {
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
 for i, vm in enumerate(m["vms"]):
-    print("VM|%s|%d|%d|%d|%d|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", "")))
+    flavor = vm.get("flavor") or m.get("default_flavor") or "ubuntu-24.04"
+    print("VM|%s|%d|%d|%d|%d|%s|%s" % (vm["name"], i + 1, vm["vcpu"], vm["memory_mb"], vm["disk_gb"], vm.get("role", ""), flavor))
     for n, nic in enumerate(vm["nics"]):
         mac = "%s:%02x:%02x" % (m["mac_prefix"], i + 1, n)
         print("NIC|%s|%d|%s|%s|%s|%s" % (vm["name"], n, nic["net"], nic.get("vlan", ""),
@@ -93,7 +101,7 @@ PY
 vmid_of() { echo $(( vmid_base + $1 )); }
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing command: $1" >&2; exit 1; }; }
-need qm; need pvesm; need python3; need curl; need sha256sum
+need qm; need pvesm; need python3
 
 case "$action" in
   status)
@@ -143,25 +151,41 @@ snip_dir="$(pvesm path "$snip_storage:snippets/probe" 2>/dev/null | sed 's#/prob
 [[ -n "${snip_dir:-}" ]] || { echo "Storage $snip_storage has no snippets content type. Enable it under Datacenter > Storage." >&2; exit 1; }
 run mkdir -p "$snip_dir" "$workdir"
 
-# Image: download and check the SHA-256 sum.
-img_name="$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['image']['img'])" "$manifest")"
-base_url="$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['image']['base_url'])" "$manifest")"
-img="$workdir/$img_name"
-if [[ ! -f "$img" ]]; then
-  run curl -fL -o "$img" "$base_url$img_name"
-  if [[ "$dry_run" == 0 ]]; then
-    want="$(curl -fsSL "${base_url}SHA256SUMS" | awk -v f="*$img_name" '$2 == f {print $1}')"
-    got="$(sha256sum "$img" | awk '{print $1}')"
-    [[ -n "$want" && "$want" == "$got" ]] || { rm -f "$img"; echo "SHA-256 mismatch for $img_name." >&2; exit 1; }
+# Images: one for each flavor in use. resolve-image.py finds the newest file, downloads it,
+# and checks it against the publisher's checksum. Hardened flavors use their base flavor's image.
+resolver="$here/../common/resolve-image.py"
+declare -A flavor_img
+while IFS='|' read -r kind _ _ _ _ _ _ flv; do
+  [[ "$kind" == VM ]] || continue
+  [[ -z "${flavor_img[$flv]:-}" ]] || continue
+  img_args=(--flavor "$flv" --out "$workdir/images")
+  case "$flv" in
+    rhel-10|rhel-10-stig)
+      [[ -n "$rhel_image" ]] || { echo "$flv needs --rhel-image, the qcow2 file from the Red Hat Customer Portal." >&2; exit 2; }
+      img_args+=(--image-path "$rhel_image") ;;
+  esac
+  if [[ "$dry_run" == 1 ]]; then
+    run python3 "$resolver" "${img_args[@]}"
+    flavor_img[$flv]="$workdir/images/<image-for-$flv>"
+  else
+    flavor_img[$flv]="$(python3 "$resolver" "${img_args[@]}" | tail -n 1)"
   fi
+done < <(plan)
+
+# A Proxmox subscription key, if the license file has one. It is not printed.
+if [[ -n "$license_file" && "$dry_run" == 0 ]]; then
+  pve_key="$(python3 -c "import json,sys;print((json.load(open(sys.argv[1])).get('proxmox') or {}).get('subscription_key',''))" "$license_file")"
+  if [[ -n "$pve_key" ]]; then pvesubscription set "$pve_key" >/dev/null || echo "Could not set the Proxmox subscription key." >&2; fi
 fi
 
 # Seeds.
 key_args=(); for key in "${ssh_keys[@]}"; do key_args+=(--ssh-key "$key"); done
-run python3 "$seedtool" --manifest "$manifest" --out "$workdir/seeds" --tagging hypervisor --guest-agent qemu "${key_args[@]}"
+seed_args=(--manifest "$manifest" --out "$workdir/seeds" --tagging hypervisor --guest-agent qemu)
+[[ -z "$license_file" ]] || seed_args+=(--license-file "$license_file")
+run python3 "$seedtool" "${seed_args[@]}" "${key_args[@]}"
 
 # Machines.
-declare -A vm_cpu vm_mem vm_disk vm_idx
+declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor
 nic_args=()
 current=""
 create_vm() {
@@ -180,17 +204,17 @@ create_vm() {
   done
   run qm create "$id" --name "$name" --memory "${vm_mem[$name]}" --cores "${vm_cpu[$name]}" --cpu x86-64-v2-AES \
     --ostype l26 --scsihw virtio-scsi-single --agent enabled=1 --serial0 socket --vga serial0 "${nic_args[@]}"
-  run qm set "$id" --scsi0 "$storage:0,import-from=$img,discard=on"
+  run qm set "$id" --scsi0 "$storage:0,import-from=${flavor_img[${vm_flavor[$name]}]},discard=on"
   run qm resize "$id" scsi0 "${vm_disk[$name]}G"
   run qm set "$id" --ide2 "$storage:cloudinit" --boot order=scsi0 \
     --cicustom "user=$snip_storage:snippets/lab201-$name-user.yml,network=$snip_storage:snippets/lab201-$name-network.yml,meta=$snip_storage:snippets/lab201-$name-meta.yml"
 }
 
 gateway_name=""
-while IFS='|' read -r kind a b c d e f; do
+while IFS='|' read -r kind a b c d e f g; do
   if [[ "$kind" == VM ]]; then
     [[ -z "$current" ]] || create_vm "$current"
-    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; nic_args=()
+    current="$a"; vm_idx[$a]="$b"; vm_cpu[$a]="$c"; vm_mem[$a]="$d"; vm_disk[$a]="$e"; vm_flavor[$a]="$g"; nic_args=()
     [[ "$f" != gateway ]] || gateway_name="$a"
   else
     # NIC|name|index|net|vlan|trunk|mac

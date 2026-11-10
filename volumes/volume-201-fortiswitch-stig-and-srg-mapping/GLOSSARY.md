@@ -13,12 +13,14 @@ the SRG and STIG terms this volume builds on.
 - **Cloud-init (NoCloud)** — the first-boot configuration tool in cloud images; the NoCloud source reads `user-data`, `meta-data`, and `network-config` from a CD-ROM labeled `cidata`, or from files a hypervisor supplies.
 - **Console server** — a device that connects to the serial console ports of other devices and offers them over the network, usually through SSH; the OpenGear IM7216-2-DAC-LMV in Chapter 08 is one.
 - **FIPS-CC mode** — the FortiSwitchOS operating mode that restricts the switch to FIPS 140 and Common Criteria validated behavior; the mapped release is the FIPS-CC image.
+- **Flavor** — the Linux distribution and release a lab machine starts from, such as Ubuntu 24.04 LTS or Rocky Linux 10. `flavors.json` lists them, with their package names and which machine types each can run.
 - **FortiLink** — Fortinet's protocol for managing FortiSwitch units from a FortiGate; in managed mode, the switch's configuration lives on the FortiGate.
 - **FortiSwitchOS Feature Matrix** — Fortinet's per-release document listing every FortiSwitch feature and the model series that support it.
 - **Gap lab** — a lab for an SRG requirement that FortiSwitch cannot meet: it proves the setting is absent, applies the nearest compensating control, and records the disposition and residual risk.
 - **Guest tagging (VGT)** — VLAN tagging done by the guest operating system, which sees tagged frames; on ESXi it is a port group with VLAN ID 4095.
 - **Interactive crosswalk table** — the self-contained web page generated from the SRG mapping workbook, with search, filters, sorting, and CSV download for the crosswalk, prerequisites, and model-support sheets.
 - **Lab Builder** — the browser page in the lab-scripts folder that turns your choices (platform, machine names and sizes, address block) into a manifest, the commands to run, and a checklist.
+- **License file** — the JSON file `licenses.local.json` that holds the keys the lab scripts can apply (Red Hat, Ubuntu Pro, vSphere, Proxmox). It stays on your computer and out of the repository and the zip.
 - **Manifest (lab201-vms.json)** — the one file that lists the lab machines, their sizes, networks, and IPv4 addresses, read by every platform script in Chapters 09 to 13.
 - **Model support sheet** — the workbook sheet that records, for each FortiSwitchOS 7.6.7 feature, whether the FS-648F-FPOE and FS-2048F support it.
 - **Negative test** — a test that tries to break a control and shows that it blocks what it should; it pairs with a positive test that shows the control permits what it should.
@@ -31,6 +33,7 @@ the SRG and STIG terms this volume builds on.
 - **Serial pinout (X1 and X2)** — the OpenGear per-port setting that matches the RJ45 wiring of a console cable; X2 is Cisco Straight (the default) and X1 is Cisco Rolled.
 - **SRG mapping workbook** — the Excel workbook that holds the FortiSwitch crosswalk of SRG requirements to FortiSwitch settings, commands, documentation references, and verification status.
 - **STIG crosswalk** — an alignment of one vendor's STIG rules with another platform's settings through the SRG requirement each rule implements, used where the second platform, such as FortiSwitch, has no STIG of its own.
+- **STIG-hardened flavor** — a Red Hat or Ubuntu flavor that applies the DISA STIG on its first boot, then reboots once. It asks for a password for `sudo` and records the findings the lab accepts.
 - **Virtual hardware version (vmx-N)** — the VMware virtual machine hardware level, which limits the hosts that can run the machine.
 - **Virtual switch tagging (VST)** — VLAN tagging done by the virtual switch, so the guest sees untagged frames.
 - **vPC (virtual port channel)** — a Cisco Nexus feature that lets two switches present one port channel to a downstream device; FortiSwitch provides the same function with MCLAG.

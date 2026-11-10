@@ -5355,7 +5355,10 @@
     "xorriso",
     "smcroute",
     "dhcpdump",
-    "rsvg"
+    "rsvg",
+    "pvesubscription",
+    "virbr",
+    "libosinfo"
   ],
   "ignorePaths": [
     "node_modules/**",

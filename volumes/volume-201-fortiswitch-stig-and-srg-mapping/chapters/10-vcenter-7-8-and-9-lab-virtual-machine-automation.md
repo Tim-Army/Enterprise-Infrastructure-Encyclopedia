@@ -57,6 +57,16 @@ Pass `-VdsVersion` to override. A lower version is always safe, and a higher one
 
 A vCenter of one major version can manage hosts of the previous version, so the script checks the **vCenter** version against `-VsphereVersion` and takes the hardware version from the **host** it deploys to. Do not mix: deploy ESXi 7 hosts under a vCenter 8 only if you pass a `-HardwareVersion` the host supports.
 
+### Dell VxRail
+
+Dell VxRail runs vSphere and vSAN on Dell nodes and is managed by VxRail Manager. VxRail 8.0.x runs vSphere 8 and VxRail 9.0.x runs vSphere 9, so the same script builds the lab on it. VxRail needs three changes, which the script has as options and the [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) sets when you choose Dell VxRail.
+
+- **An existing switch.** `-UseExistingSwitch <name>` reuses VxRail's distributed switch and adds only port groups to it (`lab201-...`). The script changes no switch, uplink, or physical NIC, and `-NoUplinkChanges` confirms that. VxRail Manager owns the uplinks.
+- **A cluster, not a host.** `-ClusterName` places the machines in the cluster, so they can run on any host. The script imports the template through the first connected host. Cable the trunk uplinks on every host, or keep the lab on one host with a VM-Host rule, because a machine that moves to a host with no trunk loses it.
+- **One trunk.** VxRail has one set of uplinks, and `gw-201` bridges its trunk adapters, so two trunks on the same uplinks would loop. The Builder rewrites the manifest with one trunk: T1 and T2 become one network, the gateway has one trunk adapter, and the peers' second links (VLANs 2003 and 2004) use it too. Both hardware switches must then reach the VxRail uplinks, for example through an external trunk.
+
+Storage goes on the vSAN datastore, and with the default mirroring policy the thin disks can use about twice their size in raw space. VxRail 9.0.x needs vSphere 9 and vSAN licenses managed through VCF Operations, and Dell's knowledge base says perpetual licenses from 8.x do not carry over. Do not upgrade vCenter or ESXi outside VxRail Manager. None of this has been run on a VxRail.
+
 ## Design Considerations
 
 - **Template first.** The script imports the OVA once into `lab201-ubuntu-template` and converts it to a template. Clones are quick and use thin disks. If you already keep an Ubuntu template, change `$tplName` in the script.
@@ -88,6 +98,8 @@ A vCenter of one major version can manage hosts of the previous version, so the 
 | `-FolderName` | The VM folder (default `lab201`). |
 | `-NetworkType` | `Standard` (default) or `Distributed`. |
 | `-VdsVersion` | Distributed switch version, if you need to override the default. |
+| `-ClusterName`, `-UseExistingSwitch`, `-NoUplinkChanges` | Dell VxRail and other managed clusters (see above). |
+| `-LicenseFile`, `-FlavorImages` | The license file, and OVA paths for flavors that publish none (Chapter 09). |
 
 The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Status`, `RemoveBuildNics`, and `Remove` do the same.
 

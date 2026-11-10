@@ -42,24 +42,64 @@ The scripts are in one folder and are downloadable as a unit.
 | `common/make-seed.py` | Renders the cloud-init files for each machine and, with `--iso`, writes a seed ISO labeled `cidata`. |
 | `builder/lab-builder.html` | The [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html), a page that runs in your browser. It writes a manifest for your choices, the commands for each platform, and a checklist, and downloads them as a zip. |
 | `diagrams/lab-topology.svg` and `.png` | The Chapter 999 network diagram, copied into the zip when the site is built, so the scripts and the picture of what they build travel together. |
+| `common/flavors.json` | The Linux flavors, the package names for each family, and which machine types each flavor can run. |
+| `common/resolve-image.py` | Finds, downloads, and checks the cloud image for a flavor. |
 | `esxi/Deploy-Lab201-Esxi.ps1` | This chapter's script. |
+| `kvm/deploy-lab201-kvm.sh` | The KVM and libvirt script ([Chapter 14](14-kvm-libvirt-lab-virtual-machine-automation.md)). |
 
 [Download the whole set as one zip](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip), or fetch single files from the [lab-scripts folder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/common/lab201-vms.json). A `SHA256SUMS` file in the folder lists the checksum of every script.
 
 ### The Lab Builder
 
-The [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) is one HTML page that runs in your browser, with the manifest built into it. You choose a platform and version, fill in the names of your hosts, storage, and network connections, and change what to build. It then writes three things: a copy of the manifest that holds your changes, the commands to run for your platform (a preview, the build, the removal of the build adapters, and the baseline snapshots), and a checklist of what the scripts cannot do. A zip button bundles them with the platform's script, `make-seed.py`, the README, and the network diagram. The page has to be opened from the published site for the zip to include the scripts, because a page opened from a local file cannot fetch them.
+The [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) is one HTML page that runs in your browser, with the manifest and the flavor catalog built into it. You choose a platform and version (ESXi, vCenter, Dell VxRail, Workstation Pro, Proxmox VE, KVM, or WSL), fill in the names of your hosts, storage, and network connections, and change what to build. It then writes three things: a copy of the manifest that holds your changes, the commands to run for your platform (a preview, the build, the removal of the build adapters, and the baseline snapshots), and a checklist of what the scripts cannot do. A zip button bundles them with the platform's script, the seed tool, the flavor catalog, the image resolver, the README, and the network diagram. The page has to be opened from the published site for the zip to include the scripts, because a page opened from a local file cannot fetch them.
 
 What you can change:
 
 - **Machines.** Leave any machine out (the gateway always stays), rename it, and change its vCPUs, memory, and disk. Each machine has a proposed minimum size, and a value below it is refused, with the default kept, unless you tick that machine's **Override** box. The minimums are the `min` values in the manifest. They are proposals, and each needs a test build before you rely on it.
 - **Names.** A name uses lowercase letters, digits, and hyphens, and must be unique. The scripts find the gateway by its `role`, not its name, so it can be renamed. Chapter 999 and the requirement labs use the default names, so keep a note of your renames.
-- **Address block.** Move the lab to another private block (the first two octets of IPv4, and a unique local IPv6 prefix). The manifest holds the two prefixes (`ipv4_prefix` and `ipv6_prefix`), and `make-seed.py` rewrites every address, the gateway's VLAN interfaces, and its firewall sets. The page writes a `CHANGES.md` that lists the changes you must repeat on the switches.
-- **Licensing.** The page lists the products your choices need a license for, and records where you keep each key, as a note in the checklist. It does not accept keys, because the scripts do not apply them, and a key typed into a page has no safe place to go. Applying license keys from a secret file is a planned addition.
+- **Linux flavors.** A default flavor for every Linux machine, and a flavor for each machine. A flavor that cannot run a machine type is left out of that machine's list, with a note that names what was left out. Planned flavors are listed and disabled. See *Linux flavors* below.
+- **Address block, VLANs, and addresses.** Move the lab to another private block (the first two octets of IPv4, and a unique local IPv6 prefix), give any of the seven shared segments another VLAN ID, and change a machine's address inside its own segment. The manifest holds the prefixes (`ipv4_prefix`, `ipv6_prefix`) and a map from each changed VLAN to its segment (`vlan_segments`). `make-seed.py` rewrites the addresses, the gateway's VLAN interfaces, and its firewall sets. The page refuses a VLAN that is reserved, used twice, or out of range, and an address that is outside its segment, used twice, or the gateway's `.1`. It writes a `CHANGES.md` that lists what to repeat on the switches.
+- **Platforms.** Each platform has its own settings. Dell VxRail uses the vCenter script with an existing distributed switch, no uplink changes, and one trunk (see [Chapter 10](10-vcenter-7-8-and-9-lab-virtual-machine-automation.md)). KVM uses [Chapter 14](14-kvm-libvirt-lab-virtual-machine-automation.md).
+- **Licensing.** The page lists the products your choices need a license for, says which ones the scripts apply, and writes a template for the license file. See *License keys* below. It does not accept keys.
 
-What is not there yet: flavors other than Ubuntu 24.04 LTS (Red Hat, Debian, the hardened STIG flavors, Windows, and the others are marked planned, and the page shows a proposed support table), Dell VxRail and KVM, renumbering a segment's VLAN, and editing one machine's address. The page refuses nothing silently: a rejected value is marked, the default stays in use, and the reason is listed.
+What is not there yet: Linux Mint, Tiny Core Linux, Windows 11, and Windows Server 2022 and 2025. They are listed as planned, each with its reason, and no script supports them.
 
-The page keeps its own copy of the manifest so that it works with no server. After you change `lab201-vms.json`, run `python scripts/python/sync_lab_builder.py` to copy it into the page. `validate.sh` fails if the two differ. The page also has a self-test: add `?selftest=1` to its address, and it runs 32 checks of its logic and its controls, and shows the results at the bottom.
+The page keeps its own copy of the manifest and the flavor catalog so that it works with no server. After you change `lab201-vms.json` or `flavors.json`, run `python scripts/python/sync_lab_builder.py` to copy them into the page. `validate.sh` fails if the copies differ. The page also has a self-test: add `?selftest=1` to its address, and it runs 64 checks of its logic and its controls, and shows the results at the bottom.
+
+### Linux flavors
+
+Each machine can use its own Linux flavor. `flavors.json` lists them, and the manifest names a machine's flavor in `flavor` (or sets `default_flavor` for all). The seed tool translates the package names for the flavor's family: `apt` families use the manifest's Ubuntu names, and `dnf` families use their own (`net-snmp-utils` for `snmp`, `tftp-server` for `tftpd-hpa`, `kea` for `kea-dhcp4-server`, and so on). A package a flavor does not have is left out, and the seed tool says so. On Rocky Linux and AlmaLinux the seed enables EPEL first for the tools that live there.
+
+| Flavor | Status | Image | Notes |
+| --- | --- | --- | --- |
+| Ubuntu 24.04 LTS | Ready (the default) | Published, with an OVA for VMware | The flavor every chapter was written against |
+| Ubuntu 26.04 LTS | Experimental | Published, with an OVA | |
+| Debian 13 | Experimental | Published qcow2 | |
+| Rocky Linux 10, AlmaLinux 10 | Experimental | Published qcow2 | EPEL for `nfdump`, `hping3`, `frr`, and a few others |
+| Fedora Cloud 43 | Experimental | Published qcow2 (the file name is found by pattern) | |
+| Red Hat Enterprise Linux 10 | Experimental | You download it (subscription needed) | Registered with an activation key and organization, if you give them |
+| Ubuntu 24.04 LTS, DoW STIG hardened | Experimental | The Ubuntu 24.04 image | Ubuntu Pro token; the seed runs the Ubuntu Security Guide's `disa_stig` fix and reboots once |
+| RHEL 10, DoW STIG hardened | Experimental | The RHEL 10 image | The seed runs `oscap` with the `stig` profile and reboots once |
+| Linux Mint 22, Tiny Core Linux, Windows 11, Windows Server 2022 and 2025 | Planned | None | No script support. Each has its reason in `flavors.json` |
+
+**Experimental** means the seed is generated and passes its checks (valid YAML, the right packages, the right groups), but no machine has been built from it, so expect fixes on the first real build. The ratings of which machine types a flavor can run (`roles` in `flavors.json`) are proposals. The seed tool refuses a planned flavor, and refuses a machine type a flavor is rated `n` for, such as a hardened flavor for `attacker-201`.
+
+**Hardened flavors.** The STIG forbids passwordless `sudo`, so a hardened machine asks for a password, and the seed tool refuses to build one unless `LAB201_ADMIN_PASSWORD_HASH` is set (make a hash with `openssl passwd -6`). The machine reboots once after hardening, and `/root/LAB201-STIG-NOTES.txt` lists the findings the lab accepts because it needs the behavior: IP forwarding on the gateway and peers, and the services on the service hosts. Whether Ubuntu's `disa_stig` profile has shipped for 24.04 was not confirmed.
+
+**Images on each platform.** Proxmox VE and KVM use the qcow2 images directly, and `resolve-image.py` downloads and checks them. The VMware platforms import OVA files. Ubuntu publishes them, and the scripts download them. For any other flavor, convert its qcow2 image to a stream-optimized VMDK with `qemu-img` and wrap it in an OVA, then pass the path with `-FlavorImages @{ 'debian-13' = 'C:\images\debian.ova' }`. The script stops with that message if a flavor has no OVA. WSL builds Ubuntu 24.04 only.
+
+### License keys
+
+The scripts that can apply a license read it from a JSON file you keep on your own computer, passed with `-LicenseFile` (PowerShell) or `--license-file` (Bash). The Lab Builder writes a template, `licenses.example.json`, with empty values for the products your choices need. Copy it to `licenses.local.json`, fill it in, and keep it out of the repository (the name is in `.gitignore`).
+
+| Section of the file | Applied by | What it does |
+| --- | --- | --- |
+| `redhat` (`activation_key`, `org`) | The seed tool, on every platform except WSL | Registers a Red Hat machine on its first boot (cloud-init's subscription module) |
+| `ubuntu_pro` (`token`) | The seed tool | Attaches Ubuntu Pro on the hardened Ubuntu machines |
+| `vsphere` (`esxi`, `vcenter`) | The ESXi and vCenter scripts | Adds the license and assigns it to the host and to vCenter |
+| `proxmox` (`subscription_key`) | The Proxmox script | Runs `pvesubscription set` |
+
+A key is written only into the seed of a machine that needs it, never printed, and never copied into the manifest or the zip. Licensing for Dell VxRail 9 is done in VCF Operations, and the FortiSwitch licenses are for hardware, so neither is applied by a script. Workstation Pro needs no key. The vSphere license calls were written from the vSphere API and have not been run against a host.
 
 ### How a machine gets its identity
 
@@ -127,6 +167,8 @@ Every action in step 3 and later honors `-WhatIf`.
 | `-Action` | `Deploy` (default), `Status`, `RemoveBuildNics`, or `Remove`. |
 | `-HardwareVersion` | Override of the virtual hardware version. |
 | `-SkipCertificateCheck` | Accept the host's self-signed certificate for this session. Use it only on a lab network. |
+| `-FlavorImages` | A hashtable of OVA paths for flavors that publish no OVA (`@{ 'debian-13' = 'C:\images\debian.ova' }`). |
+| `-LicenseFile` | The JSON license file (see *License keys*). |
 
 ## Validation and Troubleshooting
 
