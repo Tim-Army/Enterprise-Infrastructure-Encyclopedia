@@ -547,11 +547,13 @@ address in the host table.
    `openssh-server` and `tftpd-hpa` (set `TFTP_DIRECTORY` and
    `TFTP_ADDRESS` in `/etc/default/tftpd-hpa`), create a backup user with an
    SFTP-only chroot, and install `nfdump` for NetFlow and IPFIX (`nfcapd -p 2055`)
-   and `sflowtool` for sFlow (`sflowtool -p 6343`). `sflowtool` could not be
-   installed from the Ubuntu 24.04 or Debian 13 repositories, and the Red Hat family
-   catalog has no package for it, so the build scripts skip it and list it as
-   `unavailable_packages` in `/etc/lab201-vm`. Build it from
-   its upstream source if you need it.
+   and `sflowtool` for sFlow (`sflowtool -p 6343`). `sflowtool` is not in the
+   Ubuntu 24.04 or Debian 13 repositories, and the Red Hat family catalog has no
+   package for it, so the build scripts compile it from the upstream source
+   (release v6.11, `source_builds` in `flavors.json`) and record
+   `source_built=sflowtool-v6.11` in `/etc/lab201-vm`. That needs internet access to
+   GitHub from the build NIC. If the build fails, the line `source_build_failed=sflowtool`
+   is written there instead.
 6. **Certificates (P3), on `ca-201`.** Install a small CA with SCEP support (for
    example `step-ca`). Create the CA, issue the two service certificates, and
    export the CA certificate to `/etc/ssl/lab201/ca.pem` on every host that

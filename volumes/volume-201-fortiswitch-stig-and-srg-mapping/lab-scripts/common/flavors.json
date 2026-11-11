@@ -12,6 +12,17 @@
     "static host",
     "spoofing and flooding test host"
   ],
+  "source_builds": {
+    "sflowtool": {
+      "repo": "https://github.com/sflow/sflowtool.git",
+      "tag": "v6.11",
+      "build": "./boot.sh && ./configure && make && make install",
+      "deps": {
+        "apt": ["git", "build-essential", "autoconf", "automake"],
+        "dnf": ["git", "gcc", "make", "autoconf", "automake"]
+      }
+    }
+  },
   "families": {
     "apt": {
       "install": "apt",

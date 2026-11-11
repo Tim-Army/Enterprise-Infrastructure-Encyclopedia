@@ -86,6 +86,7 @@ def load_flavors(path):
     FLAVOR_DATA["default"] = data.get("default", FLAVOR_DATA["default"])
     FLAVOR_DATA["role_keys"] = data["role_keys"]
     FLAVOR_DATA["families"] = data["families"]
+    FLAVOR_DATA["source_builds"] = data.get("source_builds", {})
     FLAVOR_DATA["flavors"] = dict((f["id"], f) for f in data["flavors"])
 
 
@@ -270,6 +271,15 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     if agent and agent not in pkgs:
         pkgs.append(agent)
     install, needs_epel, missing = map_packages(pkgs, flavor)
+    # A package with no repository build is compiled from source when the flavor can.
+    source_built = []
+    for p in list(missing):
+        sb = FLAVOR_DATA.get("source_builds", {}).get(p)
+        deps = sb.get("deps", {}).get(fam.get("install")) if sb else None
+        if deps:
+            source_built.append((p, sb))
+            missing.remove(p)
+            install += [d for d in deps if d not in install]
     if stig == "rhel-oscap":
         install += ["scap-security-guide", "openscap-scanner"]
     sudo_rule = "ALL=(ALL) ALL" if flavor.get("needs_password") else "ALL=(ALL) NOPASSWD:ALL"
@@ -307,6 +317,8 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     info = "name=%s\nrole=%s\nflavor=%s\n" % (vm["name"], vm["role"], flavor["id"])
     if missing:
         info += "unavailable_packages=%s\n" % " ".join(missing)
+    if source_built:
+        info += "source_built=%s" % " ".join("%s-%s" % (p, sb["tag"]) for p, sb in source_built) + chr(10)
     files.append(("/etc/lab201-vm", info))
     if stig:
         files.append(("/root/LAB201-STIG-NOTES.txt", stig_notes(vm, flavor, missing)))
@@ -339,6 +351,10 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
                 if prep:
                     run.append("%s || true" % prep)
                 run.append("systemctl enable --now %s || true" % unit)
+    for p, sb in source_built:
+        src = "/usr/local/src/" + p
+        run.append("(set -e; rm -rf %s; git clone --depth 1 --branch %s %s %s; cd %s; %s) || echo source_build_failed=%s >> /etc/lab201-vm"
+                   % (src, sb["tag"], sb["repo"], src, src, sb["build"], p))
     if vm.get("forwarding"):
         run.append("sysctl --system")
     if vm.get("role") == "gateway":
