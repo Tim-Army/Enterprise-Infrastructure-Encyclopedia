@@ -16,11 +16,13 @@
     "apt": {
       "install": "apt",
       "admin_group": "sudo",
-      "map": {}
+      "map": { "sflowtool": null }
     },
     "dnf": {
       "install": "dnf",
       "admin_group": "wheel",
+      "services": { "freeradius": "radiusd", "rsyslog": "rsyslog", "chrony": "chronyd", "tftpd-hpa": "tftp.socket" },
+      "service_prep": { "freeradius": "cd /etc/raddb/certs && ./bootstrap && chgrp -R radiusd /etc/raddb/certs && chmod -R g+rX /etc/raddb/certs" },
       "map": {
         "snmp": "net-snmp-utils",
         "snmptrapd": "net-snmp",

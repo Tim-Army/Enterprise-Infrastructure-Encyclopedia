@@ -331,6 +331,14 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
             elif flavor.get("subscription"):
                 run.append("subscription-manager repos --enable codeready-builder-for-rhel-10-$(arch)-rpms || true")
         run.append("dnf -y install %s" % " ".join(install))
+        # Debian and Ubuntu start a package's service on install. The Red Hat family does not.
+        for p in vm.get("packages", []):
+            unit = fam.get("services", {}).get(p)
+            if unit and fam.get("map", {}).get(p, p) in install:
+                prep = fam.get("service_prep", {}).get(p)
+                if prep:
+                    run.append("%s || true" % prep)
+                run.append("systemctl enable --now %s || true" % unit)
     if vm.get("forwarding"):
         run.append("sysctl --system")
     if vm.get("role") == "gateway":

@@ -372,6 +372,15 @@ Lessons from this work:
   and the Red Hat family sets them with `nmcli`. The Red Hat guest agent also blocks
   `guest-exec`, so a script cannot check those machines through it. SSH through
   the host works for every flavor.
+- **Build the heaviest machine too.** `ca-201` installs almost nothing, so it passed
+  on every flavor. The services host did not: `sflowtool` could not be installed
+  from the Ubuntu 24.04 or Debian 13 repositories, which made cloud-init report an
+  error on the apt family;
+  the Red Hat family installed the services but did not start them, because that
+  family starts nothing on install; and FreeRADIUS there fails to start until
+  `/etc/raddb/certs/bootstrap` has made its test certificates. A check that reads
+  `systemctl is-active` can mislead, since a unit that does not exist also prints
+  `inactive`.
 
 ### The Word and PDF downloads
 
