@@ -19,6 +19,39 @@ explains it, and all of them read the same manifest.
 
 `builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. The zip also holds `lab-builder-choices.json`, the same file that **Save choices** makes. Use **Load choices** with it to get the same build back on the page. Load that file and not the manifest (`lab201-vms.json`), which the page refuses. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
 
+## Walk the labs with Claude
+
+The zip that the Lab Builder makes is ready for a Claude session. Besides the
+scripts and the manifest, it holds:
+
+- `LAB-VALUES.md`: the values of your build in one place (switch models and
+  host names, VLAN IDs, subnets, and machine names and addresses).
+- `walkthroughs/`: the lab chapters this build is for (Chapter 999 and the
+  requirement labs in Chapters 04 to 08), rewritten with those values.
+- `CLAUDE.md`: instructions that tell Claude what the folder holds and how to
+  walk the labs, starting with Lab 999.1.
+- `START-CLAUDE.txt`: the line to start with.
+
+With Claude Code, unzip the file, open a terminal in the `lab201-build`
+folder, and run:
+
+```powershell
+claude "Start the lab walkthrough."
+```
+
+Claude Code reads `CLAUDE.md` by itself. In the Claude desktop or web app, add
+the folder to a project or chat and send: `Read CLAUDE.md and LAB-VALUES.md,
+then start the lab walkthrough.`
+
+Claude then takes one step at a time, waits for your output, and checks it
+against the expected result. It is told not to change a switch or a machine
+without your go-ahead, and never to ask for a password or a license key.
+
+The walkthroughs are rewritten by pattern (`VLAN 40`, `set vlanid 40`,
+`vlan40`, and the lab addresses). If a step and `LAB-VALUES.md` differ,
+`LAB-VALUES.md` is right. The chapters in `walkthroughs/` of the lab-scripts
+zip are the unchanged originals. `walkthroughs.list` names them.
+
 ## Before you run anything
 
 1. Read the chapter for your platform, and run the script with `-WhatIf` (or

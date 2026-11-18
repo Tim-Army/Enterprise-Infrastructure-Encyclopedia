@@ -62,6 +62,20 @@ for scripts_dir in volumes/*/lab-scripts; do
   if [[ -f "$topology" ]]; then
     extra_args+=(--add "$topology=diagrams/lab-topology.svg")
   fi
+  # Lab chapters named in lab-scripts/walkthroughs.list are published as
+  # walkthroughs/<file>, so the Lab Builder can put them in its zip.
+  if [[ -f "$scripts_dir/walkthroughs.list" ]]; then
+    while IFS= read -r chapter || [[ -n "$chapter" ]]; do
+      chapter="${chapter%$'\r'}"
+      [[ -z "$chapter" || "$chapter" == \#* ]] && continue
+      if [[ -f "volumes/$vol/chapters/$chapter" ]]; then
+        extra_args+=(--add "volumes/$vol/chapters/$chapter=walkthroughs/$chapter")
+      else
+        echo "build-download-site.sh: $scripts_dir/walkthroughs.list names a missing chapter: $chapter" >&2
+        exit 1
+      fi
+    done < "$scripts_dir/walkthroughs.list"
+  fi
   python3 scripts/python/package_lab_scripts.py "$scripts_dir" "$output/downloads/$vol" "$vol-lab-scripts.zip" ${extra_args[@]+"${extra_args[@]}"}
 done
 

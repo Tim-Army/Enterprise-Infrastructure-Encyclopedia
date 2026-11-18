@@ -1208,6 +1208,14 @@ details summary.small{margin-top:4px}
   FLAVORS.forEach(function (f) { FLAVOR[f.id] = f; });
   var DEFAULT_FLAVOR = FL.default;
   var SEGMENTS = [10, 20, 30, 40, 41, 42, 50];
+  var SEGNAMES = { 10: 'Lab-Services', 20: 'Admin', 30: 'Switch-Mgmt', 40: 'Users-8021X', 41: 'Users-MAB', 42: 'Static-Hosts', 50: 'Guest-AuthFail' };
+  // The two switches under test. The labs were written for these models.
+  var SW_DEFAULT = { a: 'FS-648F-FPOE', b: 'FS-2048F' }, SW_LICENSE = { a: 'FS-SW-LIC-600', b: 'FS-SW-LIC-2000' }, SW_ROLE = { a: 'Access switch', b: 'Aggregation switch' };
+  // Suggestions only. Any FortiSwitch model name can be typed.
+  var SW_MODELS = ['FS-108F', 'FS-108F-POE', 'FS-108F-FPOE', 'FS-124F', 'FS-124F-POE', 'FS-124F-FPOE', 'FS-148F', 'FS-148F-POE', 'FS-148F-FPOE', 'FS-224E', 'FS-224E-POE', 'FS-248E-POE', 'FS-248E-FPOE',
+    'FS-424E', 'FS-424E-POE', 'FS-424E-FPOE', 'FS-448E', 'FS-448E-POE', 'FS-448E-FPOE', 'FS-524D', 'FS-548D', 'FS-624F', 'FS-624F-FPOE', 'FS-648F', 'FS-648F-FPOE', 'FS-1024E', 'FS-1048E', 'FS-T1024E', 'FS-2048F', 'FS-3032E'];
+  var REPO_BLOB = 'https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main/';
+  var VOLUME_DIR = 'volumes/volume-201-fortiswitch-stig-and-srg-mapping/';
   var RESERVED_VLANS = [1, 2001, 2002, 2003, 2004, 2005, 4095];
   var DEFAULT_KEY_WIN = '~\\.ssh\\id_ed25519.pub';
 
@@ -1323,10 +1331,10 @@ details summary.small{margin-top:4px}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
   };
   function resetVms() {
-    state.vms = {};
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b };
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -1590,6 +1598,11 @@ details summary.small{margin-top:4px}
       if (vl !== s || moved) out.warnings.push('Segment ' + s + ' uses ' + (vl !== s ? 'VLAN ' + vl : '') + (vl !== s && moved ? ' and ' : '') + (moved ? 'subnet ' + out.sub.cidr[s] : '') + (vl !== s && !moved ? ', but its subnet is still ' + out.sub.cidr[s] : '') + '. Make the same change on the switches.');
     });
     out.addr = addrCheck(out, p4v);
+    out.sw = swCheck();
+    ['a', 'b'].forEach(function (k) {
+      if (out.sw.err[k]) out.errors.push(SW_ROLE[k] + ' model: ' + out.sw.err[k]);
+      else if (out.sw.changed[k]) out.warnings.push('The ' + SW_ROLE[k].toLowerCase() + ' is an ' + out.sw.model[k] + ', not the ' + SW_DEFAULT[k] + ' the labs were written for. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).');
+    });
     Object.keys(out.addr.err).forEach(function (n) { Object.keys(out.addr.err[n]).forEach(function (k) { out.errors.push(n + ' address: ' + out.addr.err[n][k]); }); });
     var peers = ['rtr-peer-1', 'rtr-peer-2'].filter(function (n) { return out.included.indexOf(n) < 0; });
     if (peers.length && !PLATFORMS[state.platform].wslOnly) out.warnings.push('Routing peers left out (' + peers.join(', ') + '). The routing labs in Chapters 05 and 06 need both.');
@@ -1842,6 +1855,7 @@ details summary.small{margin-top:4px}
 
   function changesText(m, v) {
     var lines = [];
+    ['a', 'b'].forEach(function (k) { if (v.sw.changed[k]) lines.push('Switch: the ' + SW_ROLE[k].toLowerCase() + ' is an ' + v.sw.model[k] + ' named ' + v.sw.name[k] + ', not the ' + SW_DEFAULT[k] + ' (' + swCheckDefaults().name[k] + '). Check the feature matrix for the model.'); });
     if (m.ipv4_prefix !== OLD_V4) lines.push('IPv4 block: ' + OLD_V4 + '.0.0/16 is now ' + m.ipv4_prefix + '.0.0/16. Every address starting with ' + OLD_V4 + '. starts with ' + m.ipv4_prefix + '. instead.');
     if (m.ipv6_prefix !== OLD_V6) lines.push('IPv6 prefix: ' + OLD_V6 + ' is now ' + m.ipv6_prefix + '. Every IPv6 address of the lab uses the new prefix and keeps its last two groups.');
     SEGMENTS.forEach(function (s) { if (v.vlan.eff[s] !== s) lines.push('VLAN: segment ' + s + ' uses VLAN ' + v.vlan.eff[s] + ', not ' + s + '. Create VLAN ' + v.vlan.eff[s] + ' on both switches and in the trunks.'); });
@@ -1948,10 +1962,163 @@ details summary.small{margin-top:4px}
   }
   function fetchBytes(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(function (b) { return new Uint8Array(b); }); }
 
+  /* ------------------------------------------------------------- switches */
+  function swHost(model) { return 'sw-' + model.replace(/^FS-/, '').split('-')[0].toLowerCase(); }
+  function swResolve(models) {
+    var res = { model: {}, name: {}, err: {}, changed: {} };
+    ['a', 'b'].forEach(function (k) {
+      var t = String(models[k] || '').trim().toUpperCase();
+      if (!t) t = SW_DEFAULT[k];
+      if (!/^FS-[A-Z0-9]+(-[A-Z0-9]+)*$/.test(t)) { res.err[k] = 'Use a FortiSwitch model name such as ' + SW_DEFAULT[k] + '. The default is kept'; t = SW_DEFAULT[k]; }
+      res.model[k] = t; res.changed[k] = t !== SW_DEFAULT[k];
+    });
+    var ha = swHost(res.model.a), hb = swHost(res.model.b);
+    res.name.a = ha + '-1'; res.name.b = hb + (ha === hb ? '-2' : '-1');
+    return res;
+  }
+  function swCheck() { return swResolve(state.sw); }
+  function swCheckDefaults() { return swResolve(SW_DEFAULT); }
+
+  /* --------------------------------------------------------- walkthroughs */
+  function escRe(x) { return x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function allAddrs(vm) {
+    var a = [];
+    vm.nics.forEach(function (n) { (n.ipv4 || []).forEach(function (x) { a.push(x); }); });
+    (vm.dummies || []).forEach(function (d) { d.ipv4.forEach(function (x) { a.push(x); }); });
+    return a;
+  }
+  function anyChange(m, v) {
+    return m.ipv4_prefix !== OLD_V4 || m.ipv6_prefix !== OLD_V6 || v.vlan.any || v.sub.any || v.addr.count > 0 || v.sw.changed.a || v.sw.changed.b ||
+      Object.keys(v.names).some(function (k) { return v.names[k] !== k; });
+  }
+
+  // Rewrite one lab chapter so that it uses the values of this build: addresses, VLAN IDs, machine names, and switch models.
+  // included lists the chapter files that travel in the zip. Links to anything else go to the repository.
+  function adaptWalkthrough(text, m, v, included) {
+    var tokens = [], p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, def = swCheckDefaults();
+    function hold(x) { tokens.push(x); return '\u0001' + (tokens.length - 1) + '\u0002'; }
+    function literal(from, to) {
+      if (from === to) return;
+      text = text.replace(new RegExp('(^|[^A-Za-z0-9.-])' + escRe(from) + '(?![A-Za-z0-9-]|\\.\\d)', 'g'), function (all, pre) { return pre + hold(to); });
+    }
+    // Links: chapters in the zip stay relative, the lab diagram points at the copy in the zip, and the rest go to the repository.
+    text = text.replace(/\]\(([^)\s]+)\)/g, function (all, target) {
+      if (/^(https?:|mailto:|#)/.test(target)) return all;
+      var i = target.indexOf('#'), hash = i >= 0 ? target.slice(i) : '', file = i >= 0 ? target.slice(0, i) : target;
+      if (included.indexOf(file) >= 0) return all;
+      if (/chapter-999-shared-lab-topology\.svg$/.test(file)) return '](../diagrams/lab-topology.svg)';
+      var out = [];
+      (VOLUME_DIR + 'chapters/' + file).split('/').forEach(function (x) { if (x === '..') out.pop(); else if (x && x !== '.') out.push(x); });
+      return '](' + REPO_BLOB + out.join('/') + hash + ')';
+    });
+    // Exact values first, held as tokens so the block and subnet rules below do not touch them again.
+    vmRows().forEach(function (e) {
+      if (!rowIncluded(e.base, e.row)) return;
+      var eff = v.addr.eff[e.base.name] || {};
+      addrSlots(e.base).forEach(function (sl) {
+        var want = eff[sl.key];
+        if (want && want !== mapDef(sl.def, p4, v.sub)) literal(sl.def.split('/')[0], want.split('/')[0]);
+      });
+    });
+    Object.keys(v.names).forEach(function (k) { literal(k, v.names[k]); });
+    ['a', 'b'].forEach(function (k) {
+      literal(def.name[k], v.sw.name[k]);
+      if (v.sw.changed[k]) {
+        text = text.split('`' + SW_LICENSE[k] + '`').join(hold('(the SKU for the ' + v.sw.model[k] + ')'));
+        literal(SW_LICENSE[k], 'the Advanced Features License SKU for the ' + v.sw.model[k]);
+      }
+      literal(SW_DEFAULT[k], v.sw.model[k]);
+    });
+    // IPv4: a shared segment takes its subnet, everything else moves with the block.
+    text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.(\\d{1,3})(?=\\.)', 'g'), function (all, pre, c) {
+      return pre + (SEGMENTS.indexOf(+c) >= 0 ? v.sub.base[+c] : p4 + '.' + c);
+    });
+    if (p4 !== OLD_V4) text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.(?!\\d)', 'g'), function (all, pre) { return pre + p4 + '.'; });
+    // IPv6: the last group is the third and fourth IPv4 octets, so it follows a moved subnet.
+    text = text.replace(new RegExp(escRe(OLD_V6) + '([0-9a-f]{0,4})(?![0-9a-f:])', 'gi'), function (all, h) {
+      if (!h) return p6;
+      var val = parseInt(h, 16), third = val >> 8, fourth = val & 255;
+      if (SEGMENTS.indexOf(third) >= 0) third = +v.sub.base[third].split('.')[2];
+      return p6 + ((third << 8) | fourth).toString(16);
+    });
+    // VLAN IDs of the shared segments.
+    if (v.vlan.any) {
+      var mv = function (n) { return SEGMENTS.indexOf(+n) >= 0 ? String(v.vlan.eff[+n]) : n; };
+      text = text.replace(/\b(VLANs?|vlanid|native-vlan|allowed-vlans) (\d+(?:(?:, and |, | and | to |,)\d+)*)/g, function (all, kw, list) { return kw + ' ' + list.replace(/\d+/g, mv); });
+      text = text.replace(/\bvlan(\d+)\b/g, function (all, n) { return 'vlan' + mv(n); });
+      text = text.replace(/(\{ id: )(\d+)(, link)/g, function (all, a, n, b) { return a + mv(n) + b; });
+    }
+    text = text.replace(/\u0001(\d+)\u0002/g, function (all, i) { return tokens[+i]; });
+    var note = '> **Lab Builder copy.** ' + (anyChange(m, v)
+      ? 'The addresses, VLAN IDs, machine names, and switch models in this copy are the ones chosen for this build. `LAB-VALUES.md` lists them, and it is right where this text and it differ.'
+      : 'This build uses the Chapter 999 defaults, so the lab values in this copy match the original chapter.') +
+      (v.sw.changed.a || v.sw.changed.b ? ' The labs were written for the ' + SW_DEFAULT.a + ' and the ' + SW_DEFAULT.b + '. A statement about what a switch supports was written for those models, so check the feature matrix for yours.' : '') +
+      ' Links to chapters that are not in this folder go to the repository.';
+    return /^# .*\n/.test(text) ? text.replace(/^(# .*\n)/, '$1\n' + note + '\n') : note + '\n\n' + text;
+  }
+
+  // The values of this build in one place, for a person and for an assistant that walks the labs.
+  function labValuesText(m, v) {
+    var p = PLATFORMS[state.platform], ver = p.versions.filter(function (x) { return x[0] === state.version; })[0];
+    var L = ['# Lab values for this build', '', 'Made by the Lab Builder. The walkthroughs in `walkthroughs/` already use these values. Where a walkthrough and this file differ, this file is right.', ''];
+    L.push('## Platform', '', '- Platform: ' + (ver ? ver[1] : p.name), '- IPv4 block: `' + m.ipv4_prefix + '.0.0/16`', '- IPv6 prefix: `' + m.ipv6_prefix + '` (/112)', '- Admin user on every Linux machine: `' + m.admin_user + '` (SSH key login)', '');
+    L.push('## Switches under test', '', '| Role | Host name | Model |', '| --- | --- | --- |');
+    ['a', 'b'].forEach(function (k) { L.push('| ' + SW_ROLE[k] + ' | `' + v.sw.name[k] + '` | ' + v.sw.model[k] + (v.sw.changed[k] ? ' (the labs were written for the ' + SW_DEFAULT[k] + ')' : '') + ' |'); });
+    L.push('', '## Shared segments', '', '| Segment | Name | VLAN ID | IPv4 subnet | Gateway |', '| --- | --- | --- | --- | --- |');
+    SEGMENTS.forEach(function (g) { L.push('| ' + g + ' | ' + SEGNAMES[g] + ' | ' + v.vlan.eff[g] + ' | `' + v.sub.cidr[g] + '` | `' + v.sub.base[g] + '.1` |'); });
+    L.push('', '## Machines', '', '| Machine | Role | Flavor | Lab addresses |', '| --- | --- | --- | --- |');
+    m.vms.forEach(function (vm) { L.push('| `' + vm.name + '` | ' + vm.role + ' | ' + FLAVOR[vm.flavor || m.default_flavor].name + ' | ' + (allAddrs(vm).map(function (a) { return '`' + a + '`'; }).join(', ') || 'none') + ' |'); });
+    var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0; }).map(function (e) { return e.base.name; });
+    if (left.length) L.push('', 'Machines left out of this build: ' + left.join(', ') + '.');
+    return L.join('\n') + '\n';
+  }
+
+  // Instructions for a Claude session that opens this folder. Claude Code reads CLAUDE.md on its own.
+  function claudeText(m, v, walkthroughs) {
+    var p = PLATFORMS[state.platform], first = walkthroughs.indexOf('999-shared-lab-infrastructure.md') >= 0 ? '999-shared-lab-infrastructure.md' : walkthroughs[0];
+    var L = ['# Lab 201 build: instructions for Claude', '',
+      'This folder was made by the Lab Builder of the Enterprise Infrastructure Encyclopedia, Volume CCI (FortiSwitch STIG and SRG mapping). It holds one lab build and the lab walkthroughs written for it. Your job is to walk the user through the labs, one step at a time.', '',
+      '## What is in this folder', '',
+      '- `LAB-VALUES.md`: the values of this build (switch models, VLAN IDs, subnets, machine names and addresses). Read it first.',
+      '- `walkthroughs/`: the lab chapters, already rewritten with those values.' + (walkthroughs.length ? ' In order: ' + walkthroughs.map(function (w) { return '`' + w + '`'; }).join(', ') + '.' : ' The Lab Builder could not fetch them (see `MISSING-FILES.txt`), so ask the user for the chapters.'),
+      '- `RUN.txt`: the commands that build the lab machines on ' + p.name + '. `CHECKLIST.md` lists what to check before and after.',
+      '- `CHANGES.md` (only when something differs from the defaults): what the user changed from the book.',
+      '- `common/` and `' + p.script.split('/')[0] + '/`: the manifest and the build script. `lab-builder-choices.json` reloads this build in the Lab Builder.', '',
+      '## Start here', '',
+      'When the user opens a session in this folder, or says "start", do this:', '',
+      '1. Read `LAB-VALUES.md` and `CHECKLIST.md`.',
+      '2. Ask the user what already exists: are the lab machines built (`RUN.txt`), and are the two switches cabled and reachable?',
+      first ? '3. Begin with the first lab, **Lab 999.1**, in `walkthroughs/' + first + '`. The build script creates the machines that Labs 999.1 and 999.2 describe, so in those two labs verify what the script built instead of building it again.' : '3. Begin with Lab 999.1 of Chapter 999 once the user supplies the chapter.',
+      '4. Go on in order: Labs 999.1 to 999.6, then the requirement labs in Chapters 04, 05, 06, and 07. Chapter 08 is optional and needs a console server.', '',
+      '## How to walk a lab', '',
+      '- Take one step at a time. Say what the step does, give the exact command, and say what result to expect.',
+      '- Wait for the user to run it and show the output. Compare the output with the expected result before you go on.',
+      '- A step passes only when the output shows it. If you cannot see the result, say that it is not verified.',
+      '- Keep a short log in `PROGRESS.md`: the lab, the step, pass or fail, and the date. Start the next session from it.',
+      '- Use the values in `LAB-VALUES.md`. If a walkthrough shows a different value, `LAB-VALUES.md` is right. Tell the user about the difference.', '',
+      '## Rules', '',
+      '- Do not change a switch or a machine without the user\'s go-ahead for that step. Show the commands first.',
+      '- Run every build script with its preview first (`-WhatIf` or `--dry-run`). The scripts have had limited testing on real hosts.',
+      '- Never ask the user to paste a password, a license key, or a private key into the chat. Keys go in the license file or in environment variables on the user\'s computer.',
+      '- Keep the lab isolated. Do not route `' + m.ipv4_prefix + '.0.0/16` into another network.',
+      '- If a step fails, stop and work out why with the user. Do not skip ahead.'];
+    if (v.sw.changed.a || v.sw.changed.b) L.push('- The labs were written for the ' + SW_DEFAULT.a + ' and the ' + SW_DEFAULT.b + '. This build uses the ' + v.sw.model.a + ' and the ' + v.sw.model.b + '. Before a lab relies on a feature, check that the model supports it (Chapter 01, prerequisite P9), and tell the user when it does not.');
+    return L.join('\n') + '\n';
+  }
+
+  function startText() {
+    return ['Start the lab walkthrough with Claude', '',
+      'Claude Code (terminal): open a terminal in this folder and run:', '',
+      '  claude "Start the lab walkthrough."', '',
+      'Claude Code reads CLAUDE.md in this folder by itself and begins with the first lab.', '',
+      'Claude desktop or web: add this folder to a project or a chat, then send:', '',
+      '  Read CLAUDE.md and LAB-VALUES.md, then start the lab walkthrough.', ''].join('\n');
+  }
+
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -1984,6 +2151,7 @@ details summary.small{margin-top:4px}
     });
     state.images = s.images || {}; state.isos = s.isos || {}; state.rhelImage = s.rhelImage || '';
     state.licFile = s.licFile || (p.shell === 'ps' ? '.\\licenses.local.json' : './licenses.local.json'); state.licRefs = s.licRefs || {};
+    if (s.switches && typeof s.switches === 'object') ['a', 'b'].forEach(function (k) { if (s.switches[k]) state.sw[k] = String(s.switches[k]); });
     return notes;
   }
 
@@ -2002,10 +2170,24 @@ details summary.small{margin-top:4px}
       ['../common/resolve-image.py', 'common/resolve-image.py'], ['../README.md', 'README.md'],
       ['../diagrams/lab-topology.svg', 'diagrams/lab-topology.svg'], ['../diagrams/lab-topology.png', 'diagrams/lab-topology.png']
     ];
-    var missing = [];
-    return Promise.all(wanted.map(function (w) {
+    files.push({ path: root + 'LAB-VALUES.md', bytes: enc.encode(labValuesText(m, v)) });
+    files.push({ path: root + 'START-CLAUDE.txt', bytes: enc.encode(startText()) });
+    var missing = [], walkNames = [];
+    function fetchText(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
+    var base = Promise.all(wanted.map(function (w) {
       return fetchBytes(w[0]).then(function (b) { files.push({ path: root + w[1], bytes: b }); }, function () { missing.push(w[1]); });
-    })).then(function () {
+    }));
+    // The lab chapters this build is for, rewritten with its values.
+    var walk = fetchText('../walkthroughs.list').then(function (txt) {
+      var names = txt.split(/\r?\n/).map(function (x) { return x.trim(); }).filter(function (x) { return x && x.charAt(0) !== '#'; });
+      return Promise.all(names.map(function (n) {
+        return fetchText('../walkthroughs/' + n).then(function (t) {
+          walkNames.push(n); files.push({ path: root + 'walkthroughs/' + n, bytes: enc.encode(adaptWalkthrough(t, m, v, names)) });
+        }, function () { missing.push('walkthroughs/' + n); });
+      })).then(function () { walkNames = names.filter(function (n) { return walkNames.indexOf(n) >= 0; }); });
+    }, function () { missing.push('walkthroughs/ (the lab chapters)'); });
+    return Promise.all([base, walk]).then(function () {
+      files.push({ path: root + 'CLAUDE.md', bytes: enc.encode(claudeText(m, v, walkNames)) });
       if (missing.length) files.push({ path: root + 'MISSING-FILES.txt', bytes: enc.encode('This page could not fetch these files from the site:\n' + missing.map(function (x) { return '  ' + x; }).join('\n') + '\n\nDownload the lab-scripts zip from the Volume CCI page and copy them next to common/lab201-vms.json.\nOpening the page from a local file blocks the fetch. Open it from the published site instead.\n') });
       return { blob: makeZip(files), missing: missing, count: files.length };
     });
@@ -2013,7 +2195,8 @@ details summary.small{margin-top:4px}
 
   window.LabBuilderCore = {
     BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
-    choicesText: choicesText, applyChoices: applyChoices,
+    choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: labValuesText, claudeText: claudeText, startText: startText,
+    swCheck: swCheck, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
@@ -2044,8 +2227,9 @@ details summary.small{margin-top:4px}
     h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
     h += '<table id="vlans" style="margin-top:12px"></table><p class="small" id="addrpreview"></p></div>';
-    h += '<div class="card" id="imagecard" hidden><h2><span class="n">7</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
-    h += '<div class="card"><h2><span class="n">8</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
+    h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div></div>';
+    h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
+    h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
     r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden></div><p class="small" id="zipnote"></p></div>';
@@ -2129,6 +2313,15 @@ details summary.small{margin-top:4px}
     });
     $('machines').innerHTML = h;
     renderFlavors();
+  }
+
+  function renderSwitches() {
+    var h = '';
+    ['a', 'b'].forEach(function (k) {
+      h += '<label for="sw' + k + '">' + C.SW_ROLE[k] + '</label><div><input type="text" id="sw' + k + '" data-sw="' + k + '" class="wide" style="max-width:200px" list="swmodels" value="' + esc(S.sw[k]) + '"> <span class="small" data-m="sw" data-k="' + k + '"></span></div>';
+    });
+    h += '<datalist id="swmodels">' + C.SW_MODELS.map(function (x) { return '<option value="' + x + '">'; }).join('') + '</datalist>';
+    $('switches').innerHTML = h;
   }
 
   var lastSub = null;
@@ -2218,6 +2411,11 @@ details summary.small{margin-top:4px}
       smsg.textContent = serr || v.sub.note[s] || (!on && moved ? 'follows VLAN ' + v.vlan.eff[s] : '');
     });
     lastSub = v.sub;
+    ['a', 'b'].forEach(function (k) {
+      var swi = document.querySelector('[data-sw="' + k + '"]'), swn = document.querySelector('[data-m=sw][data-k="' + k + '"]'), swe = v.sw.err[k];
+      swi.className = 'wide' + (swe ? ' err' : v.sw.changed[k] ? ' chg' : '');
+      swn.textContent = swe || ('Host name ' + v.sw.name[k] + (v.sw.changed[k] ? '. The labs were written for the ' + C.SW_DEFAULT[k] : ''));
+    });
     var b10 = v.sub.base[10], h10 = (+b10.split('.')[2]).toString(16);
     $('addrpreview').textContent = 'Example: segment 10 is ' + b10 + '.0/24, the gateway is ' + b10 + '.1 and ' + m.ipv6_prefix + h10 + '01, and the first service host is ' + b10 + '.10 and ' + m.ipv6_prefix + h10 + '0a.';
     $('stats').innerHTML = [[tt.n, 'machines'], [tt.cpu, 'vCPU'], [(tt.mem / 1024) + ' GB', 'memory'], [tt.disk + ' GB', 'disk, thin']].map(function (s) { return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
@@ -2279,6 +2477,7 @@ details summary.small{margin-top:4px}
       else if (t.hasAttribute('data-iso')) S.isos[t.getAttribute('data-iso')] = t.value;
       else if (t.hasAttribute('data-vlan')) S.vlans[t.getAttribute('data-vlan')] = t.value;
       else if (t.hasAttribute('data-subon')) { var sg = t.getAttribute('data-subon'); S.subnetOn[sg] = t.checked; if (t.checked && !S.subnets[sg] && lastSub) S.subnets[sg] = lastSub.cidr[sg]; }
+      else if (t.hasAttribute('data-sw')) S.sw[t.getAttribute('data-sw')] = t.value;
       else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
@@ -2306,7 +2505,7 @@ details summary.small{margin-top:4px}
       var inp = ev.target, f = inp.files[0]; if (!f) return;
       f.text().then(function (txt) {
         var notes = C.applyChoices(JSON.parse(txt.replace(/^﻿/, '')));
-        sigDeps = ''; renderPlatforms(); renderFlavors(); renderMachines(); renderVlans(); $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile; refresh();
+        sigDeps = ''; renderPlatforms(); renderFlavors(); renderMachines(); renderVlans(); renderSwitches(); $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile; refresh();
         $('zipnote').textContent = 'Loaded ' + f.name + '.' + (notes.length ? ' Note: ' + notes.join('; ') + '.' : '');
       }).catch(function (e) {
         $('zipnote').textContent = 'Could not load ' + f.name + '. ' + (e instanceof SyntaxError ? 'It is not valid JSON' : e.message) + '.';
@@ -2315,7 +2514,7 @@ details summary.small{margin-top:4px}
   }
 
   function start() {
-    renderStatic(); renderPlatforms(); renderMachines(); renderVlans();
+    renderStatic(); renderPlatforms(); renderMachines(); renderVlans(); renderSwitches();
     $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile;
     bind(); refresh();
   }
@@ -2395,6 +2594,22 @@ details summary.small{margin-top:4px}
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset('vcenter'); cmd = C.commandText(man());
     ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('powershell -ExecutionPolicy Bypass -File .\\Deploy-Lab201-Vcenter.ps1') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    // Switch models and lab walkthroughs
+    var wsrc = '# T\n\nVLAN 40 and VLANs 10, 40, and 41 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`). `set vlanid 40`, `vlan40`, 10.201.40.2/24, gateway 10.201.10.1, fd00:db8:201::2802, fd00:db8:201::a01, `svc-201a` at 10.201.10.10. See [Chapter 999](999-x.md), [Chapter 01](01-y.md#top), and ![d](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg). VLAN 2005 and 10.30.1.1 stay.\n';
+    reset(); v = C.validateAll(); m = C.buildManifest(v);
+    var wt = C.adaptWalkthrough(wsrc, m, v, ['999-x.md']);
+    ok(wt.indexOf('VLAN 40 and VLANs 10, 40, and 41 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`)') > 0 && wt.indexOf('10.201.40.2/24, gateway 10.201.10.1, fd00:db8:201::2802') > 0 && wt.indexOf('match the original') > 0, 'a walkthrough of a default build keeps the book values');
+    ok(wt.indexOf('](999-x.md)') > 0 && wt.indexOf('](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main/volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-y.md#top)') > 0 && wt.indexOf('](../diagrams/lab-topology.svg)') > 0, 'walkthrough links point inside the zip or at the repository');
+    reset(); S.vlans[40] = '140'; S.v4 = '10.77'; S.vms['svc-201a'].name = 'svc-a'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24'; S.sw.a = 'fs-424e-fpoe'; v = C.validateAll(); m = C.buildManifest(v);
+    wt = C.adaptWalkthrough(wsrc, m, v, ['999-x.md']);
+    ok(wt.indexOf('VLAN 140 and VLANs 10, 140, and 41') > 0 && wt.indexOf('`set vlanid 140`, `vlan140`') > 0 && wt.indexOf('VLAN 2005 and 10.30.1.1 stay') > 0, 'a walkthrough takes the chosen VLAN IDs');
+    ok(wt.indexOf('10.77.140.2/24, gateway 10.77.10.1, fd00:db8:201::8c02, fd00:db8:201::a01') > 0 && wt.indexOf('`svc-a` at 10.77.10.15.') > 0, 'a walkthrough takes the chosen addresses and machine names');
+    ok(wt.indexOf('`sw-424e-1` (FS-424E-FPOE, license (the SKU for the FS-424E-FPOE))') > 0 && wt.indexOf('check the feature matrix') > 0 && v.warnings.some(function (w) { return w.indexOf('FS-424E-FPOE') > 0; }), 'a walkthrough takes the chosen switch model and host name');
+    ok(C.labValuesText(m, v).indexOf('| 40 | Users-8021X | 140 | `10.77.140.0/24` | `10.77.140.1` |') > 0 && C.labValuesText(m, v).indexOf('| Access switch | `sw-424e-1` | FS-424E-FPOE') > 0 && C.claudeText(m, v, ['999-shared-lab-infrastructure.md']).indexOf('**Lab 999.1**, in `walkthroughs/999-shared-lab-infrastructure.md`') > 0, 'the zip describes the build for an assistant');
+    S.sw.a = 'catalyst 9300'; S.sw.b = 'FS-648F-FPOE'; v = C.validateAll();
+    ok(!!v.sw.err.a && v.sw.model.a === 'FS-648F-FPOE' && v.sw.name.a === 'sw-648f-1' && v.sw.name.b === 'sw-648f-2', 'a model that is not a FortiSwitch is refused, and two switches of one model get different names');
+    reset(); S.sw.b = 'FS-1048E'; var swSaved = C.choicesText(); reset(); C.applyChoices(JSON.parse(swSaved));
+    ok(S.sw.b === 'FS-1048E' && S.sw.a === 'FS-648F-FPOE', 'the choices file keeps the switch models');
     // Save choices and Load choices
     reset('proxmox'); S.defaultFlavor = 'rocky-10'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-2'].include = false; S.vms['svc-201a'].name = 'svc-a';
     S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';

@@ -1,0 +1,8 @@
+# Lab chapters that the Lab Builder puts in its zip, in walkthrough order.
+# The site build publishes each one from this volume's chapters folder to lab-scripts/walkthroughs/.
+999-shared-lab-infrastructure.md
+04-layer-2-switch-srg-requirement-labs.md
+05-network-device-management-srg-requirement-labs.md
+06-router-srg-requirement-labs.md
+07-aaa-services-srg-requirement-labs.md
+08-opengear-im7216-console-server-and-optional-console-lab.md
