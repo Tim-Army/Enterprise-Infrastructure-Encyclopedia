@@ -52,7 +52,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Find a Python 3 that really runs. -PythonCommand names the command to use (for example python3.12 or "py -3.12").
+# Find a Python 3 that really runs. -PythonCommand names the command to use (for example python3.15 or "py -3.15").
 # Without it the script tries python3, then the py launcher, then python.
 # On Windows, python.exe and python3.exe can be Microsoft Store stubs that only print "Python was not found".
 $pyExe = $null; $pyArgs = @()
@@ -66,7 +66,7 @@ foreach ($cand in $pyCandidates) {
 }
 if (-not $pyExe -and $PythonCommand) { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
 if (-not $pyExe -and $Action -eq 'Deploy') {
-  throw 'Python 3 was not found. Install it (for example: winget install Python.Python.3.12), open a new PowerShell window, run "python -m pip install pycdlib", and run the script again.'
+  throw 'Python 3 was not found. Install it (for example: winget install Python.Python.3.15), open a new PowerShell window, run "python -m pip install pycdlib", and run the script again.'
 }
 
 function Get-WebText {

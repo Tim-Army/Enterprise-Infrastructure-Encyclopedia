@@ -42,7 +42,7 @@ Usage: $0 [options]
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (for rhel-10 flavors)
   --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro)
-  --python CMD           Python 3 command to use (default python3), for example python3.12
+  --python CMD           Python 3 command to use (default python3), for example python3.15
   --dry-run              print what would run
 EOF
 }

@@ -46,7 +46,7 @@ Usage: $0 [options]
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (needed for rhel-10 flavors)
   --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro, Proxmox subscription)
-  --python CMD           Python 3 command to use (default python3), for example python3.12
+  --python CMD           Python 3 command to use (default python3), for example python3.15
   --iso FLAVOR=VOLUME    the install ISO for a Windows, Linux Mint, or Tiny Core flavor, as a Proxmox volume
                          (repeatable), for example win-2025=local:iso/Server2025.iso
   --iso-storage NAME     storage with the "iso" content type for the answer-file CDs (default $iso_storage)

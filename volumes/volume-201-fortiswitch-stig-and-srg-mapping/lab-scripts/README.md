@@ -29,8 +29,8 @@ explains it, and all of them read the same manifest.
    scripts look for `python3`, then the `py` launcher, then `python`, and skip
    the Microsoft Store stubs that only print "Python was not found". To pick
    the command or version yourself, pass `-PythonCommand` (for example
-   `-PythonCommand 'py -3.12'`), or `--python python3.12` to the Bash scripts,
-   which use `python3` by default. On Windows, `winget install Python.Python.3.12`
+   `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash scripts,
+   which use `python3` by default. On Windows, `winget install Python.Python.3.15`
    installs Python.
 3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
    with `-SshKeyFile` (or `--ssh-key`).
