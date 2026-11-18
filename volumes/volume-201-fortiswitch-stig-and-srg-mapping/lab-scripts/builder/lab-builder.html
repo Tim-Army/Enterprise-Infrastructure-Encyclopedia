@@ -1748,8 +1748,8 @@ details summary.small{margin-top:4px}
     if (Object.keys(needs.file).length && state.platform !== 'wsl') args.push([ps ? '-LicenseFile' : '--license-file', state.licFile]);
     var names = m.vms.map(function (x) { return x.name; });
     var blocks = [];
-    if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, run these two lines first.\n# They unblock the downloaded lab scripts and allow scripts in this\n# PowerShell window only. The setting ends when you close the window.',
-      'Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force']);
+    if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, use one of these.\n# Both apply to one PowerShell process only, so nothing changes for the\n# rest of the computer. Neither works if Group Policy sets the execution\n# policy. In that case, ask your administrator.\n#\n# Allow scripts for the rest of this window, then run the commands below:',
+      'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting. Add the\n# script\'s parameters after the file name. Use pwsh instead of powershell\n# for PowerShell 7. A table parameter (@{ ... }) cannot be passed this way.\npowershell -ExecutionPolicy Bypass -File .\\' + p.exe + ' -WhatIf\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
     var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
     if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', ps ? "$env:LAB201_WINDOWS_ADMIN_PASSWORD = '<LAB_ONLY_PASSWORD>'" : "export LAB201_WINDOWS_ADMIN_PASSWORD='<LAB_ONLY_PASSWORD>'"]);
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
@@ -1827,7 +1827,7 @@ details summary.small{margin-top:4px}
         n.push('Bind each service to its own address, because two copies of a service collide on the shared network.');
         break;
     }
-    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. The Command tab starts with two lines that unblock the lab scripts and allow them in the current PowerShell window only. If your organization sets the execution policy with Group Policy, those lines have no effect, so ask your administrator.');
+    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: powershell -ExecutionPolicy Bypass -File .\\' + PLATFORMS[state.platform].exe + ' (pwsh for PowerShell 7). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
     n.push('The scripts have not been run on real hosts. Run the preview first.');
     return n;
   }
@@ -2345,7 +2345,7 @@ details summary.small{margin-top:4px}
     ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset('vcenter'); cmd = C.commandText(man());
-    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('Unblock-File') < cmd.indexOf('-WhatIf') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('powershell -ExecutionPolicy Bypass -File .\\Deploy-Lab201-Vcenter.ps1') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
     reset('proxmox'); cmd = C.commandText(man());
     ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
     reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);

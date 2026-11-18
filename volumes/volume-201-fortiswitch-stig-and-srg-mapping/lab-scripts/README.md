@@ -31,6 +31,42 @@ explains it, and all of them read the same manifest.
 4. Keep the scripts and the `common` folder together, because each script finds
    `..\common\lab201-vms.json` and `make-seed.py` relative to itself.
 
+## If PowerShell blocks a script
+
+Windows blocks downloaded PowerShell scripts by default. PowerShell then says
+that running scripts is disabled on this system, or that the file is not
+digitally signed. Use one of the two commands below. Both apply to one
+PowerShell process only, so nothing changes for the rest of the computer.
+
+To run one script past the execution policy without changing any setting:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Deploy-Lab201-Vcenter.ps1 -WhatIf
+```
+
+Use the script for your platform, and add its parameters after the file name.
+Use `pwsh` instead of `powershell` if you run PowerShell 7. A table parameter
+such as `-FlavorImages @{ ... }` cannot be passed this way, so use the next
+command for those.
+
+To allow scripts for the rest of the current window instead, and then run the
+scripts as the chapters show:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+```
+
+The setting ends when you close the window. Neither command works if Group
+Policy sets the execution policy. In that case, ask your administrator.
+
+`Bypass` also skips the "downloaded from the internet" prompt. Under a policy
+such as `RemoteSigned`, unblock the downloaded scripts instead. Run this from
+a platform folder such as `esxi`:
+
+```powershell
+Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File
+```
+
 ## What is in `common/`
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
