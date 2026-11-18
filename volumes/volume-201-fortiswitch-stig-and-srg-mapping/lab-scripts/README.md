@@ -65,6 +65,32 @@ taking priority. Use the `py` launcher instead (`py -3 --version`), or pass
 `-PythonCommand 'py -3.15'` to the script. The scripts were written for Python
 3.8 or later and have been run only on Python 3.10.
 
+### If the script says the ISO needs pycdlib
+
+The script makes the seed ISOs with the `pycdlib` Python package, and stops
+when that package is missing. Install it with the same Python that the script
+uses:
+
+```powershell
+python -m pip install pycdlib
+```
+
+If `python` is the Microsoft Store stub on your computer, use the launcher:
+
+```powershell
+py -3 -m pip install pycdlib
+```
+
+Then run the script again. With more than one Python installed, `pycdlib` has
+to be in the one the script picks. The script tries `python3`, then `py -3`,
+then `python`. To use one version for both, install the package into it and
+name it with `-PythonCommand`:
+
+```powershell
+py -3.15 -m pip install pycdlib
+.\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -PythonCommand 'py -3.15' -WhatIf
+```
+
 ## Make an SSH key on Windows
 
 A deploy needs an SSH public key, so that you can log in to the machines it
