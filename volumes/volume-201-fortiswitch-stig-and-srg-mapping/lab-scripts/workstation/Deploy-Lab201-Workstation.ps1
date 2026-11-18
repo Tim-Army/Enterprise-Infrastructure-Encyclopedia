@@ -21,11 +21,14 @@
   pycdlib (pip install pycdlib) for the seed ISOs.
 
 .EXAMPLE
-  .\Deploy-Lab201-Workstation.ps1 -VmRoot D:\VMs\lab201 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
+  .\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
+
+.EXAMPLE
+  .\Deploy-Lab201-Workstation.ps1 -VmRoot E:\VMs\lab201 -SshKeyFile ~\.ssh\id_ed25519.pub
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-  [string] $VmRoot = 'D:\VMs\lab201',
+  [string] $VmRoot,
   [ValidateSet('Deploy', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
   [string[]] $SshKeyFile,
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
@@ -48,6 +51,23 @@ function Get-WebText {
   if ($r.Content -is [byte[]]) { return [System.Text.Encoding]::UTF8.GetString($r.Content) }
   return [string]$r.Content
 }
+
+# Without -VmRoot, the machines go in a lab201 folder inside Workstation's default folder for virtual machines:
+# the one set in Preferences, or Documents\Virtual Machines.
+if (-not $VmRoot) {
+  $vmHome = $null
+  $prefs = Join-Path $env:APPDATA 'VMware\preferences.ini'
+  if (Test-Path $prefs) {
+    $line = Get-Content $prefs | Where-Object { $_ -match '^\s*prefvmx\.defaultVMPath\s*=\s*"(.+)"\s*$' } | Select-Object -First 1
+    if ($line) { $vmHome = $line -replace '^\s*prefvmx\.defaultVMPath\s*=\s*"(.+)"\s*$', '$1' }
+  }
+  if (-not $vmHome) { $vmHome = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Virtual Machines' }
+  $VmRoot = Join-Path $vmHome 'lab201'
+}
+if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + '\'))) {
+  throw "Drive $($VmRoot.Substring(0, 2)) in the machines folder ($VmRoot) does not exist. Pass -VmRoot with a folder on a drive this computer has."
+}
+Write-Host "Machines folder: $VmRoot"
 
 # Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
 if (-not $WorkstationDir) {

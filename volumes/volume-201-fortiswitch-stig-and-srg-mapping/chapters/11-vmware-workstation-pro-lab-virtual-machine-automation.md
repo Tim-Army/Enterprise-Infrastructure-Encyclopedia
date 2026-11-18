@@ -62,7 +62,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
 | Parameter | Meaning |
 | --- | --- |
-| `-VmRoot` | Folder for the machines (default `D:\VMs\lab201`). |
+| `-VmRoot` | Folder for the machines. Without it, the script uses a `lab201` folder inside Workstation's default folder for virtual machines (the one set in Preferences, or `Documents\Virtual Machines`) and prints the path. |
 | `-SshKeyFile` | Public key files for `labadmin`. |
 | `-BridgeVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 220, and the build vmnet. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
@@ -135,7 +135,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 2. Run with `-WhatIf` and read the output, then run for real:
 
    ```powershell
-   .\Deploy-Lab201-Workstation.ps1 -VmRoot D:\VMs\lab201 -SshKeyFile ~\.ssh\id_ed25519.pub
+   .\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub
    ```
 
 3. Run `-Action Status` until all twelve machines run, then check `cloud-init status --long` on three of them.
@@ -149,7 +149,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 2. Snapshot each machine:
 
    ```powershell
-   Get-ChildItem D:\VMs\lab201 -Recurse -Filter *.vmx | Where-Object { $_.BaseName -ne 'lab201-base' } |
+   Get-ChildItem "$([Environment]::GetFolderPath('MyDocuments'))\Virtual Machines\lab201" -Recurse -Filter *.vmx | Where-Object { $_.BaseName -ne 'lab201-base' } |
      ForEach-Object { & 'C:\Program Files\VMware\VMware Workstation\vmrun.exe' -T ws snapshot $_.FullName baseline-201 }
    ```
 

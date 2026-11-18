@@ -1265,7 +1265,7 @@ details summary.small{margin-top:4px}
       versions: [['17', 'Workstation Pro 17'], ['25H2', 'Workstation Pro 25H2'], ['26H1U1', 'Workstation Pro 26H1 U1']], defVersion: '25H2',
       script: 'workstation/Deploy-Lab201-Workstation.ps1', exe: 'Deploy-Lab201-Workstation.ps1',
       fields: [
-        { id: 'vmroot', label: 'Folder for the machines', def: 'D:\\VMs\\lab201', flag: '-VmRoot' },
+        { id: 'vmroot', label: 'Folder for the machines', def: '', ph: '(default: lab201 in the Workstation virtual machine folder)', flag: '-VmRoot', optional: true },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
         { id: 'bridge', label: 'Bridged network (trunk and out-of-band)', def: 'vmnet0', flag: '-BridgeVmnet' },
         { id: 'lan', label: 'Segment 220 network (host-only)', def: 'vmnet5', flag: '-Lan220Vmnet' },
@@ -1774,7 +1774,7 @@ details summary.small{margin-top:4px}
     }
     var snap, list = names.map(function (n) { return "'" + n + "'"; }).join(', ');
     if (state.platform === 'esxi' || state.platform === 'vcenter' || state.platform === 'vxrail') snap = 'Get-VM -Name ' + names.map(psQuote).join(', ') + ' | New-Snapshot -Name baseline-201';
-    else if (state.platform === 'workstation') snap = '$vmrun = \'C:\\Program Files\\VMware\\VMware Workstation\\vmrun.exe\', \'C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\' | Where-Object { Test-Path $_ } | Select-Object -First 1\nforeach ($n in ' + list + ') { & $vmrun -T ws snapshot "' + (state.params.vmroot || 'D:\\VMs\\lab201') + '\\$n\\$n.vmx" baseline-201 }';
+    else if (state.platform === 'workstation') snap = '$vmrun = \'C:\\Program Files\\VMware\\VMware Workstation\\vmrun.exe\', \'C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\' | Where-Object { Test-Path $_ } | Select-Object -First 1\nforeach ($n in ' + list + ') { & $vmrun -T ws snapshot "' + (state.params.vmroot || '$([Environment]::GetFolderPath(\'MyDocuments\'))\\Virtual Machines\\lab201') + '\\$n\\$n.vmx" baseline-201 }' + (state.params.vmroot ? '' : '\n# If Workstation keeps its machines somewhere else, use the folder the script printed as "Machines folder".');
     else if (state.platform === 'proxmox') {
       var base = parseInt(state.params.vmid || '20100', 10);
       snap = 'for id in ' + names.map(function (n, i) { return base + i + 1; }).join(' ') + '; do qm snapshot "$id" baseline-201; done';
