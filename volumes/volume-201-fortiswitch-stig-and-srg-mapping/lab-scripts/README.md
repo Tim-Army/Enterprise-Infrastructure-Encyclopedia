@@ -32,7 +32,7 @@ explains it, and all of them read the same manifest.
    `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash scripts,
    which use `python3` by default. See *Install Python on Windows* below.
 3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
-   with `-SshKeyFile` (or `--ssh-key`).
+   with `-SshKeyFile` (or `--ssh-key`). See *Make an SSH key on Windows* below.
 4. Keep the scripts and the `common` folder together, because each script finds
    `..\common\lab201-vms.json` and `make-seed.py` relative to itself.
 
@@ -64,6 +64,59 @@ If `python` still says that Python was not found, the Microsoft Store stub is
 taking priority. Use the `py` launcher instead (`py -3 --version`), or pass
 `-PythonCommand 'py -3.15'` to the script. The scripts were written for Python
 3.8 or later and have been run only on Python 3.10.
+
+## Make an SSH key on Windows
+
+A deploy needs an SSH public key, so that you can log in to the machines it
+builds. Without one, the script stops with `-SshKeyFile is required`. First
+check whether you already have a key:
+
+```powershell
+Get-ChildItem ~\.ssh\*.pub
+```
+
+If that lists a file such as `id_ed25519.pub`, use it. If it prints nothing,
+make a key pair:
+
+```powershell
+ssh-keygen -t ed25519
+```
+
+Press Enter at each prompt to accept the default file name. A passphrase is
+optional. The command writes two files in `~\.ssh`: `id_ed25519` is the private
+key, which stays on your computer, and `id_ed25519.pub` is the public key.
+Pass the public key to the script by adding `-SshKeyFile` and the path to the
+`.pub` file on the command that runs the script. Run it from the script's own
+folder, for example `workstation`. This is the preview run:
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
+```
+
+To build the machines, run the same line without `-WhatIf`:
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub
+```
+
+Pass `id_ed25519.pub` and not `id_ed25519`, which is the private key. Other
+options, such as `-BridgeVmnet vmnet0`, go on the same line. The Lab Builder's
+Command tab and `RUN.txt` in its zip give the whole command with `-SshKeyFile`
+already filled in. The Bash scripts take the same file with `--ssh-key`.
+
+If `ssh-keygen` is not recognized, the OpenSSH client is not installed. Open
+PowerShell as administrator and check for it:
+
+```powershell
+Get-WindowsCapability -Online -Name OpenSSH.Client*
+```
+
+If the state is `NotPresent`, install it, then open a new PowerShell window and
+run `ssh-keygen` again:
+
+```powershell
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+```
 
 ## If PowerShell blocks a script
 
