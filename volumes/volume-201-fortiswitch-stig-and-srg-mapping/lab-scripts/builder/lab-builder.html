@@ -1774,7 +1774,7 @@ details summary.small{margin-top:4px}
     }
     var snap, list = names.map(function (n) { return "'" + n + "'"; }).join(', ');
     if (state.platform === 'esxi' || state.platform === 'vcenter' || state.platform === 'vxrail') snap = 'Get-VM -Name ' + names.map(psQuote).join(', ') + ' | New-Snapshot -Name baseline-201';
-    else if (state.platform === 'workstation') snap = 'foreach ($n in ' + list + ') { & \'C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\' -T ws snapshot "' + (state.params.vmroot || 'D:\\VMs\\lab201') + '\\$n\\$n.vmx" baseline-201 }';
+    else if (state.platform === 'workstation') snap = '$vmrun = \'C:\\Program Files\\VMware\\VMware Workstation\\vmrun.exe\', \'C:\\Program Files (x86)\\VMware\\VMware Workstation\\vmrun.exe\' | Where-Object { Test-Path $_ } | Select-Object -First 1\nforeach ($n in ' + list + ') { & $vmrun -T ws snapshot "' + (state.params.vmroot || 'D:\\VMs\\lab201') + '\\$n\\$n.vmx" baseline-201 }';
     else if (state.platform === 'proxmox') {
       var base = parseInt(state.params.vmid || '20100', 10);
       snap = 'for id in ' + names.map(function (n, i) { return base + i + 1; }).join(' ') + '; do qm snapshot "$id" baseline-201; done';

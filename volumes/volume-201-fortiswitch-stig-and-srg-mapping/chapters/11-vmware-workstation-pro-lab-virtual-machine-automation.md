@@ -36,7 +36,7 @@ For a trunk to work, 802.1Q tags must pass between the guest, the vmnet, the Win
 
 ### Workstation versions
 
-The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 17 puts all three under its install folder, in `OVFTool\` for the last. Whether the later releases (25H2 and 26H1 U1) still bundle OVF Tool was not confirmed when this chapter was written. If it does not, install OVF Tool separately and pass `-OvfToolPath`. Broadcom has made Workstation Pro available free of charge, and its terms for commercial use differ between sources, so read the current license terms before you use it for work.
+The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 17 puts all three under its install folder, in `OVFTool\` for the last. Workstation 26.0 installs under `C:\Program Files\VMware\VMware Workstation` instead of `Program Files (x86)`, and one 26.0.0 install that was checked has all three tools there, with OVF Tool in `OVFTool\`. The script looks in both folders, and `-WorkstationDir` names another one. On Workstation Pro 17, use the `Program Files (x86)` path in the snapshot command of Lab 11.3. Whether 25H2 bundles OVF Tool was not confirmed when this chapter was written. If it does not, install OVF Tool separately and pass `-OvfToolPath`. Broadcom has made Workstation Pro available free of charge, and its terms for commercial use differ between sources, so read the current license terms before you use it for work.
 
 ## Design Considerations
 
@@ -150,7 +150,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
    ```powershell
    Get-ChildItem D:\VMs\lab201 -Recurse -Filter *.vmx | Where-Object { $_.BaseName -ne 'lab201-base' } |
-     ForEach-Object { & 'C:\Program Files (x86)\VMware\VMware Workstation\vmrun.exe' -T ws snapshot $_.FullName baseline-201 }
+     ForEach-Object { & 'C:\Program Files\VMware\VMware Workstation\vmrun.exe' -T ws snapshot $_.FullName baseline-201 }
    ```
 
 **Negative test.** From `static-1`, run `curl -m 5 https://cloud-images.ubuntu.com`. It must fail.

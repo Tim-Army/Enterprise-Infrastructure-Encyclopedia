@@ -30,7 +30,7 @@ param(
   [string[]] $SshKeyFile,
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
   [string] $WorkDir = (Join-Path $PSScriptRoot 'work'),
-  [string] $WorkstationDir = 'C:\Program Files (x86)\VMware\VMware Workstation',
+  [string] $WorkstationDir,
   [ValidatePattern('^vmnet\d+$')] [string] $BridgeVmnet = 'vmnet0',
   [ValidatePattern('^vmnet\d+$')] [string] $Lan220Vmnet = 'vmnet5',
   [ValidatePattern('^vmnet\d+$')] [string] $WanVmnet = 'vmnet8',
@@ -49,10 +49,17 @@ function Get-WebText {
   return [string]$r.Content
 }
 
+# Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
+if (-not $WorkstationDir) {
+  $WorkstationDir = @('C:\Program Files\VMware\VMware Workstation', 'C:\Program Files (x86)\VMware\VMware Workstation') |
+    Where-Object { Test-Path (Join-Path $_ 'vmrun.exe') } | Select-Object -First 1
+  if (-not $WorkstationDir) { throw 'vmrun.exe was not found under Program Files or Program Files (x86). Is Workstation Pro installed? Pass -WorkstationDir with its install folder.' }
+}
 $vmrun = Join-Path $WorkstationDir 'vmrun.exe'
 $ovftool = if ($OvfToolPath) { $OvfToolPath } elseif (Test-Path (Join-Path $WorkstationDir 'OVFTool\ovftool.exe')) { Join-Path $WorkstationDir 'OVFTool\ovftool.exe' } else { (Get-Command ovftool.exe -ErrorAction SilentlyContinue).Source }
 $vdisk = Join-Path $WorkstationDir 'vmware-vdiskmanager.exe'
-foreach ($exe in $vmrun, $ovftool, $vdisk) { if (-not $exe -or -not (Test-Path $exe)) { throw "Not found: $exe. Is Workstation Pro installed, is -WorkstationDir right, and is OVF Tool installed (-OvfToolPath)?" } }
+if (-not $ovftool) { throw "ovftool.exe was not found in $WorkstationDir\OVFTool or on the PATH. Install OVF Tool and pass -OvfToolPath." }
+foreach ($exe in $vmrun, $ovftool, $vdisk) { if (-not (Test-Path $exe)) { throw "Not found: $exe. Is Workstation Pro installed, is -WorkstationDir right, and is OVF Tool installed (-OvfToolPath)?" } }
 
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
 $names = @{}; $i = 0
