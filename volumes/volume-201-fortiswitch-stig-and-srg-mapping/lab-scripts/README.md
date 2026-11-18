@@ -30,12 +30,40 @@ explains it, and all of them read the same manifest.
    the Microsoft Store stubs that only print "Python was not found". To pick
    the command or version yourself, pass `-PythonCommand` (for example
    `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash scripts,
-   which use `python3` by default. On Windows, `winget install Python.Python.3.15`
-   installs Python.
+   which use `python3` by default. See *Install Python on Windows* below.
 3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
    with `-SshKeyFile` (or `--ssh-key`).
 4. Keep the scripts and the `common` folder together, because each script finds
    `..\common\lab201-vms.json` and `make-seed.py` relative to itself.
+
+## Install Python on Windows
+
+If a script says that Python was not found, install Python with `winget`.
+First list the versions that `winget` offers, to see the latest one:
+
+```powershell
+winget search Python.Python
+```
+
+Install the version you want. This installs Python 3.15:
+
+```powershell
+winget install Python.Python.3.15
+```
+
+Close the PowerShell window and open a new one, so the new `python` command
+is found. Then check the version and install the package that the scripts need
+for the seed ISOs:
+
+```powershell
+python --version
+python -m pip install pycdlib
+```
+
+If `python` still says that Python was not found, the Microsoft Store stub is
+taking priority. Use the `py` launcher instead (`py -3 --version`), or pass
+`-PythonCommand 'py -3.15'` to the script. The scripts were written for Python
+3.8 or later and have been run only on Python 3.10.
 
 ## If PowerShell blocks a script
 
