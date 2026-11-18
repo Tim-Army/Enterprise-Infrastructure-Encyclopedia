@@ -2106,6 +2106,39 @@ details summary.small{margin-top:4px}
     return L.join('\n') + '\n';
   }
 
+  // How to hand the zip to a Claude session. Shown on the page in the Claude tab.
+  function claudeHelpText() {
+    var p = PLATFORMS[state.platform];
+    return ['Walk the labs with Claude', '',
+      '1. Set your choices on this page, then click Download zip.',
+      '2. Unzip lab201-build.zip. On Windows, unzip into a short folder such as C:\\lab201,',
+      '   because long folder names can make the unzip fail.',
+      '3. Open a terminal in the lab201-build folder.',
+      '4. Claude Code: run this line.', '',
+      'claude "Start the lab walkthrough."', '',
+      '   Claude Code reads CLAUDE.md in the folder by itself and begins with Lab 999.1.', '',
+      '   Claude desktop or web: add the folder to a project or a chat, then send this line.', '',
+      'Read CLAUDE.md and LAB-VALUES.md, then start the lab walkthrough.', '',
+      'What the zip gives Claude', '',
+      '- CLAUDE.md: what the folder holds, where to start, and the rules to follow.',
+      '- LAB-VALUES.md: your switch models and host names, VLAN IDs, subnets, and machine',
+      '  names and addresses.',
+      '- walkthroughs/: Chapter 999 and the requirement labs in Chapters 04 to 08, rewritten',
+      '  with your values.',
+      '- RUN.txt and CHECKLIST.md: the commands that build the machines on ' + p.name + ',',
+      '  and what to check before and after.',
+      '- START-CLAUDE.txt: the two start lines above.', '',
+      'What to expect', '',
+      '- Claude takes one step at a time, gives the command and the expected result, and',
+      '  waits for your output before it goes on.',
+      '- It is told not to change a switch or a machine without your go-ahead, and never to',
+      '  ask for a password, a license key, or a private key.',
+      '- It keeps a log in PROGRESS.md, so a later session can continue where you stopped.',
+      '- If a walkthrough step and LAB-VALUES.md differ, LAB-VALUES.md is right.',
+      '- The page must be opened from the published site. A local copy cannot fetch the',
+      '  walkthroughs, and the zip then lists them in MISSING-FILES.txt.', ''].join('\n');
+  }
+
   function startText() {
     return ['Start the lab walkthrough with Claude', '',
       'Claude Code (terminal): open a terminal in this folder and run:', '',
@@ -2195,7 +2228,7 @@ details summary.small{margin-top:4px}
 
   window.LabBuilderCore = {
     BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
-    choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: labValuesText, claudeText: claudeText, startText: startText,
+    choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: labValuesText, claudeText: claudeText, startText: startText, claudeHelpText: claudeHelpText,
     swCheck: swCheck, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
@@ -2232,9 +2265,9 @@ details summary.small{margin-top:4px}
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
-    r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden></div><p class="small" id="zipnote"></p></div>';
+    r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden></div><p class="small" id="zipnote"></p><p class="small">The zip can be handed to Claude to walk the labs with you. Unzip it, open a terminal in the folder, and run <code>claude "Start the lab walkthrough."</code> The <b>Claude</b> tab has the full steps.</p></div>';
     $('right').innerHTML = r;
-    var tabs = [['command', 'Command'], ['manifest', 'Manifest'], ['checklist', 'Checklist'], ['changes', 'Changes'], ['licenses', 'License file'], ['diagram', 'Diagram']];
+    var tabs = [['command', 'Command'], ['manifest', 'Manifest'], ['checklist', 'Checklist'], ['changes', 'Changes'], ['licenses', 'License file'], ['claude', 'Claude'], ['diagram', 'Diagram']];
     $('tabs').innerHTML = tabs.map(function (t) { return '<button data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('');
     // matrix
     var heads = C.FLAVORS.filter(function (f) { return f.status !== 'planned'; });
@@ -2425,6 +2458,7 @@ details summary.small{margin-top:4px}
     else if (activeTab === 'manifest') body = '<pre>' + esc(JSON.stringify(m, null, 2)) + '</pre>';
     else if (activeTab === 'checklist') body = '<pre>' + esc(C.checklistText(m, v)) + '</pre>';
     else if (activeTab === 'changes') body = '<pre>' + esc(C.changesText(m, v) || 'No changes from the Chapter 999 defaults.') + '</pre>';
+    else if (activeTab === 'claude') body = '<pre>' + esc(C.claudeHelpText()) + '</pre><p class="small">The zip holds these instructions for Claude in CLAUDE.md, and the two start lines in START-CLAUDE.txt.</p>';
     else if (activeTab === 'licenses') body = '<pre>' + esc(C.licensesExample(m) || 'No license file is used for these choices.') + '</pre><p class="small">Copy this to ' + esc(S.licFile) + ' and fill in the values on your computer. Never commit it, and never put it in the zip.</p>';
     else body = '<div class="diag"><img alt="Shared lab network diagram" src="../diagrams/lab-topology.svg" onerror="this.parentNode.innerHTML=\'<p class=small>The diagram is added when the site is built, so it appears on the published page and in the zip.</p>\'"></div><p class="small">This is the default lab. The generated zip includes the same picture.</p>';
     $('tabbody').innerHTML = body;
@@ -2486,7 +2520,7 @@ details summary.small{margin-top:4px}
     document.addEventListener('input', onInput);
     document.addEventListener('change', function (ev) { if (ev.target.tagName === 'SELECT') onInput(ev); });
     $('copy').addEventListener('click', function () {
-      var r = refresh(), text = activeTab === 'manifest' ? JSON.stringify(r.m, null, 2) : activeTab === 'checklist' ? C.checklistText(r.m, r.v) : activeTab === 'licenses' ? C.licensesExample(r.m) : C.commandText(r.m);
+      var r = refresh(), text = activeTab === 'manifest' ? JSON.stringify(r.m, null, 2) : activeTab === 'checklist' ? C.checklistText(r.m, r.v) : activeTab === 'licenses' ? C.licensesExample(r.m) : activeTab === 'claude' ? C.claudeHelpText() : C.commandText(r.m);
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { $('zipnote').textContent = 'Copied.'; }, function () { $('zipnote').textContent = 'Copy failed. Select the text and copy it by hand.'; });
     });
     $('dlmanifest').addEventListener('click', function () { var r = refresh(); download('lab201-vms.json', new Blob([JSON.stringify(r.m, null, 2) + '\n'], { type: 'application/json' })); });
@@ -2610,6 +2644,8 @@ details summary.small{margin-top:4px}
     ok(!!v.sw.err.a && v.sw.model.a === 'FS-648F-FPOE' && v.sw.name.a === 'sw-648f-1' && v.sw.name.b === 'sw-648f-2', 'a model that is not a FortiSwitch is refused, and two switches of one model get different names');
     reset(); S.sw.b = 'FS-1048E'; var swSaved = C.choicesText(); reset(); C.applyChoices(JSON.parse(swSaved));
     ok(S.sw.b === 'FS-1048E' && S.sw.a === 'FS-648F-FPOE', 'the choices file keeps the switch models');
+    reset('workstation');
+    ok(C.claudeHelpText().indexOf('claude "Start the lab walkthrough."') > 0 && C.claudeHelpText().indexOf('VMware Workstation Pro') > 0 && C.startText().indexOf('claude "Start the lab walkthrough."') > 0 && !!document.querySelector('#tabs button[data-tab="claude"]'), 'the page explains how to hand the zip to Claude');
     // Save choices and Load choices
     reset('proxmox'); S.defaultFlavor = 'rocky-10'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-2'].include = false; S.vms['svc-201a'].name = 'svc-a';
     S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
