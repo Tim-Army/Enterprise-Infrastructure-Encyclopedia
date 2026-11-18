@@ -29,6 +29,7 @@ workdir=/var/tmp/lab201
 dry_run=0
 ssh_keys=()
 license_file=""
+python="python3"
 rhel_image=""
 iso_storage=local
 declare -A iso_vol
@@ -45,6 +46,7 @@ Usage: $0 [options]
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (needed for rhel-10 flavors)
   --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro, Proxmox subscription)
+  --python CMD           Python 3 command to use (default python3), for example python3.12
   --iso FLAVOR=VOLUME    the install ISO for a Windows, Linux Mint, or Tiny Core flavor, as a Proxmox volume
                          (repeatable), for example win-2025=local:iso/Server2025.iso
   --iso-storage NAME     storage with the "iso" content type for the answer-file CDs (default $iso_storage)
@@ -67,6 +69,7 @@ while [[ $# -gt 0 ]]; do
     --workdir) workdir="$2"; shift 2 ;;
     --rhel-image) rhel_image="$2"; shift 2 ;;
     --license-file) license_file="$2"; shift 2 ;;
+    --python) python="$2"; shift 2 ;;
     --iso) iso_vol["${2%%=*}"]="${2#*=}"; shift 2 ;;
     --iso-storage) iso_storage="$2"; shift 2 ;;
     --dry-run) dry_run=1; shift ;;
@@ -92,7 +95,7 @@ bridge_of() {
 
 # One line per VM and per NIC, in the order of the manifest.
 plan() {
-  python3 - "$manifest" "$here/../common/flavors.json" <<'PY'
+  "$python" - "$manifest" "$here/../common/flavors.json" <<'PY'
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
 fl = dict((f["id"], f) for f in json.load(open(sys.argv[2], encoding="utf-8"))["flavors"])
@@ -111,7 +114,7 @@ PY
 vmid_of() { echo $(( vmid_base + $1 )); }
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing command: $1" >&2; exit 1; }; }
-need qm; need pvesm; need python3
+need qm; need pvesm; need "$python"
 
 case "$action" in
   status)
@@ -189,16 +192,16 @@ while IFS='|' read -r kind _ _ _ _ _ _ flv isflag _; do
       img_args+=(--image-path "$rhel_image") ;;
   esac
   if [[ "$dry_run" == 1 ]]; then
-    run python3 "$resolver" "${img_args[@]}"
+    run "$python" "$resolver" "${img_args[@]}"
     flavor_img[$flv]="$workdir/images/<image-for-$flv>"
   else
-    flavor_img[$flv]="$(python3 "$resolver" "${img_args[@]}" | tail -n 1)"
+    flavor_img[$flv]="$("$python" "$resolver" "${img_args[@]}" | tail -n 1)"
   fi
 done < <(plan)
 
 # A Proxmox subscription key, if the license file has one. It is not printed.
 if [[ -n "$license_file" && "$dry_run" == 0 ]]; then
-  pve_key="$(python3 -c "import json,sys;print((json.load(open(sys.argv[1])).get('proxmox') or {}).get('subscription_key',''))" "$license_file")"
+  pve_key="$("$python" -c "import json,sys;print((json.load(open(sys.argv[1])).get('proxmox') or {}).get('subscription_key',''))" "$license_file")"
   if [[ -n "$pve_key" ]]; then pvesubscription set "$pve_key" >/dev/null || echo "Could not set the Proxmox subscription key." >&2; fi
 fi
 
@@ -212,7 +215,7 @@ if [[ "$any_iso" == 1 ]]; then
   [[ -n "$iso_dir" ]] || { echo "Storage $iso_storage has no iso content type." >&2; exit 1; }
 fi
 [[ -z "$license_file" ]] || seed_args+=(--license-file "$license_file")
-run python3 "$seedtool" "${seed_args[@]}" "${key_args[@]}"
+run "$python" "$seedtool" "${seed_args[@]}" "${key_args[@]}"
 
 # Machines.
 declare -A vm_cpu vm_mem vm_disk vm_idx vm_flavor vm_iso vm_family vm_ostype vm_cputype

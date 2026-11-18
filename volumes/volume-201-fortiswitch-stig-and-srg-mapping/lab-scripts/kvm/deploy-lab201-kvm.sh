@@ -29,6 +29,7 @@ workdir=/var/tmp/lab201
 dry_run=0
 ssh_keys=()
 license_file=""
+python="python3"
 rhel_image=""
 
 usage() {
@@ -41,6 +42,7 @@ Usage: $0 [options]
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (for rhel-10 flavors)
   --license-file FILE    JSON file with keys to apply (Red Hat, Ubuntu Pro)
+  --python CMD           Python 3 command to use (default python3), for example python3.12
   --dry-run              print what would run
 EOF
 }
@@ -58,6 +60,7 @@ while [[ $# -gt 0 ]]; do
     --workdir) workdir="$2"; shift 2 ;;
     --rhel-image) rhel_image="$2"; shift 2 ;;
     --license-file) license_file="$2"; shift 2 ;;
+    --python) python="$2"; shift 2 ;;
     --dry-run) dry_run=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
@@ -81,7 +84,7 @@ bridge_of() {
 
 # One line for each machine: name|vcpu|memory_mb|disk_gb|role|flavor|net,mac;net,mac;...
 plan() {
-  python3 - "$manifest" "$here/../common/flavors.json" <<'PY'
+  "$python" - "$manifest" "$here/../common/flavors.json" <<'PY'
 import json, sys
 m = json.load(open(sys.argv[1], encoding="utf-8"))
 for i, vm in enumerate(m["vms"]):
@@ -95,7 +98,7 @@ PY
 }
 
 need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing command: $1" >&2; exit 1; }; }
-need virsh; need python3
+need virsh; need "$python"
 
 case "$action" in
   status)
@@ -145,10 +148,10 @@ while IFS='|' read -r _ _ _ _ _ flv _; do
       img_args+=(--image-path "$rhel_image") ;;
   esac
   if [[ "$dry_run" == 1 ]]; then
-    run python3 "$resolver" "${img_args[@]}"
+    run "$python" "$resolver" "${img_args[@]}"
     flavor_img[$flv]="$workdir/images/<image-for-$flv>"
   else
-    flavor_img[$flv]="$(python3 "$resolver" "${img_args[@]}" | tail -n 1)"
+    flavor_img[$flv]="$("$python" "$resolver" "${img_args[@]}" | tail -n 1)"
   fi
 done < <(plan)
 
@@ -156,7 +159,7 @@ done < <(plan)
 key_args=(); for key in "${ssh_keys[@]}"; do key_args+=(--ssh-key "$key"); done
 seed_args=(--manifest "$manifest" --out "$workdir/seeds" --tagging guest --guest-agent qemu)
 [[ -z "$license_file" ]] || seed_args+=(--license-file "$license_file")
-run python3 "$seedtool" "${seed_args[@]}" "${key_args[@]}"
+run "$python" "$seedtool" "${seed_args[@]}" "${key_args[@]}"
 
 create_vm() {
   local name="$1" cpu="$2" mem="$3" disk="$4" flv="$5" nics="$6" disk_path seed net_args=() pair net mac

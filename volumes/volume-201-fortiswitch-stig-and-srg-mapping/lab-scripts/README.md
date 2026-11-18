@@ -25,7 +25,13 @@ explains it, and all of them read the same manifest.
    `--dry-run` for Proxmox) first. None of these scripts has been run against a
    real host yet. Treat them as a starting point to check, not a tested tool.
 2. Install Python 3.8 or later. For the seed ISOs (every platform except
-   Proxmox and WSL), also run `pip install pycdlib`.
+   Proxmox and WSL), also run `python -m pip install pycdlib`. The PowerShell
+   scripts look for `python3`, then the `py` launcher, then `python`, and skip
+   the Microsoft Store stubs that only print "Python was not found". To pick
+   the command or version yourself, pass `-PythonCommand` (for example
+   `-PythonCommand 'py -3.12'`), or `--python python3.12` to the Bash scripts,
+   which use `python3` by default. On Windows, `winget install Python.Python.3.12`
+   installs Python.
 3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
    with `-SshKeyFile` (or `--ssh-key`).
 4. Keep the scripts and the `common` folder together, because each script finds

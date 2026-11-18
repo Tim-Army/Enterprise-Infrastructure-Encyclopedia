@@ -1224,6 +1224,7 @@ details summary.small{margin-top:4px}
         { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
         { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.12 or py -3.12' },
         { id: 'skipcert', label: 'Accept the host certificate', type: 'check', flag: '-SkipCertificateCheck', help: 'Only for a first run on a lab network' }
       ]
     },
@@ -1242,6 +1243,7 @@ details summary.small{margin-top:4px}
         { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
         { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.12 or py -3.12' },
         { id: 'skipcert', label: 'Accept the vCenter certificate', type: 'check', flag: '-SkipCertificateCheck' }
       ]
     },
@@ -1257,6 +1259,7 @@ details summary.small{margin-top:4px}
         { id: 'datastore', label: 'vSAN datastore', ph: '<VSAN_DATASTORE>', flag: '-Datastore' },
         { id: 'vds', label: 'Existing distributed switch', ph: '<VXRAIL_VDS>', flag: '-UseExistingSwitch' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.12 or py -3.12' },
         { id: 'skipcert', label: 'Accept the vCenter certificate', type: 'check', flag: '-SkipCertificateCheck' }
       ]
     },
@@ -1267,6 +1270,7 @@ details summary.small{margin-top:4px}
       fields: [
         { id: 'vmroot', label: 'Folder for the machines', def: '', ph: '(default: lab201 in the Workstation virtual machine folder)', flag: '-VmRoot', optional: true },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.12 or py -3.12' },
         { id: 'bridge', label: 'Bridged network (trunk and out-of-band)', def: 'vmnet0', flag: '-BridgeVmnet' },
         { id: 'lan', label: 'Segment 220 network (host-only)', def: 'vmnet5', flag: '-Lan220Vmnet' },
         { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' }
@@ -1278,6 +1282,7 @@ details summary.small{margin-top:4px}
       script: 'proxmox/deploy-lab201-proxmox.sh', exe: 'deploy-lab201-proxmox.sh',
       fields: [
         { id: 'key', label: 'SSH public key file', def: '~/.ssh/id_ed25519.pub', flag: '--ssh-key' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3)', flag: '--python', optional: true, help: 'For example python3.12' },
         { id: 'storage', label: 'Disk storage', def: 'local-lvm', flag: '--storage' },
         { id: 'snip', label: 'Snippets storage', def: 'local', flag: '--snippets-storage' },
         { id: 'wan', label: 'Build bridge (internet)', def: 'vmbr0', flag: '--bridge-wan' },
@@ -1294,6 +1299,7 @@ details summary.small{margin-top:4px}
       script: 'kvm/deploy-lab201-kvm.sh', exe: 'deploy-lab201-kvm.sh',
       fields: [
         { id: 'key', label: 'SSH public key file', def: '~/.ssh/id_ed25519.pub', flag: '--ssh-key' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3)', flag: '--python', optional: true, help: 'For example python3.12' },
         { id: 'wan', label: 'Build bridge (internet)', def: 'virbr0', flag: '--bridge-wan' },
         { id: 'oob', label: 'Out-of-band bridge', def: 'br-oob', flag: '--bridge-oob' },
         { id: 't1', label: 'Trunk T1 bridge', def: 'br-t1', flag: '--bridge-t1' },
@@ -1308,6 +1314,7 @@ details summary.small{margin-top:4px}
       script: 'wsl/Deploy-Lab201-Wsl.ps1', exe: 'Deploy-Lab201-Wsl.ps1',
       fields: [
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
+        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.12 or py -3.12' },
         { id: 'root', label: 'Folder for the distributions', def: '', ph: '(default: %USERPROFILE%\\wsl-lab201)', flag: '-InstallRoot', optional: true }
       ]
     }
@@ -2400,6 +2407,9 @@ details summary.small{margin-top:4px}
     ok(S.params.vmroot === 'E:\\lab' && S.params.bridge === 'vmnet0' && S.params.t1 === undefined && S.version === P.workstation.defVersion && loadNotes.length === 2, 'an older choices file loads, with notes about what it could not use');
     var refused = 0; [C.BASE, [1], { platform: 'nope' }].forEach(function (x) { try { C.applyChoices(x); } catch (e) { refused++; } });
     ok(refused === 3, 'a manifest or another JSON file is refused as a choices file');
+    reset('vcenter'); cmd = C.commandText(man()); S.params.python = 'py -3.12'; var cmdPy = C.commandText(man());
+    reset('proxmox'); S.params.python = 'python3.12';
+    ok(cmd.indexOf('-PythonCommand') < 0 && cmdPy.indexOf("-PythonCommand 'py -3.12'") > 0 && C.commandText(man()).indexOf('--python python3.12') > 0, 'the Python command can be chosen, and is left out by default');
     reset('proxmox'); cmd = C.commandText(man());
     ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
     reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);

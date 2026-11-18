@@ -23,6 +23,7 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
   [ValidateSet('Deploy', 'Status', 'Remove')] [string] $Action = 'Deploy',
+  [string] $PythonCommand,
   [string[]] $SshKeyFile,
   [string] $InstallRoot = (Join-Path $env:USERPROFILE 'wsl-lab201'),
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
@@ -30,6 +31,23 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+# Find a Python 3 that really runs. -PythonCommand names the command to use (for example python3.12 or "py -3.12").
+# Without it the script tries python3, then the py launcher, then python.
+# On Windows, python.exe and python3.exe can be Microsoft Store stubs that only print "Python was not found".
+$pyExe = $null; $pyArgs = @()
+$pyCandidates = @(, @('python3')) + @(, @('py', '-3')) + @(, @('python'))
+if ($PythonCommand) { $pyCandidates = @(, @($PythonCommand.Trim() -split '\s+')) }
+foreach ($cand in $pyCandidates) {
+  if (-not (Get-Command $cand[0] -ErrorAction SilentlyContinue)) { continue }
+  $rest = @($cand | Select-Object -Skip 1)
+  try { $ver = (& $cand[0] @rest --version 2>&1 | Out-String) } catch { continue }
+  if ($LASTEXITCODE -eq 0 -and $ver -match 'Python 3\.') { $pyExe = $cand[0]; $pyArgs = $rest; break }
+}
+if (-not $pyExe -and $PythonCommand) { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
+if (-not $pyExe -and $Action -eq 'Deploy') {
+  throw 'Python 3 was not found. Install it (for example: winget install Python.Python.3.12), open a new PowerShell window, and run the script again.'
+}
 
 function Get-WebText {
   # Invoke-WebRequest returns a byte array for some text files (for example SHA256SUMS), so decode it.
@@ -81,7 +99,7 @@ if (-not (Test-Path $rootfs)) {
 # One provisioning script per host, written with Unix line endings.
 $keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
 $seedDir = Join-Path $WorkDir 'wsl'
-& python (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --wsl @keys
+& $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --wsl @keys
 if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }
 
 foreach ($h in $hosts) {
