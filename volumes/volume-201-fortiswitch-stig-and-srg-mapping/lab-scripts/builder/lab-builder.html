@@ -1748,6 +1748,8 @@ details summary.small{margin-top:4px}
     if (Object.keys(needs.file).length && state.platform !== 'wsl') args.push([ps ? '-LicenseFile' : '--license-file', state.licFile]);
     var names = m.vms.map(function (x) { return x.name; });
     var blocks = [];
+    if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, run these two lines first.\n# They unblock the downloaded lab scripts and allow scripts in this\n# PowerShell window only. The setting ends when you close the window.',
+      'Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force']);
     var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
     if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', ps ? "$env:LAB201_WINDOWS_ADMIN_PASSWORD = '<LAB_ONLY_PASSWORD>'" : "export LAB201_WINDOWS_ADMIN_PASSWORD='<LAB_ONLY_PASSWORD>'"]);
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
@@ -1825,6 +1827,7 @@ details summary.small{margin-top:4px}
         n.push('Bind each service to its own address, because two copies of a service collide on the shared network.');
         break;
     }
+    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. The Command tab starts with two lines that unblock the lab scripts and allow them in the current PowerShell window only. If your organization sets the execution policy with Group Policy, those lines have no effect, so ask your administrator.');
     n.push('The scripts have not been run on real hosts. Run the preview first.');
     return n;
   }
@@ -2341,6 +2344,10 @@ details summary.small{margin-top:4px}
     reset('workstation'); m = man(); cmd = C.commandText(m);
     ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
+    reset('vcenter'); cmd = C.commandText(man());
+    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('Unblock-File') < cmd.indexOf('-WhatIf') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    reset('proxmox'); cmd = C.commandText(man());
+    ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
     reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);
     ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.10.15/24', 'a machine address can be changed');
     S.vms['svc-201a'].addr['n1.0'] = '10.201.20.15/24'; v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address outside its segment is refused');

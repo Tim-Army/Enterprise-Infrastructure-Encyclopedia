@@ -252,7 +252,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 
 ### Lab 9.1: Preview the build
 
-1. Download and unpack the lab-scripts zip. Open PowerShell in the `esxi` folder. If you want to change machine names or sizes, leave machines out, or move the lab to another address block, open the Lab Builder first (`builder/lab-builder.html` on the published site), choose ESXi and your version, and download its zip. It gives you a manifest to put in `common/` and the command to use in the next step.
+1. Download and unpack the lab-scripts zip. Open PowerShell in the `esxi` folder. Windows blocks downloaded PowerShell scripts by default. If PowerShell says that running scripts is disabled, or that the file is not digitally signed, run `Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File` and then `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force`. The second command applies to the current PowerShell window only and has no effect where Group Policy sets the execution policy. If you want to change machine names or sizes, leave machines out, or move the lab to another address block, open the Lab Builder first (`builder/lab-builder.html` on the published site), choose ESXi and your version, and download its zip. It gives you a manifest to put in `common/` and the command to use in the next step.
 2. Run the script with `-WhatIf` and read every line it prints:
 
    ```powershell
