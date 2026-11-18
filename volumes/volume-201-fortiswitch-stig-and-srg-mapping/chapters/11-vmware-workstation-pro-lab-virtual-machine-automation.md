@@ -165,7 +165,7 @@ Run `-Action Remove`. Delete `lab201-base`, `work\`, and the lab vmnets if you n
 
 ## Lab Verification
 
-Complete this sign-off once Labs 11.1 to 11.3 have been run end to end on a real Windows host with a real switch trunk. Until then the script is unverified. It was checked for syntax, and its `.vmx` rewriting was tested on a sample file, but it has not been run against Workstation. The behavior of OVF Tool in the current release, the `vmrun clone` of the imported machine, and whether the host's adapters pass 802.1Q tags are the first things to confirm.
+Complete this sign-off once Labs 11.1 to 11.3 have been run end to end on a real Windows host with a real switch trunk. Until then the labs are not signed off. The script itself has been run: on a Windows computer with Workstation Pro 26 and Python 3.15, it built and started all the lab machines from a Lab Builder zip whose values had been changed on the page, and a Claude Code session started from the zip's `CLAUDE.md` began at Lab 999.1. That run found four things the script and this chapter now cover: Workstation 26 installs under `Program Files`, a computer may have no `D:` drive, `python` can be the Microsoft Store stub, and `vmrun` does not add the machines to the Workstation library. Not yet run: the trunk to the hardware switches (whether the host's adapter passes 802.1Q tags), `-Action RemoveBuildNics`, the snapshot step, and the labs themselves.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

@@ -55,8 +55,10 @@ zip are the unchanged originals. `walkthroughs.list` names them.
 ## Before you run anything
 
 1. Read the chapter for your platform, and run the script with `-WhatIf` (or
-   `--dry-run` for Proxmox) first. None of these scripts has been run against a
-   real host yet. Treat them as a starting point to check, not a tested tool.
+   `--dry-run` for Proxmox) first. The Proxmox VE and VMware Workstation scripts
+   have built the lab machines on real hosts (Chapter 09 says what was run).
+   The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. Treat
+   all of them as a starting point to check, not a finished tool.
 2. Install Python 3.8 or later. For the seed ISOs (every platform except
    Proxmox and WSL), also run `python -m pip install pycdlib`. The PowerShell
    scripts look for `python3`, then the `py` launcher, then `python`, and skip
@@ -96,7 +98,7 @@ python -m pip install pycdlib
 If `python` still says that Python was not found, the Microsoft Store stub is
 taking priority. Use the `py` launcher instead (`py -3 --version`), or pass
 `-PythonCommand 'py -3.15'` to the script. The scripts were written for Python
-3.8 or later and have been run only on Python 3.10.
+3.8 or later and have been run on Python 3.10 and 3.15.
 
 ### If the script says the ISO needs pycdlib
 

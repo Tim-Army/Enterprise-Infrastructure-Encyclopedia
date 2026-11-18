@@ -98,7 +98,7 @@ details summary.small{margin-top:4px}
   <section id="left"></section>
   <aside class="right" id="right"></aside>
 </main>
-<footer>The scripts behind this page have not been run on real hosts, and the minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply, and Mint and Tiny Core still need a person to run part of the install.</footer>
+<footer>The Proxmox VE and VMware Workstation scripts have built the lab machines on real hosts. The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. The minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply, and Mint and Tiny Core still need a person to run part of the install.</footer>
 <div id="selftest" hidden></div>
 
 <script id="lab201-manifest" type="application/json">
@@ -1849,7 +1849,9 @@ details summary.small{margin-top:4px}
         break;
     }
     if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: powershell -ExecutionPolicy Bypass -File .\\' + PLATFORMS[state.platform].exe + ' (pwsh for PowerShell 7). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
-    n.push('The scripts have not been run on real hosts. Run the preview first.');
+    n.push(state.platform === 'proxmox' || state.platform === 'workstation'
+      ? 'This script has built the lab machines on a real host, but only with the choices that were tested (Chapter 09 says which). Run the preview first.'
+      : 'This script has not been run on a real host. Run the preview first.');
     return n;
   }
 
