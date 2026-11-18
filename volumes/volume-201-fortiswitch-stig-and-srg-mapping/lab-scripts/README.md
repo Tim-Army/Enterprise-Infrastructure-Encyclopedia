@@ -144,6 +144,43 @@ run `ssh-keygen` again:
 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 ```
 
+## Log in to the machines
+
+The admin user on every Linux machine is `labadmin`. By default it has no
+password: the account is locked for password login and accepts only the SSH
+key you passed with `-SshKeyFile` (or `--ssh-key`). So you cannot sign in at
+the machine's console window. Log in over SSH from the computer that holds the
+private key:
+
+```powershell
+ssh labadmin@<address>
+```
+
+`<address>` is the machine's address on the build network. On VMware
+Workstation, ask `vmrun` for it, with the path of the machine's `.vmx` file in
+the machines folder. A new machine needs a few minutes to install its guest
+tools before this answers:
+
+```powershell
+& 'C:\Program Files\VMware\VMware Workstation\vmrun.exe' -T ws getGuestIPAddress "<machines folder>\gw-201\gw-201.vmx"
+```
+
+`sudo` asks for no password on the standard flavors.
+
+To sign in at the console as well, give `labadmin` a password before you run
+the deploy. Make a password hash with `openssl passwd -6`, which prompts for
+the password, and put the hash in `LAB201_ADMIN_PASSWORD_HASH`:
+
+```powershell
+$env:LAB201_ADMIN_PASSWORD_HASH = '<CRYPT_HASH>'
+```
+
+In Bash, use `export LAB201_ADMIN_PASSWORD_HASH='<CRYPT_HASH>'`. The password
+then works at the console and over SSH. Machines that are already built keep
+their setup, so this applies to machines you build afterwards. The hardened
+(STIG) flavors always need this hash, because their `sudo` asks for the
+password.
+
 ## VMware Workstation: see the machines in the library
 
 The Workstation script builds and starts the machines with `vmrun`, which does
