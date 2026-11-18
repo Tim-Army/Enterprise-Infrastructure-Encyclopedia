@@ -140,7 +140,7 @@ before assessing against it.
 
 The lab automation in Chapters 09 to 14 targets VMware ESXi and vCenter 7.0 and
 8.0 (the versions that volume was asked to cover, not the vSphere 9.x baseline
-above), Workstation Pro 17 and 25H2, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and later, WSL 2, and the
+above), Workstation Pro 17, 25H2, and 26H1 U1, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and later, WSL 2, and the
 Ubuntu Server 24.04 LTS cloud image (other Linux flavors are experimental). Change `image` in
 `lab-scripts/common/lab201-vms.json` to use another Ubuntu release.
 

@@ -2,7 +2,7 @@
 
 ## Learning Objectives
 
-- Prepare the Virtual Network Editor with the five networks the lab needs, and say which one connects to which switch cable.
+- Prepare the Virtual Network Editor with the three networks the lab needs, and say why the trunk and the out-of-band network share the one bridged network.
 - Explain why Workstation needs the guests to create their own VLAN interfaces, and what that changes in the seed files.
 - Run `Deploy-Lab201-Workstation.ps1` to import the cloud image, clone the twelve machines, write their `.vmx` settings, and start them.
 - Test whether a Windows network adapter passes 802.1Q tags, and decide what to do if it does not.
@@ -15,7 +15,7 @@
 The twelve machines, their addresses, and their cloud-init seeds are the same as in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md). Read the machine table and the seed description there. Workstation differs in three ways.
 
 1. **No VLAN-aware switch.** An ESXi port group, a Proxmox VLAN-aware bridge, and a vSphere distributed port group all add and remove VLAN tags for a machine. A Workstation virtual network (a *vmnet*) is a plain Layer 2 switch with no VLAN setting. The **guests** therefore create the VLAN interfaces themselves. The script renders the seeds with `--tagging guest`, so `svc-201a`'s adapter on trunk T1 gets a netplan VLAN interface (`nic1v10`) for VLAN 10, and the adapter itself carries tagged frames.
-2. **Bridged networks reach the cable.** A vmnet bridged to a physical Windows adapter connects the machines to that adapter's cable. Each trunk is one vmnet bridged to the adapter that cables to a switch.
+2. **Bridged networks reach the cable.** A vmnet bridged to a physical Windows adapter connects the machines to that adapter's cable. Workstation supports one bridged network, so the lab uses one: the trunk and the out-of-band network share it, and trunks T1 and T2 become a single trunk. The gateway then has one trunk adapter. Two trunk adapters on one bridged network would make the gateway bridge them into a loop.
 3. **The tool is `vmrun`.** Workstation has no PowerCLI. The script drives `vmrun.exe` (clone, start, stop), `ovftool.exe` (import the OVA), and `vmware-vdiskmanager.exe` (grow a disk), and edits each machine's `.vmx` file as text.
 
 ### The networks
@@ -24,13 +24,11 @@ Create these in the Virtual Network Editor (Edit, Virtual Network Editor, then *
 
 | Lab network | Default vmnet | Type | Connects to |
 | --- | --- | --- | --- |
-| `lab201-t1` (trunk T1) | `vmnet2` | Bridged to one Windows adapter | The cable to `sw-648f-1` |
-| `lab201-t2` (trunk T2) | `vmnet3` | Bridged to one Windows adapter | The cable to `sw-2048f-1` |
-| `lab201-oob` (segment 0) | `vmnet4` | Bridged to one Windows adapter | The cables to the switch management ports |
+| `lab201-t1` (the one trunk) and `lab201-oob` (segment 0) | `vmnet0` | Bridged to one Windows adapter | A switch port that carries the lab VLANs as tags and the out-of-band network untagged, and reaches both switches |
 | `lab201-lan220` (segment 220) | `vmnet5` | Host-only, DHCP off | No cable |
 | `lab201-wan` (build) | `vmnet8` | NAT (the default NAT network) | The internet, through the host |
 
-`vmnet0` is the automatic bridge to the host's primary adapter. The script treats `vmnet8` as NAT, `vmnet0` as automatic bridging, and every other name as a custom vmnet. You can pass different names with `-T1Vmnet`, `-T2Vmnet`, `-OobVmnet`, `-Lan220Vmnet`, and `-WanVmnet`.
+`vmnet0` is the automatic bridge to the host's primary adapter. The script treats `vmnet8` as NAT, `vmnet0` as automatic bridging, and every other name as a custom vmnet. You can pass different names with `-BridgeVmnet`, `-Lan220Vmnet`, and `-WanVmnet`. The script stops if the manifest still has a second trunk (`lab201-t2`), so generate the manifest with the Lab Builder for Workstation, which merges T1 and T2.
 
 ### A caution about VLAN tags on Windows
 
@@ -38,7 +36,7 @@ For a trunk to work, 802.1Q tags must pass between the guest, the vmnet, the Win
 
 ### Workstation versions
 
-The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 17 puts all three under its install folder, in `OVFTool\` for the last. Whether the current release (25H2) still bundles OVF Tool was not confirmed when this chapter was written. If it does not, install OVF Tool separately and pass `-OvfToolPath`. Broadcom has made Workstation Pro available free of charge, and its terms for commercial use differ between sources, so read the current license terms before you use it for work.
+The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 17 puts all three under its install folder, in `OVFTool\` for the last. Whether the later releases (25H2 and 26H1 U1) still bundle OVF Tool was not confirmed when this chapter was written. If it does not, install OVF Tool separately and pass `-OvfToolPath`. Broadcom has made Workstation Pro available free of charge, and its terms for commercial use differ between sources, so read the current license terms before you use it for work.
 
 ## Design Considerations
 
@@ -66,7 +64,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | --- | --- |
 | `-VmRoot` | Folder for the machines (default `D:\VMs\lab201`). |
 | `-SshKeyFile` | Public key files for `labadmin`. |
-| `-T1Vmnet`, `-T2Vmnet`, `-OobVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The vmnet for each lab network. |
+| `-BridgeVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 220, and the build vmnet. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
 | `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available here, because Workstation has no VLAN-aware switch and those guests cannot tag the trunks. |
 | `-Action` | `Deploy` (default), `Status`, `RemoveBuildNics`, or `Remove`. |
@@ -94,7 +92,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
 ## Security and Best Practices
 
-- **Bridged networks reach real cables.** A machine on `vmnet2`, `vmnet3`, or `vmnet4` shares those cables with the switches under test. Do not bridge a lab network to your production adapter, and use adapters that cable only to the lab.
+- **Bridged networks reach real cables.** A machine on the bridged network shares that cable with the switches under test. Do not bridge the lab to your production adapter, and use an adapter that cables only to the lab.
 - **NAT is the build path only.** `vmnet8` gives every machine internet access until you run `-Action RemoveBuildNics`. Run it as soon as the packages are installed.
 - **Administrator rights.** The Virtual Network Editor needs them, and `vmrun` does not. Run the script as a normal user.
 - **Protect the key and the folder.** The private key of `-SshKeyFile` stays out of the repository and the lab folders. `work\` holds the seeds. Delete it when you finish.
@@ -121,13 +119,13 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
 ## Hands-On Lab
 
-**Prerequisites.** A Windows 11 or Windows 10 host with VMware Workstation Pro, about 32 GiB of memory and 250 GB free, three adapters for T1, T2, and out-of-band (they can be USB adapters), PowerShell 7 or Windows PowerShell 5.1, Python 3.8 or later with `pip install pycdlib`, and an SSH key pair. Switch-side configuration is Chapter 999, Lab 999.3 and later.
+**Prerequisites.** A Windows 11 or Windows 10 host with VMware Workstation Pro, about 32 GiB of memory and 250 GB free, one adapter for the bridged lab network (it can be a USB adapter), PowerShell 7 or Windows PowerShell 5.1, Python 3.8 or later with `pip install pycdlib`, and an SSH key pair. Switch-side configuration is Chapter 999, Lab 999.3 and later.
 
 ### Lab 11.1: Create the networks
 
-1. Open the Virtual Network Editor as administrator and create `vmnet2` and `vmnet3` as bridged networks, each bound to its own adapter, `vmnet4` as bridged to the out-of-band adapter, and `vmnet5` as host-only.
-2. Turn the DHCP service off on all four. Leave `vmnet8` as the default NAT network.
-3. In the adapter properties of each bridged Windows adapter, clear every protocol except *VMware Bridge Protocol*, so Windows does not use the adapter itself.
+1. Open the Virtual Network Editor as administrator. Bind the bridged network `vmnet0` to the lab adapter instead of leaving it on automatic, and create `vmnet5` as host-only.
+2. Turn the DHCP service off on `vmnet5`. Leave `vmnet8` as the default NAT network.
+3. In the adapter properties of the bridged Windows adapter, clear every protocol except *VMware Bridge Protocol*, so Windows does not use the adapter itself.
 
 **Expected result.** Four lab networks and the NAT network exist, each with the right binding.
 

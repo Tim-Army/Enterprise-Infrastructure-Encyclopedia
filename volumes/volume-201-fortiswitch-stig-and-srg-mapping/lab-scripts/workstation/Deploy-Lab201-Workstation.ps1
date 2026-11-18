@@ -11,9 +11,9 @@
   Workstation has no VLAN-aware virtual switch, so every VLAN tag is created
   inside the guests (make-seed.py --tagging guest). Create the lab networks in
   the Virtual Network Editor first, as described in Chapter 11:
-    -T1Vmnet   bridged to the NIC that cables to sw-648f-1 (trunk T1)
-    -T2Vmnet   bridged to the NIC that cables to sw-2048f-1 (trunk T2)
-    -OobVmnet  bridged to the NIC that cables to the switch management ports
+    -BridgeVmnet  the one bridged network (vmnet0 by default), bridged to the NIC
+                  that cables to the switches. The trunk and the out-of-band
+                  network both use it, because Workstation supports one bridge.
     -Lan220Vmnet  host-only, with the DHCP service turned off
   -WanVmnet is the network the build NICs use (vmnet8, the NAT network, by default).
 
@@ -31,9 +31,7 @@ param(
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
   [string] $WorkDir = (Join-Path $PSScriptRoot 'work'),
   [string] $WorkstationDir = 'C:\Program Files (x86)\VMware\VMware Workstation',
-  [ValidatePattern('^vmnet\d+$')] [string] $T1Vmnet = 'vmnet2',
-  [ValidatePattern('^vmnet\d+$')] [string] $T2Vmnet = 'vmnet3',
-  [ValidatePattern('^vmnet\d+$')] [string] $OobVmnet = 'vmnet4',
+  [ValidatePattern('^vmnet\d+$')] [string] $BridgeVmnet = 'vmnet0',
   [ValidatePattern('^vmnet\d+$')] [string] $Lan220Vmnet = 'vmnet5',
   [ValidatePattern('^vmnet\d+$')] [string] $WanVmnet = 'vmnet8',
   [string] $OvfToolPath,
@@ -59,7 +57,11 @@ foreach ($exe in $vmrun, $ovftool, $vdisk) { if (-not $exe -or -not (Test-Path $
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
 $names = @{}; $i = 0
 foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
-$vmnetOf = @{ 'lab201-t1' = $T1Vmnet; 'lab201-t2' = $T2Vmnet; 'lab201-oob' = $OobVmnet; 'lab201-lan220' = $Lan220Vmnet; 'lab201-wan' = $WanVmnet }
+$vmnetOf = @{ 'lab201-t1' = $BridgeVmnet; 'lab201-t2' = $BridgeVmnet; 'lab201-oob' = $BridgeVmnet; 'lab201-lan220' = $Lan220Vmnet; 'lab201-wan' = $WanVmnet }
+# Workstation supports one bridged network. With T1 and T2 on it, the gateway would bridge the two NICs into a loop.
+if (@($lab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
+  throw "The manifest has a second trunk (lab201-t2), but Workstation supports one bridged network. Generate the manifest with the Lab Builder for Workstation, which merges T1 and T2 into one trunk."
+}
 
 $flavorCatalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
 

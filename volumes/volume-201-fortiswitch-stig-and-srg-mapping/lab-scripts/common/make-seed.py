@@ -43,6 +43,7 @@ from xml.sax.saxutils import escape as xml_escape
 HERE = os.path.dirname(os.path.abspath(__file__))
 V4_PREFIX = "10.201"
 V6_PREFIX = "fd00:db8:201::"
+SEGMENT_SUBNETS = {}
 V6_LEN = {24: 120, 31: 127, 32: 128}
 FLAVOR_DATA = {"default": "ubuntu-24.04", "role_keys": [], "families": {}, "flavors": {}}
 
@@ -75,9 +76,10 @@ SYSCTL_FORWARD = "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1\n"
 
 def configure(manifest):
     """Take the address blocks from the manifest (the defaults are the Chapter 999 plan)."""
-    global V4_PREFIX, V6_PREFIX
+    global V4_PREFIX, V6_PREFIX, SEGMENT_SUBNETS
     V4_PREFIX = manifest.get("ipv4_prefix", V4_PREFIX)
     V6_PREFIX = manifest.get("ipv6_prefix", V6_PREFIX)
+    SEGMENT_SUBNETS = manifest.get("segment_subnets", {})
 
 
 def load_flavors(path):
@@ -131,8 +133,24 @@ def map_packages(pkgs, flavor):
     return install, needs_epel, missing
 
 
+def seg_base(seg):
+    """First three octets of a shared segment's IPv4 subnet. The Lab Builder follows the VLAN ID by default."""
+    return SEGMENT_SUBNETS.get(str(seg)) or "%s.%d" % (V4_PREFIX, seg)
+
+
 def nft_rules():
-    return NFT_RULES.replace("10.201.", V4_PREFIX + ".").replace("fd00:db8:201::", V6_PREFIX)
+    def v4(m):
+        seg = int(m.group(1))
+        return (seg_base(seg) if str(seg) in SEGMENT_SUBNETS else "%s.%d" % (V4_PREFIX, seg)) + "."
+
+    def v6(m):
+        third = int(m.group(1) or "0", 16) >> 8
+        if str(third) in SEGMENT_SUBNETS:
+            return "%s%x/120" % (V6_PREFIX, int(SEGMENT_SUBNETS[str(third)].split(".")[2]) << 8)
+        return "%s%s/120" % (V6_PREFIX, m.group(1))
+    text = re.sub(r"10\.201\.(\d+)\.", v4, NFT_RULES)
+    text = re.sub(r"fd00:db8:201::([0-9a-f]*)/120", v6, text)
+    return text.replace("fd00:db8:201::", V6_PREFIX)
 
 
 def q(value):
@@ -222,7 +240,7 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
                         "      accept-ra: false", "      link-local: []"])
         for vid in trunk["vlans"]:
             seg = int(manifest.get("vlan_segments", {}).get(str(vid), vid))
-            v4 = "%s.%d.1/24" % (V4_PREFIX, seg)
+            v4 = "%s.1/24" % seg_base(seg)
             vlans.append(["    vlan%d:" % vid, "      id: %d" % vid, "      link: %s" % trunk["name"],
                           "      dhcp6: false", "      accept-ra: false", "      addresses:"]
                          + [x.rstrip("\n") for x in yaml_list(addresses_of([v4]), 8).splitlines()])
@@ -499,12 +517,12 @@ def windows_setup_script(manifest, vm_index, vm, flavor, ssh_keys):
         if role == "DHCP server":
             L.append("Install-WindowsFeature -Name DHCP -IncludeManagementTools | Out-Null")
             for nic in nic_plan(manifest, vm_index, vm):
-                if nic["build"] or not nic["vlan"] or nic["vlan"] == 10 or not nic["addrs"]:
+                if nic["build"] or not nic["vlan"] or int(manifest.get("vlan_segments", {}).get(str(nic["vlan"]), nic["vlan"])) == 10 or not nic["addrs"]:
                     continue
-                seg = nic["addrs"][0].split("/")[0].split(".")[2]
-                pre = V4_PREFIX
+                octets = nic["addrs"][0].split("/")[0].split(".")
+                seg, pre = octets[2], ".".join(octets[:2])
                 L += ["Add-DhcpServerv4Scope -Name 'lab201-seg%s' -StartRange %s.%s.100 -EndRange %s.%s.199 -SubnetMask 255.255.255.0 -State Active" % (seg, pre, seg, pre, seg),
-                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.10.1" % (pre, seg, pre, seg, pre)]
+                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.1" % (pre, seg, pre, seg, seg_base(10))]
     L += ["Write-Host 'Lab 201 setup finished.'", "Stop-Transcript | Out-Null"]
     return "\r\n".join(L) + "\r\n"
 

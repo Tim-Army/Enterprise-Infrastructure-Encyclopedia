@@ -84,6 +84,7 @@ td select{display:block;margin-top:4px;max-width:100%;font-size:12px}
 input.addr{width:170px;font-size:12px}
 input.addr.err{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
 input.addr.chg{border-color:var(--accent)}
+input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.sub.chgtext{color:var(--accent);font-weight:600}
 details summary.small{margin-top:4px}
 #images label{font-size:12.5px}
 </style>
@@ -1260,15 +1261,13 @@ details summary.small{margin-top:4px}
       ]
     },
     workstation: {
-      name: 'VMware Workstation Pro', sub: 'Windows, vmrun and ovftool', shell: 'ps', vmware: true,
-      versions: [['17', 'Workstation Pro 17'], ['25H2', 'Workstation Pro 25H2']], defVersion: '25H2',
+      name: 'VMware Workstation Pro', sub: 'Windows, vmrun and ovftool', shell: 'ps', vmware: true, singleTrunk: true,
+      versions: [['17', 'Workstation Pro 17'], ['25H2', 'Workstation Pro 25H2'], ['26H1U1', 'Workstation Pro 26H1 U1']], defVersion: '25H2',
       script: 'workstation/Deploy-Lab201-Workstation.ps1', exe: 'Deploy-Lab201-Workstation.ps1',
       fields: [
         { id: 'vmroot', label: 'Folder for the machines', def: 'D:\\VMs\\lab201', flag: '-VmRoot' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 't1', label: 'Trunk T1 network (bridged)', def: 'vmnet2', flag: '-T1Vmnet' },
-        { id: 't2', label: 'Trunk T2 network (bridged)', def: 'vmnet3', flag: '-T2Vmnet' },
-        { id: 'oob', label: 'Out-of-band network (bridged)', def: 'vmnet4', flag: '-OobVmnet' },
+        { id: 'bridge', label: 'Bridged network (trunk and out-of-band)', def: 'vmnet0', flag: '-BridgeVmnet' },
         { id: 'lan', label: 'Segment 220 network (host-only)', def: 'vmnet5', flag: '-Lan220Vmnet' },
         { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' }
       ]
@@ -1317,14 +1316,14 @@ details summary.small{margin-top:4px}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
   };
   function resetVms() {
     state.vms = {};
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
-    SEGMENTS.forEach(function (s) { state.vlans[s] = String(s); });
+    SEGMENTS.forEach(function (s) { state.vlans[s] = String(s); state.subnetOn[s] = false; state.subnets[s] = ''; });
   }
   function resetParams() {
     state.params = {};
@@ -1379,6 +1378,12 @@ details summary.small{margin-top:4px}
     return out;
   }
   function swapPrefix(a, to) { return a.indexOf(OLD_V4 + '.') === 0 ? to + a.slice(OLD_V4.length) : a; }
+  // The default address of a slot after the block and the segment subnets have moved.
+  function mapDef(a, newPrefix, sub) {
+    var d = swapPrefix(a, newPrefix), p = cidrParts(d);
+    if (sub && p && p.o[0] + '.' + p.o[1] === newPrefix && SEGMENTS.indexOf(p.o[2]) >= 0 && sub.base[p.o[2]]) return sub.base[p.o[2]] + '.' + p.o[3] + '/' + p.len;
+    return d;
+  }
   function cidrParts(a) {
     var m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\/(\d{1,2})$/.exec(a);
     if (!m) return null;
@@ -1449,6 +1454,56 @@ details summary.small{margin-top:4px}
     return res;
   }
 
+  // Third octets the plan already uses outside the shared segments (out-of-band, routed links, peers).
+  var FIXED_OCTETS = (function () {
+    var seen = { 0: true };
+    BASE.vms.forEach(function (vm) {
+      var all = [];
+      vm.nics.forEach(function (n) { all = all.concat(n.ipv4 || []); });
+      (vm.dummies || []).forEach(function (d) { all = all.concat(d.ipv4 || []); });
+      all.forEach(function (a) { var p = cidrParts(a); if (p && p.o[0] + '.' + p.o[1] === OLD_V4 && SEGMENTS.indexOf(p.o[2]) < 0) seen[p.o[2]] = true; });
+    });
+    return seen;
+  })();
+
+  // The IPv4 subnet of each shared segment. It follows the VLAN ID (VLAN 140 is x.y.140.0/24)
+  // unless the segment's Set subnet box is ticked, and then it is the /24 you type.
+  function subnetCheck(p4, vlanEff) {
+    var res = { base: {}, cidr: {}, def: {}, err: {}, note: {}, any: false }, use = {};
+    SEGMENTS.forEach(function (s) {
+      var n = vlanEff[s], oct = n <= 254 ? n : s;
+      res.def[s] = p4 + '.' + oct + '.0/24';
+      use[s] = { base: p4 + '.' + oct, oct: oct, typed: false, vlan: n };
+      if (n > 254) res.note[s] = 'VLAN ' + n + ' does not fit in an octet, so the subnet stays ' + res.def[s] + '. Tick Set subnet to choose one';
+      if (state.subnetOn[s]) {
+        var t = String(state.subnets[s] || '').trim(), m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.0\/24$/.exec(t);
+        if (!t) return;
+        if (!m || +m[1] > 255 || +m[2] > 255 || +m[3] > 255) res.err[s] = 'Use a /24 network such as ' + res.def[s];
+        else if (!validIpv4Prefix(m[1] + '.' + m[2])) res.err[s] = 'Use a private range: 10.x, 172.16 to 172.31, or 192.168';
+        else if (+m[3] < 1 || +m[3] > 254) res.err[s] = 'Use a third octet from 1 to 254';
+        else { use[s] = { base: +m[1] + '.' + +m[2] + '.' + +m[3], oct: +m[3], typed: true, vlan: n }; delete res.note[s]; }
+        if (res.err[s]) res.err[s] += '. ' + res.def[s] + ' is used';
+      }
+    });
+    // The IPv6 address comes from the third and fourth octets, so a third octet can be used once.
+    var changed = true;
+    while (changed) {
+      changed = false;
+      var owners = {};
+      SEGMENTS.forEach(function (s) { (owners[use[s].oct] = owners[use[s].oct] || []).push(s); });
+      SEGMENTS.forEach(function (s) {
+        var u = use[s], o = u.oct, fixed = FIXED_OCTETS[o], other = owners[o].filter(function (x) { return x !== s; })[0];
+        if (o === s || (!fixed && other === undefined)) return;
+        var why = fixed ? 'the out-of-band network, the routed links, or the peers use third octet ' + o : 'segment ' + other + ' already uses third octet ' + o;
+        res.err[s] = (u.typed ? u.base + '.0/24 cannot be used: ' : 'VLAN ' + u.vlan + ' would put the subnet on ' + u.base + '.0/24, but ') + why + '. ' + p4 + '.' + s + '.0/24 is used. ' + (u.typed ? 'Type another subnet' : 'Tick Set subnet to choose another');
+        delete res.note[s];
+        use[s] = { base: p4 + '.' + s, oct: s, typed: false, vlan: u.vlan }; changed = true;
+      });
+    }
+    SEGMENTS.forEach(function (s) { res.base[s] = use[s].base; res.cidr[s] = use[s].base + '.0/24'; if (use[s].base !== p4 + '.' + s) res.any = true; });
+    return res;
+  }
+
   function addrCheck(v, newPrefix) {
     // Effective addresses for each included machine, and the problems with edits.
     var out = { eff: {}, err: {}, count: 0 }, slots = [];
@@ -1457,13 +1512,13 @@ details summary.small{margin-top:4px}
       var isGw = e.base.role === 'gateway';
       out.eff[e.base.name] = {}; out.err[e.base.name] = {};
       addrSlots(e.base).forEach(function (sl) {
-        var def = swapPrefix(sl.def, newPrefix), text = (e.row.addr[sl.key] || '').trim(), use = def, dp = cidrParts(def), msg = '';
+        var def = mapDef(sl.def, newPrefix, v.sub), text = (e.row.addr[sl.key] || '').trim(), use = def, dp = cidrParts(def), msg = '';
         if (text) {
           var p = cidrParts(text);
           if (!p) msg = 'Not an address with a prefix length, such as ' + def;
           else if (dp.len !== 24) msg = 'Only /24 addresses can be changed';
           else if (p.len !== dp.len) msg = 'Keep the /' + dp.len + ' prefix length';
-          else if (p.o[0] + '.' + p.o[1] !== newPrefix || p.o[2] !== dp.o[2]) msg = 'Stay inside ' + newPrefix + '.' + dp.o[2] + '.0/24';
+          else if (p.o.slice(0, 3).join('.') !== dp.o.slice(0, 3).join('.')) msg = 'Stay inside ' + dp.o.slice(0, 3).join('.') + '.0/24';
           else if (p.o[3] < 1 || p.o[3] > 254) msg = 'Use a host number from 1 to 254';
           else if (p.o[3] === 1 && !isGw) msg = '.1 belongs to the gateway';
           else use = text;
@@ -1519,9 +1574,15 @@ details summary.small{margin-top:4px}
     out.vlan = vlanCheck();
     SEGMENTS.forEach(function (s) {
       if (out.vlan.err[s]) out.errors.push('VLAN for segment ' + s + ': ' + out.vlan.err[s]);
-      else if (out.vlan.eff[s] !== s) out.warnings.push('Segment ' + s + ' uses VLAN ' + out.vlan.eff[s] + ', so the VLAN is no longer the third octet. Use VLAN ' + out.vlan.eff[s] + ' on the switches.');
     });
-    out.addr = addrCheck(out, v4ok ? state.v4 : OLD_V4);
+    var p4v = v4ok ? state.v4 : OLD_V4;
+    out.sub = subnetCheck(p4v, out.vlan.eff);
+    SEGMENTS.forEach(function (s) {
+      if (out.sub.err[s]) out.errors.push('Subnet for segment ' + s + ': ' + out.sub.err[s]);
+      var vl = out.vlan.eff[s], moved = out.sub.base[s] !== p4v + '.' + s;
+      if (vl !== s || moved) out.warnings.push('Segment ' + s + ' uses ' + (vl !== s ? 'VLAN ' + vl : '') + (vl !== s && moved ? ' and ' : '') + (moved ? 'subnet ' + out.sub.cidr[s] : '') + (vl !== s && !moved ? ', but its subnet is still ' + out.sub.cidr[s] : '') + '. Make the same change on the switches.');
+    });
+    out.addr = addrCheck(out, p4v);
     Object.keys(out.addr.err).forEach(function (n) { Object.keys(out.addr.err[n]).forEach(function (k) { out.errors.push(n + ' address: ' + out.addr.err[n][k]); }); });
     var peers = ['rtr-peer-1', 'rtr-peer-2'].filter(function (n) { return out.included.indexOf(n) < 0; });
     if (peers.length && !PLATFORMS[state.platform].wslOnly) out.warnings.push('Routing peers left out (' + peers.join(', ') + '). The routing labs in Chapters 05 and 06 need both.');
@@ -1544,6 +1605,16 @@ details summary.small{margin-top:4px}
     if (Array.isArray(node)) return node.map(function (x) { return rewriteAddresses(x, from, to); });
     if (node && typeof node === 'object') { var o = {}; Object.keys(node).forEach(function (k) { o[k] = rewriteAddresses(node[k], from, to); }); return o; }
     if (typeof node === 'string' && node.indexOf(from + '.') === 0) return to + node.slice(from.length);
+    return node;
+  }
+
+  function remapSubnets(node, p4, sub) {
+    if (Array.isArray(node)) return node.map(function (x) { return remapSubnets(x, p4, sub); });
+    if (node && typeof node === 'object') { var o = {}; Object.keys(node).forEach(function (k) { o[k] = remapSubnets(node[k], p4, sub); }); return o; }
+    if (typeof node === 'string' && node.indexOf(p4 + '.') === 0) {
+      var rest = node.slice(p4.length + 1), dot = rest.indexOf('.'), seg = dot > 0 && /^\d+$/.test(rest.slice(0, dot)) ? +rest.slice(0, dot) : -1;
+      if (SEGMENTS.indexOf(seg) >= 0 && sub.base[seg] !== p4 + '.' + seg) return sub.base[seg] + rest.slice(dot);
+    }
     return node;
   }
 
@@ -1573,7 +1644,7 @@ details summary.small{margin-top:4px}
     });
     // IPv4 block first, then the addresses you edited (typed with the new block).
     m.vms = m.vms.map(function (x) {
-      var vm = rewriteAddresses(x.vm, OLD_V4, p4);
+      var vm = remapSubnets(rewriteAddresses(x.vm, OLD_V4, p4), p4, v.sub);
       var eff = v.addr.eff[x.base.name] || {};
       addrSlots(x.base).forEach(function (sl) {
         var val = eff[sl.key];
@@ -1591,6 +1662,9 @@ details summary.small{margin-top:4px}
       if (vm.bridge_trunks) vm.bridge_trunks.vlans = vm.bridge_trunks.vlans.map(function (id) { return SEGMENTS.indexOf(id) >= 0 ? v.vlan.eff[id] : id; });
     });
     if (Object.keys(map).length) m.vlan_segments = map; else delete m.vlan_segments;
+    var ss = {};
+    SEGMENTS.forEach(function (s) { if (v.sub.base[s] !== p4 + '.' + s) ss[s] = v.sub.base[s]; });
+    if (Object.keys(ss).length) m.segment_subnets = ss; else delete m.segment_subnets;
     m.ipv4_prefix = p4; m.ipv6_prefix = p6;
     m.default_flavor = state.defaultFlavor;
     if (PLATFORMS[state.platform].singleTrunk) singleTrunk(m);
@@ -1735,7 +1809,8 @@ details summary.small{margin-top:4px}
         break;
       case 'workstation':
         n.push('Workstation has no VLAN-aware switch, so the guests tag VLANs. Test that your Windows adapters pass 802.1Q tags (Lab 11.2).');
-        n.push('Create the five networks in the Virtual Network Editor first. Check that your Workstation release includes OVF Tool, or pass -OvfToolPath.');
+        n.push('Workstation supports one bridged network, so the trunk and the out-of-band network share it and the lab is built with one trunk (T1 and T2 become one). Bridge it to the NIC that reaches both switches.');
+        n.push('In the Virtual Network Editor, set up the bridged network, a host-only network for segment 220 with DHCP off, and the NAT network for the build NICs. Check that your Workstation release includes OVF Tool, or pass -OvfToolPath.');
         break;
       case 'proxmox':
         n.push('Create the bridges first, and make the two trunk bridges VLAN-aware. Do not put both trunk NICs in one host bridge: gw-201 bridges them.');
@@ -1758,12 +1833,13 @@ details summary.small{margin-top:4px}
     var lines = [];
     if (m.ipv4_prefix !== OLD_V4) lines.push('IPv4 block: ' + OLD_V4 + '.0.0/16 is now ' + m.ipv4_prefix + '.0.0/16. Every address starting with ' + OLD_V4 + '. starts with ' + m.ipv4_prefix + '. instead.');
     if (m.ipv6_prefix !== OLD_V6) lines.push('IPv6 prefix: ' + OLD_V6 + ' is now ' + m.ipv6_prefix + '. Every IPv6 address of the lab uses the new prefix and keeps its last two groups.');
-    SEGMENTS.forEach(function (s) { if (v.vlan.eff[s] !== s) lines.push('VLAN: segment ' + s + ' (' + m.ipv4_prefix + '.' + s + '.0/24) uses VLAN ' + v.vlan.eff[s] + ', not ' + s + '. Create VLAN ' + v.vlan.eff[s] + ' on both switches and in the trunks.'); });
+    SEGMENTS.forEach(function (s) { if (v.vlan.eff[s] !== s) lines.push('VLAN: segment ' + s + ' uses VLAN ' + v.vlan.eff[s] + ', not ' + s + '. Create VLAN ' + v.vlan.eff[s] + ' on both switches and in the trunks.'); });
+    SEGMENTS.forEach(function (s) { if (v.sub.base[s] !== m.ipv4_prefix + '.' + s) lines.push('Subnet: segment ' + s + ' is ' + v.sub.cidr[s] + ', not ' + m.ipv4_prefix + '.' + s + '.0/24. Its gateway is ' + v.sub.base[s] + '.1, and every address in the segment moves with it.'); });
     vmRows().forEach(function (e) {
       if (!rowIncluded(e.base, e.row)) return;
       var eff = v.addr.eff[e.base.name] || {};
       addrSlots(e.base).forEach(function (sl) {
-        var def = swapPrefix(sl.def, m.ipv4_prefix);
+        var def = mapDef(sl.def, m.ipv4_prefix, v.sub);
         if (eff[sl.key] && eff[sl.key] !== def) lines.push('Address: ' + (v.names[e.base.name]) + ' uses ' + eff[sl.key] + ' instead of ' + def + '.');
       });
     });
@@ -1774,7 +1850,7 @@ details summary.small{margin-top:4px}
     if (left.length) lines.push('Machines left out: ' + left.join(', ') + '.');
     var fl = []; vmRows().forEach(function (e) { var f = v.flavors[e.base.name]; if (f && f !== DEFAULT_FLAVOR) fl.push((v.names[e.base.name]) + ': ' + FLAVOR[f].name); });
     if (fl.length) lines.push('Linux flavors: ' + fl.join('; ') + '. All others use ' + FLAVOR[DEFAULT_FLAVOR].name + '.');
-    if (PLATFORMS[state.platform].singleTrunk) lines.push('One trunk: T1 and T2 are one network on VxRail. The gateway has one trunk NIC, and the peers\' T2 links (VLANs 2003 and 2004) use it too.');
+    if (PLATFORMS[state.platform].singleTrunk) lines.push('One trunk: T1 and T2 are one network on ' + (state.platform === 'workstation' ? 'Workstation, which supports one bridged network' : 'VxRail') + '. The gateway has one trunk NIC, and the peers\' T2 links (VLANs 2003 and 2004) use it too.');
     if (!lines.length) return '';
     return '# Changes from the Chapter 999 defaults\n\n' + lines.map(function (l) { return '- ' + l; }).join('\n') +
       '\n\nChapter 999, the requirement labs in Chapters 04 to 07, and the switch baselines use the default names, addresses, and VLANs. ' +
@@ -1888,7 +1964,7 @@ details summary.small{margin-top:4px}
     BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
-    vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
+    vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso
   };
@@ -1912,7 +1988,7 @@ details summary.small{margin-top:4px}
     h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<table id="machines"></table></div>';
-    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. Move the plan to another block, give a segment another VLAN ID, or change a machine\'s address in step 5. The gateway is always .1.</p>';
+    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. Move the plan to another block, or give a segment another VLAN ID. A segment\'s IPv4 subnet follows its VLAN ID (VLAN 140 is 10.201.140.0/24). Tick <b>Set subnet</b> to type a different /24 for a segment. Change a machine\'s address in step 5. The gateway is always .1.</p>';
     h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
     h += '<table id="vlans" style="margin-top:12px"></table><p class="small" id="addrpreview"></p></div>';
@@ -2003,10 +2079,11 @@ details summary.small{margin-top:4px}
     renderFlavors();
   }
 
+  var lastSub = null;
   function renderVlans() {
     var h = '<tr><th>Segment</th><th>Name</th><th>VLAN ID</th><th>IPv4 subnet</th></tr>';
     SEGMENTS.forEach(function (s) {
-      h += '<tr><td>' + s + '</td><td>' + SEGNAMES[s] + '</td><td><input type="text" class="num" data-vlan="' + s + '" value="' + esc(S.vlans[s]) + '" aria-label="VLAN of segment ' + s + '"><span class="msg" data-m="vlan" data-seg="' + s + '"></span></td><td class="small" data-m="subnet" data-seg="' + s + '"></td></tr>';
+      h += '<tr><td>' + s + '</td><td>' + SEGNAMES[s] + '</td><td><input type="text" class="num" data-vlan="' + s + '" value="' + esc(S.vlans[s]) + '" aria-label="VLAN of segment ' + s + '"><span class="msg" data-m="vlan" data-seg="' + s + '"></span></td><td><span class="sub" data-m="subnet" data-seg="' + s + '"></span><input type="text" class="addr subin" data-sub="' + s + '" value="' + esc(S.subnets[s] || '') + '" aria-label="IPv4 subnet of segment ' + s + '"><label class="subset small"><input type="checkbox" data-subon="' + s + '"' + (S.subnetOn[s] ? ' checked' : '') + '> Set subnet</label><span class="msg" data-m="submsg" data-seg="' + s + '"></span></td></tr>';
     });
     $('vlans').innerHTML = h;
   }
@@ -2064,7 +2141,7 @@ details summary.small{margin-top:4px}
       });
       C.addrSlots(b).forEach(function (sl) {
         var inp = tr.querySelector('[data-f=addr][data-slot="' + sl.key + '"]'), msg = tr.querySelector('[data-m=addr][data-slot="' + sl.key + '"]');
-        var def = C.swapPrefix(sl.def, C.validIpv4Prefix(S.v4) ? S.v4 : C.OLD_V4), parts = def.split('/');
+        var def = C.mapDef(sl.def, C.validIpv4Prefix(S.v4) ? S.v4 : C.OLD_V4, v.sub), parts = def.split('/');
         inp.placeholder = def; inp.disabled = !inc || parts[1] !== '24';
         var err = inc && v.addr.err[b.name] ? v.addr.err[b.name][sl.key] : '';
         inp.className = 'addr' + (err ? ' err' : (inc && r.addr[sl.key] && !err ? ' chg' : '')); msg.textContent = err || '';
@@ -2078,10 +2155,19 @@ details summary.small{margin-top:4px}
       var inp = document.querySelector('[data-vlan="' + s + '"]'), msg = document.querySelector('[data-m=vlan][data-seg="' + s + '"]'), sub = document.querySelector('[data-m=subnet][data-seg="' + s + '"]');
       var bad = v.vlan.err[s], changed = !bad && v.vlan.eff[s] !== s;
       inp.className = 'num' + (bad ? ' err' : changed ? ' chg' : ''); msg.className = 'msg ' + (bad ? 'bad' : 'warn');
-      msg.textContent = bad ? bad + '. The default is kept' : changed ? 'VLAN is not the third octet. Use VLAN ' + v.vlan.eff[s] + ' on the switches' : '';
-      sub.textContent = m.ipv4_prefix + '.' + s + '.0/24';
+      msg.textContent = bad ? bad + '. The default is kept' : changed ? 'Use VLAN ' + v.vlan.eff[s] + ' on the switches' : '';
+      var on = !!S.subnetOn[s], sin = document.querySelector('[data-sub="' + s + '"]'), smsg = document.querySelector('[data-m=submsg][data-seg="' + s + '"]'), serr = v.sub.err[s];
+      var moved = v.sub.base[s] !== m.ipv4_prefix + '.' + s;
+      sub.textContent = v.sub.cidr[s]; sub.style.display = on ? 'none' : ''; sub.className = 'sub' + (moved ? ' chgtext' : '');
+      sin.style.display = on ? '' : 'none'; sin.placeholder = v.sub.def[s];
+      if (document.activeElement !== sin && sin.value !== (S.subnets[s] || '')) sin.value = S.subnets[s] || '';
+      sin.className = 'addr subin' + (serr ? ' err' : on && moved ? ' chg' : '');
+      smsg.className = 'msg ' + (serr ? 'bad' : 'warn');
+      smsg.textContent = serr || v.sub.note[s] || (!on && moved ? 'follows VLAN ' + v.vlan.eff[s] : '');
     });
-    $('addrpreview').textContent = 'Example: segment 10 is ' + m.ipv4_prefix + '.10.0/24, the gateway is ' + m.ipv4_prefix + '.10.1 and ' + m.ipv6_prefix + 'a01, and the first service host is ' + m.ipv4_prefix + '.10.10 and ' + m.ipv6_prefix + 'a0a.';
+    lastSub = v.sub;
+    var b10 = v.sub.base[10], h10 = (+b10.split('.')[2]).toString(16);
+    $('addrpreview').textContent = 'Example: segment 10 is ' + b10 + '.0/24, the gateway is ' + b10 + '.1 and ' + m.ipv6_prefix + h10 + '01, and the first service host is ' + b10 + '.10 and ' + m.ipv6_prefix + h10 + '0a.';
     $('stats').innerHTML = [[tt.n, 'machines'], [tt.cpu, 'vCPU'], [(tt.mem / 1024) + ' GB', 'memory'], [tt.disk + ' GB', 'disk, thin']].map(function (s) { return '<div class="stat"><b>' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
     Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.className = b.getAttribute('data-tab') === activeTab ? 'on' : ''; });
     var body = '';
@@ -2140,6 +2226,8 @@ details summary.small{margin-top:4px}
       else if (t.hasAttribute('data-image')) S.images[t.getAttribute('data-image')] = t.value;
       else if (t.hasAttribute('data-iso')) S.isos[t.getAttribute('data-iso')] = t.value;
       else if (t.hasAttribute('data-vlan')) S.vlans[t.getAttribute('data-vlan')] = t.value;
+      else if (t.hasAttribute('data-subon')) { var sg = t.getAttribute('data-subon'); S.subnetOn[sg] = t.checked; if (t.checked && !S.subnets[sg] && lastSub) S.subnets[sg] = lastSub.cidr[sg]; }
+      else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
       refresh();
@@ -2159,7 +2247,7 @@ details summary.small{margin-top:4px}
       });
     });
     $('save').addEventListener('click', function () {
-      download('lab-builder-choices.json', new Blob([JSON.stringify({ platform: S.platform, version: S.version, params: S.params, defaultFlavor: S.defaultFlavor, v4: S.v4, v6: S.v6, vlans: S.vlans, vms: S.vms, images: S.images, rhelImage: S.rhelImage, licFile: S.licFile, licRefs: S.licRefs }, null, 2)], { type: 'application/json' }));
+      download('lab-builder-choices.json', new Blob([JSON.stringify({ platform: S.platform, version: S.version, params: S.params, defaultFlavor: S.defaultFlavor, v4: S.v4, v6: S.v6, vlans: S.vlans, subnetOn: S.subnetOn, subnets: S.subnets, vms: S.vms, images: S.images, rhelImage: S.rhelImage, licFile: S.licFile, licRefs: S.licRefs }, null, 2)], { type: 'application/json' }));
     });
     $('load').addEventListener('click', function () { $('loadfile').click(); });
     $('loadfile').addEventListener('change', function (ev) {
@@ -2167,7 +2255,7 @@ details summary.small{margin-top:4px}
       f.text().then(function (txt) {
         var s = JSON.parse(txt); if (!P[s.platform]) throw new Error('Unknown platform');
         S.platform = s.platform; S.version = String(s.version); S.params = s.params || {}; S.defaultFlavor = s.defaultFlavor || C.DEFAULT_FLAVOR; S.v4 = s.v4 || C.OLD_V4; S.v6 = s.v6 || C.OLD_V6;
-        S.vlans = s.vlans || S.vlans; S.images = s.images || {}; S.rhelImage = s.rhelImage || ''; S.licFile = s.licFile || S.licFile; S.licRefs = s.licRefs || {};
+        S.vlans = s.vlans || S.vlans; S.subnetOn = s.subnetOn || {}; S.subnets = s.subnets || {}; S.images = s.images || {}; S.rhelImage = s.rhelImage || ''; S.licFile = s.licFile || S.licFile; S.licRefs = s.licRefs || {};
         Object.keys(S.vms).forEach(function (k) { if (s.vms && s.vms[k]) S.vms[k] = Object.assign(S.vms[k], s.vms[k]); });
         sigDeps = ''; renderPlatforms(); renderMachines(); renderVlans(); $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile; refresh();
       }).catch(function () { $('zipnote').textContent = 'That file is not a Lab Builder choices file.'; });
@@ -2232,6 +2320,27 @@ details summary.small{margin-top:4px}
     ok(!v.vlan.err[40] && dhcp.nics.filter(function (n) { return n.vlan === 140; }).length === 1 && vm(m, 'gw-201').bridge_trunks.vlans.indexOf(140) >= 0 && m.vlan_segments['140'] === 40, 'a segment can use another VLAN ID');
     S.vlans[41] = '140'; v = C.validateAll(); ok(!!v.vlan.err[41], 'a duplicate VLAN ID is refused');
     S.vlans[41] = '2003'; v = C.validateAll(); ok(!!v.vlan.err[41], 'a routed-link VLAN ID is refused');
+    // The IPv4 subnet follows the VLAN ID unless Set subnet is ticked
+    reset(); S.vlans[40] = '140'; v = C.validateAll(); m = C.buildManifest(v); dhcp = vm(m, 'dhcp-201');
+    ok(v.sub.cidr[40] === '10.201.140.0/24' && dhcp.nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === '10.201.140.2/24'; }) && m.segment_subnets['40'] === '10.201.140' && !v.errors.length, 'the subnet follows a changed VLAN ID');
+    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.10.10/24' && !m.segment_subnets['10'], 'other segments keep their subnets');
+    S.subnetOn[40] = true; S.subnets[40] = '10.201.77.0/24'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(v.sub.cidr[40] === '10.201.77.0/24' && vm(m, 'dhcp-201').nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === '10.201.77.2/24'; }) && !v.errors.length, 'Set subnet lets a segment use a typed /24');
+    S.subnets[40] = '192.168.40.0/24'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(vm(m, 'dhcp-201').nics.some(function (n) { return (n.ipv4 || [])[0] === '192.168.40.2/24'; }) && m.segment_subnets['40'] === '192.168.40', 'a typed subnet can be outside the IPv4 block');
+    S.subnets[40] = '10.201.41.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.40.0/24' && v.sub.cidr[41] === '10.201.41.0/24', 'a subnet another segment uses is refused');
+    S.subnets[40] = '10.201.200.0/24'; v = C.validateAll(); ok(!!v.sub.err[40], 'a subnet the routed links use is refused');
+    S.subnets[40] = '8.8.8.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.140.0/24', 'a public subnet is refused and the VLAN subnet stays');
+    S.subnets[40] = '10.201.77.5/24'; v = C.validateAll(); ok(!!v.sub.err[40], 'a subnet must be a /24 network address');
+    reset(); S.vlans[40] = '1040'; v = C.validateAll(); ok(v.sub.cidr[40] === '10.201.40.0/24' && !!v.sub.note[40] && !v.sub.err[40], 'a VLAN ID above 254 keeps the default subnet');
+    reset(); S.vlans[40] = '200'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.40.0/24' && v.vlan.eff[40] === 200, 'a VLAN ID that matches a routed-link subnet keeps the default subnet');
+    reset(); S.v4 = '10.77'; S.vlans[20] = '120'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(vm(m, 'admin-201').nics[1].ipv4[0] === '10.77.120.10/24' && vm(m, 'admin-201').nics[1].gateway4 === '10.77.120.1', 'the subnet follows the VLAN ID inside a moved IPv4 block');
+    reset(); S.vlans[10] = '110'; S.vms['svc-201a'].addr['n1.0'] = '10.201.110.15/24'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.110.15/24' && !v.errors.length, 'a machine address is edited inside the moved subnet');
+    reset('workstation'); m = man(); cmd = C.commandText(m);
+    ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
+    ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);
     ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.10.15/24', 'a machine address can be changed');
     S.vms['svc-201a'].addr['n1.0'] = '10.201.20.15/24'; v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address outside its segment is refused');
