@@ -86,6 +86,7 @@ if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + 
   throw "Drive $($VmRoot.Substring(0, 2)) in the machines folder ($VmRoot) does not exist. Pass -VmRoot with a folder on a drive this computer has."
 }
 Write-Host "Machines folder: $VmRoot"
+Write-Host 'The machines do not show in the Workstation library by themselves. In Workstation, right-click My Computer in the Library, choose Scan for Virtual Machines, and pick that folder.'
 
 # Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
 if (-not $WorkstationDir) {
@@ -249,7 +250,7 @@ foreach ($vmDef in $lab.vms) {
   }
   $iso = (Resolve-Path (Join-Path $seedDir "$name-seed.iso")).Path
   $add += 'ide1:0.present = "TRUE"', 'ide1:0.deviceType = "cdrom-image"', "ide1:0.fileName = `"$iso`"", 'ide1:0.startConnected = "TRUE"'
-  Edit-Vmx -Path $vmx -Add $add -Drop { param($l) $l -match '^(ethernet\d+\.|ide1:0\.|displayName|memsize|numvcpus|guestOS)\b' }
+  Edit-Vmx -Path $vmx -Add $add -Drop { param($l) $l -match '^(ethernet\d+\.|ide1:0\.|powerType\.|displayName|memsize|numvcpus|guestOS)\b' }
 
   $disk = (Get-Content $vmx | Where-Object { $_ -match '^scsi0:0\.fileName' } | Select-Object -First 1) -replace '^[^"]*"([^"]+)".*$', '$1'
   & $vdisk -x "$($vmDef.disk_gb)GB" (Join-Path $dir $disk) | Out-Null

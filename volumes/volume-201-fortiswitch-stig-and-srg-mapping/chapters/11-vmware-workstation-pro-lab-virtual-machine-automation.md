@@ -85,6 +85,8 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | --- | --- | --- |
 | `Not found: ...ovftool.exe` | OVF Tool is not part of this Workstation release | Install it and pass `-OvfToolPath` |
 | `vmrun clone` fails | The base machine is running or has a snapshot problem | Power off `lab201-base`; delete its snapshots; rerun |
+| The machines run but are not in the Workstation library | `vmrun` does not add machines to the library | Right-click **My Computer** in the Library, choose **Scan for Virtual Machines**, and pick the machines folder that the script printed |
+| Workstation warns that `preset` is not a valid value for `powerType.powerOff` | The imported cloud image carries that setting, and Workstation uses `soft` instead | Harmless. The script removes the `powerType` settings from each machine it builds |
 | A machine will not start | A bad `.vmx` key, or a vmnet that does not exist | Check `vmware.log` in its folder; create the vmnet; rerun with `-Action Remove` first |
 | No tagged frames on `nic2` | The Windows driver strips tags | Change the adapter's VLAN setting, change adapters, or use another chapter's platform |
 | Build adapter has no address | `vmnet8` is not NAT or its DHCP is off | Restore the default NAT network and its DHCP |

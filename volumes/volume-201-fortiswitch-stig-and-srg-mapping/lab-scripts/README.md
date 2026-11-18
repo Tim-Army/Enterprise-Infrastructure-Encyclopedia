@@ -144,6 +144,23 @@ run `ssh-keygen` again:
 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 ```
 
+## VMware Workstation: see the machines in the library
+
+The Workstation script builds and starts the machines with `vmrun`, which does
+not add them to the Workstation library. They run, but the Library pane stays
+empty. To list them:
+
+1. In Workstation, right-click **My Computer** in the Library.
+2. Choose **Scan for Virtual Machines**.
+3. Pick the machines folder. The script prints it as `Machines folder`. By
+   default it is `lab201` inside Workstation's folder for virtual machines.
+4. Finish the scan. The lab machines then appear in the Library.
+
+When a machine starts, Workstation may warn that the value `preset` for
+`powerType.powerOff` is not valid and that it uses `soft` instead. The setting
+comes from the imported cloud image, and the warning is harmless. The script
+now removes those settings from each machine it builds.
+
 ## If PowerShell blocks a script
 
 Windows blocks downloaded PowerShell scripts by default. PowerShell then says

@@ -1819,6 +1819,7 @@ details summary.small{margin-top:4px}
       case 'workstation':
         n.push('Workstation has no VLAN-aware switch, so the guests tag VLANs. Test that your Windows adapters pass 802.1Q tags (Lab 11.2).');
         n.push('Workstation supports one bridged network, so the trunk and the out-of-band network share it and the lab is built with one trunk (T1 and T2 become one). Bridge it to the NIC that reaches both switches.');
+        n.push('The script does not add the machines to the Workstation library. To see them, right-click My Computer in the Library, choose Scan for Virtual Machines, and pick the machines folder.');
         n.push('In the Virtual Network Editor, set up the bridged network, a host-only network for segment 220 with DHCP off, and the NAT network for the build NICs. Check that your Workstation release includes OVF Tool, or pass -OvfToolPath.');
         break;
       case 'proxmox':
