@@ -1940,10 +1940,50 @@ details summary.small{margin-top:4px}
   }
   function fetchBytes(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(function (b) { return new Uint8Array(b); }); }
 
+  /* -------------------------------------------------------------- choices */
+  // Everything you chose on the page, as the file that Load choices reads back.
+  function choicesText() {
+    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs }, null, 2) + '\n';
+  }
+  // Put a saved choices file back into the page state. Returns notes about values it could not use.
+  function applyChoices(s) {
+    if (!s || typeof s !== 'object' || Array.isArray(s)) throw new Error('It is not a Lab Builder choices file');
+    if (Array.isArray(s.vms)) throw new Error('It is a lab manifest (lab201-vms.json), not a choices file. Load the lab-builder-choices.json that Save choices or the zip gives you');
+    if (!PLATFORMS[s.platform]) throw new Error('It is not a Lab Builder choices file (it names no platform this page knows)');
+    var notes = [], p = PLATFORMS[s.platform], ver = String(s.version), sp = s.params || {};
+    state.platform = s.platform;
+    if (p.versions.some(function (x) { return x[0] === ver; })) state.version = ver;
+    else { state.version = p.defVersion; notes.push('version ' + ver + ' is not offered, so ' + p.defVersion + ' is used'); }
+    resetParams();
+    p.fields.forEach(function (f) { if (Object.prototype.hasOwnProperty.call(sp, f.id)) state.params[f.id] = f.type === 'check' ? !!sp[f.id] : String(sp[f.id]); });
+    var dropped = Object.keys(sp).filter(function (k) { return !p.fields.some(function (f) { return f.id === k; }); });
+    if (dropped.length) notes.push('settings this platform no longer has were left out (' + dropped.join(', ') + ')');
+    state.defaultFlavor = FLAVOR[s.defaultFlavor] ? s.defaultFlavor : DEFAULT_FLAVOR;
+    state.v4 = s.v4 || OLD_V4; state.v6 = s.v6 || OLD_V6;
+    resetVms();
+    SEGMENTS.forEach(function (g) {
+      if (s.vlans && s.vlans[g] !== undefined) state.vlans[g] = String(s.vlans[g]);
+      if (s.subnetOn && s.subnetOn[g]) state.subnetOn[g] = true;
+      if (s.subnets && s.subnets[g]) state.subnets[g] = String(s.subnets[g]);
+    });
+    Object.keys(state.vms).forEach(function (k) {
+      var r = s.vms && s.vms[k], row = state.vms[k];
+      if (!r || typeof r !== 'object') return;
+      ['name', 'vcpu', 'mem', 'disk', 'flavor'].forEach(function (f) { if (r[f] !== undefined && r[f] !== null) row[f] = String(r[f]); });
+      row.include = r.include !== false; row.override = !!r.override;
+      row.addr = r.addr && typeof r.addr === 'object' ? r.addr : {}; row.touched = r.touched && typeof r.touched === 'object' ? r.touched : {};
+      if (row.flavor && !FLAVOR[row.flavor]) { notes.push(k + ': flavor ' + row.flavor + ' is not known, so the default is used'); row.flavor = ''; }
+    });
+    state.images = s.images || {}; state.isos = s.isos || {}; state.rhelImage = s.rhelImage || '';
+    state.licFile = s.licFile || (p.shell === 'ps' ? '.\\licenses.local.json' : './licenses.local.json'); state.licRefs = s.licRefs || {};
+    return notes;
+  }
+
   function buildZip() {
     var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), root = 'lab201-build/';
     var files = [
       { path: root + 'common/lab201-vms.json', bytes: enc.encode(JSON.stringify(m, null, 2) + '\n') },
+      { path: root + 'lab-builder-choices.json', bytes: enc.encode(choicesText()) },
       { path: root + 'RUN.txt', bytes: enc.encode(commandText(m)) },
       { path: root + 'CHECKLIST.md', bytes: enc.encode(checklistText(m, v)) }
     ];
@@ -1965,6 +2005,7 @@ details summary.small{margin-top:4px}
 
   window.LabBuilderCore = {
     BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
+    choicesText: choicesText, applyChoices: applyChoices,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
@@ -2250,18 +2291,18 @@ details summary.small{margin-top:4px}
       });
     });
     $('save').addEventListener('click', function () {
-      download('lab-builder-choices.json', new Blob([JSON.stringify({ platform: S.platform, version: S.version, params: S.params, defaultFlavor: S.defaultFlavor, v4: S.v4, v6: S.v6, vlans: S.vlans, subnetOn: S.subnetOn, subnets: S.subnets, vms: S.vms, images: S.images, rhelImage: S.rhelImage, licFile: S.licFile, licRefs: S.licRefs }, null, 2)], { type: 'application/json' }));
+      download('lab-builder-choices.json', new Blob([C.choicesText()], { type: 'application/json' }));
     });
     $('load').addEventListener('click', function () { $('loadfile').click(); });
     $('loadfile').addEventListener('change', function (ev) {
-      var f = ev.target.files[0]; if (!f) return;
+      var inp = ev.target, f = inp.files[0]; if (!f) return;
       f.text().then(function (txt) {
-        var s = JSON.parse(txt); if (!P[s.platform]) throw new Error('Unknown platform');
-        S.platform = s.platform; S.version = String(s.version); S.params = s.params || {}; S.defaultFlavor = s.defaultFlavor || C.DEFAULT_FLAVOR; S.v4 = s.v4 || C.OLD_V4; S.v6 = s.v6 || C.OLD_V6;
-        S.vlans = s.vlans || S.vlans; S.subnetOn = s.subnetOn || {}; S.subnets = s.subnets || {}; S.images = s.images || {}; S.rhelImage = s.rhelImage || ''; S.licFile = s.licFile || S.licFile; S.licRefs = s.licRefs || {};
-        Object.keys(S.vms).forEach(function (k) { if (s.vms && s.vms[k]) S.vms[k] = Object.assign(S.vms[k], s.vms[k]); });
-        sigDeps = ''; renderPlatforms(); renderMachines(); renderVlans(); $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile; refresh();
-      }).catch(function () { $('zipnote').textContent = 'That file is not a Lab Builder choices file.'; });
+        var notes = C.applyChoices(JSON.parse(txt.replace(/^﻿/, '')));
+        sigDeps = ''; renderPlatforms(); renderFlavors(); renderMachines(); renderVlans(); $('v4').value = S.v4; $('v6').value = S.v6; $('licfile').value = S.licFile; refresh();
+        $('zipnote').textContent = 'Loaded ' + f.name + '.' + (notes.length ? ' Note: ' + notes.join('; ') + '.' : '');
+      }).catch(function (e) {
+        $('zipnote').textContent = 'Could not load ' + f.name + '. ' + (e instanceof SyntaxError ? 'It is not valid JSON' : e.message) + '.';
+      }).then(function () { inp.value = ''; });
     });
   }
 
@@ -2346,6 +2387,19 @@ details summary.small{margin-top:4px}
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset('vcenter'); cmd = C.commandText(man());
     ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('powershell -ExecutionPolicy Bypass -File .\\Deploy-Lab201-Vcenter.ps1') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    // Save choices and Load choices
+    reset('proxmox'); S.defaultFlavor = 'rocky-10'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-2'].include = false; S.vms['svc-201a'].name = 'svc-a';
+    S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
+    S.v4 = '10.77'; S.vlans[41] = '141'; S.subnetOn[20] = true; S.subnets[20] = '192.168.20.0/24'; S.params.storage = 'blue'; S.isos['win-11'] = 'iso:iso/w11.iso'; S.licRefs.rhel = 'vault';
+    var savedText = C.choicesText(), wantM = JSON.stringify(man()), wantCmd = C.commandText(man());
+    reset('vcenter'); S.vms['gw-201'].name = 'other'; S.vlans[10] = '110'; S.isos = {}; S.licRefs = {};
+    var loadNotes = C.applyChoices(JSON.parse(savedText));
+    ok(JSON.stringify(man()) === wantM && C.commandText(man()) === wantCmd && C.choicesText() === savedText && !loadNotes.length, 'a saved choices file loads back to the same build');
+    var oldFile = JSON.parse(savedText); oldFile.platform = 'workstation'; oldFile.version = '99'; oldFile.params = { vmroot: 'E:\\lab', t1: 'vmnet2', t2: 'vmnet3', oob: 'vmnet4' }; delete oldFile.isos; delete oldFile.subnetOn; delete oldFile.subnets;
+    loadNotes = C.applyChoices(oldFile);
+    ok(S.params.vmroot === 'E:\\lab' && S.params.bridge === 'vmnet0' && S.params.t1 === undefined && S.version === P.workstation.defVersion && loadNotes.length === 2, 'an older choices file loads, with notes about what it could not use');
+    var refused = 0; [C.BASE, [1], { platform: 'nope' }].forEach(function (x) { try { C.applyChoices(x); } catch (e) { refused++; } });
+    ok(refused === 3, 'a manifest or another JSON file is refused as a choices file');
     reset('proxmox'); cmd = C.commandText(man());
     ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
     reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);
