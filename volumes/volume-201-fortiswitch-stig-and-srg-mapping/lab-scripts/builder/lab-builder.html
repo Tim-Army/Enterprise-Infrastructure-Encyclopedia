@@ -22,7 +22,7 @@ header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 
 header h1{font-size:19px;margin:0}
 header .sub{color:var(--muted);font-size:13px}
 main{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;padding:18px 28px 28px;max-width:1500px;margin:0 auto}
-@media (max-width:980px){main{grid-template-columns:1fr;padding:14px 16px}header{padding:12px 16px}}
+@media (max-width:980px){main{grid-template-columns:minmax(0,1fr);padding:14px 16px}header{padding:12px 16px}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px}
 .card h2{font-size:14px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
 .card h2 .n{background:var(--accent);color:var(--accent-ink);border-radius:99px;width:20px;height:20px;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
@@ -52,7 +52,7 @@ input.ovr{border-color:var(--warn);background:var(--warn-soft)}
 .minl{display:block;font-size:10.5px;color:var(--muted);text-align:right}
 .minl.bad{color:var(--bad);font-weight:600}.minl.warn{color:var(--warn);font-weight:600}
 .msg{display:block;font-size:11px;margin-top:2px}.msg.bad{color:var(--bad);font-weight:600}.msg.warn{color:var(--warn);font-weight:600}
-.field{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:7px 12px;align-items:center;font-size:13px}
+.field{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:7px 12px;align-items:center;font-size:13px}
 .field label{color:var(--ink)}
 .note{border-radius:8px;padding:8px 11px;font-size:12.5px;margin-top:8px}
 .note.warn{background:var(--warn-soft);color:var(--warn)}.note.ok{background:var(--ok-soft);color:var(--ok)}
@@ -96,6 +96,10 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
 textarea.cfgedit{display:block;width:100%;min-height:320px;margin-top:10px;background:var(--code-bg);color:var(--code-ink);border:1.5px solid var(--line);border-radius:8px;padding:13px 15px;font:12px/1.55 ui-monospace,Consolas,monospace;white-space:pre;overflow:auto;resize:vertical}
 textarea.cfgedit.chg{border-color:var(--accent)}
 .inet{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px}.inet label{cursor:pointer;white-space:nowrap}
+/* Nothing makes the page wider than the screen. A column takes the width it is given, a wide table scrolls sideways inside its card, and on a narrow screen a label sits above its field. */
+.tscroll{overflow-x:auto}
+@media (max-width:640px){.field{grid-template-columns:minmax(0,1fr);gap:2px 12px}.field>label{margin-top:8px}.field>label:first-child{margin-top:0}}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -6253,11 +6257,28 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     else {
       L.push('- Wait until every machine has finished its first boot (RUN.txt, step 3). It prints a line for each machine. For one that failed, log in to it and run lab201-status, then cloud-init status --long.');
       L.push('- Remove the build adapters (step 4), then take the baseline snapshots (step 5). Step 5 refuses while a machine still has its build adapter, because a restore would bring it back.');
-      if (m.uplink) L.push('- ' + m.uplink.vm + ' keeps its adapter on the build network as the uplink to the external firewall. Put the rules of the external firewall (the Lab Builder, section 11) in place after step 4, and ' +
+      if (m.uplink) L.push('- ' + m.uplink.vm + ' keeps its adapter on the build network as the uplink to the external firewall. Put the rules of the external firewall (' + firewallFile(v).path + ') in place after step 4, and ' +
         (m.uplink.address ? 'give the firewall the route back to the lab through ' + m.uplink.address.split('/')[0] : 'reserve the DHCP address of ' + m.uplink.vm + ', because the route back to the lab points at it') + '.');
       L.push('- Between labs, return the machines to the baseline with the last command in RUN.txt.');
     }
     L.push('- Build the services and the switch baselines: Chapter 999, Labs 999.1 to 999.6.');
+    // The text for a network device as the gateway is a file of the zip, and the notes of section 10 belong with it.
+    var gwf = gatewayFile(v);
+    if (gwf) {
+      L.push('');
+      L.push('## Gateway device');
+      L.push('A network device is the gateway of this build' + (gwf.gwBuilt ? ', in place of ' + gwf.gw : '') + '. The zip has its starting configuration in ' + gwf.path + ' (' + gwf.os + '): the text of section 10 of the Lab Builder. ' +
+        'It gives the device the .1 address of every shared segment and lets every lab segment reach every other one, which is wider than the policy of Lab 999.1.');
+      gwf.notes.forEach(function (n) { L.push('- ' + n); });
+      if (gwf.extra) L.push('- ' + gwf.extra.path + ': ' + gwf.extra.title);
+    }
+    // The external firewall text is a file of the zip, and the notes of section 11 belong with it.
+    var fwf = firewallFile(v);
+    L.push('');
+    L.push('## External firewall');
+    L.push('The zip has the rules for an additional firewall outside the lab in ' + fwf.path + ' (' + fwf.os + '). They are the text of section 11 of the Lab Builder, as it stands there.' +
+      (fwf.edited ? ' You edited that text on the page, so it does not follow the choices of this build, and these notes are for the text of the page.' : ''));
+    fwf.notes.forEach(function (n) { L.push('- ' + n); });
     L.push('');
     return L.join('\n');
   }
@@ -6527,7 +6548,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
 
   // Instructions for a Claude session that opens this folder. Claude Code reads CLAUDE.md on its own.
   function claudeText(m, v, walkthroughs) {
-    var p = PLATFORMS[state.platform], names = walkthroughs.map(function (w) { return typeof w === 'string' ? { file: w, short: w } : w; });
+    var p = PLATFORMS[state.platform], names = walkthroughs.map(function (w) { return typeof w === 'string' ? { file: w, short: w } : w; }), gwf = gatewayFile(v);
     var lab = v.startLab || { id: '999.1', title: 'Build the gateway and the VLANs', file: '999-shared-lab-infrastructure.md' };
     var labFile = names.filter(function (w) { return w.file === lab.file; })[0], first = labFile ? labFile.short : '';
     walkthroughs = names.map(function (w) { return w.short; });
@@ -6539,6 +6560,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       '- `RUN.txt`: the commands that build the lab machines on ' + p.name + '. `CHECKLIST.md` lists what to check before and after.',
       '- `CHANGES.md` (only when something differs from the defaults): what the user changed from the book.',
       '- `diagrams/lab-topology.svg`: a picture of this build, drawn by the Lab Builder from the same values. A PNG copy is beside it when the browser could make one.',
+      '- `' + firewallFile(v).path + '`: the rules for an additional firewall outside the lab, between the lab and the internet. It is not part of a lab walkthrough. The user puts the rules on that firewall, and `CHECKLIST.md` has the notes for them. Do not apply this file to a lab machine or a switch.' +
+        (gwf ? '\n- `' + gwf.path + '`: the starting configuration for the network device that is the gateway of this build (' + gwf.os + '). The user puts it on that device, and `CHECKLIST.md` has the notes for it.' +
+          (gwf.gwBuilt ? ' The scripts still build `' + gwf.gw + '`, and it must stay shut down while the device is the gateway, because both hold the same addresses.' : '') + ' Do not apply this file to a lab machine or a switch.' : ''),
       '- `common/` and `' + p.script.split('/')[0] + '/`: the manifest and the build script. `lab-builder-choices.json` reloads this build in the Lab Builder.', '',
       '## Start here', '',
       'When the user opens a session in this folder, or says "start", do this:', '',
@@ -6607,6 +6631,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       '  with your values.',
       '- RUN.txt and CHECKLIST.md: the commands that build the machines on ' + p.name + ',',
       '  and what to check before and after.',
+      '- external-firewall/: the text of section 11, the rules for an additional firewall',
+      '  outside the lab. CHECKLIST.md has the notes for it.',
+      '- gateway-device/: the text of section 10, when a network device is the gateway of',
+      '  the build. CHECKLIST.md has the notes for it too.',
       '- START-CLAUDE.txt: the two start lines above.', '',
       'Your progress', '',
       '- Claude logs each step in PROGRESS.md in the lab folder, and one row for each SRG',
@@ -6758,7 +6786,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         'Pick another OS type if a network device is the gateway. The page then writes a starting configuration for it, and the Diagram tab shows it.'] };
     var L = [], lab = m.lab, trunk = lab + ' trunk to the lab VLANs', first = m.ifs[1], extra = null;
     var notes = ['Replace ' + GW_TRUNK + ' with the port that carries the lab VLANs, and ' + GW_OOB + ' with the port on the out-of-band network (segment 0).',
-      'Each tagged interface has the number of its segment. Its VLAN ID and its addresses are the ones of step 6.'];
+      'Each tagged interface has the number of its segment. Its VLAN ID and its addresses are the ones of section 6.'];
     if (m.gwBuilt) notes.push('The scripts still build ' + m.gw + '. Keep it shut down while the device is the gateway, because both hold the same addresses.' +
       (m.twoTrunks ? ' ' + m.gw + ' also joins the two trunks (T1 and T2) into one network, so the device must reach both trunks.' : ''));
     if (os === 'iosxe') {
@@ -7016,6 +7044,23 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // With an uplink address that is set, the firewall text names it.
     if (up.addr) { fwc.text = fwc.text.split(FW_GW).join(up.addr); fwc.notes = fwc.notes.filter(function (x) { return x.indexOf('Replace ' + FW_GW) !== 0; }); }
     return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: gatewayConfig(g, m), firewall: fwc };
+  }
+
+  // The external firewall text as a file of the zip. It is the text as it stands in section 11, so an edited text goes
+  // into the zip as it was edited. The notes are the ones of the page's own text.
+  function firewallFile(v) {
+    var n = netConfigs(v), edited = !!state.fwEdit && state.fwEdit !== n.firewall.text;
+    return { path: 'external-firewall/' + n.firewall.file, os: n.fwName, text: edited ? state.fwEdit : n.firewall.text, edited: edited, notes: n.firewall.notes };
+  }
+
+  // The text for a network device that is the gateway, as a file of the zip. The Linux router of the scripts needs no
+  // text, so it gives no file. Lines that only some devices of an OS type need are a file of their own beside it.
+  function gatewayFile(v) {
+    var n = netConfigs(v), g = n.gateway;
+    if (!g.text) return null;
+    var path = 'gateway-device/' + g.file;
+    return { path: path, os: n.gwName, gw: n.model.gw, gwBuilt: n.model.gwBuilt, text: g.text, notes: g.notes,
+      extra: g.extra ? { path: path.replace(/\.txt$/, '-extra.txt'), title: g.extra.title, text: g.extra.text } : null };
   }
 
   /* ----------------------------------------------------------- lab picture */
@@ -7280,26 +7325,40 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return notes;
   }
 
+  // The files of the zip that the page writes itself, with no fetch: each has a path inside the zip folder and a text.
+  function zipOwnFiles(m, v) {
+    var files = [
+      { path: 'common/lab201-vms.json', text: JSON.stringify(m, null, 2) + '\n' },
+      { path: 'lab-builder-choices.json', text: choicesText() },
+      { path: 'RUN.txt', text: commandText(m) },
+      { path: 'CHECKLIST.md', text: checklistText(m, v) }
+    ];
+    var ch = changesText(m, v); if (ch) files.push({ path: 'CHANGES.md', text: ch });
+    var ex = licensesExample(m); if (ex) files.push({ path: 'licenses.example.json', text: ex });
+    // The picture of this build is drawn here.
+    files.push({ path: 'diagrams/lab-topology.svg', text: topologySvg(m, v) });
+    files.push({ path: 'LAB-VALUES.md', text: labValuesText(m, v) });
+    files.push({ path: 'START-CLAUDE.txt', text: startText() });
+    // The external firewall text of section 11, as it stands on the page.
+    var fwf = firewallFile(v);
+    files.push({ path: fwf.path, text: fwf.text });
+    // The text of section 10 for a network device as the gateway, when the build has one.
+    var gwf = gatewayFile(v);
+    if (gwf) files.push({ path: gwf.path, text: gwf.text });
+    if (gwf && gwf.extra) files.push({ path: gwf.extra.path, text: gwf.extra.text });
+    return files;
+  }
+
   function buildZip() {
     var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), root = 'lab201-build/';
-    var files = [
-      { path: root + 'common/lab201-vms.json', bytes: enc.encode(JSON.stringify(m, null, 2) + '\n') },
-      { path: root + 'lab-builder-choices.json', bytes: enc.encode(choicesText()) },
-      { path: root + 'RUN.txt', bytes: enc.encode(commandText(m)) },
-      { path: root + 'CHECKLIST.md', bytes: enc.encode(checklistText(m, v)) }
-    ];
-    var ch = changesText(m, v); if (ch) files.push({ path: root + 'CHANGES.md', bytes: enc.encode(ch) });
-    var ex = licensesExample(m); if (ex) files.push({ path: root + 'licenses.example.json', bytes: enc.encode(ex) });
+    var own = zipOwnFiles(m, v), files = own.map(function (f) { return { path: root + f.path, bytes: enc.encode(f.text) }; });
     var wanted = [
       ['../' + p.script, p.script], ['../common/make-seed.py', 'common/make-seed.py'], ['../common/flavors.json', 'common/flavors.json'],
       ['../common/resolve-image.py', 'common/resolve-image.py'], ['../README.md', 'README.md']
     ];
-    // The picture of this build is drawn here, with a PNG copy where the browser can make one.
-    var svg = topologySvg(m, v);
-    files.push({ path: root + 'diagrams/lab-topology.svg', bytes: enc.encode(svg) });
+    // A PNG copy of the picture goes beside it where the browser can make one.
+    var svg = own.filter(function (f) { return f.path === 'diagrams/lab-topology.svg'; })[0].text;
     var png = svgPng(svg, 1.5).then(function (b) { if (b) files.push({ path: root + 'diagrams/lab-topology.png', bytes: b }); });
-    files.push({ path: root + 'LAB-VALUES.md', bytes: enc.encode(labValuesText(m, v)) });
-    files.push({ path: root + 'START-CLAUDE.txt', bytes: enc.encode(startText()) });
     var missing = [], walkNames = [];
     function fetchText(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
     var base = Promise.all(wanted.map(function (w) {
@@ -7314,7 +7373,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return Promise.all([base, walk, png]).then(function () {
       files.push({ path: root + 'CLAUDE.md', bytes: enc.encode(claudeText(m, v, walkNames)) });
       if (missing.length) files.push({ path: root + 'MISSING-FILES.txt', bytes: enc.encode('This page could not fetch these files from the site:\n' + missing.map(function (x) { return '  ' + x; }).join('\n') + '\n\nDownload the lab-scripts zip from the Volume CCI page and copy them next to common/lab201-vms.json.\nOpening the page from a local file blocks the fetch. Open it from the published site instead.\n') });
-      return { blob: makeZip(files), missing: missing, count: files.length };
+      return { blob: makeZip(files), missing: missing, count: files.length, names: files.map(function (f) { return f.path; }) };
     });
   }
 
@@ -7325,7 +7384,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     isoSumOf: isoSumOf, reqStatus: reqStatus, requirementRows: requirementRows, resultsCsv: resultsCsv, csvCell: csvCell,
     swCheck: swCheck, swSeries: swSeries, fswCheck: fswCheck, FSW: FSW, FSW_VERSIONS: FSW_VERSIONS, parseProgress: parseProgress, labStatus: labStatus, LABS: LABS, WALKTHROUGHS: WALKTHROUGHS, PORTS: PORTS, DEFAULT_CONSOLE_PW: DEFAULT_CONSOLE_PW, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
-    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
+    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, zipOwnFiles: zipOwnFiles, firewallFile: firewallFile, gatewayFile: gatewayFile, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
@@ -7352,7 +7411,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<details id="planbox"><summary>Labs you plan to run: <span id="plancount"></span></summary><p class="hint">Untick a lab, or a whole chapter, that you will not run. The labs of Chapter 999 build the shared lab, so they are always in the plan. CLAUDE.md in the zip tells Claude to skip what you untick. Hold the pointer over a lab to see the machines its text names.</p><div id="planlabs"></div></details>';
     h += '<p class="small" id="plannote"></p><div class="actions" style="margin-top:6px;margin-bottom:10px"><button class="btn" id="planapply">Match the machines to these labs</button></div>';
-    h += '<table id="machines"></table></div>';
+    h += '<div class="tscroll"><table id="machines"></table></div></div>';
     h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The lab takes one /24 subnet for each of its networks. The page makes the subnets contiguous, starting at the starting IP, so the lab needs the fewest subnets and the smallest supernet. The chapters number a subnet by its VLAN ID (VLAN 10 is 10.201.10.0/24), so the walkthroughs in the zip are rewritten with the subnets of this build. The VLAN IDs stay as they are. Tick <b>Set subnet</b> to type a different /24 for a segment. Change a machine\'s address in step 5. The gateway is always .1.</p>';
     h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
@@ -7360,17 +7419,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="field">' + [['start', '1. Starting IP', 'addr subin'], ['count', '2. How many subnets', 'num'], ['net', '3. Supernet', 'addr subin']].map(function (r) {
       return '<label for="r' + r[0] + '">' + r[1] + '</label><div><span class="sub rangeval" id="r' + r[0] + 'v"></span><input type="text" id="r' + r[0] + '" class="' + r[2] + '" autocomplete="off"><label class="subset small"><input type="checkbox" data-rangeon="' + r[0] + '"> Override</label><span class="msg bad" id="r' + r[0] + 'msg"></span><span class="msg small" id="r' + r[0] + 'note"></span></div>';
     }).join('') + '<label>Subnet allocation</label><div><span class="sub rangeval" id="rplanv"></span><span class="msg small" id="rplannote"></span></div></div><div id="rangewarn"></div></details>';
-    h += '<table id="vlans" style="margin-top:14px"></table><p class="small" id="othernets" style="margin:10px 0 0"></p><p class="small" id="addrpreview"></p></div>';
+    h += '<div class="tscroll"><table id="vlans" style="margin-top:14px"></table></div><p class="small" id="othernets" style="margin:10px 0 0"></p><p class="small" id="addrpreview"></p></div>';
     h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div><div class="field" style="margin-top:12px"><label for="fswver">FortiSwitchOS version</label><div><select id="fswver"></select> <span class="small">Sets which Fortinet feature matrix the page reads. The lab chapters cite the FortiSwitchOS 7.6.7 CLI Reference, so another release adds a note to the walkthroughs.</span></div></div><div id="fswtable"></div><div id="fswcompare"></div><p class="hint" style="margin-top:12px">Switch ports: the labs write the ports as placeholders such as <code>&lt;PORT_EP1&gt;</code>. Type the ports you use and the walkthroughs in the zip show them. An empty field keeps the placeholder. One name serves both switches, so leave a field empty where the two differ.</p><div class="field" id="ports"></div><div class="field" style="margin-top:12px"><label for="startlab">Start Claude at lab</label><div><select id="startlab"></select> <span class="small">The lab that CLAUDE.md in the zip tells Claude to begin with.</span></div></div></div>';
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
-    h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
+    h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><div class="tscroll"><table id="lics"></table></div></div>';
     var optsOf = function (list) { return list.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + '</option>'; }).join(''); };
-    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
+    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port, and the zip holds that text in the folder gateway-device. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
     h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div>';
-    h += '<label for="gwuplink" id="gwuplabel">Uplink</label><div id="gwupbox"><label class="subset" style="margin-left:0"><input type="checkbox" id="gwuplink"> Keep the uplink of <span id="gwupname"></span> to the external firewall</label></div>';
+    h += '<label for="gwuplink" id="gwuplabel">Uplink</label><div id="gwupbox"><label class="subset" style="margin-left:0;white-space:normal"><input type="checkbox" id="gwuplink"> Keep the uplink of <span id="gwupname"></span> to the external firewall</label></div>';
     h += '<label for="upaddr" id="upaddrlabel">Uplink address</label><div id="upaddrbox"><span class="sub rangeval" id="upauto"></span><span id="upstatic"><span class="small" id="upgwname"></span> <input type="text" id="upaddr" class="addr subin" autocomplete="off" placeholder="192.168.50.2/24" aria-label="Uplink address of the gateway"> <span class="small">external firewall</span> <input type="text" id="upfw" class="addr subin" autocomplete="off" placeholder="192.168.50.1" aria-label="Address of the external firewall"> <span class="small">DNS</span> <input type="text" id="updns" class="addr subin" autocomplete="off" placeholder="the external firewall" aria-label="DNS server for the gateway"></span><label class="subset small"><input type="checkbox" id="upset"> Override</label><span class="msg bad" id="upmsg"></span></div></div>';
     h += '<div class="note info" id="gwupnote"></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
-    h += '<div class="card"><h2><span class="n">11</span> External firewall configuration <span class="badge">additional firewall</span></h2><p class="hint">An additional firewall, outside the lab, between the lab and the internet. <span id="fwnotgw"></span> This one gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 6). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs.</p>';
+    h += '<div class="card"><h2><span class="n">11</span> External firewall configuration <span class="badge">additional firewall</span></h2><p class="hint">An additional firewall, outside the lab, between the lab and the internet. <span id="fwnotgw"></span> This one gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 6). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs. The zip holds the text as it stands here, in the folder external-firewall.</p>';
     h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div><label>Internet access</label><div id="fwinet" class="inet"></div></div><textarea id="fwtext" class="cfgedit" spellcheck="false" wrap="off" aria-label="External firewall configuration"></textarea><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><button class="btn" id="fwreset" hidden>Use the page\'s text again</button><span class="small" id="fwmsg"></span></div><div class="note warn" id="fwedited" hidden></div><div class="note info" id="fwnotes"></div></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
@@ -7380,11 +7439,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     $('tabs').innerHTML = tabs.map(function (t) { return '<button data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('');
     // matrix
     var heads = C.FLAVORS.filter(function (f) { return f.status !== 'planned'; });
-    var mx = '<table class="mx"><tr><th>Machine type</th>' + heads.map(function (f) { return '<th>' + esc(f.short || f.name) + '</th>'; }).join('') + '</tr>';
+    var mx = '<div class="tscroll"><table class="mx"><tr><th>Machine type</th>' + heads.map(function (f) { return '<th>' + esc(f.short || f.name) + '</th>'; }).join('') + '</tr>';
     C.FL.role_keys.forEach(function (rk, i) {
       mx += '<tr><td>' + esc(rk) + '</td>' + heads.map(function (f) { var c = f.roles[i]; return '<td>' + (c === 'y' ? '<span class="y">&#10003;</span>' : c === 'x' ? '<span class="s">&#10003;*</span>' : '<span class="nn">no</span>') + '</td>'; }).join('') + '</tr>';
     });
-    mx += '</table><p class="small">* needs extra steps: packages from another repository (EPEL), an accepted STIG finding, or an image you supply. These ratings are proposals that need a test build. Mint, Tiny Core, and Windows install from an ISO and are rated here too: ';
+    mx += '</table></div><p class="small">* needs extra steps: packages from another repository (EPEL), an accepted STIG finding, or an image you supply. These ratings are proposals that need a test build. Mint, Tiny Core, and Windows install from an ISO and are rated here too: ';
     mx += C.FLAVORS.filter(function (f) { return f.status === 'planned'; }).map(function (f) { return esc(f.name) + ' (' + esc(f.why || '') + ')'; }).join(' ') + '</p>';
     $('matrix').innerHTML = mx;
   }
@@ -7602,16 +7661,16 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       var head = '<tr><th>Lab feature</th><th>' + esc(v.sw.model.a) + '</th><th>' + esc(v.sw.model.b) + '</th><th>Planned labs that use it there</th></tr>';
       fh = '<p class="small" style="margin-top:8px">Fortinet\'s feature matrix for FortiSwitchOS ' + v.fsw.version + ': the ' + esc(v.sw.model.a) + ' is in series <b>' + esc(fa.series || 'not listed') + '</b> and the ' + esc(v.sw.model.b) + ' is in series <b>' + esc(fb.series || 'not listed') + '</b>. ' +
         (shown.length ? shown.length + ' of ' + keys.length + ' lab features are not fully supported on one of them:' : keys.length ? 'All ' + keys.length + ' lab features are listed as supported on both.' : '') + ' The matrix lists model series, so check it for your exact model. The last column takes the switch from each lab\'s Uses line and the feature from keywords in the lab text.</p>' +
-        (shown.length ? '<table class="prog">' + head + shown.map(rowHtml).join('') + '</table>' : '') +
-        (keys.length ? '<details' + (($('fswtable').querySelector('details') || {}).open ? ' open' : '') + '><summary class="small">All ' + keys.length + ' lab features</summary><table class="prog">' + head + keys.map(rowHtml).join('') + '</table></details>' : '');
+        (shown.length ? '<div class="tscroll"><table class="prog">' + head + shown.map(rowHtml).join('') + '</table></div>' : '') +
+        (keys.length ? '<details' + (($('fswtable').querySelector('details') || {}).open ? ' open' : '') + '><summary class="small">All ' + keys.length + ' lab features</summary><div class="tscroll"><table class="prog">' + head + keys.map(rowHtml).join('') + '</table></div></details>' : '');
     }
     $('fswtable').innerHTML = fh;
     // What changes for these two models between the releases the page knows.
     var cmp = C.fswCompare(v.sw), vers = C.FSW_VERSIONS.map(function (x) { return x[0]; }), ch = '';
     var cmpCell = function (val) { return '<td class="c ' + (val === 'yes' ? 'okc' : val === 'no' ? 'badc' : 'small') + '">' + (val || 'not listed') + '</td>'; };
     if (cmp.rows.length) {
-      ch = '<table class="prog"><tr><th>Lab feature</th>' + ['a', 'b'].map(function (k) { return vers.map(function (x) { return '<th class="c">' + esc(v.sw.model[k]) + '<br>' + x + '</th>'; }).join(''); }).join('') + '</tr>' +
-        cmp.rows.map(function (r) { return '<tr><td>' + esc(r.name) + '</td>' + ['a', 'b'].map(function (k) { return vers.map(function (x) { return cmpCell(r[k][x]); }).join(''); }).join('') + '</tr>'; }).join('') + '</table>';
+      ch = '<div class="tscroll"><table class="prog"><tr><th>Lab feature</th>' + ['a', 'b'].map(function (k) { return vers.map(function (x) { return '<th class="c">' + esc(v.sw.model[k]) + '<br>' + x + '</th>'; }).join(''); }).join('') + '</tr>' +
+        cmp.rows.map(function (r) { return '<tr><td>' + esc(r.name) + '</td>' + ['a', 'b'].map(function (k) { return vers.map(function (x) { return cmpCell(r[k][x]); }).join(''); }).join('') + '</tr>'; }).join('') + '</table></div>';
     } else ch = '<p class="small">These releases list the same support for the lab features on these two models.</p>';
     ['a', 'b'].forEach(function (k) { if (cmp.notListed[k].length) ch += '<p class="small">The feature matrix for FortiSwitchOS ' + cmp.notListed[k].join(', ') + ' does not list the ' + esc(v.sw.model[k]) + '.</p>'; });
     $('fswcompare').innerHTML = '<details' + (($('fswcompare').querySelector('details') || {}).open ? ' open' : '') + '><summary class="small">What changes between FortiSwitchOS ' + vers.join(', ') + ' for these models: ' + (cmp.rows.length ? cmp.rows.length + ' lab feature' + (cmp.rows.length === 1 ? '' : 's') : 'nothing') + '</summary>' + ch + '</details>';
@@ -7655,8 +7714,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       body = '<p class="small">' + (pr ? pr.rows + ' step rows and ' + pr.reqRows + ' requirement rows read. ' + counts.passed + ' of ' + C.LABS.length + ' labs passed, ' + counts.failed + ' failed, ' + counts.blocked + ' blocked, ' + counts['not started'] + ' not started. A lab counts as passed when it has passed steps and no failed or blocked step. It does not check that every step of the lab was run.' : 'Claude keeps a log of each lab step in PROGRESS.md, in the lab folder. Click <b>Load progress</b> below and pick that file to see which labs passed.') + '</p>' +
         '<p class="small"><b>By requirement.</b> The lab chapters test ' + reqs.length + ' SRG requirements: ' + rc.pass + ' pass, ' + rc.fail + ' fail, ' + rc.blocked + ' blocked, ' + rc.skipped + ' skipped, ' + rc['not tested'] + ' not tested. A requirement takes its result from its own row in PROGRESS.md, the one with its SRG ID and its lab. Without one, it follows the steps of its lab. The file below says which.</p>' +
         '<div class="actions" style="margin-top:6px"><button class="btn" data-act="csv">Download results (CSV)</button></div>' +
-        '<details id="reqbox"' + reqOpen + '><summary class="small">All ' + reqs.length + ' requirements</summary><div style="overflow-x:auto"><table class="prog"><tr><th>SRG ID</th><th class="c">CAT</th><th>Lab</th><th>Tested on</th><th>Result</th><th>From</th><th>Evidence</th></tr>' + reqHtml + '</table></div></details>' +
-        '<table class="prog" style="margin-top:10px"><tr><th>Lab</th><th>Title</th><th>Status</th><th>Steps</th></tr>' + rowsHtml + '</table>';
+        '<details id="reqbox"' + reqOpen + '><summary class="small">All ' + reqs.length + ' requirements</summary><div class="tscroll"><table class="prog"><tr><th>SRG ID</th><th class="c">CAT</th><th>Lab</th><th>Tested on</th><th>Result</th><th>From</th><th>Evidence</th></tr>' + reqHtml + '</table></div></details>' +
+        '<div class="tscroll"><table class="prog" style="margin-top:10px"><tr><th>Lab</th><th>Title</th><th>Status</th><th>Steps</th></tr>' + rowsHtml + '</table></div>';
     }
     else if (activeTab === 'claude') body = '<pre>' + esc(C.claudeHelpText()) + '</pre><p class="small">The zip holds these instructions for Claude in CLAUDE.md, and the two start lines in START-CLAUDE.txt.</p>';
     else if (activeTab === 'licenses') body = '<pre>' + esc(C.licensesExample(m) || 'No license file is used for these choices.') + '</pre><p class="small">Copy this to ' + esc(S.licFile) + ' and fill in the values on your computer. Never commit it, and never put it in the zip.</p>';
@@ -7727,7 +7786,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ta.className = 'cfgedit' + (edited ? ' chg' : '');
     $('fwreset').hidden = !edited; $('fwedited').hidden = !edited;
     $('fwedited').textContent = edited ? 'You edited this text, so it no longer follows the page. A change of the range, of the machines, or of the gateway does not reach it. Click "Use the page\'s text again" to get the text of the page back. '
-      + 'The page keeps your edit in this browser and in the choices file, so do not put a password or a key in it.' : '';
+      + 'The page keeps your edit in this browser and in the choices file, and the zip holds the text as you edited it, so do not put a password or a key in it.' : '';
     $('fwnotes').innerHTML = list(n.firewall);
     var boxes = n.machines.map(function (h) { return '<label><input type="checkbox" data-inet="' + esc(h.base) + '"' + (h.on ? ' checked' : '') + '> ' + esc(h.name) + '</label>'; }).join('');
     if ($('fwinet').getAttribute('data-sig') !== boxes) { $('fwinet').innerHTML = boxes || '<span class="small">This build has no machine that could use it.</span>'; $('fwinet').setAttribute('data-sig', boxes); }
@@ -8401,6 +8460,41 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(netDef && netBack && netOldOk && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.count && !S.rangeOn.net && S.rangeStart === '' && S.rangeCount === '' && S.rangeNet === '' && S.uplink === false && S.uplinkSet === false &&
       S.uplinkAddr === '' && S.uplinkFw === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
       'the choices file keeps the gateway, its uplink, the firewall, the range and its Override boxes, the machines with internet access, and an edited text, and an old file gives the defaults');
+    // The zip holds the external firewall text as a file, as the text stands on the page.
+    reset(); v = C.validateAll(); m = C.buildManifest(v);
+    var ff = C.firewallFile(v), own = C.zipOwnFiles(m, v), inZip = function (p) { return own.filter(function (f) { return f.path === p; })[0]; };
+    ok(ff.path === 'external-firewall/' + C.netConfigs(v).firewall.file && /^external-firewall\/[a-z0-9]+-firewall-fortigate\.txt$/.test(ff.path) && !ff.edited && ff.text === C.netConfigs(v).firewall.text && ff.text.indexOf('config firewall policy') > 0 &&
+      !!inZip(ff.path) && inZip(ff.path).text === ff.text && own.filter(function (f) { return f.path.indexOf('external-firewall/') === 0; }).length === 1 && !!inZip('CHECKLIST.md') && !!inZip('LAB-VALUES.md') && !!inZip('common/lab201-vms.json') && !!inZip('diagrams/lab-topology.svg'),
+      'the zip holds the external firewall text as a file, beside the files it had before');
+    var ckl = C.checklistText(m, v), cmd = C.claudeText(m, v, []);
+    ok(ckl.indexOf('## External firewall') > 0 && ckl.indexOf('in ' + ff.path + ' (FortiGate (FortiOS))') > 0 && ff.notes.length > 3 && ff.notes.every(function (x) { return ckl.indexOf('- ' + x) > 0; }) && ckl.indexOf('You edited that text') < 0 &&
+      cmd.indexOf('- `' + ff.path + '`: the rules for an additional firewall outside the lab') > 0 && C.claudeHelpText().indexOf('- external-firewall/: the text of section 11') > 0,
+      'the checklist names the firewall file and has its notes, and CLAUDE.md says what the file is');
+    S.fwOs = 'asa'; S.fwEdit = 'my own rule\n'; S.uplink = true; v = C.validateAll(); m = C.buildManifest(v); ff = C.firewallFile(v); own = C.zipOwnFiles(m, v); ckl = C.checklistText(m, v);
+    ok(/-firewall-asa\.txt$/.test(ff.path) && ff.edited && ff.text === 'my own rule\n' && (inZip(ff.path) || {}).text === 'my own rule\n' && ff.notes.join(' ') === C.netConfigs(v).firewall.notes.join(' ') && ckl.indexOf('You edited that text on the page') > 0 &&
+      ckl.indexOf('Put the rules of the external firewall (' + ff.path + ') in place after step 4') > 0 && ckl.indexOf('(Cisco ASA)') > 0,
+      'an edited firewall text goes into the zip as it was edited, under the name of its OS type, and the checklist says so');
+    S.fwEdit = C.netConfigs(v).firewall.text; ff = C.firewallFile(v);
+    ok(!ff.edited && ff.text === C.netConfigs(v).firewall.text, 'a text that equals the text of the page does not count as edited');
+    S.fwOs = C.NET_OS_DEFAULT; S.fwEdit = ''; S.uplink = false;
+    // The zip holds the text for a network device as the gateway, and nothing for the Linux router of the scripts.
+    reset(); S.gwOs = 'linux'; v = C.validateAll(); m = C.buildManifest(v); own = C.zipOwnFiles(m, v); ckl = C.checklistText(m, v);
+    ok(C.gatewayFile(v) === null && !own.some(function (f) { return f.path.indexOf('gateway-device/') === 0; }) && ckl.indexOf('## Gateway device') < 0 && C.claudeText(m, v, []).indexOf('gateway-device/') < 0,
+      'the Linux router of the scripts needs no text, so the zip has no gateway file for it');
+    S.gwOs = 'asa'; v = C.validateAll(); m = C.buildManifest(v); own = C.zipOwnFiles(m, v); ckl = C.checklistText(m, v); cmd = C.claudeText(m, v, []);
+    var gf = C.gatewayFile(v) || {}, gwNet = C.netConfigs(v).gateway;
+    ok(gf.path === 'gateway-device/' + gwNet.file && /^gateway-device\/[a-z0-9]+-gateway-asa\.txt$/.test(gf.path) && gf.text === gwNet.text && gf.text.length > 100 && gf.extra === null && (inZip(gf.path) || {}).text === gwNet.text &&
+      own.filter(function (f) { return f.path.indexOf('gateway-device/') === 0; }).length === 1 && !!inZip(C.firewallFile(v).path),
+      'the zip holds the text for a network device as the gateway, beside the external firewall text');
+    ok(ckl.indexOf('## Gateway device') > 0 && ckl.indexOf('## Gateway device') < ckl.indexOf('## External firewall') && ckl.indexOf('in ' + gf.path + ' (Cisco ASA)') > 0 && (gf.notes || []).length > 2 && (gf.notes || []).every(function (x) { return ckl.indexOf('- ' + x) > 0; }) &&
+      ckl.indexOf('the ones of section 6') > 0 && cmd.indexOf('- `' + gf.path + '`: the starting configuration for the network device that is the gateway of this build (Cisco ASA)') > 0 && cmd.indexOf('must stay shut down while the device is the gateway') > 0 &&
+      C.claudeHelpText().indexOf('- gateway-device/: the text of section 10') > 0,
+      'the checklist names the gateway file and has its notes, and CLAUDE.md says what the file is');
+    S.gwOs = 'junos'; v = C.validateAll(); m = C.buildManifest(v); own = C.zipOwnFiles(m, v); ckl = C.checklistText(m, v); gf = C.gatewayFile(v) || {}; gwNet = C.netConfigs(v).gateway;
+    ok(/-gateway-junos\.txt$/.test(gf.path) && !!gf.extra && gf.extra.path === gf.path.replace('.txt', '-extra.txt') && gf.extra.text === gwNet.extra.text && gf.extra.text.indexOf('set security zones security-zone') === 0 &&
+      (inZip(gf.extra.path) || {}).text === gwNet.extra.text && (inZip(gf.path) || {}).text === gwNet.text && own.filter(function (f) { return f.path.indexOf('gateway-device/') === 0; }).length === 2 && ckl.indexOf('- ' + gf.extra.path + ': On an SRX Series firewall in flow mode') > 0,
+      'lines that only an SRX needs are a file of their own beside the Junos gateway text, and the checklist says what they are');
+    S.gwOs = 'linux';
     // The picture of the lab follows the choices. A node is found by the name its machine has in the manifest.
     var node = function (text, n) { var r = new RegExp('<g data-node="' + n + '" data-state="([a-z]+)"(?: data-kind="([a-z]+)")?>').exec(text); return r ? r[1] + (r[2] ? ':' + r[2] : '') : ''; };
     var lnk = function (text, n) { var r = new RegExp('<g data-link="' + n + '" data-state="([a-z]+)">').exec(text); return r ? r[1] : ''; };
@@ -8617,6 +8711,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(body().indexOf('password manager: lab ESXi') > 0, 'a license note reaches the checklist');
     document.querySelector('[data-tab="licenses"]').click();
     ok(/"vsphere"/.test(body()) && /"esxi": ""/.test(body()), 'the license example tab shows an empty template');
+    // The layout: nothing may make the page wider than the screen, on a phone as on a desktop.
+    document.querySelector('[data-tab="progress"]').click();
+    var tables = document.querySelectorAll('main table');
+    ok(tables.length >= 5 && Array.prototype.every.call(tables, function (t) { var box = t.closest('.tscroll'); return !!box && getComputedStyle(box).overflowX === 'auto'; }), 'every table is in a box that scrolls sideways, so a wide table does not widen the page');
+    document.querySelector('[data-tab="licenses"]').click();
+    var probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute;left:0;top:0;width:300px;visibility:hidden';
+    probe.innerHTML = '<div class="field"><label>Probe</label><div><select><option>' + new Array(121).join('wide ') + '</option></select></div></div>';
+    document.body.appendChild(probe);
+    var fieldFits = probe.firstChild.scrollWidth <= 300 && probe.querySelector('select').getBoundingClientRect().width <= 300;
+    document.body.removeChild(probe);
+    var oneColumn = Array.prototype.some.call(document.querySelector('style').sheet.cssRules, function (r) {
+      return !!r.media && /max-width:\s*980px/.test(r.media.mediaText) && Array.prototype.some.call(r.cssRules, function (x) { return x.selectorText === 'main' && /^minmax\(0(px)?,\s*1fr\)$/.test(x.style.gridTemplateColumns); });
+    });
+    ok(fieldFits && oneColumn, 'a long list stays inside its field, and on a narrow screen the page is one column that cannot grow wider than the screen');
     return { fails: fails, text: out.join('\n') };
   }
 
@@ -8684,6 +8793,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       S.platform = 'proxmox'; S.version = '8'; C.resetParams(); S.vms['admin-201'].flavor = 'rhel-10';
       C.buildZip().then(function (z) {
         document.title = 'ziptest ' + z.count + ' files, missing ' + z.missing.join(',');
+        $('selftest').setAttribute('data-names', z.names.join('\n'));
         z.blob.arrayBuffer().then(function (ab) { var u = new Uint8Array(ab), bin = ''; for (var i = 0; i < u.length; i++) bin += String.fromCharCode(u[i]); $('selftest').hidden = false; $('selftest').setAttribute('data-zip', btoa(bin)); });
       });
     }
