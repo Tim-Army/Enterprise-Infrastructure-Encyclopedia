@@ -315,6 +315,7 @@ you run a requirement lab.
 | RADIUS login fails but the server is reachable | The shared secret differs, or the switch is not a client | Match the secret and add the switch's source address to `clients.conf` |
 | Syslog arrives on UDP but not over TLS | The CA certificate is not trusted, or the port differs | Use port 6514 on both ends and install the lab CA on the switch |
 | NTP never synchronizes | The key ID or key differs between the switch and `chrony` | Match `key-id` and `key`, and check `chronyc sources` |
+| NTP stops synchronizing after the NTP hosts restart | `chrony` reaches no upstream server and has no `local` line | Add the `local` line and the `server` line of Lab 999.2 to `chrony.conf`, or give the two hosts internet access |
 | IPv6 pings fail while IPv4 works | A /112 host tried SLAAC, or the host has no static IPv6 address | Set the address statically; SLAAC cannot work on a /112 |
 | A routed link is up but a route is missing | The peer does not know the lab prefix | Add the prefix on the peer, then check the routing table |
 
@@ -509,10 +510,25 @@ address in the host table.
    allow 10.201.0.0/16
    allow fd00:db8:201::/112
    keyfile /etc/chrony/chrony.keys
+   local stratum 10 orphan
+   server 10.201.10.31 iburst
    ```
 
-   and in `/etc/chrony/chrony.keys` add one key line, `1 SHA1 <SECRET>`, then
-   restart `chrony`.
+   That is the text for `svc-201a`. On `svc-201b` the last line names the
+   other server, `server 10.201.10.30 iburst`. In `/etc/chrony/chrony.keys`
+   add one key line, `1 SHA1 <SECRET>`, then restart `chrony`.
+
+   The `local` line lets chrony serve the clock of its own machine when it
+   reaches no upstream server. The lab needs that line. After the build
+   adapters are removed, the two hosts have no way to the internet, unless
+   the lab has an uplink to an external firewall that gives them internet
+   access (the Lab Builder, section 12). Without the line, the switches do
+   not synchronize once the hosts have restarted. The `orphan` option and the
+   `server` line keep the two hosts on one time: each polls the other, one
+   serves its own clock, and the other follows it. The switches poll both
+   servers, and two clocks that drift apart would leave them without a
+   time they can trust. These lines follow the chrony documentation of the
+   `local` directive and have not been run in this lab.
 3. **Syslog with TLS (P4).** Install `rsyslog` and `rsyslog-gnutls`. Issue a
    server certificate from `ca-201` (step 6) and add `/etc/rsyslog.d/10-lab201.conf`:
 

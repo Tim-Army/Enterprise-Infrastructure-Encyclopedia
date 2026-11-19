@@ -92,6 +92,10 @@ table.prog td.c,table.prog th.c{text-align:center}
 #images label{font-size:12.5px}
 /* A text block in the left column must not widen the page: it takes the width of its card and scrolls inside it. */
 pre.cfg{width:0;min-width:100%;margin-top:10px}
+/* The firewall text can be edited, so it is in a text box that looks like the other text blocks. */
+textarea.cfgedit{display:block;width:100%;min-height:320px;margin-top:10px;background:var(--code-bg);color:var(--code-ink);border:1.5px solid var(--line);border-radius:8px;padding:13px 15px;font:12px/1.55 ui-monospace,Consolas,monospace;white-space:pre;overflow:auto;resize:vertical}
+textarea.cfgedit.chg{border-color:var(--accent)}
+.inet{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px}.inet label{cursor:pointer;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -4897,9 +4901,9 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   var NET_OS = [['asa', 'Cisco ASA'], ['nxos', 'Cisco Nexus (NX-OS)'], ['iosxe', 'Cisco IOS XE'], ['iosxr', 'Cisco IOS XR'], ['fortigate', 'FortiGate (FortiOS)'], ['junos', 'Juniper Junos OS']];
   // The text that is written when a name is not one of these.
   var NET_OS_DEFAULT = 'fortigate';
-  // Each list starts with what the lab has when nothing is chosen: the Linux router that the scripts build is the
-  // gateway, and the gateway is the firewall. A name from NET_OS puts a network device in that place.
-  var NET_GW = [['linux', 'Linux router gw-201 (built by the scripts)']].concat(NET_OS), NET_FW = [['gateway', 'The gateway (no separate firewall)']].concat(NET_OS);
+  // The gateway list starts with what the lab has when nothing is chosen: the Linux router that the scripts build. A
+  // name from NET_OS puts a network device in its place. The external firewall is always a network device.
+  var NET_GW = [['linux', 'Linux router gw-201 (built by the scripts)']].concat(NET_OS), NET_FW = NET_OS;
   // The two switches under test. The labs were written for these models.
   var SW_DEFAULT = { a: 'FS-648F-FPOE', b: 'FS-2048F' }, SW_LICENSE = { a: 'FS-SW-LIC-600', b: 'FS-SW-LIC-2000' }, SW_ROLE = { a: 'Access switch', b: 'Aggregation switch' };
   // Suggestions only. Any FortiSwitch model name can be typed.
@@ -5027,10 +5031,10 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_FW[0][0]
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeStart: '', rangeCount: '', inet: {}, fwEdit: ''
   };
   function resetVms() {
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_FW[0][0];
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeStart = ''; state.rangeCount = ''; state.inet = {}; state.fwEdit = '';
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -5328,6 +5332,13 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
       if (vl !== s || moved) out.warnings.push('Segment ' + s + ' uses ' + (vl !== s ? 'VLAN ' + vl : '') + (vl !== s && moved ? ' and ' : '') + (moved ? 'subnet ' + out.sub.cidr[s] : '') + (vl !== s && !moved ? ', but its subnet is still ' + out.sub.cidr[s] : '') + '. Make the same change on the switches.');
     });
     out.addr = addrCheck(out, p4v);
+    // The network range of the lab, which the external firewall uses as the supernet.
+    out.range = rangeCheck(p4v);
+    if (out.range.err.start) out.errors.push('Lab network range, starting IP: ' + out.range.err.start + '. ' + out.range.start + ' is used');
+    if (out.range.err.count) out.errors.push('Lab network range, subnets: ' + out.range.err.count + '. ' + out.range.count + ' is used');
+    out.range.outside = labSubnets(out, p4v).filter(function (n) { return n < out.range.from || n > out.range.to; }).map(function (n) { return ip4str(n) + '/24'; });
+    if (out.range.outside.length) out.warnings.push('The lab network range ' + out.range.cidr + ' does not hold ' + out.range.outside.length + ' subnet' + (out.range.outside.length === 1 ? '' : 's') + ' that this lab uses: ' + out.range.outside.join(', ') +
+      '. The external firewall would block ' + (out.range.outside.length === 1 ? 'it' : 'them') + ' like any other network.');
     out.sw = swCheck();
     out.fsw = fswCheck(out.sw);
     if (!out.fsw.has) out.warnings.push('No feature data is loaded for FortiSwitchOS ' + out.fsw.version + ', so the page cannot say which lab features your switches support.');
@@ -6149,7 +6160,7 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   // The values come from the same checks as the manifest, so the text follows the block, the VLAN IDs, and the subnets.
   // The text holds commands only. What a reader must know goes into the notes, because the comment mark differs
   // between these systems.
-  var GW_TRUNK = '<GW_TRUNK_PORT>', GW_OOB = '<GW_OOB_PORT>', FW_LAB = '<FW_LAB_INTERFACE>', FW_OUT = '<FW_INTERNET_INTERFACE>';
+  var GW_TRUNK = '<GW_TRUNK_PORT>', GW_OOB = '<GW_OOB_PORT>', FW_LAB = '<FW_LAB_INTERFACE>', FW_OUT = '<FW_INTERNET_INTERFACE>', FW_GW = '<LAB_GATEWAY_ADDRESS>';
   var NET_UNTESTED = 'This text was written from the vendor\'s documentation. It was not run on a device, so check it against the reference for your release.';
   function netOs(id) { return NET_OS.some(function (o) { return o[0] === id; }) ? id : NET_OS_DEFAULT; }
   function netPick(list, id) { return list.some(function (o) { return o[0] === id; }) ? id : list[0][0]; }
@@ -6269,66 +6280,145 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     return { os: os, file: lab + '-gateway-' + os + '.txt', text: L.join('\n') + '\n', notes: notes, extra: extra };
   }
 
-  // The firewall: lab addresses reach lab addresses, and everything else that comes from the lab is dropped. For the
-  // gateway device (same), the text names its interfaces. For a separate firewall, the interface that faces the lab
-  // is a placeholder.
-  function firewallConfig(os, m, same) {
+  // An IPv4 address as a number, and back. NaN when the text is no address.
+  function ip4num(a) {
+    var m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(String(a).trim());
+    if (!m || +m[1] > 255 || +m[2] > 255 || +m[3] > 255 || +m[4] > 255) return NaN;
+    return ((+m[1] * 256 + +m[2]) * 256 + +m[3]) * 256 + +m[4];
+  }
+  function ip4str(n) { return [Math.floor(n / 16777216) % 256, Math.floor(n / 65536) % 256, Math.floor(n / 256) % 256, n % 256].join('.'); }
+  // The private range an address is in, as its first and last address, or null.
+  function privateRange(n) {
+    return [['10.0.0.0', '10.255.255.255'], ['172.16.0.0', '172.31.255.255'], ['192.168.0.0', '192.168.255.255']].map(function (b) { return [ip4num(b[0]), ip4num(b[1])]; }).filter(function (b) { return n >= b[0] && n <= b[1]; })[0] || null;
+  }
+
+  // The network range of the lab. The first address and the number of /24 subnets give the smallest block that holds
+  // them, which is the supernet. With nothing typed, the range is the address block of step 6. A value that cannot be
+  // used is reported, and the range falls back to a value that can.
+  function rangeCheck(p4) {
+    var defStart = ip4num(p4 + '.0.0'), startText = String(state.rangeStart || '').trim(), countText = String(state.rangeCount || '').trim(), err = {};
+    var start = startText ? ip4num(startText) : defStart, count = countText ? (/^\d+$/.test(countText) ? parseInt(countText, 10) : NaN) : 256;
+    if (isNaN(start)) err.start = 'Use an IPv4 address such as ' + ip4str(defStart);
+    else if (!privateRange(start)) err.start = 'Use a private range: 10.x, 172.16 to 172.31, or 192.168';
+    else if (start % 256) err.start = 'Use the first address of a /24 subnet, such as ' + ip4str(start - start % 256);
+    if (err.start) start = defStart;
+    if (isNaN(count) || count < 1) { err.count = 'Use a whole number of subnets, 1 or more'; count = 256; }
+    // The smallest block that holds every subnet from the first one on.
+    function fit(s, c) {
+      var end = s + c * 256 - 1, len = 24, size = 256, net = s;
+      while (len > 0) { net = s - s % size; if (net + size - 1 >= end) break; len--; size *= 2; }
+      return { net: net, len: len, size: size };
+    }
+    var own = privateRange(start), most = Math.floor((own[1] + 1 - start) / 256), f = fit(start, count);
+    if (f.net < own[0] || f.net + f.size - 1 > own[1]) {
+      if (!err.count) err.count = count + ' subnets from ' + ip4str(start) + ' do not fit in the private range. The most is ' + most;
+      count = Math.min(256, most); f = fit(start, count);
+    }
+    return { start: ip4str(start), count: count, net: ip4str(f.net), len: f.len, cidr: ip4str(f.net) + '/' + f.len, last: ip4str(f.net + f.size - 1), holds: f.size / 256, from: f.net, to: f.net + f.size - 1,
+      exact: f.size / 256 === count && f.net === start, typed: !!(startText || countText), err: err, outside: [] };
+  }
+  // The /24 networks that this build uses: the gateway, the machines, the two switches, and the hosts that Chapter 999
+  // names. The range of the lab should hold them all.
+  function labSubnets(v, p4) {
+    var seen = {}, add = function (a) { var n = ip4num(String(a).split('/')[0]); if (!isNaN(n)) seen[n - n % 256] = true; };
+    netModel(v).ifs.forEach(function (i) { add(i.ip4); });
+    vmRows().forEach(function (e) { if (rowIncluded(e.base, e.row)) addrSlots(e.base).forEach(function (sl) { add((v.addr.eff[e.base.name] || {})[sl.key] || mapDef(sl.def, p4, v.sub)); }); });
+    ['11', '12'].forEach(function (h) { add(p4 + '.0.' + h); add(v.sub.base[30] + '.' + h); add(p4 + '.250.' + h); });
+    SERVICES.forEach(function (s) { add(mapDef(s.ipv4 + '/24', p4, v.sub)); });
+    add(p4 + '.254.1');
+    return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; });
+  }
+
+  // The machines that can reach the internet through the external firewall. The hosts of the NTP servers are among
+  // them unless you take them out, because Lab 999.2 has those servers take their time from the internet. The gateway
+  // is not offered: it faces the firewall with its own uplink, not with a lab address.
+  function inetDefault(name) { return SERVICES.some(function (s) { return s.on === name && /^ntp-/.test(s.name); }); }
+  function inetHosts(v, p4) {
+    var out = [];
+    vmRows().forEach(function (e) {
+      if (e.base.role === 'gateway' || !rowIncluded(e.base, e.row)) return;
+      var seen = {}, addrs = [];
+      addrSlots(e.base).forEach(function (sl) { var a = ((v.addr.eff[e.base.name] || {})[sl.key] || mapDef(sl.def, p4, v.sub)).split('/')[0]; if (!seen[a]) { seen[a] = true; addrs.push(a); } });
+      out.push({ base: e.base.name, name: v.names[e.base.name] || e.base.name, on: typeof state.inet[e.base.name] === 'boolean' ? state.inet[e.base.name] : inetDefault(e.base.name), addrs: addrs });
+    });
+    return out;
+  }
+
+  // The external firewall, which stands outside the lab, between the lab and the internet. Lab machines reach their own
+  // supernet, the machines that need it reach the internet, and nothing else that comes from the lab is passed. The
+  // first lines are the way back to the lab. f holds the supernet, the IPv6 block, and the machines with internet access.
+  function firewallConfig(os, f) {
     os = netOs(os);
-    var L = [], lab = m.lab, acl = lab.toUpperCase() + '-NO-INTERNET', acl6 = acl + '-V6', filter = lab + '-no-internet', filter6 = filter + '-v6';
-    var why = lab + ': lab addresses reach lab addresses and nothing else', n6 = m.nets6[0].net + '/' + m.nets6[0].len, pairs = [];
-    m.nets4.forEach(function (a) { m.nets4.forEach(function (b) { pairs.push([a, b]); }); });
-    var ports = same ? m.ifs.map(netPort) : [FW_LAB], policy = os === 'fortigate';
-    var notes = [same ? 'No separate firewall is chosen, so this text is for the gateway device of section 10 and names its interfaces.'
-      : 'This text is for a separate firewall. Replace ' + FW_LAB + ' with ' + (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab' + (os === 'junos' ? ' (the text uses unit 0 of it)' : '') + '.' +
-        (policy ? '' : ' That interface must carry the lab and nothing else, because the last rule drops everything that is not lab traffic.')];
-    if (!policy) notes.push('Lab addresses reach lab addresses. Everything else that comes in from the lab is dropped and ' + (os === 'junos' ? 'counted' : 'logged') + ', so the lab has no path to the internet.');
+    var L = [], lab = f.lab, acl = lab.toUpperCase() + '-EXTERNAL', acl6 = acl + '-V6', grp = lab.toUpperCase() + '-INTERNET', filter = lab + '-external', filter6 = filter + '-v6', net = f.net, len = f.len, s6 = f.sup6, addrs = [];
+    f.hosts.forEach(function (h) { h.addrs.forEach(function (a) { addrs.push(a); }); });
+    var own = lab + ': lab machines reach their own supernet', out = lab + ': internet access for the machines that need it', rest = lab + ': nothing else leaves the lab', policy = os === 'fortigate';
+    var names = f.hosts.map(function (h) { return h.name; });
+    var notes = ['This firewall stands outside the lab, between the lab and the internet. Replace ' + FW_LAB + ' with ' + (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab' + (os === 'junos' ? ' (the text uses unit 0 of it)' : '') +
+        (policy ? (names.length ? ', and ' + FW_OUT + ' with its interface that faces the internet.' : '.') : '. That interface must carry the lab and nothing else, because the last rule drops everything else that comes in there.'),
+      'Replace ' + FW_GW + ' with the address that the lab gateway has on the network between it and this firewall. The first lines are the way back to the lab.',
+      'Lab machines reach the supernet ' + net + '/' + len + ' of section 11 and nothing else. ' + (names.length ? 'Internet access: ' + names.join(', ') + '.' : 'No machine has internet access.') +
+        (names.length ? ' A machine with internet access also reaches the other networks behind this firewall. Add a rule above its line if it must not.' : ''),
+      policy ? 'FortiOS reads policies from the top, so keep these policies above any policy that lets the lab out.' + (names.length ? ' The policy ' + lab + '-internet translates the source address ("set nat enable").' : '') + ' One policy holds IPv4 and IPv6 addresses from FortiOS 6.4.'
+        : 'The text does not translate addresses. If this firewall translates the addresses of its inside networks, make sure that rule covers the machines with internet access.' + (os === 'asa' ? ' One access list holds IPv4 and IPv6 entries from ASA 9.0(1).' : ''),
+      'The IPv6 addresses of the lab are unique local addresses, which are not routed on the internet, so no machine gets IPv6 internet access.',
+      f.device ? 'The lab needs a way to this firewall: give the gateway device an uplink to it and a default route.'
+        : f.gwBuilt ? 'The lab needs a way to this firewall. ' + f.gw + ' as the scripts build it has none after step 4, because its uplink is a build adapter and it forwards only what Lab 999.1 allows. Until it has an uplink, a default route, and a rule for these machines, no lab traffic reaches this firewall.'
+          : 'The lab needs a way to this firewall, and this build has no gateway.'];
     if (os === 'iosxe') {
-      L.push('ip access-list extended ' + acl, ' remark ' + why);
-      pairs.forEach(function (p) { L.push(' permit ip ' + p[0].net + ' ' + wildOf(p[0].len) + ' ' + p[1].net + ' ' + wildOf(p[1].len)); });
-      L.push(' deny ip any any log', '!', 'ipv6 access-list ' + acl6, ' remark ' + why, ' permit ipv6 ' + n6 + ' ' + n6, ' permit icmp any any nd-ns', ' permit icmp any any nd-na', ' deny ipv6 any any log', '!');
-      ports.forEach(function (p) { L.push('interface ' + p, ' ip access-group ' + acl + ' in', ' ipv6 traffic-filter ' + acl6 + ' in', '!'); });
+      L.push('ip route ' + net + ' ' + maskOf(len) + ' ' + FW_GW, '!', 'ip access-list extended ' + acl, ' remark ' + own, ' permit ip ' + net + ' ' + wildOf(len) + ' ' + net + ' ' + wildOf(len));
+      if (addrs.length) L.push(' remark ' + out);
+      addrs.forEach(function (a) { L.push(' permit ip host ' + a + ' any'); });
+      L.push(' remark ' + rest, ' deny ip any any log', '!', 'ipv6 access-list ' + acl6, ' remark ' + own, ' permit ipv6 ' + s6 + ' ' + s6, ' permit icmp any any nd-ns', ' permit icmp any any nd-na', ' remark ' + rest, ' deny ipv6 any any log', '!',
+        'interface ' + FW_LAB, ' ip access-group ' + acl + ' in', ' ipv6 traffic-filter ' + acl6 + ' in', '!');
       notes.push('See what was dropped with "show ip access-lists ' + acl + '" and "show ipv6 access-list ' + acl6 + '".');
     } else if (os === 'nxos') {
-      L.push('ip access-list ' + acl, '  statistics per-entry', '  remark ' + why);
-      pairs.forEach(function (p) { L.push('  permit ip ' + p[0].net + '/' + p[0].len + ' ' + p[1].net + '/' + p[1].len); });
-      L.push('  deny ip any any log', 'ipv6 access-list ' + acl6, '  statistics per-entry', '  remark ' + why, '  permit ipv6 ' + n6 + ' ' + n6, '  permit icmp any any nd-ns', '  permit icmp any any nd-na', '  deny ipv6 any any log');
-      ports.forEach(function (p) { L.push('interface ' + p, '  ip access-group ' + acl + ' in', '  ipv6 traffic-filter ' + acl6 + ' in'); });
+      L.push('ip route ' + net + '/' + len + ' ' + FW_GW, 'ip access-list ' + acl, '  statistics per-entry', '  remark ' + own, '  permit ip ' + net + '/' + len + ' ' + net + '/' + len);
+      if (addrs.length) L.push('  remark ' + out);
+      addrs.forEach(function (a) { L.push('  permit ip ' + a + '/32 any'); });
+      L.push('  remark ' + rest, '  deny ip any any log', 'ipv6 access-list ' + acl6, '  statistics per-entry', '  remark ' + own, '  permit ipv6 ' + s6 + ' ' + s6, '  permit icmp any any nd-ns', '  permit icmp any any nd-na', '  remark ' + rest, '  deny ipv6 any any log',
+        'interface ' + FW_LAB, '  ip access-group ' + acl + ' in', '  ipv6 traffic-filter ' + acl6 + ' in');
       notes.push('See what was dropped with "show ip access-lists ' + acl + '" and "show ipv6 access-lists ' + acl6 + '".');
     } else if (os === 'iosxr') {
       var seq = 10, line = function (text) { seq += 10; return ' ' + (seq - 10) + ' ' + text; };
-      L.push('ipv4 access-list ' + acl, line('remark ' + why));
-      pairs.forEach(function (p) { L.push(line('permit ipv4 ' + p[0].net + ' ' + wildOf(p[0].len) + ' ' + p[1].net + ' ' + wildOf(p[1].len))); });
-      L.push(line('deny ipv4 any any log'), '!'); seq = 10;
-      L.push('ipv6 access-list ' + acl6, line('remark ' + why), line('permit ipv6 ' + n6 + ' ' + n6), line('permit icmpv6 any any nd-ns'), line('permit icmpv6 any any nd-na'), line('deny ipv6 any any log'), '!');
-      ports.forEach(function (p) { L.push('interface ' + p, ' ipv4 access-group ' + acl + ' ingress', ' ipv6 access-group ' + acl6 + ' ingress', '!'); });
+      L.push('router static', ' address-family ipv4 unicast', '  ' + net + '/' + len + ' ' + FW_GW, ' !', '!', 'ipv4 access-list ' + acl, line('remark ' + own), line('permit ipv4 ' + net + ' ' + wildOf(len) + ' ' + net + ' ' + wildOf(len)));
+      if (addrs.length) L.push(line('remark ' + out));
+      addrs.forEach(function (a) { L.push(line('permit ipv4 host ' + a + ' any')); });
+      L.push(line('remark ' + rest), line('deny ipv4 any any log'), '!'); seq = 10;
+      L.push('ipv6 access-list ' + acl6, line('remark ' + own), line('permit ipv6 ' + s6 + ' ' + s6), line('permit icmpv6 any any nd-ns'), line('permit icmpv6 any any nd-na'), line('remark ' + rest), line('deny ipv6 any any log'), '!',
+        'interface ' + FW_LAB, ' ipv4 access-group ' + acl + ' ingress', ' ipv6 access-group ' + acl6 + ' ingress', '!');
       notes.push('Enter the text in configuration mode, read it back with "show configuration", and then enter "commit".',
         'See what was dropped with "show access-lists ipv4 ' + acl + '" and "show access-lists ipv6 ' + acl6 + '".');
     } else if (os === 'asa') {
-      L.push('access-list ' + acl + ' remark ' + why);
-      pairs.forEach(function (p) { L.push('access-list ' + acl + ' extended permit ip ' + p[0].net + ' ' + maskOf(p[0].len) + ' ' + p[1].net + ' ' + maskOf(p[1].len)); });
-      L.push('access-list ' + acl + ' extended permit ip ' + n6 + ' ' + n6, 'access-list ' + acl + ' extended deny ip any any log');
-      (same ? m.ifs.map(function (i) { return netName(m, i); }) : [FW_LAB]).forEach(function (n) { L.push('access-group ' + acl + ' in interface ' + n); });
-      notes.push('One access list holds IPv4 and IPv6 entries from ASA 9.0(1).', 'See what was dropped with "show access-list ' + acl + '".');
+      L.push('route ' + FW_LAB + ' ' + net + ' ' + maskOf(len) + ' ' + FW_GW);
+      if (addrs.length) { L.push('object-group network ' + grp); addrs.forEach(function (a) { L.push(' network-object host ' + a); }); }
+      L.push('access-list ' + acl + ' remark ' + own, 'access-list ' + acl + ' extended permit ip ' + net + ' ' + maskOf(len) + ' ' + net + ' ' + maskOf(len), 'access-list ' + acl + ' extended permit ip ' + s6 + ' ' + s6);
+      if (addrs.length) L.push('access-list ' + acl + ' remark ' + out, 'access-list ' + acl + ' extended permit ip object-group ' + grp + ' any4');
+      L.push('access-list ' + acl + ' remark ' + rest, 'access-list ' + acl + ' extended deny ip any any log', 'access-group ' + acl + ' in interface ' + FW_LAB);
+      notes.push('See what was dropped with "show access-list ' + acl + '".');
     } else if (os === 'fortigate') {
-      var names = m.nets4.map(function (n, k) { return '"' + lab + '-net' + (k + 1) + '"'; });
-      L.push('config firewall address');
-      m.nets4.forEach(function (n, k) { L.push('    edit ' + names[k], '        set subnet ' + n.net + ' ' + maskOf(n.len), '    next'); });
-      L.push('end', 'config firewall address6', '    edit "' + lab + '-net6"', '        set ip6 ' + n6, '    next', 'end', 'config firewall policy', '    edit 0',
-        '        set name "' + filter + '"', '        set srcintf "' + (same ? lab : FW_LAB) + '"', '        set dstintf "' + FW_OUT + '"', '        set action deny',
-        '        set srcaddr ' + names.join(' '), '        set dstaddr "all"', '        set srcaddr6 "' + lab + '-net6"', '        set dstaddr6 "all"',
-        '        set schedule "always"', '        set service "ALL"', '        set logtraffic all', '        set comments "' + lab + ': nothing from the lab leaves through this interface"', '    next', 'end');
-      notes.push('Replace ' + FW_OUT + ' with the interface that faces the internet. The policy drops and logs everything from the lab addresses that would leave through it.' + (same ? ' Its source is the zone ' + lab + ' of the gateway configuration.' : ''),
-        'FortiOS reads policies from the top, so move this policy above any policy that lets these addresses out. With no such policy, FortiOS drops the traffic already, and this policy records it.',
-        'One policy holds IPv4 and IPv6 addresses from FortiOS 6.4.');
+      var members = [];
+      L.push('config router static', '    edit 0', '        set dst ' + net + ' ' + maskOf(len), '        set gateway ' + FW_GW, '        set device "' + FW_LAB + '"', '        set comment "' + lab + ': the way back to the lab"', '    next', 'end',
+        'config firewall address', '    edit "' + lab + '-supernet"', '        set subnet ' + net + ' ' + maskOf(len), '    next');
+      f.hosts.forEach(function (h) {
+        h.addrs.forEach(function (a) { members.push('"' + lab + '-inet-' + (members.length + 1) + '"'); L.push('    edit ' + members[members.length - 1], '        set subnet ' + a + ' 255.255.255.255', '        set comment "' + h.name + '"', '    next'); });
+      });
+      L.push('end');
+      if (members.length) L.push('config firewall addrgrp', '    edit "' + lab + '-internet"', '        set member ' + members.join(' '), '    next', 'end');
+      L.push('config firewall address6', '    edit "' + lab + '-supernet6"', '        set ip6 ' + s6, '    next', 'end', 'config firewall policy');
+      if (members.length) L.push('    edit 0', '        set name "' + lab + '-internet"', '        set srcintf "' + FW_LAB + '"', '        set dstintf "' + FW_OUT + '"', '        set action accept', '        set srcaddr "' + lab + '-internet"', '        set dstaddr "all"',
+        '        set schedule "always"', '        set service "ALL"', '        set nat enable', '        set logtraffic all', '        set comments "' + out + '"', '    next');
+      L.push('    edit 0', '        set name "' + lab + '-block"', '        set srcintf "' + FW_LAB + '"', '        set dstintf "any"', '        set action deny', '        set srcaddr "' + lab + '-supernet"', '        set dstaddr "all"',
+        '        set srcaddr6 "' + lab + '-supernet6"', '        set dstaddr6 "all"', '        set schedule "always"', '        set service "ALL"', '        set logtraffic all', '        set comments "' + rest + '"', '    next', 'end');
     } else {
       var f4 = 'set firewall family inet filter ' + filter, f6 = 'set firewall family inet6 filter ' + filter6;
-      m.nets4.forEach(function (n) { L.push(f4 + ' term lab-to-lab from source-address ' + n.net + '/' + n.len); });
-      m.nets4.forEach(function (n) { L.push(f4 + ' term lab-to-lab from destination-address ' + n.net + '/' + n.len); });
-      L.push(f4 + ' term lab-to-lab then accept', f4 + ' term everything-else then count ' + lab + '-blocked', f4 + ' term everything-else then discard',
-        f6 + ' term lab-to-lab from source-address ' + n6, f6 + ' term lab-to-lab from destination-address ' + n6, f6 + ' term lab-to-lab then accept',
+      L.push('set routing-options static route ' + net + '/' + len + ' next-hop ' + FW_GW, f4 + ' term own-supernet from source-address ' + net + '/' + len, f4 + ' term own-supernet from destination-address ' + net + '/' + len, f4 + ' term own-supernet then accept');
+      addrs.forEach(function (a) { L.push(f4 + ' term internet-access from source-address ' + a + '/32'); });
+      if (addrs.length) L.push(f4 + ' term internet-access then accept');
+      L.push(f4 + ' term everything-else then count ' + lab + '-blocked', f4 + ' term everything-else then discard',
+        f6 + ' term own-supernet from source-address ' + s6, f6 + ' term own-supernet from destination-address ' + s6, f6 + ' term own-supernet then accept',
         f6 + ' term neighbor-discovery from next-header icmp6', f6 + ' term neighbor-discovery from icmp-type neighbor-solicit', f6 + ' term neighbor-discovery from icmp-type neighbor-advertisement', f6 + ' term neighbor-discovery then accept',
-        f6 + ' term everything-else then count ' + lab + '-blocked-v6', f6 + ' term everything-else then discard');
-      (same ? m.ifs.map(netUnit) : [FW_LAB + ' unit 0']).forEach(function (u) { L.push('set interfaces ' + u + ' family inet filter input ' + filter, 'set interfaces ' + u + ' family inet6 filter input ' + filter6); });
+        f6 + ' term everything-else then count ' + lab + '-blocked-v6', f6 + ' term everything-else then discard',
+        'set interfaces ' + FW_LAB + ' unit 0 family inet filter input ' + filter, 'set interfaces ' + FW_LAB + ' unit 0 family inet6 filter input ' + filter6);
       notes.push('Enter the lines in configuration mode, read the change with "show | compare", and then enter "commit".',
         'See what was dropped with "show firewall filter ' + filter + '" and "show firewall filter ' + filter6 + '".');
     }
@@ -6336,15 +6426,14 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     return { os: os, file: lab + '-firewall-' + os + '.txt', text: L.join('\n') + '\n', notes: notes, extra: null };
   }
 
-  // Both texts for the choices on the page. The gateway is the Linux router of the scripts or a device, and the
-  // firewall is the gateway or a separate device. The lab picture is drawn from the same answer.
+  // The gateway text and the external firewall text for the choices on the page. The gateway is the Linux router of the
+  // scripts or a device. The lab picture is drawn from the same answer.
   function netConfigs(v) {
-    var m = netModel(v), g = netPick(NET_GW, state.gwOs), f = netPick(NET_FW, state.fwOs), device = g !== NET_GW[0][0], separate = f !== NET_FW[0][0], pick = 'Pick an OS type only if a separate firewall stands between the lab and the internet. The page then writes its rules, and the Diagram tab shows it.';
-    var firewall = separate ? firewallConfig(f, m, false) : device ? firewallConfig(g, m, true) : { os: f, file: '', text: '', extra: null, notes: m.gwBuilt
-      ? [m.gw + ' is the firewall too, so there is nothing to enter here. It drops forwarded traffic unless a rule of Lab 999.1 allows it, and it translates no addresses.',
-        'After the build, the lab has no way to the internet: step 4 of the commands removes the build adapters, which are the only connection to the internet-facing network.', pick]
-      : ['This build has no gateway, so it has no firewall of its own. The hosts share the network of Windows.', pick] };
-    return { model: m, gw: g, fw: f, device: device, separate: separate, gwName: netLabel(g), fwName: netLabel(f), gateway: gatewayConfig(g, m), firewall: firewall };
+    v = v || validateAll();
+    var p4 = validIpv4Prefix(state.v4) ? state.v4 : OLD_V4, p6 = validIpv6Prefix(state.v6) ? state.v6 : OLD_V6;
+    var m = netModel(v), g = netPick(NET_GW, state.gwOs), f = netOs(state.fwOs), device = g !== NET_GW[0][0], all = inetHosts(v, p4), on = all.filter(function (h) { return h.on; });
+    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, gateway: gatewayConfig(g, m),
+      firewall: firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device }) };
   }
 
   /* ----------------------------------------------------------- lab picture */
@@ -6353,7 +6442,7 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   // firewall choices come from the page, so the picture changes with them.
   function topologySvg(m, v, net) {
     v = v || validateAll(); m = m || buildManifest(v); net = net || netConfigs(v);
-    var p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, plat = PLATFORMS[state.platform], wsl = !!plat.wslOnly, one = !!plat.singleTrunk, D = 56, out = [];
+    var p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, plat = PLATFORMS[state.platform], wsl = !!plat.wslOnly, one = !!plat.singleTrunk, D = 70, out = [];
     var ver = plat.versions.filter(function (q) { return q[0] === state.version; })[0], platName = ver ? ver[1] : plat.name;
     var INK = '#1f2937', MUTE = '#6b7280', LINK = '#b45309', rows = {};
     vmRows().forEach(function (e) { rows[e.base.name] = e; });
@@ -6422,22 +6511,23 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     out.push('<svg viewBox="0 0 960 ' + (YL + 74) + '" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">');
     out.push('<title>Lab topology of this build</title>');
     out.push('<desc>' + xml('The shared lab of Chapter 999 as chosen on the Lab Builder, on ' + platName + '. Gateway: ' + (net.device ? 'a ' + net.gwName + ' device in place of ' + nm(gw) : st(gw) === 'in' ? nm(gw) + ', a Linux router' : 'none') +
-      '. Firewall: ' + (net.separate ? 'a separate ' + net.fwName + ' device' : 'the gateway') + '. Switches under test: ' + swA + ' (' + v.sw.model.a + ') and ' + swB + ' (' + v.sw.model.b + '). Machines in this build: ' +
+      '. External firewall: ' + net.fwName + ', with internet access for ' + (net.internet.length ? net.internet.map(function (h) { return h.name; }).join(', ') : 'no machine') + ' and the supernet ' + net.range.cidr + '. Switches under test: ' + swA + ' (' + v.sw.model.a + ') and ' + swB + ' (' + v.sw.model.b + '). Machines in this build: ' +
       (inBuild.map(function (b) { return nm(b.name); }).join(', ') || 'none') + '.' + (notIn.length ? ' Not in this build: ' + notIn.map(function (b) { return b.name; }).join(', ') + '.' : '') + ' All addresses come from ' + p4 + '.0.0/16 and ' + p6 + '/112.') + '</desc>');
     rect(0, 0, 960, YL + 74, '#ffffff', '#ffffff', { rx: 0, sw: 0 });
     text(480, 24, 'Shared lab topology (Chapter 999) as chosen on the Lab Builder: ' + p4 + '.0.0/16 and ' + p6 + '/112', { size: 15, bold: true, anchor: 'middle', max: 920 });
 
-    // The way out of the lab: the internet-facing network, and a separate firewall on the way when one was chosen.
-    path('M300,' + H0 + ' V60 H650', MUTE, 1.5, '6 3');
-    if (net.separate) box('firewall', 'in', 'fw', 370, 38, 240, 44, 'Firewall: ' + net.fwName, ['separate device: only lab to lab passes'], { center: true, kind: net.fw, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
-    else tag(490, 53, 150, 'no separate firewall');
-    box('internet', 'in', 'opt', 650, 38, 290, 44, 'Internet-facing network', [wsl ? 'the Windows network that the WSL hosts share' : 'reached by the build adapters only, which step 4 removes'], { center: true, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
+    // The way out of the lab: the external firewall, and the internet behind it.
+    var inet = net.internet.map(function (h) { return h.name; });
+    path('M300,' + H0 + ' V66 H330', MUTE, 1.5, '6 3'); path('M620,66 H710', MUTE, 1.5, '6 3');
+    box('firewall', 'in', 'fw', 330, 38, 290, 56, 'External firewall: ' + net.fwName, [inet.length ? 'internet for ' + (inet.length > 3 ? inet.length + ' machines' : inet.join(', ')) : 'no machine has internet access', 'the rest stays in ' + net.range.cidr],
+      { center: true, kind: net.fw, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
+    box('internet', 'in', 'opt', 710, 38, 230, 56, 'Internet', wsl ? ['the WSL hosts reach it through Windows'] : ['the build adapters reach it too,', 'until step 4 removes them'], { center: true, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
 
     // The hypervisor and its machines.
     var defFlavor = FLAVOR[m.default_flavor].name, otherFlavor = m.vms.filter(function (q) { return q.flavor && q.flavor !== m.default_flavor; }).length;
     rect(20, H0, 920, 270, '#f8fafc', '#475569', { dash: '6 4' });
     text(32, H0 + 18, (wsl ? platName : 'Hypervisor (' + platName + ')') + ': ' + m.vms.length + (wsl ? ' service hosts, ' : ' virtual machines, ') + defFlavor + (otherFlavor ? ', ' + otherFlavor + ' with another flavor' : ''), { size: 12, bold: true, fill: '#334155', max: 890 });
-    var segs = net.model.ifs.map(function (i) { return i.seg; }), segA = segs.slice(0, 4).join(', ') + ',', segB = segs.slice(4).join(', '), role = net.separate ? 'gateway' : 'gateway and firewall';
+    var segs = net.model.ifs.map(function (i) { return i.seg; }), segA = segs.slice(0, 4).join(', ') + ',', segB = segs.slice(4).join(', '), role = net.device ? 'gateway' : 'gateway and firewall';
     if (net.device) box('gateway', 'in', 'dev', 36, Y1, 120, 110, 'Gateway device', [net.gwName, role, '.1 on segments', segA, segB].concat(st(gw) === 'in' ? [nm(gw) + ': shut down'] : []), { center: true, kind: net.gw });
     else if (st(gw) !== 'in') box('gateway', st(gw), 'vm', 36, Y1, 120, 110, nm(gw), ['gateway', why(gw)], { center: true, kind: net.gw });
     else box('gateway', 'in', 'vm', 36, Y1, 120, 110, nm(gw), [role, '.1 on segments', segA, segB, FLAVOR[v.flavors[gw] || m.default_flavor].name], { center: true, kind: net.gw });
@@ -6554,7 +6644,7 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeStart: state.rangeStart, rangeCount: state.rangeCount, internet: state.inet, firewallText: state.fwEdit }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -6594,7 +6684,10 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     state.startLab = LABS.some(function (l) { return l.id === s.startLab; }) ? s.startLab : '999.1';
     state.fswVersion = FSW_VERSIONS.some(function (x) { return x[0] === s.fswVersion; }) ? s.fswVersion : FSW_DEFAULT;
     if (s.switches && typeof s.switches === 'object') ['a', 'b'].forEach(function (k) { if (s.switches[k]) state.sw[k] = String(s.switches[k]); });
-    state.gwOs = netPick(NET_GW, s.gatewayOs); state.fwOs = netPick(NET_FW, s.firewallOs);
+    state.gwOs = netPick(NET_GW, s.gatewayOs); state.fwOs = netOs(s.firewallOs);
+    state.rangeStart = typeof s.rangeStart === 'string' ? s.rangeStart : ''; state.rangeCount = typeof s.rangeCount === 'string' || typeof s.rangeCount === 'number' ? String(s.rangeCount) : '';
+    state.inet = {}; BASE.vms.forEach(function (b) { if (s.internet && typeof s.internet[b.name] === 'boolean') state.inet[b.name] = s.internet[b.name]; });
+    state.fwEdit = typeof s.firewallText === 'string' && s.firewallText.length <= 100000 ? s.firewallText : '';
     return notes;
   }
 
@@ -6647,7 +6740,7 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
-    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs
+    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs
   };
 })();
 </script>
@@ -6681,8 +6774,10 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     var optsOf = function (list) { return list.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + '</option>'; }).join(''); };
     h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that, and it needs nothing from this section. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
     h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
-    h += '<div class="card"><h2><span class="n">11</span> Firewall configuration</h2><p class="hint">The firewall keeps the lab from the internet: lab addresses reach lab addresses, and nothing else that comes from the lab is passed. Without a separate firewall, that is the job of the gateway. Pick an OS type only if a separate firewall stands between the lab and the internet. The page then writes its rules. The Diagram tab shows your choice.</p>';
-    h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div></div><pre id="fwcfg" class="cfg"></pre><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><span class="small" id="fwmsg"></span></div><div class="note info" id="fwnotes"></div></div>';
+    h += '<div class="card"><h2><span class="n">11</span> Lab network range</h2><p class="hint">The range of addresses that belongs to the lab. The external firewall of section 12 lets a lab machine reach this range and nothing else, unless you give the machine internet access. Open the list, type the first address, then say how many /24 subnets the lab holds. The page shows the smallest block that holds them, which is the supernet. With nothing typed, the range is the address block of step 6.</p>';
+    h += '<details id="rangebox"><summary>Lab network range: <span id="rangesum"></span></summary><div class="field" style="margin-top:10px"><label for="rstart">1. Starting IP</label><div><input type="text" id="rstart" class="addr" autocomplete="off"><span class="msg bad" id="rstartmsg"></span></div><label for="rcount">2. How many subnets</label><div><input type="text" id="rcount" class="num" autocomplete="off"> <span class="small">each one a /24</span><span class="msg bad" id="rcountmsg"></span></div><label>3. Supernet</label><div id="rangeout"></div></div></details><div id="rangewarn"></div></div>';
+    h += '<div class="card"><h2><span class="n">12</span> External firewall configuration</h2><p class="hint">The firewall outside the lab, between the lab and the internet. It gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 11). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs.</p>';
+    h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div><label>Internet access</label><div id="fwinet" class="inet"></div></div><textarea id="fwtext" class="cfgedit" spellcheck="false" wrap="off" aria-label="External firewall configuration"></textarea><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><button class="btn" id="fwreset" hidden>Use the page\'s text again</button><span class="small" id="fwmsg"></span></div><div class="note warn" id="fwedited" hidden></div><div class="note info" id="fwnotes"></div></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
     r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden><button class="btn" id="loadprog">Load progress</button><input type="file" id="progfile" accept=".md,text/markdown,text/plain" hidden><button class="btn" id="startover">Start over</button></div><p class="small" id="zipnote"></p><p class="small" id="keptnote"></p><p class="small">The zip can be handed to Claude to walk the labs with you. Unzip it, open a terminal in the folder, and run <code>claude "Start the lab walkthrough."</code> The <b>Claude</b> tab has the full steps.</p></div>';
@@ -6971,7 +7066,7 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     }
     else if (activeTab === 'claude') body = '<pre>' + esc(C.claudeHelpText()) + '</pre><p class="small">The zip holds these instructions for Claude in CLAUDE.md, and the two start lines in START-CLAUDE.txt.</p>';
     else if (activeTab === 'licenses') body = '<pre>' + esc(C.licensesExample(m) || 'No license file is used for these choices.') + '</pre><p class="small">Copy this to ' + esc(S.licFile) + ' and fill in the values on your computer. Never commit it, and never put it in the zip.</p>';
-    else body = '<div class="diag">' + C.topologySvg(m, v, net) + '</div><p class="small">This picture is drawn from your choices: the platform, the machines and their names, the addresses, the VLAN IDs, the switch models and ports, and the gateway and the firewall of sections 10 and 11. It is small here, so open it in a new tab to read it. The zip holds it as diagrams/lab-topology.svg.</p><div class="actions" style="margin-top:6px"><button class="btn" data-act="svgopen">Open it in a new tab</button><button class="btn" data-act="svg">Download diagram (SVG)</button></div>';
+    else body = '<div class="diag">' + C.topologySvg(m, v, net) + '</div><p class="small">This picture is drawn from your choices: the platform, the machines and their names, the addresses, the VLAN IDs, the switch models and ports, the gateway of section 10, and the external firewall of section 12. It is small here, so open it in a new tab to read it. The zip holds it as diagrams/lab-topology.svg.</p><div class="actions" style="margin-top:6px"><button class="btn" data-act="svgopen">Open it in a new tab</button><button class="btn" data-act="svg">Download diagram (SVG)</button></div>';
     $('tabbody').innerHTML = body;
     var iss = '';
     if (v.errors.length) iss += '<div class="note bad"><b>Refused changes (defaults kept)</b><ul>' + v.errors.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
@@ -6985,17 +7080,36 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
   // The gateway and firewall sections: the text for the chosen operating systems, and what to know before using it.
   function renderNet(v) {
     var n = C.netConfigs(v), list = function (c) { return '<b>' + (c.text ? 'Before you use it' : 'Nothing to enter') + '</b><ul>' + c.notes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; };
-    [['gw', n.gateway, n.gw], ['fw', n.firewall, n.fw]].forEach(function (x) {
-      var sel = $(x[0] + 'os'), pre = $(x[0] + 'cfg');
-      if (sel.value !== x[2]) sel.value = x[2];
-      // The text is put back only when it differs, so reading it is not disturbed by a change elsewhere on the page.
-      if (pre.textContent !== x[1].text) { pre.textContent = x[1].text; $(x[0] + 'msg').textContent = ''; }
-      // A choice that needs no text shows its notes only.
-      pre.hidden = !x[1].text; $(x[0] + 'acts').style.display = x[1].text ? '' : 'none';
-      $(x[0] + 'notes').innerHTML = list(x[1]);
-    });
-    var ex = n.gateway.extra;
+    var plural = function (k, word) { return k + ' ' + word + (k === 1 ? '' : 's'); };
+    // The gateway. A choice that needs no text shows its notes only.
+    var gsel = $('gwos'), gpre = $('gwcfg'), ex = n.gateway.extra;
+    if (gsel.value !== n.gw) gsel.value = n.gw;
+    // The text is put back only when it differs, so reading it is not disturbed by a change elsewhere on the page.
+    if (gpre.textContent !== n.gateway.text) { gpre.textContent = n.gateway.text; $('gwmsg').textContent = ''; }
+    gpre.hidden = !n.gateway.text; $('gwacts').style.display = n.gateway.text ? '' : 'none';
+    $('gwnotes').innerHTML = list(n.gateway);
     $('gwextra').innerHTML = ex ? '<p class="small" style="margin:10px 0 6px">' + esc(ex.title) + '</p><pre class="cfg" style="margin-top:0">' + esc(ex.text) + '</pre>' : '';
+    // The network range of the lab.
+    var r = n.range, rs = $('rstart'), rc = $('rcount');
+    $('rangesum').textContent = r.cidr + ' (room for ' + plural(r.holds, 'subnet') + ')';
+    rs.placeholder = (C.validIpv4Prefix(S.v4) ? S.v4 : C.OLD_V4) + '.0.0'; rc.placeholder = '256';
+    if (document.activeElement !== rs && rs.value !== S.rangeStart) rs.value = S.rangeStart;
+    if (document.activeElement !== rc && rc.value !== S.rangeCount) rc.value = S.rangeCount;
+    rs.className = 'addr' + (r.err.start ? ' err' : S.rangeStart.trim() ? ' chg' : ''); rc.className = 'num' + (r.err.count ? ' err' : S.rangeCount.trim() ? ' chg' : '');
+    $('rstartmsg').textContent = r.err.start ? r.err.start + '. ' + r.start + ' is used' : ''; $('rcountmsg').textContent = r.err.count ? r.err.count + '. ' + r.count + ' is used' : '';
+    $('rangeout').innerHTML = '<b>' + esc(r.cidr) + '</b>: ' + esc(r.net) + ' to ' + esc(r.last) + ', room for ' + plural(r.holds, 'subnet') + ' of /24.' + (r.exact ? '' : ' It is the smallest block that holds ' + plural(r.count, 'subnet') + ' from ' + esc(r.start) + '.');
+    $('rangewarn').innerHTML = r.outside.length ? '<div class="note warn">This range does not hold ' + plural(r.outside.length, 'subnet') + ' that the lab uses: ' + esc(r.outside.join(', ')) + '. The external firewall would block ' + (r.outside.length === 1 ? 'it' : 'them') + ' like any other network.</div>' : '';
+    // The external firewall. An edited text stays in its box until the text of the page is asked for again.
+    var fsel = $('fwos'), ta = $('fwtext'), edited = !!S.fwEdit && S.fwEdit !== n.firewall.text, want = edited ? S.fwEdit : n.firewall.text;
+    if (fsel.value !== n.fw) fsel.value = n.fw;
+    if (ta.value !== want) { ta.value = want; $('fwmsg').textContent = ''; }
+    ta.className = 'cfgedit' + (edited ? ' chg' : '');
+    $('fwreset').hidden = !edited; $('fwedited').hidden = !edited;
+    $('fwedited').textContent = edited ? 'You edited this text, so it no longer follows the page. A change of the range, of the machines, or of the gateway does not reach it. Click "Use the page\'s text again" to get the text of the page back. '
+      + 'The page keeps your edit in this browser and in the choices file, so do not put a password or a key in it.' : '';
+    $('fwnotes').innerHTML = list(n.firewall);
+    var boxes = n.machines.map(function (h) { return '<label><input type="checkbox" data-inet="' + esc(h.base) + '"' + (h.on ? ' checked' : '') + '> ' + esc(h.name) + '</label>'; }).join('');
+    if ($('fwinet').getAttribute('data-sig') !== boxes) { $('fwinet').innerHTML = boxes || '<span class="small">This build has no machine that could use it.</span>'; $('fwinet').setAttribute('data-sig', boxes); }
     return n;
   }
 
@@ -7096,7 +7210,16 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
       else if (t.id === 'startlab') S.startLab = t.value;
       else if (t.id === 'fswver') S.fswVersion = t.value;
       else if (t.id === 'gwos') S.gwOs = t.value;
-      else if (t.id === 'fwos') S.fwOs = t.value;
+      else if (t.id === 'fwos') {
+        // An edited text was written for the operating system it was made for.
+        if (t.value === S.fwOs) return;
+        if (S.fwEdit && !window.confirm('Your edited firewall text was written for the other OS type. Replace it with the text of the page for this one?')) { t.value = S.fwOs; return; }
+        S.fwOs = t.value; S.fwEdit = '';
+      }
+      else if (t.id === 'rstart') S.rangeStart = t.value;
+      else if (t.id === 'rcount') S.rangeCount = t.value;
+      else if (t.id === 'fwtext') S.fwEdit = t.value === C.netConfigs().firewall.text ? '' : t.value;
+      else if (t.hasAttribute('data-inet')) S.inet[t.getAttribute('data-inet')] = t.checked;
       else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
@@ -7138,19 +7261,21 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
         $('zipnote').textContent = z.missing.length ? 'The zip has ' + z.count + ' files. ' + z.missing.length + ' could not be fetched (see MISSING-FILES.txt in the zip). Open this page from the published site to include them.' : 'The zip has ' + z.count + ' files.';
       });
     });
-    // The gateway and firewall sections each copy and save their own text.
+    // The gateway and firewall sections each copy and save their own text. The firewall text is the one in its box,
+    // which can be an edited one.
     [['gw', 'gateway'], ['fw', 'firewall']].forEach(function (x) {
-      var msg = $(x[0] + 'msg');
+      var msg = $(x[0] + 'msg'), textOf = function (c) { return x[0] === 'fw' ? $('fwtext').value : c.text; };
       $(x[0] + 'copy').addEventListener('click', function () {
         var c = C.netConfigs()[x[1]];
-        if (navigator.clipboard) navigator.clipboard.writeText(c.text).then(function () { msg.textContent = 'Copied.'; }, function () { msg.textContent = 'Copy failed. Select the text and copy it by hand.'; });
+        if (navigator.clipboard) navigator.clipboard.writeText(textOf(c)).then(function () { msg.textContent = 'Copied.'; }, function () { msg.textContent = 'Copy failed. Select the text and copy it by hand.'; });
         else msg.textContent = 'This browser cannot copy from here. Select the text and copy it by hand.';
       });
       $(x[0] + 'dl').addEventListener('click', function () {
         var c = C.netConfigs()[x[1]];
-        download(c.file, new Blob([c.text], { type: 'text/plain' })); msg.textContent = 'Saved ' + c.file + '.';
+        download(c.file, new Blob([textOf(c)], { type: 'text/plain' })); msg.textContent = 'Saved ' + c.file + '.';
       });
     });
+    $('fwreset').addEventListener('click', function () { S.fwEdit = ''; refresh(); $('fwmsg').textContent = 'The text of the page is back.'; });
     $('save').addEventListener('click', function () {
       download('lab-builder-choices.json', new Blob([C.choicesText()], { type: 'application/json' }));
     });
@@ -7485,9 +7610,9 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
       nm.ifs.slice(1).every(function (i, k) { var s = C.SEGMENTS[k]; return i.seg === s && i.vlan === s && i.name === C.SEGNAMES[s] && i.ip4 === C.OLD_V4 + '.' + s + '.1' && i.ip6 === C.OLD_V6 + ((s << 8) | 1).toString(16); }) &&
       nm.nets4.length === 1 && nm.nets4[0].net === C.OLD_V4 + '.0.0' && nm.nets4[0].len === 16 && nm.nets6.length === 1 && nm.nets6[0].net === C.OLD_V6 && nm.nets6[0].len === 112,
       'the gateway model holds the .1 address of the out-of-band network and of every shared segment, and the two lab blocks');
-    ok(osIds.join() === 'asa,nxos,iosxe,iosxr,fortigate,junos' && C.NET_GW.map(function (o) { return o[0]; }).join() === 'linux,' + osIds.join() && C.NET_FW.map(function (o) { return o[0]; }).join() === 'gateway,' + osIds.join() &&
-      S.gwOs === 'linux' && S.fwOs === 'gateway' && C.gatewayConfig('no-such-os', nm).text === '' && C.gatewayConfig('linux', nm).file === '' && C.gatewayConfig('linux', nm).notes[0].indexOf('nothing to enter here') > 0,
-      'six operating systems are offered, after the Linux router that the scripts build and the gateway as its own firewall');
+    ok(osIds.join() === 'asa,nxos,iosxe,iosxr,fortigate,junos' && C.NET_GW.map(function (o) { return o[0]; }).join() === 'linux,' + osIds.join() && C.NET_FW === C.NET_OS && C.NET_OS_DEFAULT === 'fortigate' &&
+      S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && C.gatewayConfig('no-such-os', nm).text === '' && C.gatewayConfig('linux', nm).file === '' && C.gatewayConfig('linux', nm).notes[0].indexOf('nothing to enter here') > 0,
+      'six operating systems are offered for a device, the gateway list starts with the Linux router that the scripts build, and the external firewall starts as a FortiGate');
     var clean = function (c) { return c.text.slice(-1) === '\n' && c.text.indexOf('undefined') < 0 && c.text.indexOf('NaN') < 0 && c.text.indexOf('\t') < 0 && !/ \n/.test(c.text) && c.notes.length > 2 && c.notes[c.notes.length - 1].indexOf('not run on a device') > 0; };
     ok(osIds.every(function (o) {
       var g = C.gatewayConfig(o, nm), slash = o === 'nxos' || o === 'junos';
@@ -7514,40 +7639,64 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
       gj.text.indexOf('set interfaces <GW_OOB_PORT> unit 0 family inet address 10.77.0.1/24\n') > 0 && gj.text.indexOf('security') < 0 && gj.extra && count(gj.extra.text, 'set security zones security-zone ' + nm.lab + ' interfaces ') === nm.ifs.length &&
       gj.extra.text.indexOf(' interfaces ' + TRK + '.40\n') > 0 && gj.extra.text.slice(-13) === ' then permit\n' && osIds.every(function (o) { return o === 'junos' || C.gatewayConfig(o, nm).extra === null; }),
       'the Junos gateway text uses one unit for each segment, and keeps the SRX lines apart from it');
-    // The firewall: lab to lab is passed, the rest is dropped, and the neighbor discovery of IPv6 is passed before the drop.
-    var fw = function (o, same) { return C.firewallConfig(o, nm, same).text; }, ACL = nm.lab.toUpperCase() + '-NO-INTERNET', N6 = P6 + '/112', comesFirst = function (text, a, b) { return text.indexOf(a) > 0 && text.indexOf(a) < text.indexOf(b); };
-    ok(osIds.every(function (o) { var f = C.firewallConfig(o, nm, true); return clean(f) && C.firewallConfig(o, nm, false).extra === null && f.file === nm.lab + '-firewall-' + o + '.txt' && f.text.indexOf(N6) > 0; }) &&
-      count(fw('iosxe', true), ' permit ip ') === 4 && fw('iosxe', true).indexOf(' permit ip 10.77.0.0 0.0.255.255 192.168.41.0 0.0.0.255\n') > 0 && comesFirst(fw('iosxe', true), ' permit ip 192.168.41.0 0.0.0.255 192.168.41.0 0.0.0.255\n', ' deny ip any any log\n') &&
-      comesFirst(fw('iosxe', true), ' permit ipv6 ' + N6 + ' ' + N6 + '\n permit icmp any any nd-ns\n permit icmp any any nd-na\n', ' deny ipv6 any any log\n') &&
-      fw('nxos', true).indexOf('ip access-list ' + ACL + '\n  statistics per-entry\n') === 0 && count(fw('nxos', true), '  permit ip ') === 4 && comesFirst(fw('nxos', true), '  permit ip 192.168.41.0/24 10.77.0.0/16\n', '  deny ip any any log\n') && comesFirst(fw('nxos', true), '  permit icmp any any nd-na\n', '  deny ipv6 any any log\n') &&
-      fw('iosxr', true).indexOf('ipv4 access-list ' + ACL + '\n 10 remark ') === 0 && fw('iosxr', true).indexOf(' 50 permit ipv4 192.168.41.0 0.0.0.255 192.168.41.0 0.0.0.255\n 60 deny ipv4 any any log\n') > 0 &&
-      fw('iosxr', true).indexOf('ipv6 access-list ' + ACL + '-V6\n 10 remark ') > 0 && fw('iosxr', true).indexOf(' 20 permit ipv6 ' + N6 + ' ' + N6 + '\n 30 permit icmpv6 any any nd-ns\n 40 permit icmpv6 any any nd-na\n 50 deny ipv6 any any log\n') > 0,
-      'the IOS XE, NX-OS, and IOS XR firewall texts pass lab to lab for every lab network, and drop the rest last');
-    ok(count(fw('asa', true), ' extended permit ip ') === 5 && fw('asa', true).indexOf('!') < 0 &&fw('asa', true).indexOf('access-list ' + ACL + ' extended permit ip 10.77.0.0 255.255.0.0 192.168.41.0 255.255.255.0\n') > 0 && comesFirst(fw('asa', true), 'access-list ' + ACL + ' extended permit ip ' + N6 + ' ' + N6 + '\n', 'access-list ' + ACL + ' extended deny ip any any log\n') &&
-      count(fw('fortigate', true), '        set subnet ') === 2 && fw('fortigate', true).indexOf('        set subnet 192.168.41.0 255.255.255.0\n') > 0 && fw('fortigate', true).indexOf('        set ip6 ' + N6 + '\n') > 0 &&
-      fw('fortigate', true).indexOf('        set dstintf "<FW_INTERNET_INTERFACE>"\n        set action deny\n        set srcaddr "' + nm.lab + '-net1" "' + nm.lab + '-net2"\n        set dstaddr "all"\n        set srcaddr6 "' + nm.lab + '-net6"\n        set dstaddr6 "all"\n') > 0 &&
-      count(fw('junos', true), ' term lab-to-lab from source-address ') === 3 && count(fw('junos', true), ' term lab-to-lab from destination-address ') === 3 && comesFirst(fw('junos', true), ' term neighbor-discovery from icmp-type neighbor-advertisement\n', '-v6 term everything-else then discard\n') &&
-      comesFirst(fw('junos', true), ' filter ' + nm.lab + '-no-internet term lab-to-lab then accept\n', ' filter ' + nm.lab + '-no-internet term everything-else then discard\n'),
+    // The network range of the lab: the first address and the number of /24 subnets give the smallest block that holds them.
+    reset(); v = C.validateAll();
+    var rg = function (start, n) { S.rangeStart = start; S.rangeCount = n; return C.validateAll().range; }, r0 = v.range, B16 = C.OLD_V4 + '.0.0/16';
+    ok(r0.cidr === B16 && r0.count === 256 && r0.holds === 256 && r0.exact && !r0.typed && r0.outside.length === 0 && !r0.err.start && !r0.err.count, 'with nothing typed, the lab range is the address block of step 6, and it holds every subnet the lab uses');
+    var r8 = rg('10.50.8.0', '8'), r7 = rg('10.201.10.0', '7'), r300 = rg('10.0.0.0', '300'), r1 = rg('192.168.5.0', '1');
+    ok(r8.cidr === '10.50.8.0/21' && r8.exact && r8.last === '10.50.15.255' && r7.cidr === '10.201.0.0/19' && !r7.exact && r7.holds === 32 && r7.last === '10.201.31.255' && r300.cidr === '10.0.0.0/15' && r300.holds === 512 && r1.cidr === '192.168.5.0/24' && r1.holds === 1,
+      'the supernet is the smallest block that holds the subnets, also when the first address is not at its start');
+    var rb = rg('8.8.8.0', ''), rn = rg('10.201.0.7', ''), rc0 = rg('', '0'), rbig = rg('192.168.200.0', '100'), rangeErr = C.validateAll().errors.filter(function (e) { return e.indexOf('Lab network range') === 0; });
+    ok(!!rb.err.start && rb.cidr === B16 && !!rn.err.start && rn.err.start.indexOf('10.201.0.0') > 0 && !!rc0.err.count && rc0.count === 256 && !!rbig.err.count && rbig.err.count.indexOf('The most is 56') > 0 && rbig.cidr === '192.168.192.0/18' && rangeErr.length === 1,
+      'a starting IP or a number of subnets that cannot be used is refused, and the page says what it uses');
+    var rsmall = rg('', '64'), rangeWarn = C.validateAll().warnings.filter(function (w) { return w.indexOf('The lab network range ' + C.OLD_V4 + '.0.0/18 does not hold') === 0; });
+    ok(rsmall.cidr === C.OLD_V4 + '.0.0/18' && rsmall.outside.indexOf(C.OLD_V4 + '.250.0/24') >= 0 && rsmall.outside.indexOf(C.OLD_V4 + '.10.0/24') < 0 && rangeWarn.length === 1, 'a range that is too small names the lab subnets it does not hold');
+    // The machines with internet access: the hosts of the NTP servers unless they are taken out, and never the gateway.
+    reset(); v = C.validateAll();
+    var nc = C.netConfigs(v), gwN = C.BASE.vms.filter(function (b) { return b.role === 'gateway'; })[0].name, onNames = function (x) { return x.internet.map(function (h) { return h.base; }).join(); };
+    var ntpHosts = C.SERVICES.filter(function (s) { return /^ntp-/.test(s.name); }).map(function (s) { return s.on; }), ntpAddr = C.SERVICES.filter(function (s) { return /^ntp-/.test(s.name); })[0].ipv4;
+    ok(ntpHosts.length > 1 && onNames(nc) === ntpHosts.join() && nc.machines.length === C.BASE.vms.length - 1 && nc.machines.every(function (h) { return h.base !== gwN; }) && nc.internet[0].addrs.indexOf(ntpAddr) >= 0 && nc.fw === C.NET_OS_DEFAULT && nc.range.cidr === B16,
+      'the hosts of the NTP servers have internet access unless it is taken away, and the gateway is not offered');
+    S.inet[ntpHosts[0]] = false; S.inet['admin-201'] = true; S.vms[ntpHosts[1]].include = false; var nc2 = C.netConfigs();
+    ok(onNames(nc2) === 'admin-201' && nc2.machines.every(function (h) { return h.base !== ntpHosts[1]; }), 'a machine can be given internet access or lose it, and a machine that is left out is not offered');
+    // The external firewall text: the way back to the lab, the supernet, the machines with internet access, and the drop.
+    reset(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::'; S.rangeStart = '10.77.0.0'; S.rangeCount = '128'; S.inet[ntpHosts[1]] = false; v = C.validateAll(); nm = C.netModel(v);
+    var fwc =function (o) { S.fwOs = o; return C.netConfigs(v).firewall; }, fw = function (o) { return fwc(o).text; }, ACL = nm.lab.toUpperCase() + '-EXTERNAL', N6 = P6 + '/112', L4 = '<FW_LAB_INTERFACE>', GWA = '<LAB_GATEWAY_ADDRESS>';
+    var comesFirst = function (text, a, b) { return text.indexOf(a) > 0 && text.indexOf(a) < text.indexOf(b); }, ends = function (text, s) { return text.slice(-s.length) === s; }, nHost = C.netConfigs(v).internet[0].addrs.length;
+    ok(nHost > 1 && osIds.every(function (o) { var f = fwc(o); return clean(f) && f.extra === null && f.file === nm.lab + '-firewall-' + o + '.txt' && f.text.indexOf(L4) > 0 && f.text.indexOf(GWA) > 0 && f.text.indexOf(N6) > 0 && f.text.indexOf('GW_TRUNK') < 0 && f.text.indexOf(C.OLD_V4 + '.') < 0 && f.notes[0].indexOf('outside the lab') > 0 && f.notes.join(' ').indexOf('10.77.0.0/17') > 0; }) &&
+      fw('iosxe').indexOf('ip route 10.77.0.0 255.255.128.0 ' + GWA + '\n!\nip access-list extended ' + ACL + '\n') === 0 && fw('iosxe').indexOf(' permit ip 10.77.0.0 0.0.127.255 10.77.0.0 0.0.127.255\n') > 0 && count(fw('iosxe'), ' permit ip host ') === nHost &&
+      comesFirst(fw('iosxe'), ' permit ip host 10.77.10.30 any\n', ' deny ip any any log\n') && comesFirst(fw('iosxe'), ' permit ipv6 ' + N6 + ' ' + N6 + '\n permit icmp any any nd-ns\n permit icmp any any nd-na\n', ' deny ipv6 any any log\n') &&
+      fw('iosxe').indexOf('interface ' + L4 + '\n ip access-group ' + ACL + ' in\n ipv6 traffic-filter ' + ACL + '-V6 in\n') > 0 && count(fw('iosxe'), ' ip access-group ') === 1 &&
+      fw('nxos').indexOf('ip route 10.77.0.0/17 ' + GWA + '\nip access-list ' + ACL + '\n  statistics per-entry\n') === 0 && fw('nxos').indexOf('  permit ip 10.77.0.0/17 10.77.0.0/17\n') > 0 && comesFirst(fw('nxos'), '  permit ip 10.77.10.30/32 any\n', '  deny ip any any log\n') &&
+      comesFirst(fw('nxos'), '  permit icmp any any nd-na\n', '  deny ipv6 any any log\n') && fw('nxos').indexOf('interface ' + L4 + '\n  ip access-group ' + ACL + ' in\n  ipv6 traffic-filter ' + ACL + '-V6 in\n') > 0 &&
+      fw('iosxr').indexOf('router static\n address-family ipv4 unicast\n  10.77.0.0/17 ' + GWA + '\n !\n!\nipv4 access-list ' + ACL + '\n 10 remark ') === 0 && fw('iosxr').indexOf(' 20 permit ipv4 10.77.0.0 0.0.127.255 10.77.0.0 0.0.127.255\n 30 remark ') > 0 && fw('iosxr').indexOf(' 40 permit ipv4 host 10.77.10.10 any\n') > 0 &&
+      fw('iosxr').indexOf(' ' + (50 + nHost * 10) + ' deny ipv4 any any log\n') > 0 && fw('iosxr').indexOf(' 20 permit ipv6 ' + N6 + ' ' + N6 + '\n 30 permit icmpv6 any any nd-ns\n 40 permit icmpv6 any any nd-na\n 50 remark ') > 0 && fw('iosxr').indexOf(' 60 deny ipv6 any any log\n') > 0 &&
+      fw('iosxr').indexOf('interface ' + L4 + '\n ipv4 access-group ' + ACL + ' ingress\n ipv6 access-group ' + ACL + '-V6 ingress\n') > 0 && fw('iosxr').indexOf('commit') < 0,
+      'the IOS XE, NX-OS, and IOS XR firewall texts route back to the lab, pass the supernet and the machines with internet access, and drop the rest last');
+    var GRP = nm.lab.toUpperCase() + '-INTERNET', members = []; for (var hi = 1; hi <= nHost; hi++) members.push('"' + nm.lab + '-inet-' + hi + '"');
+    ok(fw('asa').indexOf('route ' + L4 + ' 10.77.0.0 255.255.128.0 ' + GWA + '\nobject-group network ' + GRP + '\n network-object host 10.77.10.10\n') === 0 && fw('asa').indexOf('!') < 0 && count(fw('asa'), ' network-object host ') === nHost &&
+      fw('asa').indexOf('access-list ' + ACL + ' extended permit ip 10.77.0.0 255.255.128.0 10.77.0.0 255.255.128.0\naccess-list ' + ACL + ' extended permit ip ' + N6 + ' ' + N6 + '\n') > 0 &&
+      comesFirst(fw('asa'), 'access-list ' + ACL + ' extended permit ip object-group ' + GRP + ' any4\n', 'access-list ' + ACL + ' extended deny ip any any log\n') && ends(fw('asa'), 'access-group ' + ACL + ' in interface ' + L4 + '\n') &&
+      fw('fortigate').indexOf('config router static\n    edit 0\n        set dst 10.77.0.0 255.255.128.0\n        set gateway ' + GWA + '\n        set device "' + L4 + '"\n') === 0 && fw('fortigate').indexOf('    edit "' + nm.lab + '-supernet"\n        set subnet 10.77.0.0 255.255.128.0\n') > 0 &&
+      count(fw('fortigate'), '        set subnet ') === nHost + 1 && fw('fortigate').indexOf('        set member ' + members.join(' ') + '\n') > 0 && fw('fortigate').indexOf('        set ip6 ' + N6 + '\n') > 0 &&
+      fw('fortigate').indexOf('        set name "' + nm.lab + '-internet"\n        set srcintf "' + L4 + '"\n        set dstintf "<FW_INTERNET_INTERFACE>"\n        set action accept\n        set srcaddr "' + nm.lab + '-internet"\n        set dstaddr "all"\n') > 0 && fw('fortigate').indexOf('        set nat enable\n') > 0 &&
+      comesFirst(fw('fortigate'), '        set action accept\n', '        set name "' + nm.lab + '-block"\n        set srcintf "' + L4 + '"\n        set dstintf "any"\n        set action deny\n        set srcaddr "' + nm.lab + '-supernet"\n        set dstaddr "all"\n        set srcaddr6 "' + nm.lab + '-supernet6"\n        set dstaddr6 "all"\n') &&
+      fw('junos').indexOf('set routing-options static route 10.77.0.0/17 next-hop ' + GWA + '\n') === 0 && count(fw('junos'), ' term internet-access from source-address ') === nHost && comesFirst(fw('junos'), ' term own-supernet then accept\n', ' term internet-access then accept\n') &&
+      comesFirst(fw('junos'), ' term internet-access then accept\n', ' filter ' + nm.lab + '-external term everything-else then discard\n') && comesFirst(fw('junos'), ' term neighbor-discovery from icmp-type neighbor-advertisement\n', '-v6 term everything-else then discard\n') &&
+      fw('junos').indexOf('set interfaces ' + L4 + ' unit 0 family inet filter input ' + nm.lab + '-external\nset interfaces ' + L4 + ' unit 0 family inet6 filter input ' + nm.lab + '-external-v6\n') > 0,
       'the ASA, FortiGate, and Junos firewall texts do the same in their own form');
-    // With the operating system of the gateway, the rules go on its interfaces. With another one, on a placeholder.
-    var L4 = '<FW_LAB_INTERFACE>', nIf = nm.ifs.length;
-    ok(count(fw('iosxe', true), ' ip access-group ' + ACL + ' in\n') === nIf && count(fw('iosxe', true), ' ipv6 traffic-filter ' + ACL + '-V6 in\n') === nIf && fw('iosxe', true).indexOf('interface ' + TRK + '.40\n ip access-group') > 0 && fw('iosxe', true).indexOf(L4) < 0 &&
-      count(fw('iosxe', false), ' ip access-group ') === 1 && fw('iosxe', false).indexOf('interface ' + L4 + '\n ip access-group ' + ACL + ' in\n ipv6 traffic-filter ' + ACL + '-V6 in\n') > 0 && fw('iosxe', false).indexOf('GW_') < 0 &&
-      count(fw('nxos', true), '  ipv6 traffic-filter ' + ACL + '-V6 in\n') === nIf && fw('nxos', false).indexOf('interface ' + L4 + '\n  ip access-group ' + ACL + ' in\n') > 0 &&
-      count(fw('iosxr', true), ' ipv4 access-group ' + ACL + ' ingress\n ipv6 access-group ' + ACL + '-V6 ingress\n') === nIf && count(fw('iosxr', false), ' ingress\n') === 2 &&
-      count(fw('asa', true), 'access-group ' + ACL + ' in interface ') === nIf && fw('asa', true).indexOf('access-group ' + ACL + ' in interface ' + nm.lab + '-seg40\n') > 0 && count(fw('asa', false), 'access-group ') === 1 && fw('asa', false).indexOf('access-group ' + ACL + ' in interface ' + L4 + '\n') > 0 &&
-      fw('fortigate', true).indexOf('        set srcintf "' + nm.lab + '"\n') > 0 && fw('fortigate', false).indexOf('        set srcintf "' + L4 + '"\n') > 0 &&
-      count(fw('junos', true), ' family inet filter input ' + nm.lab + '-no-internet\n') === nIf && fw('junos', true).indexOf('set interfaces ' + TRK + ' unit 40 family inet6 filter input ' + nm.lab + '-no-internet-v6\n') > 0 && fw('junos', false).indexOf('set interfaces ' + L4 + ' unit 0 family inet filter input ') > 0 && count(fw('junos', false), ' filter input ') === 2,
-      'the firewall text names the interfaces of the gateway when both have one operating system, and a placeholder when they differ');
-    S.gwOs = 'asa'; S.fwOs = 'gateway'; var nc = C.netConfigs(v), ncOwn = nc.device && !nc.separate && nc.gateway.text === gw('asa') && nc.firewall.text === fw('asa', true) && nc.firewall.notes[0].indexOf('for the gateway device') > 0 && nc.gateway.notes.join(' ').indexOf('Keep it shut down') > 0;
-    S.fwOs = 'asa'; nc = C.netConfigs(v); var ncSep = nc.device && nc.separate && nc.firewall.text === fw('asa', false) && nc.firewall.notes[0].indexOf('for a separate firewall') > 0 && nc.firewall.notes[0].indexOf(L4) > 0;
-    S.gwOs = 'linux'; S.fwOs = 'gateway'; nc = C.netConfigs(v); var ncBuilt = !nc.device && !nc.separate && nc.gateway.text === '' && nc.firewall.text === '' && nc.firewall.notes[0].indexOf('is the firewall too') > 0;
-    S.fwOs = 'junos'; nc = C.netConfigs(v);
-    ok(ncOwn && ncSep && ncBuilt && !nc.device && nc.separate && nc.gateway.text === '' && nc.firewall.text === fw('junos', false), 'the firewall text is for the gateway device unless a separate firewall is chosen, and the Linux router needs no text');
-    S.gwOs = 'iosxr'; S.fwOs = 'nxos'; var netSaved = JSON.parse(C.choicesText()); reset();
-    var netDef = S.gwOs === 'linux' && S.fwOs === 'gateway'; C.applyChoices(netSaved);
-    var netBack = S.gwOs === 'iosxr' && S.fwOs === 'nxos'; delete netSaved.gatewayOs; netSaved.firewallOs = 'no-such-os'; C.applyChoices(netSaved);
-    ok(netDef && netBack && S.gwOs === 'linux' && S.fwOs === 'gateway', 'the choices file keeps the gateway and the firewall choice, and an old file or an unknown name gives the default');
+    S.inet[ntpHosts[0]] = false; var fwNone = osIds.map(function (o) { return fwc(o); });
+    ok(fwNone.every(function (f) { return clean(f) && f.text.toLowerCase().indexOf('internet') < 0 && f.notes.join(' ').indexOf('No machine has internet access.') > 0; }) && fw('iosxe').indexOf(' permit ip host ') < 0 && fw('asa').indexOf('object-group') < 0 &&
+      fw('fortigate').indexOf('addrgrp') < 0 && fw('fortigate').indexOf('set action accept') < 0 && fw('fortigate').indexOf('set action deny') > 0 && fw('junos').indexOf('internet-access') < 0, 'with no machine chosen, the firewall text gives no internet access at all');
+    S.inet[ntpHosts[0]] = true; S.fwOs = 'iosxe'; S.gwOs = 'linux'; var noteLinux = C.netConfigs(v).firewall.notes.join(' '); S.gwOs = 'asa'; var ncDev = C.netConfigs(v), noteDev = ncDev.firewall.notes.join(' ');
+    ok(noteLinux.indexOf(gwN + ' as the scripts build it has none after step 4') > 0 && noteDev.indexOf('give the gateway device an uplink') > 0 && ncDev.device && ncDev.gateway.text === gw('asa') && ncDev.gateway.notes.join(' ').indexOf('Keep it shut down') > 0 && ncDev.firewall.text === fw('iosxe') && ncDev.fwName === 'Cisco IOS XE',
+      'the notes say what the lab needs to reach the firewall, for the Linux router and for a device as the gateway');
+    S.gwOs = 'iosxr'; S.fwOs = 'nxos'; S.fwEdit = 'my own rule\n'; var netSaved = JSON.parse(C.choicesText()); reset();
+    var netDef = S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && S.rangeStart === '' && S.rangeCount === '' && Object.keys(S.inet).length === 0 && S.fwEdit === ''; C.applyChoices(netSaved);
+    var netBack = S.gwOs === 'iosxr' && S.fwOs === 'nxos' && S.rangeStart === '10.77.0.0' && S.rangeCount === '128' && S.inet[ntpHosts[1]] === false && S.inet[ntpHosts[0]] === true && S.fwEdit === 'my own rule\n';
+    delete netSaved.gatewayOs; netSaved.firewallOs = 'no-such-os'; delete netSaved.rangeStart; netSaved.rangeCount = null; netSaved.internet = { 'no-such-machine': true }; netSaved.firewallText = 7; C.applyChoices(netSaved);
+    ok(netDef && netBack && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && S.rangeStart === '' && S.rangeCount === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
+      'the choices file keeps the gateway, the firewall, the range, the machines with internet access, and an edited text, and an old file gives the defaults');
     // The picture of the lab follows the choices. A node is found by the name its machine has in the manifest.
     var node = function (text, n) { var r = new RegExp('<g data-node="' + n + '" data-state="([a-z]+)"(?: data-kind="([a-z]+)")?>').exec(text); return r ? r[1] + (r[2] ? ':' + r[2] : '') : ''; };
     var lnk = function (text, n) { var r = new RegExp('<g data-link="' + n + '" data-state="([a-z]+)">').exec(text); return r ? r[1] : ''; };
@@ -7555,9 +7704,9 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     var svg = C.topologySvg(m, v), gwN = C.BASE.vms.filter(function (b) { return b.role === 'gateway'; })[0].name;
     ok(svg.indexOf('<svg viewBox="0 0 960 ') === 0 && svg.slice(-6) === '</svg>' && svg.indexOf('undefined') < 0 && svg.indexOf('NaN') < 0 &&
       C.BASE.vms.every(function (b) { return b.name === gwN ? node(svg, 'gateway') === 'in:linux' && svg.indexOf('>' + b.name + '<') > 0 : node(svg, b.name) === 'in' && svg.indexOf(b.name) > 0; }) &&
-      C.SERVICES.length > 0 && C.SERVICES.every(function (s) { return svg.indexOf(s.name) > 0; }) && svg.indexOf(C.OLD_V4 + '.0.0/16 and ' + C.OLD_V6 + '/112') > 0 && node(svg, 'firewall') === '' && svg.indexOf('>no separate firewall<') > 0 &&
+      C.SERVICES.length > 0 && C.SERVICES.every(function (s) { return svg.indexOf(s.name) > 0; }) && svg.indexOf(C.OLD_V4 + '.0.0/16 and ' + C.OLD_V6 + '/112') > 0 && node(svg, 'firewall') === 'in:' + C.NET_OS_DEFAULT && svg.indexOf('>External firewall: FortiGate (FortiOS)<') > 0 && svg.indexOf('>internet for ' + ntpHosts.join(', ') + '<') > 0 && svg.indexOf('>the rest stays in ' + B16 + '<') > 0 &&
       svg.indexOf('data-link="one-trunk"') < 0 && svg.indexOf('>Trunk T1<') > 0 && svg.indexOf('>Trunk T2<') > 0 && ['L1', 'L2', 'L3', 'L4'].every(function (l) { return lnk(svg, l) === 'in'; }) && svg.indexOf('>Every shared segment has its default VLAN ID and subnet.<') > 0,
-      'the lab picture shows every machine and service name of the default build, the two blocks, two trunks, and no separate firewall');
+      'the lab picture shows every machine and service name of the default build, the two blocks, two trunks, and the external firewall');
     S.vms[gwN].name = 'edge-fw'; S.vms['static-2'].include = false; S.vms['rtr-peer-1'].include = false; S.v4 = '10.77'; S.vlans[40] = '140'; S.sw.a = 'FS-424E-FPOE'; S.ports.PORT_EP1 = 'port5'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
     v = C.validateAll(); m = C.buildManifest(v); svg = C.topologySvg(m, v);
     ok(svg.indexOf('>edge-fw<') > 0 && svg.indexOf('edge-fw .1, sw-424e-1 .11') > 0 && node(svg, 'static-2') === 'out' && svg.indexOf('>static-2  left out<') > 0 && node(svg, 'rtr-peer-1') === 'out' && lnk(svg, 'L1') === 'out' && lnk(svg, 'L3') === 'out' && lnk(svg, 'L2') === 'in' && lnk(svg, 'L4') === 'in' &&
@@ -7567,11 +7716,10 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     reset('workstation'); var svgOne = C.topologySvg(); reset('wsl'); var svgWsl = C.topologySvg(); reset('proxmox');
     ok(svgOne.indexOf('<g data-link="one-trunk">') > 0 && svgOne.indexOf('>Trunk T1<') < 0 && svgOne.indexOf('T1 and T2 are one network.<') > 0 && node(svgWsl, 'gateway') === 'na:linux' && node(svgWsl, 'rtr-peer-1') === 'na' && node(svgWsl, 'svc-201a') === 'in' &&
       svgWsl.indexOf('>no trunk on WSL<') > 0 && svgWsl.indexOf('data-link="one-trunk"') < 0 && lnk(svgWsl, 'L1') === 'out', 'the picture shows one trunk where the platform has one, and what WSL does not build');
-    S.gwOs = 'asa'; var svgDev = C.topologySvg(); S.fwOs = 'junos'; var svgFw = C.topologySvg(); S.gwOs = 'linux'; var svgSep = C.topologySvg(); reset('proxmox');
-    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway and firewall<') > 0 && svgDev.indexOf('>' + gwN + ': shut down<') > 0 && node(svgDev, 'firewall') === '' &&
-      node(svgFw, 'gateway') === 'in:asa' && node(svgFw, 'firewall') === 'in:junos' && svgFw.indexOf('>Firewall: Juniper Junos OS<') > 0 && svgFw.indexOf('>gateway and firewall<') < 0 && svgFw.indexOf('>no separate firewall<') < 0 &&
-      node(svgSep, 'gateway') === 'in:linux' && node(svgSep, 'firewall') === 'in:junos' && svgSep.indexOf('>Gateway device<') < 0 && svgSep.indexOf('>' + gwN + '<') > 0,
-      'the picture shows a device as the gateway and a separate firewall when they are chosen');
+    S.gwOs = 'asa'; var svgDev = C.topologySvg(); S.fwOs = 'junos'; S.inet[ntpHosts[0]] = false; S.inet[ntpHosts[1]] = false; S.rangeCount = '128'; var svgFw = C.topologySvg(); reset('proxmox');
+    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway<') > 0 && svgDev.indexOf('>gateway and firewall<') < 0 && svgDev.indexOf('>' + gwN + ': shut down<') > 0 &&
+      node(svgDev, 'firewall') === 'in:' + C.NET_OS_DEFAULT && node(svgFw, 'gateway') === 'in:asa' && node(svgFw, 'firewall') === 'in:junos' && svgFw.indexOf('>External firewall: Juniper Junos OS<') > 0 && svgFw.indexOf('>no machine has internet access<') > 0 &&
+      svgFw.indexOf('>the rest stays in ' + C.OLD_V4 + '.0.0/17<') > 0, 'the picture shows a device as the gateway, and the external firewall with its operating system, its machines, and its range');
     // Choices kept in the browser
     var canStore = (function () { try { window.localStorage.setItem('lab201-probe', '1'); window.localStorage.removeItem('lab201-probe'); return true; } catch (e) { return false; } })();
     var realKey = storeKey, wasOn = storeOn; storeKey = 'lab201-builder-selftest'; storeOn = true;
@@ -7665,24 +7813,42 @@ pre.cfg{width:0;min-width:100%;margin-top:10px}
     ok(/"140": 40/.test(body()), 'a changed VLAN appears as a segment mapping');
     type('input[data-vlan="41"]', '140');
     ok(/err/.test(document.querySelector('input[data-vlan="41"]').className), 'a duplicate VLAN is marked');
-    // The gateway and firewall sections. The block is 10.77 and segment 40 has VLAN 140 at this point.
-    var gwText = function () { return $('gwcfg').textContent; }, fwText = function () { return $('fwcfg').textContent; };
-    ok($('gwos').options.length === C.NET_GW.length && $('fwos').options.length === C.NET_FW.length && $('gwos').value === 'linux' && $('fwos').value === 'gateway' && $('gwcfg').hidden && $('fwcfg').hidden && $('gwacts').style.display === 'none' &&
-      $('fwacts').style.display === 'none' && $('gwnotes').textContent.indexOf('Nothing to enter') === 0 && $('fwnotes').textContent.indexOf('is the firewall too') > 0, 'the gateway and firewall sections start with the Linux router that the scripts build, which needs no text');
-    pick('#gwos', 'fortigate');
-    ok(S.gwOs === 'fortigate' && !$('gwcfg').hidden && $('gwacts').style.display === '' && gwText().indexOf('set vlanid 140\n        set ip 10.77.140.1 255.255.255.0\n') > 0 && !$('fwcfg').hidden && fwText().indexOf('set subnet 10.77.0.0 255.255.0.0\n') > 0 &&
-      fwText().indexOf('set srcintf "' + C.BASE.lab + '"') > 0 && $('gwextra').textContent === '' && $('gwnotes').textContent.indexOf('Before you use it') === 0 && $('fwnotes').textContent.indexOf('for the gateway device') > 0,
-      'a device as the gateway gets both texts, with the block and the VLAN IDs of the page');
-    pick('#gwos', 'junos'); pick('#fwos', 'fortigate');
-    ok(S.gwOs === 'junos' && S.fwOs === 'fortigate' && gwText().indexOf('set interfaces <GW_TRUNK_PORT> unit 40 vlan-id 140\n') > 0 && $('gwextra').textContent.indexOf('set security zones security-zone ' + C.BASE.lab + ' interfaces ') > 0 &&
-      fwText().indexOf('set srcintf "<FW_LAB_INTERFACE>"') > 0 && $('fwnotes').textContent.indexOf('for a separate firewall') > 0, 'a separate firewall gets its own text, in its own operating system');
-    // The picture on the Diagram tab follows the two choices and the rest of the page.
+    // The gateway section, the lab network range, and the external firewall. The block is 10.77 and segment 40 has VLAN 140 at this point.
+    var gwText = function () { return $('gwcfg').textContent; }, fwText = function () { return $('fwtext').value; }, inetBox = function (n) { return document.querySelector('[data-inet="' + n + '"]'); };
+    ok($('gwos').options.length === C.NET_GW.length && $('fwos').options.length === C.NET_OS.length && $('gwos').value === 'linux' && $('fwos').value === C.NET_OS_DEFAULT && $('gwcfg').hidden && $('gwacts').style.display === 'none' && $('gwnotes').textContent.indexOf('Nothing to enter') === 0 &&
+      fwText().indexOf('config router static\n') === 0 && fwText().indexOf('set dst 10.77.0.0 255.255.0.0\n') > 0 && $('fwreset').hidden && $('fwedited').hidden && $('rangesum').textContent.indexOf('10.77.0.0/16') === 0,
+      'the gateway section starts with the Linux router, and the external firewall text follows the address block');
+    pick('#gwos', 'junos');
+    ok(S.gwOs === 'junos' && !$('gwcfg').hidden && $('gwacts').style.display === '' && gwText().indexOf('set interfaces <GW_TRUNK_PORT> unit 40 vlan-id 140\n') > 0 && $('gwextra').textContent.indexOf('set security zones security-zone ' + C.BASE.lab + ' interfaces ') > 0 &&
+      $('gwnotes').textContent.indexOf('Before you use it') === 0 && $('fwnotes').textContent.indexOf('give the gateway device an uplink') > 0, 'a device as the gateway gets its text, and the firewall notes follow');
+    type('#rstart', '10.77.0.0'); type('#rcount', '64');
+    ok($('rangesum').textContent.indexOf('10.77.0.0/18') === 0 && fwText().indexOf('set dst 10.77.0.0 255.255.192.0\n') > 0 && $('rangewarn').textContent.indexOf('does not hold') > 0 && /chg/.test($('rcount').className) && $('rangeout').textContent.indexOf('10.77.63.255') > 0,
+      'the lab network range gives its supernet to the external firewall, and warns when it does not hold the lab');
+    type('#rcount', 'many');
+    ok(/err/.test($('rcount').className) && $('rcountmsg').textContent.indexOf('256 is used') > 0 && $('rangesum').textContent.indexOf('10.77.0.0/16') === 0, 'a number of subnets that cannot be used is marked, and the default is used');
+    type('#rcount', ''); type('#rstart', '');
+    ok(inetBox('svc-201a').checked && inetBox('svc-201b').checked && !inetBox('admin-201').checked && !inetBox('gw-201') && fwText().indexOf('set comment "svc-201a"') > 0 && fwText().indexOf('set comment "admin-201"') < 0, 'the hosts of the NTP servers have internet access from the start');
+    inetBox('admin-201').click(); inetBox('svc-201a').click();
+    ok(S.inet['admin-201'] === true && S.inet['svc-201a'] === false && inetBox('admin-201').checked && fwText().indexOf('set comment "admin-201"') > 0 && fwText().indexOf('set comment "svc-201a"') < 0, 'ticking a machine gives it internet access in the firewall text');
+    // The firewall text can be edited. An edit stays until the text of the page is asked for again.
+    var fwGen = fwText(); type('#fwtext', fwGen + 'set my-own-rule\n');
+    ok(S.fwEdit === fwGen + 'set my-own-rule\n' && !$('fwreset').hidden && !$('fwedited').hidden && /chg/.test($('fwtext').className), 'the firewall text can be edited, and the page says that it no longer follows');
+    inetBox('admin-201').click();
+    ok(fwText() === fwGen + 'set my-own-rule\n' && C.netConfigs().firewall.text !== fwGen, 'an edited text is kept when a choice changes');
+    $('fwreset').click();
+    ok(S.fwEdit === '' && fwText() === C.netConfigs().firewall.text && $('fwreset').hidden && $('fwedited').hidden && fwText().indexOf('my-own-rule') < 0, 'the text of the page comes back on request');
+    var realConfirm = window.confirm, asked = 0;
+    window.confirm = function () { asked++; return false; }; type('#fwtext', fwText() + 'x'); pick('#fwos', 'asa');
+    var fwKept = S.fwOs === C.NET_OS_DEFAULT && $('fwos').value === C.NET_OS_DEFAULT && S.fwEdit !== '';
+    window.confirm = function () { asked++; return true; }; pick('#fwos', 'asa'); window.confirm = realConfirm;
+    ok(fwKept && asked === 2 && S.fwOs === 'asa' && S.fwEdit === '' && fwText().indexOf('route <FW_LAB_INTERFACE> ') === 0, 'another OS type replaces an edited text only after a question');
+    // The picture on the Diagram tab follows the choices.
     document.querySelector('[data-tab="diagram"]').click();
     var pic = function (n) { return document.querySelector('#tabbody svg [data-node="' + n + '"]'); }, parsed = new DOMParser().parseFromString(C.topologySvg(), 'image/svg+xml');
-    ok(!!pic('gateway') && pic('gateway').getAttribute('data-kind') === 'junos' && !!pic('firewall') && pic('firewall').getAttribute('data-kind') === 'fortigate' && !parsed.querySelector('parsererror') && parsed.documentElement.nodeName === 'svg' &&
-      !!document.querySelector('#tabbody [data-act="svg"]'), 'the Diagram tab draws the lab with the gateway device and the separate firewall');
-    pick('#gwos', 'linux'); pick('#fwos', 'gateway');
-    ok(pic('gateway').getAttribute('data-kind') === 'linux' && !pic('firewall') && body().indexOf('10.77.0.0/16') > 0 && body().indexOf('Lab VLANs: 10, 20, 30, 140, 41, 42, 50.') > 0 && body().indexOf('edge-host') > 0,
+    ok(!!pic('gateway') && pic('gateway').getAttribute('data-kind') === 'junos' && !!pic('firewall') && pic('firewall').getAttribute('data-kind') === 'asa' && body().indexOf('External firewall: Cisco ASA') > 0 && !parsed.querySelector('parsererror') &&
+      parsed.documentElement.nodeName === 'svg' && !!document.querySelector('#tabbody [data-act="svg"]'), 'the Diagram tab draws the lab with the gateway device and the external firewall');
+    pick('#gwos', 'linux'); pick('#fwos', C.NET_OS_DEFAULT);
+    ok(pic('gateway').getAttribute('data-kind') === 'linux' && pic('firewall').getAttribute('data-kind') === C.NET_OS_DEFAULT && body().indexOf('10.77.0.0/16') > 0 && body().indexOf('Lab VLANs: 10, 20, 30, 140, 41, 42, 50.') > 0 && body().indexOf('edge-host') > 0,
       'the Diagram tab goes back to the Linux router, and shows the block, the VLAN IDs, and the names of the page');
     document.querySelector('[data-tab="manifest"]').click();
     // platforms
