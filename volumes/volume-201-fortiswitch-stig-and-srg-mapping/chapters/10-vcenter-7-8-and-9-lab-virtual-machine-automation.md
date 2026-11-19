@@ -101,7 +101,9 @@ Storage goes on the vSAN datastore, and with the default mirroring policy the th
 | `-ClusterName`, `-UseExistingSwitch`, `-NoUplinkChanges` | Dell VxRail and other managed clusters (see above). |
 | `-LicenseFile`, `-FlavorImages`, `-IsoImages` | The license file, OVA paths for flavors that publish none, and datastore paths of install ISOs for Windows, Linux Mint, and Tiny Core (Chapter 09). Those machines are created empty, with the install ISO and the answer CD attached, and use the Intel e1000e adapter for Windows. |
 
-The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Status`, `RemoveBuildNics`, and `Remove` do the same.
+The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-Wait`, `-WaitMinutes`, `-SnapshotName`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Check`, `Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` do the same. `Check` also tests the datacenter, the host or cluster, and, with `-UseExistingSwitch`, the distributed switch.
+
+`Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` look for the machines only in the lab folder (`-FolderName`). A machine with the same name elsewhere in vCenter is never touched. If you built the lab in another folder, pass the same `-FolderName` to these actions.
 
 Example for vCenter 8 with distributed switches:
 
@@ -119,6 +121,7 @@ The checks in Chapter 09 (cloud-init status, hostnames, addresses, the gateway b
 | --- | --- | --- |
 | Template exists | `Get-Template lab201-ubuntu-template` | One template |
 | Machines are in the folder | `.\Deploy-Lab201-Vcenter.ps1 -Action Status -VcenterServer <VCENTER>` | Twelve machines in `lab201` |
+| The first boot finished | The same command with `-Wait` | `ok` in the Build column of every machine |
 | Distributed switch version | `Get-VDSwitch dvs-lab201-t1 \| Select Name, Version` | `7.0.3` or `8.0.0` unless you overrode it |
 | Trunk policy | `Get-VDPortgroup lab201-t1-trunk \| Get-VDSecurityPolicy` | Promiscuous, forged transmits, MAC changes all allowed |
 | Machines stay put | `Get-VM -Location lab201 \| Select Name, VMHost` | The single host in every row |
@@ -168,14 +171,15 @@ Everything in Chapter 09's security section applies. In addition:
 ### Lab 10.1: Preview the build
 
 1. Unpack the lab-scripts zip and open PowerShell in the `vcenter` folder.
-2. Run the script with `-WhatIf`, using `-NetworkType Standard`. Read every line.
+2. Run the script with `-Action Check` and the arguments of the build. It changes nothing, and it logs in to vCenter to test the version, the datacenter, the host, the datastore, and the uplinks.
+3. Run the script with `-WhatIf`, using `-NetworkType Standard`. Read every line.
 
-**Expected result.** The folder, the six networks and port groups, the template, and twelve clones are listed, and nothing is created.
+**Expected result.** The check ends with `Ready`, or names what to fix. In the preview, the folder, the six networks and port groups, the template, and twelve clones are listed, and nothing is created.
 
 ### Lab 10.2: Build with standard switches
 
 1. Run the command without `-WhatIf`.
-2. Run `-Action Status` until every machine reports an address.
+2. Run `-Action Status -Wait` with `-VcenterServer` and `-VsphereVersion`. It ends when every machine reports that its first boot has finished.
 3. On `gw-201`, run `bridge link` and `ip -br addr show type vlan`.
 
 **Expected result.** Twelve machines in the `lab201` folder, each with the Chapter 999 addresses, and `gw-201` showing both trunks in `br-trunk`.
@@ -184,7 +188,8 @@ Everything in Chapter 09's security section applies. In addition:
 
 1. Add a VM-Host rule (or set DRS to manual) for the `lab201` folder.
 2. Run `-Action RemoveBuildNics`.
-3. Snapshot every machine as `baseline-201`.
+3. Run `-Action Snapshot`. It takes the snapshot `baseline-201` of every machine in the lab folder. It refuses, and names the machines, if one of them still has its build adapter, so step 2 comes first.
+4. Between labs, run `-Action Restore`. It returns every machine to that snapshot and powers it on, the gateway first, and it discards what changed on the machines since the snapshot.
 
 **Negative test.** Try a vMotion of `svc-201a` to another host. The rule or the manual DRS level must stop it, or you must see the trunk fail on arrival.
 
@@ -201,7 +206,7 @@ Run `-Action Remove`. Delete the template, the `lab201` folder, the `lab201-seed
 
 ## Lab Verification
 
-Complete this sign-off once Labs 10.1 to 10.3 have been run end to end under a real vCenter 7 and a real vCenter 8. Until then the script is unverified. It was written against the PowerCLI documentation and checked for syntax and for the shared seed output only. The distributed switch version defaults, the clone of the imported template, and the trunk security policy on distributed port groups are the first things to confirm.
+Complete this sign-off once Labs 10.1 to 10.3 have been run end to end under a real vCenter 7 and a real vCenter 8. Until then the script is unverified. It was written against the PowerCLI documentation and checked for syntax and for the shared seed output only. The distributed switch version defaults, the clone of the imported template, and the trunk security policy on distributed port groups are the first things to confirm. Of the `Check`, `Status -Wait`, `Snapshot`, and `Restore` actions, only `Check` has been run: its local tests, and then, under Windows PowerShell 5.1 with PowerCLI, as far as a failed login to a server that does not exist.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

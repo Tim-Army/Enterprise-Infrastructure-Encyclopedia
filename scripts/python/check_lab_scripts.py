@@ -11,7 +11,8 @@ a hypervisor:
 - every PowerShell script parses (skipped with a note when pwsh is missing);
 - when the folder has common/make-seed.py, the seed generator writes a seed for
   every machine of the manifest with every cloud-image flavor, with the VLAN
-  tags made by the hypervisor and by the guest.
+  tags made by the hypervisor and by the guest, and every seed carries the
+  lab201-status script, which passes "bash -n" (one seed of each run is checked).
 
 It prints one line for each group and exits with status 1 if anything failed,
 which validate.sh uses.
@@ -20,6 +21,7 @@ which validate.sh uses.
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -30,6 +32,8 @@ SKIP_DIRS = {"work", "__pycache__", "seeds", "walkthroughs"}
 # A throwaway public key and password hash. They only have to look right to make-seed.py.
 TEST_KEY = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGirxqLHvYFZAkfgxfAH904k/2kkqekQ9oKHI3Wxpai7 lab-script-check\n"
 TEST_HASH = "$6$labcheck$0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmn"
+# The write_files entry of the status script in a seed's user-data.
+STATUS_FILE = re.compile(r'- path: /usr/local/sbin/lab201-status\n    permissions: "0755"\n    content: (".*")\n')
 
 
 def files_under(root, suffix):
@@ -111,6 +115,7 @@ def check_seeds(folder, problems):
         return role not in role_keys or flavor.get("roles", [])[role_keys.index(role)] != "n"
 
     runs = seeds = 0
+    bash = shutil.which("bash")
     with tempfile.TemporaryDirectory() as tmp:
         key = os.path.join(tmp, "key.pub")
         with open(key, "w", encoding="utf-8") as fh:
@@ -136,6 +141,7 @@ def check_seeds(folder, problems):
                 if result.returncode != 0:
                     problems.append("%s failed: %s" % (label, (result.stderr.strip().splitlines() or ["no message"])[-1]))
                     continue
+                checked_status = False
                 for name in names:
                     user = os.path.join(out, name, "user-data")
                     network = os.path.join(out, name, "network-config")
@@ -144,9 +150,22 @@ def check_seeds(folder, problems):
                         continue
                     seeds += 1
                     with open(user, "r", encoding="utf-8") as fh:
-                        if not fh.readline().startswith("#cloud-config"):
-                            problems.append("%s: the user-data of %s does not start with #cloud-config" % (label, name))
-    return "%d seed run(s) wrote %d seeds: every cloud-image flavor with the machines it can run, both tagging modes" % (runs, seeds)
+                        text = fh.read()
+                    if not text.startswith("#cloud-config"):
+                        problems.append("%s: the user-data of %s does not start with #cloud-config" % (label, name))
+                    # The status script that --action status reads. Its text is a JSON string in the YAML.
+                    found = STATUS_FILE.search(text)
+                    if not found:
+                        problems.append("%s: the user-data of %s has no lab201-status script" % (label, name))
+                    elif bash and not checked_status:
+                        checked_status = True
+                        script = os.path.join(tmp, "lab201-status.sh")
+                        with open(script, "w", encoding="utf-8", newline="\n") as fh:
+                            fh.write(json.loads(found.group(1)))
+                        result = subprocess.run([bash, "-n", script], capture_output=True, text=True)
+                        if result.returncode != 0:
+                            problems.append("%s: the lab201-status script of %s fails bash -n: %s" % (label, name, (result.stderr.strip().splitlines() or ["error"])[-1]))
+    return "%d seed run(s) wrote %d seeds, each with a status script: every cloud-image flavor with the machines it can run, both tagging modes" % (runs, seeds)
 
 
 def main():

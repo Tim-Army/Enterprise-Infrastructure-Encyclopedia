@@ -75,6 +75,84 @@ table inet lab201 {
 
 SYSCTL_FORWARD = "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1\n"
 
+# The first line this script prints is "lab201 STATE NAME details". STATE is running (the first boot is not
+# finished), ok, or failed. The platform scripts read that line for --action status. The lists of packages and
+# units are filled in for each machine.
+STATUS_SCRIPT = """#!/bin/sh
+# Written by make-seed.py. Says whether this machine's first boot finished and its lab services run.
+# Usage: lab201-status [--publish]
+#   --publish also hands the first line to a VMware hypervisor as guestinfo.lab201 (needs root).
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin; export PATH
+NAME=__NAME__
+PKG_TOOL=__PKG_TOOL__
+PKGS="__PKGS__"
+UNITS="__UNITS__"
+# 0 on a hardened flavor, where the STIG can stop a lab service on purpose: the unit is then only named.
+UNIT_FAIL=__UNIT_FAIL__
+has_pkg() {
+  if [ "$PKG_TOOL" = dnf ]; then rpm -q "$1" >/dev/null 2>&1 || rpm -q --whatprovides "$1" >/dev/null 2>&1
+  else dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q 'install ok installed'; fi
+}
+long=$(cloud-init status --long 2>/dev/null)
+ci=$(printf '%s\\n' "$long" | sed -n 's/^status: *//p' | head -n 1)
+[ -n "$ci" ] || ci=unknown
+ext=$(printf '%s\\n' "$long" | sed -n 's/^extended_status: *//p' | head -n 1)
+total=0; have=0; missing=""
+for p in $PKGS; do
+  total=$((total + 1))
+  if has_pkg "$p"; then have=$((have + 1)); else missing="$missing,$p"; fi
+done
+utotal=0; uok=0; inactive=""
+for u in $UNITS; do
+  utotal=$((utotal + 1))
+  if systemctl is-active --quiet "$u" 2>/dev/null; then uok=$((uok + 1)); else inactive="$inactive,$u"; fi
+done
+srcfail=$(sed -n 's/^source_build_failed=//p' /etc/lab201-vm 2>/dev/null | tr '\\n' ',' | sed 's/,$//')
+detail="packages=$have/$total services=$uok/$utotal cloud-init=$ci"
+case "$ext" in *degraded*) detail="$detail cloud-init-notes=recoverable-errors" ;; esac
+if [ ! -f /var/lib/cloud/instance/boot-finished ] && [ "$ci" != error ]; then
+  state=running
+else
+  state=ok
+  [ "$ci" = error ] && state=failed
+  if [ -n "$missing" ]; then state=failed; detail="$detail missing=${missing#,}"; fi
+  if [ -n "$inactive" ]; then detail="$detail inactive=${inactive#,}"; [ "$UNIT_FAIL" = 1 ] && state=failed; fi
+  if [ -n "$srcfail" ]; then state=failed; detail="$detail source_build_failed=$srcfail"; fi
+fi
+line="lab201 $state $NAME $detail"
+echo "$line"
+if [ "$state" = failed ]; then
+  echo "Look at: sudo cloud-init status --long, and /var/log/cloud-init-output.log"
+fi
+if [ "$1" = "--publish" ]; then
+  stamp=$(date -u +%Y-%m-%dT%H:%MZ)
+  if command -v vmware-rpctool >/dev/null 2>&1; then vmware-rpctool "info-set guestinfo.lab201 $line at=$stamp" >/dev/null 2>&1 || true
+  elif command -v vmtoolsd >/dev/null 2>&1; then vmtoolsd --cmd "info-set guestinfo.lab201 $line at=$stamp" >/dev/null 2>&1 || true
+  fi
+fi
+[ "$state" != failed ]
+"""
+
+STATUS_SERVICE = """[Unit]
+Description=Report the lab 201 build state to the hypervisor
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/lab201-status --publish
+SuccessExitStatus=1
+"""
+
+STATUS_TIMER = """[Unit]
+Description=Report the lab 201 build state every minute
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=1min
+
+[Install]
+WantedBy=timers.target
+"""
+
 
 def configure(manifest):
     """Take the address blocks from the manifest (the defaults are the Chapter 999 plan)."""
@@ -133,6 +211,21 @@ def map_packages(pkgs, flavor):
         if (p in epel or target in epel) and flavor.get("epel"):
             needs_epel = True
     return install, needs_epel, missing
+
+
+def family_of(flavor):
+    """The package family record of a flavor. A flavor of an unknown family is treated as an apt one."""
+    return FLAVOR_DATA["families"].get(flavor["family"], {"admin_group": "sudo", "map": {}, "install": "apt"})
+
+
+def source_builds_for(missing, fam):
+    """The packages in missing that this family can compile from source, as (name, build record) pairs."""
+    out = []
+    for p in missing:
+        sb = FLAVOR_DATA.get("source_builds", {}).get(p)
+        if sb and sb.get("deps", {}).get(fam.get("install")):
+            out.append((p, sb))
+    return out
 
 
 def seg_base(seg):
@@ -282,7 +375,7 @@ def address_block(nic, routes=True):
 
 def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, licenses=None):
     flavor = flavor or FLAVOR_DATA["flavors"].get(FLAVOR_DATA["default"]) or {"family": "apt"}
-    fam = FLAVOR_DATA["families"].get(flavor["family"], {"admin_group": "sudo", "map": {}, "install": "apt"})
+    fam = family_of(flavor)
     licenses = licenses or {}
     stig = flavor.get("stig")
     user = manifest["admin_user"]
@@ -292,14 +385,10 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
         pkgs.append(agent)
     install, needs_epel, missing = map_packages(pkgs, flavor)
     # A package with no repository build is compiled from source when the flavor can.
-    source_built = []
-    for p in list(missing):
-        sb = FLAVOR_DATA.get("source_builds", {}).get(p)
-        deps = sb.get("deps", {}).get(fam.get("install")) if sb else None
-        if deps:
-            source_built.append((p, sb))
-            missing.remove(p)
-            install += [d for d in deps if d not in install]
+    source_built = source_builds_for(missing, fam)
+    for p, sb in source_built:
+        missing.remove(p)
+        install += [d for d in sb["deps"][fam.get("install")] if d not in install]
     if stig == "rhel-oscap":
         install += ["scap-security-guide", "openscap-scanner"]
     sudo_rule = "ALL=(ALL) ALL" if flavor.get("needs_password") else "ALL=(ALL) NOPASSWD:ALL"
@@ -346,9 +435,15 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     files.append(("/etc/lab201-vm", info))
     if stig:
         files.append(("/root/LAB201-STIG-NOTES.txt", stig_notes(vm, flavor, missing)))
+    files.append(("/usr/local/sbin/lab201-status", status_script(vm, flavor, fam, install, source_built), "0755"))
+    if guest_agent == "vmware":
+        # A VMware guest hands its build state to the hypervisor, where --action Status reads it with no login.
+        files.append(("/etc/systemd/system/lab201-status.service", STATUS_SERVICE))
+        files.append(("/etc/systemd/system/lab201-status.timer", STATUS_TIMER))
     L.append("write_files:")
-    for path, content in files:
-        L += ["  - path: %s" % path, "    permissions: \"0644\"", "    content: %s" % q(content)]
+    for entry in files:
+        path, content, mode = entry[0], entry[1], (entry[2] if len(entry) > 2 else "0644")
+        L += ["  - path: %s" % path, "    permissions: \"%s\"" % mode, "    content: %s" % q(content)]
     run = []
     if not routes_in_netplan(flavor):
         for n, nic in enumerate(vm["nics"]):
@@ -387,6 +482,7 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
         run.append("systemctl enable --now qemu-guest-agent || systemctl start qemu-guest-agent || true")
     if guest_agent == "vmware":
         run.append("systemctl enable --now open-vm-tools || systemctl start open-vm-tools || true")
+        run.append("systemctl daemon-reload; systemctl enable --now lab201-status.timer || true")
     if stig == "ubuntu-usg":
         run += ["pro enable usg || true", "apt-get install -y usg || true", "usg fix disa_stig || true"]
     if stig == "rhel-oscap":
@@ -399,6 +495,33 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     if stig:
         L += ["power_state:", "  mode: reboot", "  message: Rebooting once after hardening", "  timeout: 600", "  condition: true"]
     return "\n".join(L) + "\n"
+
+
+def status_script(vm, flavor, fam, install, source_built):
+    """The lab201-status script for one machine: the packages it must have and the units that must run.
+
+    A unit is listed only when a real build showed it active after the first boot: the units the Red Hat
+    family seed enables (services), the units of the apt family in expect_active, and nftables on the gateway.
+    """
+    tool = "dnf" if fam.get("install") == "dnf" else "apt"
+    built = set(p for p, _ in source_built)
+    for _, sb in source_built:
+        built.update(sb.get("deps", {}).get(fam.get("install"), []))
+    # Packages that were added only to compile a source build are not part of the lab, so they are not checked.
+    pkgs = [p for p in install if p not in built]
+    expect = fam.get("expect_active") or fam.get("services") or {}
+    units = []
+    for p in vm.get("packages", []):
+        unit = expect.get(p)
+        if unit and fam.get("map", {}).get(p, p) in install and unit not in units:
+            units.append(unit)
+    if vm.get("role") == "gateway" and "nftables" not in units:
+        units.append("nftables")
+    text = STATUS_SCRIPT
+    for key, value in (("__NAME__", vm["name"]), ("__PKG_TOOL__", tool), ("__PKGS__", " ".join(pkgs)), ("__UNITS__", " ".join(units)),
+                       ("__UNIT_FAIL__", "0" if flavor.get("stig") else "1")):
+        text = text.replace(key, value)
+    return text
 
 
 def stig_notes(vm, flavor, missing):
@@ -805,6 +928,11 @@ def main():
         if flavor.get("ubuntu_pro") and not (licenses.get("ubuntu_pro") or {}).get("token"):
             print("make-seed: warning: %s needs an Ubuntu Pro token for the STIG tools. Pass --license-file with ubuntu_pro token." % vm["name"], file=sys.stderr)
         _, _, missing = map_packages(vm.get("packages", []), flavor)
+        # A missing package is either compiled from source on the first boot, or left out.
+        built = [p for p, _ in source_builds_for(missing, family_of(flavor))]
+        missing = [p for p in missing if p not in built]
+        if built:
+            print("make-seed: note: %s has no package for %s, so %s builds it from source on its first boot." % (flavor["name"], ", ".join(built), vm["name"]), file=sys.stderr)
         if missing:
             print("make-seed: note: %s does not have %s on %s, so those tools are left out of %s." % (flavor["name"], ", ".join(missing), vm["role"], vm["name"]), file=sys.stderr)
         d = os.path.join(a.out, vm["name"])

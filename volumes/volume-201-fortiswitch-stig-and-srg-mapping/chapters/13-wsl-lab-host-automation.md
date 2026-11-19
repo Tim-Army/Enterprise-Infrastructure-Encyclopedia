@@ -82,7 +82,7 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 | --- | --- |
 | `-SshKeyFile` | Public key files for `labadmin` (required for `Deploy`). |
 | `-InstallRoot` | Folder for the distributions' disks (default `%USERPROFILE%\wsl-lab201`). |
-| `-Action` | `Deploy` (default), `Status`, or `Remove` (which unregisters each distribution and deletes its disk). |
+| `-Action` | `Deploy` (default), `Check`, `Status`, or `Remove` (which unregisters each distribution and deletes its disk). `Check` changes nothing: it tests that WSL is installed, Python, the SSH key, the manifest, and disk space, and says how to fix what is missing. WSL has no snapshots, so this script has no `Snapshot` or `Restore`. |
 
 ## Validation and Troubleshooting
 
@@ -136,9 +136,10 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 
 ### Lab 13.1: Build the hosts
 
-1. Unpack the lab-scripts zip and open PowerShell in the `wsl` folder. Preview with `-WhatIf`:
+1. Unpack the lab-scripts zip and open PowerShell in the `wsl` folder. Run the readiness check, then preview with `-WhatIf`. Neither changes anything:
 
    ```powershell
+   .\Deploy-Lab201-Wsl.ps1 -Action Check -SshKeyFile ~\.ssh\id_ed25519.pub
    .\Deploy-Lab201-Wsl.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
    ```
 
@@ -170,7 +171,7 @@ Run `-Action Remove`. Delete `%USERPROFILE%\wsl-lab201`, the `work\` folder, and
 
 ## Lab Verification
 
-Complete this sign-off once Labs 13.1 and 13.2 have been run end to end on a real Windows 11 host. Until then the script is unverified. The generated provisioning scripts pass `bash -n` and `shellcheck`, and the selection of the image and its checksum was tested against Canonical's site, but nothing has been run in WSL. Whether `wsl --import` accepts the renamed `.wsl` image, whether the WSL kernel has 802.1Q support, and whether the boot command runs on your WSL release are the first things to confirm.
+Complete this sign-off once Labs 13.1 and 13.2 have been run end to end on a real Windows 11 host. Until then the script is unverified. The generated provisioning scripts pass `bash -n` and `shellcheck`, and the selection of the image and its checksum was tested against Canonical's site, but nothing has been run in WSL. Whether `wsl --import` accepts the renamed `.wsl` image, whether the WSL kernel has 802.1Q support, and whether the boot command runs on your WSL release are the first things to confirm. The `Check` action was run on one Windows computer where WSL is not installed, and it reported that. It has not been run where WSL is installed.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

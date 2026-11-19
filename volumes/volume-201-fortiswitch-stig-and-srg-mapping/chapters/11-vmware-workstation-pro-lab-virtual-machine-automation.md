@@ -67,7 +67,9 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | `-BridgeVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 220, and the build vmnet. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
 | `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available here, because Workstation has no VLAN-aware switch and those guests cannot tag the trunks. |
-| `-Action` | `Deploy` (default), `Check`, `Status`, `RemoveBuildNics`, or `Remove`. `Check` changes nothing: it tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest, memory, disk space, and the networks, and says how to fix what is missing. `Status` lists each machine, its state, and the `ssh` line that logs in to it. |
+| `-Action` | `Deploy` (default), `Check`, `Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, or `Remove`. `Check` changes nothing: it tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest, memory, disk space, and the networks, and says how to fix what is missing. `Status` lists each machine, its state, whether its first boot has finished, and the `ssh` line that logs in to it. `Snapshot` takes the baseline snapshot of every machine, and refuses while a machine still has its build adapter (adapter 0). `Restore` returns every machine to that snapshot and starts it. |
+| `-Wait`, `-WaitMinutes` | With `-Action Status`: keep checking until every machine reports that its first boot has finished, for at most `-WaitMinutes` (30 by default). Each machine hands its state to Workstation through VMware Tools about once a minute, as the guest variable `lab201`, and `vmrun readVariable` reads it with no login. If no machine reports within six minutes, the wait stops and says so. |
+| `-SnapshotName` | The snapshot that `Snapshot` and `Restore` use. The default is `baseline-201`. |
 | `-AddToLibrary` | Opens each machine in Workstation after the build, which lists it in the Library. Not tested yet. |
 
 `-WhatIf` is supported for every action that changes something.
@@ -77,7 +79,8 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | Check | Command | Expected |
 | --- | --- | --- |
 | Machines exist and run | `.\Deploy-Lab201-Workstation.ps1 -Action Status` | Twelve machines, `running` |
-| Cloud-init finished | On a machine: `cloud-init status --long` | `status: done` |
+| The first boot finished | The same command with `-Wait` | `ok` in the Build column of every machine. `failed` names a missing package or a lab service that does not run |
+| Cloud-init finished | On a machine: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
 | Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v10` | A VLAN interface with `id 10` |
 | Addresses | `ip -br addr` | The Chapter 999 addresses, both families |
 | Tags reach the cable | On `gw-201`: `sudo tcpdump -e -n -i nic2 vlan` while a switch sends traffic | Frames with `vlan` tags |
@@ -141,7 +144,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
    .\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub
    ```
 
-3. Run `-Action Status` until all twelve machines run, then check `cloud-init status --long` on three of them.
+3. Run `.\Deploy-Lab201-Workstation.ps1 -Action Status -Wait`. It ends when every machine reports that its first boot has finished, and prints the line that logs in to each. Then check `lab201-status` and `cloud-init status --long` on three of them. If no machine reports its state, that check by hand is the one to rely on.
 4. **Tag test.** With the switch trunk configured (Lab 999.3), run `sudo tcpdump -e -n -i nic2 vlan` on `gw-201`.
 
 **Expected result.** Twelve running machines with the Chapter 999 addresses, and tagged frames in the capture. If the capture shows no tags, see the troubleshooting table before continuing.
@@ -149,11 +152,16 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 ### Lab 11.3: Remove the build adapters and take the baseline
 
 1. Run `.\Deploy-Lab201-Workstation.ps1 -Action RemoveBuildNics`. It stops each machine, switches off adapter 0, and starts it again.
-2. Snapshot each machine:
+2. Snapshot each machine. The script finds the machines folder itself, the one it printed as `Machines folder`. It refuses, and names the machines, if adapter 0 is still on in one of them:
 
    ```powershell
-   Get-ChildItem "$([Environment]::GetFolderPath('MyDocuments'))\Virtual Machines\lab201" -Recurse -Filter *.vmx | Where-Object { $_.BaseName -ne 'lab201-base' } |
-     ForEach-Object { & 'C:\Program Files\VMware\VMware Workstation\vmrun.exe' -T ws snapshot $_.FullName baseline-201 }
+   .\Deploy-Lab201-Workstation.ps1 -Action Snapshot
+   ```
+
+3. Between labs, return every machine to that snapshot. It discards what changed on the machines since the snapshot. `vmrun` leaves a reverted machine suspended, so the script starts it again:
+
+   ```powershell
+   .\Deploy-Lab201-Workstation.ps1 -Action Restore
    ```
 
 **Negative test.** From `static-1`, run `curl -m 5 https://cloud-images.ubuntu.com`. It must fail.
@@ -166,7 +174,7 @@ Run `-Action Remove`. Delete `lab201-base`, `work\`, and the lab vmnets if you n
 
 ## Lab Verification
 
-Complete this sign-off once Labs 11.1 to 11.3 have been run end to end on a real Windows host with a real switch trunk. Until then the labs are not signed off. The script itself has been run: on a Windows computer with Workstation Pro 26 and Python 3.15, it built and started all the lab machines from a Lab Builder zip whose values had been changed on the page, and a Claude Code session started from the zip's `CLAUDE.md` began at Lab 999.1. That run found four things the script and this chapter now cover: Workstation 26 installs under `Program Files`, a computer may have no `D:` drive, `python` can be the Microsoft Store stub, and `vmrun` does not add the machines to the Workstation library. Not yet run: the trunk to the hardware switches (whether the host's adapter passes 802.1Q tags), `-Action RemoveBuildNics`, the snapshot step, and the labs themselves.
+Complete this sign-off once Labs 11.1 to 11.3 have been run end to end on a real Windows host with a real switch trunk. Until then the labs are not signed off. The script itself has been run: on a Windows computer with Workstation Pro 26 and Python 3.15, it built and started all the lab machines from a Lab Builder zip whose values had been changed on the page, and a Claude Code session started from the zip's `CLAUDE.md` began at Lab 999.1. That run found four things the script and this chapter now cover: Workstation 26 installs under `Program Files`, a computer may have no `D:` drive, `python` can be the Microsoft Store stub, and `vmrun` does not add the machines to the Workstation library. Not yet run: the trunk to the hardware switches (whether the host's adapter passes 802.1Q tags), `-Action RemoveBuildNics`, and the labs themselves. The `Status -Wait`, `Snapshot`, and `Restore` actions were added after that run and have not been run against machines. `Snapshot` was run against stand-in `.vmx` files only: it refused while adapter 0 was on in one of them, and with `-WhatIf` it listed the machines once adapter 0 was off in all of them. The first thing to confirm for `Status -Wait` is that `vmrun readVariable` returns the build state a machine hands to Workstation.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

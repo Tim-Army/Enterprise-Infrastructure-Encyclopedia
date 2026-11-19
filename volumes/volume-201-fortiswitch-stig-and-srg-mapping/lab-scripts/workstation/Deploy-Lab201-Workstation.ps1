@@ -20,20 +20,36 @@
   Needs PowerShell 5.1 or 7, Workstation Pro 17 or later, and Python 3 with
   pycdlib (pip install pycdlib) for the seed ISOs.
 
+  -Action picks what the script does:
+    Deploy           builds and starts the machines (the default)
+    Check            tests what a deploy needs on this computer and changes nothing
+    Status           shows each machine, whether its first boot has finished, and how
+                     to log in. With -Wait it keeps checking until every machine has finished
+    RemoveBuildNics  switches the build network adapter of each machine off
+    Snapshot         takes the baseline snapshot of every machine (Lab 999.6)
+    Restore          returns every machine to the baseline snapshot and starts it
+    Remove           stops and deletes the machines
+
 .EXAMPLE
   .\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
 
 .EXAMPLE
   .\Deploy-Lab201-Workstation.ps1 -VmRoot E:\VMs\lab201 -SshKeyFile ~\.ssh\id_ed25519.pub
+
+.EXAMPLE
+  .\Deploy-Lab201-Workstation.ps1 -Action Status -Wait
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
   [string] $VmRoot,
-  [ValidateSet('Deploy', 'Check', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
+  [ValidateSet('Deploy', 'Check', 'Status', 'RemoveBuildNics', 'Snapshot', 'Restore', 'Remove')] [string] $Action = 'Deploy',
+  [switch] $Wait,
+  [ValidateRange(1, 600)] [int] $WaitMinutes = 30,
+  [ValidatePattern('^[A-Za-z][A-Za-z0-9_-]{1,39}$')] [string] $SnapshotName = 'baseline-201',
   [string] $PythonCommand,
   [string[]] $SshKeyFile,
-  [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
-  [string] $WorkDir = (Join-Path $PSScriptRoot 'work'),
+  [string] $Manifest,
+  [string] $WorkDir,
   [string] $WorkstationDir,
   [ValidatePattern('^vmnet\d+$')] [string] $BridgeVmnet = 'vmnet0',
   [ValidatePattern('^vmnet\d+$')] [string] $Lan220Vmnet = 'vmnet5',
@@ -45,6 +61,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+# Windows PowerShell 5.1 leaves $PSScriptRoot empty inside param() when the script is started with -File,
+# so the defaults that need the script's folder are set here.
+if (-not $Manifest) { $Manifest = Join-Path $PSScriptRoot '..\common\lab201-vms.json' }
+if (-not $WorkDir) { $WorkDir = Join-Path $PSScriptRoot 'work' }
 
 # Find a Python 3 that really runs. -PythonCommand names the command to use (for example python3.15 or "py -3.15").
 # Without it the script tries python3, then the py launcher, then python.
@@ -270,20 +291,120 @@ function Edit-Vmx {
   Set-Content -Path $Path -Value ($kept + $Add) -Encoding ASCII
 }
 
+function Get-LabBuildState {
+  # What the machine says about its first boot. The guest hands one line to Workstation as the guest
+  # variable lab201 (lab201-status --publish runs every minute), and vmrun reads it with no login.
+  param([string] $Vmx)
+  foreach ($var in 'lab201', 'guestinfo.lab201') {
+    $text = ''
+    try { $text = (& $vmrun -T ws readVariable $Vmx guestVar $var 2>$null | Out-String).Trim() } catch { $text = '' }
+    if ($text -match '^lab201 (\S+) \S+ ?(.*)$') { return @{ State = $Matches[1]; Detail = $Matches[2] } }
+  }
+  return @{ State = 'unknown'; Detail = '' }
+}
+
 if ($Action -eq 'Status') {
-  # State of each machine, and the line that logs in to it over SSH.
-  $running = @(& $vmrun -T ws list)
+  # State of each machine, whether its first boot has finished, and the line that logs in to it over SSH.
+  $started = Get-Date
+  $deadline = $started.AddMinutes($WaitMinutes)
+  $everReported = $false
+  while ($true) {
+    $running = @(& $vmrun -T ws list)
+    $rows = @(); $pending = @(); $failedNames = @(); $notRunning = @()
+    foreach ($vmDef in $lab.vms) {
+      $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
+      $state = if ($running -contains $vmx) { 'running' } elseif (Test-Path $vmx) { 'stopped' } else { 'missing' }
+      if ($state -ne 'running') { $notRunning += $vmDef.name }
+      $build = ''; $note = ''
+      if ($state -eq 'running') {
+        $b = Get-LabBuildState $vmx
+        $build = $b.State
+        if ($build -ne 'unknown') { $everReported = $true }
+        if ($build -in 'running', 'unknown') { $pending += $vmDef.name }
+        if ($build -eq 'failed') { $failedNames += $vmDef.name }
+        $ip = ''
+        try { $ip = (& $vmrun -T ws getGuestIPAddress $vmx 2>$null | Out-String).Trim() } catch { $ip = '' }
+        $login = if ($ip -match '^\d+\.\d+\.\d+\.\d+$') { "ssh $($lab.admin_user)@$ip" } else { 'address not ready yet' }
+        $note = if ($build -eq 'unknown') { "not reported yet   $login" } else { "$($b.Detail)   $login" }
+      }
+      $rows += '{0,-16} {1,-8} {2,-8} {3}' -f $vmDef.name, $state, $build, $note
+    }
+    if (-not $Wait -or -not $pending.Count -or (Get-Date) -ge $deadline) { break }
+    # If no machine has reported after six minutes, the guest tools are not passing the state on. Stop waiting.
+    if (-not $everReported -and ((Get-Date) - $started).TotalMinutes -ge 6) { break }
+    Write-Host ('{0:HH:mm:ss} Still building: {1}' -f (Get-Date), ($pending -join ' '))
+    Start-Sleep -Seconds 15
+  }
+  '{0,-16} {1,-8} {2,-8} {3}' -f 'MACHINE', 'STATE', 'BUILD', 'DETAIL'
+  $rows
+  if (-not ($running | Where-Object { $_ -like (Join-Path $VmRoot '*') })) {
+    Write-Host "No lab machine is running in $VmRoot. If the machines are in another folder, pass -VmRoot."
+    return
+  }
+  if ($failedNames.Count) {
+    Write-Warning "These machines report a problem (a failed first boot, or a lab service that is not running): $($failedNames -join ', '). Log in to one and run: lab201-status"
+    exit 1
+  }
+  if ($pending.Count -and -not $everReported) {
+    Write-Host 'No machine reports its build state yet. A machine reports about a minute after it starts.'
+    Write-Host 'To check one by hand, log in to it and run: lab201-status'
+    if ($Wait) { exit 1 }
+  } elseif ($Wait -and $pending.Count) {
+    Write-Warning "Not every machine finished within $WaitMinutes minutes: $($pending -join ', ')"
+    exit 1
+  } elseif ($Wait -and $notRunning.Count) {
+    # Say what the table shows and no more: a machine that is stopped or missing was not checked.
+    Write-Host 'Every running machine has finished its first boot.' -ForegroundColor Green
+    Write-Host "Not checked, because they are stopped or missing: $($notRunning -join ', ')"
+  } elseif ($Wait) {
+    Write-Host 'Every machine has finished its first boot.' -ForegroundColor Green
+  }
+  return
+}
+
+if ($Action -eq 'Snapshot') {
+  # A snapshot keeps the machine's adapters. With the build adapter (adapter 0) still on, a restore would bring
+  # it back, and with it the machine's path to the internet. So the build adapters have to go first.
+  $withBuildNic = @()
   foreach ($vmDef in $lab.vms) {
     $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
-    $state = if ($running -contains $vmx) { 'running' } elseif (Test-Path $vmx) { 'stopped' } else { 'missing' }
-    $login = ''
-    if ($state -eq 'running') {
-      $ip = ''
-      try { $ip = (& $vmrun -T ws getGuestIPAddress $vmx 2>$null | Out-String).Trim() } catch { $ip = '' }
-      $login = if ($ip -match '^\d+\.\d+\.\d+\.\d+$') { "ssh $($lab.admin_user)@$ip" } else { 'address not ready yet (the guest tools are still starting)' }
-    }
-    '{0,-16} {1,-8} {2}' -f $vmDef.name, $state, $login
+    if ((Test-Path $vmx) -and (Select-String -Path $vmx -Pattern '^\s*ethernet0\.present\s*=\s*"TRUE"' -Quiet)) { $withBuildNic += $vmDef.name }
   }
+  if ($withBuildNic.Count) {
+    throw "These machines still have their build adapter: $($withBuildNic -join ', '). A snapshot keeps that adapter, and a restore would bring it back with its path to the internet. Run -Action RemoveBuildNics first. No snapshot was taken."
+  }
+  foreach ($vmDef in $lab.vms) {
+    $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
+    if (-not (Test-Path $vmx)) { continue }
+    $have = @(& $vmrun -T ws listSnapshots $vmx 2>$null)
+    if ($have -contains $SnapshotName) { Write-Host "$($vmDef.name) has the snapshot $SnapshotName. Skipped."; continue }
+    if (-not $PSCmdlet.ShouldProcess($vmDef.name, "Take the snapshot $SnapshotName")) { continue }
+    Write-Host "Taking the snapshot $SnapshotName of $($vmDef.name)"
+    & $vmrun -T ws snapshot $vmx $SnapshotName
+    if ($LASTEXITCODE -ne 0) { throw "vmrun snapshot failed for $($vmDef.name)." }
+  }
+  return
+}
+
+if ($Action -eq 'Restore') {
+  # The gateway first, then the rest.
+  $gwFirst = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
+  $restoreOrder = @($gwFirst) + @($lab.vms.name | Where-Object { $_ -ne $gwFirst })
+  $noSnapshot = @()
+  foreach ($name in $restoreOrder) {
+    if (-not $name) { continue }
+    $vmx = Join-Path $VmRoot "$name\$name.vmx"
+    if (-not (Test-Path $vmx)) { continue }
+    $have = @(& $vmrun -T ws listSnapshots $vmx 2>$null)
+    if ($have -notcontains $SnapshotName) { Write-Warning "$name has no snapshot $SnapshotName. It is left as it is."; $noSnapshot += $name; continue }
+    if (-not $PSCmdlet.ShouldProcess($name, "Return to the snapshot $SnapshotName and start")) { continue }
+    Write-Host "Returning $name to the snapshot $SnapshotName"
+    & $vmrun -T ws revertToSnapshot $vmx $SnapshotName
+    if ($LASTEXITCODE -ne 0) { throw "vmrun revertToSnapshot failed for $name." }
+    # vmrun leaves a machine suspended when the snapshot was taken while it ran, so start it.
+    & $vmrun -T ws start $vmx nogui
+  }
+  if ($noSnapshot.Count) { throw "No snapshot $SnapshotName on: $($noSnapshot -join ', '). Take it first with -Action Snapshot." }
   return
 }
 
@@ -363,6 +484,8 @@ foreach ($vmDef in $lab.vms) {
 
   $disk = (Get-Content $vmx | Where-Object { $_ -match '^scsi0:0\.fileName' } | Select-Object -First 1) -replace '^[^"]*"([^"]+)".*$', '$1'
   & $vdisk -x "$($vmDef.disk_gb)GB" (Join-Path $dir $disk) | Out-Null
+  # A disk cannot shrink, so the tool refuses when the image is already larger than the manifest's size.
+  if ($LASTEXITCODE -ne 0) { Write-Host "  ${name}: the disk was not resized to $($vmDef.disk_gb) GB. That is expected when its image is already larger, and the disk then keeps the size of the image." }
 }
 
 $gwName = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
@@ -383,4 +506,4 @@ if ($AddToLibrary -and $PSCmdlet.ShouldProcess('the lab machines', 'Open in Work
 } else {
   Write-Host "To list the machines in the Workstation Library, right-click My Computer there, choose Scan for Virtual Machines, and pick $VmRoot. Or run the deploy with -AddToLibrary."
 }
-Write-Host 'To see each machine and how to log in to it, run this script with -Action Status.'
+Write-Host 'To see when every machine has finished its first boot, and how to log in to each, run this script with -Action Status -Wait.'

@@ -94,6 +94,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 - **Storage.** `--storage` receives the disks and the cloud-init drives. `local-lvm` is typical. Use a directory or ZFS storage if you prefer.
 - **Images and flavors.** Each machine can use its own Linux flavor. `resolve-image.py` finds the newest published image for each flavor in use, downloads it, and checks it against the publisher's checksum, removing the file on a mismatch. Proxmox VE imports qcow2 images directly, so every published flavor works here without conversion.
 - **Idempotence.** A machine whose ID exists is skipped. A rerun after a failure carries on.
+- **A machine is its ID and its name.** The script finds a machine by its VM ID (`--vmid-base` plus its place in the manifest) and checks that the machine with that ID has the manifest's name. When the ID holds a machine with another name, a deploy stops before it makes anything, and `status`, `remove-build-nics`, `snapshot`, `restore`, and `remove` leave that machine alone and say so. Without the check, `remove` would destroy whatever machine had the ID.
 
 ## Implementation and Automation
 
@@ -112,7 +113,9 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | Option | Meaning |
 | --- | --- |
 | `--ssh-key FILE` | Public key for `labadmin` (repeatable). Required for `deploy`. |
-| `--action` | `deploy` (default), `status`, `remove-build-nics`, or `remove`. |
+| `--action` | `deploy` (default), `check`, `status`, `remove-build-nics`, `snapshot`, `restore`, or `remove`. `check` tests what a deploy needs on the node and changes nothing. `snapshot` takes the baseline snapshot of every machine, and refuses while a machine still has its build NIC (`net0`). `restore` rolls every machine back to that snapshot and starts it, the gateway first. |
+| `--wait`, `--wait-minutes N` | With `--action status`: keep checking until every machine reports that its first boot has finished, for at most N minutes (30 by default). |
+| `--snapshot-name NAME` | The snapshot that `snapshot` and `restore` use (default `baseline-201`). |
 | `--storage`, `--snippets-storage` | Storage for disks and storage for snippets. |
 | `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-lan220` | The bridge for each network. |
 | `--vmid-base` | The ID offset (default 20100). |
@@ -120,6 +123,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image, needed for the `rhel-10` flavors. |
 | `--license-file FILE` | JSON file with keys to apply: Red Hat, Ubuntu Pro, a Windows product key, and a Proxmox subscription key (Chapter 09). |
 | `--iso FLAVOR=VOLUME` | The install ISO of a Windows, Linux Mint, or Tiny Core flavor, as a Proxmox volume such as `local:iso/Server2025.iso` (repeatable). |
+| `--iso-sum FLAVOR=CHECKSUM` | The checksum that the publisher of that ISO gives (repeatable). `check` and `deploy` compare the file with it and stop when it differs. SHA-256, SHA-512, SHA-1, and MD5 are told apart by their length. |
 | `--iso-storage NAME` | Storage with the `iso` content type, where the script puts each machine's answer-file CD (default `local`). |
 | `--dry-run` | Print each command instead of running it. |
 
@@ -127,8 +131,9 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 
 | Check | Command | Expected |
 | --- | --- | --- |
-| Machines exist | `./deploy-lab201-proxmox.sh --action status` | Twelve machines, `status: running` |
-| Cloud-init finished | In a guest: `cloud-init status --long` | `status: done` |
+| The node is ready | `./deploy-lab201-proxmox.sh --action check --ssh-key ~/lab201.pub` | `Ready`, or a line for each thing to fix |
+| The first boot finished | `./deploy-lab201-proxmox.sh --action status --wait` | Twelve machines with `ok`. The guest agent runs `lab201-status` in each machine. A Rocky, AlmaLinux, Fedora, or Red Hat machine shows `unknown`, because its agent runs no commands |
+| Cloud-init finished | In a guest: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
 | The seed is what you expect | `qm cloudinit dump 20102 network` | The netplan for `svc-201a` with its MAC addresses |
 | Guest agent | `qm agent 20102 ping` | No error once the agent runs |
 | Addresses | In a guest: `ip -br addr` | The Chapter 999 addresses |
@@ -139,6 +144,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `Bridge vmbr2 is not VLAN-aware` | `bridge-vlan-aware yes` missing | Add it and run `ifreload -a` |
 | `Storage local has no snippets content type` | Snippets not enabled | Enable the content type on the storage |
 | `qm set ... import-from` is not accepted | Proxmox VE older than the script expects | Upgrade, or use `qm importdisk` |
+| `its image is 10G, larger than the 8 GB the manifest asks for` | The manifest asks for a disk smaller than the cloud image of the flavor. The Rocky Linux and AlmaLinux images are 10 GB | Nothing to fix. A disk cannot shrink, so the machine keeps the size of the image. The Lab Builder raises such a disk to the image size for you |
 | A machine boots with the wrong network settings | A custom snippet was ignored or overridden | Compare `qm cloudinit dump` with the snippet; clear fields in the web interface's Cloud-Init tab |
 | `gw-201` passes no tagged frames | `trunks=` did not apply, or the bridge is not VLAN-aware | Run `bridge vlan show dev tap20101i2`; check the NIC line with `qm config 20101` |
 | The lab loops or floods | Both trunk NICs were put in one host bridge | Give each NIC its own bridge |
@@ -186,25 +192,34 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 
 ### Lab 12.2: Build the lab
 
-1. Copy your public key to the node, change to the `proxmox` folder, and run a dry run:
+1. Copy your public key to the node, change to the `proxmox` folder, and run the readiness check, then a dry run. Neither changes anything:
 
    ```bash
+   ./deploy-lab201-proxmox.sh --action check --ssh-key ~/lab201.pub
    ./deploy-lab201-proxmox.sh --ssh-key ~/lab201.pub --dry-run
    ```
 
 2. Read the output, then run it without `--dry-run`. Add the `--bridge-…` options if your bridge names differ.
-3. Run `--action status`, then check `qm cloudinit dump` and `cloud-init status --long` for three machines.
+3. Run `./deploy-lab201-proxmox.sh --action status --wait`. It ends when every machine reports that its first boot has finished. Then check `qm cloudinit dump` and `cloud-init status --long` for three machines.
 
-**Expected result.** Twelve running machines with the Chapter 999 addresses and cloud-init `done`.
+**Expected result.** Twelve running machines with `ok`, the Chapter 999 addresses, and cloud-init `done`.
 
 ### Lab 12.3: Remove the build NICs and take the baseline
 
 1. Run `./deploy-lab201-proxmox.sh --action remove-build-nics`. It removes `net0` from every machine, including the gateway.
-2. Snapshot every machine:
+2. Snapshot every machine. The script refuses, and names the machines, if one of them still has `net0`:
 
    ```bash
-   for id in $(seq 20101 20112); do qm snapshot "$id" baseline-201 --description 'Lab 999.6 baseline'; done
+   ./deploy-lab201-proxmox.sh --action snapshot
    ```
+
+3. Between labs, return every machine to that snapshot. It discards what changed on the machines since the snapshot and starts them, the gateway first:
+
+   ```bash
+   ./deploy-lab201-proxmox.sh --action restore
+   ```
+
+   A machine that restarts without its build NIC reports `cloud-init-notes=recoverable-errors` in its status line, because cloud-init can no longer find that NIC. The machine is still `ok`.
 
 **Negative test.** From `static-1`, run `curl -m 5 https://cloud-images.ubuntu.com`. It must fail.
 
@@ -217,6 +232,8 @@ Run `./deploy-lab201-proxmox.sh --action remove`, delete the snippet files (`/va
 ## Lab Verification
 
 Complete this sign-off once Labs 12.1 to 12.3 have been run end to end on a real Proxmox VE node with a real switch trunk. One machine (`ca-201`) was built, checked, and removed with the script on Proxmox VE 9.2.9 for Ubuntu 24.04 and 26.04, Debian 13, Rocky 10, AlmaLinux 10, and Fedora 43. Those tests confirmed the `import-from` disk import, the `--cicustom` snippets, the cloud-init drive, the guest agent, the lab addresses (IPv4 and IPv6), and the `status`, `remove-build-nics`, and `remove` actions. It used the host's management bridge for the build NIC and an isolated bridge for the lab NIC, so it did not test the gateway, the `trunks=2-4094` range, VLANs on a real trunk, the other eleven machines, or the hardened, Red Hat subscription, and ISO flavors.
+
+A later run on Proxmox VE 9.2 built all twelve machines (eleven on Ubuntu 24.04, and `static-2` on Rocky Linux 10) and ran the `check`, `status --wait`, `remove-build-nics`, `snapshot`, and `restore` actions. The status read `ok` from each Ubuntu machine through the guest agent, with its counts of packages and services, and `unknown` from the Rocky machine, whose guest agent runs no commands. A service stopped by hand showed as `failed`, and `restore` returned that machine to the snapshot. With a manifest that names another machine for a VM ID, `status`, `snapshot`, `remove`, and `deploy` left that ID alone. The checksum check of `--iso-sum` was run with a small test file in the ISO storage, not with an install ISO, and that run found that the script could not locate an ISO storage folder at all, which is now fixed. No ISO flavor has been built yet. A Rocky Linux machine whose manifest asked for an 8 GB disk kept the 10 GB of its image, with a note, and an Ubuntu machine beside it grew to 8 GB. That run used one VLAN-aware bridge for both trunks and the host's management bridge for the build NIC, so VLANs on a real trunk are still untested. A further run with two machines (`static-1` on Ubuntu 24.04 and `static-2` on Rocky Linux 10) tested the order of the baseline steps. `snapshot` refused while the machines had `net0`, named both, and took no snapshot. After `remove-build-nics` it took the snapshots, and after `restore` both machines ran without `net0`. `status --wait` ended by saying that one of the two machines had reported, with a line for the Rocky machine. With `static-1` stopped, it said that one machine was not checked. With a `--vmid-base` that holds no lab machine, it said that no lab machine runs at those VM IDs.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*

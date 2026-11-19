@@ -14,6 +14,16 @@
   ESXi 9 is licensed only through vSphere Foundation or Cloud Foundation and has no
   free edition.
 
+  -Action picks what the script does:
+    Deploy           builds and starts the machines (the default)
+    Check            tests what a deploy needs on this computer and on the host, and changes nothing
+    Status           shows each machine and whether its first boot has finished.
+                     With -Wait it keeps checking until every machine has finished
+    RemoveBuildNics  removes the build network adapter of each machine
+    Snapshot         takes the baseline snapshot of every machine (Lab 999.6)
+    Restore          returns every machine to the baseline snapshot and powers it on
+    Remove           powers off and deletes the machines
+
 .EXAMPLE
   .\Deploy-Lab201-Esxi.ps1 -EsxiHost esxi01.example.net -Datastore datastore1 `
     -VsphereVersion 8 -SshKeyFile ~\.ssh\id_ed25519.pub `
@@ -28,11 +38,14 @@ param(
   [PSCredential] $Credential,
   [string] $Datastore,
   [ValidateSet(7, 8, 9)] [int] $VsphereVersion = 8,
-  [ValidateSet('Deploy', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
+  [ValidateSet('Deploy', 'Check', 'Status', 'RemoveBuildNics', 'Snapshot', 'Restore', 'Remove')] [string] $Action = 'Deploy',
+  [switch] $Wait,
+  [ValidateRange(1, 600)] [int] $WaitMinutes = 30,
+  [ValidatePattern('^[A-Za-z][A-Za-z0-9_-]{1,39}$')] [string] $SnapshotName = 'baseline-201',
   [string] $PythonCommand,
   [string[]] $SshKeyFile,
-  [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
-  [string] $WorkDir = (Join-Path $PSScriptRoot 'work'),
+  [string] $Manifest,
+  [string] $WorkDir,
   [string] $Trunk1Nic, [string] $Trunk2Nic, [string] $OobNic, [string] $WanNic,
   [string] $HardwareVersion,
   [string] $LicenseFile,
@@ -42,6 +55,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+# Windows PowerShell 5.1 leaves $PSScriptRoot empty inside param() when the script is started with -File,
+# so the defaults that need the script's folder are set here.
+if (-not $Manifest) { $Manifest = Join-Path $PSScriptRoot '..\common\lab201-vms.json' }
+if (-not $WorkDir) { $WorkDir = Join-Path $PSScriptRoot 'work' }
 
 # Find a Python 3 that really runs. -PythonCommand names the command to use (for example python3.15 or "py -3.15").
 # Without it the script tries python3, then the py launcher, then python.
@@ -55,7 +73,7 @@ foreach ($cand in $pyCandidates) {
   try { $ver = (& $cand[0] @rest --version 2>&1 | Out-String) } catch { continue }
   if ($LASTEXITCODE -eq 0 -and $ver -match 'Python 3\.') { $pyExe = $cand[0]; $pyArgs = $rest; break }
 }
-if (-not $pyExe -and $PythonCommand) { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
+if (-not $pyExe -and $PythonCommand -and $Action -ne 'Check') { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
 if (-not $pyExe -and $Action -eq 'Deploy') {
   throw 'Python 3 was not found. Install it (for example: winget install Python.Python.3.15), open a new PowerShell window, run "python -m pip install pycdlib", and run the script again.'
 }
@@ -154,6 +172,133 @@ function Get-DefaultHardwareVersion {
   if ($HostVersion -ge [version]'8.0.2') { return 'vmx-21' } else { return 'vmx-20' }
 }
 
+function Get-LabBuildState {
+  # What the machine says about its first boot. The guest hands one line to the hypervisor as
+  # guestinfo.lab201 (lab201-status --publish runs every minute), so no login is needed to read it.
+  param($Vm)
+  $entry = $Vm.ExtensionData.Config.ExtraConfig | Where-Object { $_.Key -eq 'guestinfo.lab201' } | Select-Object -First 1
+  if ($entry -and "$($entry.Value)" -match '^lab201 (\S+) \S+ ?(.*)$') { return @{ State = $Matches[1]; Detail = $Matches[2] } }
+  return @{ State = 'unknown'; Detail = '' }
+}
+
+if ($Action -eq 'Check') {
+  # Tests what a deploy needs on this computer and on the host, and changes nothing.
+  $script:failed = 0
+  function Show-Check {
+    param([string] $State, [string] $What, [string] $Fix)
+    $color = switch ($State) { 'OK' { 'Green' } 'WARN' { 'Yellow' } default { 'Red' } }
+    if ($State -eq 'FAIL') { $script:failed++ }
+    Write-Host ('[{0,-4}] {1}' -f $State, $What) -ForegroundColor $color
+    if ($Fix -and $State -ne 'OK') { Write-Host "       $Fix" }
+  }
+  Write-Host 'Checking this computer and the host for the lab build. Nothing is changed.'
+  Show-Check 'OK' "PowerShell $($PSVersionTable.PSVersion)"
+
+  if ($pyExe) {
+    $pyName = (@($pyExe) + $pyArgs) -join ' '
+    Show-Check 'OK' "Python: $pyName ($((& $pyExe @pyArgs --version 2>&1 | Out-String).Trim()))"
+    $null = & $pyExe @pyArgs -c 'import pycdlib' 2>&1
+    if ($LASTEXITCODE -eq 0) { Show-Check 'OK' 'Python package pycdlib (for the seed ISOs)' }
+    else { Show-Check 'FAIL' 'Python package pycdlib is not installed' "Run: $pyName -m pip install pycdlib" }
+  } elseif ($PythonCommand) {
+    Show-Check 'FAIL' "-PythonCommand '$PythonCommand' did not run Python 3" "Check it with: $PythonCommand --version"
+  } else {
+    Show-Check 'FAIL' 'Python 3 was not found (tried python3, py -3, and python)' 'Run: winget install Python.Python.3.15   Then open a new PowerShell window and run: python -m pip install pycdlib'
+  }
+
+  if (-not $SshKeyFile) {
+    Show-Check 'FAIL' 'No SSH public key was given (-SshKeyFile)' 'Make one with: ssh-keygen -t ed25519   Then pass: -SshKeyFile ~\.ssh\id_ed25519.pub'
+  } else {
+    foreach ($k in $SshKeyFile) {
+      if (-not (Test-Path $k)) { Show-Check 'FAIL' "SSH public key not found: $k" 'Make one with: ssh-keygen -t ed25519'; continue }
+      $first = (Get-Content -Path $k -TotalCount 1)
+      if ($first -match '^(ssh-|ecdsa-|sk-)') { Show-Check 'OK' "SSH public key: $k" }
+      elseif ($first -match 'PRIVATE KEY') { Show-Check 'FAIL' "$k is a private key" 'Pass the public key, the file that ends in .pub' }
+      else { Show-Check 'FAIL' "$k does not look like an SSH public key" 'Pass the file that ends in .pub' }
+    }
+  }
+
+  $checkLab = $null
+  if (Test-Path $Manifest) {
+    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Builder again' }
+  } else {
+    Show-Check 'FAIL' "The manifest was not found: $Manifest" 'Keep the script and the common folder together, as they are in the zip'
+  }
+  $needMb = 0; $needGb = 0
+  if ($checkLab) {
+    Show-Check 'OK' "Manifest: $(@($checkLab.vms).Count) machines"
+    $needGb = ($checkLab.vms | Measure-Object -Property disk_gb -Sum).Sum
+    $needMb = ($checkLab.vms | Measure-Object -Property memory_mb -Sum).Sum
+    $seen = @{}
+    foreach ($vmDef in $checkLab.vms) {
+      $fid = Get-FlavorId $vmDef $checkLab
+      if ($seen[$fid]) { continue }
+      $seen[$fid] = $true
+      $rec = $flavorCatalog.flavors | Where-Object { $_.id -eq $fid } | Select-Object -First 1
+      if (-not $rec) { Show-Check 'FAIL' "The manifest names a flavor this script does not know: $fid" 'Download the zip from the Lab Builder again'; continue }
+      if ($rec.iso) {
+        if ($IsoImages.ContainsKey($fid)) { Show-Check 'OK' "Install ISO for ${fid}: $($IsoImages[$fid]). Compare it with the publisher's checksum before you upload it" }
+        else { Show-Check 'FAIL' "$fid installs from an ISO, and -IsoImages has no entry for it" "Upload the ISO to a datastore and pass: -IsoImages @{ '$fid' = '[datastore] folder/file.iso' }" }
+        continue
+      }
+      $imageId = Get-ImageFlavorId $fid
+      $supplied = @($fid, $imageId) | Where-Object { $FlavorImages.ContainsKey($_) } | Select-Object -First 1
+      if ($supplied) {
+        if (Test-Path $FlavorImages[$supplied]) { Show-Check 'OK' "OVA for ${imageId}: $($FlavorImages[$supplied])" }
+        else { Show-Check 'FAIL' "The OVA for $imageId was not found: $($FlavorImages[$supplied])" 'Check the path in -FlavorImages' }
+      } elseif (-not (($flavorCatalog.flavors | Where-Object { $_.id -eq $imageId } | Select-Object -First 1).image.ova)) {
+        Show-Check 'FAIL' "$imageId publishes no OVA, and -FlavorImages has no entry for it" "Make an OVA from its qcow2 image and pass: -FlavorImages @{ '$imageId' = 'path\to\image.ova' }"
+      }
+    }
+  }
+
+  if (-not (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) {
+    Show-Check 'FAIL' 'VMware PowerCLI is not installed, so the host was not checked' 'Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
+  } else {
+    Show-Check 'OK' 'VMware PowerCLI is installed'
+    try {
+      Import-Module VMware.VimAutomation.Core -ErrorAction Stop | Out-Null
+      if ($SkipCertificateCheck) { Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false | Out-Null }
+      Set-PowerCLIConfiguration -Scope Session -ParticipateInCeip $false -Confirm:$false | Out-Null
+      if (-not $Credential) { $Credential = Get-Credential -Message "Account on $EsxiHost" }
+      $checkServer = Connect-VIServer -Server $EsxiHost -Credential $Credential -ErrorAction Stop
+      try {
+        $checkHost = Get-VMHost -Server $checkServer | Select-Object -First 1
+        if ($checkHost.Version -like "$VsphereVersion.*") { Show-Check 'OK' "Host $($checkHost.Name): ESXi $($checkHost.Version)" }
+        else { Show-Check 'FAIL' "The host runs ESXi $($checkHost.Version), but -VsphereVersion is $VsphereVersion" 'Pass the major version the host runs' }
+        Show-Check 'WARN' 'The check cannot tell whether the host license allows API writes' 'The free ESXi license makes the API read-only. A deploy then stops with a clear message'
+        if (-not $Datastore) { Show-Check 'FAIL' 'No datastore was given (-Datastore)' 'Pass the name of the datastore for the machines' }
+        else {
+          $checkDs = Get-Datastore -Server $checkServer -Name $Datastore -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $checkDs) { Show-Check 'FAIL' "Datastore $Datastore was not found on the host" 'Check the name with: Get-Datastore' }
+          elseif ($checkDs.FreeSpaceGB -ge $needGb) { Show-Check 'OK' ("Datastore {0}: {1:N0} GB free. The thin disks can grow to {2} GB" -f $Datastore, $checkDs.FreeSpaceGB, $needGb) }
+          else { Show-Check 'WARN' ("Datastore {0}: {1:N0} GB free, and the thin disks can grow to {2} GB" -f $Datastore, $checkDs.FreeSpaceGB, $needGb) 'Free some space, or use a larger datastore' }
+        }
+        foreach ($pair in @(@('-Trunk1Nic', $Trunk1Nic), @('-Trunk2Nic', $Trunk2Nic), @('-OobNic', $OobNic), @('-WanNic', $WanNic))) {
+          if (-not $pair[1]) { Show-Check 'WARN' "$($pair[0]) was not given, so that lab network has no uplink and stays inside the host"; continue }
+          if (Get-VMHostNetworkAdapter -VMHost $checkHost -Physical -Name $pair[1] -ErrorAction SilentlyContinue) { Show-Check 'OK' "$($pair[0]) $($pair[1])" }
+          else { Show-Check 'FAIL' "$($pair[0]) $($pair[1]) is not a physical NIC of the host" 'List them with: Get-VMHostNetworkAdapter -Physical' }
+        }
+        $freeMb = ($checkHost.MemoryTotalGB - $checkHost.MemoryUsageGB) * 1024
+        if ($freeMb -ge $needMb) { Show-Check 'OK' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) }
+        else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) 'Leave machines out in the Lab Builder, or make them smaller' }
+        if ($checkLab) {
+          $existing = @(Get-VM -Server $checkServer -Name $checkLab.vms.name -ErrorAction SilentlyContinue)
+          if ($existing.Count) { Show-Check 'OK' "$($existing.Count) machine(s) with a lab name already exist. A deploy skips them" }
+        }
+      }
+      finally { Disconnect-VIServer -Server $checkServer -Confirm:$false -ErrorAction SilentlyContinue }
+    }
+    catch {
+      Show-Check 'FAIL' "The host $EsxiHost could not be checked: $($_.Exception.Message)" 'Check the host name and the account. For a first run on a lab network, add -SkipCertificateCheck'
+    }
+  }
+
+  if ($script:failed) { Write-Host "$($script:failed) problem(s) to fix before the build." -ForegroundColor Red; exit 1 }
+  Write-Host 'Ready. Run the preview next (-WhatIf).' -ForegroundColor Green
+  return
+}
+
 if (-not (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) {
   throw 'VMware PowerCLI is not installed. Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
 }
@@ -187,8 +332,97 @@ try {
   }
 
   if ($Action -eq 'Status') {
-    Get-VM -Server $server -Name $lab.vms.name -ErrorAction SilentlyContinue |
-      Select-Object Name, PowerState, NumCpu, MemoryGB, @{n = 'IPs'; e = { $_.Guest.IPAddress -join ' ' } } | Format-Table -AutoSize
+    # Each machine, whether its first boot has finished, and its addresses.
+    $started = Get-Date
+    $deadline = $started.AddMinutes($WaitMinutes)
+    $everReported = $false
+    while ($true) {
+      $rows = @(); $pending = @(); $failedNames = @(); $notChecked = @()
+      foreach ($vmDef in $lab.vms) {
+        $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $vm) { $notChecked += $vmDef.name; $rows += [pscustomobject]@{ Machine = $vmDef.name; Power = 'missing'; Build = ''; Detail = ''; Addresses = '' }; continue }
+        $build = ''; $detail = ''
+        if ($vm.PowerState -eq 'PoweredOn') {
+          if ((Get-FlavorRecord (Get-FlavorId $vmDef $lab)).iso) { $notChecked += $vmDef.name; $build = 'manual'; $detail = 'installs from an ISO, so look at its console' }
+          else {
+            $b = Get-LabBuildState $vm
+            $build = $b.State; $detail = $b.Detail
+            if ($build -ne 'unknown') { $everReported = $true } else { $detail = 'not reported yet' }
+            if ($build -in 'running', 'unknown') { $pending += $vmDef.name }
+            if ($build -eq 'failed') { $failedNames += $vmDef.name }
+          }
+        } else { $notChecked += $vmDef.name }
+        $rows += [pscustomobject]@{ Machine = $vmDef.name; Power = [string]$vm.PowerState; Build = $build; Detail = $detail; Addresses = ($vm.Guest.IPAddress -join ' ') }
+      }
+      if (-not $Wait -or -not $pending.Count -or (Get-Date) -ge $deadline) { break }
+      # If no machine has reported after six minutes, the guest tools are not passing the state on. Stop waiting.
+      if (-not $everReported -and ((Get-Date) - $started).TotalMinutes -ge 6) { break }
+      Write-Host ('{0:HH:mm:ss} Still building: {1}' -f (Get-Date), ($pending -join ' '))
+      Start-Sleep -Seconds 15
+    }
+    $rows | Format-Table -AutoSize -Wrap
+    if (-not ($rows | Where-Object { $_.Power -eq 'PoweredOn' })) {
+      Write-Host 'No lab machine is powered on on this host.'
+      return
+    }
+    if ($failedNames.Count) { throw "These machines report a problem (a failed first boot, or a lab service that is not running): $($failedNames -join ', '). Log in to one and run: lab201-status" }
+    if ($pending.Count -and -not $everReported) {
+      Write-Host 'No machine reports its build state yet. A machine reports about a minute after it starts.'
+      Write-Host 'To check one by hand, log in to it and run: lab201-status'
+      if ($Wait) { throw 'The build state could not be read.' }
+    }
+    elseif ($Wait -and $pending.Count) { throw "Not every machine finished within $WaitMinutes minutes: $($pending -join ', ')" }
+    elseif ($Wait -and $notChecked.Count) {
+      # Say what the table shows and no more: a machine that is off, missing, or installs by hand was not checked.
+      Write-Host 'Every machine that reports has finished its first boot.' -ForegroundColor Green
+      Write-Host "Not checked, because they are off or missing, or they install from an ISO: $($notChecked -join ', ')"
+    }
+    elseif ($Wait) { Write-Host 'Every machine has finished its first boot.' -ForegroundColor Green }
+    return
+  }
+
+  if ($Action -eq 'Snapshot') {
+    # A snapshot keeps the machine's adapters. With the build adapter still there, a restore would bring it back,
+    # and with it the machine's path to the internet. So the build adapters have to go first.
+    $withBuildNic = @()
+    foreach ($vmDef in $lab.vms) {
+      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+      if (-not $vm) { continue }
+      $mac = & $macOf $vmDef.name 0
+      if (Get-NetworkAdapter -VM $vm | Where-Object { $_.MacAddress -ieq $mac }) { $withBuildNic += $vmDef.name }
+    }
+    if ($withBuildNic.Count) {
+      throw "These machines still have their build adapter: $($withBuildNic -join ', '). A snapshot keeps that adapter, and a restore would bring it back with its path to the internet. Run -Action RemoveBuildNics first. No snapshot was taken."
+    }
+    foreach ($vmDef in $lab.vms) {
+      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+      if (-not $vm) { continue }
+      if (Get-Snapshot -VM $vm -Name $SnapshotName -ErrorAction SilentlyContinue) { Write-Host "$($vmDef.name) has the snapshot $SnapshotName. Skipped."; continue }
+      if (-not $PSCmdlet.ShouldProcess($vmDef.name, "Take the snapshot $SnapshotName")) { continue }
+      Write-Host "Taking the snapshot $SnapshotName of $($vmDef.name)"
+      New-Snapshot -VM $vm -Name $SnapshotName -Description 'Lab 201 baseline (Lab 999.6)' -Memory:$false -Quiesce:$false -Confirm:$false | Out-Null
+    }
+    return
+  }
+
+  if ($Action -eq 'Restore') {
+    # The gateway first, then the rest. The snapshot holds no memory, so each machine boots from its disk.
+    $gwFirst = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
+    $restoreOrder = @($gwFirst) + @($lab.vms.name | Where-Object { $_ -ne $gwFirst })
+    $noSnapshot = @()
+    foreach ($name in $restoreOrder) {
+      if (-not $name) { continue }
+      $vm = Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue | Select-Object -First 1
+      if (-not $vm) { continue }
+      $snap = Get-Snapshot -VM $vm -Name $SnapshotName -ErrorAction SilentlyContinue | Select-Object -First 1
+      if (-not $snap) { Write-Warning "$name has no snapshot $SnapshotName. It is left as it is."; $noSnapshot += $name; continue }
+      if (-not $PSCmdlet.ShouldProcess($name, "Return to the snapshot $SnapshotName and power on")) { continue }
+      Write-Host "Returning $name to the snapshot $SnapshotName"
+      Set-VM -VM $vm -Snapshot $snap -Confirm:$false | Out-Null
+      $vm = Get-VM -Server $server -Name $name | Select-Object -First 1
+      if ($vm.PowerState -ne 'PoweredOn') { Start-VM -VM $vm | Out-Null }
+    }
+    if ($noSnapshot.Count) { throw "No snapshot $SnapshotName on: $($noSnapshot -join ', '). Take it first with -Action Snapshot." }
     return
   }
 
@@ -281,7 +515,10 @@ try {
     else {
       $vm = Import-VApp -Source $imageOf[$fid] -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
       Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
-      Get-HardDisk -VM $vm | Select-Object -First 1 | Set-HardDisk -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null
+      # A disk cannot shrink. When the image is already larger than the manifest's size, the disk keeps the size of the image.
+      $hd = Get-HardDisk -VM $vm | Select-Object -First 1
+      if ($hd.CapacityGB -lt $vmDef.disk_gb) { Set-HardDisk -HardDisk $hd -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null }
+      elseif ($hd.CapacityGB -gt $vmDef.disk_gb) { Write-Host ('  {0}: its image is {1:N0} GB, larger than the {2} GB the manifest asks for. A disk cannot shrink, so it stays that size.' -f $name, $hd.CapacityGB, $vmDef.disk_gb) }
       $nicType = 'Vmxnet3'
     }
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false

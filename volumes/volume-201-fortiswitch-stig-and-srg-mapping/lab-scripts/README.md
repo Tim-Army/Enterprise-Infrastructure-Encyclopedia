@@ -19,6 +19,14 @@ explains it, and all of them read the same manifest.
 
 `builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. The zip also holds `lab-builder-choices.json`, the same file that **Save choices** makes. Use **Load choices** with it to get the same build back on the page. Load that file and not the manifest (`lab201-vms.json`), which the page refuses. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
 
+The page keeps your choices in the browser, so a reload does not lose them. It does not keep a console password you type, because the browser store is plain text. **Start over** clears the kept choices and goes back to the defaults.
+
+Under **Machines and sizes** you can clear the box of each lab you will not run. The page then names the machines those labs no longer use, and **Match the machines to these labs** leaves them out. The gateway, the service hosts, the certificate authority, the DHCP server, and the administrator workstation are always kept, because the shared lab of Chapter 999 needs them, and the page names them. The machines of a lab are the ones its text names, so check the list before you build.
+
+Sections 10 and 11 of the page hold the gateway and the firewall of the lab. Each list starts with what the scripts build: the Linux router `gw-201` is the gateway, and the gateway is the firewall, so there is nothing to enter. Pick another OS type in section 10 only if a network device takes the place of `gw-201`, and in section 11 only if a separate firewall stands between the lab and the internet: Cisco ASA, Cisco Nexus (NX-OS), Cisco IOS XE, Cisco IOS XR, FortiGate (FortiOS), or Juniper Junos OS. The gateway text gives the device the `.1` address of every shared segment and lets the lab segments reach each other, which is wider than the policy of Lab 999.1 that `gw-201` applies. The firewall text lets lab addresses reach lab addresses and drops everything else that comes from the lab. Both follow your address block, VLAN IDs, and subnets. Port names are placeholders such as `<GW_TRUNK_PORT>`. These configurations were written from the vendors' documentation and have not been run on a device, so check them against the reference for your release. The scripts still build `gw-201` when a device is the gateway, so keep it shut down then, because both would hold the same addresses.
+
+The **Diagram** tab draws the lab from your choices: the platform, the machines with their names and addresses, the machines you left out, the VLAN IDs, the switch models, and the gateway and the firewall. Change a choice and the picture changes with it. The zip holds that picture as `diagrams/lab-topology.svg`, with a PNG copy where the browser can make one.
+
 ## Walk the labs with Claude
 
 The zip that the Lab Builder makes is ready for a Claude session. Besides the
@@ -36,18 +44,41 @@ The walkthrough files have short names in the zip, such as
 `walkthroughs/999-shared-lab.md`, so that the paths stay short on Windows.
 On the Lab Builder you can pick the FortiSwitchOS release (7.6.7, 8.0.0, or 8.0.1) and your
 two switch models. `LAB-VALUES.md` then lists the lab features that Fortinet's
-Feature Matrix marks as not supported on those models, with the labs that
-name them, and `CLAUDE.md` tells Claude to record such a step as blocked by
-the model. The data is `common/fortiswitch-features.json`. It covers model
-series, so check the matrix for your exact model.
+Feature Matrix marks as not supported on those models, with the planned labs
+that use each one on that switch, and `CLAUDE.md` tells Claude to record such
+a step as blocked by the model. The switch of a lab comes from its **Uses**
+line, and the feature from keywords in its text, so treat the list as a guide.
+The data is `common/fortiswitch-features.json`. It covers model series, so
+check the matrix for your exact model. The page also shows what changes for
+your two models between the three releases.
+
+The lab chapters cite the FortiSwitchOS 7.6.7 CLI Reference, so 7.6.7 is the
+default. With another release, each walkthrough names that release where the
+chapter expects 7.6.x, and says that the commands and page numbers still come
+from the 7.6.7 reference. `CLAUDE.md` then tells Claude not to guess when a
+switch refuses a command.
 
 On the Lab Builder you can also type the switch ports you use, which replace
 placeholders such as `<PORT_EP1>` in the walkthroughs, and pick the lab that
 Claude starts with.
 
 Claude logs each step in `PROGRESS.md`, as a table with the columns Lab, Step,
-Result, Date, and Note. Click **Load progress** on the Lab Builder and pick
-that file to see, on the **Progress** tab, which labs passed.
+Result, Date, Note, and Evidence. When the tests of a lab are finished, it adds
+one row for each SRG requirement of that lab to a second table (SRG ID, Lab,
+Result, Date, Note, and Evidence). It saves the output that each lab's
+**Evidence** line names in `evidence/<lab>/<date>/`, and is told to replace
+passwords, keys, and secrets with `<SECRET>` first. Read an evidence file
+before you share it, because that rule depends on Claude following it.
+
+Click **Load progress** on the Lab Builder and pick `PROGRESS.md`. The
+**Progress** tab then shows which labs passed and how far each of the 185 SRG
+requirements has been tested. A requirement takes its result from its own row,
+the one with its SRG ID and its lab. A row that names no lab counts for every
+lab that tests the requirement. Without a row, a requirement follows the steps
+of its lab. **Download results (CSV)** saves one row for each requirement, with
+the lab, the switch model, the release, the result, where the result comes
+from, and the evidence. It is a file of its own, keyed by SRG ID and lab. The
+page never reads or writes a worksheet.
 
 With Claude Code, unzip the file, open a terminal in the `lab201-build`
 folder, and run:
@@ -71,18 +102,39 @@ zip are the unchanged originals. `walkthroughs.list` names them.
 
 ## Before you run anything
 
-On VMware Workstation, start with the readiness check. It changes nothing. It
-tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest,
-memory, disk space, and the networks, and says how to fix what is missing:
+Start with the readiness check. Every script has one, and it changes nothing.
+It tests what a deploy needs and says how to fix what is missing. Give it the
+same arguments as the build. The Lab Builder's Command tab and `RUN.txt` show
+the whole line:
 
 ```powershell
 .\Deploy-Lab201-Workstation.ps1 -Action Check -SshKeyFile ~\.ssh\id_ed25519.pub
 ```
 
-The other scripts have no check yet, so follow this list for them.
+```bash
+./deploy-lab201-proxmox.sh --action check --ssh-key ~/.ssh/id_ed25519.pub
+```
+
+| Script | What the check tests |
+| --- | --- |
+| Workstation | Python and `pycdlib`, the SSH key, the Workstation tools, the manifest, memory, disk space, and the networks |
+| ESXi | Python and `pycdlib`, the SSH key, PowerCLI, the manifest and its images, and then, after it logs in, the host version, the datastore, the uplinks, and memory |
+| vCenter and VxRail | The same local tests, and then the version, the datacenter, the host or cluster, the datastore, and the uplinks or the existing switch |
+| Proxmox VE | The Proxmox VE version, Python, the SSH key, the storage, the bridges, the VM IDs, memory, disk space, and the images you supply |
+| KVM | libvirt, virt-install, Python, the SSH key, the bridges, memory, and disk space |
+| WSL | WSL, Python, the SSH key, the manifest, and disk space |
+
+The Proxmox VE check was run on a Proxmox VE 9.2 node. The checks of the
+Workstation, ESXi, vCenter, and WSL scripts were run on one Windows computer
+with Workstation Pro 26, without WSL, and without PowerCLI in PowerShell 7.
+The ESXi and vCenter checks also ran under Windows PowerShell 5.1 with
+PowerCLI, as far as a failed login to a host that does not exist. No check has
+logged in to a real ESXi host or vCenter. The KVM check has not been run.
+
+Then follow this list.
 
 1. Read the chapter for your platform, and run the script with `-WhatIf` (or
-   `--dry-run` for Proxmox) first. The Proxmox VE and VMware Workstation scripts
+   `--dry-run` for Proxmox and KVM) first. The Proxmox VE and VMware Workstation scripts
    have built the lab machines on real hosts (Chapter 09 says what was run).
    The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. Treat
    all of them as a starting point to check, not a finished tool.
@@ -97,6 +149,104 @@ The other scripts have no check yet, so follow this list for them.
    with `-SshKeyFile` (or `--ssh-key`). See *Make an SSH key on Windows* below.
 4. Keep the scripts and the `common` folder together, because each script finds
    `..\common\lab201-vms.json` and `make-seed.py` relative to itself.
+
+## After the build: wait, take the baseline, and return to it
+
+A new machine installs its packages on its first boot, which takes a few
+minutes. `Status` with `-Wait` (`--wait` in Bash) prints one line for each
+machine and ends by itself when every machine has finished:
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -Action Status -Wait
+```
+
+```bash
+./deploy-lab201-proxmox.sh --action status --wait --vmid-base 20100
+```
+
+`ok` means the first boot finished, the packages of the machine are installed,
+and its lab services run. `failed` names what is missing. Log in to that
+machine and run `lab201-status`, then `sudo cloud-init status --long`. Leave
+`-Wait` out to see the state now.
+
+Each machine carries the small script `/usr/local/sbin/lab201-status`, which
+prints that one line. How the host reads it depends on the platform:
+
+- Proxmox VE and KVM run it through the QEMU guest agent. The Red Hat family
+  images (Rocky, Alma, Fedora, and Red Hat) do not let the agent run commands,
+  so those machines show `unknown`. Log in to them and run `lab201-status`.
+- The VMware scripts read a value that the machine hands to the hypervisor
+  every minute (`guestinfo.lab201`), so they need no login. If no machine
+  reports within six minutes, the wait stops and says so.
+- Machines that install from an ISO show `manual`. Look at their console.
+
+When the wait ends, its last lines say what it could check. `Every machine has
+finished its first boot` means that every machine of the manifest answered
+`ok`. A machine that cannot report, that installs from an ISO, or that is
+stopped or missing is counted or named in those lines as not checked. `ok` for
+the other machines says nothing about that one.
+
+A machine that restarts after its build adapter is gone adds
+`cloud-init-notes=recoverable-errors` to its line, because cloud-init can no
+longer find that adapter. The machine is still `ok`.
+
+When every machine has finished, remove the build adapters, then take the
+baseline snapshot that Lab 999.6 asks for:
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -Action RemoveBuildNics
+.\Deploy-Lab201-Workstation.ps1 -Action Snapshot
+```
+
+Keep that order. `Snapshot` refuses while a machine still has its build
+adapter, names those machines, and takes no snapshot. A snapshot keeps the
+adapters of a machine, so a later `Restore` would bring the build adapter back,
+and with it the machine's path to the internet.
+
+Each requirement lab ends with "Return to baseline". `Restore` returns every
+machine to that snapshot and starts it, the gateway first. It discards what
+changed on the machines since the snapshot. Reload the baseline configuration
+of the switches too (Lab 999.6):
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -Action Restore
+```
+
+In Bash the actions are `--action snapshot` and `--action restore`. Both take
+`-SnapshotName` (`--snapshot-name`), which is `baseline-201` by default. The
+ESXi and vCenter actions need the host arguments again, and the Proxmox ones
+need `--vmid-base`. `RUN.txt` has each line. WSL has no snapshots.
+
+On Proxmox VE, a machine is known by its VM ID and its name together. When a
+VM ID holds a machine with another name, every action leaves it alone and says
+so, and a deploy stops before it makes anything. The vCenter script looks for
+the machines only in the lab folder.
+
+The status, snapshot, and restore actions were run on Proxmox VE 9.2 with
+twelve machines (eleven on Ubuntu 24.04 and one on Rocky Linux 10). On VMware
+Workstation, ESXi, vCenter, and KVM they have not been run on a real host.
+The refusal of `Snapshot` while a build adapter remains was run on Proxmox VE
+with two machines, and on Workstation against stand-in `.vmx` files only.
+
+## Check an install ISO against its checksum
+
+The scripts check each cloud image they download against the checksum file of
+its publisher. An install ISO you supply (Windows, Linux Mint, or Tiny Core)
+is yours to check. Type the checksum its publisher gives on the Lab Builder
+(card 8). SHA-256, SHA-512, SHA-1, and MD5 are told apart by their length.
+
+- On Proxmox VE, the command then carries `--iso-sum FLAVOR=CHECKSUM`. The
+  check and the deploy compare the file with it and stop when it differs.
+- On ESXi, vCenter, and VxRail the ISO is on a datastore, where the script
+  cannot read it back. The Command tab gives the line that checks your copy
+  before you upload it:
+
+```powershell
+(Get-FileHash -Algorithm SHA256 'C:\iso\file.iso').Hash
+```
+
+MD5 shows a damaged download. It does not show a file that someone changed on
+purpose, so prefer SHA-256 where the publisher gives it.
 
 ## Install Python on Windows
 
@@ -217,9 +367,9 @@ ssh labadmin@<address>
 ```
 
 `<address>` is the machine's address on the build network. On VMware
-Workstation, the script lists every machine with the line that logs in to it.
-A new machine needs a few minutes to install its guest tools before its
-address shows:
+Workstation, the script lists every machine with its build state and the line
+that logs in to it. A new machine needs a few minutes to install its guest
+tools before its address shows:
 
 ```powershell
 .\Deploy-Lab201-Workstation.ps1 -Action Status
@@ -319,12 +469,12 @@ Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
   addresses. The IPv6 addresses are derived from the IPv4 addresses.
-- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Windows 11, Windows Server, Linux Mint, and Tiny Core install from an ISO you supply, and are available on Proxmox VE, ESXi, vCenter, and VxRail.
+- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Windows 11, Windows Server, Linux Mint, and Tiny Core install from an ISO you supply, and are available on Proxmox VE, ESXi, vCenter, and VxRail. A flavor can set a minimum size (`min`). A disk cannot be smaller than its cloud image, so Rocky Linux, AlmaLinux, and Red Hat set a 10 GB disk and Fedora sets 5 GB, and the Lab Builder raises a smaller machine to that size. The scripts never shrink a disk: when a manifest asks for less than the image holds, the machine keeps the size of the image.
 - `resolve-image.py` finds, downloads, and checks the cloud image for a flavor.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.
 
-The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder.
+The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder. The zip that the Lab Builder makes holds a picture of your own build in their place, which the page draws.
 
 Check the downloaded files against `SHA256SUMS` in this folder.
 

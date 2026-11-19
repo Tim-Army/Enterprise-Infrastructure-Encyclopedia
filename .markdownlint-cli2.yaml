@@ -24,3 +24,6 @@ ignores:
   # (and their own node_modules); linting them from the repo root double-counts
   # every file and fails on third-party READMEs.
   - ".claude/**"
+  # imports/ holds source material that git ignores, so it exists only on a
+  # local computer and is not part of the book.
+  - "imports/**"

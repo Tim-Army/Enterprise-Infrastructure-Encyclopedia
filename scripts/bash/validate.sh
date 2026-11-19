@@ -49,6 +49,8 @@ fi
 python3 scripts/python/check_internal_links.py || fail=1
 
 # The Lab Builder page carries a copy of the lab manifest. It must match lab201-vms.json.
+# The same script compares the numbers that the volume states in its text (SRG requirements,
+# self-test checks) with the lab chapters and the page.
 if [[ -f scripts/python/sync_lab_builder.py ]]; then
   python3 scripts/python/sync_lab_builder.py --check || fail=1
 fi

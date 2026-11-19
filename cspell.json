@@ -5366,11 +5366,13 @@
     "tcz",
     "e1000e",
     "OOBE",
-    "firstlogin"
+    "firstlogin",
+    "guestinfo"
   ],
   "ignorePaths": [
     "node_modules/**",
     "output/**",
-    "_site/**"
+    "_site/**",
+    "imports/**"
   ]
 }

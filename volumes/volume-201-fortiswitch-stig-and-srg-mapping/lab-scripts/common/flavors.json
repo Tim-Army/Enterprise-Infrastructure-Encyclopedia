@@ -27,6 +27,7 @@
     "apt": {
       "install": "apt",
       "admin_group": "sudo",
+      "expect_active": { "chrony": "chrony", "rsyslog": "rsyslog", "freeradius": "freeradius", "tftpd-hpa": "tftpd-hpa", "kea-dhcp4-server": "kea-dhcp4-server", "frr": "frr", "smcroute": "smcroute" },
       "map": { "sflowtool": null }
     },
     "dnf": {
@@ -133,6 +134,7 @@
       "guest_id": "otherLinux64Guest",
       "name": "Rocky Linux 10",
       "short": "Rocky 10",
+      "min": { "disk_gb": 10 },
       "family": "dnf",
       "status": "experimental",
       "epel": "epel-release",
@@ -151,6 +153,7 @@
       "guest_id": "otherLinux64Guest",
       "name": "AlmaLinux 10",
       "short": "Alma 10",
+      "min": { "disk_gb": 10 },
       "family": "dnf",
       "status": "experimental",
       "epel": "epel-release",
@@ -168,6 +171,7 @@
       "guest_id": "otherLinux64Guest",
       "name": "Fedora Cloud 43",
       "short": "Fedora 43",
+      "min": { "disk_gb": 5 },
       "family": "dnf",
       "status": "experimental",
       "sub": "dnf",
@@ -185,6 +189,7 @@
       "guest_id": "otherLinux64Guest",
       "name": "Red Hat Enterprise Linux 10",
       "short": "RHEL 10",
+      "min": { "disk_gb": 10 },
       "family": "dnf",
       "status": "experimental",
       "subscription": true,
@@ -216,6 +221,7 @@
       "guest_id": "otherLinux64Guest",
       "name": "RHEL 10, DoW STIG hardened",
       "short": "RHEL 10 STIG",
+      "min": { "disk_gb": 10 },
       "family": "dnf",
       "status": "experimental",
       "subscription": true,

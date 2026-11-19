@@ -73,7 +73,9 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 | Option | Meaning |
 | --- | --- |
 | `--ssh-key FILE` | Public key for `labadmin` (repeatable). Required for `deploy`. |
-| `--action` | `deploy` (default), `status`, `remove-build-nics`, or `remove`. |
+| `--action` | `deploy` (default), `check`, `status`, `remove-build-nics`, `snapshot`, `restore`, or `remove`. `check` tests what a deploy needs on the host and changes nothing. `snapshot` takes the baseline snapshot of every machine, and refuses while a machine still has its build NIC. `restore` reverts every machine to that snapshot, running, the gateway first. |
+| `--wait`, `--wait-minutes N` | With `--action status`: keep checking until every machine reports that its first boot has finished, for at most N minutes (30 by default). The QEMU guest agent runs `lab201-status` in each machine. |
+| `--snapshot-name NAME` | The snapshot that `snapshot` and `restore` use (default `baseline-201`). |
 | `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-lan220` | The bridge for each lab network. |
 | `--disk-dir`, `--workdir` | Where the machine disks go, and where images and seeds are kept. |
 | `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image. |
@@ -84,8 +86,9 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 
 | Check | Command | Expected |
 | --- | --- | --- |
-| Machines exist and run | `./deploy-lab201-kvm.sh --action status` | Twelve machines, `running` |
-| Cloud-init finished | In a guest: `cloud-init status --long` | `status: done` |
+| The host is ready | `./deploy-lab201-kvm.sh --action check --ssh-key ~/lab201.pub` | `Ready`, or a line for each thing to fix |
+| The first boot finished | `./deploy-lab201-kvm.sh --action status --wait` | Twelve machines with `ok`. A Rocky, AlmaLinux, Fedora, or Red Hat machine shows `unknown`, because its guest agent runs no commands |
+| Cloud-init finished | In a guest: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
 | Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v10` | A VLAN interface with `id 10` |
 | Addresses | `ip -br addr` | The Chapter 999 addresses, both families |
 | Tags on the trunk | On `gw-201`: `sudo tcpdump -e -n -i nic2 vlan` | Tagged frames from the switch |
@@ -138,13 +141,14 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 
 ### Lab 14.2: Build the lab
 
-1. Run a dry run, and read every line:
+1. Run the readiness check, then a dry run, and read every line. Neither changes anything:
 
    ```bash
+   ./deploy-lab201-kvm.sh --action check --ssh-key ~/lab201.pub
    ./deploy-lab201-kvm.sh --ssh-key ~/lab201.pub --dry-run
    ```
 
-2. Run it without `--dry-run`. Then run `--action status` until all twelve machines run, and check `cloud-init status --long` on three of them.
+2. Run it without `--dry-run`. Then run `./deploy-lab201-kvm.sh --action status --wait`, which ends when every machine reports that its first boot has finished, and check `cloud-init status --long` on three of them.
 3. **Tag test.** With the switch trunk configured, run `sudo tcpdump -e -n -i nic2 vlan` on `gw-201`.
 
 **Expected result.** Twelve running machines with the Chapter 999 addresses, and tagged frames in the capture.
@@ -152,10 +156,16 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 ### Lab 14.3: Remove the build NICs and take the baseline
 
 1. Run `./deploy-lab201-kvm.sh --action remove-build-nics`.
-2. Snapshot every machine:
+2. Snapshot every machine. The script refuses, and names the machines, if one of them still has its build NIC:
 
    ```bash
-   for n in $(virsh list --name | grep -v '^$'); do virsh snapshot-create-as "$n" baseline-201; done
+   ./deploy-lab201-kvm.sh --action snapshot
+   ```
+
+3. Between labs, return every machine to that snapshot. It discards what changed on the machines since the snapshot:
+
+   ```bash
+   ./deploy-lab201-kvm.sh --action restore
    ```
 
 **Negative test.** From `static-1`, run `curl -m 5 https://cloud-images.ubuntu.com`. It must fail.
@@ -168,7 +178,7 @@ Run `./deploy-lab201-kvm.sh --action remove`, then delete `--workdir` and `--dis
 
 ## Lab Verification
 
-Complete this sign-off once Labs 14.1 to 14.3 have been run end to end on a real KVM host with a real switch trunk. Until then the script is unverified. It passes `shellcheck`, and its machine and adapter planning ran as a dry run against stubs, but it has not been run on a host. The `--cloud-init` option's handling of `network-config`, guest tagging through plain bridges, and the non-Ubuntu flavors are the first things to confirm.
+Complete this sign-off once Labs 14.1 to 14.3 have been run end to end on a real KVM host with a real switch trunk. Until then the script is unverified. It passes `shellcheck`, and its machine and adapter planning ran as a dry run against stubs, but it has not been run on a host. The `--cloud-init` option's handling of `network-config`, guest tagging through plain bridges, and the non-Ubuntu flavors are the first things to confirm. The `check`, `status --wait`, `snapshot`, and `restore` actions have not been run either. The Proxmox VE script reads the build state the same way and was run, but this script asks the guest agent through `virsh qemu-agent-command`, which is the first thing to confirm for `status --wait`.
 
 - **Lab verified by:** *pending*
 - **Date:** *pending*
