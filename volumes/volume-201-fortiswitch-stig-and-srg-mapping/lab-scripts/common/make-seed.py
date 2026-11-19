@@ -74,6 +74,10 @@ table inet lab201 {
 """
 
 SYSCTL_FORWARD = "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1\n"
+# For a gateway that keeps its uplink. Without these two lines a Linux router answers ARP for any of its addresses on
+# every NIC, so a network that reaches two of its NICs could send to the uplink address through the other one.
+SYSCTL_UPLINK = ("# The gateway answers ARP for an address only on the NIC that has it, and announces an address from its own NIC.\n"
+                 "net.ipv4.conf.all.arp_ignore=1\nnet.ipv4.conf.all.arp_announce=2\n")
 
 # The first line this script prints is "lab201 STATE NAME details". STATE is running (the first boot is not
 # finished), ok, or failed. The platform scripts read that line for --action status. The lists of packages and
@@ -279,7 +283,9 @@ def nft_rules(uplink=None, ifname=None):
     """The firewall of the gateway (Lab 999.1), with the addresses of this build.
 
     With an uplink to the external firewall, the gateway forwards to it only the traffic of the machines with
-    internet access, and lets nothing new in from it. Answers come back through the first rule.
+    internet access, and lets nothing new in from it. Answers come back through the first rule. The gateway itself
+    takes from the uplink only answers, ping, neighbor discovery, and the DHCP answer when its address comes from
+    DHCP, so its own services, such as SSH, do not answer there.
     """
     def v4(m):
         seg = int(m.group(1))
@@ -302,6 +308,15 @@ def nft_rules(uplink=None, ifname=None):
         rules += ['    oifname "%s" drop' % ifname, '    iifname "%s" drop' % ifname]
         first = "    ct state established,related accept\n"
         text = text.replace(first, first + "\n".join(rules) + "\n", 1)
+        guard = ["  chain input {", "    type filter hook input priority 0; policy accept;",
+                 "    # The gateway itself on its uplink: answers, ping, and neighbor discovery come in, and nothing else that is new.",
+                 '    iifname "%s" ct state established,related accept' % ifname]
+        if not uplink.get("address"):
+            guard.append('    iifname "%s" udp sport 67 udp dport 68 accept' % ifname)
+        guard += ['    iifname "%s" icmp type echo-request accept' % ifname,
+                  '    iifname "%s" icmpv6 type { echo-request, nd-neighbor-solicit, nd-neighbor-advert } accept' % ifname,
+                  '    iifname "%s" drop' % ifname, "  }"]
+        text = text.replace("  chain forward {\n", "\n".join(guard) + "\n  chain forward {\n", 1)
     return text
 
 
@@ -491,6 +506,8 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     if vm.get("forwarding"):
         files.append(("/etc/sysctl.d/60-lab201.conf", SYSCTL_FORWARD))
     uplink = uplink_of(manifest, vm)
+    if uplink and vm.get("forwarding"):
+        files.append(("/etc/sysctl.d/61-lab201-uplink.conf", SYSCTL_UPLINK))
     if vm.get("role") == "gateway":
         files.append(("/etc/nftables.conf", nft_rules(uplink, uplink_nic(vm))))
     info = "name=%s\nrole=%s\nflavor=%s\n" % (vm["name"], vm["role"], flavor["id"])

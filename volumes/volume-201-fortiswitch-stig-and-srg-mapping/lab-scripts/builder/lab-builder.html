@@ -5614,8 +5614,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* ----------------------------------------------------------- validation */
   function vmRows() { return BASE.vms.map(function (vm) { return { base: vm, row: state.vms[vm.name] }; }); }
   function rowAvailable(base) { return !(PLATFORMS[state.platform].wslOnly && !base.wsl); }
+  // A network device is the gateway of the build (section 10), in place of the Linux router that the scripts build.
+  function gwIsDevice() { return netPick(NET_GW, state.gwOs) !== NET_GW[0][0]; }
+  // The Linux router is in every build, except when a network device is the gateway: the device holds its addresses,
+  // so the build leaves the router out. On WSL it follows its box like every other machine, and is not available.
+  function gwLeftOut(base) { return base.role === 'gateway' && !PLATFORMS[state.platform].wslOnly && gwIsDevice(); }
   function rowIncluded(base, row) {
-    if (base.role === 'gateway' && !PLATFORMS[state.platform].wslOnly) return true;
+    if (base.role === 'gateway' && !PLATFORMS[state.platform].wslOnly) return !gwIsDevice();
     return rowAvailable(base) && row.include;
   }
 
@@ -5629,6 +5634,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       if (!labPlanned(l)) return;
       (l.machines || []).forEach(function (n) { need[n] = true; (why[n] = why[n] || []).push(l.id); });
     });
+    // With a network device as the gateway, no lab needs the Linux router: the device takes its place.
+    BASE.vms.forEach(function (vm) { if (gwLeftOut(vm)) { delete need[vm.name]; delete why[vm.name]; } });
     var avail = vmRows().filter(function (e) { return rowAvailable(e.base); }).map(function (e) { return e.base.name; });
     return {
       planned: PLAN_LABS.filter(labPlanned).map(function (l) { return l.id; }),
@@ -6199,7 +6206,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var renamed = [];
     vmRows().forEach(function (e) { if (v.names[e.base.name] && v.names[e.base.name] !== e.base.name) renamed.push(e.base.name + ' is now ' + v.names[e.base.name]); });
     if (renamed.length) lines.push('Renamed machines: ' + renamed.join('; ') + '.');
-    var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0; }).map(function (e) { return e.base.name; });
+    // A network device as the gateway takes the Linux router out of the build, which is a change of its own.
+    vmRows().forEach(function (e) { if (gwLeftOut(e.base)) lines.push('Gateway: a network device (' + netLabel(netPick(NET_GW, state.gwOs)) + ') is the gateway, so ' + e.base.name + ' is not built. The starting configuration of the device is in the folder gateway-device.'); });
+    var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0 && !gwLeftOut(e.base); }).map(function (e) { return e.base.name; });
     if (left.length) lines.push('Machines left out: ' + left.join(', ') + '.');
     var fl = []; vmRows().forEach(function (e) { var f = v.flavors[e.base.name]; if (f && f !== DEFAULT_FLAVOR) fl.push((v.names[e.base.name]) + ': ' + FLAVOR[f].name); });
     if (fl.length) lines.push('Linux flavors: ' + fl.join('; ') + '. All others use ' + FLAVOR[DEFAULT_FLAVOR].name + '.');
@@ -6267,7 +6276,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (gwf) {
       L.push('');
       L.push('## Gateway device');
-      L.push('A network device is the gateway of this build' + (gwf.gwBuilt ? ', in place of ' + gwf.gw : '') + '. The zip has its starting configuration in ' + gwf.path + ' (' + gwf.os + '): the text of section 10 of the Lab Builder. ' +
+      L.push('A network device is the gateway of this build' + (gwf.leftOut ? ', in place of ' + gwf.gw + ', which the build leaves out' : '') + '. The zip has its starting configuration in ' + gwf.path + ' (' + gwf.os + '): the text of section 10 of the Lab Builder. ' +
         'It gives the device the .1 address of every shared segment and lets every lab segment reach every other one, which is wider than the policy of Lab 999.1.');
       gwf.notes.forEach(function (n) { L.push('- ' + n); });
       if (gwf.extra) L.push('- ' + gwf.extra.path + ': ' + gwf.extra.title);
@@ -6562,7 +6571,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       '- `diagrams/lab-topology.svg`: a picture of this build, drawn by the Lab Builder from the same values. A PNG copy is beside it when the browser could make one.',
       '- `' + firewallFile(v).path + '`: the rules for an additional firewall outside the lab, between the lab and the internet. It is not part of a lab walkthrough. The user puts the rules on that firewall, and `CHECKLIST.md` has the notes for them. Do not apply this file to a lab machine or a switch.' +
         (gwf ? '\n- `' + gwf.path + '`: the starting configuration for the network device that is the gateway of this build (' + gwf.os + '). The user puts it on that device, and `CHECKLIST.md` has the notes for it.' +
-          (gwf.gwBuilt ? ' The scripts still build `' + gwf.gw + '`, and it must stay shut down while the device is the gateway, because both hold the same addresses.' : '') + ' Do not apply this file to a lab machine or a switch.' : ''),
+          (gwf.leftOut ? ' The build has no `' + gwf.gw + '`. In Lab 999.1 the user puts this starting configuration on the device in place of the steps for `' + gwf.gw + '`. Where a later step names `' + gwf.gw + '`, the device takes its place: check the result of the step on the device, and say so when a step is written for Linux and has no counterpart there.' : '') +
+          ' Do not apply this file to a lab machine or a switch.' : ''),
       '- `common/` and `' + p.script.split('/')[0] + '/`: the manifest and the build script. `lab-builder-choices.json` reloads this build in the Lab Builder.', '',
       '## Start here', '',
       'When the user opens a session in this folder, or says "start", do this:', '',
@@ -6766,7 +6776,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var nets4 = [{ net: v.range.net, len: v.range.len }];
     v.sub.typed.forEach(function (s) { var n = ip4num(v.sub.base[s] + '.0'); if (n < v.range.from || n > v.range.to) nets4.push({ net: v.sub.base[s] + '.0', len: 24 }); });
     var plat = PLATFORMS[state.platform];
-    return { lab: BASE.lab || 'lab201', gw: gw ? v.names[gw.name] || gw.name : '', gwBuilt: !!gw && rowIncluded(gw, state.vms[gw.name]), twoTrunks: !plat.singleTrunk && !plat.wslOnly,
+    return { lab: BASE.lab || 'lab201', gw: gw ? v.names[gw.name] || gw.name : '', gwBuilt: !!gw && rowIncluded(gw, state.vms[gw.name]), gwLeftOut: !!gw && gwLeftOut(gw), twoTrunks: !plat.singleTrunk && !plat.wslOnly,
       ifs: ifs, nets4: nets4, nets6: [{ net: p6, len: 112 }] };
   }
   function netDesc(m, i) { return m.lab + ' segment ' + i.seg + ' ' + i.name; }
@@ -6781,14 +6791,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // The Linux router is built by the scripts, so there is no text for it.
     if (os === NET_GW[0][0]) return { os: os, file: '', text: '', extra: null, notes: m.gwBuilt
       ? ['The scripts build ' + m.gw + ' as the gateway and the lab\'s own firewall, so it needs no configuration text. It holds the .1 address of every shared segment and routes between them by the policy of Lab 999.1.',
-        'Pick another OS type only if a network device takes the place of ' + m.gw + '. The page then writes a starting configuration for it, and the Diagram tab shows the device as the gateway.']
+        'Pick another OS type only if a network device takes the place of ' + m.gw + '. The build then leaves ' + m.gw + ' out, the page writes a starting configuration for the device, and the Diagram tab shows the device as the gateway.']
       : ['This build has no gateway, because ' + PLATFORMS[state.platform].name + ' builds only the service hosts.',
         'Pick another OS type if a network device is the gateway. The page then writes a starting configuration for it, and the Diagram tab shows it.'] };
     var L = [], lab = m.lab, trunk = lab + ' trunk to the lab VLANs', first = m.ifs[1], extra = null;
     var notes = ['Replace ' + GW_TRUNK + ' with the port that carries the lab VLANs, and ' + GW_OOB + ' with the port on the out-of-band network (segment 0).',
       'Each tagged interface has the number of its segment. Its VLAN ID and its addresses are the ones of section 6.'];
-    if (m.gwBuilt) notes.push('The scripts still build ' + m.gw + '. Keep it shut down while the device is the gateway, because both hold the same addresses.' +
-      (m.twoTrunks ? ' ' + m.gw + ' also joins the two trunks (T1 and T2) into one network, so the device must reach both trunks.' : ''));
+    if (m.gwLeftOut) notes.push('The build leaves ' + m.gw + ' out, because the device holds its addresses.' +
+      (m.twoTrunks ? ' ' + m.gw + ' joins the two trunks (T1 and T2) into one network, so the device must reach both trunks.' : ''));
     if (os === 'iosxe') {
       L.push('ip routing', 'ipv6 unicast-routing', '!');
       m.ifs.forEach(function (i) {
@@ -7059,7 +7069,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var n = netConfigs(v), g = n.gateway;
     if (!g.text) return null;
     var path = 'gateway-device/' + g.file;
-    return { path: path, os: n.gwName, gw: n.model.gw, gwBuilt: n.model.gwBuilt, text: g.text, notes: g.notes,
+    return { path: path, os: n.gwName, gw: n.model.gw, leftOut: n.model.gwLeftOut, text: g.text, notes: g.notes,
       extra: g.extra ? { path: path.replace(/\.txt$/, '-extra.txt'), title: g.extra.title, text: g.extra.text } : null };
   }
 
@@ -7159,7 +7169,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     rect(20, H0, 920, 270, '#f8fafc', '#475569', { dash: '6 4' });
     text(32, H0 + 18, (wsl ? platName : 'Hypervisor (' + platName + ')') + ': ' + m.vms.length + (wsl ? ' service hosts, ' : ' virtual machines, ') + defFlavor + (otherFlavor ? ', ' + otherFlavor + ' with another flavor' : ''), { size: 12, bold: true, fill: '#334155', max: 890 });
     var segs = net.model.ifs.map(function (i) { return i.seg; }), segA = segs.slice(0, 4).join(', ') + ',', segB = segs.slice(4).join(', '), role = net.device ? 'gateway' : 'gateway and firewall';
-    if (net.device) box('gateway', 'in', 'dev', 36, Y1, 120, 110, 'Gateway device', [net.gwName, role, '.1 on segments', segA, segB].concat(st(gw) === 'in' ? [nm(gw) + ': shut down'] : []), { center: true, kind: net.gw });
+    if (net.device) box('gateway', 'in', 'dev', 36, Y1, 120, 110, 'Gateway device', [net.gwName, role, '.1 on segments', segA, segB].concat(net.model.gwLeftOut ? ['in place of ' + nm(gw)] : []), { center: true, kind: net.gw });
     else if (st(gw) !== 'in') box('gateway', st(gw), 'vm', 36, Y1, 120, 110, nm(gw), ['gateway', why(gw)], { center: true, kind: net.gw });
     else box('gateway', 'in', 'vm', 36, Y1, 120, 110, nm(gw), ['gateway and', 'lab firewall', '.1 on segments', segA, segB, FLAVOR[v.flavors[gw] || m.default_flavor].name], { center: true, kind: net.gw });
     svc.slice(0, 2).forEach(function (b, k) {
@@ -7384,7 +7394,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     isoSumOf: isoSumOf, reqStatus: reqStatus, requirementRows: requirementRows, resultsCsv: resultsCsv, csvCell: csvCell,
     swCheck: swCheck, swSeries: swSeries, fswCheck: fswCheck, FSW: FSW, FSW_VERSIONS: FSW_VERSIONS, parseProgress: parseProgress, labStatus: labStatus, LABS: LABS, WALKTHROUGHS: WALKTHROUGHS, PORTS: PORTS, DEFAULT_CONSOLE_PW: DEFAULT_CONSOLE_PW, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
-    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, zipOwnFiles: zipOwnFiles, firewallFile: firewallFile, gatewayFile: gatewayFile, makeZip: makeZip, crc32: crc32,
+    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, zipOwnFiles: zipOwnFiles, firewallFile: firewallFile, gatewayFile: gatewayFile, gwLeftOut: gwLeftOut, gwIsDevice: gwIsDevice, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
@@ -7424,7 +7434,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><div class="tscroll"><table id="lics"></table></div></div>';
     var optsOf = function (list) { return list.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + '</option>'; }).join(''); };
-    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port, and the zip holds that text in the folder gateway-device. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
+    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The build then leaves gw-201 out, and the page writes a starting configuration for the device, on one 802.1Q trunk port and the out-of-band port. The zip holds that text in the folder gateway-device. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
     h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div>';
     h += '<label for="gwuplink" id="gwuplabel">Uplink</label><div id="gwupbox"><label class="subset" style="margin-left:0;white-space:normal"><input type="checkbox" id="gwuplink"> Keep the uplink of <span id="gwupname"></span> to the external firewall</label></div>';
     h += '<label for="upaddr" id="upaddrlabel">Uplink address</label><div id="upaddrbox"><span class="sub rangeval" id="upauto"></span><span id="upstatic"><span class="small" id="upgwname"></span> <input type="text" id="upaddr" class="addr subin" autocomplete="off" placeholder="192.168.50.2/24" aria-label="Uplink address of the gateway"> <span class="small">external firewall</span> <input type="text" id="upfw" class="addr subin" autocomplete="off" placeholder="192.168.50.1" aria-label="Address of the external firewall"> <span class="small">DNS</span> <input type="text" id="updns" class="addr subin" autocomplete="off" placeholder="the external firewall" aria-label="DNS server for the gateway"></span><label class="subset small"><input type="checkbox" id="upset"> Override</label><span class="msg bad" id="upmsg"></span></div></div>';
@@ -7584,7 +7594,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       tr.className = inc ? '' : 'off';
       var cb = tr.querySelector('[data-f=include]'); cb.checked = inc; cb.disabled = !avail || (b.role === 'gateway' && !P[S.platform].wslOnly);
       tr.querySelector('[data-f=override]').checked = r.override;
-      tr.querySelector('[data-m=avail]').textContent = avail ? '' : 'Not built on WSL';
+      tr.querySelector('[data-m=avail]').textContent = !avail ? 'Not built on WSL' : C.gwLeftOut(b) ? 'Left out: a network device is the gateway (section 10)' : '';
       var nameIn = tr.querySelector('[data-f=name]');
       nameIn.className = 'name' + (res.name.err && inc ? ' err' : (inc && r.name.trim() !== b.name ? ' chg' : ''));
       tr.querySelector('[data-m=name]').className = 'msg bad'; tr.querySelector('[data-m=name]').textContent = inc ? res.name.err : '';
@@ -7641,7 +7651,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var wslOnly = !!P[S.platform].wslOnly;
     $('plannote').textContent = wslOnly ? 'WSL builds only the service hosts, so the lab plan does not change its machines.' :
       (v.plan.unused.length ? 'The labs you plan do not use: ' + v.plan.unused.join(', ') + '. ' : '') + (v.plan.missing.length ? 'Left out, but used by the plan: ' + v.plan.missing.join(', ') + '. ' : '') +
-      (!v.plan.unused.length && !v.plan.missing.length ? 'The machines of this build match the labs you plan. ' : '') + 'These machines are always kept, because the shared lab of Chapter 999 needs them: ' + C.BASE.vms.filter(function (x) { return x.role === 'gateway' || C.BASE_MACHINES[x.name]; }).map(function (x) { return x.name; }).join(', ') + '.';
+      (!v.plan.unused.length && !v.plan.missing.length ? 'The machines of this build match the labs you plan. ' : '') + 'These machines are always kept, because the shared lab of Chapter 999 needs them: ' + C.BASE.vms.filter(function (x) { return (x.role === 'gateway' && !C.gwLeftOut(x)) || C.BASE_MACHINES[x.name]; }).map(function (x) { return x.name; }).join(', ') + '.';
     $('planapply').disabled = wslOnly || !(v.plan.unused.length || v.plan.missing.length);
     // Feature support of the two switch models in the chosen release.
     var fh = '';
@@ -7754,6 +7764,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     $('upmsg').textContent = [up.err.addr, up.err.fw, up.err.dns].filter(function (x) { return x; }).map(function (x) { return x + '. '; }).join('') + (up.err.addr || up.err.fw || up.err.dns ? 'DHCP is used.' : '');
     $('gwupnote').innerHTML = up.on ? '<b>With the uplink kept</b><ul>' + ['Step 4 removes the build adapters of the other machines and leaves the adapter of ' + up.gw + ' on the build network in place.',
       up.gw + ' takes its default route there and forwards the traffic of the machines with internet access (section 11) to the external firewall. It forwards nothing else out of the lab, and it does not translate addresses.',
+      up.gw + ' itself takes only answers, ping, ' + (up.addr ? 'and neighbor discovery' : 'neighbor discovery, and its DHCP answer') + ' from the uplink. Its SSH does not answer there, so log in to it from the lab side or at its console.',
       up.addr ? 'The firewall text of section 11 uses the uplink address for the way back to the lab. With an address that is set, no DHCP answer names a DNS server, so ' + up.gw + ' asks ' + up.dns.join(' and ') + (S.uplinkDns.trim() ? '.' : ', the external firewall. Type another DNS server if the firewall does not answer DNS.') : 'The address comes from DHCP, so reserve it on the DHCP server. The firewall text of section 11 needs it for the way back to the lab.',
       'Put the rules of section 11 on the firewall after step 4. During the build, every machine installs its packages over a build adapter, and those rules drop that traffic.'].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'
       : 'Without the uplink, step 4 removes the adapter of ' + esc(up.gw) + ' on the build network with the other build adapters, and no lab traffic reaches the external firewall.';
@@ -8444,7 +8455,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       fw('fortigate').indexOf('addrgrp') < 0 && fw('fortigate').indexOf('set action accept') < 0 && fw('fortigate').indexOf('set action deny') > 0 && fw('junos').indexOf('internet-access') < 0, 'with no machine chosen, the firewall text gives no internet access at all');
     S.inet[ntpHosts[0]] = true; S.fwOs = 'iosxe'; S.gwOs = 'linux'; var noteLinux = C.netConfigs(v).firewall.notes.join(' '); S.gwOs = 'asa'; var ncDev = C.netConfigs(v), noteDev = ncDev.firewall.notes.join(' ');
     ok(noteLinux.indexOf('This is an additional firewall, outside the lab') === 0 && noteLinux.indexOf('It does not take the place of ' + gwN + ', which stays the lab\'s own firewall.') > 0 && noteDev.indexOf('This is an additional firewall') === 0 && noteDev.indexOf('It does not take the place of') < 0 &&
-      noteLinux.indexOf(gwN + ' has none after step 4') > 0 && noteLinux.indexOf('section 6') > 0 && noteDev.indexOf('give the gateway device an uplink') > 0 && ncDev.device && ncDev.gateway.text === gw('asa') && ncDev.gateway.notes.join(' ').indexOf('Keep it shut down') > 0 && ncDev.firewall.text === fw('iosxe') && ncDev.fwName === 'Cisco IOS XE',
+      noteLinux.indexOf(gwN + ' has none after step 4') > 0 && noteLinux.indexOf('section 6') > 0 && noteDev.indexOf('give the gateway device an uplink') > 0 && ncDev.device && ncDev.gateway.text === gw('asa') && ncDev.gateway.notes.join(' ').indexOf('The build leaves ' + gwN + ' out, because the device holds its addresses.') > 0 && ncDev.gateway.notes.join(' ').indexOf('shut down') < 0 && ncDev.firewall.text === fw('iosxe') && ncDev.fwName === 'Cisco IOS XE',
       'the notes say that the external firewall is an additional one, and what the lab needs to reach it, for the Linux router and for a device as the gateway');
     S.gwOs = 'iosxr'; S.fwOs = 'nxos'; S.fwEdit = 'my own rule\n'; S.rangeOn = { count: true, net: true }; S.rangeNet = '10.76.0.0/15'; S.uplink = true; S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1';
     var netSaved = JSON.parse(C.choicesText()); reset();
@@ -8487,7 +8498,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       own.filter(function (f) { return f.path.indexOf('gateway-device/') === 0; }).length === 1 && !!inZip(C.firewallFile(v).path),
       'the zip holds the text for a network device as the gateway, beside the external firewall text');
     ok(ckl.indexOf('## Gateway device') > 0 && ckl.indexOf('## Gateway device') < ckl.indexOf('## External firewall') && ckl.indexOf('in ' + gf.path + ' (Cisco ASA)') > 0 && (gf.notes || []).length > 2 && (gf.notes || []).every(function (x) { return ckl.indexOf('- ' + x) > 0; }) &&
-      ckl.indexOf('the ones of section 6') > 0 && cmd.indexOf('- `' + gf.path + '`: the starting configuration for the network device that is the gateway of this build (Cisco ASA)') > 0 && cmd.indexOf('must stay shut down while the device is the gateway') > 0 &&
+      ckl.indexOf('the ones of section 6') > 0 && cmd.indexOf('- `' + gf.path + '`: the starting configuration for the network device that is the gateway of this build (Cisco ASA)') > 0 && cmd.indexOf('The build has no `' + gf.gw + '`. In Lab 999.1 the user puts this starting configuration on the device') > 0 && ckl.indexOf(', in place of ' + gf.gw + ', which the build leaves out.') > 0 &&
       C.claudeHelpText().indexOf('- gateway-device/: the text of section 10') > 0,
       'the checklist names the gateway file and has its notes, and CLAUDE.md says what the file is');
     S.gwOs = 'junos'; v = C.validateAll(); m = C.buildManifest(v); own = C.zipOwnFiles(m, v); ckl = C.checklistText(m, v); gf = C.gatewayFile(v) || {}; gwNet = C.netConfigs(v).gateway;
@@ -8495,6 +8506,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       (inZip(gf.extra.path) || {}).text === gwNet.extra.text && (inZip(gf.path) || {}).text === gwNet.text && own.filter(function (f) { return f.path.indexOf('gateway-device/') === 0; }).length === 2 && ckl.indexOf('- ' + gf.extra.path + ': On an SRX Series firewall in flow mode') > 0,
       'lines that only an SRX needs are a file of their own beside the Junos gateway text, and the checklist says what they are');
     S.gwOs = 'linux';
+    // A network device as the gateway takes the Linux router out of the build.
+    reset(); S.gwOs = 'asa'; v = C.validateAll(); m = C.buildManifest(v);
+    var gwBase = C.BASE.vms.filter(function (b) { return b.role === 'gateway'; })[0], chg = C.changeLines(m, v, true).join(' | ');
+    ok(m.vms.length === C.BASE.vms.length - 1 && !m.vms.some(function (x) { return x.role === 'gateway'; }) && !C.rowIncluded(gwBase, S.vms[gwBase.name]) && C.gwLeftOut(gwBase) && v.included.indexOf(gwBase.name) < 0 && v.errors.length === 0 &&
+      v.plan.missing.indexOf(gwBase.name) < 0 && !v.plan.need[gwBase.name] && C.netConfigs(v).model.gwLeftOut && !C.netConfigs(v).model.gwBuilt && chg.indexOf('Gateway: a network device (Cisco ASA) is the gateway, so ' + gwBase.name + ' is not built.') >= 0 && chg.indexOf('Machines left out') < 0 &&
+      m.vms.filter(function (x) { return x.name === 'svc-201a'; })[0].nics[1].gateway4 === v.sub.base[10] + '.1',
+      'a network device as the gateway takes the Linux router out of the build, and the other machines keep its address as their gateway');
+    S.gwOs = 'linux'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(m.vms.length === C.BASE.vms.length && m.vms[0].role === 'gateway' && !C.gwLeftOut(gwBase) && C.changeLines(m, v, true).join(' ').indexOf('Gateway:') < 0, 'the Linux router is back in the build when it is the gateway again');
+    reset('wsl'); S.gwOs = 'fortigate'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(!C.gwLeftOut(gwBase) && !C.netConfigs(v).model.gwLeftOut && C.changeLines(m, v, true).join(' ').indexOf('Gateway: a network device') < 0 && (C.gatewayFile(v) || {}).leftOut === false, 'on WSL, which builds no router, a device as the gateway leaves nothing out');
+    reset(); S.gwOs = 'linux';
     // The picture of the lab follows the choices. A node is found by the name its machine has in the manifest.
     var node = function (text, n) { var r = new RegExp('<g data-node="' + n + '" data-state="([a-z]+)"(?: data-kind="([a-z]+)")?>').exec(text); return r ? r[1] + (r[2] ? ':' + r[2] : '') : ''; };
     var lnk = function (text, n) { var r = new RegExp('<g data-link="' + n + '" data-state="([a-z]+)">').exec(text); return r ? r[1] : ''; };
@@ -8520,7 +8543,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(svgOne.indexOf('<g data-link="one-trunk">') > 0 && svgOne.indexOf('>Trunk T1<') < 0 && svgOne.indexOf('T1 and T2 are one network.<') > 0 && node(svgWsl, 'gateway') === 'na:linux' && node(svgWsl, 'rtr-peer-1') === 'na' && node(svgWsl, 'svc-201a') === 'in' &&
       svgWsl.indexOf('>no trunk on WSL<') > 0 && svgWsl.indexOf('data-link="one-trunk"') < 0 && lnk(svgWsl, 'L1') === 'out', 'the picture shows one trunk where the platform has one, and what WSL does not build');
     S.gwOs = 'asa'; var svgDev = C.topologySvg(); S.fwOs = 'junos'; S.inet[ntpHosts[0]] = false; S.inet[ntpHosts[1]] = false; S.rangeOn = { count: true }; S.rangeCount = '128'; var svgFw = C.topologySvg(); reset('proxmox');
-    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway<') > 0 && svgDev.indexOf('>lab firewall<') < 0 && svgDev.indexOf('>an additional firewall<') > 0 && svgDev.indexOf('>' + gwN + ': shut down<') > 0 &&
+    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway<') > 0 && svgDev.indexOf('>lab firewall<') < 0 && svgDev.indexOf('>an additional firewall<') > 0 && svgDev.indexOf('>in place of ' + gwN + '<') > 0 && svgDev.indexOf('shut down') < 0 &&
       node(svgDev, 'firewall') === 'in:' + C.NET_OS_DEFAULT && node(svgFw, 'gateway') === 'in:asa' && node(svgFw, 'firewall') === 'in:junos' && svgFw.indexOf('>External firewall: Juniper Junos OS<') > 0 && svgFw.indexOf('>no machine has internet access<') > 0 &&
       svgFw.indexOf('>the rest stays in ' + C.OLD_V4 + '.0.0/17<') > 0, 'the picture shows a device as the gateway, and the external firewall with its operating system, its machines, and its range');
     // Choices kept in the browser
@@ -8646,6 +8669,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(!S.uplink && $('gwupbox').style.display === 'none' && $('gwupnote').style.display === 'none', 'a device as the gateway has no uplink option, because it brings its own');
     ok(S.gwOs === 'junos' && !$('gwcfg').hidden && $('gwacts').style.display === '' && gwText().indexOf('set interfaces <GW_TRUNK_PORT> unit 40 vlan-id 140\n') > 0 && $('gwextra').textContent.indexOf('set security zones security-zone ' + C.BASE.lab + ' interfaces ') > 0 &&
       $('gwnotes').textContent.indexOf('Before you use it') === 0 && $('fwnotes').textContent.indexOf('give the gateway device an uplink') > 0, 'a device as the gateway gets its text, and the firewall notes follow');
+    var gwRowName = C.BASE.vms.filter(function (x) { return x.role === 'gateway'; })[0].name, gwTr = document.querySelector('tr[data-vm="' + gwRowName + '"]'), gwCb = gwTr.querySelector('[data-f=include]'), nDev = +stat(0);
+    var outDev = !gwCb.checked && gwCb.disabled && gwTr.className === 'off' && gwTr.querySelector('[data-m=avail]').textContent.indexOf('Left out: a network device is the gateway') === 0 && $('gwnotes').textContent.indexOf('The build leaves ' + gwRowName + ' out') > 0;
+    pick('#gwos', 'linux');
+    ok(outDev && gwCb.checked && gwCb.disabled && gwTr.className === '' && gwTr.querySelector('[data-m=avail]').textContent === '' && +stat(0) === nDev + 1, 'a device as the gateway takes the Linux router out of the machines, and it comes back with its own choice');
+    pick('#gwos', 'junos');
     // The lab network range is in the IP addressing section. The page picks its values, and a box overrides each one.
     var rng = C.validateAll().range, need = rng.need, rbox = function (k) { return document.querySelector('[data-rangeon="' + k + '"]'); }, seg40 = function () { return document.querySelector('[data-m="subnet"][data-seg="40"]').textContent; };
     ok($('rangebox').closest('.card').querySelector('h2').textContent.indexOf('IP addressing') > 0 && !Array.prototype.some.call(document.querySelectorAll('#left .card h2'), function (h) { return h.textContent.indexOf('Lab network range') >= 0; }) &&
