@@ -114,6 +114,12 @@ for i, vm in enumerate(m["vms"]):
 PY
 }
 
+# The machine whose first NIC stays as the uplink to the external firewall. The Lab Builder writes "uplink" into the
+# manifest when the build keeps one. remove-build-nics and snapshot then leave that NIC alone.
+uplink_vm() {
+  "$python" -c 'import json, sys; print((json.load(open(sys.argv[1], encoding="utf-8")).get("uplink") or {}).get("vm", ""))' "$manifest"
+}
+
 has_snapshot() { virsh snapshot-list "$1" --name 2>/dev/null | grep -Fxq "$2"; }
 
 # The build state of one machine, as "STATE|detail". STATE is ok, running, failed, starting, stopped, or unknown.
@@ -276,7 +282,9 @@ case "$action" in
     fi
     exit 0 ;;
   remove-build-nics)
+    keep="$(uplink_vm)"
     while IFS='|' read -r name _ _ _ _ _ nics; do
+      if [[ -n "$keep" && "$name" == "$keep" ]]; then echo "$name keeps its first NIC: it is the uplink to the external firewall."; continue; fi
       virsh dominfo "$name" >/dev/null 2>&1 || continue
       mac="${nics%%;*}"; mac="${mac#*,}"
       echo "Removing the build NIC of $name"
@@ -287,7 +295,10 @@ case "$action" in
     # A snapshot keeps the machine's NICs. With the build NIC (the first one) still there, a restore would bring
     # it back, and with it the machine's path to the internet. So the build NICs have to go first.
     with_build_nic=()
+    keep="$(uplink_vm)"
     while IFS='|' read -r name _ _ _ _ _ nics; do
+      # The first NIC of the uplink machine is its uplink to the external firewall, and it stays.
+      if [[ -n "$keep" && "$name" == "$keep" ]]; then continue; fi
       virsh dominfo "$name" >/dev/null 2>&1 || continue
       mac="${nics%%;*}"; mac="${mac#*,}"
       if { virsh domiflist "$name" 2>/dev/null || true; } | grep -qi -- "$mac"; then with_build_nic+=("$name"); fi

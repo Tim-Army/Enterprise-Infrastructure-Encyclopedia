@@ -233,7 +233,54 @@ def seg_base(seg):
     return SEGMENT_SUBNETS.get(str(seg)) or "%s.%d" % (V4_PREFIX, seg)
 
 
-def nft_rules():
+def uplink_of(manifest, vm):
+    """The uplink of this machine to the external firewall, or None.
+
+    The Lab Builder writes "uplink" into the manifest when the build keeps one: "vm" names the gateway, and
+    "internet" lists the lab addresses whose traffic the gateway forwards to the uplink. "address", "gateway",
+    and "dns" are there when the address was set. Without them the uplink takes its address from DHCP, like a
+    build NIC. The uplink is the build NIC of that machine, which the platform scripts then leave in place.
+    """
+    up = manifest.get("uplink") or {}
+    return up if up.get("vm") == vm["name"] else None
+
+
+def uplink_nic(vm):
+    """The interface name of the uplink of a machine: its build NIC."""
+    for n, nic in enumerate(vm["nics"]):
+        if nic.get("build"):
+            return "nic%d" % n
+    return None
+
+
+def check_uplink(manifest):
+    """Stop with a clear message when the uplink in the manifest cannot be built."""
+    up = manifest.get("uplink")
+    if not up:
+        return
+    vm = next((x for x in manifest["vms"] if x["name"] == up.get("vm")), None)
+    if vm is None or vm.get("role") != "gateway" or uplink_nic(vm) is None:
+        raise SystemExit("make-seed: the uplink names %r, which is not the gateway of this manifest with a build NIC." % up.get("vm"))
+    try:
+        for a in up.get("internet", []):
+            ipaddress.IPv4Address(a)
+        if up.get("address") or up.get("gateway"):
+            iface = ipaddress.IPv4Interface(up["address"])
+            gateway = ipaddress.IPv4Address(up["gateway"])
+            if gateway not in iface.network or gateway == iface.ip:
+                raise ValueError("the external firewall %s is not another address in %s" % (gateway, iface.network))
+            for a in up.get("dns", []):
+                ipaddress.IPv4Address(a)
+    except (KeyError, ValueError) as err:
+        raise SystemExit("make-seed: the uplink in the manifest cannot be used: %s" % err)
+
+
+def nft_rules(uplink=None, ifname=None):
+    """The firewall of the gateway (Lab 999.1), with the addresses of this build.
+
+    With an uplink to the external firewall, the gateway forwards to it only the traffic of the machines with
+    internet access, and lets nothing new in from it. Answers come back through the first rule.
+    """
     def v4(m):
         seg = int(m.group(1))
         return (seg_base(seg) if str(seg) in SEGMENT_SUBNETS else "%s.%d" % (V4_PREFIX, seg)) + "."
@@ -245,7 +292,17 @@ def nft_rules():
         return "%s%s/120" % (V6_PREFIX, m.group(1))
     text = re.sub(r"10\.201\.(\d+)\.", v4, NFT_RULES)
     text = re.sub(r"fd00:db8:201::([0-9a-f]*)/120", v6, text)
-    return text.replace("fd00:db8:201::", V6_PREFIX)
+    text = text.replace("fd00:db8:201::", V6_PREFIX)
+    if uplink and ifname:
+        hosts = [str(ipaddress.IPv4Address(a)) for a in uplink.get("internet", [])]
+        rules = ["    # The uplink to the external firewall: only the machines with internet access go out, and nothing new comes in."]
+        if hosts:
+            rules.append('    oifname "%s" ip saddr @inet4 accept' % ifname)
+            text = text.replace("  chain forward {\n", "  set inet4 { type ipv4_addr; elements = { %s } }\n  chain forward {\n" % ", ".join(hosts), 1)
+        rules += ['    oifname "%s" drop' % ifname, '    iifname "%s" drop' % ifname]
+        first = "    ct state established,related accept\n"
+        text = text.replace(first, first + "\n".join(rules) + "\n", 1)
+    return text
 
 
 def q(value):
@@ -305,7 +362,15 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
         body = ["    %s:" % name,
                 "      match:", "        macaddress: %s" % q(mac),
                 "      set-name: %s" % name]
-        if nic.get("build"):
+        up = uplink_of(manifest, vm) if nic.get("build") else None
+        if up and up.get("address"):
+            # The uplink of the gateway to the external firewall, with the address that was set on the Lab Builder.
+            body += ["      dhcp4: false", "      dhcp6: false", "      accept-ra: false", "      addresses:", "        - %s" % q(up["address"])]
+            if up.get("dns"):
+                body += ["      nameservers:", "        addresses: [%s]" % ", ".join(q(a) for a in up["dns"])]
+            if routes:
+                body += ["      routes:", "        - to: 0.0.0.0/0", "          via: %s" % q(up["gateway"]), "          metric: 50"]
+        elif nic.get("build"):
             body += ["      dhcp4: true", "      dhcp6: false", "      accept-ra: false",
                      "      dhcp4-overrides:", "        route-metric: 50"]
         elif nic.get("trunk"):
@@ -425,8 +490,9 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     files = []
     if vm.get("forwarding"):
         files.append(("/etc/sysctl.d/60-lab201.conf", SYSCTL_FORWARD))
+    uplink = uplink_of(manifest, vm)
     if vm.get("role") == "gateway":
-        files.append(("/etc/nftables.conf", nft_rules()))
+        files.append(("/etc/nftables.conf", nft_rules(uplink, uplink_nic(vm))))
     info = "name=%s\nrole=%s\nflavor=%s\n" % (vm["name"], vm["role"], flavor["id"])
     if missing:
         info += "unavailable_packages=%s\n" % " ".join(missing)
@@ -447,7 +513,9 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     run = []
     if not routes_in_netplan(flavor):
         for n, nic in enumerate(vm["nics"]):
-            if nic.get("build"):
+            if nic.get("build") and uplink and uplink.get("address"):
+                run.append('c=$(nmcli -g GENERAL.CONNECTION dev show nic%d) && nmcli con mod "$c" ipv4.gateway %s ipv4.route-metric 50 && nmcli con up "$c" || true' % (n, uplink["gateway"]))
+            elif nic.get("build"):
                 run.append('c=$(nmcli -g GENERAL.CONNECTION dev show nic%d) && nmcli con mod "$c" ipv4.route-metric 50 && nmcli con up "$c" || true' % n)
             if nic.get("gateway4") and not nic.get("build"):
                 dev = "nic%d" % n
@@ -872,6 +940,7 @@ def main():
     with open(a.manifest, "r", encoding="utf-8") as fh:
         manifest = json.load(fh)
     configure(manifest)
+    check_uplink(manifest)
     load_flavors(a.flavors)
     licenses = {}
     if a.license_file:

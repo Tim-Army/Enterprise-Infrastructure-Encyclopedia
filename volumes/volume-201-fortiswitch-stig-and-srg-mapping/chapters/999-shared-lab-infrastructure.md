@@ -115,6 +115,14 @@ next free number in that range (VLAN ID equal to the third octet) and records it
 in its own chapter. Every other number outside 100 to 199 that is not in the table is unassigned,
 so a shared segment can be added without renumbering.
 
+The Lab Builder ([Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md))
+gives the networks of a build contiguous `/24` subnets, in the order of this
+table, so that the lab needs the fewest and its supernet is small. In this
+chapter as published, a subnet has the number of its segment. In the copy of
+this chapter in the Lab Builder's zip, the table holds the subnets of that
+build, and so does `LAB-VALUES.md`. The segment numbers, the names, and the
+VLAN IDs are the same in both.
+
 #### Hosts
 
 | Host | Role | Prerequisite | Segment | IPv4 | IPv6 |
@@ -522,13 +530,13 @@ address in the host table.
    reaches no upstream server. The lab needs that line. After the build
    adapters are removed, the two hosts have no way to the internet, unless
    the lab has an uplink to an external firewall that gives them internet
-   access (the Lab Builder, section 12). Without the line, the switches do
-   not synchronize once the hosts have restarted. The `orphan` option and the
-   `server` line keep the two hosts on one time: each polls the other, one
-   serves its own clock, and the other follows it. The switches poll both
-   servers, and two clocks that drift apart would leave them without a
-   time they can trust. These lines follow the chrony documentation of the
-   `local` directive and have not been run in this lab.
+   access (the Lab Builder, sections 10 and 11). Without the line, the
+   switches do not synchronize once the hosts have restarted. The `orphan`
+   option and the `server` line keep the two hosts on one time: each polls
+   the other, one serves its own clock, and the other follows it. The
+   switches poll both servers, and two clocks that drift apart would leave
+   them without a time they can trust. These lines follow the chrony
+   documentation of the `local` directive and have not been run in this lab.
 3. **Syslog with TLS (P4).** Install `rsyslog` and `rsyslog-gnutls`. Issue a
    server certificate from `ca-201` (step 6) and add `/etc/rsyslog.d/10-lab201.conf`:
 

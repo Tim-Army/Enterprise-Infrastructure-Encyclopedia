@@ -84,7 +84,7 @@ td select{display:block;margin-top:4px;max-width:100%;font-size:12px}
 input.addr{width:170px;font-size:12px}
 input.addr.err{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
 input.addr.chg{border-color:var(--accent)}
-table.prog td,table.prog th{font-size:12px;padding:3px 6px}.okc{color:var(--ok);font-weight:600}.badc{color:var(--bad);font-weight:600}input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.sub.chgtext{color:var(--accent);font-weight:600}
+table.prog td,table.prog th{font-size:12px;padding:3px 6px}.okc{color:var(--ok);font-weight:600}.badc{color:var(--bad);font-weight:600}input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.rangeval{font:12.5px ui-monospace,Consolas,monospace;font-weight:600}.sub.chgtext{color:var(--accent);font-weight:600}
 details summary.small{margin-top:4px}
 .planch{margin:8px 0 0}.planch .labs{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px;margin:4px 0 0 22px;font-size:12px}.planch label{cursor:pointer}
 @media (max-width:900px){.planch .labs{grid-template-columns:1fr}}
@@ -2918,7 +2918,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "gw-201",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        254
+      ]
     },
     {
       "id": "999.2",
@@ -2937,7 +2948,15 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "ca-201",
         "dhcp-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        40,
+        41,
+        50
+      ]
     },
     {
       "id": "999.3",
@@ -2950,7 +2969,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "gw-201",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        250
+      ]
     },
     {
       "id": "999.4",
@@ -2967,7 +2997,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "svc-201b"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "999.5",
@@ -2980,7 +3016,15 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "rtr-peer-1",
         "rtr-peer-2"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        200,
+        210,
+        211,
+        250
+      ]
     },
     {
       "id": "999.6",
@@ -2994,7 +3038,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50
+      ]
     },
     {
       "id": "4.1",
@@ -3020,7 +3074,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "svc-201b"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "4.2",
@@ -3059,6 +3119,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "fgt-201"
+      ],
+      "nets": [
+        0,
+        10,
+        30,
+        250,
+        254
       ]
     },
     {
@@ -3100,7 +3167,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "machines": [
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "4.4",
@@ -3139,7 +3212,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "4.5",
@@ -3176,7 +3256,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "static-2",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        40,
+        41,
+        42,
+        50,
+        250
+      ]
     },
     {
       "id": "4.6",
@@ -3233,7 +3323,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "admin-201",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        20,
+        30,
+        42
+      ]
     },
     {
       "id": "4.7",
@@ -3279,7 +3374,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "4.8",
@@ -3307,7 +3409,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "4.9",
@@ -3331,7 +3440,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "b"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "5.1",
@@ -3390,7 +3504,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.2",
@@ -3422,7 +3543,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "machines": [
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.3",
@@ -3470,7 +3597,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "a"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "5.4",
@@ -3536,7 +3668,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.5",
@@ -3585,7 +3724,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.6",
@@ -3621,7 +3767,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "svc-201b"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "5.7",
@@ -3659,7 +3811,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.8",
@@ -3689,7 +3848,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "ca-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "5.9",
@@ -3724,7 +3889,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "machines": [
         "svc-201b"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "5.10",
@@ -3755,7 +3926,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "admin-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "5.11",
@@ -3776,7 +3954,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "admin-201",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        20,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "5.12",
@@ -3799,7 +3984,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "6.1",
@@ -3852,7 +4044,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "admin-201",
         "rtr-peer-1"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        20,
+        30,
+        250
+      ]
     },
     {
       "id": "6.2",
@@ -3890,7 +4088,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "6.3",
@@ -3965,7 +4170,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "rtr-peer-2",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        20,
+        30,
+        42,
+        250
+      ]
     },
     {
       "id": "6.4",
@@ -3993,7 +4205,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "rtr-peer-1"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "6.5",
@@ -4024,7 +4242,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "rtr-peer-1"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "6.6",
@@ -4102,7 +4326,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "rtr-peer-1",
         "rtr-peer-2"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        200,
+        250
+      ]
     },
     {
       "id": "6.7",
@@ -4122,7 +4352,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "b"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "6.8",
@@ -4156,7 +4391,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "rtr-peer-1",
         "mcast-src-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        220,
+        250
+      ]
     },
     {
       "id": "6.9",
@@ -4188,7 +4429,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "rtr-peer-1"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        200,
+        250
+      ]
     },
     {
       "id": "6.10",
@@ -4214,7 +4462,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "gw-201",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        250
+      ]
     },
     {
       "id": "6.11",
@@ -4266,7 +4525,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "machines": [
         "rtr-peer-1"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "6.12",
@@ -4317,7 +4581,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "b"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "6.13",
@@ -4357,7 +4626,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "a"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "6.14",
@@ -4443,7 +4717,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "b"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "6.15",
@@ -4501,7 +4780,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "mcast-src-201",
         "attacker-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        42,
+        220,
+        250
+      ]
     },
     {
       "id": "6.16",
@@ -4544,7 +4830,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "a"
       ],
       "machines": [],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        30,
+        250
+      ]
     },
     {
       "id": "7.1",
@@ -4574,7 +4865,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "ca-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "7.2",
@@ -4610,7 +4907,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201b",
         "ca-201"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "7.3",
@@ -4634,7 +4937,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         "svc-201a",
         "svc-201b"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "7.4",
@@ -4658,7 +4967,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "machines": [
         "svc-201a"
       ],
-      "other": []
+      "other": [],
+      "nets": [
+        0,
+        10,
+        30,
+        250
+      ]
     },
     {
       "id": "8.1",
@@ -4673,6 +4988,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "og-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        100
       ]
     },
     {
@@ -4690,6 +5016,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "og-201"
+      ],
+      "nets": [
+        0,
+        20,
+        30,
+        100,
+        250,
+        254
       ]
     },
     {
@@ -4709,6 +5043,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "og-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        100
       ]
     },
     {
@@ -4725,6 +5070,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "og-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        100
       ]
     },
     {
@@ -4744,6 +5100,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "other": [
         "og-201",
         "oob-admin-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        42,
+        100
       ]
     },
     {
@@ -4761,6 +5124,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "other": [
         "og-201",
         "oob-admin-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        41,
+        42,
+        50,
+        100,
+        250
       ]
     },
     {
@@ -4780,6 +5155,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ],
       "other": [
         "og-201"
+      ],
+      "nets": [
+        0,
+        10,
+        20,
+        30,
+        100,
+        250
       ]
     }
   ],
@@ -4856,6 +5239,116 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "ipv4": "10.201.230.11",
       "optional": false
     }
+  ],
+  "networks": [
+    {
+      "id": 0,
+      "name": "OOB-Mgmt",
+      "vlan": "none (physical)",
+      "hosts": true
+    },
+    {
+      "id": 10,
+      "name": "Lab-Services",
+      "vlan": "10",
+      "hosts": true
+    },
+    {
+      "id": 20,
+      "name": "Admin",
+      "vlan": "20",
+      "hosts": true
+    },
+    {
+      "id": 30,
+      "name": "Switch-Mgmt",
+      "vlan": "30",
+      "hosts": true
+    },
+    {
+      "id": 40,
+      "name": "Users-8021X",
+      "vlan": "40",
+      "hosts": true
+    },
+    {
+      "id": 41,
+      "name": "Users-MAB",
+      "vlan": "41",
+      "hosts": true
+    },
+    {
+      "id": 42,
+      "name": "Static-Hosts",
+      "vlan": "42",
+      "hosts": true
+    },
+    {
+      "id": 50,
+      "name": "Guest-AuthFail",
+      "vlan": "50",
+      "hosts": true
+    },
+    {
+      "id": 60,
+      "name": "Unused",
+      "vlan": "60",
+      "hosts": false
+    },
+    {
+      "id": 99,
+      "name": "Native-Dead",
+      "vlan": "99",
+      "hosts": false
+    },
+    {
+      "id": 100,
+      "name": "Console-OOB",
+      "vlan": "none (isolated LAN)",
+      "hosts": true
+    },
+    {
+      "id": 200,
+      "name": "Routed-Links",
+      "vlan": "2001-2005",
+      "hosts": true
+    },
+    {
+      "id": 210,
+      "name": "Peer1-Nets",
+      "vlan": "behind rtr-peer-1",
+      "hosts": true
+    },
+    {
+      "id": 211,
+      "name": "Peer2-Nets",
+      "vlan": "behind rtr-peer-2",
+      "hosts": true
+    },
+    {
+      "id": 220,
+      "name": "Mcast-Source",
+      "vlan": "behind rtr-peer-1",
+      "hosts": true
+    },
+    {
+      "id": 230,
+      "name": "VXLAN-Tenant",
+      "vlan": "230 (VNI 230)",
+      "hosts": true
+    },
+    {
+      "id": 250,
+      "name": "Loopbacks",
+      "vlan": "none (loopbacks)",
+      "hosts": true
+    },
+    {
+      "id": 254,
+      "name": "FortiLink",
+      "vlan": "FortiLink",
+      "hosts": true
+    }
   ]
 }
 </script>
@@ -4875,6 +5368,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   var WALKTHROUGHS = LABDATA.walkthroughs || [], LABS = LABDATA.labs || [];
   // The service names of Chapter 999, with the host each one is on and its address. The lab picture names them.
   var SERVICES = LABDATA.services || [];
+  // The networks of the lab, from the Segments table of Chapter 999, in the order of that table. Each one that a build
+  // uses takes the next /24 of the lab network range, so the subnets are contiguous and the lab needs the fewest.
+  // A VLAN with no host and no gateway (the parking VLAN and the native VLAN) takes no subnet.
+  var NETS = (LABDATA.networks || []).filter(function (n) { return n.hosts !== false; }), NOHOST = (LABDATA.networks || []).filter(function (n) { return n.hosts === false; }), NET_NAME = {};
+  NETS.forEach(function (n) { NET_NAME[n.id] = n.name; });
   // The labs you can plan or leave out. The Chapter 999 labs build the shared lab, so they are always planned.
   function isSharedLab(l) { return l.file.indexOf('999-') === 0; }
   var PLAN_LABS = LABS.filter(function (l) { return !isSharedLab(l); });
@@ -5031,10 +5529,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeStart: '', rangeCount: '', inet: {}, fwEdit: ''
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeCount: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: ''
   };
   function resetVms() {
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeStart = ''; state.rangeCount = ''; state.inet = {}; state.fwEdit = '';
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeCount = ''; state.rangeNet = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = '';
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -5093,12 +5591,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return out;
   }
   function swapPrefix(a, to) { return a.indexOf(OLD_V4 + '.') === 0 ? to + a.slice(OLD_V4.length) : a; }
-  // The default address of a slot after the block and the segment subnets have moved.
+  // The default address of a slot after the block has moved and the networks of the lab have taken their subnets.
   function mapDef(a, newPrefix, sub) {
     var d = swapPrefix(a, newPrefix), p = cidrParts(d);
-    if (sub && p && p.o[0] + '.' + p.o[1] === newPrefix && SEGMENTS.indexOf(p.o[2]) >= 0 && sub.base[p.o[2]]) return sub.base[p.o[2]] + '.' + p.o[3] + '/' + p.len;
+    if (sub && p && p.o[0] + '.' + p.o[1] === newPrefix && sub.base[p.o[2]]) return sub.base[p.o[2]] + '.' + p.o[3] + '/' + p.len;
     return d;
   }
+  // Where an address of the Chapter 999 plan is in this build.
+  function mapIp(a, newPrefix, sub) { return mapDef(a + '/32', newPrefix, sub).split('/')[0]; }
   function cidrParts(a) {
     var m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\/(\d{1,2})$/.exec(a);
     if (!m) return null;
@@ -5203,53 +5703,61 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return res;
   }
 
-  // Third octets the plan already uses outside the shared segments (out-of-band, routed links, peers).
-  var FIXED_OCTETS = (function () {
-    var seen = { 0: true };
-    BASE.vms.forEach(function (vm) {
-      var all = [];
-      vm.nics.forEach(function (n) { all = all.concat(n.ipv4 || []); });
-      (vm.dummies || []).forEach(function (d) { all = all.concat(d.ipv4 || []); });
-      all.forEach(function (a) { var p = cidrParts(a); if (p && p.o[0] + '.' + p.o[1] === OLD_V4 && SEGMENTS.indexOf(p.o[2]) < 0) seen[p.o[2]] = true; });
-    });
-    return seen;
-  })();
+  // The lab networks that this build uses. A network stays in unless every lab that names it is left out of the plan
+  // and no machine of the build has an address in it. A network that no lab names stays in, because nothing says that
+  // it is unused. The out-of-band network and the shared segments are always in: the gateway has an address in each.
+  function netsInUse(included) {
+    var named = {}, use = {};
+    LABS.forEach(function (l) { (l.nets || []).forEach(function (n) { named[n] = true; if (labPlanned(l)) use[n] = true; }); });
+    BASE.vms.forEach(function (b) { if (included.indexOf(b.name) >= 0) addrSlots(b).forEach(function (sl) { var p = cidrParts(sl.def); if (p) use[p.o[2]] = true; }); });
+    return NETS.filter(function (n) { return use[n.id] || !named[n.id] || n.id === 0 || SEGMENTS.indexOf(n.id) >= 0; }).map(function (n) { return n.id; });
+  }
 
-  // The IPv4 subnet of each shared segment. It follows the VLAN ID (VLAN 140 is x.y.140.0/24)
-  // unless the segment's Set subnet box is ticked, and then it is the /24 you type.
-  function subnetCheck(p4, vlanEff) {
-    var res = { base: {}, cidr: {}, def: {}, err: {}, note: {}, any: false }, use = {};
+  // The IPv4 subnet of each lab network. The networks of a build take contiguous /24 subnets from the starting IP, in
+  // the order of the Segments table of Chapter 999, so the lab needs the fewest subnets. The starting IP is the start
+  // of the block unless you set it. A shared segment whose Set subnet box is ticked takes the /24 you type and leaves
+  // the row. The IPv6 address of a host comes from the third and fourth octets of its IPv4 address, so a third octet
+  // can be used once.
+  function subnetCheck(p4, vlanEff, included) {
+    var res = { base: {}, cidr: {}, def: {}, err: {}, any: false, inUse: netsInUse(included || []), row: [], typed: [], start: 0, startErr: '', need: 0 };
+    var blockStart = ip4num(p4 + '.0.0'), blockEnd = blockStart + 65536, typed = {}, start = blockStart, row = [];
     SEGMENTS.forEach(function (s) {
-      var n = vlanEff[s], oct = n <= 254 ? n : s;
-      res.def[s] = p4 + '.' + oct + '.0/24';
-      use[s] = { base: p4 + '.' + oct, oct: oct, typed: false, vlan: n };
-      if (n > 254) res.note[s] = 'VLAN ' + n + ' does not fit in an octet, so the subnet stays ' + res.def[s] + '. Tick Set subnet to choose one';
-      if (state.subnetOn[s]) {
-        var t = String(state.subnets[s] || '').trim(), m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.0\/24$/.exec(t);
-        if (!t) return;
-        if (!m || +m[1] > 255 || +m[2] > 255 || +m[3] > 255) res.err[s] = 'Use a /24 network such as ' + res.def[s];
-        else if (!validIpv4Prefix(m[1] + '.' + m[2])) res.err[s] = 'Use a private range: 10.x, 172.16 to 172.31, or 192.168';
-        else if (+m[3] < 1 || +m[3] > 254) res.err[s] = 'Use a third octet from 1 to 254';
-        else { use[s] = { base: +m[1] + '.' + +m[2] + '.' + +m[3], oct: +m[3], typed: true, vlan: n }; delete res.note[s]; }
-        if (res.err[s]) res.err[s] += '. ' + res.def[s] + ' is used';
-      }
+      if (!state.subnetOn[s]) return;
+      var t = String(state.subnets[s] || '').trim(), m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.0\/24$/.exec(t);
+      if (!t) return;
+      if (!m || +m[1] > 255 || +m[2] > 255 || +m[3] > 255) res.err[s] = 'Use a /24 network such as ' + p4 + '.' + s + '.0/24';
+      else if (!validIpv4Prefix(m[1] + '.' + m[2])) res.err[s] = 'Use a private range: 10.x, 172.16 to 172.31, or 192.168';
+      else typed[s] = { base: +m[1] + '.' + +m[2] + '.' + +m[3], oct: +m[3] };
     });
-    // The IPv6 address comes from the third and fourth octets, so a third octet can be used once.
+    // A subnet that you set and that cannot be used goes back into the row, which then needs one more /24.
     var changed = true;
     while (changed) {
       changed = false;
-      var owners = {};
-      SEGMENTS.forEach(function (s) { (owners[use[s].oct] = owners[use[s].oct] || []).push(s); });
-      SEGMENTS.forEach(function (s) {
-        var u = use[s], o = u.oct, fixed = FIXED_OCTETS[o], other = owners[o].filter(function (x) { return x !== s; })[0];
-        if (o === s || (!fixed && other === undefined)) return;
-        var why = fixed ? 'the out-of-band network, the routed links, or the peers use third octet ' + o : 'segment ' + other + ' already uses third octet ' + o;
-        res.err[s] = (u.typed ? u.base + '.0/24 cannot be used: ' : 'VLAN ' + u.vlan + ' would put the subnet on ' + u.base + '.0/24, but ') + why + '. ' + p4 + '.' + s + '.0/24 is used. ' + (u.typed ? 'Type another subnet' : 'Tick Set subnet to choose another');
-        delete res.note[s];
-        use[s] = { base: p4 + '.' + s, oct: s, typed: false, vlan: u.vlan }; changed = true;
+      row = res.inUse.filter(function (id) { return !typed[id]; });
+      // The starting IP has to lie in the block and leave room for the row.
+      start = blockStart; res.startErr = '';
+      if ((state.rangeOn || {}).start) {
+        var s0 = ip4num(String(state.rangeStart || '').trim());
+        if (isNaN(s0)) res.startErr = 'Use an IPv4 address such as ' + ip4str(blockStart);
+        else if (s0 % 256) res.startErr = 'Use the first address of a /24 subnet, such as ' + ip4str(s0 - s0 % 256);
+        else if (s0 < blockStart || s0 >= blockEnd) res.startErr = 'Use an address in the IPv4 block ' + p4 + '.0.0/16. Change the block to move the lab to another one';
+        else if (s0 + row.length * 256 > blockEnd) res.startErr = row.length + ' subnets from ' + ip4str(s0) + ' do not fit in ' + p4 + '.0.0/16. The last starting IP that fits is ' + ip4str(blockEnd - row.length * 256);
+        else start = s0;
+      }
+      var taken = {};
+      row.forEach(function (id, i) { taken[(start - blockStart) / 256 + i] = id; });
+      Object.keys(typed).forEach(function (s) {
+        var o = typed[s].oct, other = Object.keys(typed).filter(function (x) { return x !== s && typed[x] && typed[x].oct === o; })[0];
+        if (taken[o] === undefined && other === undefined) return;
+        res.err[s] = typed[s].base + '.0/24 cannot be used: ' + (taken[o] !== undefined ? NET_NAME[taken[o]] + ' already uses third octet ' + o : 'segment ' + other + ' already uses third octet ' + o) + '. Type another subnet';
+        delete typed[s]; changed = true;
       });
     }
-    SEGMENTS.forEach(function (s) { res.base[s] = use[s].base; res.cidr[s] = use[s].base + '.0/24'; if (use[s].base !== p4 + '.' + s) res.any = true; });
+    row.forEach(function (id, i) { res.base[id] = ip4str(start + i * 256).replace(/\.0$/, ''); });
+    Object.keys(typed).forEach(function (s) { res.base[s] = typed[s].base; res.typed.push(+s); });
+    res.inUse.forEach(function (id) { res.cidr[id] = res.base[id] + '.0/24'; if (res.base[id] !== p4 + '.' + id) res.any = true; });
+    SEGMENTS.forEach(function (s) { res.def[s] = res.cidr[s]; if (res.err[s]) res.err[s] += '. ' + res.cidr[s] + ' is used'; });
+    res.row = row; res.start = start; res.need = row.length;
     return res;
   }
 
@@ -5325,20 +5833,27 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       if (out.vlan.err[s]) out.errors.push('VLAN for segment ' + s + ': ' + out.vlan.err[s]);
     });
     var p4v = v4ok ? state.v4 : OLD_V4;
-    out.sub = subnetCheck(p4v, out.vlan.eff);
+    out.sub = subnetCheck(p4v, out.vlan.eff, out.included);
     SEGMENTS.forEach(function (s) {
       if (out.sub.err[s]) out.errors.push('Subnet for segment ' + s + ': ' + out.sub.err[s]);
-      var vl = out.vlan.eff[s], moved = out.sub.base[s] !== p4v + '.' + s;
-      if (vl !== s || moved) out.warnings.push('Segment ' + s + ' uses ' + (vl !== s ? 'VLAN ' + vl : '') + (vl !== s && moved ? ' and ' : '') + (moved ? 'subnet ' + out.sub.cidr[s] : '') + (vl !== s && !moved ? ', but its subnet is still ' + out.sub.cidr[s] : '') + '. Make the same change on the switches.');
+      if (out.vlan.eff[s] !== s) out.warnings.push('Segment ' + s + ' uses VLAN ' + out.vlan.eff[s] + '. Make the same change on the switches.');
+      if (out.sub.typed.indexOf(s) >= 0) out.warnings.push('Segment ' + s + ' uses the subnet ' + out.sub.cidr[s] + ', which you set, so it is not contiguous with the other lab subnets.');
     });
     out.addr = addrCheck(out, p4v);
     // The network range of the lab, which the external firewall uses as the supernet.
-    out.range = rangeCheck(p4v);
+    out.range = rangeCheck(out, p4v);
     if (out.range.err.start) out.errors.push('Lab network range, starting IP: ' + out.range.err.start + '. ' + out.range.start + ' is used');
     if (out.range.err.count) out.errors.push('Lab network range, subnets: ' + out.range.err.count + '. ' + out.range.count + ' is used');
-    out.range.outside = labSubnets(out, p4v).filter(function (n) { return n < out.range.from || n > out.range.to; }).map(function (n) { return ip4str(n) + '/24'; });
+    if (out.range.err.net) out.errors.push('Lab network range, supernet: ' + out.range.err.net + '. ' + out.range.cidr + ' is used');
+    out.warnings.push('The subnets of this build are contiguous: ' + out.range.need + ' from ' + out.range.start + ', in ' + out.range.cidr + '. They are not the subnets printed in the chapters, which follow the VLAN IDs. Use the walkthroughs in the zip and LAB-VALUES.md, which show the subnets of this build.');
+    if (out.range.short) out.warnings.push('The supernet ' + out.range.cidr + ' is smaller than the lab network range: ' + out.range.count + ' subnet' + (out.range.count === 1 ? '' : 's') + ' from ' + out.range.start + ' take ' + out.range.auto.cidr + '.');
     if (out.range.outside.length) out.warnings.push('The lab network range ' + out.range.cidr + ' does not hold ' + out.range.outside.length + ' subnet' + (out.range.outside.length === 1 ? '' : 's') + ' that this lab uses: ' + out.range.outside.join(', ') +
       '. The external firewall would block ' + (out.range.outside.length === 1 ? 'it' : 'them') + ' like any other network.');
+    // The uplink of the gateway to the external firewall.
+    out.uplink = uplinkCheck(out);
+    if (out.uplink.err.addr) out.errors.push('Uplink address: ' + out.uplink.err.addr + '. DHCP is used');
+    if (out.uplink.err.fw) out.errors.push('Uplink, address of the external firewall: ' + out.uplink.err.fw + '. DHCP is used');
+    if (out.uplink.err.dns) out.errors.push('Uplink, DNS server: ' + out.uplink.err.dns + '. DHCP is used');
     out.sw = swCheck();
     out.fsw = fswCheck(out.sw);
     if (!out.fsw.has) out.warnings.push('No feature data is loaded for FortiSwitchOS ' + out.fsw.version + ', so the page cannot say which lab features your switches support.');
@@ -5402,7 +5917,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (node && typeof node === 'object') { var o = {}; Object.keys(node).forEach(function (k) { o[k] = remapSubnets(node[k], p4, sub); }); return o; }
     if (typeof node === 'string' && node.indexOf(p4 + '.') === 0) {
       var rest = node.slice(p4.length + 1), dot = rest.indexOf('.'), seg = dot > 0 && /^\d+$/.test(rest.slice(0, dot)) ? +rest.slice(0, dot) : -1;
-      if (SEGMENTS.indexOf(seg) >= 0 && sub.base[seg] !== p4 + '.' + seg) return sub.base[seg] + rest.slice(dot);
+      if (sub.base[seg] && sub.base[seg] !== p4 + '.' + seg) return sub.base[seg] + rest.slice(dot);
     }
     return node;
   }
@@ -5451,9 +5966,16 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       if (vm.bridge_trunks) vm.bridge_trunks.vlans = vm.bridge_trunks.vlans.map(function (id) { return SEGMENTS.indexOf(id) >= 0 ? v.vlan.eff[id] : id; });
     });
     if (Object.keys(map).length) m.vlan_segments = map; else delete m.vlan_segments;
+    // The subnet of every lab network that is not where its number would put it.
     var ss = {};
-    SEGMENTS.forEach(function (s) { if (v.sub.base[s] !== p4 + '.' + s) ss[s] = v.sub.base[s]; });
+    v.sub.inUse.forEach(function (id) { if (v.sub.base[id] !== p4 + '.' + id) ss[id] = v.sub.base[id]; });
     if (Object.keys(ss).length) m.segment_subnets = ss; else delete m.segment_subnets;
+    // The uplink of the gateway, which step 4 then leaves in place, and the addresses whose traffic the gateway forwards to it.
+    if (v.uplink.on) {
+      m.uplink = { vm: v.uplink.gw, internet: [] };
+      inetHosts(v, p4).forEach(function (h) { if (h.on) h.addrs.forEach(function (a) { m.uplink.internet.push(a); }); });
+      if (v.uplink.addr) { m.uplink.address = v.uplink.cidr; m.uplink.gateway = v.uplink.fw; m.uplink.dns = v.uplink.dns; }
+    } else delete m.uplink;
     m.ipv4_prefix = p4; m.ipv6_prefix = p6;
     m.default_flavor = state.defaultFlavor;
     if (PLATFORMS[state.platform].singleTrunk) singleTrunk(m);
@@ -5586,7 +6108,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       return blocks;
     }
     blocks.push(['3. Wait until every machine has finished its first boot. This prints a line for each machine' + (state.platform === 'workstation' ? ', with the line that logs in to it' : '') + ',\n# and says which one did not finish. Leave ' + (ps ? '-Wait' : '--wait') + ' out to see the state now, without waiting.', act('Status', 'status', ps ? '-Wait' : '--wait')]);
-    blocks.push(['4. Remove the build ' + (ps ? 'adapters' : 'NICs') + '. The machines then reach only the lab networks.', act('RemoveBuildNics', 'remove-build-nics')]);
+    blocks.push(['4. Remove the build ' + (ps ? 'adapters' : 'NICs') + '. The machines then reach only the lab networks.' + (m.uplink ? '\n# ' + m.uplink.vm + ' keeps its ' + (ps ? 'adapter' : 'NIC') + ', which is the uplink to the external firewall.' : ''), act('RemoveBuildNics', 'remove-build-nics')]);
     blocks.push(['5. Take the baseline snapshot of every machine (Lab 999.6). It refuses while a machine still has its build ' + (ps ? 'adapter' : 'NIC') + ',\n# because a restore would bring that back with its path to the internet. Run step 4 first.', act('Snapshot', 'snapshot')]);
     blocks.push(['Between labs: return every machine to the baseline. Each requirement lab ends with "Return to baseline".\n# This discards what changed on the machines since the snapshot. Reload the baseline configuration\n# of the switches too (Lab 999.6).', act('Restore', 'restore')]);
     return blocks;
@@ -5642,15 +6164,26 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return n;
   }
 
-  function changesText(m, v) {
-    var lines = [];
+  // What differs from the Chapter 999 defaults. The subnets always do, because the page makes them contiguous. With
+  // yours, the list leaves that out and holds only what you changed, for the review before a download.
+  function changeLines(m, v, yours) {
+    var lines = [], r = v.range, on = state.rangeOn || {};
     ['a', 'b'].forEach(function (k) { if (v.sw.changed[k]) lines.push('Switch: the ' + SW_ROLE[k].toLowerCase() + ' is an ' + v.sw.model[k] + ' named ' + v.sw.name[k] + ', not the ' + SW_DEFAULT[k] + ' (' + swCheckDefaults().name[k] + '). Check the feature matrix for the model.'); });
     if (v.fsw && v.fsw.version !== FSW_BOOK) lines.push('FortiSwitchOS: this build runs ' + v.fsw.version + ', not the ' + FSW_BOOK + ' whose CLI Reference the lab chapters cite. LAB-VALUES.md lists the feature support for ' + v.fsw.version + '. Check a command against the reference for ' + v.fsw.version + ' when the switch refuses it.');
     if (v.plan && v.plan.off.length) lines.push('Labs left out of the plan: ' + v.plan.off.join(', ') + '. CLAUDE.md tells Claude to skip them.');
     if (m.ipv4_prefix !== OLD_V4) lines.push('IPv4 block: ' + OLD_V4 + '.0.0/16 is now ' + m.ipv4_prefix + '.0.0/16. Every address starting with ' + OLD_V4 + '. starts with ' + m.ipv4_prefix + '. instead.');
-    if (m.ipv6_prefix !== OLD_V6) lines.push('IPv6 prefix: ' + OLD_V6 + ' is now ' + m.ipv6_prefix + '. Every IPv6 address of the lab uses the new prefix and keeps its last two groups.');
+    if (m.ipv6_prefix !== OLD_V6) lines.push('IPv6 prefix: ' + OLD_V6 + ' is now ' + m.ipv6_prefix + '. Every IPv6 address of the lab uses the new prefix.');
     SEGMENTS.forEach(function (s) { if (v.vlan.eff[s] !== s) lines.push('VLAN: segment ' + s + ' uses VLAN ' + v.vlan.eff[s] + ', not ' + s + '. Create VLAN ' + v.vlan.eff[s] + ' on both switches and in the trunks.'); });
-    SEGMENTS.forEach(function (s) { if (v.sub.base[s] !== m.ipv4_prefix + '.' + s) lines.push('Subnet: segment ' + s + ' is ' + v.sub.cidr[s] + ', not ' + m.ipv4_prefix + '.' + s + '.0/24. Its gateway is ' + v.sub.base[s] + '.1, and every address in the segment moves with it.'); });
+    if (on.start && !r.err.start) lines.push('Lab network range: the subnets start at ' + r.start + ', not at ' + r.auto.start + '.');
+    if (on.count && !r.err.count) lines.push('Lab network range: it has room for ' + r.count + ' subnets, not only the ' + r.need + ' that this build needs.');
+    if (on.net && !r.err.net) lines.push('Lab network range: the supernet is ' + r.cidr + ', which you set. The smallest block is ' + r.auto.cidr + '.');
+    v.sub.typed.forEach(function (s) { lines.push('Subnet: segment ' + s + ' is ' + v.sub.cidr[s] + ', which you set. Its gateway is ' + v.sub.base[s] + '.1, and every address in the segment moves with it.'); });
+    if (!yours) {
+      lines.push('Subnets: the lab networks take contiguous /24 subnets from ' + r.start + ', and the lab network range is ' + r.cidr + '. Chapter 999 numbers a subnet by its VLAN ID instead. The IPv6 address of a host follows its IPv4 address.');
+      v.sub.inUse.forEach(function (id) {
+        if (v.sub.typed.indexOf(id) < 0 && v.sub.base[id] !== OLD_V4 + '.' + id) lines.push('Subnet: ' + NET_NAME[id] + ' (segment ' + id + ') is ' + v.sub.cidr[id] + ', not ' + OLD_V4 + '.' + id + '.0/24.');
+      });
+    }
     vmRows().forEach(function (e) {
       if (!rowIncluded(e.base, e.row)) return;
       var eff = v.addr.eff[e.base.name] || {};
@@ -5667,6 +6200,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var fl = []; vmRows().forEach(function (e) { var f = v.flavors[e.base.name]; if (f && f !== DEFAULT_FLAVOR) fl.push((v.names[e.base.name]) + ': ' + FLAVOR[f].name); });
     if (fl.length) lines.push('Linux flavors: ' + fl.join('; ') + '. All others use ' + FLAVOR[DEFAULT_FLAVOR].name + '.');
     if (PLATFORMS[state.platform].singleTrunk) lines.push('One trunk: T1 and T2 are one network on ' + (state.platform === 'workstation' ? 'Workstation, which supports one bridged network' : 'VxRail') + '. The gateway has one trunk NIC, and the peers\' T2 links (VLANs 2003 and 2004) use it too.');
+    if (v.uplink.on) lines.push('Uplink: ' + v.uplink.gw + ' keeps its uplink to the external firewall, ' + (v.uplink.addr ? 'with the address ' + v.uplink.cidr + ' and the firewall at ' + v.uplink.fw : 'with an address from DHCP') + '. Step 4 leaves its adapter in place.');
+    return lines;
+  }
+  function changesText(m, v) {
+    var lines = changeLines(m, v);
     if (!lines.length) return '';
     return '# Changes from the Chapter 999 defaults\n\n' + lines.map(function (l) { return '- ' + l; }).join('\n') +
       '\n\nChapter 999, the requirement labs in Chapters 04 to 07, and the switch baselines use the default names, addresses, and VLANs. ' +
@@ -5715,6 +6253,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     else {
       L.push('- Wait until every machine has finished its first boot (RUN.txt, step 3). It prints a line for each machine. For one that failed, log in to it and run lab201-status, then cloud-init status --long.');
       L.push('- Remove the build adapters (step 4), then take the baseline snapshots (step 5). Step 5 refuses while a machine still has its build adapter, because a restore would bring it back.');
+      if (m.uplink) L.push('- ' + m.uplink.vm + ' keeps its adapter on the build network as the uplink to the external firewall. Put the rules of the external firewall (the Lab Builder, section 11) in place after step 4, and ' +
+        (m.uplink.address ? 'give the firewall the route back to the lab through ' + m.uplink.address.split('/')[0] : 'reserve the DHCP address of ' + m.uplink.vm + ', because the route back to the lab points at it') + '.');
       L.push('- Between labs, return the machines to the baseline with the last command in RUN.txt.');
     }
     L.push('- Build the services and the switch baselines: Chapter 999, Labs 999.1 to 999.6.');
@@ -5905,17 +6445,25 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     });
     // Switch ports the user named. A placeholder with no value stays as it is.
     Object.keys(v.ports || {}).forEach(function (k) { text = text.split('<' + k + '>').join(hold(v.ports[k])); });
-    // IPv4: a shared segment takes its subnet, everything else moves with the block.
+    // A VLAN that carries no host and has no gateway takes no subnet in this build, so its subnet cells say so.
+    NOHOST.forEach(function (n) {
+      text = text.split('`' + OLD_V4 + '.' + n.id + '.0/24`').join(hold('none')).split('`' + OLD_V6 + (n.id << 8).toString(16) + '/120`').join(hold('none'));
+    });
+    // IPv4: the block of the chapters is the lab network range of this build, a lab network takes its subnet, and
+    // everything else moves with the block.
+    text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.0\\.0/16(?![0-9])', 'g'), function (all, pre) { return pre + hold(v.range.cidr); });
     text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.(\\d{1,3})(?=\\.)', 'g'), function (all, pre, c) {
-      return pre + (SEGMENTS.indexOf(+c) >= 0 ? v.sub.base[+c] : p4 + '.' + c);
+      return pre + (v.sub.base[+c] || p4 + '.' + c);
     });
     if (p4 !== OLD_V4) text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.(?!\\d)', 'g'), function (all, pre) { return pre + p4 + '.'; });
     // IPv6: the last group is the third and fourth IPv4 octets, so it follows a moved subnet.
-    text = text.replace(new RegExp(escRe(OLD_V6) + '([0-9a-f]{0,4})(?![0-9a-f:])', 'gi'), function (all, h) {
-      if (!h) return p6;
-      var val = parseInt(h, 16), third = val >> 8, fourth = val & 255;
-      if (SEGMENTS.indexOf(third) >= 0) third = +v.sub.base[third].split('.')[2];
-      return p6 + ((third << 8) | fourth).toString(16);
+    // The prefix alone is the whole lab (/112), or the out-of-band network when /120 follows it.
+    text = text.replace(new RegExp(escRe(OLD_V6) + '([0-9a-f]{0,4})(?![0-9a-f:])(/120)?', 'gi'), function (all, h, oob) {
+      if (!h && !oob) return p6;
+      var val = parseInt(h || '0', 16), third = val >> 8, fourth = val & 255;
+      if (v.sub.base[third]) third = +v.sub.base[third].split('.')[2];
+      val = (third << 8) | fourth;
+      return p6 + (val ? val.toString(16) : '') + (oob || '');
     });
     // VLAN IDs of the shared segments.
     if (v.vlan.any) {
@@ -5942,7 +6490,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   function labValuesText(m, v) {
     var p = PLATFORMS[state.platform], ver = p.versions.filter(function (x) { return x[0] === state.version; })[0];
     var L = ['# Lab values for this build', '', 'Made by the Lab Builder. The walkthroughs in `walkthroughs/` already use these values. Where a walkthrough and this file differ, this file is right.', ''];
-    L.push('## Platform', '', '- Platform: ' + (ver ? ver[1] : p.name), '- IPv4 block: `' + m.ipv4_prefix + '.0.0/16`', '- IPv6 prefix: `' + m.ipv6_prefix + '` (/112)', '- Admin user on every Linux machine: `' + m.admin_user + '` (SSH key login' + (state.consolePw && state.platform !== 'wsl' ? '; a console password is set by the `LAB201_CONSOLE_PASSWORD` line in `RUN.txt`' : '') + ')', '');
+    L.push('## Platform', '', '- Platform: ' + (ver ? ver[1] : p.name), '- IPv4 block: `' + m.ipv4_prefix + '.0.0/16`', '- Lab network range: `' + v.range.cidr + '` (' + v.range.net + ' to ' + v.range.last + '). The lab subnets are contiguous: ' + v.range.need + ' from ' + v.range.start + '. The external firewall uses this range as the supernet of the lab.', '- IPv6 prefix: `' + m.ipv6_prefix + '` (/112)', '- Admin user on every Linux machine: `' + m.admin_user + '` (SSH key login' + (state.consolePw && state.platform !== 'wsl' ? '; a console password is set by the `LAB201_CONSOLE_PASSWORD` line in `RUN.txt`' : '') + ')', '');
     L.push('## Switches under test', '', '| Role | Host name | Model |', '| --- | --- | --- |');
     ['a', 'b'].forEach(function (k) { L.push('| ' + SW_ROLE[k] + ' | `' + v.sw.name[k] + '` | ' + v.sw.model[k] + (v.sw.changed[k] ? ' (the labs were written for the ' + SW_DEFAULT[k] + ')' : '') + ' |'); });
     L.push('', '## FortiSwitchOS and feature support', '', '- FortiSwitchOS release: ' + v.fsw.version);
@@ -5964,8 +6512,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (v.plan && v.plan.off.length) L.push('## Labs planned for this build', '', '- Planned: Labs 999.1 to 999.6, and ' + (v.plan.planned.join(', ') || 'no requirement lab') + '.', '- Left out: ' + v.plan.off.join(', ') + '.', '');
     L.push('## Switch ports', '', '| Placeholder in the labs | Meaning | Port |', '| --- | --- | --- |');
     PORTS.forEach(function (p) { L.push('| `<' + p[0] + '>` | ' + p[1] + ' | ' + (v.ports[p[0]] ? '`' + v.ports[p[0]] + '`' : 'not chosen; read it with `get switch interface status`') + ' |'); });
-    L.push('', '## Shared segments', '', '| Segment | Name | VLAN ID | IPv4 subnet | Gateway |', '| --- | --- | --- | --- | --- |');
-    SEGMENTS.forEach(function (g) { L.push('| ' + g + ' | ' + SEGNAMES[g] + ' | ' + v.vlan.eff[g] + ' | `' + v.sub.cidr[g] + '` | `' + v.sub.base[g] + '.1` |'); });
+    L.push('', '## Shared segments', '', '| Segment | Name | VLAN ID | IPv4 subnet | Gateway | Subnet in the chapters |', '| --- | --- | --- | --- | --- | --- |');
+    SEGMENTS.forEach(function (g) { L.push('| ' + g + ' | ' + SEGNAMES[g] + ' | ' + v.vlan.eff[g] + ' | `' + v.sub.cidr[g] + '` | `' + v.sub.base[g] + '.1` | `' + OLD_V4 + '.' + g + '.0/24` |'); });
+    L.push('', '## Other lab networks', '', '| Segment | Name | IPv4 subnet | Subnet in the chapters |', '| --- | --- | --- | --- |');
+    v.range.others.forEach(function (o) { L.push('| ' + o.id + ' | ' + o.name + ' | `' + o.cidr + '` | `' + OLD_V4 + '.' + o.id + '.0/24` |'); });
+    if (m.uplink) L.push('', '## Uplink to the external firewall', '', '- ' + m.uplink.vm + ' keeps its adapter on the build network as the uplink. Step 4 leaves it in place.', '- Uplink address: ' + (m.uplink.address ? '`' + m.uplink.address + '`, the external firewall is `' + m.uplink.gateway + '`, and the DNS server is `' + m.uplink.dns.join('`, `') + '`' : 'from DHCP') + '.',
+      '- Addresses whose traffic ' + m.uplink.vm + ' forwards to the uplink: ' + (m.uplink.internet.map(function (a) { return '`' + a + '`'; }).join(', ') || 'none') + '.');
     L.push('', '## Machines', '', '| Machine | Role | Flavor | Lab addresses |', '| --- | --- | --- | --- |');
     m.vms.forEach(function (vm) { L.push('| `' + vm.name + '` | ' + vm.role + ' | ' + FLAVOR[vm.flavor || m.default_flavor].name + ' | ' + (allAddrs(vm).map(function (a) { return '`' + a + '`'; }).join(', ') || 'none') + ' |'); });
     var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0; }).map(function (e) { return e.base.name; });
@@ -6026,7 +6578,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       '- Do not change a switch or a machine without the user\'s go-ahead for that step. Show the commands first.',
       '- Run every build script with its preview first (`-WhatIf` or `--dry-run`). The scripts have had limited testing on real hosts.',
       '- Never ask the user to paste a password, a license key, or a private key into the chat. Keys go in the license file or in environment variables on the user\'s computer.',
-      '- Keep the lab isolated. Do not route `' + m.ipv4_prefix + '.0.0/16` into another network.',
+      '- Keep the lab isolated. Do not route the lab network range `' + v.range.cidr + '` into another network.' + (m.uplink ? ' Its one way out is the uplink of ' + m.uplink.vm + ' to the external firewall.' : ''),
       '- If a step fails, stop and work out why with the user. Do not skip ahead.'];
     L.push('- `LAB-VALUES.md` lists the lab features that Fortinet\'s feature matrix marks as not supported on these switch models in FortiSwitchOS ' + v.fsw.version + '. Before a lab step that uses one of them, tell the user. Record the step as blocked with that reason. It is a limit of the model, not a failed test.');
     if (v.fsw.version !== FSW_BOOK) L.push('- The lab chapters take their commands from the FortiSwitchOS ' + FSW_BOOK + ' CLI Reference, and these switches run ' + v.fsw.version + '. If a switch refuses a command, do not guess another one. Ask the user to look it up in the CLI Reference for ' + v.fsw.version + ', and record the step as blocked until the command is confirmed.');
@@ -6176,15 +6728,15 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // The IPv6 address of a lab host: the prefix, then the third and fourth IPv4 octets (Chapter 999).
     var six = function (a) { var o = a.split('.'); return p6 + ((+o[2] << 8) | +o[3]).toString(16); };
     // The gateway's own address on the out-of-band network: its one NIC that has an address and is no trunk.
-    var gw = BASE.vms.filter(function (x) { return x.role === 'gateway'; })[0], oob = p4 + '.0.1';
+    var gw = BASE.vms.filter(function (x) { return x.role === 'gateway'; })[0], oob = (v.sub.base[0] || p4 + '.0') + '.1';
     if (gw) gw.nics.forEach(function (n, i) {
       if (!n.trunk && (n.ipv4 || []).length) oob = ((v.addr.eff[gw.name] || {})['n' + i + '.0'] || mapDef(n.ipv4[0], p4, v.sub)).split('/')[0];
     });
     var ifs = [{ seg: 0, vlan: 0, name: 'OOB-Mgmt', ip4: oob, ip6: six(oob) }];
     SEGMENTS.forEach(function (s) { var a = v.sub.base[s] + '.1'; ifs.push({ seg: s, vlan: v.vlan.eff[s], name: SEGNAMES[s], ip4: a, ip6: six(a) }); });
-    // A segment whose subnet was typed can lie outside the block. It is then a lab network of its own.
-    var nets4 = [{ net: p4 + '.0.0', len: 16 }];
-    SEGMENTS.forEach(function (s) { if (v.sub.base[s].indexOf(p4 + '.') !== 0) nets4.push({ net: v.sub.base[s] + '.0', len: 24 }); });
+    // The lab is its network range. A segment whose subnet was set can lie outside it, and is then a lab network of its own.
+    var nets4 = [{ net: v.range.net, len: v.range.len }];
+    v.sub.typed.forEach(function (s) { var n = ip4num(v.sub.base[s] + '.0'); if (n < v.range.from || n > v.range.to) nets4.push({ net: v.sub.base[s] + '.0', len: 24 }); });
     var plat = PLATFORMS[state.platform];
     return { lab: BASE.lab || 'lab201', gw: gw ? v.names[gw.name] || gw.name : '', gwBuilt: !!gw && rowIncluded(gw, state.vms[gw.name]), twoTrunks: !plat.singleTrunk && !plat.wslOnly,
       ifs: ifs, nets4: nets4, nets6: [{ net: p6, len: 112 }] };
@@ -6200,7 +6752,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     os = netPick(NET_GW, os);
     // The Linux router is built by the scripts, so there is no text for it.
     if (os === NET_GW[0][0]) return { os: os, file: '', text: '', extra: null, notes: m.gwBuilt
-      ? ['The scripts build ' + m.gw + ' as the gateway, so there is nothing to enter here. It holds the .1 address of every shared segment and routes between them by the policy of Lab 999.1.',
+      ? ['The scripts build ' + m.gw + ' as the gateway and the lab\'s own firewall, so it needs no configuration text. It holds the .1 address of every shared segment and routes between them by the policy of Lab 999.1.',
         'Pick another OS type only if a network device takes the place of ' + m.gw + '. The page then writes a starting configuration for it, and the Diagram tab shows the device as the gateway.']
       : ['This build has no gateway, because ' + PLATFORMS[state.platform].name + ' builds only the service hosts.',
         'Pick another OS type if a network device is the gateway. The page then writes a starting configuration for it, and the Diagram tab shows it.'] };
@@ -6292,41 +6844,68 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return [['10.0.0.0', '10.255.255.255'], ['172.16.0.0', '172.31.255.255'], ['192.168.0.0', '192.168.255.255']].map(function (b) { return [ip4num(b[0]), ip4num(b[1])]; }).filter(function (b) { return n >= b[0] && n <= b[1]; })[0] || null;
   }
 
-  // The network range of the lab. The first address and the number of /24 subnets give the smallest block that holds
-  // them, which is the supernet. With nothing typed, the range is the address block of step 6. A value that cannot be
-  // used is reported, and the range falls back to a value that can.
-  function rangeCheck(p4) {
-    var defStart = ip4num(p4 + '.0.0'), startText = String(state.rangeStart || '').trim(), countText = String(state.rangeCount || '').trim(), err = {};
-    var start = startText ? ip4num(startText) : defStart, count = countText ? (/^\d+$/.test(countText) ? parseInt(countText, 10) : NaN) : 256;
-    if (isNaN(start)) err.start = 'Use an IPv4 address such as ' + ip4str(defStart);
-    else if (!privateRange(start)) err.start = 'Use a private range: 10.x, 172.16 to 172.31, or 192.168';
-    else if (start % 256) err.start = 'Use the first address of a /24 subnet, such as ' + ip4str(start - start % 256);
-    if (err.start) start = defStart;
-    if (isNaN(count) || count < 1) { err.count = 'Use a whole number of subnets, 1 or more'; count = 256; }
-    // The smallest block that holds every subnet from the first one on.
+  // The network range of the lab, which the external firewall uses as the supernet. The page picks it: the starting
+  // IP, one /24 for each network of the build, and the smallest block that holds them. A box beside each of the three
+  // lets you set it yourself. A value that cannot be used is reported, and the value of the page stays in use.
+  function rangeCheck(v, p4) {
+    var on = state.rangeOn || {}, err = {}, sub = v.sub, need = sub.need, start = sub.start, count = need;
+    if (sub.startErr) err.start = sub.startErr;
+    var own = privateRange(start), most = Math.floor((own[1] + 1 - start) / 256);
+    if (on.count) {
+      var ct = String(state.rangeCount || '').trim(), c = /^\d+$/.test(ct) ? parseInt(ct, 10) : NaN;
+      if (isNaN(c) || c < 1) err.count = 'Use a whole number of subnets, 1 or more';
+      else if (c < need) err.count = 'This build needs ' + need + ' subnets, one for each of its networks';
+      else if (c > most) err.count = c + ' subnets from ' + ip4str(start) + ' do not fit in the private range. The most is ' + most;
+      else count = c;
+    }
+    // The smallest block that holds every subnet from the first one on. A block starts on its own boundary.
     function fit(s, c) {
       var end = s + c * 256 - 1, len = 24, size = 256, net = s;
       while (len > 0) { net = s - s % size; if (net + size - 1 >= end) break; len--; size *= 2; }
       return { net: net, len: len, size: size };
     }
-    var own = privateRange(start), most = Math.floor((own[1] + 1 - start) / 256), f = fit(start, count);
-    if (f.net < own[0] || f.net + f.size - 1 > own[1]) {
-      if (!err.count) err.count = count + ' subnets from ' + ip4str(start) + ' do not fit in the private range. The most is ' + most;
-      count = Math.min(256, most); f = fit(start, count);
+    var auto = fit(start, count), b = auto;
+    if (on.net) {
+      var q = /^(\d{1,3}(?:\.\d{1,3}){3})\/(\d{1,2})$/.exec(String(state.rangeNet || '').trim()), a = q ? ip4num(q[1]) : NaN, len = q ? +q[2] : NaN, size = Math.pow(2, 32 - len), pr = isNaN(a) ? null : privateRange(a);
+      if (!q || isNaN(a)) err.net = 'Use a block such as ' + ip4str(auto.net) + '/' + auto.len;
+      else if (len < 8 || len > 24) err.net = 'Use a prefix length from 8 to 24';
+      else if (a % size) err.net = 'Use the first address of the block, such as ' + ip4str(a - a % size) + '/' + len;
+      else if (!pr || a + size - 1 > pr[1]) err.net = 'Use a block inside a private range: 10.x, 172.16 to 172.31, or 192.168';
+      else b = { net: a, len: len, size: size };
     }
-    return { start: ip4str(start), count: count, net: ip4str(f.net), len: f.len, cidr: ip4str(f.net) + '/' + f.len, last: ip4str(f.net + f.size - 1), holds: f.size / 256, from: f.net, to: f.net + f.size - 1,
-      exact: f.size / 256 === count && f.net === start, typed: !!(startText || countText), err: err, outside: [] };
+    var cidr = function (x) { return ip4str(x.net) + '/' + x.len; };
+    var used = sub.inUse.map(function (id) { return ip4num(sub.base[id] + '.0'); }).sort(function (x, y) { return x - y; });
+    return { start: ip4str(start), count: count, need: need, net: ip4str(b.net), len: b.len, cidr: cidr(b), last: ip4str(b.net + b.size - 1), holds: b.size / 256, from: b.net, to: b.net + b.size - 1,
+      // What the page picks for a value whose box is not ticked.
+      auto: { start: p4 + '.0.0', count: need, cidr: cidr(auto) }, used: used,
+      // The lab networks that the table of segments does not show.
+      others: sub.inUse.filter(function (id) { return SEGMENTS.indexOf(id) < 0; }).map(function (id) { return { id: id, name: NET_NAME[id], cidr: sub.cidr[id] }; }),
+      // A subnet that you set, or a supernet that you set, can leave a lab subnet outside the supernet.
+      outside: used.filter(function (n) { return n < b.net || n > b.net + b.size - 1; }).map(function (n) { return ip4str(n) + '/24'; }),
+      // A supernet that is set can be smaller than the range above it.
+      short: b.net > auto.net || b.net + b.size < auto.net + auto.size, typed: !!(on.start || on.count || on.net), err: err };
   }
-  // The /24 networks that this build uses: the gateway, the machines, the two switches, and the hosts that Chapter 999
-  // names. The range of the lab should hold them all.
-  function labSubnets(v, p4) {
-    var seen = {}, add = function (a) { var n = ip4num(String(a).split('/')[0]); if (!isNaN(n)) seen[n - n % 256] = true; };
-    netModel(v).ifs.forEach(function (i) { add(i.ip4); });
-    vmRows().forEach(function (e) { if (rowIncluded(e.base, e.row)) addrSlots(e.base).forEach(function (sl) { add((v.addr.eff[e.base.name] || {})[sl.key] || mapDef(sl.def, p4, v.sub)); }); });
-    ['11', '12'].forEach(function (h) { add(p4 + '.0.' + h); add(v.sub.base[30] + '.' + h); add(p4 + '.250.' + h); });
-    SERVICES.forEach(function (s) { add(mapDef(s.ipv4 + '/24', p4, v.sub)); });
-    add(p4 + '.254.1');
-    return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; });
+
+  // The uplink of the gateway. Without it, step 4 removes the adapter with the other build adapters, and no lab traffic
+  // reaches the external firewall. With it, the gateway keeps the adapter, takes its default route there, and forwards
+  // the traffic of the machines with internet access to the external firewall. The address comes from DHCP unless it
+  // is set. Only the Linux router of the scripts has this uplink: a device as the gateway brings its own.
+  function uplinkCheck(v) {
+    var gwB = BASE.vms.filter(function (x) { return x.role === 'gateway'; })[0], built = !!gwB && rowIncluded(gwB, state.vms[gwB.name]), device = netPick(NET_GW, state.gwOs) !== NET_GW[0][0];
+    var on = !!state.uplink && built && !device, set = on && !!state.uplinkSet, err = {}, addr = '', cidr = '', fw = '', dns = [], gw = gwB ? v.names[gwB.name] || gwB.name : '';
+    if (set) {
+      var q = /^(\d{1,3}(?:\.\d{1,3}){3})\/(\d{1,2})$/.exec(String(state.uplinkAddr || '').trim()), a = q ? ip4num(q[1]) : NaN, len = q ? +q[2] : NaN, size = Math.pow(2, 32 - len), g = ip4num(String(state.uplinkFw || '').trim());
+      if (!q || isNaN(a) || len < 8 || len > 30) err.addr = 'Use the address of ' + gw + ' with its prefix length, such as 192.168.50.2/24';
+      else if (a % size === 0 || a % size === size - 1) err.addr = 'Use a host address, not the network or the broadcast address';
+      else if (a - a % size <= v.range.to && a - a % size + size - 1 >= v.range.from) err.addr = 'Use a network outside the lab network range ' + v.range.cidr;
+      if (isNaN(g)) err.fw = 'Use the IPv4 address of the external firewall';
+      else if (!err.addr && (Math.floor(g / size) !== Math.floor(a / size) || g === a || g % size === 0 || g % size === size - 1)) err.fw = 'Use another host address in the network of the uplink address';
+      // With an address that is set, no DHCP answer names a DNS server. The gateway asks the one typed here, or the external firewall.
+      var typedDns = String(state.uplinkDns || '').trim(), names = typedDns ? typedDns.split(/[\s,]+/) : [];
+      if (names.some(function (x) { return isNaN(ip4num(x)); })) err.dns = 'Use the IPv4 address of a DNS server, or leave the field empty to ask the external firewall';
+      if (!err.addr && !err.fw && !err.dns) { addr = q[1]; cidr = q[1] + '/' + len; fw = ip4str(g); dns = names.length ? names.map(function (x) { return ip4str(ip4num(x)); }) : [fw]; }
+    }
+    return { on: on, set: set, show: built && !device, gw: gw, addr: addr, cidr: cidr, fw: fw, dns: dns, err: err };
   }
 
   // The machines that can reach the internet through the external firewall. The hosts of the NTP servers are among
@@ -6353,16 +6932,17 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     f.hosts.forEach(function (h) { h.addrs.forEach(function (a) { addrs.push(a); }); });
     var own = lab + ': lab machines reach their own supernet', out = lab + ': internet access for the machines that need it', rest = lab + ': nothing else leaves the lab', policy = os === 'fortigate';
     var names = f.hosts.map(function (h) { return h.name; });
-    var notes = ['This firewall stands outside the lab, between the lab and the internet. Replace ' + FW_LAB + ' with ' + (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab' + (os === 'junos' ? ' (the text uses unit 0 of it)' : '') +
+    var notes = ['This is an additional firewall, outside the lab, between the lab and the internet.' + (f.device || !f.gwBuilt ? '' : ' It does not take the place of ' + f.gw + ', which stays the lab\'s own firewall.') + ' Replace ' + FW_LAB + ' with ' + (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab' + (os === 'junos' ? ' (the text uses unit 0 of it)' : '') +
         (policy ? (names.length ? ', and ' + FW_OUT + ' with its interface that faces the internet.' : '.') : '. That interface must carry the lab and nothing else, because the last rule drops everything else that comes in there.'),
       'Replace ' + FW_GW + ' with the address that the lab gateway has on the network between it and this firewall. The first lines are the way back to the lab.',
-      'Lab machines reach the supernet ' + net + '/' + len + ' of section 11 and nothing else. ' + (names.length ? 'Internet access: ' + names.join(', ') + '.' : 'No machine has internet access.') +
+      'Lab machines reach the supernet ' + net + '/' + len + ', the lab network range of section 6, and nothing else. ' + (names.length ? 'Internet access: ' + names.join(', ') + '.' : 'No machine has internet access.') +
         (names.length ? ' A machine with internet access also reaches the other networks behind this firewall. Add a rule above its line if it must not.' : ''),
       policy ? 'FortiOS reads policies from the top, so keep these policies above any policy that lets the lab out.' + (names.length ? ' The policy ' + lab + '-internet translates the source address ("set nat enable").' : '') + ' One policy holds IPv4 and IPv6 addresses from FortiOS 6.4.'
         : 'The text does not translate addresses. If this firewall translates the addresses of its inside networks, make sure that rule covers the machines with internet access.' + (os === 'asa' ? ' One access list holds IPv4 and IPv6 entries from ASA 9.0(1).' : ''),
       'The IPv6 addresses of the lab are unique local addresses, which are not routed on the internet, so no machine gets IPv6 internet access.',
       f.device ? 'The lab needs a way to this firewall: give the gateway device an uplink to it and a default route.'
-        : f.gwBuilt ? 'The lab needs a way to this firewall. ' + f.gw + ' as the scripts build it has none after step 4, because its uplink is a build adapter and it forwards only what Lab 999.1 allows. Until it has an uplink, a default route, and a rule for these machines, no lab traffic reaches this firewall.'
+        : f.uplink ? 'The lab reaches this firewall through ' + f.gw + ', which keeps its uplink (section 10) and forwards only the traffic of the machines with internet access. Put these rules on the firewall after step 4: during the build, every machine installs its packages over a build adapter, and the last rule drops that traffic.'
+        : f.gwBuilt ? 'The lab needs a way to this firewall. ' + f.gw + ' has none after step 4, because its uplink is a build adapter. Tick Uplink in section 10 to keep it.'
           : 'The lab needs a way to this firewall, and this build has no gateway.'];
     if (os === 'iosxe') {
       L.push('ip route ' + net + ' ' + maskOf(len) + ' ' + FW_GW, '!', 'ip access-list extended ' + acl, ' remark ' + own, ' permit ip ' + net + ' ' + wildOf(len) + ' ' + net + ' ' + wildOf(len));
@@ -6432,8 +7012,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     v = v || validateAll();
     var p4 = validIpv4Prefix(state.v4) ? state.v4 : OLD_V4, p6 = validIpv6Prefix(state.v6) ? state.v6 : OLD_V6;
     var m = netModel(v), g = netPick(NET_GW, state.gwOs), f = netOs(state.fwOs), device = g !== NET_GW[0][0], all = inetHosts(v, p4), on = all.filter(function (h) { return h.on; });
-    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, gateway: gatewayConfig(g, m),
-      firewall: firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device }) };
+    var up = v.uplink, fwc = firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device, uplink: up.on });
+    // With an uplink address that is set, the firewall text names it.
+    if (up.addr) { fwc.text = fwc.text.split(FW_GW).join(up.addr); fwc.notes = fwc.notes.filter(function (x) { return x.indexOf('Replace ' + FW_GW) !== 0; }); }
+    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: gatewayConfig(g, m), firewall: fwc };
   }
 
   /* ----------------------------------------------------------- lab picture */
@@ -6442,7 +7024,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   // firewall choices come from the page, so the picture changes with them.
   function topologySvg(m, v, net) {
     v = v || validateAll(); m = m || buildManifest(v); net = net || netConfigs(v);
-    var p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, plat = PLATFORMS[state.platform], wsl = !!plat.wslOnly, one = !!plat.singleTrunk, D = 70, out = [];
+    var p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, plat = PLATFORMS[state.platform], wsl = !!plat.wslOnly, one = !!plat.singleTrunk, D = 84, out = [];
     var ver = plat.versions.filter(function (q) { return q[0] === state.version; })[0], platName = ver ? ver[1] : plat.name;
     var INK = '#1f2937', MUTE = '#6b7280', LINK = '#b45309', rows = {};
     vmRows().forEach(function (e) { rows[e.base.name] = e; });
@@ -6486,6 +7068,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // in: in this build. out: left out by choice. na: the platform does not build it.
     function st(name) { var e = rows[name]; return !e || !rowAvailable(e.base) ? 'na' : rowIncluded(e.base, e.row) ? 'in' : 'out'; }
     function nm(name) { return v.names[name] || name; }
+    // An address in a lab network, wherever this build puts that network.
+    function at(id, host) { return (v.sub.base[id] || p4 + '.' + id) + '.' + host; }
     function why(name) { return st(name) === 'na' ? 'not built on ' + plat.name : 'left out of this build'; }
     function addr(name, key) {
       var sl = addrSlots(rows[name].base).filter(function (q) { return q.key === key; })[0];
@@ -6496,7 +7080,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     function any() { return true; }
     function last2(a) { return a.indexOf(p4 + '.') === 0 ? a.slice(p4.length + 1) : a; }
     // The host number where the segment has its default subnet, and the whole address where the subnet was moved.
-    function inSeg(a, seg) { return a.indexOf(p4 + '.' + seg + '.') === 0 ? '.' + a.split('.')[3] : a; }
+    function inSeg(a, seg) { return a.indexOf(at(seg, '')) === 0 ? '.' + a.split('.')[3] : a; }
     function netOf(a) { return a.split('.').slice(0, 3).join('.') + '.0/24'; }
     function segOf(b) { return (b.nics.filter(function (q) { return q.vlan && SEGMENTS.indexOf(q.vlan) >= 0; })[0] || {}).vlan; }
     function groupState(list) { var s = list.map(function (b) { return st(b.name); }); return s.indexOf('in') >= 0 ? 'in' : s.indexOf('out') >= 0 ? 'out' : 'na'; }
@@ -6512,16 +7096,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     out.push('<title>Lab topology of this build</title>');
     out.push('<desc>' + xml('The shared lab of Chapter 999 as chosen on the Lab Builder, on ' + platName + '. Gateway: ' + (net.device ? 'a ' + net.gwName + ' device in place of ' + nm(gw) : st(gw) === 'in' ? nm(gw) + ', a Linux router' : 'none') +
       '. External firewall: ' + net.fwName + ', with internet access for ' + (net.internet.length ? net.internet.map(function (h) { return h.name; }).join(', ') : 'no machine') + ' and the supernet ' + net.range.cidr + '. Switches under test: ' + swA + ' (' + v.sw.model.a + ') and ' + swB + ' (' + v.sw.model.b + '). Machines in this build: ' +
-      (inBuild.map(function (b) { return nm(b.name); }).join(', ') || 'none') + '.' + (notIn.length ? ' Not in this build: ' + notIn.map(function (b) { return b.name; }).join(', ') + '.' : '') + ' All addresses come from ' + p4 + '.0.0/16 and ' + p6 + '/112.') + '</desc>');
+      (inBuild.map(function (b) { return nm(b.name); }).join(', ') || 'none') + '.' + (notIn.length ? ' Not in this build: ' + notIn.map(function (b) { return b.name; }).join(', ') + '.' : '') + ' All addresses come from ' + net.range.cidr + ' and ' + p6 + '/112.') + '</desc>');
     rect(0, 0, 960, YL + 74, '#ffffff', '#ffffff', { rx: 0, sw: 0 });
-    text(480, 24, 'Shared lab topology (Chapter 999) as chosen on the Lab Builder: ' + p4 + '.0.0/16 and ' + p6 + '/112', { size: 15, bold: true, anchor: 'middle', max: 920 });
+    text(480, 24, 'Shared lab topology (Chapter 999) as chosen on the Lab Builder: ' + net.range.cidr + ' and ' + p6 + '/112', { size: 15, bold: true, anchor: 'middle', max: 920 });
 
     // The way out of the lab: the external firewall, and the internet behind it.
     var inet = net.internet.map(function (h) { return h.name; });
-    path('M300,' + H0 + ' V66 H330', MUTE, 1.5, '6 3'); path('M620,66 H710', MUTE, 1.5, '6 3');
-    box('firewall', 'in', 'fw', 330, 38, 290, 56, 'External firewall: ' + net.fwName, [inet.length ? 'internet for ' + (inet.length > 3 ? inet.length + ' machines' : inet.join(', ')) : 'no machine has internet access', 'the rest stays in ' + net.range.cidr],
+    // The uplink of the gateway is a line of its own when the build keeps it.
+    out.push('<g data-link="uplink" data-state="' + (net.uplink.on ? 'in' : 'out') + '">'); path('M300,' + H0 + ' V73 H330', net.uplink.on ? LINK : MUTE, net.uplink.on ? 2.5 : 1.5, net.uplink.on ? '' : '6 3');
+    if (net.uplink.on) tag(238, 80, 112, 'uplink of ' + nm(gw)); out.push('</g>'); path('M620,73 H710', MUTE, 1.5, '6 3');
+    box('firewall', 'in', 'fw', 330, 38, 290, 70, 'External firewall: ' + net.fwName, ['an additional firewall' + (!net.device && st(gw) === 'in' ? ', not ' + nm(gw) : ''), inet.length ? 'internet for ' + (inet.length > 3 ? inet.length + ' machines' : inet.join(', ')) : 'no machine has internet access', 'the rest stays in ' + net.range.cidr],
       { center: true, kind: net.fw, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
-    box('internet', 'in', 'opt', 710, 38, 230, 56, 'Internet', wsl ? ['the WSL hosts reach it through Windows'] : ['the build adapters reach it too,', 'until step 4 removes them'], { center: true, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
+    box('internet', 'in', 'opt', 710, 45, 230, 56, 'Internet', wsl ? ['the WSL hosts reach it through Windows'] : ['the build adapters reach it too,', 'until step 4 removes them'], { center: true, t0: 18, l0: 33, ts: 11.5, ls: 9.5 });
 
     // The hypervisor and its machines.
     var defFlavor = FLAVOR[m.default_flavor].name, otherFlavor = m.vms.filter(function (q) { return q.flavor && q.flavor !== m.default_flavor; }).length;
@@ -6530,7 +7116,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var segs = net.model.ifs.map(function (i) { return i.seg; }), segA = segs.slice(0, 4).join(', ') + ',', segB = segs.slice(4).join(', '), role = net.device ? 'gateway' : 'gateway and firewall';
     if (net.device) box('gateway', 'in', 'dev', 36, Y1, 120, 110, 'Gateway device', [net.gwName, role, '.1 on segments', segA, segB].concat(st(gw) === 'in' ? [nm(gw) + ': shut down'] : []), { center: true, kind: net.gw });
     else if (st(gw) !== 'in') box('gateway', st(gw), 'vm', 36, Y1, 120, 110, nm(gw), ['gateway', why(gw)], { center: true, kind: net.gw });
-    else box('gateway', 'in', 'vm', 36, Y1, 120, 110, nm(gw), [role, '.1 on segments', segA, segB, FLAVOR[v.flavors[gw] || m.default_flavor].name], { center: true, kind: net.gw });
+    else box('gateway', 'in', 'vm', 36, Y1, 120, 110, nm(gw), ['gateway and', 'lab firewall', '.1 on segments', segA, segB, FLAVOR[v.flavors[gw] || m.default_flavor].name], { center: true, kind: net.gw });
     svc.slice(0, 2).forEach(function (b, k) {
       var s = st(b.name), lines = [why(b.name)];
       if (s === 'in') lines = addrSlots(b).map(function (sl) {
@@ -6551,7 +7137,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       var s = st(b.name);
       return { text: nm(b.name) + '  ' + (s === 'in' ? inSeg(addr(b.name, keys(b, any)[0]), hostSeg) : s === 'na' ? 'not built' : 'left out'), node: b.name, st: s };
     }), { titleMid: true });
-    box('fgt-201', 'in', 'opt', 822, Y1, 104, 110, 'fgt-201', ['optional', 'FortiLink', 'managed mode', p4 + '.254.1'], { center: true });
+    box('fgt-201', 'in', 'opt', 822, Y1, 104, 110, 'fgt-201', ['optional', 'FortiLink', 'managed mode', at(254, '1')], { center: true });
 
     // The routing peers, with the network behind the first one and the multicast source on it.
     peers.slice(0, 2).forEach(function (b, k) {
@@ -6576,7 +7162,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ['a', 'b'].forEach(function (k) {
       var h = k === 'a' ? '11' : '12';
       box('switch-' + k, 'in', 'sw', k === 'a' ? 130 : 540, YS, 290, 82, v.sw.name[k] + '  (' + v.sw.model[k] + ')', [k === 'a' ? 'Access switch: 802.1X, MAB, DHCP snooping, routing' : 'Aggregation: routing, VXLAN, second end of pair tests',
-        'Mgmt port ' + p4 + '.0.' + h + '; SVI ' + v.sub.base[30] + '.' + h, 'Loopback ' + p4 + '.250.' + h], { center: true, ts: 13, t0: 20, l0: 36 });
+        'Mgmt port ' + at(0, h) + '; SVI ' + at(30, h), 'Loopback ' + at(250, h)], { center: true, ts: 13, t0: 20, l0: 36 });
     });
     path('M250,' + (310 + D) + ' V' + YS, wsl ? '#9ca3af' : '#0f172a', 4, wsl ? '6 4' : ''); path('M720,' + (310 + D) + ' V' + YS, wsl ? '#9ca3af' : '#0f172a', 4, wsl ? '6 4' : '');
     if (one) { out.push('<g data-link="one-trunk">'); path('M250,' + (326 + D) + ' H720', '#0f172a', 4); tag(485, 318 + D, 200, 'one trunk: T1 and T2 are one network'); out.push('</g>'); }
@@ -6584,18 +7170,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var up = peers.map(function (b) { return st(b.name) === 'in'; });
     function link(id, on, d, dash) { out.push('<g data-link="' + id + '" data-state="' + (on ? 'in' : 'out') + '">'); path(d, on ? LINK : '#d1d5db', 2.5, on ? dash : '2 4'); out.push('</g>'); }
     link('L1', up[0], 'M90,' + (296 + D) + ' V' + (400 + D) + ' H150 V' + YS);
-    tag(90, 341 + D, 90, 'L1  VLAN 2001'); text(90, 392 + D, p4 + '.200.0/31', { size: 9.5, anchor: 'middle' });
+    tag(90, 341 + D, 90, 'L1  VLAN 2001'); text(90, 392 + D, at(200, '0/31'), { size: 9.5, anchor: 'middle' });
     link('L3', up[0], 'M200,' + (296 + D) + ' V' + (386 + D) + ' H600 V' + YS, '8 4');
-    tag(400, 369 + D, 190, 'L3  VLAN 2003  ' + p4 + '.200.4/31');
+    tag(400, 369 + D, 190, 'L3  VLAN 2003  ' + at(200, '4/31'));
     link('L2', up[1], 'M760,' + (296 + D) + ' V' + (396 + D) + ' H370 V' + YS, '3 3');
-    tag(560, 399 + D, 190, 'L2  VLAN 2002  ' + p4 + '.200.2/31');
+    tag(560, 399 + D, 190, 'L2  VLAN 2002  ' + at(200, '2/31'));
     link('L4', up[1], 'M870,' + (296 + D) + ' V' + (400 + D) + ' H790 V' + YS);
-    tag(870, 341 + D, 90, 'L4  VLAN 2004'); text(870, 392 + D, p4 + '.200.6/31', { size: 9.5, anchor: 'middle' });
+    tag(870, 341 + D, 90, 'L4  VLAN 2004'); text(870, 392 + D, at(200, '6/31'), { size: 9.5, anchor: 'middle' });
     path('M420,' + (470 + D) + ' H540', LINK, 3.5);
-    tag(480, 451 + D, 90, 'L5  VLAN 2005'); text(480, 490 + D, p4 + '.200.8/31  to  .9/31', { size: 9.5, anchor: 'middle' });
+    tag(480, 451 + D, 90, 'L5  VLAN 2005'); text(480, 490 + D, at(200, '8/31') + '  to  .9/31', { size: 9.5, anchor: 'middle' });
 
     // The physical test endpoints on each switch.
-    var port = function (id) { return v.ports[id] || id; }, vx = function (k) { var s = SERVICES.filter(function (q) { return q.on === defSw.name[k]; })[0]; return s ? s.name + ': ' + swapPrefix(s.ipv4, p4) + ' (VXLAN tenant, VNI 230)' : 'VXLAN tenant host (VNI 230)'; };
+    var port = function (id) { return v.ports[id] || id; }, vx = function (k) { var s = SERVICES.filter(function (q) { return q.on === defSw.name[k]; })[0]; return s ? s.name + ': ' + mapIp(s.ipv4, p4, v.sub) + ' (VXLAN tenant, VNI 230)' : 'VXLAN tenant host (VNI 230)'; };
     box('endpoints-a', 'in', 'ep', 130, YE, 290, 84, 'Physical test endpoints on ' + swA, [port('PORT_EP1') + ': laptop with supplicant (802.1X, VLAN ' + v.vlan.eff[40] + ')', port('PORT_EP2') + ': MAB device (VLAN ' + v.vlan.eff[41] + ')', vx('a')], { center: true, t0: 18, l0: 34 });
     path('M275,' + (502 + D) + ' V' + YE, '#374151', 2);
     box('endpoints-b', 'in', 'ep', 540, YE, 290, 84, 'Physical test endpoints on ' + swB, ['Traffic generator and second-end test hosts', vx('b'), 'VXLAN VNI 230 tunnel: ' + swA + ' to ' + swB + ' over L5'], { center: true, t0: 18, l0: 34 });
@@ -6604,7 +7190,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // The out-of-band network, from the gateway to the management port of each switch.
     path('M36,' + (125 + D) + ' H26 V' + (680 + D) + ' H900 V' + (461 + D) + ' H830', MUTE, 2, '2 5'); path('M26,' + (461 + D) + ' H130', MUTE, 2, '2 5');
     var oob = net.model.ifs[0].ip4, oobGw = net.device ? 'the gateway device .' + oob.split('.')[3] : st(gw) === 'in' ? nm(gw) + ' .' + oob.split('.')[3] : 'no gateway';
-    tag(480, 665 + D, 560, 'Out-of-band management, segment 0 (' + p4 + '.0.0/24): ' + oobGw + ', ' + swA + ' .11, ' + swB + ' .12');
+    tag(480, 665 + D, 560, 'Out-of-band management, segment 0 (' + at(0, '0/24') + '): ' + oobGw + ', ' + swA + ' .11, ' + swB + ' .12');
 
     // What the lines mean, the segments, and what was changed on the page.
     rect(20, YL, 920, 66, '#ffffff', '#9ca3af', { rx: 4, sw: 1 });
@@ -6615,10 +7201,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     path('M652,' + (YL + 18) + ' H692', MUTE, 1.5, '6 3'); text(698, YL + 22, 'Way to the internet', { size: 10 });
     rect(812, YL + 11, 24, 13, '#f9fafb', '#9ca3af', { rx: 3, sw: 1.2, dash: '4 3' }); text(842, YL + 22, 'Not in this build', { size: 10 });
     text(34, YL + 40, 'Segments: ' + SEGMENTS.map(function (s) { return s + ' ' + SEGNAMES[s]; }).join(', ') + ', 60 Unused, 99 Native-Dead, 230 VXLAN-Tenant.', { size: 9.5, max: 890 });
-    var changed = SEGMENTS.filter(function (s) { return v.vlan.eff[s] !== s || v.sub.base[s] !== p4 + '.' + s; }).map(function (s) {
-      return 'segment ' + s + ' uses ' + [v.vlan.eff[s] !== s ? 'VLAN ' + v.vlan.eff[s] : '', v.sub.base[s] !== p4 + '.' + s ? v.sub.cidr[s] : ''].filter(function (q) { return q; }).join(' and ');
-    });
-    text(34, YL + 56, changed.length ? 'Changed on the Lab Builder: ' + changed.join('; ') + '.' : 'Every shared segment has its default VLAN ID and subnet.', { size: 9.5, max: 890 });
+    // The subnet of each shared segment. The subnets are contiguous, so they are not the ones printed in the chapters.
+    text(34, YL + 56, 'Subnets, contiguous from ' + net.range.start + ': ' + SEGMENTS.map(function (s) { return s + ' ' + v.sub.cidr[s]; }).join(', ') + '.', { size: 9.5, max: 890 });
     out.push('</svg>');
     return out.join('');
   }
@@ -6644,7 +7228,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeStart: state.rangeStart, rangeCount: state.rangeCount, internet: state.inet, firewallText: state.fwEdit }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, count: !!state.rangeOn.count, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeCount: state.rangeCount, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -6686,6 +7270,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (s.switches && typeof s.switches === 'object') ['a', 'b'].forEach(function (k) { if (s.switches[k]) state.sw[k] = String(s.switches[k]); });
     state.gwOs = netPick(NET_GW, s.gatewayOs); state.fwOs = netOs(s.firewallOs);
     state.rangeStart = typeof s.rangeStart === 'string' ? s.rangeStart : ''; state.rangeCount = typeof s.rangeCount === 'string' || typeof s.rangeCount === 'number' ? String(s.rangeCount) : '';
+    state.rangeNet = typeof s.rangeSupernet === 'string' ? s.rangeSupernet : '';
+    // A file from before the Override boxes existed set a value by typing it.
+    var ro = s.rangeOn && typeof s.rangeOn === 'object' ? s.rangeOn : { start: !!state.rangeStart.trim(), count: !!state.rangeCount.trim() };
+    state.rangeOn = { start: !!ro.start, count: !!ro.count, net: !!ro.net };
+    state.uplink = s.uplink === true; state.uplinkSet = s.uplinkSet === true; state.uplinkAddr = typeof s.uplinkAddress === 'string' ? s.uplinkAddress : ''; state.uplinkFw = typeof s.uplinkFirewall === 'string' ? s.uplinkFirewall : ''; state.uplinkDns = typeof s.uplinkDns === 'string' ? s.uplinkDns : '';
     state.inet = {}; BASE.vms.forEach(function (b) { if (s.internet && typeof s.internet[b.name] === 'boolean') state.inet[b.name] = s.internet[b.name]; });
     state.fwEdit = typeof s.firewallText === 'string' && s.firewallText.length <= 100000 ? s.firewallText : '';
     return notes;
@@ -6736,7 +7325,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     isoSumOf: isoSumOf, reqStatus: reqStatus, requirementRows: requirementRows, resultsCsv: resultsCsv, csvCell: csvCell,
     swCheck: swCheck, swSeries: swSeries, fswCheck: fswCheck, FSW: FSW, FSW_VERSIONS: FSW_VERSIONS, parseProgress: parseProgress, labStatus: labStatus, LABS: LABS, WALKTHROUGHS: WALKTHROUGHS, PORTS: PORTS, DEFAULT_CONSOLE_PW: DEFAULT_CONSOLE_PW, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
-    checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
+    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
@@ -6764,19 +7353,24 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<details id="planbox"><summary>Labs you plan to run: <span id="plancount"></span></summary><p class="hint">Untick a lab, or a whole chapter, that you will not run. The labs of Chapter 999 build the shared lab, so they are always in the plan. CLAUDE.md in the zip tells Claude to skip what you untick. Hold the pointer over a lab to see the machines its text names.</p><div id="planlabs"></div></details>';
     h += '<p class="small" id="plannote"></p><div class="actions" style="margin-top:6px;margin-bottom:10px"><button class="btn" id="planapply">Match the machines to these labs</button></div>';
     h += '<table id="machines"></table></div>';
-    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. Move the plan to another block, or give a segment another VLAN ID. A segment\'s IPv4 subnet follows its VLAN ID (VLAN 140 is 10.201.140.0/24). Tick <b>Set subnet</b> to type a different /24 for a segment. Change a machine\'s address in step 5. The gateway is always .1.</p>';
+    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The lab takes one /24 subnet for each of its networks. The page makes the subnets contiguous, starting at the starting IP, so the lab needs the fewest subnets and the smallest supernet. The chapters number a subnet by its VLAN ID (VLAN 10 is 10.201.10.0/24), so the walkthroughs in the zip are rewritten with the subnets of this build. The VLAN IDs stay as they are. Tick <b>Set subnet</b> to type a different /24 for a segment. Change a machine\'s address in step 5. The gateway is always .1.</p>';
     h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
-    h += '<table id="vlans" style="margin-top:12px"></table><p class="small" id="addrpreview"></p></div>';
+    h += '<details id="rangebox" open><summary>Lab network range: <span id="rangesum"></span></summary><p class="hint" style="margin:8px 0 10px">The range of addresses that belongs to the lab. The external firewall of section 11 lets a lab machine reach this range and nothing else, unless you give the machine internet access. The page picks the range: it starts at the start of the block, it has one /24 subnet for each network of this build, all contiguous, and the supernet is the smallest block that holds them. Tick <b>Override</b> to set a value yourself.</p>';
+    h += '<div class="field">' + [['start', '1. Starting IP', 'addr subin'], ['count', '2. How many subnets', 'num'], ['net', '3. Supernet', 'addr subin']].map(function (r) {
+      return '<label for="r' + r[0] + '">' + r[1] + '</label><div><span class="sub rangeval" id="r' + r[0] + 'v"></span><input type="text" id="r' + r[0] + '" class="' + r[2] + '" autocomplete="off"><label class="subset small"><input type="checkbox" data-rangeon="' + r[0] + '"> Override</label><span class="msg bad" id="r' + r[0] + 'msg"></span><span class="msg small" id="r' + r[0] + 'note"></span></div>';
+    }).join('') + '<label>Subnet allocation</label><div><span class="sub rangeval" id="rplanv"></span><span class="msg small" id="rplannote"></span></div></div><div id="rangewarn"></div></details>';
+    h += '<table id="vlans" style="margin-top:14px"></table><p class="small" id="othernets" style="margin:10px 0 0"></p><p class="small" id="addrpreview"></p></div>';
     h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div><div class="field" style="margin-top:12px"><label for="fswver">FortiSwitchOS version</label><div><select id="fswver"></select> <span class="small">Sets which Fortinet feature matrix the page reads. The lab chapters cite the FortiSwitchOS 7.6.7 CLI Reference, so another release adds a note to the walkthroughs.</span></div></div><div id="fswtable"></div><div id="fswcompare"></div><p class="hint" style="margin-top:12px">Switch ports: the labs write the ports as placeholders such as <code>&lt;PORT_EP1&gt;</code>. Type the ports you use and the walkthroughs in the zip show them. An empty field keeps the placeholder. One name serves both switches, so leave a field empty where the two differ.</p><div class="field" id="ports"></div><div class="field" style="margin-top:12px"><label for="startlab">Start Claude at lab</label><div><select id="startlab"></select> <span class="small">The lab that CLAUDE.md in the zip tells Claude to begin with.</span></div></div></div>';
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
     var optsOf = function (list) { return list.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + '</option>'; }).join(''); };
-    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that, and it needs nothing from this section. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
-    h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
-    h += '<div class="card"><h2><span class="n">11</span> Lab network range</h2><p class="hint">The range of addresses that belongs to the lab. The external firewall of section 12 lets a lab machine reach this range and nothing else, unless you give the machine internet access. Open the list, type the first address, then say how many /24 subnets the lab holds. The page shows the smallest block that holds them, which is the supernet. With nothing typed, the range is the address block of step 6.</p>';
-    h += '<details id="rangebox"><summary>Lab network range: <span id="rangesum"></span></summary><div class="field" style="margin-top:10px"><label for="rstart">1. Starting IP</label><div><input type="text" id="rstart" class="addr" autocomplete="off"><span class="msg bad" id="rstartmsg"></span></div><label for="rcount">2. How many subnets</label><div><input type="text" id="rcount" class="num" autocomplete="off"> <span class="small">each one a /24</span><span class="msg bad" id="rcountmsg"></span></div><label>3. Supernet</label><div id="rangeout"></div></div></details><div id="rangewarn"></div></div>';
-    h += '<div class="card"><h2><span class="n">12</span> External firewall configuration</h2><p class="hint">The firewall outside the lab, between the lab and the internet. It gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 11). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs.</p>';
+    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The page then writes a starting configuration for it, on one 802.1Q trunk port and the out-of-band port. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
+    h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div>';
+    h += '<label for="gwuplink" id="gwuplabel">Uplink</label><div id="gwupbox"><label class="subset" style="margin-left:0"><input type="checkbox" id="gwuplink"> Keep the uplink of <span id="gwupname"></span> to the external firewall</label></div>';
+    h += '<label for="upaddr" id="upaddrlabel">Uplink address</label><div id="upaddrbox"><span class="sub rangeval" id="upauto"></span><span id="upstatic"><span class="small" id="upgwname"></span> <input type="text" id="upaddr" class="addr subin" autocomplete="off" placeholder="192.168.50.2/24" aria-label="Uplink address of the gateway"> <span class="small">external firewall</span> <input type="text" id="upfw" class="addr subin" autocomplete="off" placeholder="192.168.50.1" aria-label="Address of the external firewall"> <span class="small">DNS</span> <input type="text" id="updns" class="addr subin" autocomplete="off" placeholder="the external firewall" aria-label="DNS server for the gateway"></span><label class="subset small"><input type="checkbox" id="upset"> Override</label><span class="msg bad" id="upmsg"></span></div></div>';
+    h += '<div class="note info" id="gwupnote"></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
+    h += '<div class="card"><h2><span class="n">11</span> External firewall configuration <span class="badge">additional firewall</span></h2><p class="hint">An additional firewall, outside the lab, between the lab and the internet. <span id="fwnotgw"></span> This one gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 6). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs.</p>';
     h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div><label>Internet access</label><div id="fwinet" class="inet"></div></div><textarea id="fwtext" class="cfgedit" spellcheck="false" wrap="off" aria-label="External firewall configuration"></textarea><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><button class="btn" id="fwreset" hidden>Use the page\'s text again</button><span class="small" id="fwmsg"></span></div><div class="note warn" id="fwedited" hidden></div><div class="note info" id="fwnotes"></div></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
@@ -6968,13 +7562,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       inp.className = 'num' + (bad ? ' err' : changed ? ' chg' : ''); msg.className = 'msg ' + (bad ? 'bad' : 'warn');
       msg.textContent = bad ? bad + '. The default is kept' : changed ? 'Use VLAN ' + v.vlan.eff[s] + ' on the switches' : '';
       var on = !!S.subnetOn[s], sin = document.querySelector('[data-sub="' + s + '"]'), smsg = document.querySelector('[data-m=submsg][data-seg="' + s + '"]'), serr = v.sub.err[s];
-      var moved = v.sub.base[s] !== m.ipv4_prefix + '.' + s;
-      sub.textContent = v.sub.cidr[s]; sub.style.display = on ? 'none' : ''; sub.className = 'sub' + (moved ? ' chgtext' : '');
+      var set = v.sub.typed.indexOf(s) >= 0;
+      sub.textContent = v.sub.cidr[s]; sub.style.display = on ? 'none' : ''; sub.className = 'sub';
       sin.style.display = on ? '' : 'none'; sin.placeholder = v.sub.def[s];
       if (document.activeElement !== sin && sin.value !== (S.subnets[s] || '')) sin.value = S.subnets[s] || '';
-      sin.className = 'addr subin' + (serr ? ' err' : on && moved ? ' chg' : '');
+      sin.className = 'addr subin' + (serr ? ' err' : set ? ' chg' : '');
       smsg.className = 'msg ' + (serr ? 'bad' : 'warn');
-      smsg.textContent = serr || v.sub.note[s] || (!on && moved ? 'follows VLAN ' + v.vlan.eff[s] : '');
+      smsg.textContent = serr || '';
     });
     lastSub = v.sub;
     if (document.activeElement !== $('conpw') && $('conpw').value !== S.consolePw) $('conpw').value = S.consolePw;
@@ -7066,7 +7660,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     }
     else if (activeTab === 'claude') body = '<pre>' + esc(C.claudeHelpText()) + '</pre><p class="small">The zip holds these instructions for Claude in CLAUDE.md, and the two start lines in START-CLAUDE.txt.</p>';
     else if (activeTab === 'licenses') body = '<pre>' + esc(C.licensesExample(m) || 'No license file is used for these choices.') + '</pre><p class="small">Copy this to ' + esc(S.licFile) + ' and fill in the values on your computer. Never commit it, and never put it in the zip.</p>';
-    else body = '<div class="diag">' + C.topologySvg(m, v, net) + '</div><p class="small">This picture is drawn from your choices: the platform, the machines and their names, the addresses, the VLAN IDs, the switch models and ports, the gateway of section 10, and the external firewall of section 12. It is small here, so open it in a new tab to read it. The zip holds it as diagrams/lab-topology.svg.</p><div class="actions" style="margin-top:6px"><button class="btn" data-act="svgopen">Open it in a new tab</button><button class="btn" data-act="svg">Download diagram (SVG)</button></div>';
+    else body = '<div class="diag">' + C.topologySvg(m, v, net) + '</div><p class="small">This picture is drawn from your choices: the platform, the machines and their names, the addresses, the VLAN IDs, the switch models and ports, the gateway of section 10, and the external firewall of section 11. It is small here, so open it in a new tab to read it. The zip holds it as diagrams/lab-topology.svg.</p><div class="actions" style="margin-top:6px"><button class="btn" data-act="svgopen">Open it in a new tab</button><button class="btn" data-act="svg">Download diagram (SVG)</button></div>';
     $('tabbody').innerHTML = body;
     var iss = '';
     if (v.errors.length) iss += '<div class="note bad"><b>Refused changes (defaults kept)</b><ul>' + v.errors.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
@@ -7079,7 +7673,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
 
   // The gateway and firewall sections: the text for the chosen operating systems, and what to know before using it.
   function renderNet(v) {
-    var n = C.netConfigs(v), list = function (c) { return '<b>' + (c.text ? 'Before you use it' : 'Nothing to enter') + '</b><ul>' + c.notes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; };
+    var n = C.netConfigs(v), list = function (c) { return '<b>' + (c.text ? 'Before you use it' : 'No text needed') + '</b><ul>' + c.notes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; };
     var plural = function (k, word) { return k + ' ' + word + (k === 1 ? '' : 's'); };
     // The gateway. A choice that needs no text shows its notes only.
     var gsel = $('gwos'), gpre = $('gwcfg'), ex = n.gateway.extra;
@@ -7089,16 +7683,43 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     gpre.hidden = !n.gateway.text; $('gwacts').style.display = n.gateway.text ? '' : 'none';
     $('gwnotes').innerHTML = list(n.gateway);
     $('gwextra').innerHTML = ex ? '<p class="small" style="margin:10px 0 6px">' + esc(ex.title) + '</p><pre class="cfg" style="margin-top:0">' + esc(ex.text) + '</pre>' : '';
-    // The network range of the lab.
-    var r = n.range, rs = $('rstart'), rc = $('rcount');
-    $('rangesum').textContent = r.cidr + ' (room for ' + plural(r.holds, 'subnet') + ')';
-    rs.placeholder = (C.validIpv4Prefix(S.v4) ? S.v4 : C.OLD_V4) + '.0.0'; rc.placeholder = '256';
-    if (document.activeElement !== rs && rs.value !== S.rangeStart) rs.value = S.rangeStart;
-    if (document.activeElement !== rc && rc.value !== S.rangeCount) rc.value = S.rangeCount;
-    rs.className = 'addr' + (r.err.start ? ' err' : S.rangeStart.trim() ? ' chg' : ''); rc.className = 'num' + (r.err.count ? ' err' : S.rangeCount.trim() ? ' chg' : '');
-    $('rstartmsg').textContent = r.err.start ? r.err.start + '. ' + r.start + ' is used' : ''; $('rcountmsg').textContent = r.err.count ? r.err.count + '. ' + r.count + ' is used' : '';
-    $('rangeout').innerHTML = '<b>' + esc(r.cidr) + '</b>: ' + esc(r.net) + ' to ' + esc(r.last) + ', room for ' + plural(r.holds, 'subnet') + ' of /24.' + (r.exact ? '' : ' It is the smallest block that holds ' + plural(r.count, 'subnet') + ' from ' + esc(r.start) + '.');
-    $('rangewarn').innerHTML = r.outside.length ? '<div class="note warn">This range does not hold ' + plural(r.outside.length, 'subnet') + ' that the lab uses: ' + esc(r.outside.join(', ')) + '. The external firewall would block ' + (r.outside.length === 1 ? 'it' : 'them') + ' like any other network.</div>' : '';
+    // The uplink of the gateway, which only the Linux router of the scripts has.
+    var up = n.uplink, show = function (ids, yes) { ids.forEach(function (id) { $(id).style.display = yes ? '' : 'none'; }); };
+    show(['gwuplabel', 'gwupbox', 'gwupnote'], up.show); show(['upaddrlabel', 'upaddrbox'], up.on); show(['upauto'], !up.set); show(['upstatic'], up.set);
+    $('gwuplink').checked = !!S.uplink; $('upset').checked = !!S.uplinkSet; $('gwupname').textContent = up.gw; $('upgwname').textContent = up.gw;
+    $('upauto').textContent = 'DHCP, on the network of the build adapters';
+    [['upaddr', S.uplinkAddr, up.err.addr], ['upfw', S.uplinkFw, up.err.fw], ['updns', S.uplinkDns, up.err.dns]].forEach(function (x) {
+      var inp = $(x[0]); if (document.activeElement !== inp && inp.value !== x[1]) inp.value = x[1];
+      inp.className = 'addr subin' + (x[2] ? ' err' : x[1].trim() ? ' chg' : '');
+    });
+    $('upmsg').textContent = [up.err.addr, up.err.fw, up.err.dns].filter(function (x) { return x; }).map(function (x) { return x + '. '; }).join('') + (up.err.addr || up.err.fw || up.err.dns ? 'DHCP is used.' : '');
+    $('gwupnote').innerHTML = up.on ? '<b>With the uplink kept</b><ul>' + ['Step 4 removes the build adapters of the other machines and leaves the adapter of ' + up.gw + ' on the build network in place.',
+      up.gw + ' takes its default route there and forwards the traffic of the machines with internet access (section 11) to the external firewall. It forwards nothing else out of the lab, and it does not translate addresses.',
+      up.addr ? 'The firewall text of section 11 uses the uplink address for the way back to the lab. With an address that is set, no DHCP answer names a DNS server, so ' + up.gw + ' asks ' + up.dns.join(' and ') + (S.uplinkDns.trim() ? '.' : ', the external firewall. Type another DNS server if the firewall does not answer DNS.') : 'The address comes from DHCP, so reserve it on the DHCP server. The firewall text of section 11 needs it for the way back to the lab.',
+      'Put the rules of section 11 on the firewall after step 4. During the build, every machine installs its packages over a build adapter, and those rules drop that traffic.'].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'
+      : 'Without the uplink, step 4 removes the adapter of ' + esc(up.gw) + ' on the build network with the other build adapters, and no lab traffic reaches the external firewall.';
+    // The gateway in the text about the external firewall, which is an additional firewall.
+    $('fwnotgw').textContent = n.device ? 'It is not the gateway device of section 10.' : n.model.gwBuilt ? 'It is not ' + n.model.gw + ', which stays the lab\'s own firewall and filters between the lab segments (Lab 999.1).' : '';
+    // The network range of the lab. The page picks each value unless its box is ticked.
+    var r = n.range;
+    $('rangesum').textContent = r.cidr + (r.typed ? ', with values you set' : ', picked by the page');
+    [['start', r.start, S.rangeStart, r.err.start], ['count', String(r.count), S.rangeCount, r.err.count], ['net', r.cidr, S.rangeNet, r.err.net]].forEach(function (x) {
+      var k = x[0], on = !!S.rangeOn[k], inp = $('r' + k), val = $('r' + k + 'v');
+      document.querySelector('[data-rangeon="' + k + '"]').checked = on;
+      val.style.display = on ? 'none' : ''; inp.style.display = on ? '' : 'none'; val.textContent = x[1];
+      if (document.activeElement !== inp && inp.value !== x[2]) inp.value = x[2];
+      inp.className = (k === 'count' ? 'num' : 'addr subin') + (x[3] ? ' err' : on ? ' chg' : '');
+      $('r' + k + 'msg').textContent = x[3] ? x[3] + '. ' + x[1] + ' is used' : '';
+    });
+    var typedSegs = v.sub.typed.map(function (s) { return 'segment ' + s + ' (' + v.sub.cidr[s] + ')'; });
+    $('rplanv').textContent = typedSegs.length ? 'Contiguous, except ' + typedSegs.join(' and ') : 'Contiguous';
+    $('rplannote').textContent = 'Each network of the lab takes the next /24, starting at ' + r.start + ', so the lab needs the fewest subnets.' + (typedSegs.length ? ' A segment whose subnet you set is not in that row.' : '');
+    $('rstartnote').textContent = S.rangeOn.start ? 'The page would pick ' + r.auto.start + '.' : 'The start of the IPv4 block above.';
+    $('rcountnote').textContent = 'Each one a /24. ' + (S.rangeOn.count ? 'The page would pick ' + r.auto.count + '. ' : '') + 'This build needs ' + r.need + ': one for each of its networks.';
+    $('rnetnote').textContent = r.net + ' to ' + r.last + ', room for ' + plural(r.holds, 'subnet') + '. ' + (S.rangeOn.net ? 'The page would pick ' + r.auto.cidr + '.' : 'The smallest block that holds ' + plural(r.count, 'subnet') + ' from ' + r.start + '.');
+    $('othernets').textContent = 'The other networks of this build: ' + r.others.map(function (o) { return o.name + ' ' + o.cidr; }).join(', ') + '.';
+    $('rangewarn').innerHTML = (r.short ? '<div class="note warn">The supernet ' + esc(r.cidr) + ' is smaller than the range above it: ' + plural(r.count, 'subnet') + ' from ' + esc(r.start) + ' take ' + esc(r.auto.cidr) + '.</div>' : '') +
+      (r.outside.length ? '<div class="note warn">This range does not hold ' + plural(r.outside.length, 'subnet') + ' that the lab uses: ' + esc(r.outside.join(', ')) + '. The external firewall would block ' + (r.outside.length === 1 ? 'it' : 'them') + ' like any other network.</div>' : '');
     // The external firewall. An edited text stays in its box until the text of the page is asked for again.
     var fsel = $('fwos'), ta = $('fwtext'), edited = !!S.fwEdit && S.fwEdit !== n.firewall.text, want = edited ? S.fwEdit : n.firewall.text;
     if (fsel.value !== n.fw) fsel.value = n.fw;
@@ -7218,6 +7839,20 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       }
       else if (t.id === 'rstart') S.rangeStart = t.value;
       else if (t.id === 'rcount') S.rangeCount = t.value;
+      else if (t.id === 'rnet') S.rangeNet = t.value;
+      else if (t.hasAttribute('data-rangeon')) {
+        // A value that is set starts from the one the page shows, so ticking a box alone changes nothing.
+        var rk = t.getAttribute('data-rangeon'), rr = C.validateAll().range;
+        S.rangeOn[rk] = t.checked;
+        if (t.checked && rk === 'start' && !S.rangeStart.trim()) S.rangeStart = rr.start;
+        if (t.checked && rk === 'count' && !S.rangeCount.trim()) S.rangeCount = String(rr.count);
+        if (t.checked && rk === 'net' && !S.rangeNet.trim()) S.rangeNet = rr.cidr;
+      }
+      else if (t.id === 'gwuplink') S.uplink = t.checked;
+      else if (t.id === 'upset') S.uplinkSet = t.checked;
+      else if (t.id === 'upaddr') S.uplinkAddr = t.value;
+      else if (t.id === 'upfw') S.uplinkFw = t.value;
+      else if (t.id === 'updns') S.uplinkDns = t.value;
       else if (t.id === 'fwtext') S.fwEdit = t.value === C.netConfigs().firewall.text ? '' : t.value;
       else if (t.hasAttribute('data-inet')) S.inet[t.getAttribute('data-inet')] = t.checked;
       else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
@@ -7249,9 +7884,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     });
     $('dlzip').addEventListener('click', function () {
       // Show what differs from the book before the zip is made, so a mistyped value is caught here.
-      var rv = refresh(), chg = C.changesText(rv.m, rv.v).split('\n').filter(function (l) { return l.indexOf('- ') === 0; });
+      var rv = refresh(), chg = C.changeLines(rv.m, rv.v, true).map(function (l) { return '- ' + l; });
       if (rv.v.errors.length || chg.length) {
-        var msg = (chg.length ? 'This build differs from the Chapter 999 defaults:\n\n' + chg.join('\n') + '\n\n' : '') +
+        var msg = (chg.length ? 'You changed these values of the build:\n\n' + chg.join('\n') + '\n\n' : '') +
           (rv.v.errors.length ? 'Refused changes (the default is kept for each):\n\n' + rv.v.errors.map(function (e) { return '- ' + e; }).join('\n') + '\n\n' : '') + 'Download the zip with these values?';
         if (!window.confirm(msg)) { $('zipnote').textContent = 'No zip was made. Change the values and click Download zip again.'; return; }
       }
@@ -7336,7 +7971,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     S.vms['svc-201a'].name = 'edge-fw'; v = C.validateAll(); ok(!!v.rows['svc-201a'].name.err, 'a duplicate name is refused');
     // address block
     reset(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(v.errors.length === 0 && JSON.stringify(m).indexOf('"10.201.') < 0 && JSON.stringify(m).indexOf('10.77.10.10/24') > 0 && m.ipv6_prefix === 'fd12:3456:789a::', 'a new address block rewrites every IPv4 address');
+    // The lab networks in the order of the Segments table, and where the contiguous numbering puts each one.
+    var netIds = C.NETS.map(function (n) { return n.id; }), idx = function (id) { return netIds.indexOf(id); }, sub4 = function (id, rest) { return C.OLD_V4 + '.' + idx(id) + (rest || ''); }, six = function (id, host) { return ((idx(id) << 8) | host).toString(16); };
+    ok(v.errors.length === 0 && JSON.stringify(m).indexOf('"10.201.') < 0 && JSON.stringify(m).indexOf('10.77.' + idx(10) + '.10/24') > 0 && m.ipv6_prefix === 'fd12:3456:789a::' && v.range.net === '10.77.0.0', 'a new address block rewrites every IPv4 address');
     S.v4 = '8.8'; v = C.validateAll(); ok(v.errors.length === 1 && C.buildManifest(v).ipv4_prefix === C.OLD_V4, 'a public block is refused');
     // flavors
     reset(); S.vms['gw-201'].flavor = 'ubuntu-24.04-stig'; m = man();
@@ -7365,24 +8002,40 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(!v.vlan.err[40] && dhcp.nics.filter(function (n) { return n.vlan === 140; }).length === 1 && vm(m, 'gw-201').bridge_trunks.vlans.indexOf(140) >= 0 && m.vlan_segments['140'] === 40, 'a segment can use another VLAN ID');
     S.vlans[41] = '140'; v = C.validateAll(); ok(!!v.vlan.err[41], 'a duplicate VLAN ID is refused');
     S.vlans[41] = '2003'; v = C.validateAll(); ok(!!v.vlan.err[41], 'a routed-link VLAN ID is refused');
-    // The IPv4 subnet follows the VLAN ID unless Set subnet is ticked
+    // The lab networks take contiguous /24 subnets, in the order of the Segments table of Chapter 999
+    reset(); v = C.validateAll(); m = C.buildManifest(v); dhcp = vm(m, 'dhcp-201');
+    ok(netIds.length > C.SEGMENTS.length && v.sub.inUse.join() === netIds.join() && netIds.every(function (id) { return v.sub.base[id] === sub4(id); }) && v.sub.need === netIds.length && !v.sub.typed.length && !v.errors.length,
+      'every lab network takes the next /24 from the start of the block, in the order of the Segments table of Chapter 999');
+    ok(dhcp.nics.some(function (n) { return n.vlan === 40 && n.ipv4[0] === sub4(40, '.2/24'); }) && vm(m, 'svc-201a').nics[1].ipv4[0] === sub4(10, '.10/24') && vm(m, 'svc-201a').nics[1].gateway4 === sub4(10, '.1') &&
+      netIds.every(function (id) { return idx(id) === id ? m.segment_subnets[String(id)] === undefined : m.segment_subnets[String(id)] === sub4(id); }) && JSON.stringify(vm(m, 'rtr-peer-1')).indexOf('"' + sub4(200, '.1/31') + '"') > 0 &&
+      JSON.stringify(vm(m, 'rtr-peer-1')).indexOf('"' + sub4(250, '.21/32') + '"') > 0 && JSON.stringify(m.vms).indexOf(C.OLD_V4 + '.200.') < 0 && JSON.stringify(m.vms).indexOf(C.OLD_V4 + '.250.') < 0 &&
+      m.vms.every(function (x) { return x.nics.every(function (n) { return !n.gateway4 || (n.ipv4 || []).some(function (a) { return a.split('.').slice(0, 3).join('.') === n.gateway4.split('.').slice(0, 3).join('.'); }); }); }),
+      'the manifest gives every machine its address in the contiguous subnets, also on the routed links and the loopbacks, and names each subnet that moved');
+    reset(); C.PLAN_LABS.forEach(function (l) { S.labsOff[l.id] = true; }); C.applyPlan(); v = C.validateAll();
+    var netShared = {}, netNamed = {}, netMach = {};
+    C.LABS.forEach(function (l) { (l.nets || []).forEach(function (n) { netNamed[n] = true; if (C.PLAN_LABS.indexOf(l) < 0) netShared[n] = true; }); });
+    C.BASE.vms.forEach(function (b) { if (v.included.indexOf(b.name) >= 0) C.addrSlots(b).forEach(function (sl) { netMach[+sl.def.split('.')[2]] = true; }); });
+    var netExpect = netIds.filter(function (id) { return id === 0 || C.SEGMENTS.indexOf(id) >= 0 || netShared[id] || netMach[id] || !netNamed[id]; });
+    ok(v.sub.inUse.join() === netExpect.join() && v.sub.need === netExpect.length && netExpect.every(function (id, i) { return v.sub.base[id] === C.OLD_V4 + '.' + i; }) && v.range.count === netExpect.length,
+      'a lab network that only labs left out of the plan use takes no subnet, and the row closes');
     reset(); S.vlans[40] = '140'; v = C.validateAll(); m = C.buildManifest(v); dhcp = vm(m, 'dhcp-201');
-    ok(v.sub.cidr[40] === '10.201.140.0/24' && dhcp.nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === '10.201.140.2/24'; }) && m.segment_subnets['40'] === '10.201.140' && !v.errors.length, 'the subnet follows a changed VLAN ID');
-    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.10.10/24' && !m.segment_subnets['10'], 'other segments keep their subnets');
+    ok(v.sub.cidr[40] === sub4(40, '.0/24') && dhcp.nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === sub4(40, '.2/24'); }) && !v.errors.length, 'a changed VLAN ID leaves the subnet of its segment where it is');
     S.subnetOn[40] = true; S.subnets[40] = '10.201.77.0/24'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(v.sub.cidr[40] === '10.201.77.0/24' && vm(m, 'dhcp-201').nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === '10.201.77.2/24'; }) && !v.errors.length, 'Set subnet lets a segment use a typed /24');
+    ok(v.sub.cidr[40] === '10.201.77.0/24' && v.sub.typed.join() === '40' && v.sub.need === netIds.length - 1 && v.sub.base[41] === sub4(40) && vm(m, 'dhcp-201').nics.some(function (n) { return n.vlan === 140 && n.ipv4[0] === '10.201.77.2/24'; }) && !v.errors.length &&
+      v.range.outside.join() === '10.201.77.0/24' && v.warnings.some(function (w) { return w.indexOf('Segment 40 uses the subnet 10.201.77.0/24') === 0; }), 'Set subnet lets a segment use a typed /24, and the other networks close the row');
     S.subnets[40] = '192.168.40.0/24'; v = C.validateAll(); m = C.buildManifest(v);
     ok(vm(m, 'dhcp-201').nics.some(function (n) { return (n.ipv4 || [])[0] === '192.168.40.2/24'; }) && m.segment_subnets['40'] === '192.168.40', 'a typed subnet can be outside the IPv4 block');
-    S.subnets[40] = '10.201.41.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.40.0/24' && v.sub.cidr[41] === '10.201.41.0/24', 'a subnet another segment uses is refused');
-    S.subnets[40] = '10.201.200.0/24'; v = C.validateAll(); ok(!!v.sub.err[40], 'a subnet the routed links use is refused');
-    S.subnets[40] = '8.8.8.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.140.0/24', 'a public subnet is refused and the VLAN subnet stays');
+    S.subnets[40] = sub4(30, '.0/24'); v = C.validateAll();
+    ok(!!v.sub.err[40] && v.sub.err[40].indexOf('third octet ' + idx(30)) > 0 && !v.sub.typed.length && v.sub.cidr[40] === sub4(40, '.0/24') && v.sub.cidr[41] === sub4(41, '.0/24'), 'a subnet that a lab network uses is refused, and the segment goes back into the row');
+    S.subnets[40] = '192.168.' + idx(30) + '.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === sub4(40, '.0/24'), 'a typed subnet in another block is refused too when a lab network has its third octet, because the IPv6 address comes from it');
+    S.subnets[40] = '8.8.8.0/24'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === sub4(40, '.0/24'), 'a public subnet is refused and the segment keeps its place in the row');
     S.subnets[40] = '10.201.77.5/24'; v = C.validateAll(); ok(!!v.sub.err[40], 'a subnet must be a /24 network address');
-    reset(); S.vlans[40] = '1040'; v = C.validateAll(); ok(v.sub.cidr[40] === '10.201.40.0/24' && !!v.sub.note[40] && !v.sub.err[40], 'a VLAN ID above 254 keeps the default subnet');
-    reset(); S.vlans[40] = '200'; v = C.validateAll(); ok(!!v.sub.err[40] && v.sub.cidr[40] === '10.201.40.0/24' && v.vlan.eff[40] === 200, 'a VLAN ID that matches a routed-link subnet keeps the default subnet');
+    reset(); S.subnetOn[40] = true; S.subnetOn[41] = true; S.subnets[40] = '192.168.77.0/24'; S.subnets[41] = '172.16.77.0/24'; v = C.validateAll();
+    ok(!!v.sub.err[40] && !v.sub.err[41] && v.sub.typed.join() === '41', 'two typed subnets cannot share a third octet');
     reset(); S.v4 = '10.77'; S.vlans[20] = '120'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(vm(m, 'admin-201').nics[1].ipv4[0] === '10.77.120.10/24' && vm(m, 'admin-201').nics[1].gateway4 === '10.77.120.1', 'the subnet follows the VLAN ID inside a moved IPv4 block');
-    reset(); S.vlans[10] = '110'; S.vms['svc-201a'].addr['n1.0'] = '10.201.110.15/24'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.110.15/24' && !v.errors.length, 'a machine address is edited inside the moved subnet');
+    ok(vm(m, 'admin-201').nics[1].ipv4[0] === '10.77.' + idx(20) + '.10/24' && vm(m, 'admin-201').nics[1].gateway4 === '10.77.' + idx(20) + '.1' && vm(m, 'admin-201').nics[1].vlan === 120, 'the subnets stay contiguous inside a moved IPv4 block');
+    reset(); S.vms['svc-201a'].addr['n1.0'] = sub4(10, '.15/24'); v = C.validateAll(); m = C.buildManifest(v);
+    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === sub4(10, '.15/24') && !v.errors.length, 'a machine address is edited inside its subnet');
     reset('workstation'); m = man(); cmd = C.commandText(m);
     ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
@@ -7392,14 +8045,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var wsrc = '# T\n\nVLAN 40 and VLANs 10, 40, and 41 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`). `set vlanid 40`, `vlan40`, 10.201.40.2/24, gateway 10.201.10.1, fd00:db8:201::2802, fd00:db8:201::a01, `svc-201a` at 10.201.10.10. See [Chapter 999](999-x.md), [Chapter 01](01-y.md#top), and ![d](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg). VLAN 2005 and 10.30.1.1 stay.\n';
     reset(); v = C.validateAll(); m = C.buildManifest(v);
     var wt = C.adaptWalkthrough(wsrc, m, v, ['999-x.md']);
-    ok(wt.indexOf('VLAN 40 and VLANs 10, 40, and 41 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`)') > 0 && wt.indexOf('10.201.40.2/24, gateway 10.201.10.1, fd00:db8:201::2802') > 0 && wt.indexOf('match the original') > 0, 'a walkthrough of a default build keeps the book values');
+    ok(wt.indexOf('VLAN 40 and VLANs 10, 40, and 41 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`)') > 0 && wt.indexOf(sub4(40, '.2/24') + ', gateway ' + sub4(10, '.1') + ', ' + C.OLD_V6 + six(40, 2) + ', ' + C.OLD_V6 + six(10, 1) + ', `svc-201a` at ' + sub4(10, '.10.')) > 0 &&
+      wt.indexOf('LAB-VALUES.md') > 0 && wt.indexOf('match the original') < 0, 'a walkthrough of a default build keeps the names and the VLAN IDs of the book, and takes the contiguous subnets');
+    var wsrc2 = 'Plan `10.201.0.0/16` and `fd00:db8:201::/112`. OOB `10.201.0.0/24` `fd00:db8:201::/120`, switch 10.201.0.11 fd00:db8:201::b. Unused `10.201.60.0/24` `fd00:db8:201::3c00/120`. Loopback 10.201.250.11 fd00:db8:201::fa0b.\n';
+    reset(); S.rangeOn = { start: true }; S.rangeStart = '10.201.32.0'; v = C.validateAll(); m = C.buildManifest(v);
+    var wt2 = C.adaptWalkthrough(wsrc2, m, v, []), loop = 32 + idx(250);
+    ok(wt2.indexOf('Plan `10.201.32.0/' + v.range.len + '` and `fd00:db8:201::/112`. OOB `10.201.32.0/24` `fd00:db8:201::2000/120`, switch 10.201.32.11 fd00:db8:201::200b. Unused none none. Loopback 10.201.' + loop + '.11 fd00:db8:201::' + ((loop << 8) | 11).toString(16) + '.') >= 0,
+      'a walkthrough names the lab network range where the book names its block, moves the out-of-band network with the starting IP, and gives a VLAN without hosts no subnet');
     ok(wt.indexOf('](999-x.md)') > 0 && wt.indexOf('](https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main/volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-y.md#top)') > 0 && wt.indexOf('](../diagrams/lab-topology.svg)') > 0, 'walkthrough links point inside the zip or at the repository');
-    reset(); S.vlans[40] = '140'; S.v4 = '10.77'; S.vms['svc-201a'].name = 'svc-a'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24'; S.sw.a = 'fs-424e-fpoe'; v = C.validateAll(); m = C.buildManifest(v);
+    reset(); S.vlans[40] = '140'; S.v4 = '10.77'; S.vms['svc-201a'].name = 'svc-a'; S.vms['svc-201a'].addr['n1.0'] = '10.77.' + idx(10) + '.15/24'; S.sw.a = 'fs-424e-fpoe'; v = C.validateAll(); m = C.buildManifest(v);
     wt = C.adaptWalkthrough(wsrc, m, v, ['999-x.md']);
     ok(wt.indexOf('VLAN 140 and VLANs 10, 140, and 41') > 0 && wt.indexOf('`set vlanid 140`, `vlan140`') > 0 && wt.indexOf('VLAN 2005 and 10.30.1.1 stay') > 0, 'a walkthrough takes the chosen VLAN IDs');
-    ok(wt.indexOf('10.77.140.2/24, gateway 10.77.10.1, fd00:db8:201::8c02, fd00:db8:201::a01') > 0 && wt.indexOf('`svc-a` at 10.77.10.15.') > 0, 'a walkthrough takes the chosen addresses and machine names');
+    ok(wt.indexOf('10.77.' + idx(40) + '.2/24, gateway 10.77.' + idx(10) + '.1, ' + C.OLD_V6 + six(40, 2) + ', ' + C.OLD_V6 + six(10, 1)) > 0 && wt.indexOf('`svc-a` at 10.77.' + idx(10) + '.15.') > 0, 'a walkthrough takes the chosen addresses and machine names');
     ok(wt.indexOf('`sw-424e-1` (FS-424E-FPOE, license (the SKU for the FS-424E-FPOE))') > 0 && wt.indexOf('check the feature matrix') > 0 && v.warnings.some(function (w) { return w.indexOf('FS-424E-FPOE') > 0; }), 'a walkthrough takes the chosen switch model and host name');
-    ok(C.labValuesText(m, v).indexOf('| 40 | Users-8021X | 140 | `10.77.140.0/24` | `10.77.140.1` |') > 0 && C.labValuesText(m, v).indexOf('| Access switch | `sw-424e-1` | FS-424E-FPOE') > 0 && C.claudeText(m, v, ['999-shared-lab-infrastructure.md']).indexOf('**Lab 999.1** (Build the gateway and the VLANs) in `walkthroughs/999-shared-lab-infrastructure.md`') > 0, 'the zip describes the build for an assistant');
+    ok(C.labValuesText(m, v).indexOf('| 40 | Users-8021X | 140 | `10.77.' + idx(40) + '.0/24` | `10.77.' + idx(40) + '.1` | `' + C.OLD_V4 + '.40.0/24` |') > 0 && C.labValuesText(m, v).indexOf('- Lab network range: `' + v.range.cidr + '`') > 0 &&
+      C.labValuesText(m, v).indexOf('| 250 | Loopbacks | `10.77.' + idx(250) + '.0/24` | `' + C.OLD_V4 + '.250.0/24` |') > 0 && C.labValuesText(m, v).indexOf('| Access switch | `sw-424e-1` | FS-424E-FPOE') > 0 && C.claudeText(m, v, ['999-shared-lab-infrastructure.md']).indexOf('**Lab 999.1** (Build the gateway and the VLANs) in `walkthroughs/999-shared-lab-infrastructure.md`') > 0, 'the zip describes the build for an assistant');
     S.sw.a = 'catalyst 9300'; S.sw.b = 'FS-648F-FPOE'; v = C.validateAll();
     ok(!!v.sw.err.a && v.sw.model.a === 'FS-648F-FPOE' && v.sw.name.a === 'sw-648f-1' && v.sw.name.b === 'sw-648f-2', 'a model that is not a FortiSwitch is refused, and two switches of one model get different names');
     reset(); S.sw.b = 'FS-1048E'; var swSaved = C.choicesText(); reset(); C.applyChoices(JSON.parse(swSaved));
@@ -7425,7 +8085,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var relSrc = '# T\n\n| 3 | `get system status` | The model you expect and a 7.6.x FortiSwitchOS release |\n\nTwo switches on FortiSwitchOS\n7.6.x, with a cable. See the FortiSwitchOS 7.6.7 CLI Reference p127.\n';
     reset(); v = C.validateAll(); m = C.buildManifest(v);
     var relSame = C.adaptWalkthrough(relSrc, m, v, []);
-    ok(S.fswVersion === '7.6.7' && C.FSW_DEFAULT === C.FSW_BOOK && relSame.indexOf('a 7.6.x FortiSwitchOS release') > 0 && C.changesText(m, v) === '' && !v.warnings.some(function (w) { return w.indexOf('CLI Reference') > 0; }), 'FortiSwitchOS 7.6.7 is the default, the release the lab chapters cite');
+    ok(S.fswVersion === '7.6.7' && C.FSW_DEFAULT === C.FSW_BOOK && relSame.indexOf('a 7.6.x FortiSwitchOS release') > 0 && C.changeLines(m, v, true).length === 0 && C.changesText(m, v).indexOf('FortiSwitchOS:') < 0 && !v.warnings.some(function (w) { return w.indexOf('CLI Reference') > 0; }), 'FortiSwitchOS 7.6.7 is the default, the release the lab chapters cite');
     S.fswVersion = '8.0.1'; v = C.validateAll(); m = C.buildManifest(v);
     var relOther = C.adaptWalkthrough(relSrc, m, v, []);
     ok(relOther.split('\n').filter(function (l) { return l.indexOf('> **Lab Builder copy.**') !== 0; }).join('\n').indexOf('7.6.x') < 0 && relOther.indexOf('The model you expect and FortiSwitchOS 8.0.1 |') > 0 && relOther.indexOf('FortiSwitchOS\n8.0.1, with a cable') > 0 && relOther.indexOf('FortiSwitchOS 7.6.7 CLI Reference p127') > 0, 'another release replaces the 7.6.x the chapters expect and keeps what they cite');
@@ -7453,8 +8113,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(S.ports.PORT_EP1 === 'port5' && S.startLab === '4.1', 'the choices file keeps the switch ports and the start lab');
     // Save choices and Load choices
     reset('proxmox'); S.defaultFlavor = 'rocky-10'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-2'].include = false; S.vms['svc-201a'].name = 'svc-a';
-    S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
-    S.v4 = '10.77'; S.vlans[41] = '141'; S.subnetOn[20] = true; S.subnets[20] = '192.168.20.0/24'; S.params.storage = 'blue'; S.isos['win-11'] = 'iso:iso/w11.iso'; S.licRefs.rhel = 'vault';
+    S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.' + idx(10) + '.15/24';
+    S.v4 = '10.77'; S.vlans[41] = '141'; S.subnetOn[20] = true; S.subnets[20] = '192.168.20.0/24'; S.rangeOn = { count: true }; S.rangeCount = '40'; S.uplink = true; S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1'; S.params.storage = 'blue'; S.isos['win-11'] = 'iso:iso/w11.iso'; S.licRefs.rhel = 'vault';
     var savedText = C.choicesText(), wantM = JSON.stringify(man()), wantCmd = C.commandText(man());
     reset('vcenter'); S.vms['gw-201'].name = 'other'; S.vlans[10] = '110'; S.isos = {}; S.licRefs = {};
     var loadNotes = C.applyChoices(JSON.parse(savedText));
@@ -7469,12 +8129,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf('-PythonCommand') < 0 && cmdPy.indexOf("-PythonCommand 'py -3.15'") > 0 && C.commandText(man()).indexOf('--python python3.15') > 0, 'the Python command can be chosen, and is left out by default');
     reset('proxmox'); cmd = C.commandText(man());
     ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
-    reset(); S.vms['svc-201a'].addr['n1.0'] = '10.201.10.15/24'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.201.10.15/24', 'a machine address can be changed');
-    S.vms['svc-201a'].addr['n1.0'] = '10.201.20.15/24'; v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address outside its segment is refused');
-    S.vms['svc-201a'].addr['n1.0'] = '10.201.10.11/24'; v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address already used is refused');
-    S.vms['svc-201a'].addr['n1.0'] = '10.201.10.1/24'; v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], '.1 is kept for the gateway');
-    reset(); S.v4 = '10.77'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24'; m = man(); ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.77.10.15/24', 'an edited address works with a new block');
+    reset(); S.vms['svc-201a'].addr['n1.0'] = sub4(10, '.15/24'); v = C.validateAll(); m = C.buildManifest(v);
+    ok(vm(m, 'svc-201a').nics[1].ipv4[0] === sub4(10, '.15/24'), 'a machine address can be changed');
+    S.vms['svc-201a'].addr['n1.0'] = sub4(20, '.15/24'); v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address outside its segment is refused');
+    S.vms['svc-201a'].addr['n1.0'] = sub4(10, '.11/24'); v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], 'an address already used is refused');
+    S.vms['svc-201a'].addr['n1.0'] = sub4(10, '.1/24'); v = C.validateAll(); ok(!!v.addr.err['svc-201a']['n1.0'], '.1 is kept for the gateway');
+    reset(); S.v4 = '10.77'; S.vms['svc-201a'].addr['n1.0'] = '10.77.' + idx(10) + '.15/24'; m = man(); ok(vm(m, 'svc-201a').nics[1].ipv4[0] === '10.77.' + idx(10) + '.15/24', 'an edited address works with a new block');
     // VxRail
     reset('vxrail'); m = man(); cmd = C.commandText(m);
     ok(JSON.stringify(m).indexOf('lab201-t2') < 0 && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1 && vm(m, 'gw-201').bridge_trunks.ports.join() === 'lab201-t1', 'VxRail builds the lab with one trunk');
@@ -7606,12 +8266,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // checked against the segments of the page.
     reset(); v = C.validateAll();
     var nm = C.netModel(v), osIds = C.NET_OS.map(function (o) { return o[0]; }), count = function (text, s) { return text.split(s).length - 1; };
-    ok(nm.ifs.length === C.SEGMENTS.length + 1 && nm.ifs[0].seg === 0 && nm.ifs[0].ip4 === C.OLD_V4 + '.0.1' && nm.ifs[0].ip6 === C.OLD_V6 + '1' &&
-      nm.ifs.slice(1).every(function (i, k) { var s = C.SEGMENTS[k]; return i.seg === s && i.vlan === s && i.name === C.SEGNAMES[s] && i.ip4 === C.OLD_V4 + '.' + s + '.1' && i.ip6 === C.OLD_V6 + ((s << 8) | 1).toString(16); }) &&
-      nm.nets4.length === 1 && nm.nets4[0].net === C.OLD_V4 + '.0.0' && nm.nets4[0].len === 16 && nm.nets6.length === 1 && nm.nets6[0].net === C.OLD_V6 && nm.nets6[0].len === 112,
-      'the gateway model holds the .1 address of the out-of-band network and of every shared segment, and the two lab blocks');
+    ok(nm.ifs.length === C.SEGMENTS.length + 1 && nm.ifs[0].seg === 0 && nm.ifs[0].ip4 === sub4(0, '.1') && nm.ifs[0].ip6 === C.OLD_V6 + six(0, 1) &&
+      nm.ifs.slice(1).every(function (i, k) { var s = C.SEGMENTS[k]; return i.seg === s && i.vlan === s && i.name === C.SEGNAMES[s] && i.ip4 === sub4(s, '.1') && i.ip6 === C.OLD_V6 + six(s, 1); }) &&
+      nm.nets4.length === 1 && nm.nets4[0].net === v.range.net && nm.nets4[0].len === v.range.len && nm.nets6.length === 1 && nm.nets6[0].net === C.OLD_V6 && nm.nets6[0].len === 112,
+      'the gateway model holds the .1 address of the out-of-band network and of every shared segment, the lab network range, and the IPv6 block');
     ok(osIds.join() === 'asa,nxos,iosxe,iosxr,fortigate,junos' && C.NET_GW.map(function (o) { return o[0]; }).join() === 'linux,' + osIds.join() && C.NET_FW === C.NET_OS && C.NET_OS_DEFAULT === 'fortigate' &&
-      S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && C.gatewayConfig('no-such-os', nm).text === '' && C.gatewayConfig('linux', nm).file === '' && C.gatewayConfig('linux', nm).notes[0].indexOf('nothing to enter here') > 0,
+      S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && C.gatewayConfig('no-such-os', nm).text === '' && C.gatewayConfig('linux', nm).file === '' && C.gatewayConfig('linux', nm).notes[0].indexOf('the lab\'s own firewall, so it needs no configuration text') > 0,
       'six operating systems are offered for a device, the gateway list starts with the Linux router that the scripts build, and the external firewall starts as a FortiGate');
     var clean = function (c) { return c.text.slice(-1) === '\n' && c.text.indexOf('undefined') < 0 && c.text.indexOf('NaN') < 0 && c.text.indexOf('\t') < 0 && !/ \n/.test(c.text) && c.notes.length > 2 && c.notes[c.notes.length - 1].indexOf('not run on a device') > 0; };
     ok(osIds.every(function (o) {
@@ -7622,59 +8282,94 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // A moved block, a changed VLAN ID, and a typed subnet outside the block.
     reset(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::'; S.vlans[40] = '140'; S.subnetOn[41] = true; S.subnets[41] = '192.168.41.0/24'; v = C.validateAll(); nm = C.netModel(v);
     var seg = function (s) { return nm.ifs.filter(function (i) { return i.seg === s; })[0]; }, d40 = nm.lab + ' segment 40 ' + C.SEGNAMES[40], P6 = 'fd12:3456:789a::';
-    ok(!v.sub.err[41] && seg(0).ip4 === '10.77.0.1' && seg(0).ip6 === P6 + '1' && seg(40).vlan === 140 && seg(40).ip4 === '10.77.140.1' && seg(40).ip6 === P6 + '8c01' && seg(41).vlan === 41 && seg(41).ip4 === '192.168.41.1' && seg(41).ip6 === P6 + '2901' &&
-      nm.nets4.length === 2 && nm.nets4[0].net === '10.77.0.0' && nm.nets4[1].net === '192.168.41.0' && nm.nets4[1].len === 24 && nm.nets6[0].net === P6, 'the model follows a moved block, a changed VLAN ID, and a typed subnet, which becomes a lab network of its own');
+    // Segment 41 has the subnet that was typed, so the networks after it close the row. Segment 40 comes before it and keeps its place.
+    var a40 = '10.77.' + idx(40) + '.1', s40 = P6 + six(40, 1);
+    ok(!v.sub.err[41] && seg(0).ip4 === '10.77.0.1' && seg(0).ip6 === P6 + '1' && seg(40).vlan === 140 && seg(40).ip4 === a40 && seg(40).ip6 === s40 && seg(41).vlan === 41 && seg(41).ip4 === '192.168.41.1' && seg(41).ip6 === P6 + '2901' &&
+      seg(42).ip4 === '10.77.' + idx(41) + '.1' && nm.nets4.length === 2 && nm.nets4[0].net === '10.77.0.0' && nm.nets4[0].len === v.range.len && nm.nets4[1].net === '192.168.41.0' && nm.nets4[1].len === 24 && nm.nets6[0].net === P6,
+      'the model follows a moved block, a changed VLAN ID, and a typed subnet, which becomes a lab network of its own');
     var gw = function (o) { return C.gatewayConfig(o, nm).text; }, TRK = '<GW_TRUNK_PORT>';
-    ok(gw('iosxe').indexOf('ip routing\nipv6 unicast-routing\n') === 0 && gw('iosxe').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n encapsulation dot1Q 140\n ip address 10.77.140.1 255.255.255.0\n ipv6 address ' + P6 + '8c01/120\n!') > 0 &&
-      gw('nxos').indexOf('interface ' + TRK + '\n  description ' + nm.lab + ' trunk to the lab VLANs\n  no switchport\n  no shutdown\n') > 0 && gw('nxos').indexOf('interface ' + TRK + '.40\n  description ' + d40 + '\n  encapsulation dot1q 140\n  ip address 10.77.140.1/24\n  ipv6 address ' + P6 + '8c01/120\n  no shutdown\n') > 0 &&
-      gw('iosxr').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n encapsulation dot1q 140\n ipv4 address 10.77.140.1 255.255.255.0\n ipv6 address ' + P6 + '8c01/120\n!') > 0 && gw('iosxr').indexOf('commit') < 0,
+    ok(gw('iosxe').indexOf('ip routing\nipv6 unicast-routing\n') === 0 && gw('iosxe').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n encapsulation dot1Q 140\n ip address ' + a40 + ' 255.255.255.0\n ipv6 address ' + s40 + '/120\n!') > 0 &&
+      gw('nxos').indexOf('interface ' + TRK + '\n  description ' + nm.lab + ' trunk to the lab VLANs\n  no switchport\n  no shutdown\n') > 0 && gw('nxos').indexOf('interface ' + TRK + '.40\n  description ' + d40 + '\n  encapsulation dot1q 140\n  ip address ' + a40 + '/24\n  ipv6 address ' + s40 + '/120\n  no shutdown\n') > 0 &&
+      gw('iosxr').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n encapsulation dot1q 140\n ipv4 address ' + a40 + ' 255.255.255.0\n ipv6 address ' + s40 + '/120\n!') > 0 && gw('iosxr').indexOf('commit') < 0,
       'the IOS XE, NX-OS, and IOS XR gateway texts tag each subinterface with its VLAN ID and number it by its segment');
-    ok(gw('asa').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n vlan 140\n nameif ' + nm.lab + '-seg40\n security-level 100\n ip address 10.77.140.1 255.255.255.0\n ipv6 address ' + P6 + '8c01/120\ninterface ') > 0 &&
+    ok(gw('asa').indexOf('interface ' + TRK + '.40\n description ' + d40 + '\n vlan 140\n nameif ' + nm.lab + '-seg40\n security-level 100\n ip address ' + a40 + ' 255.255.255.0\n ipv6 address ' + s40 + '/120\ninterface ') > 0 &&
       gw('asa').slice(-45) === 'same-security-traffic permit inter-interface\n' && count(gw('asa'), ' security-level 100\n') === nm.ifs.length && gw('asa').indexOf('!') < 0 &&
-      gw('fortigate').indexOf('    edit "' + nm.lab + '-seg40"\n        set vdom "root"\n        set type vlan\n        set interface "' + TRK + '"\n        set vlanid 140\n        set ip 10.77.140.1 255.255.255.0\n        set allowaccess ping\n        set description "' + d40 + '"\n        config ipv6\n            set ip6-address ' + P6 + '8c01/120\n            set ip6-allowaccess ping\n        end\n    next\n') > 0 &&
+      gw('fortigate').indexOf('    edit "' + nm.lab + '-seg40"\n        set vdom "root"\n        set type vlan\n        set interface "' + TRK + '"\n        set vlanid 140\n        set ip ' + a40 + ' 255.255.255.0\n        set allowaccess ping\n        set description "' + d40 + '"\n        config ipv6\n            set ip6-address ' + s40 + '/120\n            set ip6-allowaccess ping\n        end\n    next\n') > 0 &&
       gw('fortigate').indexOf('config system zone\n    edit "' + nm.lab + '"\n        set intrazone allow\n        set interface "<GW_OOB_PORT>" ' + C.SEGMENTS.map(function (s) { return '"' + nm.lab + '-seg' + s + '"'; }).join(' ') + '\n    next\nend\n') > 0,
       'the ASA and FortiGate gateway texts name each interface and let the lab interfaces reach each other');
     var gj = C.gatewayConfig('junos', nm);
-    ok(gj.text.indexOf('set interfaces ' + TRK + ' vlan-tagging\n') > 0 && gj.text.indexOf('set interfaces ' + TRK + ' unit 40 vlan-id 140\nset interfaces ' + TRK + ' unit 40 family inet address 10.77.140.1/24\nset interfaces ' + TRK + ' unit 40 family inet6 address ' + P6 + '8c01/120\n') > 0 &&
+    ok(gj.text.indexOf('set interfaces ' + TRK + ' vlan-tagging\n') > 0 && gj.text.indexOf('set interfaces ' + TRK + ' unit 40 vlan-id 140\nset interfaces ' + TRK + ' unit 40 family inet address ' + a40 + '/24\nset interfaces ' + TRK + ' unit 40 family inet6 address ' + s40 + '/120\n') > 0 &&
       gj.text.indexOf('set interfaces <GW_OOB_PORT> unit 0 family inet address 10.77.0.1/24\n') > 0 && gj.text.indexOf('security') < 0 && gj.extra && count(gj.extra.text, 'set security zones security-zone ' + nm.lab + ' interfaces ') === nm.ifs.length &&
       gj.extra.text.indexOf(' interfaces ' + TRK + '.40\n') > 0 && gj.extra.text.slice(-13) === ' then permit\n' && osIds.every(function (o) { return o === 'junos' || C.gatewayConfig(o, nm).extra === null; }),
       'the Junos gateway text uses one unit for each segment, and keeps the SRX lines apart from it');
-    // The network range of the lab: the first address and the number of /24 subnets give the smallest block that holds them.
+    // The network range of the lab: the starting IP, one /24 for each lab network, and the smallest block that holds them.
     reset(); v = C.validateAll();
-    var rg = function (start, n) { S.rangeStart = start; S.rangeCount = n; return C.validateAll().range; }, r0 = v.range, B16 = C.OLD_V4 + '.0.0/16';
-    ok(r0.cidr === B16 && r0.count === 256 && r0.holds === 256 && r0.exact && !r0.typed && r0.outside.length === 0 && !r0.err.start && !r0.err.count, 'with nothing typed, the lab range is the address block of step 6, and it holds every subnet the lab uses');
-    var r8 = rg('10.50.8.0', '8'), r7 = rg('10.201.10.0', '7'), r300 = rg('10.0.0.0', '300'), r1 = rg('192.168.5.0', '1');
-    ok(r8.cidr === '10.50.8.0/21' && r8.exact && r8.last === '10.50.15.255' && r7.cidr === '10.201.0.0/19' && !r7.exact && r7.holds === 32 && r7.last === '10.201.31.255' && r300.cidr === '10.0.0.0/15' && r300.holds === 512 && r1.cidr === '192.168.5.0/24' && r1.holds === 1,
-      'the supernet is the smallest block that holds the subnets, also when the first address is not at its start');
-    var rb = rg('8.8.8.0', ''), rn = rg('10.201.0.7', ''), rc0 = rg('', '0'), rbig = rg('192.168.200.0', '100'), rangeErr = C.validateAll().errors.filter(function (e) { return e.indexOf('Lab network range') === 0; });
-    ok(!!rb.err.start && rb.cidr === B16 && !!rn.err.start && rn.err.start.indexOf('10.201.0.0') > 0 && !!rc0.err.count && rc0.count === 256 && !!rbig.err.count && rbig.err.count.indexOf('The most is 56') > 0 && rbig.cidr === '192.168.192.0/18' && rangeErr.length === 1,
-      'a starting IP or a number of subnets that cannot be used is refused, and the page says what it uses');
-    var rsmall = rg('', '64'), rangeWarn = C.validateAll().warnings.filter(function (w) { return w.indexOf('The lab network range ' + C.OLD_V4 + '.0.0/18 does not hold') === 0; });
-    ok(rsmall.cidr === C.OLD_V4 + '.0.0/18' && rsmall.outside.indexOf(C.OLD_V4 + '.250.0/24') >= 0 && rsmall.outside.indexOf(C.OLD_V4 + '.10.0/24') < 0 && rangeWarn.length === 1, 'a range that is too small names the lab subnets it does not hold');
+    var rg = function (on, start, n, net) { S.rangeOn = on; S.rangeStart = start || ''; S.rangeCount = n || ''; S.rangeNet = net || ''; return C.validateAll().range; }, r0 = v.range, need = netIds.length;
+    // The smallest block that holds n subnets from the third octet s3. A block starts on its own boundary.
+    var fit = function (s3, n) { var size = 1, len = 24, net; for (;;) { net = s3 - s3 % size; if (net + size >= s3 + n) return { cidr: C.OLD_V4 + '.' + net + '.0/' + len, holds: size }; size *= 2; len--; } };
+    ok(r0.start === C.OLD_V4 + '.0.0' && r0.count === need && r0.need === need && r0.cidr === fit(0, need).cidr && r0.holds === fit(0, need).holds && !r0.typed && !r0.short && r0.outside.length === 0 && !r0.err.start && !r0.err.count && !r0.err.net &&
+      r0.others.length === need - C.SEGMENTS.length && v.warnings.some(function (w) { return w.indexOf('The subnets of this build are contiguous: ' + need + ' from ' + C.OLD_V4 + '.0.0') === 0; }),
+      'with nothing set, the lab range starts at the block, has one /24 for each lab network, and its supernet is the smallest block that holds them');
+    var r64 = rg({ start: true }, C.OLD_V4 + '.64.0'), b64 = C.validateAll().sub.base[10], r8 = rg({ start: true }, C.OLD_V4 + '.8.0'), r2n = rg({ count: true }, '', String(2 * need)), rnet = rg({ net: true }, '', '', '10.200.0.0/15');
+    ok(r64.cidr === fit(64, need).cidr && r64.typed && b64 === C.OLD_V4 + '.' + (64 + idx(10)) && r8.cidr === fit(8, need).cidr && r8.holds === fit(8, need).holds && r2n.count === 2 * need && r2n.need === need && r2n.cidr === fit(0, 2 * need).cidr &&
+      rnet.cidr === '10.200.0.0/15' && rnet.holds === 512 && !rnet.short && rnet.auto.cidr === fit(0, need).cidr,
+      'the range follows a starting IP, a larger number of subnets, or a supernet that is set, and the supernet is the smallest block that holds the subnets');
+    var eOut = rg({ start: true }, '10.50.0.0'), eOdd = rg({ start: true }, C.OLD_V4 + '.0.7'), eRoom = rg({ start: true }, C.OLD_V4 + '.250.0'), eFew = rg({ count: true }, '', String(need - 1)), eZero = rg({ count: true }, '', '0'),
+      eNet = rg({ net: true }, '', '', C.OLD_V4 + '.1.0/16'), ePub = rg({ net: true }, '', '', '8.8.0.0/16'), rangeErr = C.validateAll().errors.filter(function (e) { return e.indexOf('Lab network range') === 0; });
+    ok(!!eOut.err.start && eOut.start === C.OLD_V4 + '.0.0' && !!eOdd.err.start && eOdd.err.start.indexOf(C.OLD_V4 + '.0.0') > 0 && !!eRoom.err.start && eRoom.err.start.indexOf('The last starting IP that fits is ' + C.OLD_V4 + '.' + (256 - need) + '.0') > 0 &&
+      !!eFew.err.count && eFew.count === need && eFew.err.count.indexOf('needs ' + need) > 0 && !!eZero.err.count && !!eNet.err.net && eNet.err.net.indexOf(C.OLD_V4 + '.0.0/16') > 0 && eNet.cidr === fit(0, need).cidr && !!ePub.err.net && rangeErr.length === 1,
+      'a starting IP, a number of subnets, or a supernet that cannot be used is refused, and the page says what it uses');
+    var rsmall = rg({ net: true }, '', '', C.OLD_V4 + '.0.0/24'), smallWarn = C.validateAll().warnings;
+    ok(rsmall.cidr === C.OLD_V4 + '.0.0/24' && rsmall.short && rsmall.outside.length === need - 1 && rsmall.outside.indexOf(sub4(250, '.0/24')) >= 0 && rsmall.outside.indexOf(sub4(0, '.0/24')) < 0 &&
+      smallWarn.filter(function (w) { return w.indexOf('The lab network range ' + C.OLD_V4 + '.0.0/24 does not hold') === 0; }).length === 1 && smallWarn.filter(function (w) { return w.indexOf('The supernet ' + C.OLD_V4 + '.0.0/24 is smaller') === 0; }).length === 1,
+      'a supernet that is too small names the lab subnets it does not hold');
+    // The uplink of the gateway to the external firewall.
+    reset(); v = C.validateAll(); m = C.buildManifest(v);
+    ok(!v.uplink.on && v.uplink.show && m.uplink === undefined && C.commandText(m).indexOf('keeps its') < 0 && C.netConfigs(v).firewall.notes.some(function (x) { return x.indexOf('Tick Uplink in section 10 to keep it') > 0; }),
+      'without the uplink, the manifest keeps no adapter for the gateway, and the firewall notes say what is missing');
+    var upOf = function (mm) { return mm.uplink || { internet: [], dns: [] }; };
+    S.uplink = true; v = C.validateAll(); m = C.buildManifest(v); var upNet = C.netConfigs(v), gwName = v.uplink.gw;
+    ok(v.uplink.on && !v.uplink.set && upOf(m).vm === gwName && upOf(m).address === undefined && upOf(m).internet.join() === upNet.internet.map(function (h) { return h.addrs.join(); }).join() && upOf(m).internet.indexOf(sub4(10, '.30')) >= 0 &&
+      C.commandText(m).indexOf('# ' + gwName + ' keeps its NIC, which is the uplink to the external firewall.') > 0 && C.checklistText(m, v).indexOf('reserve the DHCP address of ' + gwName) > 0 && upNet.firewall.text.indexOf('<LAB_GATEWAY_ADDRESS>') > 0 &&
+      upNet.firewall.notes.some(function (x) { return x.indexOf('keeps its uplink (section 10)') > 0 && x.indexOf('after step 4') > 0; }) && C.changeLines(m, v, true).some(function (l) { return l.indexOf('Uplink: ' + gwName + ' keeps its uplink') === 0; }),
+      'with the uplink, the manifest names the gateway and the addresses it forwards, step 4 leaves its adapter, and the firewall notes say to put the rules in place after step 4');
+    S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1'; v = C.validateAll(); m = C.buildManifest(v); upNet = C.netConfigs(v);
+    ok(v.uplink.addr === '192.168.50.2' && upOf(m).address === '192.168.50.2/24' && upOf(m).gateway === '192.168.50.1' && upNet.firewall.text.indexOf('<LAB_GATEWAY_ADDRESS>') < 0 && upNet.firewall.text.indexOf('192.168.50.2') > 0 &&
+      !upNet.firewall.notes.some(function (x) { return x.indexOf('Replace <LAB_GATEWAY_ADDRESS>') === 0; }) && C.labValuesText(m, v).indexOf('## Uplink to the external firewall') > 0 && C.checklistText(m, v).indexOf('route back to the lab through 192.168.50.2') > 0,
+      'an uplink address that is set goes into the manifest and into the route back to the lab of the firewall text');
+    S.uplinkDns = '9.9.9.9, 192.168.50.53'; var upDns = (upOf(C.buildManifest(C.validateAll())).dns || []).join(); S.uplinkDns = 'ns1.example'; var upBadDns = C.validateAll(); S.uplinkDns = '';
+    ok((upOf(m).dns || []).join() === '192.168.50.1' && upDns === '9.9.9.9,192.168.50.53' && !!upBadDns.uplink.err.dns && !upBadDns.uplink.addr && !!C.buildManifest(upBadDns).uplink && upOf(C.buildManifest(upBadDns)).dns === undefined && upBadDns.errors.some(function (e) { return e.indexOf('Uplink, DNS server:') === 0; }),
+      'with an uplink address that is set, the gateway asks the external firewall for DNS unless another server is typed, and a name in place of an address is refused');
+    S.uplinkAddr = sub4(30, '.9/24'); S.uplinkFw = sub4(30, '.1'); var upIn = C.validateAll(); S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.60.1'; var upFar = C.validateAll(); S.uplinkAddr = '192.168.50.0/24'; S.uplinkFw = '192.168.50.1'; var upNet0 = C.validateAll();
+    ok(!!upIn.uplink.err.addr && upIn.uplink.on && !upIn.uplink.addr && !!C.buildManifest(upIn).uplink && upOf(C.buildManifest(upIn)).address === undefined && upIn.errors.some(function (e) { return e.indexOf('Uplink address:') === 0; }) && !!upFar.uplink.err.fw && !upFar.uplink.addr && !!upNet0.uplink.err.addr,
+      'an uplink address inside the lab network range, a firewall in another network, or a network address is refused, and DHCP is used');
+    reset(); S.uplink = true; S.gwOs = 'iosxe'; v = C.validateAll(); var upDev = v.uplink; reset('wsl'); S.uplink = true; var upWsl = C.validateAll();
+    ok(!upDev.on && !upDev.show && C.buildManifest(v).uplink === undefined && !upWsl.uplink.on && !upWsl.uplink.show, 'only the Linux router of the scripts has the uplink: a device as the gateway, or a build with no gateway, has none');
     // The machines with internet access: the hosts of the NTP servers unless they are taken out, and never the gateway.
     reset(); v = C.validateAll();
     var nc = C.netConfigs(v), gwN = C.BASE.vms.filter(function (b) { return b.role === 'gateway'; })[0].name, onNames = function (x) { return x.internet.map(function (h) { return h.base; }).join(); };
     var ntpHosts = C.SERVICES.filter(function (s) { return /^ntp-/.test(s.name); }).map(function (s) { return s.on; }), ntpAddr = C.SERVICES.filter(function (s) { return /^ntp-/.test(s.name); })[0].ipv4;
-    ok(ntpHosts.length > 1 && onNames(nc) === ntpHosts.join() && nc.machines.length === C.BASE.vms.length - 1 && nc.machines.every(function (h) { return h.base !== gwN; }) && nc.internet[0].addrs.indexOf(ntpAddr) >= 0 && nc.fw === C.NET_OS_DEFAULT && nc.range.cidr === B16,
+    ok(ntpHosts.length > 1 && onNames(nc) === ntpHosts.join() && nc.machines.length === C.BASE.vms.length - 1 && nc.machines.every(function (h) { return h.base !== gwN; }) && nc.internet[0].addrs.indexOf(C.mapIp(ntpAddr, C.OLD_V4, v.sub)) >= 0 && nc.internet[0].addrs.indexOf(sub4(10, '.' + ntpAddr.split('.')[3])) >= 0 && nc.fw === C.NET_OS_DEFAULT && nc.range.cidr === v.range.cidr,
       'the hosts of the NTP servers have internet access unless it is taken away, and the gateway is not offered');
     S.inet[ntpHosts[0]] = false; S.inet['admin-201'] = true; S.vms[ntpHosts[1]].include = false; var nc2 = C.netConfigs();
     ok(onNames(nc2) === 'admin-201' && nc2.machines.every(function (h) { return h.base !== ntpHosts[1]; }), 'a machine can be given internet access or lose it, and a machine that is left out is not offered');
     // The external firewall text: the way back to the lab, the supernet, the machines with internet access, and the drop.
-    reset(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::'; S.rangeStart = '10.77.0.0'; S.rangeCount = '128'; S.inet[ntpHosts[1]] = false; v = C.validateAll(); nm = C.netModel(v);
+    reset(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::'; S.rangeOn = { count: true }; S.rangeCount = '128'; S.inet[ntpHosts[1]] = false; v = C.validateAll(); nm = C.netModel(v);
+    var h10 = '10.77.' + idx(10);
     var fwc =function (o) { S.fwOs = o; return C.netConfigs(v).firewall; }, fw = function (o) { return fwc(o).text; }, ACL = nm.lab.toUpperCase() + '-EXTERNAL', N6 = P6 + '/112', L4 = '<FW_LAB_INTERFACE>', GWA = '<LAB_GATEWAY_ADDRESS>';
     var comesFirst = function (text, a, b) { return text.indexOf(a) > 0 && text.indexOf(a) < text.indexOf(b); }, ends = function (text, s) { return text.slice(-s.length) === s; }, nHost = C.netConfigs(v).internet[0].addrs.length;
     ok(nHost > 1 && osIds.every(function (o) { var f = fwc(o); return clean(f) && f.extra === null && f.file === nm.lab + '-firewall-' + o + '.txt' && f.text.indexOf(L4) > 0 && f.text.indexOf(GWA) > 0 && f.text.indexOf(N6) > 0 && f.text.indexOf('GW_TRUNK') < 0 && f.text.indexOf(C.OLD_V4 + '.') < 0 && f.notes[0].indexOf('outside the lab') > 0 && f.notes.join(' ').indexOf('10.77.0.0/17') > 0; }) &&
       fw('iosxe').indexOf('ip route 10.77.0.0 255.255.128.0 ' + GWA + '\n!\nip access-list extended ' + ACL + '\n') === 0 && fw('iosxe').indexOf(' permit ip 10.77.0.0 0.0.127.255 10.77.0.0 0.0.127.255\n') > 0 && count(fw('iosxe'), ' permit ip host ') === nHost &&
-      comesFirst(fw('iosxe'), ' permit ip host 10.77.10.30 any\n', ' deny ip any any log\n') && comesFirst(fw('iosxe'), ' permit ipv6 ' + N6 + ' ' + N6 + '\n permit icmp any any nd-ns\n permit icmp any any nd-na\n', ' deny ipv6 any any log\n') &&
+      comesFirst(fw('iosxe'), ' permit ip host ' + h10 + '.30 any\n', ' deny ip any any log\n') && comesFirst(fw('iosxe'), ' permit ipv6 ' + N6 + ' ' + N6 + '\n permit icmp any any nd-ns\n permit icmp any any nd-na\n', ' deny ipv6 any any log\n') &&
       fw('iosxe').indexOf('interface ' + L4 + '\n ip access-group ' + ACL + ' in\n ipv6 traffic-filter ' + ACL + '-V6 in\n') > 0 && count(fw('iosxe'), ' ip access-group ') === 1 &&
-      fw('nxos').indexOf('ip route 10.77.0.0/17 ' + GWA + '\nip access-list ' + ACL + '\n  statistics per-entry\n') === 0 && fw('nxos').indexOf('  permit ip 10.77.0.0/17 10.77.0.0/17\n') > 0 && comesFirst(fw('nxos'), '  permit ip 10.77.10.30/32 any\n', '  deny ip any any log\n') &&
+      fw('nxos').indexOf('ip route 10.77.0.0/17 ' + GWA + '\nip access-list ' + ACL + '\n  statistics per-entry\n') === 0 && fw('nxos').indexOf('  permit ip 10.77.0.0/17 10.77.0.0/17\n') > 0 && comesFirst(fw('nxos'), '  permit ip ' + h10 + '.30/32 any\n', '  deny ip any any log\n') &&
       comesFirst(fw('nxos'), '  permit icmp any any nd-na\n', '  deny ipv6 any any log\n') && fw('nxos').indexOf('interface ' + L4 + '\n  ip access-group ' + ACL + ' in\n  ipv6 traffic-filter ' + ACL + '-V6 in\n') > 0 &&
-      fw('iosxr').indexOf('router static\n address-family ipv4 unicast\n  10.77.0.0/17 ' + GWA + '\n !\n!\nipv4 access-list ' + ACL + '\n 10 remark ') === 0 && fw('iosxr').indexOf(' 20 permit ipv4 10.77.0.0 0.0.127.255 10.77.0.0 0.0.127.255\n 30 remark ') > 0 && fw('iosxr').indexOf(' 40 permit ipv4 host 10.77.10.10 any\n') > 0 &&
+      fw('iosxr').indexOf('router static\n address-family ipv4 unicast\n  10.77.0.0/17 ' + GWA + '\n !\n!\nipv4 access-list ' + ACL + '\n 10 remark ') === 0 && fw('iosxr').indexOf(' 20 permit ipv4 10.77.0.0 0.0.127.255 10.77.0.0 0.0.127.255\n 30 remark ') > 0 && fw('iosxr').indexOf(' 40 permit ipv4 host ' + h10 + '.10 any\n') > 0 &&
       fw('iosxr').indexOf(' ' + (50 + nHost * 10) + ' deny ipv4 any any log\n') > 0 && fw('iosxr').indexOf(' 20 permit ipv6 ' + N6 + ' ' + N6 + '\n 30 permit icmpv6 any any nd-ns\n 40 permit icmpv6 any any nd-na\n 50 remark ') > 0 && fw('iosxr').indexOf(' 60 deny ipv6 any any log\n') > 0 &&
       fw('iosxr').indexOf('interface ' + L4 + '\n ipv4 access-group ' + ACL + ' ingress\n ipv6 access-group ' + ACL + '-V6 ingress\n') > 0 && fw('iosxr').indexOf('commit') < 0,
       'the IOS XE, NX-OS, and IOS XR firewall texts route back to the lab, pass the supernet and the machines with internet access, and drop the rest last');
     var GRP = nm.lab.toUpperCase() + '-INTERNET', members = []; for (var hi = 1; hi <= nHost; hi++) members.push('"' + nm.lab + '-inet-' + hi + '"');
-    ok(fw('asa').indexOf('route ' + L4 + ' 10.77.0.0 255.255.128.0 ' + GWA + '\nobject-group network ' + GRP + '\n network-object host 10.77.10.10\n') === 0 && fw('asa').indexOf('!') < 0 && count(fw('asa'), ' network-object host ') === nHost &&
+    ok(fw('asa').indexOf('route ' + L4 + ' 10.77.0.0 255.255.128.0 ' + GWA + '\nobject-group network ' + GRP + '\n network-object host ' + h10 + '.10\n') === 0 && fw('asa').indexOf('!') < 0 && count(fw('asa'), ' network-object host ') === nHost &&
       fw('asa').indexOf('access-list ' + ACL + ' extended permit ip 10.77.0.0 255.255.128.0 10.77.0.0 255.255.128.0\naccess-list ' + ACL + ' extended permit ip ' + N6 + ' ' + N6 + '\n') > 0 &&
       comesFirst(fw('asa'), 'access-list ' + ACL + ' extended permit ip object-group ' + GRP + ' any4\n', 'access-list ' + ACL + ' extended deny ip any any log\n') && ends(fw('asa'), 'access-group ' + ACL + ' in interface ' + L4 + '\n') &&
       fw('fortigate').indexOf('config router static\n    edit 0\n        set dst 10.77.0.0 255.255.128.0\n        set gateway ' + GWA + '\n        set device "' + L4 + '"\n') === 0 && fw('fortigate').indexOf('    edit "' + nm.lab + '-supernet"\n        set subnet 10.77.0.0 255.255.128.0\n') > 0 &&
@@ -7689,14 +8384,23 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(fwNone.every(function (f) { return clean(f) && f.text.toLowerCase().indexOf('internet') < 0 && f.notes.join(' ').indexOf('No machine has internet access.') > 0; }) && fw('iosxe').indexOf(' permit ip host ') < 0 && fw('asa').indexOf('object-group') < 0 &&
       fw('fortigate').indexOf('addrgrp') < 0 && fw('fortigate').indexOf('set action accept') < 0 && fw('fortigate').indexOf('set action deny') > 0 && fw('junos').indexOf('internet-access') < 0, 'with no machine chosen, the firewall text gives no internet access at all');
     S.inet[ntpHosts[0]] = true; S.fwOs = 'iosxe'; S.gwOs = 'linux'; var noteLinux = C.netConfigs(v).firewall.notes.join(' '); S.gwOs = 'asa'; var ncDev = C.netConfigs(v), noteDev = ncDev.firewall.notes.join(' ');
-    ok(noteLinux.indexOf(gwN + ' as the scripts build it has none after step 4') > 0 && noteDev.indexOf('give the gateway device an uplink') > 0 && ncDev.device && ncDev.gateway.text === gw('asa') && ncDev.gateway.notes.join(' ').indexOf('Keep it shut down') > 0 && ncDev.firewall.text === fw('iosxe') && ncDev.fwName === 'Cisco IOS XE',
-      'the notes say what the lab needs to reach the firewall, for the Linux router and for a device as the gateway');
-    S.gwOs = 'iosxr'; S.fwOs = 'nxos'; S.fwEdit = 'my own rule\n'; var netSaved = JSON.parse(C.choicesText()); reset();
-    var netDef = S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && S.rangeStart === '' && S.rangeCount === '' && Object.keys(S.inet).length === 0 && S.fwEdit === ''; C.applyChoices(netSaved);
-    var netBack = S.gwOs === 'iosxr' && S.fwOs === 'nxos' && S.rangeStart === '10.77.0.0' && S.rangeCount === '128' && S.inet[ntpHosts[1]] === false && S.inet[ntpHosts[0]] === true && S.fwEdit === 'my own rule\n';
-    delete netSaved.gatewayOs; netSaved.firewallOs = 'no-such-os'; delete netSaved.rangeStart; netSaved.rangeCount = null; netSaved.internet = { 'no-such-machine': true }; netSaved.firewallText = 7; C.applyChoices(netSaved);
-    ok(netDef && netBack && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && S.rangeStart === '' && S.rangeCount === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
-      'the choices file keeps the gateway, the firewall, the range, the machines with internet access, and an edited text, and an old file gives the defaults');
+    ok(noteLinux.indexOf('This is an additional firewall, outside the lab') === 0 && noteLinux.indexOf('It does not take the place of ' + gwN + ', which stays the lab\'s own firewall.') > 0 && noteDev.indexOf('This is an additional firewall') === 0 && noteDev.indexOf('It does not take the place of') < 0 &&
+      noteLinux.indexOf(gwN + ' has none after step 4') > 0 && noteLinux.indexOf('section 6') > 0 && noteDev.indexOf('give the gateway device an uplink') > 0 && ncDev.device && ncDev.gateway.text === gw('asa') && ncDev.gateway.notes.join(' ').indexOf('Keep it shut down') > 0 && ncDev.firewall.text === fw('iosxe') && ncDev.fwName === 'Cisco IOS XE',
+      'the notes say that the external firewall is an additional one, and what the lab needs to reach it, for the Linux router and for a device as the gateway');
+    S.gwOs = 'iosxr'; S.fwOs = 'nxos'; S.fwEdit = 'my own rule\n'; S.rangeOn = { count: true, net: true }; S.rangeNet = '10.76.0.0/15'; S.uplink = true; S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1';
+    var netSaved = JSON.parse(C.choicesText()); reset();
+    var netDef = S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.count && !S.rangeOn.net && S.rangeStart === '' && S.rangeCount === '' && S.rangeNet === '' && !S.uplink && !S.uplinkSet && S.uplinkAddr === '' && S.uplinkFw === '' &&
+      Object.keys(S.inet).length === 0 && S.fwEdit === ''; C.applyChoices(netSaved);
+    var netBack = S.gwOs === 'iosxr' && S.fwOs === 'nxos' && S.rangeOn.count === true && S.rangeOn.net === true && S.rangeOn.start === false && S.rangeCount === '128' && S.rangeNet === '10.76.0.0/15' && S.uplink === true && S.uplinkSet === true &&
+      S.uplinkAddr === '192.168.50.2/24' && S.uplinkFw === '192.168.50.1' && S.inet[ntpHosts[1]] === false && S.inet[ntpHosts[0]] === true && S.fwEdit === 'my own rule\n';
+    // A file from before the Override boxes existed: a value that was typed counts as set.
+    var netOld = JSON.parse(JSON.stringify(netSaved)); delete netOld.rangeOn; delete netOld.rangeSupernet; netOld.rangeStart = '10.77.64.0'; netOld.rangeCount = ''; C.applyChoices(netOld);
+    var netOldOk = S.rangeOn.start === true && S.rangeOn.count === false && S.rangeOn.net === false && S.rangeStart === '10.77.64.0' && S.rangeNet === '';
+    delete netSaved.gatewayOs; netSaved.firewallOs = 'no-such-os'; delete netSaved.rangeOn; delete netSaved.rangeStart; netSaved.rangeCount = null; netSaved.rangeSupernet = 5; netSaved.uplink = 'yes'; delete netSaved.uplinkSet; netSaved.uplinkAddress = 7; delete netSaved.uplinkFirewall;
+    netSaved.internet = { 'no-such-machine': true }; netSaved.firewallText = 7; C.applyChoices(netSaved);
+    ok(netDef && netBack && netOldOk && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.count && !S.rangeOn.net && S.rangeStart === '' && S.rangeCount === '' && S.rangeNet === '' && S.uplink === false && S.uplinkSet === false &&
+      S.uplinkAddr === '' && S.uplinkFw === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
+      'the choices file keeps the gateway, its uplink, the firewall, the range and its Override boxes, the machines with internet access, and an edited text, and an old file gives the defaults');
     // The picture of the lab follows the choices. A node is found by the name its machine has in the manifest.
     var node = function (text, n) { var r = new RegExp('<g data-node="' + n + '" data-state="([a-z]+)"(?: data-kind="([a-z]+)")?>').exec(text); return r ? r[1] + (r[2] ? ':' + r[2] : '') : ''; };
     var lnk = function (text, n) { var r = new RegExp('<g data-link="' + n + '" data-state="([a-z]+)">').exec(text); return r ? r[1] : ''; };
@@ -7704,20 +8408,25 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var svg = C.topologySvg(m, v), gwN = C.BASE.vms.filter(function (b) { return b.role === 'gateway'; })[0].name;
     ok(svg.indexOf('<svg viewBox="0 0 960 ') === 0 && svg.slice(-6) === '</svg>' && svg.indexOf('undefined') < 0 && svg.indexOf('NaN') < 0 &&
       C.BASE.vms.every(function (b) { return b.name === gwN ? node(svg, 'gateway') === 'in:linux' && svg.indexOf('>' + b.name + '<') > 0 : node(svg, b.name) === 'in' && svg.indexOf(b.name) > 0; }) &&
-      C.SERVICES.length > 0 && C.SERVICES.every(function (s) { return svg.indexOf(s.name) > 0; }) && svg.indexOf(C.OLD_V4 + '.0.0/16 and ' + C.OLD_V6 + '/112') > 0 && node(svg, 'firewall') === 'in:' + C.NET_OS_DEFAULT && svg.indexOf('>External firewall: FortiGate (FortiOS)<') > 0 && svg.indexOf('>internet for ' + ntpHosts.join(', ') + '<') > 0 && svg.indexOf('>the rest stays in ' + B16 + '<') > 0 &&
-      svg.indexOf('data-link="one-trunk"') < 0 && svg.indexOf('>Trunk T1<') > 0 && svg.indexOf('>Trunk T2<') > 0 && ['L1', 'L2', 'L3', 'L4'].every(function (l) { return lnk(svg, l) === 'in'; }) && svg.indexOf('>Every shared segment has its default VLAN ID and subnet.<') > 0,
-      'the lab picture shows every machine and service name of the default build, the two blocks, two trunks, and the external firewall');
-    S.vms[gwN].name = 'edge-fw'; S.vms['static-2'].include = false; S.vms['rtr-peer-1'].include = false; S.v4 = '10.77'; S.vlans[40] = '140'; S.sw.a = 'FS-424E-FPOE'; S.ports.PORT_EP1 = 'port5'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
+      C.SERVICES.length > 0 && C.SERVICES.every(function (s) { return svg.indexOf(s.name) > 0; }) && svg.indexOf(v.range.cidr + ' and ' + C.OLD_V6 + '/112') > 0 && node(svg, 'firewall') === 'in:' + C.NET_OS_DEFAULT && svg.indexOf('>External firewall: FortiGate (FortiOS)<') > 0 && svg.indexOf('>internet for ' + ntpHosts.join(', ') + '<') > 0 && svg.indexOf('>the rest stays in ' + v.range.cidr + '<') > 0 &&
+      svg.indexOf('data-link="one-trunk"') < 0 && svg.indexOf('>Trunk T1<') > 0 && svg.indexOf('>Trunk T2<') > 0 && ['L1', 'L2', 'L3', 'L4'].every(function (l) { return lnk(svg, l) === 'in'; }) && svg.indexOf('>Subnets, contiguous from ' + C.OLD_V4 + '.0.0: 10 ' + sub4(10, '.0/24') + ', ') > 0 &&
+      svg.indexOf('>Loopback ' + sub4(250, '.11') + '<') > 0 && svg.indexOf('>' + sub4(254, '.1') + '<') > 0 && svg.indexOf('>' + sub4(200, '.0/31') + '<') > 0 && svg.indexOf(C.OLD_V4 + '.250.') < 0 && svg.indexOf(C.OLD_V4 + '.200.') < 0,
+      'the lab picture shows every machine and service name of the default build, the lab network range, the contiguous subnets, two trunks, and the external firewall');
+    ok(svg.indexOf('>an additional firewall, not ' + gwN + '<') > 0 && svg.indexOf('>gateway and<') > 0 && svg.indexOf('>lab firewall<') > 0 && lnk(svg, 'uplink') === 'out' && svg.indexOf('>uplink of ') < 0,
+      'the picture names the external firewall as an additional firewall, and the gateway as the lab firewall');
+    S.uplink = true; var svgUp = C.topologySvg(); S.uplink = false;
+    ok(lnk(svgUp, 'uplink') === 'in' && svgUp.indexOf('>uplink of ' + gwN + '<') > 0, 'the picture draws the uplink of the gateway when the build keeps it');
+    S.vms[gwN].name = 'edge-fw'; S.vms['static-2'].include = false; S.vms['rtr-peer-1'].include = false; S.v4 = '10.77'; S.vlans[40] = '140'; S.sw.a = 'FS-424E-FPOE'; S.ports.PORT_EP1 = 'port5'; S.vms['svc-201a'].addr['n1.0'] = '10.77.' + idx(10) + '.15/24';
     v = C.validateAll(); m = C.buildManifest(v); svg = C.topologySvg(m, v);
     ok(svg.indexOf('>edge-fw<') > 0 && svg.indexOf('edge-fw .1, sw-424e-1 .11') > 0 && node(svg, 'static-2') === 'out' && svg.indexOf('>static-2  left out<') > 0 && node(svg, 'rtr-peer-1') === 'out' && lnk(svg, 'L1') === 'out' && lnk(svg, 'L3') === 'out' && lnk(svg, 'L2') === 'in' && lnk(svg, 'L4') === 'in' &&
-      svg.indexOf('10.77.0.0/16') > 0 && svg.indexOf('>Loopback 10.77.250.22<') > 0 && svg.indexOf('>Lab VLANs: 10, 20, 30, 140, 41, 42, 50.<') > 0 && svg.indexOf('>sw-424e-1  (FS-424E-FPOE)<') > 0 && svg.indexOf('>port5: laptop with supplicant (802.1X, VLAN 140)<') > 0 &&
-      svg.indexOf('segment 40 uses VLAN 140 and 10.77.140.0/24') > 0 && svg.indexOf('>  and 140.2, 41.2, 50.2<') > 0 && svg.indexOf('>radius-201a  .15<') > 0 && svg.indexOf(C.OLD_V4 + '.') < 0,
+      v.range.net === '10.77.0.0' && svg.indexOf(v.range.cidr + ' and ') > 0 && svg.indexOf('>Loopback 10.77.' + idx(250) + '.22<') > 0 && svg.indexOf('>Lab VLANs: 10, 20, 30, 140, 41, 42, 50.<') > 0 && svg.indexOf('>sw-424e-1  (FS-424E-FPOE)<') > 0 && svg.indexOf('>port5: laptop with supplicant (802.1X, VLAN 140)<') > 0 &&
+      svg.indexOf(', 40 10.77.' + idx(40) + '.0/24, ') > 0 && svg.indexOf('>  and ' + idx(40) + '.2, ' + idx(41) + '.2, ' + idx(50) + '.2<') > 0 && svg.indexOf('>radius-201a  .15<') > 0 && svg.indexOf('>an additional firewall, not edge-fw<') > 0 && svg.indexOf(C.OLD_V4 + '.') < 0,
       'the picture follows a new name, machines left out, a moved block, a changed VLAN ID, an edited address, another switch model, and a typed port');
     reset('workstation'); var svgOne = C.topologySvg(); reset('wsl'); var svgWsl = C.topologySvg(); reset('proxmox');
     ok(svgOne.indexOf('<g data-link="one-trunk">') > 0 && svgOne.indexOf('>Trunk T1<') < 0 && svgOne.indexOf('T1 and T2 are one network.<') > 0 && node(svgWsl, 'gateway') === 'na:linux' && node(svgWsl, 'rtr-peer-1') === 'na' && node(svgWsl, 'svc-201a') === 'in' &&
       svgWsl.indexOf('>no trunk on WSL<') > 0 && svgWsl.indexOf('data-link="one-trunk"') < 0 && lnk(svgWsl, 'L1') === 'out', 'the picture shows one trunk where the platform has one, and what WSL does not build');
-    S.gwOs = 'asa'; var svgDev = C.topologySvg(); S.fwOs = 'junos'; S.inet[ntpHosts[0]] = false; S.inet[ntpHosts[1]] = false; S.rangeCount = '128'; var svgFw = C.topologySvg(); reset('proxmox');
-    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway<') > 0 && svgDev.indexOf('>gateway and firewall<') < 0 && svgDev.indexOf('>' + gwN + ': shut down<') > 0 &&
+    S.gwOs = 'asa'; var svgDev = C.topologySvg(); S.fwOs = 'junos'; S.inet[ntpHosts[0]] = false; S.inet[ntpHosts[1]] = false; S.rangeOn = { count: true }; S.rangeCount = '128'; var svgFw = C.topologySvg(); reset('proxmox');
+    ok(node(svgDev, 'gateway') === 'in:asa' && svgDev.indexOf('>Gateway device<') > 0 && svgDev.indexOf('>Cisco ASA<') > 0 && svgDev.indexOf('>gateway<') > 0 && svgDev.indexOf('>lab firewall<') < 0 && svgDev.indexOf('>an additional firewall<') > 0 && svgDev.indexOf('>' + gwN + ': shut down<') > 0 &&
       node(svgDev, 'firewall') === 'in:' + C.NET_OS_DEFAULT && node(svgFw, 'gateway') === 'in:asa' && node(svgFw, 'firewall') === 'in:junos' && svgFw.indexOf('>External firewall: Juniper Junos OS<') > 0 && svgFw.indexOf('>no machine has internet access<') > 0 &&
       svgFw.indexOf('>the rest stays in ' + C.OLD_V4 + '.0.0/17<') > 0, 'the picture shows a device as the gateway, and the external firewall with its operating system, its machines, and its range');
     // Choices kept in the browser
@@ -7744,6 +8453,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     function pick(sel, value) { var el = document.querySelector(sel); el.value = value; el.dispatchEvent(new Event('change', { bubbles: true })); return el; }
     function stat(i) { return document.querySelectorAll('#stats .stat b')[i].textContent; }
     function body() { return document.getElementById('tabbody').textContent; }
+    // The lab networks in the order of the Segments table: the contiguous numbering gives each one its place in that order.
+    var netIds = C.NETS.map(function (n) { return n.id; }), idx = function (id) { return netIds.indexOf(id); };
     C.resetVms(); S.platform = 'vcenter'; S.version = '8'; S.defaultFlavor = C.DEFAULT_FLAVOR; S.v4 = C.OLD_V4; S.v6 = C.OLD_V6; S.images = {}; C.resetParams(); sigDeps = '';
     renderPlatforms(); renderMachines(); renderVlans(); $('v4').value = S.v4; $('v6').value = S.v6; refresh();
     ok(stat(0) === '12' && stat(1) === '17', 'the page starts with 12 machines and 17 vCPUs');
@@ -7804,9 +8515,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // addressing
     type('#v4', '10.77');
     document.querySelector('[data-tab="manifest"]').click();
-    ok(body().indexOf('10.77.10.10/24') > 0, 'a new IPv4 block appears in the manifest');
-    type('input[data-vm="svc-201a"][data-slot="n1.0"]', '10.77.10.15/24');
-    ok(body().indexOf('10.77.10.15/24') > 0, 'an edited machine address appears in the manifest');
+    ok(body().indexOf('10.77.' + idx(10) + '.10/24') > 0, 'a new IPv4 block appears in the manifest');
+    type('input[data-vm="svc-201a"][data-slot="n1.0"]', '10.77.' + idx(10) + '.15/24');
+    ok(body().indexOf('10.77.' + idx(10) + '.15/24') > 0, 'an edited machine address appears in the manifest');
     type('input[data-vm="svc-201a"][data-slot="n1.1"]', '10.77.20.9/24');
     ok(/err/.test(document.querySelector('input[data-vm="svc-201a"][data-slot="n1.1"]').className), 'an address outside its segment is marked');
     type('input[data-vlan="40"]', '140');
@@ -7815,18 +8526,53 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(/err/.test(document.querySelector('input[data-vlan="41"]').className), 'a duplicate VLAN is marked');
     // The gateway section, the lab network range, and the external firewall. The block is 10.77 and segment 40 has VLAN 140 at this point.
     var gwText = function () { return $('gwcfg').textContent; }, fwText = function () { return $('fwtext').value; }, inetBox = function (n) { return document.querySelector('[data-inet="' + n + '"]'); };
-    ok($('gwos').options.length === C.NET_GW.length && $('fwos').options.length === C.NET_OS.length && $('gwos').value === 'linux' && $('fwos').value === C.NET_OS_DEFAULT && $('gwcfg').hidden && $('gwacts').style.display === 'none' && $('gwnotes').textContent.indexOf('Nothing to enter') === 0 &&
-      fwText().indexOf('config router static\n') === 0 && fwText().indexOf('set dst 10.77.0.0 255.255.0.0\n') > 0 && $('fwreset').hidden && $('fwedited').hidden && $('rangesum').textContent.indexOf('10.77.0.0/16') === 0,
+    ok($('gwos').options.length === C.NET_GW.length && $('fwos').options.length === C.NET_OS.length && $('gwos').value === 'linux' && $('fwos').value === C.NET_OS_DEFAULT && $('gwcfg').hidden && $('gwacts').style.display === 'none' && $('gwnotes').textContent.indexOf('No text needed') === 0 &&
+      fwText().indexOf('config router static\n') === 0 && fwText().indexOf('set dst 10.77.0.0 ') > 0 && $('fwreset').hidden && $('fwedited').hidden && $('rangesum').textContent.indexOf('10.77.0.0/') === 0,
       'the gateway section starts with the Linux router, and the external firewall text follows the address block');
+    var fwCard = $('fwos').closest('.card'), gwNow = C.validateAll().uplink.gw;
+    ok(fwCard.querySelector('h2 .n').textContent === '11' && (fwCard.querySelector('h2 .badge') || {}).textContent === 'additional firewall' && $('fwnotgw').textContent.indexOf('It is not ' + gwNow + ', which stays the lab\'s own firewall') === 0 &&
+      $('gwos').closest('.card').querySelector('h2 .n').textContent === '10' && document.querySelectorAll('#left > .card').length === 11 && $('fwnotes').textContent.indexOf('This is an additional firewall') > 0,
+      'the external firewall is section 11 and is marked as an additional firewall, which is not the gateway');
+    // The uplink of the gateway. The Manifest tab is open at this point.
+    ok($('gwupbox').style.display === '' && !$('gwuplink').checked && $('upaddrbox').style.display === 'none' && $('gwupnote').textContent.indexOf('Without the uplink') === 0 && body().indexOf('"uplink": {') < 0, 'the uplink of the gateway is offered for the Linux router, and it is off at the start');
+    $('gwuplink').click();
+    ok(S.uplink === true && $('upaddrbox').style.display === '' && $('upauto').textContent.indexOf('DHCP') === 0 && $('upstatic').style.display === 'none' && $('gwupnote').textContent.indexOf('With the uplink kept') === 0 && body().indexOf('"uplink": {') > 0 &&
+      body().indexOf('"vm": "' + gwNow + '"') > 0 && $('fwnotes').textContent.indexOf('keeps its uplink (section 10)') > 0, 'ticking Uplink keeps the adapter of the gateway in the manifest, and the firewall notes follow');
+    $('upset').click(); type('#upaddr', '192.168.50.2/24'); type('#upfw', '192.168.50.1');
+    ok(S.uplinkSet && $('upstatic').style.display === '' && $('upauto').style.display === 'none' && body().indexOf('"address": "192.168.50.2/24"') > 0 && body().indexOf('"gateway": "192.168.50.1"') > 0 && fwText().indexOf('set gateway 192.168.50.2\n') > 0 &&
+      fwText().indexOf('<LAB_GATEWAY_ADDRESS>') < 0 && $('upmsg').textContent === '' && /"dns": \[\s*"192\.168\.50\.1"\s*\]/.test(body()) && $('gwupnote').textContent.indexOf('asks 192.168.50.1, the external firewall') > 0,
+      'an uplink address that is set appears in the manifest and in the firewall text, and the external firewall is the DNS server');
+    type('#updns', '9.9.9.9');
+    ok(/"dns": \[\s*"9\.9\.9\.9"\s*\]/.test(body()) && /chg/.test($('updns').className) && $('gwupnote').textContent.indexOf('asks 9.9.9.9.') > 0, 'a DNS server that is typed takes the place of the external firewall');
+    type('#updns', '');
+    type('#upfw', '192.168.60.1');
+    ok(/err/.test($('upfw').className) && $('upmsg').textContent.indexOf('DHCP is used') > 0 && body().indexOf('"address": "192.168.50.2/24"') < 0 && fwText().indexOf('<LAB_GATEWAY_ADDRESS>') > 0, 'an uplink address that cannot be used is marked, and DHCP is used');
+    $('upset').click(); $('gwuplink').click();
     pick('#gwos', 'junos');
+    ok(!S.uplink && $('gwupbox').style.display === 'none' && $('gwupnote').style.display === 'none', 'a device as the gateway has no uplink option, because it brings its own');
     ok(S.gwOs === 'junos' && !$('gwcfg').hidden && $('gwacts').style.display === '' && gwText().indexOf('set interfaces <GW_TRUNK_PORT> unit 40 vlan-id 140\n') > 0 && $('gwextra').textContent.indexOf('set security zones security-zone ' + C.BASE.lab + ' interfaces ') > 0 &&
       $('gwnotes').textContent.indexOf('Before you use it') === 0 && $('fwnotes').textContent.indexOf('give the gateway device an uplink') > 0, 'a device as the gateway gets its text, and the firewall notes follow');
-    type('#rstart', '10.77.0.0'); type('#rcount', '64');
-    ok($('rangesum').textContent.indexOf('10.77.0.0/18') === 0 && fwText().indexOf('set dst 10.77.0.0 255.255.192.0\n') > 0 && $('rangewarn').textContent.indexOf('does not hold') > 0 && /chg/.test($('rcount').className) && $('rangeout').textContent.indexOf('10.77.63.255') > 0,
-      'the lab network range gives its supernet to the external firewall, and warns when it does not hold the lab');
+    // The lab network range is in the IP addressing section. The page picks its values, and a box overrides each one.
+    var rng = C.validateAll().range, need = rng.need, rbox = function (k) { return document.querySelector('[data-rangeon="' + k + '"]'); }, seg40 = function () { return document.querySelector('[data-m="subnet"][data-seg="40"]').textContent; };
+    ok($('rangebox').closest('.card').querySelector('h2').textContent.indexOf('IP addressing') > 0 && !Array.prototype.some.call(document.querySelectorAll('#left .card h2'), function (h) { return h.textContent.indexOf('Lab network range') >= 0; }) &&
+      $('rstartv').textContent === '10.77.0.0' && $('rcountv').textContent === String(need) && $('rnetv').textContent === rng.cidr && $('rstart').style.display === 'none' && $('rcount').style.display === 'none' && $('rnet').style.display === 'none' &&
+      !rbox('start').checked && !rbox('count').checked && !rbox('net').checked && $('rplanv').textContent === 'Contiguous' && $('othernets').textContent.indexOf('Loopbacks 10.77.' + idx(250) + '.0/24') > 0 && $('rangesum').textContent === rng.cidr + ', picked by the page' &&
+      seg40() === '10.77.' + idx(40) + '.0/24', 'the lab network range is part of the IP addressing section, and the page picks the starting IP, the number of subnets, and the supernet');
+    rbox('count').click();
+    var sameAsPage = $('rcount').value === String(need) && $('rcount').style.display === '' && $('rcountv').style.display === 'none' && $('rangesum').textContent.indexOf(rng.cidr) === 0 && S.rangeOn.count === true;
+    type('#rcount', '64');
+    ok(sameAsPage && $('rangesum').textContent === '10.77.0.0/18, with values you set' && fwText().indexOf('set dst 10.77.0.0 255.255.192.0\n') > 0 && /chg/.test($('rcount').className) && $('rnetnote').textContent.indexOf('10.77.63.255') > 0 &&
+      $('rcountnote').textContent.indexOf('The page would pick ' + need) > 0 && $('rangewarn').textContent === '', 'ticking Override keeps the value of the page until another one is typed, and the external firewall takes the new supernet');
     type('#rcount', 'many');
-    ok(/err/.test($('rcount').className) && $('rcountmsg').textContent.indexOf('256 is used') > 0 && $('rangesum').textContent.indexOf('10.77.0.0/16') === 0, 'a number of subnets that cannot be used is marked, and the default is used');
-    type('#rcount', ''); type('#rstart', '');
+    ok(/err/.test($('rcount').className) && $('rcountmsg').textContent.indexOf(need + ' is used') > 0 && $('rangesum').textContent.indexOf(rng.cidr) === 0, 'a number of subnets that cannot be used is marked, and the value of the page is used');
+    rbox('count').click(); rbox('net').click(); type('#rnet', '10.77.0.0/24');
+    ok(!S.rangeOn.count && $('rcount').style.display === 'none' && $('rcountv').textContent === String(need) && $('rangewarn').textContent.indexOf('does not hold') > 0 && $('rangewarn').textContent.indexOf('is smaller than the range above it') > 0 &&
+      fwText().indexOf('set dst 10.77.0.0 255.255.255.0\n') > 0, 'a supernet that is set and too small is used, with a warning that names the lab subnets it does not hold');
+    rbox('net').click(); rbox('start').click(); type('#rstart', '10.77.64.0');
+    ok($('rangesum').textContent.indexOf('10.77.64.0/') === 0 && seg40() === '10.77.' + (64 + idx(40)) + '.0/24' && fwText().indexOf('set dst 10.77.64.0 ') > 0 && $('rstartnote').textContent.indexOf('The page would pick 10.77.0.0') === 0,
+      'a starting IP that is set moves the subnets of the lab and the supernet');
+    rbox('start').click();
+    ok(!S.rangeOn.start && !S.rangeOn.count && !S.rangeOn.net && $('rangesum').textContent === rng.cidr + ', picked by the page' && seg40() === '10.77.' + idx(40) + '.0/24', 'with every Override box cleared, the page picks the range again');
     ok(inetBox('svc-201a').checked && inetBox('svc-201b').checked && !inetBox('admin-201').checked && !inetBox('gw-201') && fwText().indexOf('set comment "svc-201a"') > 0 && fwText().indexOf('set comment "admin-201"') < 0, 'the hosts of the NTP servers have internet access from the start');
     inetBox('admin-201').click(); inetBox('svc-201a').click();
     ok(S.inet['admin-201'] === true && S.inet['svc-201a'] === false && inetBox('admin-201').checked && fwText().indexOf('set comment "admin-201"') > 0 && fwText().indexOf('set comment "svc-201a"') < 0, 'ticking a machine gives it internet access in the firewall text');
@@ -7848,7 +8594,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(!!pic('gateway') && pic('gateway').getAttribute('data-kind') === 'junos' && !!pic('firewall') && pic('firewall').getAttribute('data-kind') === 'asa' && body().indexOf('External firewall: Cisco ASA') > 0 && !parsed.querySelector('parsererror') &&
       parsed.documentElement.nodeName === 'svg' && !!document.querySelector('#tabbody [data-act="svg"]'), 'the Diagram tab draws the lab with the gateway device and the external firewall');
     pick('#gwos', 'linux'); pick('#fwos', C.NET_OS_DEFAULT);
-    ok(pic('gateway').getAttribute('data-kind') === 'linux' && pic('firewall').getAttribute('data-kind') === C.NET_OS_DEFAULT && body().indexOf('10.77.0.0/16') > 0 && body().indexOf('Lab VLANs: 10, 20, 30, 140, 41, 42, 50.') > 0 && body().indexOf('edge-host') > 0,
+    ok(pic('gateway').getAttribute('data-kind') === 'linux' && pic('firewall').getAttribute('data-kind') === C.NET_OS_DEFAULT && body().indexOf(C.validateAll().range.cidr + ' and ') > 0 && body().indexOf('an additional firewall, not ') > 0 && body().indexOf('Lab VLANs: 10, 20, 30, 140, 41, 42, 50.') > 0 && body().indexOf('edge-host') > 0,
       'the Diagram tab goes back to the Linux router, and shows the block, the VLAN IDs, and the names of the page');
     document.querySelector('[data-tab="manifest"]').click();
     // platforms
@@ -7899,8 +8645,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       // A mixed configuration, for checking the manifest with make-seed.py outside the browser.
       C.resetVms(); S.platform = 'proxmox'; S.version = '8'; C.resetParams(); S.v4 = '10.77'; S.v6 = 'fd12:3456:789a::';
       S.vms['gw-201'].name = 'edge-fw'; S.vms['gw-201'].flavor = 'rocky-10'; S.vms['svc-201a'].flavor = 'debian-13'; S.vms['svc-201b'].flavor = 'fedora-43';
-      S.vms['dhcp-201'].flavor = 'ubuntu-26.04'; S.vms['ca-201'].flavor = 'alma-10'; S.vms['static-1'].flavor = 'rocky-10'; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
-      S.vlans[40] = '140'; S.vms['mcast-src-201'].include = false; S.vms['attacker-201'].mem = '3'; S.vms['svc-201b'].name = 'collector-b';
+      S.vms['dhcp-201'].flavor = 'ubuntu-26.04'; S.vms['ca-201'].flavor = 'alma-10'; S.vms['static-1'].flavor = 'rocky-10'; S.vms['svc-201a'].addr['n1.0'] = '10.77.' + C.NETS.map(function (n) { return n.id; }).indexOf(10) + '.15/24';
+      S.vlans[40] = '140'; S.vms['mcast-src-201'].include = false; S.vms['attacker-201'].mem = '3'; S.vms['svc-201b'].name = 'collector-b'; S.uplink = true; S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1';
       var m = C.buildManifest(C.validateAll());
       var el2 = $('selftest'); el2.hidden = false; el2.setAttribute('data-manifest', btoa(unescape(encodeURIComponent(JSON.stringify(m)))));
       var m2 = (function () { S.platform = 'vxrail'; S.version = '9'; C.resetParams(); return C.buildManifest(C.validateAll()); })();

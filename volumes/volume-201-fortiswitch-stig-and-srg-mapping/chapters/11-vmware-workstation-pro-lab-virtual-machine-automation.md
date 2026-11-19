@@ -99,7 +99,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 ## Security and Best Practices
 
 - **Bridged networks reach real cables.** A machine on the bridged network shares that cable with the switches under test. Do not bridge the lab to your production adapter, and use an adapter that cables only to the lab.
-- **NAT is the build path only.** `vmnet8` gives every machine internet access until you run `-Action RemoveBuildNics`. Run it as soon as the packages are installed.
+- **NAT is the build path only.** `vmnet8` gives every machine internet access until you run `-Action RemoveBuildNics`. Run it as soon as the packages are installed. When the manifest has `uplink` (the **Uplink** box of the Lab Builder, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `RemoveBuildNics` and `Snapshot` leave adapter 0 of the gateway on, because it is the uplink to the external firewall.
 - **Administrator rights.** The Virtual Network Editor needs them, and `vmrun` does not. Run the script as a normal user.
 - **Protect the key and the folder.** The private key of `-SshKeyFile` stays out of the repository and the lab folders. `work\` holds the seeds. Delete it when you finish.
 - **Isolate the host.** The lab holds test attackers. Do not enable Windows network sharing between the lab adapters and other adapters, and do not let Windows bridge them.

@@ -223,6 +223,9 @@ if (-not $ovftool) { throw "ovftool.exe was not found in $WorkstationDir\OVFTool
 foreach ($exe in $vmrun, $ovftool, $vdisk) { if (-not (Test-Path $exe)) { throw "Not found: $exe. Is Workstation Pro installed, is -WorkstationDir right, and is OVF Tool installed (-OvfToolPath)?" } }
 
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
+# The machine whose first adapter stays as the uplink to the external firewall. The Lab Builder writes "uplink" into
+# the manifest when the build keeps one. RemoveBuildNics and Snapshot then leave that adapter alone.
+$uplinkVm = if ($lab.PSObject.Properties['uplink'] -and $lab.uplink.vm) { [string]$lab.uplink.vm } else { '' }
 $names = @{}; $i = 0
 foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
 $vmnetOf = @{ 'lab201-t1' = $BridgeVmnet; 'lab201-t2' = $BridgeVmnet; 'lab201-oob' = $BridgeVmnet; 'lab201-lan220' = $Lan220Vmnet; 'lab201-wan' = $WanVmnet }
@@ -367,6 +370,8 @@ if ($Action -eq 'Snapshot') {
   # it back, and with it the machine's path to the internet. So the build adapters have to go first.
   $withBuildNic = @()
   foreach ($vmDef in $lab.vms) {
+    # The first adapter of the uplink machine is its uplink to the external firewall, and it stays.
+    if ($vmDef.name -eq $uplinkVm) { continue }
     $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
     if ((Test-Path $vmx) -and (Select-String -Path $vmx -Pattern '^\s*ethernet0\.present\s*=\s*"TRUE"' -Quiet)) { $withBuildNic += $vmDef.name }
   }
@@ -421,6 +426,7 @@ if ($Action -eq 'Remove') {
 
 if ($Action -eq 'RemoveBuildNics') {
   foreach ($vmDef in $lab.vms) {
+    if ($vmDef.name -eq $uplinkVm) { Write-Host "$($vmDef.name) keeps its first adapter: it is the uplink to the external firewall."; continue }
     $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
     if (-not (Test-Path $vmx)) { continue }
     if (-not $PSCmdlet.ShouldProcess($vmDef.name, 'Switch the build network adapter off')) { continue }

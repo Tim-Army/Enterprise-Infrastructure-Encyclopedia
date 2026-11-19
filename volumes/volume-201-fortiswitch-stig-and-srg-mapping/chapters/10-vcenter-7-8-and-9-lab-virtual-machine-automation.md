@@ -103,7 +103,7 @@ Storage goes on the vSAN datastore, and with the default mirroring policy the th
 
 The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-Wait`, `-WaitMinutes`, `-SnapshotName`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Check`, `Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` do the same. `Check` also tests the datacenter, the host or cluster, and, with `-UseExistingSwitch`, the distributed switch.
 
-`Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` look for the machines only in the lab folder (`-FolderName`). A machine with the same name elsewhere in vCenter is never touched. If you built the lab in another folder, pass the same `-FolderName` to these actions.
+`Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` look for the machines only in the lab folder (`-FolderName`). A machine with the same name elsewhere in vCenter is never touched. If you built the lab in another folder, pass the same `-FolderName` to these actions. When the manifest has `uplink` (the **Uplink** box of the Lab Builder, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `RemoveBuildNics` and `Snapshot` leave the first adapter of the gateway in place, because it is the uplink to the external firewall.
 
 Example for vCenter 8 with distributed switches:
 

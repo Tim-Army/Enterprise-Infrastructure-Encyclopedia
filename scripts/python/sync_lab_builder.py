@@ -8,8 +8,9 @@ copy of lab-scripts/common/lab201-vms.json (the manifest),
 lab-scripts/common/flavors.json (the Linux flavors), the lab walkthroughs named
 in lab-scripts/walkthroughs.list with the labs of those chapters (each with the
 features its text names, the SRG requirements in its table, the switch its Uses
-line names, and the machines it uses), the service names of the Hosts table in
-Chapter 999 with their hosts and addresses, and
+line names, the machines it uses, and the lab networks it uses), the service
+names of the Hosts table in Chapter 999 with their hosts and addresses, the
+networks of the Segments table in Chapter 999, and
 lab-scripts/common/fortiswitch-features.json (which switch model series support
 the lab features), so that it works with no server. Without --check the copies are rewritten. With
 --check the script prints a message and exits with status 1 if a copy is out of
@@ -17,7 +18,8 @@ date, which validate.sh uses.
 
 The script also compares the numbers that the documents of the volume state
 about the labs and the page (how many SRG requirements the lab chapters test,
-and how many checks the self-test of the page makes) with what the lab chapters
+how many lab networks take a subnet, and how many checks the self-test of the
+page makes) with what the lab chapters
 and the page give. STATED lists those numbers. The script never changes a
 document. It names the document, the line, and both numbers, and exits with
 status 1, with or without --check.
@@ -40,6 +42,10 @@ SRG_ROW = re.compile(r"^\| `(SRG-[A-Z]+-\d{6}-[A-Z0-9]+-\d{6})` \| (I{1,3}) \| (
 HOST_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| [^|]*? on ([a-z][a-z0-9-]*) \|")
 # The same kind of row, with the IPv4 address of the service name: ... | P1, P2 | 10 | `10.201.10.10` | ...
 SERVICE_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| ([^|]*?) on ([a-z][a-z0-9-]*) \| [^|]* \| [^|]* \| `(\d+\.\d+\.\d+\.\d+)` \|")
+# A row of the Segments table in Chapter 999: | 10 | 10 | Lab-Services | `10.201.10.0/24` | `fd00:db8:201::a00/120` | .1 gw-201 | Purpose |
+NETWORK_ROW = re.compile(r"^\| (\d+) \| ([^|]*?) \| ([A-Za-z0-9-]+) \| `\d+\.\d+\.(\d+)\.0/24` \| `[^`]*` \| ([^|]*?) \| ([^|]*?) \|\s*$")
+# A row of the Hosts table with an IPv4 address. The host name is empty on a row that continues the host above it.
+HOST_ADDR_ROW = re.compile(r"^\|\s*([a-z][a-z0-9-]*)?\s*\|[^|]*\|[^|]*\|[^|]*\|\s*`\d+\.\d+\.(\d+)\.\d+`\s*\|")
 TOKEN = re.compile(r"`([a-z][a-z0-9-]*)`")
 # The host names of the two switches under test in the lab chapters (SW_DEFAULT in the Lab Builder page).
 SWITCHES = {"sw-648f-1": "a", "sw-2048f-1": "b"}
@@ -83,11 +89,50 @@ def load_services():
     return services
 
 
-def lab_facts(lab, body, patterns, machines, aliases, other):
-    """What one lab's text says: the features it names, its SRG rows, the switch it runs on, and the hosts it uses.
+def load_networks():
+    """The networks of the Segments table in Chapter 999, in the order of the table.
+
+    The Lab Builder gives each one that a build uses the next /24 of the lab network range, so the order of the
+    table is the order of the subnets. A network with no host and no gateway (the parking VLAN and the native
+    VLAN) takes no subnet, and "hosts" is false for it.
+    """
+    networks = []
+    with open(os.path.join(VOLUME, "chapters", "999-shared-lab-infrastructure.md"), "r", encoding="utf-8") as fh:
+        for line in fh:
+            m = NETWORK_ROW.match(line)
+            if not m:
+                continue
+            number, vlan, name, octet, gateway, purpose = (part.strip() for part in m.groups())
+            if int(octet) != int(number):
+                WARNINGS.append("Segment %s of Chapter 999 has the subnet with third octet %s, so the Lab Builder cannot number it" % (number, octet))
+                continue
+            networks.append({"id": int(number), "name": name, "vlan": vlan, "hosts": not (gateway == "none" and "no hosts" in purpose)})
+    return networks
+
+
+def load_host_nets():
+    """The lab networks in which each host of the Hosts table in Chapter 999 has an address."""
+    nets, name = {}, None
+    with open(os.path.join(VOLUME, "chapters", "999-shared-lab-infrastructure.md"), "r", encoding="utf-8") as fh:
+        for line in fh:
+            m = HOST_ADDR_ROW.match(line)
+            if not m:
+                if not line.startswith("|"):
+                    name = None
+                continue
+            name = m.group(1) or name
+            if name:
+                nets.setdefault(name, set()).add(int(m.group(2)))
+    return nets
+
+
+def lab_facts(lab, body, patterns, machines, aliases, other, host_nets, net_ids, block):
+    """What one lab's text says: the features it names, its SRG rows, the switch it runs on, the hosts it uses,
+    and the lab networks it uses.
 
     The switch comes from the lab's Uses line only, because the rest of the text can name the other switch
     in passing. The machines come from the whole lab, so that leaving out the others cannot break a step.
+    A lab uses a network when its text has an address in it, or names a host of the Hosts table that has one.
     """
     text = "\n".join(body)
     lab["features"] = [key for key, pattern in patterns if pattern.search(text)]
@@ -113,6 +158,10 @@ def lab_facts(lab, body, patterns, machines, aliases, other):
             found.add(aliases[token])
     lab["machines"] = [name for name in machines if name in found]
     lab["other"] = [name for name in other if name in TOKEN.findall(uses)]
+    nets = set(int(n) for n in re.findall(r"(?<![0-9.])%s\.(\d{1,3})\.\d" % re.escape(block), text))
+    for token in TOKEN.findall(text):
+        nets |= host_nets.get(token, set())
+    lab["nets"] = sorted(n for n in nets if n in net_ids)
     if lab["file"][:2] in ("04", "05", "06", "07", "08") and not uses:
         WARNINGS.append("Lab %s has no Uses line, so the Lab Builder cannot tell which switch it runs on" % lab["id"])
     known = set(machines) | set(aliases) | set(SWITCHES) | set(other) | NOT_HOSTS
@@ -134,6 +183,9 @@ def load_labs():
     patterns = [(key, re.compile(words, re.I)) for key, words in keywords.items()]
     machines, aliases, other = load_hosts()
     del WARNINGS[:]
+    networks, host_nets = load_networks(), load_host_nets()
+    net_ids = set(n["id"] for n in networks if n["hosts"])
+    block = load_json(os.path.join(VOL, "common", "lab201-vms.json")).get("ipv4_prefix", "10.201")
     walkthroughs, labs = [], []
     with open(os.path.join(VOL, "walkthroughs.list"), "r", encoding="utf-8") as fh:
         for line in fh:
@@ -146,7 +198,7 @@ def load_labs():
 
             def close():
                 if lab is not None:
-                    lab_facts(lab, body, patterns, machines, aliases, other)
+                    lab_facts(lab, body, patterns, machines, aliases, other, host_nets, net_ids, block)
                     labs.append(lab)
 
             with open(os.path.join(VOLUME, "chapters", name), "r", encoding="utf-8") as chapter:
@@ -158,7 +210,7 @@ def load_labs():
                     elif lab is not None:
                         body.append(text)
             close()
-    return {"walkthroughs": walkthroughs, "labs": labs, "services": load_services()}
+    return {"walkthroughs": walkthroughs, "labs": labs, "services": load_services(), "networks": networks}
 
 
 BLOCKS = [
@@ -185,6 +237,8 @@ STATED = [
     ("lab-scripts/README.md", "each of the # SRG requirements", "rows"),
     ("chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md", "each of the # SRG requirements", "rows"),
     ("chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md", "it runs # checks", "checks"),
+    ("chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md", "A full build uses # of them", "nets"),
+    ("lab-scripts/README.md", "A full build uses # of them", "nets"),
 ]
 
 
@@ -207,7 +261,7 @@ def selftest_checks(page):
     return len(re.findall(r"(?<![\w.$])ok\(", code)) - len(re.findall(r"\bfunction ok\(", code))
 
 
-def lab_numbers(labs, page):
+def lab_numbers(labs, page, networks=()):
     """What each kind of number in STATED is now, and the words that name it in a message."""
     ids, rows = {}, 0
     for lab in labs:
@@ -217,15 +271,16 @@ def lab_numbers(labs, page):
         "ids": (len(set().union(*ids.values())), "the distinct SRG requirements in the lab chapters"),
         "rows": (rows, "the SRG requirements that the Lab Builder lists"),
         "checks": (selftest_checks(page), "the checks that the self-test of the Lab Builder makes"),
+        "nets": (len([n for n in networks if n.get("hosts", True)]) or None, "the lab networks in the Segments table of Chapter 999 that take a subnet"),
     }
     for chapter, found in ids.items():
         numbers["ids:" + chapter] = (len(found), "the distinct SRG requirements in the labs of Chapter %s" % chapter)
     return numbers
 
 
-def stated_problems(labs, page):
+def stated_problems(labs, page, networks=()):
     """Compare each number in STATED with the lab chapters and the page. Returns the problems and the documents read."""
-    numbers = lab_numbers(labs, page)
+    numbers = lab_numbers(labs, page, networks)
     problems, texts = [], {}
     for name, words, kind in STATED:
         path = os.path.join(VOLUME, *name.split("/"))
@@ -294,7 +349,7 @@ def main(argv):
             fh.write(page)
         print("lab builder data: updated (%s)" % ", ".join(stale))
     # The documents state some of these numbers in their text. No copy step keeps those in step, so compare them.
-    problems, documents = stated_problems(loaded["lab201-labs"]["labs"], page)
+    problems, documents = stated_problems(loaded["lab201-labs"]["labs"], page, loaded["lab201-labs"]["networks"])
     if problems:
         print("stated numbers: WRONG. A document states a number that the lab chapters or the page do not give:", file=sys.stderr)
         for problem in problems:

@@ -361,6 +361,9 @@ if ($SkipCertificateCheck) {
 Set-PowerCLIConfiguration -Scope Session -ParticipateInCeip $false -Confirm:$false | Out-Null
 
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
+# The machine whose first adapter stays as the uplink to the external firewall. The Lab Builder writes "uplink" into
+# the manifest when the build keeps one. RemoveBuildNics and Snapshot then leave that adapter alone.
+$uplinkVm = if ($lab.PSObject.Properties['uplink'] -and $lab.uplink.vm) { [string]$lab.uplink.vm } else { '' }
 if (-not $Credential) { $Credential = Get-Credential -Message "Account on $VcenterServer" }
 $server = Connect-VIServer -Server $VcenterServer -Credential $Credential
 
@@ -439,6 +442,8 @@ try {
     # and with it the machine's path to the internet. So the build adapters have to go first.
     $withBuildNic = @()
     foreach ($vmDef in $lab.vms) {
+      # The first adapter of the uplink machine is its uplink to the external firewall, and it stays.
+      if ($vmDef.name -eq $uplinkVm) { continue }
       $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if (-not $vm) { continue }
       $mac = & $macOf $vmDef.name 0
@@ -479,6 +484,7 @@ try {
   }
   if ($Action -eq 'RemoveBuildNics') {
     foreach ($vmDef in $lab.vms) {
+      if ($vmDef.name -eq $uplinkVm) { Write-Host "$($vmDef.name) keeps its first adapter: it is the uplink to the external firewall."; continue }
       $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if (-not $vm) { continue }
       $mac = & $macOf $vmDef.name 0
