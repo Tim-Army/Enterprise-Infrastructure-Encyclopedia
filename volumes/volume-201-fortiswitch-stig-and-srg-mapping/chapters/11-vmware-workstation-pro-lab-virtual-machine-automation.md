@@ -67,7 +67,8 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | `-BridgeVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 220, and the build vmnet. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
 | `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available here, because Workstation has no VLAN-aware switch and those guests cannot tag the trunks. |
-| `-Action` | `Deploy` (default), `Status`, `RemoveBuildNics`, or `Remove`. |
+| `-Action` | `Deploy` (default), `Check`, `Status`, `RemoveBuildNics`, or `Remove`. `Check` changes nothing: it tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest, memory, disk space, and the networks, and says how to fix what is missing. `Status` lists each machine, its state, and the `ssh` line that logs in to it. |
+| `-AddToLibrary` | Opens each machine in Workstation after the build, which lists it in the Library. Not tested yet. |
 
 `-WhatIf` is supported for every action that changes something.
 

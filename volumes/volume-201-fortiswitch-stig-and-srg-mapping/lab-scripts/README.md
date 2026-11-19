@@ -32,6 +32,23 @@ scripts and the manifest, it holds:
   walk the labs, starting with Lab 999.1.
 - `START-CLAUDE.txt`: the line to start with.
 
+The walkthrough files have short names in the zip, such as
+`walkthroughs/999-shared-lab.md`, so that the paths stay short on Windows.
+On the Lab Builder you can pick the FortiSwitchOS release (7.6.7, 8.0.0, or 8.0.1) and your
+two switch models. `LAB-VALUES.md` then lists the lab features that Fortinet's
+Feature Matrix marks as not supported on those models, with the labs that
+name them, and `CLAUDE.md` tells Claude to record such a step as blocked by
+the model. The data is `common/fortiswitch-features.json`. It covers model
+series, so check the matrix for your exact model.
+
+On the Lab Builder you can also type the switch ports you use, which replace
+placeholders such as `<PORT_EP1>` in the walkthroughs, and pick the lab that
+Claude starts with.
+
+Claude logs each step in `PROGRESS.md`, as a table with the columns Lab, Step,
+Result, Date, and Note. Click **Load progress** on the Lab Builder and pick
+that file to see, on the **Progress** tab, which labs passed.
+
 With Claude Code, unzip the file, open a terminal in the `lab201-build`
 folder, and run:
 
@@ -53,6 +70,16 @@ The walkthroughs are rewritten by pattern (`VLAN 40`, `set vlanid 40`,
 zip are the unchanged originals. `walkthroughs.list` names them.
 
 ## Before you run anything
+
+On VMware Workstation, start with the readiness check. It changes nothing. It
+tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest,
+memory, disk space, and the networks, and says how to fix what is missing:
+
+```powershell
+.\Deploy-Lab201-Workstation.ps1 -Action Check -SshKeyFile ~\.ssh\id_ed25519.pub
+```
+
+The other scripts have no check yet, so follow this list for them.
 
 1. Read the chapter for your platform, and run the script with `-WhatIf` (or
    `--dry-run` for Proxmox) first. The Proxmox VE and VMware Workstation scripts
@@ -181,30 +208,44 @@ Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
 ## Log in to the machines
 
-The admin user on every Linux machine is `labadmin`. By default it has no
-password: the account is locked for password login and accepts only the SSH
-key you passed with `-SshKeyFile` (or `--ssh-key`). So you cannot sign in at
-the machine's console window. Log in over SSH from the computer that holds the
-private key:
+The admin user on every Linux machine is `labadmin`. Over SSH it accepts only
+the key you passed with `-SshKeyFile` (or `--ssh-key`). Log in from the
+computer that holds the private key:
 
 ```powershell
 ssh labadmin@<address>
 ```
 
 `<address>` is the machine's address on the build network. On VMware
-Workstation, ask `vmrun` for it, with the path of the machine's `.vmx` file in
-the machines folder. A new machine needs a few minutes to install its guest
-tools before this answers:
+Workstation, the script lists every machine with the line that logs in to it.
+A new machine needs a few minutes to install its guest tools before its
+address shows:
 
 ```powershell
-& 'C:\Program Files\VMware\VMware Workstation\vmrun.exe' -T ws getGuestIPAddress "<machines folder>\gw-201\gw-201.vmx"
+.\Deploy-Lab201-Workstation.ps1 -Action Status
 ```
 
 `sudo` asks for no password on the standard flavors.
 
-To sign in at the console as well, give `labadmin` a password before you run
-the deploy. Make a password hash with `openssl passwd -6`, which prompts for
-the password, and put the hash in `LAB201_ADMIN_PASSWORD_HASH`:
+To sign in at the machine's console window, give `labadmin` a console
+password before you run the deploy. Put it in `LAB201_CONSOLE_PASSWORD`:
+
+```powershell
+$env:LAB201_CONSOLE_PASSWORD = '<LAB_ONLY_PASSWORD>'
+```
+
+In Bash, use `export LAB201_CONSOLE_PASSWORD='<LAB_ONLY_PASSWORD>'`. The
+password works at the console and for `sudo`. SSH still takes only the key,
+because password login over SSH stays off. The Lab Builder proposes a console
+password and puts this line in the commands. That default is published with
+the page, so change it or clear it for anything but a closed lab. The seed
+file holds the password as plain text, so use a lab-only value. This was
+tested on one Ubuntu 24.04 machine on Proxmox VE.
+
+To allow password login over SSH as well, use a password hash instead. Make
+the hash with `openssl passwd -6`, which prompts for the password, and put it
+in `LAB201_ADMIN_PASSWORD_HASH`. When the hash is set, the console password is
+not used:
 
 ```powershell
 $env:LAB201_ADMIN_PASSWORD_HASH = '<CRYPT_HASH>'
@@ -227,6 +268,11 @@ empty. To list them:
 3. Pick the machines folder. The script prints it as `Machines folder`. By
    default it is `lab201` inside Workstation's folder for virtual machines.
 4. Finish the scan. The lab machines then appear in the Library.
+
+The script can also open each machine in Workstation after the build, which
+lists it in the Library. Add `-AddToLibrary` to the deploy command, or tick
+the box in the Lab Builder. This option has not been tested yet, so use the
+scan if a machine is missing.
 
 When a machine starts, Workstation may warn that the value `preset` for
 `powerType.powerOff` is not valid and that it uses `soft` instead. The setting

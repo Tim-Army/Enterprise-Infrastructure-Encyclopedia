@@ -44,6 +44,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 V4_PREFIX = "10.201"
 V6_PREFIX = "fd00:db8:201::"
 SEGMENT_SUBNETS = {}
+# Set from the environment in main(). A plain-text password for the admin user at the console and for sudo.
+OPTIONS = {"console_password": None}
 V6_LEN = {24: 120, 31: 127, 32: 128}
 FLAVOR_DATA = {"default": "ubuntu-24.04", "role_keys": [], "families": {}, "flavors": {}}
 
@@ -311,7 +313,7 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
          "    groups: [%s]" % fam.get("admin_group", "sudo"),
          "    shell: /bin/bash",
          "    sudo: %s" % q(sudo_rule),
-         "    lock_passwd: %s" % ("false" if password_hash else "true")]
+         "    lock_passwd: %s" % ("false" if password_hash or OPTIONS["console_password"] else "true")]
     if password_hash:
         L.append("    passwd: %s" % q(password_hash))
     if ssh_keys:
@@ -323,6 +325,10 @@ def user_data(manifest, vm, ssh_keys, guest_agent, password_hash, flavor=None, l
     pro = licenses.get("ubuntu_pro") or {}
     if flavor.get("ubuntu_pro") and pro.get("token"):
         L += ["ubuntu_pro:", "  token: %s" % q(pro["token"])]
+    if OPTIONS["console_password"] and not password_hash:
+        # A console password. ssh_pwauth stays false, so SSH still takes only the key.
+        L += ["chpasswd:", "  expire: false", "  users:", "    - name: %s" % user,
+              "      password: %s" % q(OPTIONS["console_password"]), "      type: text"]
     L += ["package_update: true", "package_upgrade: false"]
     if fam.get("install") == "apt" and install:
         L.append("packages:")
@@ -726,6 +732,9 @@ def main():
     ap.add_argument("--tagging", choices=["hypervisor", "guest"], default="hypervisor",
                     help="hypervisor: the virtual switch applies VLAN tags; guest: the guest creates VLAN interfaces")
     ap.add_argument("--guest-agent", choices=["qemu", "vmware", "none"], default="none")
+    ap.add_argument("--console-password-env", default="LAB201_CONSOLE_PASSWORD",
+                    help="environment variable with a plain-text console password for the admin user "
+                         "(console and sudo only; SSH stays key-only). Ignored when the password hash is set")
     ap.add_argument("--password-hash-env", default="LAB201_ADMIN_PASSWORD_HASH",
                     help="environment variable that holds a crypt hash for the admin user (optional)")
     ap.add_argument("--iso", action="store_true", help="also write <vm>-seed.iso")
@@ -750,6 +759,7 @@ def main():
         return 0
     keys = read_keys(a.ssh_key)
     pw = os.environ.get(a.password_hash_env) or None
+    OPTIONS["console_password"] = os.environ.get(a.console_password_env) or None
     if a.wsl:
         for vm in manifest["vms"]:
             if not vm.get("wsl") or (a.vm and vm["name"] not in a.vm):

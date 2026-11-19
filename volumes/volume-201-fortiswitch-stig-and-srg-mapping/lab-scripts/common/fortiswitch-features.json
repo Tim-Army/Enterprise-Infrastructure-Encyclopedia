@@ -1,0 +1,1645 @@
+{
+  "description": "Which FortiSwitch model series support the features the Volume CCI labs use, read from Fortinet's Feature Matrix for each FortiSwitchOS release by scripts/python/build_fortiswitch_features.py. A series is supported unless it is listed as unsupported. A note names the models of a series that have the feature, or a limit. The matrix lists model series, not every model, so check the matrix for your exact model before you rely on a feature.",
+  "source": "Fortinet, Feature Matrix for FortiSwitchOS (PDF), https://docs.fortinet.com/product/fortiswitch",
+  "keywords": {
+    "dot1x": "802\\.1x",
+    "mab": "\\bmab\\b|mac authentication bypass",
+    "radsec": "radsec",
+    "radius_admin": "radius",
+    "tacacs": "tacacs",
+    "dhcp_snooping": "dhcp[- ]snooping",
+    "dai": "arp[- ]inspection|dynamic arp",
+    "ipsg": "ip[- ]source[- ]guard",
+    "ra_guard": "ra[- ]guard",
+    "storm": "storm[- ]control",
+    "loop_guard": "loop[- ]guard",
+    "root_guard": "root[- ]guard",
+    "bpdu_guard": "bpdu[- ]guard",
+    "igmp": "igmp[- ]snooping",
+    "mac_limit": "learning[- ]limit",
+    "sticky_mac": "sticky",
+    "pvlan": "private vlan",
+    "span": "\\bspan\\b|port mirroring",
+    "erspan": "erspan|rspan",
+    "sflow": "sflow",
+    "flow_export": "netflow|ipfix|flow[- ]export",
+    "macsec": "macsec",
+    "acl_in4": "\\bacl\\b",
+    "acl_out4": "egress acl|acl[^.\\n]{0,20}egress",
+    "acl_in6": "ipv6 acl|acl[^.\\n]{0,20}ipv6",
+    "syslog_tls": "reliable syslog|reliable \\(tcp\\) syslog",
+    "fips": "fips",
+    "static_route": "static rout",
+    "urpf": "urpf|reverse[- ]path",
+    "pbr": "policy[- ]based routing",
+    "vrf": "\\bvrf\\b",
+    "ospf": "\\bospf",
+    "rip": "\\brip\\b",
+    "vrrp": "vrrp",
+    "bgp": "\\bbgp\\b",
+    "isis": "is-is",
+    "pim": "\\bpim\\b",
+    "evpn": "evpn",
+    "dhcp_relay": "dhcp[- ]relay"
+  },
+  "versions": {
+    "7.6.7": {
+      "rows_read": 241,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxE, 1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "324G, 324G-FPOE, 348G, 348G-FPOE",
+        "4xxE",
+        "500 Series",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "500 Series",
+            "6xxF",
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "324G, 324G-FPOE, 348G, 348G-FPOE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxE, 1xxF": "(124F, 148E, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxE, 1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "500 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "500 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    },
+    "8.0.0": {
+      "rows_read": 240,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "4xxE",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE)"
+          }
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    },
+    "8.0.1": {
+      "rows_read": 238,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "4xxE",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE)"
+          }
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    }
+  }
+}

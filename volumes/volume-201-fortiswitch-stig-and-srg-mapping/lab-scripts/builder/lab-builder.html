@@ -84,7 +84,7 @@ td select{display:block;margin-top:4px;max-width:100%;font-size:12px}
 input.addr{width:170px;font-size:12px}
 input.addr.err{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
 input.addr.chg{border-color:var(--accent)}
-input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.sub.chgtext{color:var(--accent);font-weight:600}
+table.prog td,table.prog th{font-size:12px;padding:3px 6px}.okc{color:var(--ok);font-weight:600}.badc{color:var(--bad);font-weight:600}input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.sub.chgtext{color:var(--accent);font-weight:600}
 details summary.small{margin-top:4px}
 #images label{font-size:12.5px}
 </style>
@@ -1194,6 +1194,2122 @@ details summary.small{margin-top:4px}
 }
 </script>
 
+<script id="lab201-switch-features" type="application/json">
+{
+  "description": "Which FortiSwitch model series support the features the Volume CCI labs use, read from Fortinet's Feature Matrix for each FortiSwitchOS release by scripts/python/build_fortiswitch_features.py. A series is supported unless it is listed as unsupported. A note names the models of a series that have the feature, or a limit. The matrix lists model series, not every model, so check the matrix for your exact model before you rely on a feature.",
+  "source": "Fortinet, Feature Matrix for FortiSwitchOS (PDF), https://docs.fortinet.com/product/fortiswitch",
+  "keywords": {
+    "dot1x": "802\\.1x",
+    "mab": "\\bmab\\b|mac authentication bypass",
+    "radsec": "radsec",
+    "radius_admin": "radius",
+    "tacacs": "tacacs",
+    "dhcp_snooping": "dhcp[- ]snooping",
+    "dai": "arp[- ]inspection|dynamic arp",
+    "ipsg": "ip[- ]source[- ]guard",
+    "ra_guard": "ra[- ]guard",
+    "storm": "storm[- ]control",
+    "loop_guard": "loop[- ]guard",
+    "root_guard": "root[- ]guard",
+    "bpdu_guard": "bpdu[- ]guard",
+    "igmp": "igmp[- ]snooping",
+    "mac_limit": "learning[- ]limit",
+    "sticky_mac": "sticky",
+    "pvlan": "private vlan",
+    "span": "\\bspan\\b|port mirroring",
+    "erspan": "erspan|rspan",
+    "sflow": "sflow",
+    "flow_export": "netflow|ipfix|flow[- ]export",
+    "macsec": "macsec",
+    "acl_in4": "\\bacl\\b",
+    "acl_out4": "egress acl|acl[^.\\n]{0,20}egress",
+    "acl_in6": "ipv6 acl|acl[^.\\n]{0,20}ipv6",
+    "syslog_tls": "reliable syslog|reliable \\(tcp\\) syslog",
+    "fips": "fips",
+    "static_route": "static rout",
+    "urpf": "urpf|reverse[- ]path",
+    "pbr": "policy[- ]based routing",
+    "vrf": "\\bvrf\\b",
+    "ospf": "\\bospf",
+    "rip": "\\brip\\b",
+    "vrrp": "vrrp",
+    "bgp": "\\bbgp\\b",
+    "isis": "is-is",
+    "pim": "\\bpim\\b",
+    "evpn": "evpn",
+    "dhcp_relay": "dhcp[- ]relay"
+  },
+  "versions": {
+    "7.6.7": {
+      "rows_read": 241,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxE, 1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "324G, 324G-FPOE, 348G, 348G-FPOE",
+        "4xxE",
+        "500 Series",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "500 Series",
+            "6xxF",
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "324G, 324G-FPOE, 348G, 348G-FPOE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxE, 1xxF": "(124F, 148E, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxE, 1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "500 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "324G, 324G-FPOE, 348G, 348G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxE, 1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "324G, 324G-FPOE, 348G, 348G-FPOE",
+            "4xxE",
+            "500 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    },
+    "8.0.0": {
+      "rows_read": 240,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "4xxE",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE)"
+          }
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    },
+    "8.0.1": {
+      "rows_read": 238,
+      "series": [
+        "FSR-108F",
+        "FSR-112F-POE",
+        "FSR-216F-POE",
+        "FSR-424F-POE",
+        "1xxF",
+        "110G-FPOE, 124G, 124G-FPOE",
+        "200 Series",
+        "4xxE",
+        "6xxF",
+        "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+        "2048F",
+        "3032E, 3032G"
+      ],
+      "features": [
+        {
+          "key": "dot1x",
+          "name": "802.1X port authentication",
+          "row": "802.1X port mode",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mab",
+          "name": "MAC authentication bypass (MAB)",
+          "row": "802.1X: MAB",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radsec",
+          "name": "RadSec for 802.1X",
+          "row": "802.1X: RadSec (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "radius_admin",
+          "name": "RADIUS for administrators",
+          "row": "RADIUS for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "tacacs",
+          "name": "TACACS+ for administrators",
+          "row": "TACACS+ for administrative authentication",
+          "listed": true,
+          "page": 2,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_snooping",
+          "name": "DHCP snooping",
+          "row": "DHCP snooping",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "dai",
+          "name": "Dynamic ARP inspection",
+          "row": "Dynamic ARP inspection (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ipsg",
+          "name": "IP source guard",
+          "row": "IP source guard (IPv4)",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE)"
+          }
+        },
+        {
+          "key": "ra_guard",
+          "name": "IPv6 RA guard",
+          "row": "IPv6 RA guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "storm",
+          "name": "Storm control",
+          "row": "Storm control",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "loop_guard",
+          "name": "Loop guard",
+          "row": "Loop guard",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "root_guard",
+          "name": "STP root guard",
+          "row": "STP root guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "bpdu_guard",
+          "name": "STP BPDU guard",
+          "row": "STP BPDU guard",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "igmp",
+          "name": "IGMP snooping",
+          "row": "IGMP snooping",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "mac_limit",
+          "name": "MAC learning limit",
+          "row": "MAC learning limit",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "sticky_mac",
+          "name": "Sticky MAC",
+          "row": "Sticky MAC",
+          "listed": true,
+          "page": 5,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "pvlan",
+          "name": "Private VLANs",
+          "row": "Private VLANs",
+          "listed": true,
+          "page": 5,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "span",
+          "name": "Port mirroring (SPAN)",
+          "row": "SPAN",
+          "listed": true,
+          "page": 6,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "erspan",
+          "name": "RSPAN and ERSPAN",
+          "row": "RSPAN and ERSPAN (IPv4)",
+          "listed": true,
+          "page": 6,
+          "unsupported": [
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {
+            "FSR-108F": "(RSPAN)",
+            "FSR-112F-POE": "(RSPAN)",
+            "FSR-216F-POE": "(RSPAN)",
+            "6xxF": "(RSPAN)"
+          }
+        },
+        {
+          "key": "sflow",
+          "name": "sFlow",
+          "row": "sFlow (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "flow_export",
+          "name": "Flow export (NetFlow and IPFIX)",
+          "row": "Flow export (IPv4)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {
+            "1xxF": "(124F, 148F)"
+          }
+        },
+        {
+          "key": "macsec",
+          "name": "MACsec",
+          "row": "MACsec: PSK mode",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "2048F",
+            "3032E, 3032G"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "(1024E, T1024E, T1024F- FPOE, 1048G)"
+          }
+        },
+        {
+          "key": "acl_in4",
+          "name": "IPv4 ingress ACL",
+          "row": "ACL (IPv4 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "acl_out4",
+          "name": "IPv4 egress ACL",
+          "row": "ACL (IPv4 egress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "acl_in6",
+          "name": "IPv6 ingress ACL",
+          "row": "ACL (IPv6 ingress)",
+          "listed": true,
+          "page": 3,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "syslog_tls",
+          "name": "Reliable syslog",
+          "row": "Reliable syslog",
+          "listed": true,
+          "page": 4,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "fips",
+          "name": "FIPS-CC mode",
+          "row": "FIPS 140-3 (Level 1) and CC support",
+          "listed": true,
+          "page": 4,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {
+            "1024E, 1048E, 1048G, T1024E, T1024F-FPOE": "1024E, 1048E, T1024E, T1024F-FPOE",
+            "3032E, 3032G": "3032E"
+          }
+        },
+        {
+          "key": "static_route",
+          "name": "Static routing",
+          "row": "Static routing (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [],
+          "notes": {}
+        },
+        {
+          "key": "urpf",
+          "name": "Unicast reverse-path forwarding (uRPF)",
+          "row": "uRPF",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pbr",
+          "name": "Policy-based routing",
+          "row": "Policy-based routing (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "6xxF"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrf",
+          "name": "VRF",
+          "row": "VRF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "ospf",
+          "name": "OSPF",
+          "row": "OSPF (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "rip",
+          "name": "RIP",
+          "row": "RIP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "vrrp",
+          "name": "VRRP",
+          "row": "VRRP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "bgp",
+          "name": "BGP",
+          "row": "BGP (IPv4/IPv6)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "isis",
+          "name": "IS-IS",
+          "row": "IS-IS (IPv4/IPv6)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "pim",
+          "name": "PIM-SSM",
+          "row": "PIM-SSM (IPv4)",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "evpn",
+          "name": "VXLAN BGP EVPN",
+          "row": "VXLAN: BGP EVPN",
+          "listed": true,
+          "page": 8,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE",
+            "FSR-424F-POE",
+            "1xxF",
+            "110G-FPOE, 124G, 124G-FPOE",
+            "200 Series",
+            "4xxE"
+          ],
+          "notes": {}
+        },
+        {
+          "key": "dhcp_relay",
+          "name": "DHCP relay",
+          "row": "DHCP relay (IPv4)",
+          "listed": true,
+          "page": 7,
+          "unsupported": [
+            "FSR-108F",
+            "FSR-112F-POE",
+            "FSR-216F-POE"
+          ],
+          "notes": {}
+        }
+      ]
+    }
+  }
+}
+</script>
+<script id="lab201-labs" type="application/json">
+{
+  "walkthroughs": [
+    {
+      "file": "999-shared-lab-infrastructure.md",
+      "short": "999-shared-lab.md"
+    },
+    {
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "short": "04-layer-2-labs.md"
+    },
+    {
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "short": "05-management-labs.md"
+    },
+    {
+      "file": "06-router-srg-requirement-labs.md",
+      "short": "06-router-labs.md"
+    },
+    {
+      "file": "07-aaa-services-srg-requirement-labs.md",
+      "short": "07-aaa-labs.md"
+    },
+    {
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "short": "08-console-lab.md"
+    }
+  ],
+  "labs": [
+    {
+      "id": "999.1",
+      "title": "Build the gateway and the VLANs",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": [
+        "radius_admin",
+        "sflow",
+        "flow_export"
+      ]
+    },
+    {
+      "id": "999.2",
+      "title": "Build the service hosts",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": [
+        "radius_admin",
+        "sflow",
+        "flow_export"
+      ]
+    },
+    {
+      "id": "999.3",
+      "title": "Baseline the switches",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": []
+    },
+    {
+      "id": "999.4",
+      "title": "Connect the switch to the services",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": [
+        "radius_admin",
+        "sflow",
+        "flow_export"
+      ]
+    },
+    {
+      "id": "999.5",
+      "title": "Build the routed links and the peers",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": []
+    },
+    {
+      "id": "999.6",
+      "title": "Take the baseline and reset to it",
+      "file": "999-shared-lab-infrastructure.md",
+      "features": []
+    },
+    {
+      "id": "4.1",
+      "title": "Authenticate every endpoint (802.1X and MAC authentication bypass)",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "dot1x",
+        "mab",
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "4.2",
+      "title": "Managed-mode network access control, quarantine, and security attributes",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "radius_admin"
+      ]
+    },
+    {
+      "id": "4.3",
+      "title": "Spanning tree protections: root guard, BPDU guard, loop guard, and rapid convergence",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "loop_guard",
+        "root_guard",
+        "bpdu_guard",
+        "span"
+      ]
+    },
+    {
+      "id": "4.4",
+      "title": "Flood control: storm control, unknown unicast, multicast snooping, and QoS",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "storm",
+        "igmp"
+      ]
+    },
+    {
+      "id": "4.5",
+      "title": "DHCP snooping, dynamic ARP inspection, and IP source guard",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "dhcp_snooping",
+        "dai",
+        "ipsg"
+      ]
+    },
+    {
+      "id": "4.6",
+      "title": "VLAN hygiene: access ports, native VLANs, trunk pruning, unused ports, and management VLAN",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "4.7",
+      "title": "Fail secure, alternate paths, non-essential capabilities, and secure settings",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "dot1x",
+        "radius_admin",
+        "macsec"
+      ]
+    },
+    {
+      "id": "4.8",
+      "title": "Session capture and real-time viewing with port mirroring (SPAN)",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": [
+        "span"
+      ]
+    },
+    {
+      "id": "4.9",
+      "title": "Gaps: VTP and UDLD",
+      "file": "04-layer-2-switch-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.1",
+      "title": "Administrator access control: roles, trusted hosts, services, and the local account",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "5.2",
+      "title": "Logon protections: lockout, banner, and session timeout",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "radius_admin"
+      ]
+    },
+    {
+      "id": "5.3",
+      "title": "Password policy: length, character classes, change distance, and hashing",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.4",
+      "title": "Audit events: accounts, privileged commands, and logons",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.5",
+      "title": "Audit record content and time: time stamps, source, and clock",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "acl_in4"
+      ]
+    },
+    {
+      "id": "5.6",
+      "title": "Audit storage, failure alerts, and off-load to two log servers",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.7",
+      "title": "Cryptography and remote maintenance: FIPS mode, strong ciphers, and SNMPv3",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "fips"
+      ]
+    },
+    {
+      "id": "5.8",
+      "title": "Authentication servers and public key certificates",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "5.9",
+      "title": "Configuration backup, supported releases, and firmware integrity",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.10",
+      "title": "Audit of privileged functions, privilege changes, and session start and end",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.11",
+      "title": "Replay-resistant management access",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "5.12",
+      "title": "Denial-of-service safeguards for the switch",
+      "file": "05-network-device-management-srg-requirement-labs.md",
+      "features": [
+        "storm"
+      ]
+    },
+    {
+      "id": "6.1",
+      "title": "Interface and IPv6 hygiene",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4"
+      ]
+    },
+    {
+      "id": "6.2",
+      "title": "ACL information-flow control and logging of dropped packets",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4"
+      ]
+    },
+    {
+      "id": "6.3",
+      "title": "Perimeter filtering: default deny, bogons, source validation, and management traffic",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4",
+        "urpf"
+      ]
+    },
+    {
+      "id": "6.4",
+      "title": "Control-plane protection and QoS",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "ospf"
+      ]
+    },
+    {
+      "id": "6.5",
+      "title": "Routing protocol and gateway redundancy authentication",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "fips",
+        "ospf",
+        "vrrp"
+      ]
+    },
+    {
+      "id": "6.6",
+      "title": "BGP session and route protection",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "bgp"
+      ]
+    },
+    {
+      "id": "6.7",
+      "title": "VRF separation",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "vrf"
+      ]
+    },
+    {
+      "id": "6.8",
+      "title": "Multicast routing: PIM interfaces, neighbor filters, and boundaries",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4",
+        "pim"
+      ]
+    },
+    {
+      "id": "6.9",
+      "title": "Hashed routing authentication with key lifetimes of 180 days or less",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "ospf",
+        "rip",
+        "bgp",
+        "isis"
+      ]
+    },
+    {
+      "id": "6.10",
+      "title": "Turn off call-home and drop fragmented ICMP",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "6.11",
+      "title": "Gaps: ICMP and ARP behavior, auxiliary port, forwarding architecture, and IP options",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4"
+      ]
+    },
+    {
+      "id": "6.12",
+      "title": "Gaps: IPv6 extension-header filtering",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "acl_in4",
+        "acl_in6"
+      ]
+    },
+    {
+      "id": "6.13",
+      "title": "Gaps: MPLS, LDP, and RSVP-TE",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "fips"
+      ]
+    },
+    {
+      "id": "6.14",
+      "title": "Gaps: provider-edge L3VPN, L2VPN, VPLS, and provider QoS roles",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "storm",
+        "mac_limit",
+        "acl_in4",
+        "urpf",
+        "vrf",
+        "bgp",
+        "evpn"
+      ]
+    },
+    {
+      "id": "6.15",
+      "title": "Gaps: rendezvous-point and designated-router multicast controls",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": [
+        "pim"
+      ]
+    },
+    {
+      "id": "6.16",
+      "title": "Gaps: MSDP",
+      "file": "06-router-srg-requirement-labs.md",
+      "features": []
+    },
+    {
+      "id": "7.1",
+      "title": "Encrypt RADIUS credentials with RadSec (TLS)",
+      "file": "07-aaa-services-srg-requirement-labs.md",
+      "features": [
+        "radsec",
+        "radius_admin",
+        "fips"
+      ]
+    },
+    {
+      "id": "7.2",
+      "title": "802.1X on the authentication server: unique identification, authentication, and EAP type",
+      "file": "07-aaa-services-srg-requirement-labs.md",
+      "features": [
+        "dot1x",
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "7.3",
+      "title": "Automated account management with RADIUS accounting",
+      "file": "07-aaa-services-srg-requirement-labs.md",
+      "features": [
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "7.4",
+      "title": "Unique shared secret for each RADIUS and TACACS+ client",
+      "file": "07-aaa-services-srg-requirement-labs.md",
+      "features": [
+        "radius_admin",
+        "tacacs"
+      ]
+    },
+    {
+      "id": "8.1",
+      "title": "Install the console server on segment 0",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": []
+    },
+    {
+      "id": "8.2",
+      "title": "Serial access to both switches",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": []
+    },
+    {
+      "id": "8.3",
+      "title": "Authenticate console users against RADIUS",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": [
+        "radius_admin"
+      ]
+    },
+    {
+      "id": "8.4",
+      "title": "Logs, time, and SNMP",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": []
+    },
+    {
+      "id": "8.5",
+      "title": "Harden the console server's own services",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": [
+        "fips"
+      ]
+    },
+    {
+      "id": "8.6",
+      "title": "Break-glass access on segment 100 (and optional cellular failover)",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": []
+    },
+    {
+      "id": "8.7",
+      "title": "Recover a switch from a lost management path",
+      "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+      "features": [
+        "radius_admin"
+      ]
+    }
+  ]
+}
+</script>
 <script>
 (function () {
   'use strict';
@@ -1201,6 +3317,14 @@ details summary.small{margin-top:4px}
   /* ---------------------------------------------------------------- data */
   var BASE = JSON.parse(document.getElementById('lab201-manifest').textContent);
   var FL = JSON.parse(document.getElementById('lab201-flavors').textContent);
+  var LABDATA = JSON.parse(document.getElementById('lab201-labs').textContent);
+  // Which switch model series support the lab features, from Fortinet's Feature Matrix for each FortiSwitchOS release.
+  var FSW = JSON.parse(document.getElementById('lab201-switch-features').textContent);
+  var FSW_VERSIONS = [['7.6.7', 'FortiSwitchOS 7.6.7'], ['8.0.0', 'FortiSwitchOS 8.0.0'], ['8.0.1', 'FortiSwitchOS 8.0.1']], FSW_DEFAULT = '8.0.1';
+  var WALKTHROUGHS = LABDATA.walkthroughs || [], LABS = LABDATA.labs || [];
+  // Physical switch ports the lab chapters leave as placeholders.
+  var PORTS = [['PORT_TRUNK', 'Trunk port (to the hypervisor)'], ['PORT_MGMT', 'Management port'], ['PORT_EP1', 'Endpoint port 1'], ['PORT_EP2', 'Endpoint port 2'],
+    ['PORT_UNUSED', 'Unused port'], ['PORT_MON', 'Monitor (mirror) port'], ['PORT_L1', 'Routed link L1 port'], ['EXTERNAL_PORT', 'External (untrusted) port']];
   var OLD_V4 = BASE.ipv4_prefix || '10.201';
   var OLD_V6 = BASE.ipv6_prefix || 'fd00:db8:201::';
 
@@ -1212,8 +3336,12 @@ details summary.small{margin-top:4px}
   // The two switches under test. The labs were written for these models.
   var SW_DEFAULT = { a: 'FS-648F-FPOE', b: 'FS-2048F' }, SW_LICENSE = { a: 'FS-SW-LIC-600', b: 'FS-SW-LIC-2000' }, SW_ROLE = { a: 'Access switch', b: 'Aggregation switch' };
   // Suggestions only. Any FortiSwitch model name can be typed.
-  var SW_MODELS = ['FS-108F', 'FS-108F-POE', 'FS-108F-FPOE', 'FS-124F', 'FS-124F-POE', 'FS-124F-FPOE', 'FS-148F', 'FS-148F-POE', 'FS-148F-FPOE', 'FS-224E', 'FS-224E-POE', 'FS-248E-POE', 'FS-248E-FPOE',
-    'FS-424E', 'FS-424E-POE', 'FS-424E-FPOE', 'FS-448E', 'FS-448E-POE', 'FS-448E-FPOE', 'FS-524D', 'FS-548D', 'FS-624F', 'FS-624F-FPOE', 'FS-648F', 'FS-648F-FPOE', 'FS-1024E', 'FS-1048E', 'FS-T1024E', 'FS-2048F', 'FS-3032E'];
+  var SW_MODELS = ['FS-108F', 'FS-108F-POE', 'FS-108F-FPOE', 'FS-124F', 'FS-124F-POE', 'FS-124F-FPOE', 'FS-148F', 'FS-148F-POE', 'FS-148F-FPOE', 'FS-110G-FPOE', 'FS-124G', 'FS-124G-FPOE',
+    'FS-224E', 'FS-224E-POE', 'FS-248E-POE', 'FS-248E-FPOE', 'FS-324G', 'FS-324G-FPOE', 'FS-348G', 'FS-348G-FPOE', 'FS-424E', 'FS-424E-POE', 'FS-424E-FPOE', 'FS-448E', 'FS-448E-POE', 'FS-448E-FPOE',
+    'FS-524D', 'FS-548D', 'FS-624F', 'FS-624F-FPOE', 'FS-648F', 'FS-648F-FPOE', 'FS-1024E', 'FS-1048E', 'FS-1048G', 'FS-T1024E', 'FS-T1024F-FPOE', 'FS-2048F', 'FS-3032E', 'FS-3032G',
+    'FSR-108F', 'FSR-112F-POE', 'FSR-216F-POE', 'FSR-424F-POE'];
+  // The console password the page proposes for the admin user. It is published with this page, so it suits a closed lab only.
+  var DEFAULT_CONSOLE_PW = 'ISEisC00L123!';
   var REPO_BLOB = 'https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main/';
   var VOLUME_DIR = 'volumes/volume-201-fortiswitch-stig-and-srg-mapping/';
   var RESERVED_VLANS = [1, 2001, 2002, 2003, 2004, 2005, 4095];
@@ -1281,7 +3409,8 @@ details summary.small{margin-top:4px}
         { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
         { id: 'bridge', label: 'Bridged network (trunk and out-of-band)', def: 'vmnet0', flag: '-BridgeVmnet' },
         { id: 'lan', label: 'Segment 220 network (host-only)', def: 'vmnet5', flag: '-Lan220Vmnet' },
-        { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' }
+        { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' },
+        { id: 'addlib', label: 'Open the machines in Workstation after the build', type: 'check', flag: '-AddToLibrary', help: 'Lists them in the Library. Not tested yet' }
       ]
     },
     proxmox: {
@@ -1331,10 +3460,10 @@ details summary.small{margin-top:4px}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR,
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '8.0.1', progress: null, vms: {}, images: {}, isos: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}
   };
   function resetVms() {
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b };
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT;
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -1599,6 +3728,24 @@ details summary.small{margin-top:4px}
     });
     out.addr = addrCheck(out, p4v);
     out.sw = swCheck();
+    out.fsw = fswCheck(out.sw);
+    if (!out.fsw.has) out.warnings.push('No feature data is loaded for FortiSwitchOS ' + out.fsw.version + ', so the page cannot say which lab features your switches support.');
+    else ['a', 'b'].forEach(function (k) {
+      var fs = out.fsw.sw[k], model = out.sw.model[k];
+      if (!fs.series) out.warnings.push('Fortinet\'s feature matrix for FortiSwitchOS ' + out.fsw.version + ' does not list the ' + model + ', so its feature support is not known. Check that the release runs on that model.');
+      else if (out.sw.changed[k] && fs.no.length) {
+        var labs = {}; fs.no.forEach(function (r) { r.labs.forEach(function (id) { labs[id] = true; }); });
+        out.warnings.push('The ' + model + ' (' + fs.series + ' in the feature matrix) lacks ' + fs.no.length + ' lab features in FortiSwitchOS ' + out.fsw.version + ': ' + fs.no.map(function (r) { return r.name; }).join(', ') + '. Labs that name them: ' + (Object.keys(labs).join(', ') || 'none') + '.');
+      }
+    });
+    out.ports = {}; out.portErr = {};
+    PORTS.forEach(function (p) {
+      var t = String(state.ports[p[0]] || '').trim();
+      if (!t) return;
+      if (/^[A-Za-z0-9][A-Za-z0-9._\/-]{0,31}$/.test(t)) out.ports[p[0]] = t;
+      else { out.portErr[p[0]] = 'Use a port name such as port1. The placeholder is kept'; out.errors.push(p[1] + ': ' + out.portErr[p[0]]); }
+    });
+    out.startLab = LABS.filter(function (l) { return l.id === state.startLab; })[0] || LABS[0] || null;
     ['a', 'b'].forEach(function (k) {
       if (out.sw.err[k]) out.errors.push(SW_ROLE[k] + ' model: ' + out.sw.err[k]);
       else if (out.sw.changed[k]) out.warnings.push('The ' + SW_ROLE[k].toLowerCase() + ' is an ' + out.sw.model[k] + ', not the ' + SW_DEFAULT[k] + ' the labs were written for. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).');
@@ -1781,8 +3928,16 @@ details summary.small{margin-top:4px}
       var parts = args.map(function (a) { return a[1] === null ? a[0] : a[0] + ' ' + (a[2] ? a[1] : q(a[1])); }).concat(extra);
       return head + cont + '\n' + parts.map(function (x, i) { return '  ' + x + (i < parts.length - 1 ? cont : ''); }).join('\n');
     }
+    var conPw = String(state.consolePw || '');
+    if (conPw && state.platform !== 'wsl') blocks.push(['Console password for the admin user. It works at the machine console and for sudo. SSH still takes\n# only your key. Leave this line out for key-only login. The hardened flavors use the password hash instead.',
+      ps ? "$env:LAB201_CONSOLE_PASSWORD = '" + conPw.replace(/'/g, "''") + "'" : "export LAB201_CONSOLE_PASSWORD='" + conPw.replace(/'/g, "'\\''") + "'"]);
+    if (state.platform === 'workstation') blocks.push(['Check that this computer is ready. This changes nothing. It tests Python, the SSH key,\n# Workstation, the manifest, memory, disk space, and the networks, and says how to fix what is missing.', line(['-Action Check'])]);
     blocks.push(['1. Preview. This changes nothing.', line([ps ? '-WhatIf' : '--dry-run'])]);
     blocks.push(['2. Build the machines.', line([])]);
+    if (state.platform === 'workstation') {
+      var root = state.params.vmroot ? ' -VmRoot ' + psQuote(state.params.vmroot) : '';
+      blocks.push(['See each machine, and the line that logs in to it. A new machine needs a few minutes before its address shows.', '.\\' + p.exe + ' -Action Status' + root]);
+    }
     if (ps) {
       var keep = args.filter(function (a) { return ['-EsxiHost', '-VcenterServer', '-VsphereVersion', '-VmRoot'].indexOf(a[0]) >= 0; });
       var tail = keep.map(function (a) { return a[0] + ' ' + psQuote(a[1]); }).join(' ');
@@ -1965,13 +4120,13 @@ details summary.small{margin-top:4px}
   function fetchBytes(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }).then(function (b) { return new Uint8Array(b); }); }
 
   /* ------------------------------------------------------------- switches */
-  function swHost(model) { return 'sw-' + model.replace(/^FS-/, '').split('-')[0].toLowerCase(); }
+  function swHost(model) { return 'sw-' + model.replace(/^FSR?-/, '').split('-')[0].toLowerCase(); }
   function swResolve(models) {
     var res = { model: {}, name: {}, err: {}, changed: {} };
     ['a', 'b'].forEach(function (k) {
       var t = String(models[k] || '').trim().toUpperCase();
       if (!t) t = SW_DEFAULT[k];
-      if (!/^FS-[A-Z0-9]+(-[A-Z0-9]+)*$/.test(t)) { res.err[k] = 'Use a FortiSwitch model name such as ' + SW_DEFAULT[k] + '. The default is kept'; t = SW_DEFAULT[k]; }
+      if (!/^FSR?-[A-Z0-9]+(-[A-Z0-9]+)*$/.test(t)) { res.err[k] = 'Use a FortiSwitch model name such as ' + SW_DEFAULT[k] + '. The default is kept'; t = SW_DEFAULT[k]; }
       res.model[k] = t; res.changed[k] = t !== SW_DEFAULT[k];
     });
     var ha = swHost(res.model.a), hb = swHost(res.model.b);
@@ -1979,6 +4134,43 @@ details summary.small{margin-top:4px}
     return res;
   }
   function swCheck() { return swResolve(state.sw); }
+
+  // The column of the feature matrix that covers a model, or null when the release does not list it.
+  function swSeries(model, version) {
+    var d = FSW.versions && FSW.versions[version];
+    if (!d) return null;
+    var rules = [[/^FSR-108F/, 'FSR-108F'], [/^FSR-112F/, 'FSR-112F-POE'], [/^FSR-216F/, 'FSR-216F-POE'], [/^FSR-424F/, 'FSR-424F-POE'],
+      [/^FS-1\d\d[EF]/, '1xxE, 1xxF'], [/^FS-1\d\dF/, '1xxF'], [/^FS-(110G|124G)/, '110G-FPOE, 124G, 124G-FPOE'], [/^FS-2\d\d[DE]/, '200 Series'],
+      [/^FS-3[24][48]G/, '324G, 324G-FPOE, 348G, 348G-FPOE'], [/^FS-M?4\d\dE/, '4xxE'], [/^FS-5\d\dD/, '500 Series'], [/^FS-6\d\dF/, '6xxF'],
+      [/^FS-(1024E|1048E|1048G|T1024E|T1024F)/, '1024E, 1048E, 1048G, T1024E, T1024F-FPOE'], [/^FS-2048F/, '2048F'], [/^FS-3032[EG]/, '3032E, 3032G']];
+    for (var i = 0; i < rules.length; i++) if (rules[i][0].test(model) && d.series.indexOf(rules[i][1]) >= 0) return rules[i][1];
+    return null;
+  }
+  // yes, no, or a note (the feature is there with a limit). A note that names models limits the feature to those models.
+  function featureState(f, model, series) {
+    if (!f.listed) return { state: 'no', why: 'not in this release' };
+    if (f.unsupported.indexOf(series) >= 0) return { state: 'no', why: '' };
+    var note = f.notes[series];
+    if (!note) return { state: 'yes', why: '' };
+    var toks = note.match(/T?\d{3,4}[A-Z](?:-F?POE)?/g), core = model.replace(/^FSR?-/, '');
+    if (!toks) return { state: 'note', why: note };
+    return toks.some(function (t) { return core === t || core.indexOf(t + '-') === 0; }) ? { state: 'yes', why: '' } : { state: 'no', why: 'only on ' + note.replace(/[()]/g, '').replace(/- /g, '-') };
+  }
+  function labsWith(key) { return LABS.filter(function (l) { return (l.features || []).indexOf(key) >= 0; }).map(function (l) { return l.id; }); }
+  function fswCheck(sw) {
+    var version = FSW_VERSIONS.some(function (x) { return x[0] === state.fswVersion; }) ? state.fswVersion : FSW_DEFAULT, d = FSW.versions && FSW.versions[version];
+    var res = { version: version, has: !!d, sw: {} };
+    ['a', 'b'].forEach(function (k) {
+      var series = swSeries(sw.model[k], version), r = res.sw[k] = { series: series, rows: [], no: [], note: [] };
+      if (!d || !series) return;
+      d.features.forEach(function (f) {
+        var st = featureState(f, sw.model[k], series), row = { key: f.key, name: f.name, state: st.state, why: st.why, labs: labsWith(f.key) };
+        r.rows.push(row);
+        if (st.state === 'no') r.no.push(row); else if (st.state === 'note') r.note.push(row);
+      });
+    });
+    return res;
+  }
   function swCheckDefaults() { return swResolve(SW_DEFAULT); }
 
   /* --------------------------------------------------------- walkthroughs */
@@ -1990,14 +4182,16 @@ details summary.small{margin-top:4px}
     return a;
   }
   function anyChange(m, v) {
-    return m.ipv4_prefix !== OLD_V4 || m.ipv6_prefix !== OLD_V6 || v.vlan.any || v.sub.any || v.addr.count > 0 || v.sw.changed.a || v.sw.changed.b ||
+    return m.ipv4_prefix !== OLD_V4 || m.ipv6_prefix !== OLD_V6 || v.vlan.any || v.sub.any || v.addr.count > 0 || v.sw.changed.a || v.sw.changed.b || Object.keys(v.ports || {}).length > 0 ||
       Object.keys(v.names).some(function (k) { return v.names[k] !== k; });
   }
 
   // Rewrite one lab chapter so that it uses the values of this build: addresses, VLAN IDs, machine names, and switch models.
   // included lists the chapter files that travel in the zip. Links to anything else go to the repository.
   function adaptWalkthrough(text, m, v, included) {
-    var tokens = [], p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, def = swCheckDefaults();
+    var tokens = [], p4 = m.ipv4_prefix, p6 = m.ipv6_prefix, def = swCheckDefaults(), shortOf = {};
+    // included is a list of chapter file names, or of { file, short } pairs when the zip stores them under short names.
+    included.forEach(function (w) { if (typeof w === 'string') shortOf[w] = w; else shortOf[w.file] = w.short || w.file; });
     function hold(x) { tokens.push(x); return '\u0001' + (tokens.length - 1) + '\u0002'; }
     function literal(from, to) {
       if (from === to) return;
@@ -2007,7 +4201,7 @@ details summary.small{margin-top:4px}
     text = text.replace(/\]\(([^)\s]+)\)/g, function (all, target) {
       if (/^(https?:|mailto:|#)/.test(target)) return all;
       var i = target.indexOf('#'), hash = i >= 0 ? target.slice(i) : '', file = i >= 0 ? target.slice(0, i) : target;
-      if (included.indexOf(file) >= 0) return all;
+      if (Object.prototype.hasOwnProperty.call(shortOf, file)) return '](' + shortOf[file] + hash + ')';
       if (/chapter-999-shared-lab-topology\.svg$/.test(file)) return '](../diagrams/lab-topology.svg)';
       var out = [];
       (VOLUME_DIR + 'chapters/' + file).split('/').forEach(function (x) { if (x === '..') out.pop(); else if (x && x !== '.') out.push(x); });
@@ -2031,6 +4225,8 @@ details summary.small{margin-top:4px}
       }
       literal(SW_DEFAULT[k], v.sw.model[k]);
     });
+    // Switch ports the user named. A placeholder with no value stays as it is.
+    Object.keys(v.ports || {}).forEach(function (k) { text = text.split('<' + k + '>').join(hold(v.ports[k])); });
     // IPv4: a shared segment takes its subnet, everything else moves with the block.
     text = text.replace(new RegExp('(^|[^0-9.])' + escRe(OLD_V4) + '\\.(\\d{1,3})(?=\\.)', 'g'), function (all, pre, c) {
       return pre + (SEGMENTS.indexOf(+c) >= 0 ? v.sub.base[+c] : p4 + '.' + c);
@@ -2055,6 +4251,7 @@ details summary.small{margin-top:4px}
       ? 'The addresses, VLAN IDs, machine names, and switch models in this copy are the ones chosen for this build. `LAB-VALUES.md` lists them, and it is right where this text and it differ.'
       : 'This build uses the Chapter 999 defaults, so the lab values in this copy match the original chapter.') +
       (v.sw.changed.a || v.sw.changed.b ? ' The labs were written for the ' + SW_DEFAULT.a + ' and the ' + SW_DEFAULT.b + '. A statement about what a switch supports was written for those models, so check the feature matrix for yours.' : '') +
+      (v.fsw && v.fsw.version.charAt(0) !== '8' ? ' This build runs FortiSwitchOS ' + v.fsw.version + '. The chapters cite the FortiSwitchOS 8.0.0 references, so check a command against the reference for your release when the switch refuses it.' : '') +
       ' Links to chapters that are not in this folder go to the repository.';
     return /^# .*\n/.test(text) ? text.replace(/^(# .*\n)/, '$1\n' + note + '\n') : note + '\n\n' + text;
   }
@@ -2063,9 +4260,27 @@ details summary.small{margin-top:4px}
   function labValuesText(m, v) {
     var p = PLATFORMS[state.platform], ver = p.versions.filter(function (x) { return x[0] === state.version; })[0];
     var L = ['# Lab values for this build', '', 'Made by the Lab Builder. The walkthroughs in `walkthroughs/` already use these values. Where a walkthrough and this file differ, this file is right.', ''];
-    L.push('## Platform', '', '- Platform: ' + (ver ? ver[1] : p.name), '- IPv4 block: `' + m.ipv4_prefix + '.0.0/16`', '- IPv6 prefix: `' + m.ipv6_prefix + '` (/112)', '- Admin user on every Linux machine: `' + m.admin_user + '` (SSH key login)', '');
+    L.push('## Platform', '', '- Platform: ' + (ver ? ver[1] : p.name), '- IPv4 block: `' + m.ipv4_prefix + '.0.0/16`', '- IPv6 prefix: `' + m.ipv6_prefix + '` (/112)', '- Admin user on every Linux machine: `' + m.admin_user + '` (SSH key login' + (state.consolePw && state.platform !== 'wsl' ? '; a console password is set by the `LAB201_CONSOLE_PASSWORD` line in `RUN.txt`' : '') + ')', '');
     L.push('## Switches under test', '', '| Role | Host name | Model |', '| --- | --- | --- |');
     ['a', 'b'].forEach(function (k) { L.push('| ' + SW_ROLE[k] + ' | `' + v.sw.name[k] + '` | ' + v.sw.model[k] + (v.sw.changed[k] ? ' (the labs were written for the ' + SW_DEFAULT[k] + ')' : '') + ' |'); });
+    L.push('', '## FortiSwitchOS and feature support', '', '- FortiSwitchOS release: ' + v.fsw.version);
+    if (!v.fsw.has) L.push('- No feature data is loaded for this release.');
+    else {
+      L.push('- Source: Fortinet, Feature Matrix for FortiSwitchOS ' + v.fsw.version + '. The matrix lists model series, so check it for your exact model before you rely on a feature.', '');
+      ['a', 'b'].forEach(function (k) {
+        var fs = v.fsw.sw[k];
+        L.push('### ' + SW_ROLE[k] + ': ' + v.sw.model[k] + ' (`' + v.sw.name[k] + '`)', '');
+        if (!fs.series) { L.push('The feature matrix for this release does not list this model, so its feature support is not known.', ''); return; }
+        L.push('Series in the feature matrix: ' + fs.series + '.', '');
+        if (!fs.no.length && !fs.note.length) { L.push('The matrix lists every lab feature as supported.', ''); return; }
+        L.push('| Lab feature | Support | Labs that name it |', '| --- | --- | --- |');
+        fs.no.forEach(function (r) { L.push('| ' + r.name + ' | not supported' + (r.why ? ' (' + r.why + ')' : '') + ' | ' + (r.labs.join(', ') || 'none') + ' |'); });
+        fs.note.forEach(function (r) { L.push('| ' + r.name + ' | supported with a limit: ' + r.why + ' | ' + (r.labs.join(', ') || 'none') + ' |'); });
+        L.push('', 'Every other lab feature is listed as supported.', '');
+      });
+    }
+    L.push('## Switch ports', '', '| Placeholder in the labs | Meaning | Port |', '| --- | --- | --- |');
+    PORTS.forEach(function (p) { L.push('| `<' + p[0] + '>` | ' + p[1] + ' | ' + (v.ports[p[0]] ? '`' + v.ports[p[0]] + '`' : 'not chosen; read it with `get switch interface status`') + ' |'); });
     L.push('', '## Shared segments', '', '| Segment | Name | VLAN ID | IPv4 subnet | Gateway |', '| --- | --- | --- | --- | --- |');
     SEGMENTS.forEach(function (g) { L.push('| ' + g + ' | ' + SEGNAMES[g] + ' | ' + v.vlan.eff[g] + ' | `' + v.sub.cidr[g] + '` | `' + v.sub.base[g] + '.1` |'); });
     L.push('', '## Machines', '', '| Machine | Role | Flavor | Lab addresses |', '| --- | --- | --- | --- |');
@@ -2077,7 +4292,10 @@ details summary.small{margin-top:4px}
 
   // Instructions for a Claude session that opens this folder. Claude Code reads CLAUDE.md on its own.
   function claudeText(m, v, walkthroughs) {
-    var p = PLATFORMS[state.platform], first = walkthroughs.indexOf('999-shared-lab-infrastructure.md') >= 0 ? '999-shared-lab-infrastructure.md' : walkthroughs[0];
+    var p = PLATFORMS[state.platform], names = walkthroughs.map(function (w) { return typeof w === 'string' ? { file: w, short: w } : w; });
+    var lab = v.startLab || { id: '999.1', title: 'Build the gateway and the VLANs', file: '999-shared-lab-infrastructure.md' };
+    var labFile = names.filter(function (w) { return w.file === lab.file; })[0], first = labFile ? labFile.short : '';
+    walkthroughs = names.map(function (w) { return w.short; });
     var L = ['# Lab 201 build: instructions for Claude', '',
       'This folder was made by the Lab Builder of the Enterprise Infrastructure Encyclopedia, Volume CCI (FortiSwitch STIG and SRG mapping). It holds one lab build and the lab walkthroughs written for it. Your job is to walk the user through the labs, one step at a time.', '',
       '## What is in this folder', '',
@@ -2090,13 +4308,20 @@ details summary.small{margin-top:4px}
       'When the user opens a session in this folder, or says "start", do this:', '',
       '1. Read `LAB-VALUES.md` and `CHECKLIST.md`.',
       '2. Ask the user what already exists: are the lab machines built (`RUN.txt`), and are the two switches cabled and reachable?',
-      first ? '3. Begin with the first lab, **Lab 999.1**, in `walkthroughs/' + first + '`. The build script creates the machines that Labs 999.1 and 999.2 describe, so in those two labs verify what the script built instead of building it again.' : '3. Begin with Lab 999.1 of Chapter 999 once the user supplies the chapter.',
-      '4. Go on in order: Labs 999.1 to 999.6, then the requirement labs in Chapters 04, 05, 06, and 07. Chapter 08 is optional and needs a console server.', '',
+      first ? '3. Begin with **Lab ' + lab.id + '** (' + lab.title + ') in `walkthroughs/' + first + '`.' + (lab.id === '999.1'
+        ? ' The build script creates the machines that Labs 999.1 and 999.2 describe, so in those two labs verify what the script built instead of building it again.'
+        : ' The user chose to start here, not at Lab 999.1. First confirm with the user that the shared lab of Chapter 999 is built and that its baseline was taken (Lab 999.6).')
+        : '3. Begin with Lab ' + lab.id + ' once the user supplies the chapter.',
+      '4. Go on in order from there. The full order is Labs 999.1 to 999.6, then the requirement labs in Chapters 04, 05, 06, and 07. Chapter 08 is optional and needs a console server.', '',
       '## How to walk a lab', '',
       '- Take one step at a time. Say what the step does, give the exact command, and say what result to expect.',
       '- Wait for the user to run it and show the output. Compare the output with the expected result before you go on.',
       '- A step passes only when the output shows it. If you cannot see the result, say that it is not verified.',
-      '- Keep a short log in `PROGRESS.md`: the lab, the step, pass or fail, and the date. Start the next session from it.',
+      '- Keep a log in `PROGRESS.md` and start the next session from it. Use exactly this table, one row for each step, so the Lab Builder can read it back:', '',
+      '  | Lab | Step | Result | Date | Note |',
+      '  | --- | --- | --- | --- | --- |',
+      '  | 999.1 | 1 | pass | 2026-01-31 | gateway answers on every VLAN |', '',
+      '  Result is one of: pass, fail, blocked, skipped. Lab is the lab number only. Use the date as YYYY-MM-DD.',
       '- Use the values in `LAB-VALUES.md`. If a walkthrough shows a different value, `LAB-VALUES.md` is right. Tell the user about the difference.', '',
       '## Rules', '',
       '- Do not change a switch or a machine without the user\'s go-ahead for that step. Show the commands first.',
@@ -2104,6 +4329,7 @@ details summary.small{margin-top:4px}
       '- Never ask the user to paste a password, a license key, or a private key into the chat. Keys go in the license file or in environment variables on the user\'s computer.',
       '- Keep the lab isolated. Do not route `' + m.ipv4_prefix + '.0.0/16` into another network.',
       '- If a step fails, stop and work out why with the user. Do not skip ahead.'];
+    L.push('- `LAB-VALUES.md` lists the lab features that Fortinet\'s feature matrix marks as not supported on these switch models in FortiSwitchOS ' + v.fsw.version + '. Before a lab step that uses one of them, tell the user. Record the step as blocked with that reason. It is a limit of the model, not a failed test.');
     if (v.sw.changed.a || v.sw.changed.b) L.push('- The labs were written for the ' + SW_DEFAULT.a + ' and the ' + SW_DEFAULT.b + '. This build uses the ' + v.sw.model.a + ' and the ' + v.sw.model.b + '. Before a lab relies on a feature, check that the model supports it (Chapter 01, prerequisite P9), and tell the user when it does not.');
     return L.join('\n') + '\n';
   }
@@ -2130,6 +4356,10 @@ details summary.small{margin-top:4px}
       '- RUN.txt and CHECKLIST.md: the commands that build the machines on ' + p.name + ',',
       '  and what to check before and after.',
       '- START-CLAUDE.txt: the two start lines above.', '',
+      'Your progress', '',
+      '- Claude logs each step in PROGRESS.md in the lab folder.',
+      '- Click Load progress on this page and pick that file. The Progress tab then shows',
+      '  which labs passed.', '',
       'What to expect', '',
       '- Claude takes one step at a time, gives the command and the expected result, and',
       '  waits for your output before it goes on.',
@@ -2139,6 +4369,27 @@ details summary.small{margin-top:4px}
       '- If a walkthrough step and LAB-VALUES.md differ, LAB-VALUES.md is right.',
       '- The page must be opened from the published site. A local copy cannot fetch the',
       '  walkthroughs, and the zip then lists them in MISSING-FILES.txt.', ''].join('\n');
+  }
+
+  // Read PROGRESS.md (the table CLAUDE.md asks for) into a status for each lab.
+  function parseProgress(text) {
+    var labs = {}, rows = 0;
+    String(text).split(/\r?\n/).forEach(function (line) {
+      var m = /^\s*\|\s*(?:Lab\s*)?(\d+\.\d+)\s*\|\s*([^|]*)\|\s*(pass|fail|blocked|skipped)\b[^|]*\|\s*([^|]*)\|/i.exec(line);
+      if (!m) return;
+      rows++;
+      var r = labs[m[1]] = labs[m[1]] || { pass: 0, fail: 0, blocked: 0, skipped: 0, last: '' };
+      r[m[3].toLowerCase()]++;
+      var d = m[4].trim(); if (/^\d{4}-\d{2}-\d{2}$/.test(d) && d > r.last) r.last = d;
+    });
+    return { labs: labs, rows: rows };
+  }
+  function labStatus(id, progress) {
+    var r = progress && progress.labs[id];
+    if (!r) return 'not started';
+    if (r.fail) return 'failed';
+    if (r.blocked) return 'blocked';
+    return r.pass ? 'passed' : 'skipped';
   }
 
   function startText() {
@@ -2153,7 +4404,7 @@ details summary.small{margin-top:4px}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-builder-choices', format: 1, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -2186,6 +4437,10 @@ details summary.small{margin-top:4px}
     });
     state.images = s.images || {}; state.isos = s.isos || {}; state.rhelImage = s.rhelImage || '';
     state.licFile = s.licFile || (p.shell === 'ps' ? '.\\licenses.local.json' : './licenses.local.json'); state.licRefs = s.licRefs || {};
+    state.consolePw = typeof s.consolePw === 'string' ? s.consolePw : DEFAULT_CONSOLE_PW;
+    state.ports = {}; PORTS.forEach(function (p) { if (s.ports && typeof s.ports[p[0]] === 'string') state.ports[p[0]] = s.ports[p[0]]; });
+    state.startLab = LABS.some(function (l) { return l.id === s.startLab; }) ? s.startLab : '999.1';
+    state.fswVersion = FSW_VERSIONS.some(function (x) { return x[0] === s.fswVersion; }) ? s.fswVersion : FSW_DEFAULT;
     if (s.switches && typeof s.switches === 'object') ['a', 'b'].forEach(function (k) { if (s.switches[k]) state.sw[k] = String(s.switches[k]); });
     return notes;
   }
@@ -2213,14 +4468,11 @@ details summary.small{margin-top:4px}
       return fetchBytes(w[0]).then(function (b) { files.push({ path: root + w[1], bytes: b }); }, function () { missing.push(w[1]); });
     }));
     // The lab chapters this build is for, rewritten with its values.
-    var walk = fetchText('../walkthroughs.list').then(function (txt) {
-      var names = txt.split(/\r?\n/).map(function (x) { return x.trim(); }).filter(function (x) { return x && x.charAt(0) !== '#'; });
-      return Promise.all(names.map(function (n) {
-        return fetchText('../walkthroughs/' + n).then(function (t) {
-          walkNames.push(n); files.push({ path: root + 'walkthroughs/' + n, bytes: enc.encode(adaptWalkthrough(t, m, v, names)) });
-        }, function () { missing.push('walkthroughs/' + n); });
-      })).then(function () { walkNames = names.filter(function (n) { return walkNames.indexOf(n) >= 0; }); });
-    }, function () { missing.push('walkthroughs/ (the lab chapters)'); });
+    var walk = Promise.all(WALKTHROUGHS.map(function (w) {
+      return fetchText('../walkthroughs/' + w.file).then(function (t) {
+        walkNames.push(w); files.push({ path: root + 'walkthroughs/' + w.short, bytes: enc.encode(adaptWalkthrough(t, m, v, WALKTHROUGHS)) });
+      }, function () { missing.push('walkthroughs/' + w.short); });
+    })).then(function () { walkNames = WALKTHROUGHS.filter(function (w) { return walkNames.indexOf(w) >= 0; }); });
     return Promise.all([base, walk]).then(function () {
       files.push({ path: root + 'CLAUDE.md', bytes: enc.encode(claudeText(m, v, walkNames)) });
       if (missing.length) files.push({ path: root + 'MISSING-FILES.txt', bytes: enc.encode('This page could not fetch these files from the site:\n' + missing.map(function (x) { return '  ' + x; }).join('\n') + '\n\nDownload the lab-scripts zip from the Volume CCI page and copy them next to common/lab201-vms.json.\nOpening the page from a local file blocks the fetch. Open it from the published site instead.\n') });
@@ -2231,7 +4483,7 @@ details summary.small{margin-top:4px}
   window.LabBuilderCore = {
     BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
     choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: labValuesText, claudeText: claudeText, startText: startText, claudeHelpText: claudeHelpText,
-    swCheck: swCheck, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
+    swCheck: swCheck, swSeries: swSeries, fswCheck: fswCheck, FSW: FSW, FSW_VERSIONS: FSW_VERSIONS, parseProgress: parseProgress, labStatus: labStatus, LABS: LABS, WALKTHROUGHS: WALKTHROUGHS, PORTS: PORTS, DEFAULT_CONSOLE_PW: DEFAULT_CONSOLE_PW, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
     resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
     checklistText: checklistText, changesText: changesText, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
@@ -2255,21 +4507,21 @@ details summary.small{margin-top:4px}
     h += '<div class="card"><h2><span class="n">2</span> Version</h2><p class="hint" id="verhint"></p><div class="pills" id="versions"></div></div>';
     h += '<div class="card"><h2><span class="n">3</span> Platform settings</h2><p class="hint">Names of the hosts, storage, and network connections the script needs. Empty fields show a placeholder in the command.</p><div class="field" id="params"></div></div>';
     h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
-    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
+    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div><label for="conpw">Console password</label><div><input type="text" id="conpw" class="wide" style="max-width:220px" autocomplete="off"> <span class="small" id="conpwnote"></span></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<table id="machines"></table></div>';
     h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The default plan is 10.201.0.0/16 and fd00:db8:201::/112, with segment number = VLAN ID = third octet. Move the plan to another block, or give a segment another VLAN ID. A segment\'s IPv4 subnet follows its VLAN ID (VLAN 140 is 10.201.140.0/24). Tick <b>Set subnet</b> to type a different /24 for a segment. Change a machine\'s address in step 5. The gateway is always .1.</p>';
     h += '<div class="field"><label for="v4">IPv4 block (first two octets)</label><div><input type="text" id="v4" class="wide" style="max-width:160px"> <span class="small" id="v4note"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div></div>';
     h += '<table id="vlans" style="margin-top:12px"></table><p class="small" id="addrpreview"></p></div>';
-    h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div></div>';
+    h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div><div class="field" style="margin-top:12px"><label for="fswver">FortiSwitchOS version</label><div><select id="fswver"></select> <span class="small">Sets which Fortinet feature matrix the page reads.</span></div></div><div id="fswtable"></div><p class="hint" style="margin-top:12px">Switch ports: the labs write the ports as placeholders such as <code>&lt;PORT_EP1&gt;</code>. Type the ports you use and the walkthroughs in the zip show them. An empty field keeps the placeholder. One name serves both switches, so leave a field empty where the two differ.</p><div class="field" id="ports"></div><div class="field" style="margin-top:12px"><label for="startlab">Start Claude at lab</label><div><select id="startlab"></select> <span class="small">The lab that CLAUDE.md in the zip tells Claude to begin with.</span></div></div></div>';
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><table id="lics"></table></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
-    r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden></div><p class="small" id="zipnote"></p><p class="small">The zip can be handed to Claude to walk the labs with you. Unzip it, open a terminal in the folder, and run <code>claude "Start the lab walkthrough."</code> The <b>Claude</b> tab has the full steps.</p></div>';
+    r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden><button class="btn" id="loadprog">Load progress</button><input type="file" id="progfile" accept=".md,text/markdown,text/plain" hidden></div><p class="small" id="zipnote"></p><p class="small">The zip can be handed to Claude to walk the labs with you. Unzip it, open a terminal in the folder, and run <code>claude "Start the lab walkthrough."</code> The <b>Claude</b> tab has the full steps.</p></div>';
     $('right').innerHTML = r;
-    var tabs = [['command', 'Command'], ['manifest', 'Manifest'], ['checklist', 'Checklist'], ['changes', 'Changes'], ['licenses', 'License file'], ['claude', 'Claude'], ['diagram', 'Diagram']];
+    var tabs = [['command', 'Command'], ['manifest', 'Manifest'], ['checklist', 'Checklist'], ['changes', 'Changes'], ['licenses', 'License file'], ['claude', 'Claude'], ['progress', 'Progress'], ['diagram', 'Diagram']];
     $('tabs').innerHTML = tabs.map(function (t) { return '<button data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('');
     // matrix
     var heads = C.FLAVORS.filter(function (f) { return f.status !== 'planned'; });
@@ -2357,6 +4609,13 @@ details summary.small{margin-top:4px}
     });
     h += '<datalist id="swmodels">' + C.SW_MODELS.map(function (x) { return '<option value="' + x + '">'; }).join('') + '</datalist>';
     $('switches').innerHTML = h;
+    var ph = '';
+    C.PORTS.forEach(function (p) {
+      ph += '<label for="port_' + p[0] + '">' + p[1] + '</label><div><input type="text" id="port_' + p[0] + '" data-port="' + p[0] + '" class="wide" style="max-width:160px" placeholder="&lt;' + p[0] + '&gt;" value="' + esc(S.ports[p[0]] || '') + '"> <span class="small" data-m="port" data-k="' + p[0] + '"></span></div>';
+    });
+    $('ports').innerHTML = ph;
+    $('fswver').innerHTML = C.FSW_VERSIONS.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === S.fswVersion ? ' selected' : '') + '>' + x[1] + '</option>'; }).join('');
+    $('startlab').innerHTML = C.LABS.map(function (l) { return '<option value="' + l.id + '"' + (l.id === S.startLab ? ' selected' : '') + '>Lab ' + l.id + ' — ' + esc(l.title) + '</option>'; }).join('');
   }
 
   var lastSub = null;
@@ -2446,6 +4705,28 @@ details summary.small{margin-top:4px}
       smsg.textContent = serr || v.sub.note[s] || (!on && moved ? 'follows VLAN ' + v.vlan.eff[s] : '');
     });
     lastSub = v.sub;
+    if (document.activeElement !== $('conpw') && $('conpw').value !== S.consolePw) $('conpw').value = S.consolePw;
+    var fh = '';
+    if (!v.fsw.has) fh = '<p class="small">No feature data is loaded for FortiSwitchOS ' + v.fsw.version + '.</p>';
+    else {
+      var fa = v.fsw.sw.a, fb = v.fsw.sw.b, cell = function (r) { return r ? (r.state === 'yes' ? '<td class="okc">yes</td>' : r.state === 'no' ? '<td class="badc">no' + (r.why ? '<br><span class="small">' + esc(r.why) + '</span>' : '') + '</td>' : '<td class="small">limit: ' + esc(r.why) + '</td>') : '<td class="small">not known</td>'; };
+      var keys = (fa.rows.length ? fa.rows : fb.rows).map(function (r) { return r.key; }), byA = {}, byB = {};
+      fa.rows.forEach(function (r) { byA[r.key] = r; }); fb.rows.forEach(function (r) { byB[r.key] = r; });
+      var shown = keys.filter(function (k) { return (byA[k] && byA[k].state !== 'yes') || (byB[k] && byB[k].state !== 'yes'); });
+      var rowHtml = function (k) { var r = byA[k] || byB[k]; return '<tr><td>' + esc(r.name) + '</td>' + cell(byA[k]) + cell(byB[k]) + '<td class="small">' + (r.labs.join(', ') || '') + '</td></tr>'; };
+      var head = '<tr><th>Lab feature</th><th>' + esc(v.sw.model.a) + '</th><th>' + esc(v.sw.model.b) + '</th><th>Labs that name it</th></tr>';
+      fh = '<p class="small" style="margin-top:8px">Fortinet\'s feature matrix for FortiSwitchOS ' + v.fsw.version + ': the ' + esc(v.sw.model.a) + ' is in series <b>' + esc(fa.series || 'not listed') + '</b> and the ' + esc(v.sw.model.b) + ' is in series <b>' + esc(fb.series || 'not listed') + '</b>. ' +
+        (shown.length ? shown.length + ' of ' + keys.length + ' lab features are not fully supported on one of them:' : keys.length ? 'All ' + keys.length + ' lab features are listed as supported on both.' : '') + ' The matrix lists model series, so check it for your exact model.</p>' +
+        (shown.length ? '<table class="prog">' + head + shown.map(rowHtml).join('') + '</table>' : '') +
+        (keys.length ? '<details><summary class="small">All ' + keys.length + ' lab features</summary><table class="prog">' + head + keys.map(rowHtml).join('') + '</table></details>' : '');
+    }
+    $('fswtable').innerHTML = fh;
+    C.PORTS.forEach(function (p) {
+      var pin = document.querySelector('[data-port="' + p[0] + '"]'), pe = v.portErr[p[0]];
+      pin.className = 'wide' + (pe ? ' err' : v.ports[p[0]] ? ' chg' : ''); document.querySelector('[data-m=port][data-k="' + p[0] + '"]').textContent = pe || '';
+    });
+    $('conpw').className = 'wide' + (S.consolePw !== C.DEFAULT_CONSOLE_PW ? ' chg' : '');
+    $('conpwnote').textContent = S.platform === 'wsl' ? 'Not used on WSL.' : S.consolePw ? 'For the admin user at the machine console and for sudo. SSH still takes only your key. ' + (S.consolePw === C.DEFAULT_CONSOLE_PW ? 'This default is published with the page, so change it outside a closed lab.' : '') : 'Empty: key-only login, and no console login.';
     ['a', 'b'].forEach(function (k) {
       var swi = document.querySelector('[data-sw="' + k + '"]'), swn = document.querySelector('[data-m=sw][data-k="' + k + '"]'), swe = v.sw.err[k];
       swi.className = 'wide' + (swe ? ' err' : v.sw.changed[k] ? ' chg' : '');
@@ -2460,6 +4741,14 @@ details summary.small{margin-top:4px}
     else if (activeTab === 'manifest') body = '<pre>' + esc(JSON.stringify(m, null, 2)) + '</pre>';
     else if (activeTab === 'checklist') body = '<pre>' + esc(C.checklistText(m, v)) + '</pre>';
     else if (activeTab === 'changes') body = '<pre>' + esc(C.changesText(m, v) || 'No changes from the Chapter 999 defaults.') + '</pre>';
+    else if (activeTab === 'progress') {
+      var pr = S.progress, counts = { passed: 0, failed: 0, blocked: 0, skipped: 0, 'not started': 0 };
+      var rowsHtml = C.LABS.map(function (l) {
+        var st = C.labStatus(l.id, pr), r = pr && pr.labs[l.id]; counts[st]++;
+        return '<tr><td>Lab ' + l.id + '</td><td>' + esc(l.title) + '</td><td class="' + (st === 'passed' ? 'okc' : st === 'failed' || st === 'blocked' ? 'badc' : 'small') + '">' + st + '</td><td class="small">' + (r ? r.pass + ' pass, ' + r.fail + ' fail' + (r.last ? ', ' + r.last : '') : '') + '</td></tr>';
+      }).join('');
+      body = '<p class="small">' + (pr ? pr.rows + ' step rows read. ' + counts.passed + ' of ' + C.LABS.length + ' labs passed, ' + counts.failed + ' failed, ' + counts.blocked + ' blocked, ' + counts['not started'] + ' not started. A lab counts as passed when it has passed steps and no failed or blocked step. It does not check that every step of the lab was run.' : 'Claude keeps a log of each lab step in PROGRESS.md, in the lab folder. Click <b>Load progress</b> below and pick that file to see which labs passed.') + '</p><table class="prog"><tr><th>Lab</th><th>Title</th><th>Status</th><th>Steps</th></tr>' + rowsHtml + '</table>';
+    }
     else if (activeTab === 'claude') body = '<pre>' + esc(C.claudeHelpText()) + '</pre><p class="small">The zip holds these instructions for Claude in CLAUDE.md, and the two start lines in START-CLAUDE.txt.</p>';
     else if (activeTab === 'licenses') body = '<pre>' + esc(C.licensesExample(m) || 'No license file is used for these choices.') + '</pre><p class="small">Copy this to ' + esc(S.licFile) + ' and fill in the values on your computer. Never commit it, and never put it in the zip.</p>';
     else body = '<div class="diag"><img alt="Shared lab network diagram" src="../diagrams/lab-topology.svg" onerror="this.parentNode.innerHTML=\'<p class=small>The diagram is added when the site is built, so it appears on the published page and in the zip.</p>\'"></div><p class="small">This is the default lab. The generated zip includes the same picture.</p>';
@@ -2508,12 +4797,16 @@ details summary.small{margin-top:4px}
       else if (t.id === 'v4') S.v4 = t.value.trim();
       else if (t.id === 'v6') S.v6 = t.value.trim();
       else if (t.id === 'licfile') S.licFile = t.value;
+      else if (t.id === 'conpw') S.consolePw = t.value;
       else if (t.id === 'rhelimg') S.rhelImage = t.value;
       else if (t.hasAttribute('data-image')) S.images[t.getAttribute('data-image')] = t.value;
       else if (t.hasAttribute('data-iso')) S.isos[t.getAttribute('data-iso')] = t.value;
       else if (t.hasAttribute('data-vlan')) S.vlans[t.getAttribute('data-vlan')] = t.value;
       else if (t.hasAttribute('data-subon')) { var sg = t.getAttribute('data-subon'); S.subnetOn[sg] = t.checked; if (t.checked && !S.subnets[sg] && lastSub) S.subnets[sg] = lastSub.cidr[sg]; }
       else if (t.hasAttribute('data-sw')) S.sw[t.getAttribute('data-sw')] = t.value;
+      else if (t.hasAttribute('data-port')) S.ports[t.getAttribute('data-port')] = t.value;
+      else if (t.id === 'startlab') S.startLab = t.value;
+      else if (t.id === 'fswver') S.fswVersion = t.value;
       else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
@@ -2526,7 +4819,24 @@ details summary.small{margin-top:4px}
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { $('zipnote').textContent = 'Copied.'; }, function () { $('zipnote').textContent = 'Copy failed. Select the text and copy it by hand.'; });
     });
     $('dlmanifest').addEventListener('click', function () { var r = refresh(); download('lab201-vms.json', new Blob([JSON.stringify(r.m, null, 2) + '\n'], { type: 'application/json' })); });
+    $('loadprog').addEventListener('click', function () { $('progfile').click(); });
+    $('progfile').addEventListener('change', function (ev) {
+      var inp = ev.target, f = inp.files[0]; if (!f) return;
+      f.text().then(function (txt) {
+        var pr = C.parseProgress(txt);
+        if (!pr.rows) { $('zipnote').textContent = 'No lab steps were found in ' + f.name + '. It needs the table that CLAUDE.md describes: | Lab | Step | Result | Date | Note |.'; return; }
+        S.progress = pr; activeTab = 'progress'; refresh();
+        $('zipnote').textContent = 'Loaded ' + f.name + ': ' + pr.rows + ' step rows. See the Progress tab.';
+      }).then(function () { inp.value = ''; });
+    });
     $('dlzip').addEventListener('click', function () {
+      // Show what differs from the book before the zip is made, so a mistyped value is caught here.
+      var rv = refresh(), chg = C.changesText(rv.m, rv.v).split('\n').filter(function (l) { return l.indexOf('- ') === 0; });
+      if (rv.v.errors.length || chg.length) {
+        var msg = (chg.length ? 'This build differs from the Chapter 999 defaults:\n\n' + chg.join('\n') + '\n\n' : '') +
+          (rv.v.errors.length ? 'Refused changes (the default is kept for each):\n\n' + rv.v.errors.map(function (e) { return '- ' + e; }).join('\n') + '\n\n' : '') + 'Download the zip with these values?';
+        if (!window.confirm(msg)) { $('zipnote').textContent = 'No zip was made. Change the values and click Download zip again.'; return; }
+      }
       $('zipnote').textContent = 'Building the zip...';
       C.buildZip().then(function (z) {
         download('lab201-build.zip', z.blob);
@@ -2641,13 +4951,48 @@ details summary.small{margin-top:4px}
     ok(wt.indexOf('VLAN 140 and VLANs 10, 140, and 41') > 0 && wt.indexOf('`set vlanid 140`, `vlan140`') > 0 && wt.indexOf('VLAN 2005 and 10.30.1.1 stay') > 0, 'a walkthrough takes the chosen VLAN IDs');
     ok(wt.indexOf('10.77.140.2/24, gateway 10.77.10.1, fd00:db8:201::8c02, fd00:db8:201::a01') > 0 && wt.indexOf('`svc-a` at 10.77.10.15.') > 0, 'a walkthrough takes the chosen addresses and machine names');
     ok(wt.indexOf('`sw-424e-1` (FS-424E-FPOE, license (the SKU for the FS-424E-FPOE))') > 0 && wt.indexOf('check the feature matrix') > 0 && v.warnings.some(function (w) { return w.indexOf('FS-424E-FPOE') > 0; }), 'a walkthrough takes the chosen switch model and host name');
-    ok(C.labValuesText(m, v).indexOf('| 40 | Users-8021X | 140 | `10.77.140.0/24` | `10.77.140.1` |') > 0 && C.labValuesText(m, v).indexOf('| Access switch | `sw-424e-1` | FS-424E-FPOE') > 0 && C.claudeText(m, v, ['999-shared-lab-infrastructure.md']).indexOf('**Lab 999.1**, in `walkthroughs/999-shared-lab-infrastructure.md`') > 0, 'the zip describes the build for an assistant');
+    ok(C.labValuesText(m, v).indexOf('| 40 | Users-8021X | 140 | `10.77.140.0/24` | `10.77.140.1` |') > 0 && C.labValuesText(m, v).indexOf('| Access switch | `sw-424e-1` | FS-424E-FPOE') > 0 && C.claudeText(m, v, ['999-shared-lab-infrastructure.md']).indexOf('**Lab 999.1** (Build the gateway and the VLANs) in `walkthroughs/999-shared-lab-infrastructure.md`') > 0, 'the zip describes the build for an assistant');
     S.sw.a = 'catalyst 9300'; S.sw.b = 'FS-648F-FPOE'; v = C.validateAll();
     ok(!!v.sw.err.a && v.sw.model.a === 'FS-648F-FPOE' && v.sw.name.a === 'sw-648f-1' && v.sw.name.b === 'sw-648f-2', 'a model that is not a FortiSwitch is refused, and two switches of one model get different names');
     reset(); S.sw.b = 'FS-1048E'; var swSaved = C.choicesText(); reset(); C.applyChoices(JSON.parse(swSaved));
     ok(S.sw.b === 'FS-1048E' && S.sw.a === 'FS-648F-FPOE', 'the choices file keeps the switch models');
     reset('workstation');
     ok(C.claudeHelpText().indexOf('claude "Start the lab walkthrough."') > 0 && C.claudeHelpText().indexOf('VMware Workstation Pro') > 0 && C.startText().indexOf('claude "Start the lab walkthrough."') > 0 && !!document.querySelector('#tabs button[data-tab="claude"]'), 'the page explains how to hand the zip to Claude');
+    reset('workstation'); cmd = C.commandText(man());
+    ok(cmd.indexOf('-Action Check') > 0 && cmd.indexOf('-Action Check') < cmd.indexOf('# 1. Preview') && cmd.indexOf('-Action Status') > cmd.indexOf('# 2. Build') && cmd.indexOf('-AddToLibrary') < 0, 'Workstation commands start with a readiness check and show how to log in');
+    S.params.addlib = true; ok(C.commandText(man()).indexOf('-AddToLibrary') > 0, 'Workstation can open the machines in the library');
+    reset('proxmox'); cmd = C.commandText(man());
+    ok(cmd.indexOf("export LAB201_CONSOLE_PASSWORD='" + C.DEFAULT_CONSOLE_PW + "'") > 0 && cmd.indexOf('-Action Check') < 0, 'a console password is proposed for the admin user');
+    S.consolePw = "it's"; var cmdQ = C.commandText(man()); S.consolePw = ''; 
+    ok(cmdQ.indexOf("export LAB201_CONSOLE_PASSWORD='it'\\''s'") > 0 && C.commandText(man()).indexOf('LAB201_CONSOLE_PASSWORD') < 0, 'the console password is quoted, and an empty one is left out');
+    reset('vcenter'); S.consolePw = 'x1'; var pwSaved = C.choicesText(); reset('vcenter'); C.applyChoices(JSON.parse(pwSaved));
+    ok(S.consolePw === 'x1' && C.commandText(man()).indexOf("$env:LAB201_CONSOLE_PASSWORD = 'x1'") > 0, 'the choices file keeps the console password');
+    // FortiSwitchOS release and feature support by model series
+    reset(); v = C.validateAll();
+    var noA = v.fsw.sw.a.no.map(function (r) { return r.key; }), noB = v.fsw.sw.b.no.map(function (r) { return r.key; });
+    ok(v.fsw.version === '8.0.1' && v.fsw.sw.a.series === '6xxF' && v.fsw.sw.b.series === '2048F' && noA.indexOf('dai') >= 0 && noA.indexOf('ipsg') >= 0 && noA.indexOf('urpf') >= 0 && noA.indexOf('dot1x') < 0 && noA.indexOf('ospf') < 0 && noB.indexOf('ipsg') < 0 && noB.indexOf('urpf') < 0, 'feature support comes from the feature matrix for the switch series');
+    S.fswVersion = '7.6.7'; v = C.validateAll();
+    ok(v.fsw.sw.b.no.some(function (r) { return r.key === 'ipsg'; }) && C.adaptWalkthrough('# T\n\nx\n', C.buildManifest(v), v, []).indexOf('This build runs FortiSwitchOS 7.6.7') > 0, 'the FortiSwitchOS release changes the feature support');
+    reset(); S.sw.a = 'FS-124F-POE'; S.sw.b = 'FS-1048G'; v = C.validateAll();
+    var st = function (k, key) { return v.fsw.sw[k].rows.filter(function (r) { return r.key === key; })[0].state; };
+    ok(v.fsw.sw.a.series === '1xxF' && st('a', 'ospf') === 'no' && st('a', 'sflow') === 'yes' && st('b', 'ipsg') === 'no' && st('b', 'macsec') === 'yes' && st('b', 'bgp') === 'yes' && v.warnings.some(function (w) { return w.indexOf('FS-124F-POE (1xxF') > 0 && w.indexOf('OSPF') > 0; }), 'a cell note that names models limits the feature to those models');
+    S.sw.a = 'FS-108F'; S.sw.b = 'FS-524D'; v = C.validateAll();
+    ok(st('a', 'sflow') === 'no' && v.fsw.sw.b.series === null && v.warnings.some(function (w) { return w.indexOf('does not list the FS-524D') > 0; }) && C.swSeries('FS-524D', '7.6.7') === '500 Series' && C.swSeries('FS-124E', '7.6.7') === '1xxE, 1xxF' && C.swSeries('FSR-112F-POE', '8.0.1') === 'FSR-112F-POE', 'a model the release does not list is reported as not known');
+    reset(); S.fswVersion = '8.0.0'; v = C.validateAll();
+    ok(v.fsw.has && v.fsw.version === '8.0.0' && v.fsw.sw.a.series === '6xxF' && !v.fsw.sw.b.no.some(function (r) { return r.key === 'ipsg'; }) && C.FSW_VERSIONS.length === 3, 'FortiSwitchOS 7.6.7, 8.0.0, and 8.0.1 can be chosen');
+    reset(); S.fswVersion = '7.6.7'; var fv = C.choicesText(); reset(); C.applyChoices(JSON.parse(fv));
+    ok(S.fswVersion === '7.6.7' && C.labValuesText(C.buildManifest(C.validateAll()), C.validateAll()).indexOf('- FortiSwitchOS release: 7.6.7') > 0 && C.LABS.some(function (l) { return l.id === '4.5' && l.features.indexOf('dhcp_snooping') >= 0; }), 'the choices file keeps the FortiSwitchOS release, and each lab lists the features it names');
+    // Switch ports, start lab, progress, short names
+    reset(); S.ports.PORT_EP1 = 'port5'; S.ports.PORT_TRUNK = 'bad port!'; S.startLab = '4.1'; v = C.validateAll(); m = C.buildManifest(v);
+    wt = C.adaptWalkthrough('# T\n\nedit <PORT_EP1> and <PORT_TRUNK>, see [Chapter 999](999-shared-lab-infrastructure.md#x) and [Chapter 01](01-y.md).\n', m, v, C.WALKTHROUGHS);
+    ok(wt.indexOf('edit port5 and <PORT_TRUNK>') > 0 && !!v.portErr.PORT_TRUNK && wt.indexOf('](999-shared-lab.md#x)') > 0 && wt.indexOf('chapters/01-y.md)') > 0, 'a walkthrough takes the chosen switch ports and the short file names of the zip');
+    var ct = C.claudeText(m, v, C.WALKTHROUGHS);
+    ok(ct.indexOf('**Lab 4.1**') > 0 && ct.indexOf('`walkthroughs/04-layer-2-labs.md`') > 0 && ct.indexOf('| Lab | Step | Result | Date | Note |') > 0 && C.LABS.length > 40 && C.LABS[0].id === '999.1', 'Claude can be told to start at a chosen lab');
+    ok(C.labValuesText(m, v).indexOf('| `<PORT_EP1>` | Endpoint port 1 | `port5` |') > 0, 'the lab values list the switch ports');
+    var pg = C.parseProgress('| Lab | Step | Result | Date | Note |\n| --- | --- | --- | --- | --- |\n| 999.1 | 1 | pass | 2026-11-20 | ok |\n| 999.1 | 2 | PASS | 2026-11-21 | ok |\n| Lab 4.1 | 3 | fail | 2026-11-21 | no auth |\n| 4.2 | 1 | blocked | x | |\nnot a row\n');
+    ok(pg.rows === 4 && C.labStatus('999.1', pg) === 'passed' && pg.labs['999.1'].last === '2026-11-21' && C.labStatus('4.1', pg) === 'failed' && C.labStatus('4.2', pg) === 'blocked' && C.labStatus('5.1', pg) === 'not started', 'PROGRESS.md is read into a status for each lab');
+    var pc = C.choicesText(); reset(); C.applyChoices(JSON.parse(pc));
+    ok(S.ports.PORT_EP1 === 'port5' && S.startLab === '4.1', 'the choices file keeps the switch ports and the start lab');
     // Save choices and Load choices
     reset('proxmox'); S.defaultFlavor = 'rocky-10'; S.vms['admin-201'].flavor = 'win-11'; S.vms['static-2'].include = false; S.vms['svc-201a'].name = 'svc-a';
     S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; S.vms['svc-201b'].override = true; S.vms['svc-201a'].addr['n1.0'] = '10.77.10.15/24';
@@ -2802,6 +5147,27 @@ details summary.small{margin-top:4px}
       })();
       el2.setAttribute('data-iso', btoa(unescape(encodeURIComponent(JSON.stringify(m3)))));
       document.title = 'exporttest';
+    }
+    if (/[?&]walktest=1/.test(q)) {
+      // Rewrite every real lab chapter with a changed build and report anything left from the book values.
+      C.resetVms(); S.platform = 'proxmox'; S.version = '8'; C.resetParams();
+      S.v4 = '10.77'; S.v6 = 'fd77:1:2::'; S.vlans[10] = '110'; S.vlans[40] = '140'; S.vlans[42] = '142'; S.vms['svc-201a'].name = 'radius-a';
+      S.sw.a = 'FS-424E-FPOE'; S.sw.b = 'FS-1048E'; C.PORTS.forEach(function (p, i) { S.ports[p[0]] = 'port' + (i + 1); });
+      var wv = C.validateAll(), wm = C.buildManifest(wv), bad = [], done = 0;
+      var checks = [[/10\.201\./g, 'old IPv4 block'], [/fd00:db8:201::/g, 'old IPv6 prefix'], [/\b(?:VLAN|vlanid|native-vlan) (?:10|40|42)\b/g, 'old VLAN ID'], [/\bvlan(?:10|40|42)\b/g, 'old VLAN interface'],
+        [/svc-201a/g, 'old machine name'], [/sw-648f-1|sw-2048f-1|FS-648F-FPOE|FS-2048F/g, 'old switch'], [/<PORT_[A-Z0-9]+>|<EXTERNAL_PORT>/g, 'port placeholder'], [/\]\((?:\.\.\/|\d\d-|9\d\d?-)[^)]*\)/g, 'link out of the zip']];
+      Promise.all(C.WALKTHROUGHS.map(function (w) {
+        return fetch('../walkthroughs/' + w.file).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (t) {
+          var out = C.adaptWalkthrough(t, wm, wv, C.WALKTHROUGHS).split('\n').filter(function (l) { return l.indexOf('> **Lab Builder copy.**') !== 0; }).join('\n');
+          out = out.replace(/\]\(\.\.\/diagrams\/lab-topology\.svg\)/g, '](ok)');
+          C.WALKTHROUGHS.forEach(function (x) { out = out.split('](' + x.short).join('](ok'); });
+          checks.forEach(function (c) { var hit = out.match(c[0]); if (hit) bad.push(w.short + ': ' + hit.length + ' ' + c[1] + ' (' + hit[0] + ')'); });
+          done++;
+        }, function () { bad.push(w.file + ': could not be fetched'); });
+      })).then(function () {
+        document.title = bad.length ? 'walktest FAILED' : 'walktest PASSED ' + done + ' chapters';
+        $('selftest').hidden = false; $('selftest').textContent = (bad.length ? 'WALKTEST FAILED\n' + bad.join('\n') : 'WALKTEST PASSED\n' + done + ' chapters rewritten with no book value left') + '\n';
+      });
     }
     if (/[?&]ziptest=1/.test(q)) {
       S.platform = 'proxmox'; S.version = '8'; C.resetParams(); S.vms['admin-201'].flavor = 'rhel-10';

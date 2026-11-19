@@ -29,7 +29,7 @@
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
   [string] $VmRoot,
-  [ValidateSet('Deploy', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
+  [ValidateSet('Deploy', 'Check', 'Status', 'RemoveBuildNics', 'Remove')] [string] $Action = 'Deploy',
   [string] $PythonCommand,
   [string[]] $SshKeyFile,
   [string] $Manifest = (Join-Path $PSScriptRoot '..\common\lab201-vms.json'),
@@ -40,7 +40,8 @@ param(
   [ValidatePattern('^vmnet\d+$')] [string] $WanVmnet = 'vmnet8',
   [string] $OvfToolPath,
   [string] $LicenseFile,
-  [hashtable] $FlavorImages = @{}
+  [hashtable] $FlavorImages = @{},
+  [switch] $AddToLibrary
 )
 
 $ErrorActionPreference = 'Stop'
@@ -57,7 +58,7 @@ foreach ($cand in $pyCandidates) {
   try { $ver = (& $cand[0] @rest --version 2>&1 | Out-String) } catch { continue }
   if ($LASTEXITCODE -eq 0 -and $ver -match 'Python 3\.') { $pyExe = $cand[0]; $pyArgs = $rest; break }
 }
-if (-not $pyExe -and $PythonCommand) { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
+if (-not $pyExe -and $PythonCommand -and $Action -ne 'Check') { throw "-PythonCommand '$PythonCommand' did not run Python 3. Check the command with: $PythonCommand --version" }
 if (-not $pyExe -and $Action -eq 'Deploy') {
   throw 'Python 3 was not found. Install it (for example: winget install Python.Python.3.15), open a new PowerShell window, run "python -m pip install pycdlib", and run the script again.'
 }
@@ -70,9 +71,9 @@ function Get-WebText {
   return [string]$r.Content
 }
 
-# Without -VmRoot, the machines go in a lab201 folder inside Workstation's default folder for virtual machines:
-# the one set in Preferences, or Documents\Virtual Machines.
-if (-not $VmRoot) {
+function Get-DefaultVmRoot {
+  # A lab201 folder inside Workstation's default folder for virtual machines:
+  # the one set in Preferences, or Documents\Virtual Machines.
   $vmHome = $null
   $prefs = Join-Path $env:APPDATA 'VMware\preferences.ini'
   if (Test-Path $prefs) {
@@ -80,20 +81,120 @@ if (-not $VmRoot) {
     if ($line) { $vmHome = $line -replace '^\s*prefvmx\.defaultVMPath\s*=\s*"(.+)"\s*$', '$1' }
   }
   if (-not $vmHome) { $vmHome = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'Virtual Machines' }
-  $VmRoot = Join-Path $vmHome 'lab201'
+  return (Join-Path $vmHome 'lab201')
 }
+
+function Find-WorkstationDir {
+  # Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
+  return (@('C:\Program Files\VMware\VMware Workstation', 'C:\Program Files (x86)\VMware\VMware Workstation') |
+    Where-Object { Test-Path (Join-Path $_ 'vmrun.exe') } | Select-Object -First 1)
+}
+
+if (-not $VmRoot) { $VmRoot = Get-DefaultVmRoot }
+if (-not $WorkstationDir) { $WorkstationDir = Find-WorkstationDir }
+
+if ($Action -eq 'Check') {
+  # Tests what a deploy needs on this computer and changes nothing.
+  $script:failed = 0
+  function Show-Check {
+    param([string] $State, [string] $What, [string] $Fix)
+    $color = switch ($State) { 'OK' { 'Green' } 'WARN' { 'Yellow' } default { 'Red' } }
+    if ($State -eq 'FAIL') { $script:failed++ }
+    Write-Host ('[{0,-4}] {1}' -f $State, $What) -ForegroundColor $color
+    if ($Fix -and $State -ne 'OK') { Write-Host "       $Fix" }
+  }
+  Write-Host "Checking this computer for the lab build. Nothing is changed."
+  Show-Check 'OK' "PowerShell $($PSVersionTable.PSVersion)"
+
+  if ($pyExe) {
+    $pyName = (@($pyExe) + $pyArgs) -join ' '
+    Show-Check 'OK' "Python: $pyName ($((& $pyExe @pyArgs --version 2>&1 | Out-String).Trim()))"
+    $null = & $pyExe @pyArgs -c 'import pycdlib' 2>&1
+    if ($LASTEXITCODE -eq 0) { Show-Check 'OK' 'Python package pycdlib (for the seed ISOs)' }
+    else { Show-Check 'FAIL' 'Python package pycdlib is not installed' "Run: $pyName -m pip install pycdlib" }
+  } elseif ($PythonCommand) {
+    Show-Check 'FAIL' "-PythonCommand '$PythonCommand' did not run Python 3" "Check it with: $PythonCommand --version"
+  } else {
+    Show-Check 'FAIL' 'Python 3 was not found (tried python3, py -3, and python)' 'Run: winget install Python.Python.3.15   Then open a new PowerShell window and run: python -m pip install pycdlib'
+  }
+
+  if (-not $SshKeyFile) {
+    Show-Check 'FAIL' 'No SSH public key was given (-SshKeyFile)' 'Make one with: ssh-keygen -t ed25519   Then pass: -SshKeyFile ~\.ssh\id_ed25519.pub'
+  } else {
+    foreach ($k in $SshKeyFile) {
+      if (-not (Test-Path $k)) { Show-Check 'FAIL' "SSH public key not found: $k" 'Make one with: ssh-keygen -t ed25519'; continue }
+      $first = (Get-Content -Path $k -TotalCount 1)
+      if ($first -match '^(ssh-|ecdsa-|sk-)') { Show-Check 'OK' "SSH public key: $k" }
+      elseif ($first -match 'PRIVATE KEY') { Show-Check 'FAIL' "$k is a private key" 'Pass the public key, the file that ends in .pub' }
+      else { Show-Check 'FAIL' "$k does not look like an SSH public key" 'Pass the file that ends in .pub' }
+    }
+  }
+
+  if ($WorkstationDir -and (Test-Path (Join-Path $WorkstationDir 'vmrun.exe'))) {
+    $ui = Join-Path $WorkstationDir 'vmware.exe'
+    $wsVersion = if (Test-Path $ui) { (Get-Item $ui).VersionInfo.ProductVersion } else { 'version unknown' }
+    Show-Check 'OK' "VMware Workstation in $WorkstationDir ($wsVersion)"
+    if (Test-Path (Join-Path $WorkstationDir 'vmware-vdiskmanager.exe')) { Show-Check 'OK' 'vmware-vdiskmanager.exe' }
+    else { Show-Check 'FAIL' "vmware-vdiskmanager.exe is not in $WorkstationDir" 'Repair the Workstation install, or pass -WorkstationDir' }
+    $ovf = if ($OvfToolPath) { $OvfToolPath } elseif (Test-Path (Join-Path $WorkstationDir 'OVFTool\ovftool.exe')) { Join-Path $WorkstationDir 'OVFTool\ovftool.exe' } else { (Get-Command ovftool.exe -ErrorAction SilentlyContinue).Source }
+    if ($ovf -and (Test-Path $ovf)) { Show-Check 'OK' "OVF Tool: $ovf" }
+    else { Show-Check 'FAIL' 'OVF Tool (ovftool.exe) was not found' 'Install OVF Tool and pass -OvfToolPath with the path of ovftool.exe' }
+  } else {
+    Show-Check 'FAIL' 'VMware Workstation Pro was not found (no vmrun.exe)' 'Install Workstation Pro, or pass -WorkstationDir with its install folder'
+  }
+
+  $checkLab = $null
+  if (Test-Path $Manifest) {
+    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Builder again' }
+  } else {
+    Show-Check 'FAIL' "The manifest was not found: $Manifest" 'Keep the script and the common folder together, as they are in the zip'
+  }
+  if ($checkLab) {
+    Show-Check 'OK' "Manifest: $(@($checkLab.vms).Count) machines"
+    if (@($checkLab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
+      Show-Check 'FAIL' 'The manifest has a second trunk (lab201-t2), and Workstation supports one bridged network' 'Make the manifest with the Lab Builder for VMware Workstation Pro'
+    }
+    $catalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
+    $isoMachines = @($checkLab.vms | Where-Object {
+        $fid = if ($_.flavor) { $_.flavor } elseif ($checkLab.default_flavor) { $checkLab.default_flavor } else { $catalog.default }
+        ($catalog.flavors | Where-Object { $_.id -eq $fid } | Select-Object -First 1).iso
+      } | ForEach-Object { $_.name })
+    if ($isoMachines.Count) { Show-Check 'FAIL' "ISO-based flavors cannot run on Workstation: $($isoMachines -join ', ')" 'Pick a cloud-image flavor for these machines in the Lab Builder' }
+    $needGb = ($checkLab.vms | Measure-Object -Property disk_gb -Sum).Sum
+    $needMb = ($checkLab.vms | Measure-Object -Property memory_mb -Sum).Sum
+    $totalMb = [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB)
+    if ($totalMb -ge $needMb + 4096) { Show-Check 'OK' ("Memory: the machines use {0:N1} GB of {1:N1} GB" -f ($needMb / 1024), ($totalMb / 1024)) }
+    else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB and this computer has {1:N1} GB" -f ($needMb / 1024), ($totalMb / 1024)) 'Leave machines out in the Lab Builder, or make them smaller' }
+  }
+
+  if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + '\'))) {
+    Show-Check 'FAIL' "Drive $($VmRoot.Substring(0, 2)) of the machines folder does not exist ($VmRoot)" 'Pass -VmRoot with a folder on a drive this computer has'
+  } else {
+    Show-Check 'OK' "Machines folder: $VmRoot"
+    if ($VmRoot -match '^[A-Za-z]:' -and $checkLab) {
+      $freeGb = [math]::Round((Get-PSDrive -Name $VmRoot.Substring(0, 1)).Free / 1GB)
+      if ($freeGb -ge $needGb) { Show-Check 'OK' "Disk: $freeGb GB free. The thin disks can grow to $needGb GB" }
+      else { Show-Check 'WARN' "Disk: $freeGb GB free, and the thin disks can grow to $needGb GB" 'Free some space, or pass -VmRoot with a folder on a larger drive' }
+    }
+  }
+
+  foreach ($net in @(@($WanVmnet, 'build network (NAT)'), @($Lan220Vmnet, 'segment 220 network (host-only)'))) {
+    $adapter = Get-NetAdapter -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq "VMware Network Adapter $($net[0].Replace('vmnet', 'VMnet'))" }
+    if ($adapter) { Show-Check 'OK' "$($net[0]), the $($net[1])" }
+    else { Show-Check 'WARN' "$($net[0]), the $($net[1]), has no host adapter" 'Create it in the Virtual Network Editor (Chapter 11)' }
+  }
+  Show-Check 'OK' "$BridgeVmnet, the bridged network, cannot be checked from here. Bind it to the lab adapter in the Virtual Network Editor"
+
+  if ($script:failed) { Write-Host "$($script:failed) problem(s) to fix before the build." -ForegroundColor Red; exit 1 }
+  Write-Host 'Ready. Run the preview next (-WhatIf).' -ForegroundColor Green
+  return
+}
+
 if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + '\'))) {
   throw "Drive $($VmRoot.Substring(0, 2)) in the machines folder ($VmRoot) does not exist. Pass -VmRoot with a folder on a drive this computer has."
 }
 Write-Host "Machines folder: $VmRoot"
-Write-Host 'The machines do not show in the Workstation library by themselves. In Workstation, right-click My Computer in the Library, choose Scan for Virtual Machines, and pick that folder.'
-
-# Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
-if (-not $WorkstationDir) {
-  $WorkstationDir = @('C:\Program Files\VMware\VMware Workstation', 'C:\Program Files (x86)\VMware\VMware Workstation') |
-    Where-Object { Test-Path (Join-Path $_ 'vmrun.exe') } | Select-Object -First 1
-  if (-not $WorkstationDir) { throw 'vmrun.exe was not found under Program Files or Program Files (x86). Is Workstation Pro installed? Pass -WorkstationDir with its install folder.' }
-}
+if (-not $WorkstationDir) { throw 'vmrun.exe was not found under Program Files or Program Files (x86). Is Workstation Pro installed? Pass -WorkstationDir with its install folder.' }
 $vmrun = Join-Path $WorkstationDir 'vmrun.exe'
 $ovftool = if ($OvfToolPath) { $OvfToolPath } elseif (Test-Path (Join-Path $WorkstationDir 'OVFTool\ovftool.exe')) { Join-Path $WorkstationDir 'OVFTool\ovftool.exe' } else { (Get-Command ovftool.exe -ErrorAction SilentlyContinue).Source }
 $vdisk = Join-Path $WorkstationDir 'vmware-vdiskmanager.exe'
@@ -170,10 +271,18 @@ function Edit-Vmx {
 }
 
 if ($Action -eq 'Status') {
+  # State of each machine, and the line that logs in to it over SSH.
+  $running = @(& $vmrun -T ws list)
   foreach ($vmDef in $lab.vms) {
     $vmx = Join-Path $VmRoot "$($vmDef.name)\$($vmDef.name).vmx"
-    $state = if ((& $vmrun -T ws list) -contains $vmx) { 'running' } elseif (Test-Path $vmx) { 'stopped' } else { 'missing' }
-    '{0,-16} {1}' -f $vmDef.name, $state
+    $state = if ($running -contains $vmx) { 'running' } elseif (Test-Path $vmx) { 'stopped' } else { 'missing' }
+    $login = ''
+    if ($state -eq 'running') {
+      $ip = ''
+      try { $ip = (& $vmrun -T ws getGuestIPAddress $vmx 2>$null | Out-String).Trim() } catch { $ip = '' }
+      $login = if ($ip -match '^\d+\.\d+\.\d+\.\d+$') { "ssh $($lab.admin_user)@$ip" } else { 'address not ready yet (the guest tools are still starting)' }
+    }
+    '{0,-16} {1,-8} {2}' -f $vmDef.name, $state, $login
   }
   return
 }
@@ -262,3 +371,16 @@ foreach ($name in $order) {
   $vmx = Join-Path $VmRoot "$name\$name.vmx"
   if ((Test-Path $vmx) -and $PSCmdlet.ShouldProcess($name, 'Start')) { & $vmrun -T ws start $vmx nogui }
 }
+
+# vmrun does not add machines to the Workstation library.
+if ($AddToLibrary -and $PSCmdlet.ShouldProcess('the lab machines', 'Open in Workstation, which lists them in the Library')) {
+  $ui = Join-Path $WorkstationDir 'vmware.exe'
+  foreach ($name in $order) {
+    $vmx = Join-Path $VmRoot "$name\$name.vmx"
+    if (Test-Path $vmx) { Start-Process -FilePath $ui -ArgumentList "`"$vmx`"" }
+  }
+  Write-Host 'Opened each machine in Workstation. If one is missing from the Library, right-click My Computer there and choose Scan for Virtual Machines.'
+} else {
+  Write-Host "To list the machines in the Workstation Library, right-click My Computer there, choose Scan for Virtual Machines, and pick $VmRoot. Or run the deploy with -AddToLibrary."
+}
+Write-Host 'To see each machine and how to log in to it, run this script with -Action Status.'

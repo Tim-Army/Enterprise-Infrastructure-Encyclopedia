@@ -53,6 +53,12 @@ if [[ -f scripts/python/sync_lab_builder.py ]]; then
   python3 scripts/python/sync_lab_builder.py --check || fail=1
 fi
 
+# The lab automation scripts: Python compiles, Bash and PowerShell parse, and
+# the seed generator writes a seed for every machine with every cloud-image flavor.
+if [[ -f scripts/python/check_lab_scripts.py ]]; then
+  python3 scripts/python/check_lab_scripts.py || fail=1
+fi
+
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
   pnpm exec markdownlint-cli2 "**/*.md" || fail=1
   pnpm exec cspell lint --no-progress "**/*.md" || fail=1

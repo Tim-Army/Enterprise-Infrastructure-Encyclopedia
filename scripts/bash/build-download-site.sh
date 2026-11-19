@@ -68,6 +68,9 @@ for scripts_dir in volumes/*/lab-scripts; do
     while IFS= read -r chapter || [[ -n "$chapter" ]]; do
       chapter="${chapter%$'\r'}"
       [[ -z "$chapter" || "$chapter" == \#* ]] && continue
+      # A line is CHAPTER-FILE = SHORT-NAME. Only the chapter file matters here.
+      chapter="${chapter%%=*}"
+      chapter="${chapter%"${chapter##*[![:space:]]}"}"
       if [[ -f "volumes/$vol/chapters/$chapter" ]]; then
         extra_args+=(--add "volumes/$vol/chapters/$chapter=walkthroughs/$chapter")
       else
