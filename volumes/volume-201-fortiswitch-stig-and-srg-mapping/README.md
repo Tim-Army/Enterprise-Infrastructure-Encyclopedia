@@ -115,13 +115,11 @@ own files.
 
 ## Related volumes
 
+- **Other Fortinet STIG volumes:** [Volume CCII — FortiAnalyzer STIG and SRG Mapping](../volume-202-fortianalyzer-stig-and-srg-mapping/README.md), [Volume CCIII — FortiManager STIG and SRG Mapping](../volume-203-fortimanager-stig-and-srg-mapping/README.md).
 - [Volume CLXXII — DISA SRGs and STIGs](../volume-172-disa-srgs-and-stigs/README.md)
   for the framework (Chapters 01 to 09), the Fortinet overview (Chapter 10), the
   other Fortinet product maps, and the Cisco chapters this volume's crosswalks
   use.
-- [Volume CCII — FortiAnalyzer STIG and SRG Mapping](../volume-202-fortianalyzer-stig-and-srg-mapping/README.md),
-  the second volume of the Fortinet STIG block, with the FortiAnalyzer map and
-  its Cisco crosswalk.
 - [Volume CLXXIV — NSE 5 FortiSwitch Lab](../volume-174-nse-5-fortiswitch-lab/README.md),
   whose hardening lab reuses commands from Chapters 01 to 03.
 - [Volume XIX — Fortinet NSE Certification Program](../volume-019-fortinet-network-security/README.md).

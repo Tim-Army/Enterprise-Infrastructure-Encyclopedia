@@ -50,12 +50,12 @@ including the time before the move.
 ### What Volume CLXXII keeps
 
 Volume CLXXII keeps the vendor-neutral framework (Chapters 01 to 09), the
-Fortinet overview (Chapter 10), the other Fortinet product maps (Chapters 13
-to 30), the Cisco overview and Catalyst map (Chapters 31 and 32), and the
-crosswalks in Chapters 34 to 36. At the old numbers of the moved chapters (12
+Fortinet overview (Chapter 10), the Cisco overview and Catalyst map (Chapters
+31 and 32), and the Fortinet product maps and crosswalks that have not moved
+to a volume of their own. At the old numbers of the moved chapters (12
 and 38) it keeps one-page pointers that link here, so links from other
-chapters, indexes, and outside pages still resolve. The product maps in
-Chapters 13 to 30 each cite Chapter 12 as a map that was built the same way,
+chapters, indexes, and outside pages still resolve. The product maps that stay
+in Volume CLXXII each cite Chapter 12 as a map that was built the same way,
 and those links now reach this volume through the pointer page. Chapters in
 this volume link back to Volume CLXXII by relative path and say "Volume
 CLXXII" in the text, because their own numbers (01 and 02) overlap with that
@@ -183,7 +183,7 @@ The move changed these things:
   Volume CLXXII (Chapters 03, 07, 10, 31, 32, and 34 to 36) name the volume
   and link across by relative path. References to the FortiSwitch chapters
   name Volume CCI, where those chapters now are.
-- `export_srg_tables.py` now covers three volumes.
+- `export_srg_tables.py` covers this volume.
 - Volume CLXXII's README and index point to the new locations, and its
   Chapter 90 records the move.
 - `PLAYBOOK.txt` of the `/srg-mapping-for` skill names the new path of its
@@ -197,6 +197,15 @@ scratch copy of the two chapters under their new names, and its six files had
 the same content as the files in Volume CLXXII. After it, the script wrote
 the same row counts as before, and the only rows that changed were the 31
 that name a chapter number.
+
+This move was made by hand, following the FortiSwitch move. Its steps were
+then written down as the `/stig-volume-for` workflow, which
+[Volume CLXXII's Chapter 90](../../volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md)
+describes. The workflow's script was tested by replaying this move on a copy
+of the repository. It produced the same two chapters, apart from five
+references to groups of chapters, which it leaves for a person, and the same
+changes to Volume CLXXII's README, index, and Chapter 90, to `book.yml`, and
+to the root `README.md` and `PROJECT_STATUS.md`.
 
 The move left one thing where it was. The scratch folders that built the
 chapters (`temp/faz/`, `temp/xw-faz/`, `temp/pq-faz/`, and `temp/pq-xw-faz/`)

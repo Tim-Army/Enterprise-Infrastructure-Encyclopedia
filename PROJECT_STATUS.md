@@ -186,12 +186,13 @@ does not by itself verify every technical claim in it.
 | CLXXIV — NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only) | 12 | Drafted |
 | CCI — FortiSwitch STIG and SRG Mapping | 16 | Drafted |
 | CCII — FortiAnalyzer STIG and SRG Mapping | 3 | Drafted |
+| CCIII — FortiManager STIG and SRG Mapping | 2 | Drafted |
 | CM — Tim's Lab Gear | 3 | Drafted |
 | CMXCVII — Master Appendices | 72 | Drafted |
 | CMXCVIII — Acronyms | 4 | Drafted |
 | CMXCIX — Reference Library | 10 | Drafted |
 
-**Total declared chapters:** 1740 of 1740 drafted (100%). Every volume has a
+**Total declared chapters:** 1742 of 1742 drafted (100%). Every volume has a
 full chapter set plus README, INDEX, and GLOSSARY.
 
 ## Known issues found during drafting

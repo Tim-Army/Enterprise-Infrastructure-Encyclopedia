@@ -45,6 +45,11 @@ The FortiAnalyzer chapters (12 and 38) moved on 2026-11-20 to
 at their old numbers remain here, and their build record is in that volume's
 Chapter 90.
 
+The FortiManager chapter (13) moved on 2026-11-20 to
+[Volume CCIII](../../volume-203-fortimanager-stig-and-srg-mapping/README.md), where it is Chapter 01; the pointer page
+at its old number remains here, and its build record is in that volume's
+Chapter 90.
+
 This chapter lets a reader judge how far to trust each part of the volume, and
 lets a maintainer run the workflow again for another vendor or a new quarterly
 DISA release. It describes the volume and the command as they stand in the
@@ -56,7 +61,7 @@ repository; when either changes, this chapter is updated with it.
 | --- | --- | --- | --- |
 | [01 to 09](01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md), the framework | 2026-10-06 | Written directly in one session as a vendor-neutral standards volume, with no labs by design, then checked the same day against DISA's October 2026 SRG-STIG Library Compilation: Chapters 01 and 02 note the new download site and date-named packages, and Chapter 03's SRG table was matched to DISA's 21 SRGs | Chapter 07 gained pointers to Chapters 10 and 31 |
 | [10](10-fortinet-products-stigs-and-srg-mapping.md), Fortinet overview | 2026-10-06 | Written directly: the two FortiGate STIGs, then the October 2026 library check updated it to the current releases (NDM V1R6, Firewall V1R5) | 2026-10-09: "The product map chapters" and "What the product maps found" sections, from the map chapters |
-| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26). Chapter 11 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-04. Chapter 12 moved to [Volume CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-20 |
+| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26). Chapter 11 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-04. Chapter 12 moved to [Volume CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-20. Chapter 13 moved to [Volume CCIII](../../volume-203-fortimanager-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-20 |
 | [31](31-cisco-products-stigs-and-srg-mapping.md), Cisco overview | 2026-10-14 | Written directly from the inventory of the ten Cisco STIG packages | Fix text corrections found by the crosswalks |
 | — | 2026-10-14 | The workflow written down as the `/srg-mapping-for` skill, from the Fortinet and Cisco runs | Crosswalk playbook (with Chapter 37) and prerequisites playbook (with Chapter 11's prerequisites) |
 | [32](32-cisco-catalyst-switch-feature-version-and-stig-map.md), Cisco Catalyst map | 2026-10-14 | The first chapter built by the skill | Prerequisites (2026-10-18) |
@@ -449,6 +454,64 @@ than by the command:
 These changes keep the chapters' existing rows and commands; they are not yet
 part of the skill, so a rebuild from an agent's original pipeline would not
 reproduce them.
+
+### Moving a product to a volume of its own
+
+Volume numbers 200 to 299 are reserved for Fortinet STIG work. A second
+command, `/stig-volume-for`, moves one Fortinet product's chapters out of this
+volume into a volume of that block. It is a Claude Code skill stored at
+`.claude/skills/stig-volume-for/`, with one script, `move_product.py`. The
+command takes a product name, for example `/stig-volume-for FortiGate`.
+
+The script has three modes:
+
+```bash
+python .claude/skills/stig-volume-for/move_product.py "<product>"
+python .claude/skills/stig-volume-for/move_product.py "<product>" --apply
+python .claude/skills/stig-volume-for/move_product.py "<product>" --check
+```
+
+1. **Dry run** (no option). It prints the plan and changes nothing: the
+   volume number, the chapters with their old and new numbers, the data files,
+   the chapter references it cannot rewrite, and the files it will change. It
+   also runs the CSV export on a scratch copy of the chapters under their new
+   names and says whether the files match today's.
+2. **Apply.** It moves the product's map chapter and the crosswalks that name
+   the product with `git mv`, numbers them from 01, and leaves a pointer page
+   at each old number. It rewrites the references in the moved chapters: a
+   chapter that moves takes its new number, a chapter that stays becomes
+   "Volume CLXXII Chapter NN", and a chapter that moved earlier is named with
+   the volume it moved to, which the script reads from that chapter's pointer
+   page. It updates this volume's README, index, and Chapter 90, registers the
+   new volume in `book.yml`, the root `README.md`, `PROJECT_STATUS.md`,
+   `cspell.json`, and `scripts/python/export_srg_tables.py`, runs the export,
+   and writes the new volume's README, index, glossary, and Chapter 90.
+3. **Check.** It fails while a comment that starts `TODO stig-volume-for`
+   remains, a moved chapter names a chapter without a volume, a link of the
+   new volume does not resolve, or the export changes a file.
+
+Two parts of a move stay with a person or Claude. The script leaves a
+reference to a group of chapters that mixes chapters that stay and chapters
+that moved, such as "Chapters 33 to 37", and lists it. It also marks the prose
+of the new volume that cannot be derived, such as the design considerations
+of its Chapter 90, with a TODO comment that says what to write. The script
+does not commit. `SKILL.md` gives the steps in order and the rules.
+
+Products moved so far:
+
+| Product | Volume | Chapters moved | Moved | How |
+| --- | --- | --- | --- | --- |
+| FortiSwitch | [CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) | 11, 33, and 37 | 2026-11-04 | By hand |
+| FortiAnalyzer | [CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) | 12 and 38 | 2026-11-20 | By hand, following the FortiSwitch move |
+| FortiManager | [CCIII](../../volume-203-fortimanager-stig-and-srg-mapping/README.md) | 13 | 2026-11-20 | `/stig-volume-for`, its first run |
+
+The workflow was written on 2026-11-20 from the FortiAnalyzer move. Its
+script was tested by replaying that move on a copy of the repository as it
+stood before the move. The script produced the same two chapters, apart from
+five references to groups of chapters, which it lists for a person, and the
+same changes to this volume's README, index, and Chapter 90, to `book.yml`,
+and to the root `README.md` and `PROJECT_STATUS.md`. The FortiManager move
+was its first run on the repository itself.
 
 ## Validation and Troubleshooting
 

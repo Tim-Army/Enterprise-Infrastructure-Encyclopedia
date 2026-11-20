@@ -6198,6 +6198,19 @@ volumes:
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
+  - id: volume-203
+    number: "CCIII"
+    slug: volume-203-fortimanager-stig-and-srg-mapping
+    title: "FortiManager STIG and SRG Mapping"
+    chapter_count: 2
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: FortiManager Feature, Version, and SRG Map"
+        path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/01-fortimanager-feature-version-and-srg-map.md
+      - id: 90
+        title: "Chapter 90: As-Built — How This Volume Was Built"
+        path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
