@@ -184,4 +184,4 @@ This chapter built the eight service-side lab hosts as WSL distributions. WSL ru
 - [ ] Can name the four lab hosts WSL cannot build, and why.
 - [ ] Has built the eight hosts and checked their addresses.
 - [ ] Has rehearsed a service configuration on them.
-- [ ] Can choose between WSL and the platforms in Chapters 09 to 12 for a given lab.
+- [ ] Can choose between WSL and the platforms in Chapters 09 to 12 and 14 for a given lab.

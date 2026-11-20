@@ -241,7 +241,7 @@ suggested. The lessons apply to any chapter written without the device in hand.
   reference list now shows when each article was last published, so a reader
   can judge which statement to trust.
 
-### Chapters 09 to 13 and the lab scripts
+### Chapters 09 to 14 and the lab scripts
 
 On 2026-11-06 the volume gained five chapters that automate building the
 Chapter 999 virtual machines: VMware ESXi 7, 8, and 9 (Chapter 09), VMware vCenter 7
@@ -395,6 +395,31 @@ vmnets. Each place now names the three networks of the chapter's table:
 `vmnet0`, `vmnet5`, and `vmnet8`. The DHCP service is turned off on the
 host-only network only, because the build adapters get their addresses from
 the NAT network, and the cleanup step deletes `vmnet5` only.
+
+The volume README was brought up to date on 2026-11-20. Parts of it still
+described the lab automation as it stood on 2026-11-06. Its download link
+named five platforms, its chapter list and software baseline named vSphere 7
+and 8 only, and it said that no script had been run against a real host. It
+now names vSphere 9 and Dell VxRail, says which scripts have built machines
+on real hosts, and tells the reader to pick a flavor, where it named the
+`image` block of the manifest, which only the WSL script still reads. The
+same leftovers were corrected in the other files that carried them: the
+chapter range 09 to 13 in Chapter 09, Chapter 13, the glossary, and
+`SOFTWARE_VERSIONS.md`, and vSphere 7 and 8 in the checklist of Chapter 09,
+the learning objectives of Chapter 10, and the help text of the ESXi and
+vCenter scripts.
+
+The flavor table of Chapter 09 gained a **Built so far** column on
+2026-11-20. The chapter, the flavor catalog, and the Lab Builder said that no
+machine had been built from an experimental flavor, and the Proxmox VE tests
+had built `ca-201` and `svc-201b` from five of them. The ratings stay as they
+were. The table now names what was built from each flavor, and the catalog
+and the page say that few or no machines have been built from an experimental
+flavor. The self-test of the page passed before and after the change. The
+row for Ubuntu 24.04 names Workstation Pro as well as Proxmox VE. The record
+of the Workstation build, reported on 2026-11-18, did not name its flavor, and
+the person who ran it confirmed on 2026-11-20 that it was Ubuntu 24.04.
+Chapters 09 and 11 now say so.
 
 Lessons from this work:
 

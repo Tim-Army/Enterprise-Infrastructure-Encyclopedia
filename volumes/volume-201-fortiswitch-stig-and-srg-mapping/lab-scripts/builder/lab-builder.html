@@ -111,7 +111,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   <section id="left"></section>
   <aside class="right" id="right"></aside>
 </main>
-<footer>The Proxmox VE and VMware Workstation scripts have built the lab machines on real hosts. The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. The minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply, and Mint and Tiny Core still need a person to run part of the install.</footer>
+<footer>The Proxmox VE and VMware Workstation scripts have built the lab machines on real hosts. The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. The minimum sizes are proposals that still need a test build. Chapters 09 to 14 explain each platform. Experimental flavors have generated, checked files, but few or no machines have been built from them, and Chapter 09 lists what was built. Windows, Linux Mint, and Tiny Core install from an ISO you supply, and Mint and Tiny Core still need a person to run part of the install.</footer>
 <div id="selftest" hidden></div>
 
 <script id="lab201-manifest" type="application/json">
@@ -664,7 +664,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
 
 <script id="lab201-flavors" type="application/json">
 {
-  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but no machine has been built from them. iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
+  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but few or no machines have been built from the flavor (Chapter 09 lists what was built). iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
   "default": "ubuntu-24.04",
   "role_keys": [
     "gateway",
@@ -5979,7 +5979,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     Object.keys(seenF).forEach(function (fid) {
       var f = FLAVOR[fid];
       if (out.isoSumErr[fid]) out.errors.push(f.name + ' checksum: ' + out.isoSumErr[fid]);
-      if (f.status === 'experimental') out.warnings.push(f.name + ' is experimental: its seed is generated and checked, but no machine has been built from it.');
+      if (f.status === 'experimental') out.warnings.push(f.name + ' is experimental: its seed is generated and checked, but few or no machines have been built from it. Chapter 09 lists what was built.');
       if (f.needs_password) out.warnings.push(f.name + ' is hardened, so sudo asks for a password. Set LAB201_ADMIN_PASSWORD_HASH to a crypt hash before building.');
       if (flavorOnPlatform(fid, state.platform) === 'image' && !userSupplied(fid)) out.warnings.push(f.name + ' has no OVA to download. Convert its qcow2 image to an OVA and give the path below.');
       if (f.iso) out.warnings.push(f.name + ' installs from an ISO you supply. ' + (f.manual ? 'A person still runs part of the install (see the checklist).' : 'The answer file holds the admin password, so delete the answer CD after the first boot.'));
@@ -7514,7 +7514,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card"><h2><span class="n">1</span> Platform</h2><p class="hint">Where the machines will run.</p><div class="opts" id="platforms"></div></div>';
     h += '<div class="card"><h2><span class="n">2</span> Version</h2><p class="hint" id="verhint"></p><div class="pills" id="versions"></div></div>';
     h += '<div class="card"><h2><span class="n">3</span> Platform settings</h2><p class="hint">Names of the hosts, storage, and network connections the script needs. Empty fields show a placeholder in the command.</p><div class="field" id="params"></div></div>';
-    h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files but no machine has been built from them. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
+    h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files, but few or no machines have been built from them, and Chapter 09 lists what was built. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
     h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div><label for="conpw">Console password</label><div><input type="text" id="conpw" class="wide" style="max-width:220px" autocomplete="off"> <span class="small" id="conpwnote"></span></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<details id="planbox"><summary>Labs you plan to run: <span id="plancount"></span></summary><p class="hint">Untick a lab, or a whole chapter, that you will not run. The labs of Chapter 999 build the shared lab, so they are always in the plan. CLAUDE.md in the zip tells Claude to skip what you untick. Hold the pointer over a lab to see the machines its text names.</p><div id="planlabs"></div></details>';

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Creates the Volume CCI lab virtual machines on a standalone VMware ESXi 7 or 8 host.
+  Creates the Volume CCI lab virtual machines on a standalone VMware ESXi 7, 8, or 9 host.
 
 .DESCRIPTION
   Reads ..\common\lab201-vms.json, builds the virtual switches and port groups,

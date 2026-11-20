@@ -1,6 +1,6 @@
 # Volume CCI — FortiSwitch STIG and SRG Mapping
 
-**Download this volume:** [Word (.docx)](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.docx) · [PDF](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.pdf) · **Lab scripts:** [all five platforms (.zip)](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip)
+**Download this volume:** [Word (.docx)](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.docx) · [PDF](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping.pdf) · **Lab scripts:** [all platforms (.zip)](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip)
 
 > A requirement-by-requirement map of **Fortinet FortiSwitch** to the DISA
 > Security Requirements Guides (SRGs) that apply to it, and two crosswalks that
@@ -9,7 +9,10 @@
 > the SRGs for its functions. This volume shows which FortiSwitchOS release
 > lists each feature, which SRG requirement it helps meet, and the command that
 > configures it. It also carries the SRG mapping workbook behind those chapters,
-> with a searchable table and CSV downloads.
+> with a searchable table and CSV downloads. The later chapters add labs that
+> cover every requirement in the crosswalk, the shared lab network they run on,
+> an optional console server lab, and scripts that build the lab's virtual
+> machines.
 
 ## Overview
 
@@ -46,10 +49,11 @@ The volume has sixteen chapters:
   the setting is absent, applies the nearest compensating control, and records
   the disposition. Every lab runs on the network from Chapter 999.
 - **Chapter 08** is the **OpenGear IM7216-2-DAC-LMV console server (firmware 5.5.3)** and an **optional console lab**: what the device can do, how it joins the Chapter 999 network on segment 0 at `.13` with one new segment (1) for break-glass access, and seven labs for serial access to both switches, RADIUS logins, logging, hardening, break-glass and cellular access, and recovery from a lost management path. A second diagram shows the console paths.
-- **Chapters 09 to 14** automate the creation of the Chapter 999 virtual machines, one chapter for each place they can run: **VMware ESXi 7, 8, and 9** (Chapter 09), **VMware vCenter 7, 8, and 9, and Dell VxRail** (Chapter 10), **VMware Workstation Pro for Windows** (Chapter 11), **Proxmox VE** (Chapter 12), **WSL** (Chapter 13, the service hosts only), and **KVM and libvirt** (Chapter 14). All read one manifest of twelve machines and one cloud-init seed tool, so a machine has the same name, addresses, and packages on every platform. Each machine can use its own Linux flavor (Ubuntu 24.04 and 26.04, Debian 13, Rocky Linux 10, AlmaLinux 10, Fedora 43, Red Hat Enterprise Linux 10, DoW STIG-hardened Ubuntu and Red Hat, and, from an ISO you supply, Windows 11, Windows Server 2022 and 2025, Linux Mint, and Tiny Core; experimental except Ubuntu 24.04), and the scripts can apply Red Hat, Ubuntu Pro, vSphere, and Proxmox keys from a license file. A [Lab Builder page](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) turns your choices (platform, version, machine names, flavors, sizes, VLANs, and addresses) into a manifest, the commands to run, and a checklist. The scripts are [downloadable as one zip](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip), and none has been run against a real host yet.
+- **Chapters 09 to 14** automate the creation of the Chapter 999 virtual machines, one chapter for each place they can run: **VMware ESXi 7, 8, and 9** (Chapter 09), **VMware vCenter 7, 8, and 9, and Dell VxRail** (Chapter 10), **VMware Workstation Pro for Windows** (Chapter 11), **Proxmox VE** (Chapter 12), **WSL** (Chapter 13, the service hosts only), and **KVM and libvirt** (Chapter 14). All read one manifest of twelve machines and one cloud-init seed tool, so a machine has the same name, addresses, and packages on every platform. Each machine can use its own Linux flavor (Ubuntu 24.04 and 26.04, Debian 13, Rocky Linux 10, AlmaLinux 10, Fedora 43, Red Hat Enterprise Linux 10, DoW STIG-hardened Ubuntu and Red Hat, and, from an ISO you supply, Windows 11, Windows Server 2022 and 2025, Linux Mint, and Tiny Core; experimental except Ubuntu 24.04), and the scripts can apply Red Hat, Ubuntu Pro, Windows, vSphere, and Proxmox keys from a license file. A [Lab Builder page](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) turns your choices (platform, version, machine names, flavors, sizes, VLANs, and addresses) into a manifest, the commands to run, and a checklist. The scripts are [downloadable as one zip](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/volume-201-fortiswitch-stig-and-srg-mapping-lab-scripts.zip). The Proxmox VE and Workstation Pro scripts have built the lab machines on real hosts. The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run against a real host yet. [Chapter 09](chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md) says what was tested.
 - **Chapter 90**, the as-built chapter, records how Chapters 01 to 03 and the
   workbook were built, when, and from which sources, and what changed after the
-  first build.
+  first build. It also records how Chapter 08 and the lab scripts of Chapters
+  09 to 14 were built, what was tested, and the lessons from that work.
 - **Chapter 999**, the **shared lab infrastructure**, defines the lab that
   every requirement lab in this volume runs in: the address plan (`10.201.0.0/16`
   for IPv4 and `fd00:db8:201::/112` for IPv6), the hosts and services that
@@ -95,13 +99,13 @@ own files.
 6. [Router SRG Requirement Labs](chapters/06-router-srg-requirement-labs.md) — ten requirement labs for the 46 Router requirements FortiSwitch can meet (interface hygiene, ACL flow control, perimeter filtering, control plane, routing authentication, BGP protection, VRFs, multicast, hashed keys with lifetimes, call-home and fragmented ICMP) and six gap labs for the 46 it cannot (MPLS, provider edge, rendezvous point, MSDP, IPv6 extension headers, Cisco-specific behaviors).
 7. [AAA Services SRG Requirement Labs](chapters/07-aaa-services-srg-requirement-labs.md) — four labs for the 7 AAA Services requirements: RadSec (RADIUS over TLS) with certificate validation, 802.1X with a secure EAP type, RADIUS accounting, and a unique shared secret per client.
 8. [OpenGear IM7216-2-DAC-LMV Console Server (Firmware 5.5.3) and Optional Console Lab](chapters/08-opengear-im7216-console-server-and-optional-console-lab.md) — what the console server can do, how it joins the Chapter 999 network on segment 0 at `.13` plus one new break-glass segment (1), a console-access diagram, and seven labs: serial access to both switches, RADIUS logins, logging and SNMPv3, hardening, break-glass and cellular access, and recovery from a lost management path.
-9. [Automating the Lab Virtual Machines on VMware ESXi 7, 8, and 9](chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md) — the twelve lab machines, the shared manifest and cloud-init seeds, virtual switches and trunk port groups, and a PowerCLI script that builds them on a standalone ESXi 7 or 8 host.
-10. [Automating the Lab Virtual Machines Through VMware vCenter 7, 8, and 9](chapters/10-vcenter-7-8-and-9-lab-virtual-machine-automation.md) — the same build through vCenter: a template and clones, a VM folder, standard or distributed switches, and the distributed switch and hardware versions for vSphere 7 and 8.
-11. [Automating the Lab Virtual Machines in VMware Workstation Pro for Windows](chapters/11-vmware-workstation-pro-lab-virtual-machine-automation.md) — custom vmnets, guest-side VLAN tagging, and a script that drives `ovftool`, `vmrun`, and the `.vmx` files.
+9. [Automating the Lab Virtual Machines on VMware ESXi 7, 8, and 9](chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md) — the twelve lab machines, the shared manifest and cloud-init seeds, virtual switches and trunk port groups, and a PowerCLI script that builds them on a standalone ESXi 7, 8, or 9 host.
+10. [Automating the Lab Virtual Machines Through VMware vCenter 7, 8, and 9](chapters/10-vcenter-7-8-and-9-lab-virtual-machine-automation.md) — the same build through vCenter: a template and clones, a VM folder, standard or distributed switches, the distributed switch and hardware versions for vSphere 7, 8, and 9, and the options that build the lab on Dell VxRail.
+11. [Automating the Lab Virtual Machines in VMware Workstation Pro for Windows](chapters/11-vmware-workstation-pro-lab-virtual-machine-automation.md) — three virtual networks (one bridged, one host-only, and one NAT), guest-side VLAN tagging, and a script that drives `ovftool`, `vmrun`, and the `.vmx` files.
 12. [Automating the Lab Virtual Machines on Proxmox VE](chapters/12-proxmox-ve-lab-virtual-machine-automation.md) — VLAN-aware bridges, cloud-init snippets, and a `qm` script that creates and starts the machines.
 13. [Automating the Lab Service Hosts in WSL](chapters/13-wsl-lab-host-automation.md) — what WSL can and cannot build for this lab: eight service hosts as distributions that share one kernel and network namespace.
 14. [Automating the Lab Virtual Machines on KVM and libvirt](chapters/14-kvm-libvirt-lab-virtual-machine-automation.md) — plain Linux bridges with guest-side VLAN tagging, a copy-on-write disk for each machine, and a `virt-install` script that builds the lab on any Linux host.
-90. [As-Built — How This Volume Was Built](chapters/90-as-built-how-this-volume-was-built.md) — how and when Chapters 01 to 03 and the SRG mapping workbook were built, from which sources, and what changed after the first build, including the move from Volume CLXXII.
+90. [As-Built — How This Volume Was Built](chapters/90-as-built-how-this-volume-was-built.md) — how and when Chapters 01 to 03 and the SRG mapping workbook were built, from which sources, and what changed after the first build, including the move from Volume CLXXII, and how Chapter 08 and the lab scripts of Chapters 09 to 14 were built and tested.
 999. [Shared Lab Infrastructure](chapters/999-shared-lab-infrastructure.md) — the lab network for this volume's requirement labs: the `10.201.0.0/16` and `fd00:db8:201::/112` address plans split into segments, the routed links and routing peers, the service hosts behind prerequisites P1 to P17, and six labs that build and baseline the gateway, services, and both switches.
 
 ## Volume resources
@@ -138,11 +142,14 @@ DISA content is the 2026-10 quarterly release recorded in
 Confirm the current release of any STIG or SRG on the DoD Cyber Exchange
 before assessing against it.
 
-The lab automation in Chapters 09 to 14 targets VMware ESXi and vCenter 7.0 and
-8.0 (the versions that volume was asked to cover, not the vSphere 9.x baseline
-above), Workstation Pro 17, 25H2, and 26H1 U1, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and later, WSL 2, and the
-Ubuntu Server 24.04 LTS cloud image (other Linux flavors are experimental). Change `image` in
-`lab-scripts/common/lab201-vms.json` to use another Ubuntu release.
+The lab automation in Chapters 09 to 14 targets VMware ESXi and vCenter 7.0,
+8.0, and 9.0 (PowerCLI 13.3 for 7 and 8, and the PowerCLI release that
+supports vSphere 9 for 9.0), Dell VxRail 8.0.x and 9.0.x, Workstation Pro 17,
+25H2, and 26H1 U1, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and
+later, WSL 2, and the Ubuntu Server 24.04 LTS cloud image (other flavors are
+experimental). To use another flavor, pick it in the Lab Builder, or set
+`flavor` on a machine (or `default_flavor` for all machines) in
+`lab-scripts/common/lab201-vms.json`.
 
 ## Building and validating this volume
 

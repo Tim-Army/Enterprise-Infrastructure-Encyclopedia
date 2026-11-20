@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Creates the Volume CCI lab virtual machines through VMware vCenter Server 7 or 8.
+  Creates the Volume CCI lab virtual machines through VMware vCenter Server 7, 8, or 9.
 
 .DESCRIPTION
   Reads ..\common\lab201-vms.json, builds the lab networks on one ESXi host that

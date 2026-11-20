@@ -1,5 +1,5 @@
 {
-  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but no machine has been built from them. iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
+  "description": "Linux, Windows, and other flavors the lab scripts know. status ready means a script can build it; experimental means the generated files are checked but few or no machines have been built from the flavor (Chapter 09 lists what was built). iso marks flavors that install from an ISO you supply (Windows, Linux Mint, Tiny Core) instead of a cloud image; manual means a person still runs part of the install. roles rates each machine type: y works, x needs extra steps, n is not offered. The ratings are proposals that need a test build.",
   "default": "ubuntu-24.04",
   "role_keys": [
     "gateway",

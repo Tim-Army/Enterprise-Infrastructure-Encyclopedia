@@ -3,10 +3,10 @@
 ## Learning Objectives
 
 - Explain what vCenter adds to the build in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md): templates and clones, folders, and distributed switches.
-- Choose between standard and distributed switches for the lab trunks, and set the distributed switch version that matches vCenter 7 or vCenter 8.
+- Choose between standard and distributed switches for the lab trunks, and set the distributed switch version that matches vCenter 7, 8, or 9.
 - Run `Deploy-Lab201-Vcenter.ps1` against a vCenter Server, then check, adjust, and snapshot the twelve lab machines.
 - Keep the lab machines on the one host that owns the trunk NICs, and prevent a cluster from moving them.
-- Say how vCenter 7 and vCenter 8 differ for this build: distributed switch version, virtual hardware version, and support status.
+- Say how vCenter 7, 8, and 9 differ for this build: distributed switch version, virtual hardware version, and support status.
 
 ## Theory and Architecture
 
