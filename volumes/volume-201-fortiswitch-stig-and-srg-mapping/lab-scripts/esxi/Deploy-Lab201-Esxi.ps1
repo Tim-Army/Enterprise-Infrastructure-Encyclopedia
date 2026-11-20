@@ -112,24 +112,40 @@ function Get-ImageFlavorId {
 
 function Resolve-FlavorOva {
   # An OVA you pass in -FlavorImages wins. Otherwise resolve-image.py finds, downloads, and checks the published OVA.
+  # With -WhatIf nothing is downloaded and no site is read: the function names the file a deploy fetches, and returns nothing.
   param([string] $Id, [string] $WorkDir, [hashtable] $Supplied)
   $imageId = Get-ImageFlavorId $Id
   foreach ($k in $Id, $imageId) {
     if ($Supplied -and $Supplied.ContainsKey($k)) { return (Resolve-Path $Supplied[$k]).Path }
   }
-  $out = & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out (Join-Path $WorkDir 'images')
-  if ($LASTEXITCODE -ne 0) {
+  $image = (Get-FlavorRecord $imageId).image
+  if (-not $image.ova) {
     throw "No OVA is available for the flavor $imageId. Make one from its qcow2 image, then pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
+  }
+  $imageDir = Join-Path $WorkDir 'images'
+  if ($WhatIfPreference) {
+    Write-Host "What if: Performing the operation `"Download the cloud image into $imageDir if it is not there or does not match the publisher's checksum, then check it`" on target `"$($image.base)$($image.ova)`"."
+    return
+  }
+  $out = & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out $imageDir
+  if ($LASTEXITCODE -ne 0) {
+    throw "The OVA for the flavor $imageId was not downloaded, or it did not pass its checksum. The lines above say why. To use an OVA you already have, pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
   }
   return [string]($out | Select-Object -Last 1)
 }
 
 function Set-LabVsphereLicense {
   # Applies the vSphere license keys in the license file. The keys are never printed.
+  # With -WhatIf no key is applied: the function names the products whose key a deploy applies.
   param($Server, $VmHost, [string] $Path, [bool] $IsVcenter)
   if (-not $Path) { return }
   $lic = Get-Content -Raw -Path $Path | ConvertFrom-Json
   if (-not $lic.vsphere) { return }
+  if ($WhatIfPreference) {
+    $kinds = @(); if ($IsVcenter -and $lic.vsphere.vcenter) { $kinds += 'vCenter' }; if ($lic.vsphere.esxi) { $kinds += 'ESXi' }
+    if ($kinds.Count) { Write-Host "What if: Performing the operation `"Apply the license key from the license file`" on target `"$($kinds -join ' and ')`"." }
+    return
+  }
   $si = Get-View ServiceInstance -Server $Server
   $lm = Get-View $si.Content.LicenseManager -Server $Server
   try {
@@ -481,7 +497,8 @@ try {
     foreach ($pg in @($portGroups.Keys | Where-Object { $portGroups[$_].net -eq $net.name })) {
       if (Get-VirtualPortGroup -VMHost $vmhost -Name $pg -ErrorAction SilentlyContinue) { continue }
       $vlanId = if ($portGroups[$pg].trunk) { 4095 } elseif ($portGroups[$pg].vlan) { [int]$portGroups[$pg].vlan } else { 0 }
-      if ($vs -and $PSCmdlet.ShouldProcess($pg, "Create the port group (VLAN $vlanId)")) {
+      # A preview makes no switch, so $vs is empty there. The port groups are listed all the same.
+      if (($vs -or $WhatIfPreference) -and $PSCmdlet.ShouldProcess($pg, "Create the port group (VLAN $vlanId)")) {
         New-VirtualPortGroup -VirtualSwitch $vs -Name $pg -VLanId $vlanId | Out-Null
       }
     }

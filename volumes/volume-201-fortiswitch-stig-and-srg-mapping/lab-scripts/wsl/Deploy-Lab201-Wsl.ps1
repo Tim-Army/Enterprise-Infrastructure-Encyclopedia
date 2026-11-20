@@ -172,18 +172,25 @@ New-Item -ItemType Directory -Force -Path $WorkDir, $InstallRoot | Out-Null
 # The newest Ubuntu 24.04 WSL image, a .wsl file (a gzip-compressed tar archive),
 # checked against Canonical's SHA-256 sums. It is saved with a .tar.gz name so that
 # wsl --import accepts it on every WSL version.
+# With -WhatIf nothing is downloaded and the site is not read: the script names the folder a deploy fetches the image from.
 $base = $lab.image.wsl_release_url
-$found = [regex]::Matches((Get-WebText $base), $lab.image.wsl_pattern) | ForEach-Object { $_.Value } | Sort-Object -Unique
-if (-not $found) { throw "No Ubuntu WSL image found at $base" }
-$imageName = $found | Sort-Object { [version]($_ -replace '^ubuntu-([\d.]+)-wsl.*$', '$1') } | Select-Object -Last 1
-$rootfsName = $imageName
-$rootfs = Join-Path $WorkDir ($imageName -replace '\.wsl$', '.tar.gz')
-if (-not (Test-Path $rootfs)) {
-  Invoke-WebRequest -Uri ($base + $imageName) -OutFile $rootfs
-  $sums = (Get-WebText ($base + 'SHA256SUMS')) -split "`n"
-  $want = ($sums | Where-Object { $_ -match [regex]::Escape($rootfsName) } | Select-Object -First 1) -replace '\s.*', ''
-  $got = (Get-FileHash -Algorithm SHA256 -Path $rootfs).Hash.ToLower()
-  if ($want -ne $got) { Remove-Item $rootfs; throw "SHA-256 mismatch for ${rootfsName}: expected $want, got $got" }
+$rootfs = $null
+if ($WhatIfPreference) {
+  Write-Host "What if: Performing the operation `"Download the newest Ubuntu WSL image into $WorkDir if it is not there, and check it against SHA256SUMS`" on target `"$base`"."
+}
+else {
+  $found = [regex]::Matches((Get-WebText $base), $lab.image.wsl_pattern) | ForEach-Object { $_.Value } | Sort-Object -Unique
+  if (-not $found) { throw "No Ubuntu WSL image found at $base" }
+  $imageName = $found | Sort-Object { [version]($_ -replace '^ubuntu-([\d.]+)-wsl.*$', '$1') } | Select-Object -Last 1
+  $rootfsName = $imageName
+  $rootfs = Join-Path $WorkDir ($imageName -replace '\.wsl$', '.tar.gz')
+  if (-not (Test-Path $rootfs)) {
+    Invoke-WebRequest -Uri ($base + $imageName) -OutFile $rootfs
+    $sums = (Get-WebText ($base + 'SHA256SUMS')) -split "`n"
+    $want = ($sums | Where-Object { $_ -match [regex]::Escape($rootfsName) } | Select-Object -First 1) -replace '\s.*', ''
+    $got = (Get-FileHash -Algorithm SHA256 -Path $rootfs).Hash.ToLower()
+    if ($want -ne $got) { Remove-Item $rootfs; throw "SHA-256 mismatch for ${rootfsName}: expected $want, got $got" }
+  }
 }
 
 # One provisioning script per host, written with Unix line endings.

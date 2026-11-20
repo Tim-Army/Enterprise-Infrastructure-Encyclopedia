@@ -145,7 +145,9 @@ logged in to a real ESXi host or vCenter. The KVM check has not been run.
 Then follow this list.
 
 1. Read the chapter for your platform, and run the script with `-WhatIf` (or
-   `--dry-run` for Proxmox and KVM) first. The Proxmox VE and VMware Workstation scripts
+   `--dry-run` for Proxmox and KVM) first. A preview downloads no image,
+   applies no license key, and builds no machine. The PowerShell previews do
+   write the seed files into `work\`. The Proxmox VE and VMware Workstation scripts
    have built the lab machines on real hosts (Chapter 09 says what was run).
    The ESXi, vCenter, VxRail, KVM, and WSL scripts have not been run. Treat
    all of them as a starting point to check, not a finished tool.

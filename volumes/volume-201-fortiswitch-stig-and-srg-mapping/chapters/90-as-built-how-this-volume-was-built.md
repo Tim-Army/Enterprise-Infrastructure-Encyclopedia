@@ -356,6 +356,46 @@ VE with three machines. The VLAN tags, the gateway's VLAN interfaces and
 firewall sets, and routed traffic between two VLANs were checked in the guests.
 The page's self-test runs 254 checks.
 
+The previews of the PowerShell scripts were corrected on 2026-11-19, after a
+`-WhatIf` run of the Workstation script fetched the Ubuntu OVA, a file of
+several hundred megabytes. The image step of the Workstation and ESXi scripts
+did not look at `-WhatIf`, and the WSL script downloaded its image the same
+way. The vCenter script did not, because it calls the image step only when it
+imports the template. A `-WhatIf` run of the ESXi and vCenter scripts with a
+license file would also have applied the vSphere license keys, because those
+calls go straight to the vSphere API, which knows nothing of `-WhatIf`. The Proxmox VE
+and KVM dry runs did neither. The image step and the license step now stop
+when `-WhatIf` is in effect and say what the build does: the image file and
+its folder, and the products whose key the build applies. The image step
+reads `flavors.json` first, so a preview still stops for a flavor that
+publishes no OVA, without starting Python. A preview still writes the seed
+files, into `work\seeds` or `work\wsl`. The change was checked with every
+download blocked. Python ran behind a guard that refuses `resolve-image.py`,
+and stand-ins took the place of `Invoke-WebRequest` and `wsl.exe`. The
+committed Workstation and WSL previews asked for the image there, and the
+corrected ones did not. No ESXi host or vCenter was available, so those two
+previews ran against stand-ins for the PowerCLI commands. The committed
+scripts called the license API under `-WhatIf`, and the corrected ones called
+nothing that changes a host. The same runs showed a second gap. On a host
+with no lab switches, the ESXi and vCenter previews listed the five switches
+and none of their port groups, because the port group step waited for a
+switch that a preview does not make. With distributed switches the preview
+stopped at the first port group, because the lookup was handed an empty
+switch, which PowerCLI 13.3 refuses. The previews now list the fifteen port
+groups of the Chapter 999 plan in each case, and the lookup is skipped while
+there is no switch.
+
+Chapter 11 was corrected on 2026-11-20. The change to one bridged network on
+2026-11-18 had rewritten its table and its steps, and had left four sentences
+that still described the first layout: three bridged networks, one host-only
+network, and the NAT network. Lab 11.1 expected four lab networks and the NAT
+network, the checklist named five lab networks, the text said to turn the DHCP
+service off on each lab network, and the cleanup step said to delete the lab
+vmnets. Each place now names the three networks of the chapter's table:
+`vmnet0`, `vmnet5`, and `vmnet8`. The DHCP service is turned off on the
+host-only network only, because the build adapters get their addresses from
+the NAT network, and the cleanup step deletes `vmnet5` only.
+
 Lessons from this work:
 
 - **Test the download code, not just its syntax.** `Invoke-WebRequest` returned
@@ -408,7 +448,18 @@ Lessons from this work:
   the whole repository for each old subnet, VLAN ID, and interface name found
   them. The walkthrough test of the Lab Builder now fails when a rewritten
   chapter holds an address outside the subnets of the build, which would have
-  caught the loopback.
+  caught the loopback. A count needs the same search. The change to one
+  Workstation bridge left the words for four and five lab networks in
+  Chapter 11, where a search for an old name or address finds nothing.
+- **Test what a preview does, not only what it prints.** The previews had been
+  read for their `What if` lines. One of them printed those lines and
+  downloaded the image in the same run, and two applied license keys. A step
+  that calls an outside program or an API directly does not know about
+  `-WhatIf`, so each such step needs its own test. Put a guard in front of
+  every download and a stand-in in front of every call that changes a host,
+  and the run shows whether a preview only previews. Run it for an empty host
+  as well as a built one: the port group lines were missing only on the empty
+  one.
 
 ### The Word and PDF downloads
 

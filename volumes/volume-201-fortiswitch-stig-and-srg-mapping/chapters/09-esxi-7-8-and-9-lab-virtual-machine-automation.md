@@ -139,7 +139,7 @@ The scripts that can apply a license read it from a JSON file you keep on your o
 | `vsphere` (`esxi`, `vcenter`) | The ESXi and vCenter scripts | Adds the license and assigns it to the host and to vCenter |
 | `proxmox` (`subscription_key`) | The Proxmox script | Runs `pvesubscription set` |
 
-A key is written only into the seed of a machine that needs it, never printed, and never copied into the manifest or the zip. Licensing for Dell VxRail 9 is done in VCF Operations, and the FortiSwitch licenses are for hardware, so neither is applied by a script. Workstation Pro needs no key. The vSphere license calls were written from the vSphere API and have not been run against a host.
+A key is written only into the seed of a machine that needs it, never printed, and never copied into the manifest or the zip. Licensing for Dell VxRail 9 is done in VCF Operations, and the FortiSwitch licenses are for hardware, so neither is applied by a script. Workstation Pro needs no key. The vSphere license calls were written from the vSphere API and have not been run against a host. A preview (`-WhatIf` or `--dry-run`) applies no license key to a host.
 
 ### How a machine gets its identity
 
@@ -193,7 +193,7 @@ Hardware version 22 runs only on ESXi 9.0. Pass `-HardwareVersion` to override t
 6. For each machine: imports the OVA under the machine's name, sets the vCPU count, memory, guest OS (`ubuntu64Guest`), and hardware version, grows the disk, replaces the network adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/` on the datastore, and attaches it.
 7. Powers on `gw-201` first, then the rest.
 
-Every action in step 3 and later honors `-WhatIf`.
+Every action in step 3 and later honors `-WhatIf`. A preview downloads no image and applies no license key. In place of step 4 it names the image file that the build fetches, and it names the products whose license key the build applies. Step 5 still runs, so a preview leaves the seed ISOs in `work/seeds`.
 
 ### Parameters
 
@@ -289,7 +289,7 @@ After a deploy, give the machines about three minutes for cloud-init, then check
      -SshKeyFile ~\.ssh\id_ed25519.pub -Trunk1Nic vmnic1 -Trunk2Nic vmnic2 -OobNic vmnic3 -WanNic vmnic0 -WhatIf
    ```
 
-**Expected result.** The check ends with `Ready`, or names what to fix. The preview lists the switches, port groups, and twelve machines it would create, and creates nothing.
+**Expected result.** The check ends with `Ready`, or names what to fix. The preview lists the switches, port groups, and twelve machines it would create, and creates nothing. It downloads nothing, and it names the image file that the build fetches.
 
 ### Lab 9.2: Build the lab
 

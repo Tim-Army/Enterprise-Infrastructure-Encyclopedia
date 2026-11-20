@@ -89,6 +89,8 @@ Storage goes on the vSAN datastore, and with the default mirroring policy the th
 7. For each machine: clones the template onto the host and datastore, sets the CPU and memory, grows the disk, replaces the adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/`, and attaches it.
 8. Powers on `gw-201` first, then the rest.
 
+With `-WhatIf`, the script downloads no image and applies no license key, as in Chapter 09.
+
 ### Parameters that differ from Chapter 09
 
 | Parameter | Meaning |
@@ -174,7 +176,7 @@ Everything in Chapter 09's security section applies. In addition:
 2. Run the script with `-Action Check` and the arguments of the build. It changes nothing, and it logs in to vCenter to test the version, the datacenter, the host, the datastore, and the uplinks.
 3. Run the script with `-WhatIf`, using `-NetworkType Standard`. Read every line.
 
-**Expected result.** The check ends with `Ready`, or names what to fix. In the preview, the folder, the six networks and port groups, the template, and twelve clones are listed, and nothing is created.
+**Expected result.** The check ends with `Ready`, or names what to fix. In the preview, the folder, the five switches and their port groups, the template, and twelve clones are listed, and nothing is created.
 
 ### Lab 10.2: Build with standard switches
 

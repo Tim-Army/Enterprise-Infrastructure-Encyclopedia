@@ -260,14 +260,24 @@ function Get-ImageFlavorId {
 
 function Resolve-FlavorOva {
   # An OVA you pass in -FlavorImages wins. Otherwise resolve-image.py finds, downloads, and checks the published OVA.
+  # With -WhatIf nothing is downloaded and no site is read: the function names the file a deploy fetches, and returns nothing.
   param([string] $Id, [string] $WorkDir, [hashtable] $Supplied)
   $imageId = Get-ImageFlavorId $Id
   foreach ($k in $Id, $imageId) {
     if ($Supplied -and $Supplied.ContainsKey($k)) { return (Resolve-Path $Supplied[$k]).Path }
   }
-  $out = & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out (Join-Path $WorkDir 'images')
-  if ($LASTEXITCODE -ne 0) {
+  $image = (Get-FlavorRecord $imageId).image
+  if (-not $image.ova) {
     throw "No OVA is available for the flavor $imageId. Make one from its qcow2 image, then pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
+  }
+  $imageDir = Join-Path $WorkDir 'images'
+  if ($WhatIfPreference) {
+    Write-Host "What if: Performing the operation `"Download the cloud image into $imageDir if it is not there or does not match the publisher's checksum, then check it`" on target `"$($image.base)$($image.ova)`"."
+    return
+  }
+  $out = & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\resolve-image.py') --flavor $imageId --ova --out $imageDir
+  if ($LASTEXITCODE -ne 0) {
+    throw "The OVA for the flavor $imageId was not downloaded, or it did not pass its checksum. The lines above say why. To use an OVA you already have, pass it with -FlavorImages @{ '$imageId' = 'path\to\image.ova' }."
   }
   return [string]($out | Select-Object -Last 1)
 }

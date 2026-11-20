@@ -136,7 +136,7 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 
 ### Lab 13.1: Build the hosts
 
-1. Unpack the lab-scripts zip and open PowerShell in the `wsl` folder. Run the readiness check, then preview with `-WhatIf`. Neither changes anything:
+1. Unpack the lab-scripts zip and open PowerShell in the `wsl` folder. Run the readiness check, then preview with `-WhatIf`. Neither changes WSL, and neither downloads the image. The preview writes the `wsl-provision.sh` of each host into `work\wsl`, where you can read it:
 
    ```powershell
    .\Deploy-Lab201-Wsl.ps1 -Action Check -SshKeyFile ~\.ssh\id_ed25519.pub

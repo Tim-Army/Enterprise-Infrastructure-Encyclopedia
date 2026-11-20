@@ -20,7 +20,7 @@ The twelve machines, their addresses, and their cloud-init seeds are the same as
 
 ### The networks
 
-Create these in the Virtual Network Editor (Edit, Virtual Network Editor, then *Change Settings*, which asks for administrator rights). Turn the DHCP service off on each lab network, because the lab has its own DHCP server.
+Create these in the Virtual Network Editor (Edit, Virtual Network Editor, then *Change Settings*, which asks for administrator rights). Turn the DHCP service off on the host-only network, because the lab has its own DHCP server. Leave it on for the NAT network, because the build adapters get their addresses from it.
 
 | Lab network | Default vmnet | Type | Connects to |
 | --- | --- | --- | --- |
@@ -72,7 +72,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | `-SnapshotName` | The snapshot that `Snapshot` and `Restore` use. The default is `baseline-201`. |
 | `-AddToLibrary` | Opens each machine in Workstation after the build, which lists it in the Library. Not tested yet. |
 
-`-WhatIf` is supported for every action that changes something.
+`-WhatIf` is supported for every action that changes something. A `-WhatIf` deploy downloads no image and builds no machine. It names the image file that the build fetches, and it still renders the seed ISOs, so a preview leaves them in `work\seeds`.
 
 ## Validation and Troubleshooting
 
@@ -133,7 +133,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 2. Turn the DHCP service off on `vmnet5`. Leave `vmnet8` as the default NAT network.
 3. In the adapter properties of the bridged Windows adapter, clear every protocol except *VMware Bridge Protocol*, so Windows does not use the adapter itself.
 
-**Expected result.** Four lab networks and the NAT network exist, each with the right binding.
+**Expected result.** The three networks exist, each with the right setting: `vmnet0` bridged to the lab adapter, `vmnet5` host-only with its DHCP service off, and `vmnet8` as the default NAT network.
 
 ### Lab 11.2: Build the lab
 
@@ -170,7 +170,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
 ### Cleanup
 
-Run `-Action Remove`. Delete `lab201-base`, `work\`, and the lab vmnets if you no longer need them.
+Run `-Action Remove`. If you no longer need them, delete `lab201-base`, `work\`, and `vmnet5`, and set `vmnet0` back to automatic bridging. Leave `vmnet8` in place, because it is the default NAT network of Workstation.
 
 ## Lab Verification
 
@@ -184,7 +184,7 @@ Complete this sign-off once Labs 11.1 to 11.3 have been run end to end on a real
 This chapter built the lab in Workstation Pro on Windows. Because a vmnet cannot add VLAN tags, the guests create the VLAN interfaces, and whether the trunks work depends on a Windows adapter that passes 802.1Q tags, which the lab must test. The script clones twelve full machines from one imported cloud image, rewrites each `.vmx` with static MAC addresses and the seed ISO, and starts them.
 
 - [ ] Can say why Workstation needs guest tagging and what it changes in the seeds.
-- [ ] Has created the five lab networks in the Virtual Network Editor.
+- [ ] Has set up the three networks in the Virtual Network Editor.
 - [ ] Has run the script, and checked for tagged frames on a trunk.
 - [ ] Has removed the build adapters and taken the `baseline-201` snapshots.
 - [ ] Knows which other chapter to use if no adapter passes tags.
