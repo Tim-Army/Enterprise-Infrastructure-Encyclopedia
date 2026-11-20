@@ -78,7 +78,9 @@ Enterprise-Infrastructure-Encyclopedia/
 - Volume numbers **200 to 299** are reserved for Fortinet STIG work. Do not
   assign them to any other topic. Volumes in this block use the same
   three-digit slug format and sort after the instructional volumes and before
-  `volume-900-...` (`volume-200-...` follows `volume-174-...`). Existing
+  `volume-900-...` (`volume-200-...` follows `volume-174-...`). The
+  FortiSwitch chapters moved from volume 172 to volume 201 on 2026-11-04, and
+  the FortiAnalyzer chapters to volume 202 on 2026-11-20. The rest of the
   Fortinet STIG material in volume 172 stays where it is.
 - The reserved block was renumbered from 97/98/99 to 997/998/999 so the
   instructional sequence can grow past 92 without colliding with it. The

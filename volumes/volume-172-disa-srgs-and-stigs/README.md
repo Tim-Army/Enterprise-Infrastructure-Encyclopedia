@@ -69,7 +69,7 @@ records how the whole volume was built:
   FortiAuthenticator, FortiPAM, FortiNAC, FortiSIEM, FortiClient and EMS,
   FortiEDR, FortiSASE, and FortiGate. Each one maps every feature of the
   product to the release that introduced it, the STIG rule or SRG requirement
-  it relates to, and the command or setting that meets it. The FortiSwitch map (Chapter 11) moved to [Volume CCI](../volume-201-fortiswitch-stig-and-srg-mapping/README.md), where it is Chapter 01.
+  it relates to, and the command or setting that meets it. The FortiSwitch map (Chapter 11) moved to [Volume CCI](../volume-201-fortiswitch-stig-and-srg-mapping/README.md), where it is Chapter 01. The FortiAnalyzer map (Chapter 12) moved to [Volume CCII](../volume-202-fortianalyzer-stig-and-srg-mapping/README.md), where it is Chapter 01.
 - **Chapter 31** covers Cisco, the vendor with the broadest STIG coverage: the
   ten Cisco STIG packages (25 STIGs, 1,096 rules), how to choose the right one
   for a device, their CAT I requirements and how to meet them, and the SRGs for
@@ -95,7 +95,7 @@ records how the whole volume was built:
 - **Chapter 38** turns the comparison around for FortiAnalyzer, which has no
   comparable Cisco product: each of its requirements is matched against every
   Cisco STIG, with Cisco SNA as the main comparison and the Cisco rules that
-  govern the log-source side.
+  govern the log-source side. It moved to [Volume CCII](../volume-202-fortianalyzer-stig-and-srg-mapping/README.md), where it is Chapter 02.
 - **Chapter 90**, the as-built chapter, records how each part of the volume
   was built, when, and from which sources, and explains the
   `/srg-mapping-for` command that built Chapters 10 to 38, a Claude Code skill in this repository, step by
@@ -136,7 +136,7 @@ except that this volume has no hands-on labs (see
 9. [Running a STIG Compliance Program](chapters/09-running-a-stig-compliance-program.md) — RMF, dispositions, POA&Ms, continuous monitoring, metrics, and STIGs versus CIS Benchmarks.
 10. [Fortinet Products — STIGs and SRG Mapping](chapters/10-fortinet-products-stigs-and-srg-mapping.md) — the FortiGate NDM and Firewall STIGs on FortiOS, uncovered FortiGate functions, SRG mapping for every other Fortinet product, and what the product maps found.
 11. [FortiSwitch Feature, Version, and SRG Map](chapters/11-fortiswitch-feature-version-and-srg-map.md) — moved to Volume CCI, [Chapter 01](../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md).
-12. [FortiAnalyzer Feature, Version, and SRG Map](chapters/12-fortianalyzer-feature-version-and-srg-map.md) — 349 FortiAnalyzer features (53 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the Central Log Server or NDM SRG requirement it maps to, and the command that meets it.
+12. [FortiAnalyzer Feature, Version, and SRG Map](chapters/12-fortianalyzer-feature-version-and-srg-map.md) — moved to Volume CCII, [Chapter 01](../volume-202-fortianalyzer-stig-and-srg-mapping/chapters/01-fortianalyzer-feature-version-and-srg-map.md).
 13. [FortiManager Feature, Version, and SRG Map](chapters/13-fortimanager-feature-version-and-srg-map.md) — 487 FortiManager features (52 core platform features and every feature in the 7.0 to 8.0 New Features Guides) with the release that introduced each, the NDM SRG requirement it maps to, and the command that meets it.
 14. [FortiAP Feature, Version, and SRG Map](chapters/14-fortiap-feature-version-and-srg-map.md) — 186 FortiAP features (39 core platform features and every feature in the FortiAP 7.0.0 to 8.0.0 release notes) with the release that introduced each, the Network WLAN STIG or NDM SRG requirement it maps to, and the FortiGate or FortiAP command that meets it.
 15. [FortiExtender Feature, Version, and SRG Map](chapters/15-fortiextender-feature-version-and-srg-map.md) — 154 FortiExtender features (43 core platform features and every feature in the FortiExtender 7.0.0 to 8.0.0 release notes) with the release that introduced each, the NDM, Router, or VPN SRG requirement it maps to, and the FortiGate or FortiExtender command that meets it.
@@ -162,7 +162,7 @@ except that this volume has no hands-on labs (see
 35. [Cisco ISE and FortiNAC STIG Crosswalk](chapters/35-cisco-ise-and-fortinac-stig-crosswalk.md) — all 81 Cisco ISE NDM and NAC STIG rules aligned with the FortiNAC-F settings that meet the same requirements (FortiNAC has no STIG): 38 same requirement, 15 equivalent setting, 20 partial, 6 not supported, with corrected ISE 3.5 commands and GUI paths, versions, and the 38 FortiNAC NDM and AAA requirements no ISE rule covers.
 36. [Cisco IOS XE Router and FortiGate STIG Crosswalk](chapters/36-cisco-ios-xe-router-and-fortigate-stig-crosswalk.md) — all 139 Cisco IOS XE Router NDM and RTR STIG rules aligned through their SRG IDs with the FortiGate STIG rule and the verified FortiOS 8.0.1 setting for a FortiGate used as a router (48 same requirement, 50 equivalent setting, 14 partial, 17 not supported, 9 not applicable, 1 by procedure; 36 NDM rules share an SRG ID with a FortiGate STIG rule, and FortiGate routing is assessed against the Router SRG), with 125 commands reused from Chapter 32, 14 corrected router fix-text commands dated by Command History, and the 124 FortiGate requirements no router rule covers.
 37. [Cisco NX-OS Switch and FortiSwitch STIG Crosswalk](chapters/37-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md) — moved to Volume CCI, [Chapter 03](../volume-201-fortiswitch-stig-and-srg-mapping/chapters/03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md).
-38. [FortiAnalyzer and Cisco STIG Crosswalk](chapters/38-fortianalyzer-and-cisco-stig-crosswalk.md) — all 65 FortiAnalyzer requirements from Chapter 12 (60 Central Log Server, 5 NDM) aligned with the Cisco SNA STIG rule and the rules in every other Cisco STIG that implement the same or an equivalent requirement, plus the Cisco rules on the log-source side (5 same requirement, 18 equivalent, 9 log-source counterpart only, 33 with no Cisco counterpart, because no Cisco STIG implements the Central Log Server SRG), with verified SNA settings, corrected SNA fix text, and the 17 SNA rules no FortiAnalyzer requirement covers.
+38. [FortiAnalyzer and Cisco STIG Crosswalk](chapters/38-fortianalyzer-and-cisco-stig-crosswalk.md) — moved to Volume CCII, [Chapter 02](../volume-202-fortianalyzer-stig-and-srg-mapping/chapters/02-fortianalyzer-and-cisco-stig-crosswalk.md).
 90. [As-Built — How This Volume Was Built](chapters/90-as-built-how-this-volume-was-built.md) — the volume's as-built record: how and when each part was built (Chapters 01 to 09 written directly and checked against the October 2026 library, Chapters 10 to 38 by one agent per chapter), then the Claude Code skill that built Chapters 10 to 38, step by step: STIG inventory, scope, overview, one agent per product, the product, crosswalk, and prerequisites playbooks, registration, checks, CSV export, and publishing, plus the changes made outside it.
 
 ## Volume resources

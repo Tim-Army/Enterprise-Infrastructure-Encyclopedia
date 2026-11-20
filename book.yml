@@ -6182,6 +6182,22 @@ volumes:
       - id: 999
         title: "Chapter 999: Shared Lab Infrastructure"
         path: volumes/volume-201-fortiswitch-stig-and-srg-mapping/chapters/999-shared-lab-infrastructure.md
+  - id: volume-202
+    number: "CCII"
+    slug: volume-202-fortianalyzer-stig-and-srg-mapping
+    title: "FortiAnalyzer STIG and SRG Mapping"
+    chapter_count: 3
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: FortiAnalyzer Feature, Version, and SRG Map"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/01-fortianalyzer-feature-version-and-srg-map.md
+      - id: 02
+        title: "Chapter 02: FortiAnalyzer and Cisco STIG Crosswalk"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/02-fortianalyzer-and-cisco-stig-crosswalk.md
+      - id: 90
+        title: "Chapter 90: As-Built — How This Volume Was Built"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear

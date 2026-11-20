@@ -7,7 +7,7 @@ Volume:     volumes/volume-172-disa-srgs-and-stigs (DISA SRGs and STIGs)
 You are writing ONE chapter for ONE product. Read these chapters first and copy
 their structure, tone, and conventions closely:
 
-  chapters/12-fortianalyzer-feature-version-and-srg-map.md   SRG map, New Features Guide version source (primary model)
+  ../volume-202-fortianalyzer-stig-and-srg-mapping/chapters/01-fortianalyzer-feature-version-and-srg-map.md   SRG map, New Features Guide version source (primary model)
   ../volume-201-fortiswitch-stig-and-srg-mapping/chapters/01-fortiswitch-feature-version-and-srg-map.md     SRG map, feature-matrix version source
   chapters/30-fortigate-feature-version-and-stig-map.md      STIG map: every STIG rule mapped, fix text checked
   chapters/24-fortipam-feature-version-and-srg-map.md        STIG rule IDs with an SRG ID column

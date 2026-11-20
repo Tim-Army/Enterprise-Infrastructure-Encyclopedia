@@ -40,6 +40,11 @@ The FortiSwitch chapters (11, 33, and 37) moved on 2026-11-04 to
 at their old numbers remain here, and their build record is in that volume's
 Chapter 90.
 
+The FortiAnalyzer chapters (12 and 38) moved on 2026-11-20 to
+[Volume CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md), where they are Chapters 01 and 02; the pointer pages
+at their old numbers remain here, and their build record is in that volume's
+Chapter 90.
+
 This chapter lets a reader judge how far to trust each part of the volume, and
 lets a maintainer run the workflow again for another vendor or a new quarterly
 DISA release. It describes the volume and the command as they stand in the
@@ -51,11 +56,11 @@ repository; when either changes, this chapter is updated with it.
 | --- | --- | --- | --- |
 | [01 to 09](01-the-dod-hardening-framework-where-srgs-and-stigs-come-from.md), the framework | 2026-10-06 | Written directly in one session as a vendor-neutral standards volume, with no labs by design, then checked the same day against DISA's October 2026 SRG-STIG Library Compilation: Chapters 01 and 02 note the new download site and date-named packages, and Chapter 03's SRG table was matched to DISA's 21 SRGs | Chapter 07 gained pointers to Chapters 10 and 31 |
 | [10](10-fortinet-products-stigs-and-srg-mapping.md), Fortinet overview | 2026-10-06 | Written directly: the two FortiGate STIGs, then the October 2026 library check updated it to the current releases (NDM V1R6, Firewall V1R5) | 2026-10-09: "The product map chapters" and "What the product maps found" sections, from the map chapters |
-| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26). Chapter 11 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-04 |
+| [11 to 30](11-fortiswitch-feature-version-and-srg-map.md), Fortinet product maps | 2026-10-07 to 2026-10-09 | One agent per product, one at a time, with the method later written down as `PLAYBOOK.txt` | Chapter 11's command column (added after its first commit); CSV downloads (2026-10-08, first for Chapters 11 to 21); prerequisites (2026-10-16 to 2026-10-18); Reference and Page columns in Chapter 11 (2026-10-26). Chapter 11 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-04. Chapter 12 moved to [Volume CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) as Chapter 01 on 2026-11-20 |
 | [31](31-cisco-products-stigs-and-srg-mapping.md), Cisco overview | 2026-10-14 | Written directly from the inventory of the ten Cisco STIG packages | Fix text corrections found by the crosswalks |
 | — | 2026-10-14 | The workflow written down as the `/srg-mapping-for` skill, from the Fortinet and Cisco runs | Crosswalk playbook (with Chapter 37) and prerequisites playbook (with Chapter 11's prerequisites) |
 | [32](32-cisco-catalyst-switch-feature-version-and-stig-map.md), Cisco Catalyst map | 2026-10-14 | The first chapter built by the skill | Prerequisites (2026-10-18) |
-| [33 to 38](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md), crosswalks | 2026-10-14 to 2026-10-15 | One agent per product pair, following the crosswalk method | Chapter 33's OS version columns; prerequisites (2026-10-16 to 2026-10-26), with corrected model-support entries in Chapters 33 and 37; Reference and Page columns in Chapters 33 and 37 (2026-10-26). Chapters 33 and 37 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapters 02 and 03 on 2026-11-04 |
+| [33 to 38](33-fortiswitch-and-cisco-catalyst-switch-stig-crosswalk.md), crosswalks | 2026-10-14 to 2026-10-15 | One agent per product pair, following the crosswalk method | Chapter 33's OS version columns; prerequisites (2026-10-16 to 2026-10-26), with corrected model-support entries in Chapters 33 and 37; Reference and Page columns in Chapters 33 and 37 (2026-10-26). Chapters 33 and 37 moved to [Volume CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) as Chapters 02 and 03 on 2026-11-04. Chapter 38 moved to [Volume CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) as Chapter 02 on 2026-11-20 |
 | 90, this chapter | 2026-10-29 | Written directly from the skill files and the repository history | Updated whenever the skill or the volume's chapters change |
 
 Each row's dates and changes come from the repository's commit history, where

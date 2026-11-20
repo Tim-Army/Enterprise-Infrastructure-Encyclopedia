@@ -2,7 +2,8 @@
 """Export the SRG tables of the map and crosswalk chapters to CSV.
 
 For every chapter in the VOLUMES below (Volume CLXXII, DISA SRGs and STIGs,
-and Volume CCI, FortiSwitch STIG and SRG Mapping) that
+Volume CCI, FortiSwitch STIG and SRG Mapping, and Volume CCII, FortiAnalyzer
+STIG and SRG Mapping) that
 matches one of the KINDS below (product maps: NN-*-feature-version-and-s*-map.md;
 crosswalks: NN-*-crosswalk.md), this script:
 
@@ -26,7 +27,11 @@ import glob
 import os
 import re
 
-VOLUMES = ["volume-172-disa-srgs-and-stigs", "volume-201-fortiswitch-stig-and-srg-mapping"]
+VOLUMES = [
+    "volume-172-disa-srgs-and-stigs",
+    "volume-201-fortiswitch-stig-and-srg-mapping",
+    "volume-202-fortianalyzer-stig-and-srg-mapping",
+]
 PORTAL = "https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia"
 # Per chapter kind: (file glob, [(heading prefix, csv suffix, link text), ...]).
 KINDS = [
