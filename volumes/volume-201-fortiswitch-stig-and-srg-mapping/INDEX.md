@@ -13,7 +13,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Baseline snapshot and lab reset** — [Chapter 999](chapters/999-shared-lab-infrastructure.md)
 - **BGP protection lab (TTL security, prefix lists, maximum prefixes)** — [Chapter 06](chapters/06-router-srg-requirement-labs.md)
 - **BPDU guard, root guard, and loop guard lab** — [Chapter 04](chapters/04-layer-2-switch-srg-requirement-labs.md)
-- **Break-glass access (segment 100, NET2)** — [Chapter 08](chapters/08-opengear-im7216-console-server-and-optional-console-lab.md), [Chapter 999](chapters/999-shared-lab-infrastructure.md)
+- **Break-glass access (segment 1, NET2)** — [Chapter 08](chapters/08-opengear-im7216-console-server-and-optional-console-lab.md), [Chapter 999](chapters/999-shared-lab-infrastructure.md)
 - **Bridging the two trunks in gw-201** — [Chapter 09](chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md), [Chapter 12](chapters/12-proxmox-ve-lab-virtual-machine-automation.md)
 - **Build network adapter (removed after package installs)** — [Chapter 09](chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md)
 - **Cellular failover (optional)** — [Chapter 08](chapters/08-opengear-im7216-console-server-and-optional-console-lab.md)

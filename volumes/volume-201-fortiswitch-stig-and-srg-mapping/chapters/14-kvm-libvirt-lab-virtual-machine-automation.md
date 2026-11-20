@@ -35,7 +35,7 @@ Create these before you run the script. It checks that each one exists, and does
 | Trunk T1 | `br-t1` | The NIC that cables to `sw-648f-1` | VLAN-tagged lab machines and the gateway's first trunk |
 | Trunk T2 | `br-t2` | The NIC that cables to `sw-2048f-1` | The gateway's second trunk and the peers' T2 links |
 | Out-of-band | `br-oob` | The NIC that cables to the switch management ports | Segment 0 |
-| Segment 220 | `br-lan220` | None | Internal link between `rtr-peer-1` and `mcast-src-201` |
+| Segment 12 | `br-mcast` | None | Internal link between `rtr-peer-1` and `mcast-src-201` |
 | Build (internet) | `virbr0` | libvirt's NAT network | The build adapters and the gateway's uplink |
 
 **Do not put both trunk NICs in one host bridge.** `gw-201` already bridges them inside the guest, so a host bridge that also joins them is a Layer 2 loop.
@@ -76,7 +76,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 | `--action` | `deploy` (default), `check`, `status`, `remove-build-nics`, `snapshot`, `restore`, or `remove`. `check` tests what a deploy needs on the host and changes nothing. `snapshot` takes the baseline snapshot of every machine, and refuses while a machine still has its build NIC. `restore` reverts every machine to that snapshot, running, the gateway first. |
 | `--wait`, `--wait-minutes N` | With `--action status`: keep checking until every machine reports that its first boot has finished, for at most N minutes (30 by default). The QEMU guest agent runs `lab201-status` in each machine. |
 | `--snapshot-name NAME` | The snapshot that `snapshot` and `restore` use (default `baseline-201`). |
-| `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-lan220` | The bridge for each lab network. |
+| `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-mcast` | The bridge for each lab network. |
 | `--disk-dir`, `--workdir` | Where the machine disks go, and where images and seeds are kept. |
 | `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image. |
 | `--license-file FILE` | JSON file with keys the seeds apply (Red Hat, Ubuntu Pro). |
@@ -89,7 +89,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 | The host is ready | `./deploy-lab201-kvm.sh --action check --ssh-key ~/lab201.pub` | `Ready`, or a line for each thing to fix |
 | The first boot finished | `./deploy-lab201-kvm.sh --action status --wait` | Twelve machines with `ok`. A Rocky, AlmaLinux, Fedora, or Red Hat machine shows `unknown`, because its guest agent runs no commands |
 | Cloud-init finished | In a guest: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
-| Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v10` | A VLAN interface with `id 10` |
+| Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v2` | A VLAN interface with `id 2` |
 | Addresses | `ip -br addr` | The Chapter 999 addresses, both families |
 | Tags on the trunk | On `gw-201`: `sudo tcpdump -e -n -i nic2 vlan` | Tagged frames from the switch |
 
@@ -134,7 +134,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 
 ### Lab 14.1: Create the bridges
 
-1. Create `br-t1`, `br-t2`, and `br-oob` with the NICs that cable to the switches (for example with NetworkManager or `/etc/network/interfaces`), and `br-lan220` with no port.
+1. Create `br-t1`, `br-t2`, and `br-oob` with the NICs that cable to the switches (for example with NetworkManager or `/etc/network/interfaces`), and `br-mcast` with no port.
 2. Check that each exists: `ip link show type bridge`.
 
 **Expected result.** Four bridges exist, and `virbr0` is up.

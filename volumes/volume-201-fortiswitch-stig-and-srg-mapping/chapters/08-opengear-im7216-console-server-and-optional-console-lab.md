@@ -13,7 +13,7 @@
 
 ### Why a console server in this lab
 
-Every lab in Chapters 04 to 07 reaches the switches over the network, through the management SVI on segment 30 or the management port on segment 0. That path fails in exactly the situations where an administrator most needs access: a bad VLAN change, a wrong routing key, a lost management address, or a switch that is booting. A console server keeps a second path alive. It connects to each device's serial console and offers that console over SSH, so an administrator can still log in when the data network is down.
+Every lab in Chapters 04 to 07 reaches the switches over the network, through the management SVI on segment 4 or the management port on segment 0. That path fails in exactly the situations where an administrator most needs access: a bad VLAN change, a wrong routing key, a lost management address, or a switch that is booting. A console server keeps a second path alive. It connects to each device's serial console and offers that console over SSH, so an administrator can still log in when the data network is down.
 
 The console server is **optional**. Chapters 04 to 07 and the labs in Chapter 999 run without it. Add it when you want to test console access, out-of-band management, or recovery, or when your lab switches sit in a rack you cannot reach.
 
@@ -133,12 +133,12 @@ This volume maps FortiSwitch to the SRGs. It does not assess the console server.
 ## Design Considerations
 
 - **One address plan.** The console server uses the existing plan. It joins segment 0 (the out-of-band management network) at `.13`, which the host table already reserves for infrastructure that shares the segment (`.11` and `.12` are the switches). The IPv6 host part is the same hexadecimal as the IPv4 host part, so `.13` is `::d`.
-- **One new segment.** Break-glass access needs a path that does not depend on gw-201, so the lab takes the first free lab-specific segment, **segment 100** (`10.201.100.0/24`, `fd00:db8:201::6400/120`, no gateway). NET2 sits on it at `.2` and the break-glass laptop `oob-admin-201` at `.10`. Chapter 999 reserves segments 100 to 199 for this purpose and lists segment 100 in its segment table.
+- **One new segment.** Break-glass access needs a path that does not depend on gw-201, so the lab uses **segment 1** (`10.201.1.0/24`, `fd00:db8:201::100/120`, no gateway), a network of its own with no VLAN. NET2 sits on it at `.2` and the break-glass laptop `oob-admin-201` at `.10`. Chapter 999 lists segment 1 in its segment table.
 - **No forwarding between networks.** The console server is not a router in this lab. NET2 stays on its own LAN, and the device's firewall does not forward between NET1 and NET2.
 - **Segment 0 stays out of band.** Chapter 999 says segment 0 carries no test traffic. The console server adds only management and console traffic there.
 - **Unique secrets.** The console server is a RADIUS client, so it gets its own shared secret in `clients.conf`, never the one a switch uses (Lab 7.4).
 - **A local emergency account.** Remote authentication fails when RADIUS is unreachable, which is the situation the console server exists for. Keep one local administrator, stored offline, and test it (Lab 8.3).
-- **Not a central service host.** The console server uses the lab's RADIUS, syslog, NTP, and SNMP hosts on segment 10. It does not replace any of them: it has no documented syslog or RADIUS server, its SNMP and NTP roles are limited, and Lab 5.6 needs two log servers.
+- **Not a central service host.** The console server uses the lab's RADIUS, syslog, NTP, and SNMP hosts on segment 2. It does not replace any of them: it has no documented syslog or RADIUS server, its SNMP and NTP roles are limited, and Lab 5.6 needs two log servers.
 - **Pinout is per cable.** Console cables vary by vendor. Start with `X2` and switch a port to `X1` if the terminal stays silent.
 
 ## Implementation and Automation
@@ -149,14 +149,14 @@ All settings come from the 5.5.3 web UI. The Quick Start for the IM7200 names th
 | --- | --- |
 | Host name | `og-201` |
 | NET1 (segment 0) | `10.201.0.13/24`, gateway `10.201.0.1`; `fd00:db8:201::d/120`, gateway `fd00:db8:201::1` |
-| NET2 (segment 100) | `10.201.100.2/24`; `fd00:db8:201::6402/120`; no gateway |
-| Break-glass laptop | `oob-admin-201`, `10.201.100.10`, `fd00:db8:201::640a` |
+| NET2 (segment 1) | `10.201.1.2/24`; `fd00:db8:201::102/120`; no gateway |
+| Break-glass laptop | `oob-admin-201`, `10.201.1.10`, `fd00:db8:201::10a` |
 | Serial port 1 | `sw-648f-1` console |
 | Serial port 2 | `sw-2048f-1` console |
 | Serial port 3 | `fgt-201` console, only if the FortiGate is hardware |
 | Serial port 16 | Loopback test cable |
 | Console speed | `115200` baud, 8 data bits, no parity, 1 stop bit, no flow control (FortiSwitchOS 7.6.7 default for `config system console`) |
-| Services | RADIUS `10.201.10.10` and `.11`; syslog `.20`; NTP `.30` (the one NTP server field, with its key); SNMPv3 manager `10.201.10.40` |
+| Services | RADIUS `10.201.2.10` and `.11`; syslog `.20`; NTP `.30` (the one NTP server field, with its key); SNMPv3 manager `10.201.2.40` |
 
 Automation is limited on purpose. The REST API and a configuration file loaded from a USB stick can repeat a build, but this chapter configures the device by hand so each setting is visible. Save the exported configuration after each lab (Lab 8.7) so the baseline can return.
 
@@ -183,8 +183,8 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 ## Security and Best Practices
 
 - Change the factory password at the first login and create a named administrator for daily use. Release 5.5.3 does not let you set the password `default` or close variants (a restriction listed in the 5.5.0 release notes).
-- Keep the console server off any production network. Segment 0 and segment 100 are lab segments.
-- Turn off Telnet and any other clear-text service. Allow SSH and HTTPS only from the admin network and segment 100.
+- Keep the console server off any production network. Segment 0 and segment 1 are lab segments.
+- Turn off Telnet and any other clear-text service. Allow SSH and HTTPS only from the admin network and segment 1.
 - Give the device a unique RADIUS secret and a unique SNMPv3 user. Do not reuse a switch's secret. Turn on *Require Message-Authenticator* so a forged RADIUS reply is rejected.
 - Use SNMPv3 at `authPriv`. In FIPS mode the device replaces an MD5 SNMPv3 setting with SHA, and the guide recommends `authPriv`.
 - Turn on the password complexity policy in 5.5.3 and the configuration-secret obfuscation on the System page.
@@ -210,7 +210,7 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 
 **Knowledge checks:**
 
-1. Why does the lab put the console server on segment 0 and add a separate segment 100 for NET2?
+1. Why does the lab put the console server on segment 0 and add a separate segment 1 for NET2?
 2. A switch console shows garbage after you connect. List two settings to check, in order.
 3. What does a user need, in addition to a valid password, to open a session on serial port 2?
 4. Why must the console server keep a local administrator when it uses RADIUS?
@@ -221,9 +221,9 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
 
 ## Hands-On Lab
 
-**Shared prerequisites.** The infrastructure from Chapter 999 (Labs 999.1 to 999.6), including gw-201 routing between segment 0 and segment 10, the RADIUS, syslog, NTP, and SNMP hosts, and the `baseline-201` snapshot. One IM7216-2-DAC-LMV running firmware 5.5.3, RJ45 console cables for each device you connect (the FortiSwitch console cable, or the adapters in the console server kit), a spare laptop for `oob-admin-201`, and a loopback test cable. A SIM and a carrier plan are needed only for the optional cellular step. **Cost:** the console server and, if you want Lab 8.6's cellular step, a data plan.
+**Shared prerequisites.** The infrastructure from Chapter 999 (Labs 999.1 to 999.6), including gw-201 routing between segment 0 and segment 2, the RADIUS, syslog, NTP, and SNMP hosts, and the `baseline-201` snapshot. One IM7216-2-DAC-LMV running firmware 5.5.3, RJ45 console cables for each device you connect (the FortiSwitch console cable, or the adapters in the console server kit), a spare laptop for `oob-admin-201`, and a loopback test cable. A SIM and a carrier plan are needed only for the optional cellular step. **Cost:** the console server and, if you want Lab 8.6's cellular step, a data plan.
 
-![Console access for the optional lab. The OpenGear console server og-201 connects NET1 (10.201.0.13) to segment 0, where gw-201 and the management ports of sw-648f-1 and sw-2048f-1 sit. Administrators on segment 20 reach og-201 through gw-201 and use SSH to TCP port 3000 plus the serial port number. og-201 reaches RADIUS, syslog, NTP, and SNMP on segment 10 through gw-201. NET2 (10.201.100.2) joins segment 100, an isolated break-glass network with no gateway, where oob-admin-201 (10.201.100.10) sits. Serial ports 1, 2, and 3 connect to the consoles of sw-648f-1, sw-2048f-1, and the optional fgt-201, and an optional cellular link provides failover.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-08-console-access-topology.svg)
+![Console access for the optional lab. The OpenGear console server og-201 connects NET1 (10.201.0.13) to segment 0, where gw-201 and the management ports of sw-648f-1 and sw-2048f-1 sit. Administrators on segment 3 reach og-201 through gw-201 and use SSH to TCP port 3000 plus the serial port number. og-201 reaches RADIUS, syslog, NTP, and SNMP on segment 2 through gw-201. NET2 (10.201.1.2) joins segment 1, an isolated break-glass network with no gateway, where oob-admin-201 (10.201.1.10) sits. Serial ports 1, 2, and 3 connect to the consoles of sw-648f-1, sw-2048f-1, and the optional fgt-201, and an optional cellular link provides failover.](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-08-console-access-topology.svg)
 
 ### Lab 8.1 — Install the console server on segment 0
 
@@ -241,7 +241,7 @@ Before each lab, check the path in this order: power and link lights, `ping 10.2
    ```text
    NET1 IPv4:  10.201.0.13  netmask 255.255.255.0  gateway 10.201.0.1
    NET1 IPv6:  fd00:db8:201::d  prefix 120  gateway fd00:db8:201::1
-   DNS:        10.201.10.1
+   DNS:        10.201.2.1
    ```
 
 5. Check the firmware version in the system status. It must read 5.5.3. If it reads 4.x, first move to the last 4.13.x release (4.13.3 or later), take a backup, and then upgrade to 5.5.3, as the release notes require. Take a new backup after the upgrade.
@@ -318,7 +318,7 @@ Press Enter at the console. The FortiSwitchOS login prompt appears. Log in, run 
    }
    ```
 
-   Restart `freeradius` on both servers. On `gw-201`, allow UDP 1812 and 1813 from `10.201.0.13` to `10.201.10.10` and `10.201.10.11`.
+   Restart `freeradius` on both servers. On `gw-201`, allow UDP 1812 and 1813 from `10.201.0.13` to `10.201.2.10` and `10.201.2.11`.
 
 2. On the console server, create groups named `netops` (access to ports 1 and 2) and `audit` (no ports). Keep the built-in `admin` group for the administrators.
 3. Under *Serial & Network > Authentication*, choose the *RADIUSDownLocal* method: remote first, and local only when the RADIUS servers are down. Enter both servers as a comma-separated list (each is tried in turn), the shared secret, and, if you want a separate accounting list, the accounting servers (otherwise the same servers are used). Choose **MS-CHAPv2**, the default for new configurations, and tick **Require Message-Authenticator**, which blocks a forged reply (the BlastRADIUS attack).
@@ -350,11 +350,11 @@ Press Enter at the console. The FortiSwitchOS login prompt appears. Log in, run 
 
 **Configure.**
 
-1. Under *System > Date & Time*, set the time zone, tick **Enable NTP**, enter `10.201.10.30` as the NTP server, and enter the authentication key and key index from Chapter 999. The user guide shows one NTP server field, so `ntp-201b` is not used here. Click Apply NTP Settings.
-2. Under *Status > Syslog*, set the remote syslog server address `10.201.10.20` and its port (the guide does not describe a TCP option, so use the default and record what the 5.5.3 screen offers). On `gw-201`, allow the syslog port from `10.201.0.13`.
+1. Under *System > Date & Time*, set the time zone, tick **Enable NTP**, enter `10.201.2.30` as the NTP server, and enter the authentication key and key index from Chapter 999. The user guide shows one NTP server field, so `ntp-201b` is not used here. Click Apply NTP Settings.
+2. Under *Status > Syslog*, set the remote syslog server address `10.201.2.20` and its port (the guide does not describe a TCP option, so use the default and record what the 5.5.3 screen offers). On `gw-201`, allow the syslog port from `10.201.0.13`.
 3. On each serial port, keep logging level 2 and set a syslog **facility and priority** for the port (for example `local0` and `info`), so the port's traffic reaches `syslog-201a`. Confirm that the storage target from Lab 8.2 is still set.
 4. Under *Alerts & Logging > SNMP*, tick **Enable the SNMP service** (it is off by default) and allow SNMP in Service Access for NET1. Create one SNMPv3 user at the `authPriv` level with SHA and AES and unique keys of at least 8 characters (generate them per Chapter 999). Create no community string, so v1 and v2c have nothing to answer with.
-5. On the *Primary SNMP Manager* tab, add `10.201.10.40` as the manager, choose version 3, and enter the user, engine ID, security level, and keys. On `nms-201`, create the matching v3 user with that engine ID. A v3 trap is rejected if the user does not already exist on the manager.
+5. On the *Primary SNMP Manager* tab, add `10.201.2.40` as the manager, choose version 3, and enter the user, engine ID, security level, and keys. On `nms-201`, create the matching v3 user with that engine ID. A v3 trap is rejected if the user does not already exist on the manager.
 
 **Positive test.** The console server's time matches `ntp-201a` (compare `date -u` on both), and the status page shows the NTP server as in use. Open and close a session on port 1: `/var/log/lab201/` on `syslog-201a` holds the login, logout, and console lines. From `nms-201`:
 
@@ -374,57 +374,57 @@ The walk returns the system group. Also walk the power-supply table (the 5.5.3 r
 
 **Goal.** Reduce the device's exposed services to SSH and HTTPS from the admin network, set a password policy, and prove that everything else is closed.
 
-**Uses.** `og-201`, `admin-201` (segment 20), `attacker-201` (segment 42), `oob-admin-201` (Lab 8.6).
+**Uses.** `og-201`, `admin-201` (segment 3), `attacker-201` (segment 7), `oob-admin-201` (Lab 8.6).
 
 **Configure.**
 
-1. Under service access, leave HTTPS and SSH enabled and turn off Telnet, HTTP, and any other service you do not need (including serial-port Telnet, raw TCP, and RFC 2217 unless a lab uses them). Leave SNMP allowed only on NET1, from `10.201.10.40`, and turn off the TFTP and FTP service, the DNS relay, and the DHCP server, which the lab does not use.
-2. Restrict the source of SSH and HTTPS to `10.201.20.0/24` and, after Lab 8.6, `10.201.100.0/24`. Use the device's firewall rules for this.
+1. Under service access, leave HTTPS and SSH enabled and turn off Telnet, HTTP, and any other service you do not need (including serial-port Telnet, raw TCP, and RFC 2217 unless a lab uses them). Leave SNMP allowed only on NET1, from `10.201.2.40`, and turn off the TFTP and FTP service, the DNS relay, and the DHCP server, which the lab does not use.
+2. Restrict the source of SSH and HTTPS to `10.201.3.0/24` and, after Lab 8.6, `10.201.1.0/24`. Use the device's firewall rules for this.
 3. Set a web session timeout and an SSH idle timeout, and add a login banner.
 4. Turn on the password complexity policy that 5.5.3 adds under the authentication settings (length, character classes), and turn on configuration-secret obfuscation on the System page.
 5. Check the web certificate. If the default certificate is in use, replace it with one signed by `ca-201` (the lab CA from P3). A certificate request in FIPS mode produces a 2048-bit key at minimum.
 
 **Positive test.** From `admin-201`, `nmap -p 22,23,53,80,443 10.201.0.13` shows 22 and 443 open and the rest closed, and `nmap -sU -p 53,67,69,123 10.201.0.13` shows no open UDP service except the ones you chose to allow. The banner appears on SSH login.
 
-**Negative test.** Run the same scan from `attacker-201` on segment 42: the console server drops the traffic. Try to set a short password for a test user: the policy refuses it. Let an SSH session sit past the idle timeout: the device closes it.
+**Negative test.** Run the same scan from `attacker-201` on segment 7: the console server drops the traffic. Try to set a short password for a test user: the policy refuses it. Let an SSH session sit past the idle timeout: the device closes it.
 
 **Evidence.** Both `nmap` scans, the firewall and service settings, the refused weak password, and the closed idle session.
 
 **Return to baseline.** Keep this configuration for the remaining labs.
 
-### Lab 8.6 — Break-glass access on segment 100 (and optional cellular failover)
+### Lab 8.6 — Break-glass access on segment 1 (and optional cellular failover)
 
-**Goal.** Reach a switch console when the data network path to `og-201` is down, using NET2 on the isolated segment 100, and, if a SIM is available, show the cellular path.
+**Goal.** Reach a switch console when the data network path to `og-201` is down, using NET2 on the isolated segment 1, and, if a SIM is available, show the cellular path.
 
 **Uses.** `og-201` NET2, `oob-admin-201` (a laptop), `sw-648f-1`, `gw-201`.
 
 **Configure.**
 
-1. Connect NET2 to a switch or cable that carries only segment 100. Connect `oob-admin-201` to the same segment.
+1. Connect NET2 to a switch or cable that carries only segment 1. Connect `oob-admin-201` to the same segment.
 2. On the console server, enable the NET2 interface and give it the static settings with no gateway:
 
    ```text
-   NET2 IPv4:  10.201.100.2  netmask 255.255.255.0   (no gateway)
-   NET2 IPv6:  fd00:db8:201::6402  prefix 120         (no gateway)
+   NET2 IPv4:  10.201.1.2  netmask 255.255.255.0   (no gateway)
+   NET2 IPv6:  fd00:db8:201::102  prefix 120         (no gateway)
    ```
 
    Keep NET2 as an interface of its own. Do not turn on aggregation with NET1, and do not enable forwarding between NET1 and NET2.
-3. On `oob-admin-201`, set `10.201.100.10/24` and `fd00:db8:201::640a/120`.
-4. Allow SSH on NET2 from `10.201.100.0/24` in the firewall rules from Lab 8.5.
+3. On `oob-admin-201`, set `10.201.1.10/24` and `fd00:db8:201::10a/120`.
+4. Allow SSH on NET2 from `10.201.1.0/24` in the firewall rules from Lab 8.5.
 5. **Optional cellular.** With the unit powered off, insert the SIM. Screw one antenna onto `CELL (MAIN)` and the second onto `CELL (AUX)`. Power on, then enter the carrier's APN under System > Dial > Internal Cellular Modem (usually the APN is the only field needed) and check the signal strength under Status > Statistics > Cellular. Opengear rates -89 to -70 dBm as medium-to-strong and -100 dBm as unacceptable, so move the antenna or use the extender if it is weak. Set the failover to use the cellular interface with a probe address of `10.201.0.1` (gw-201), so the modem stays idle until the probe fails. The default mode keeps the cellular link always on, which is not what this lab wants. Verify the carrier's data plan allows a management connection before you enable it. Many plans give a private or shared address (the `100.64.0.0/10` range) that the internet cannot reach, so the SSH test below may need Call Home with Lighthouse or a VPN. The keep-alive watchdog pings use about 50 MB a month, and the carrier may charge for them.
 
 **Positive test.** Disconnect the NET1 cable. From `oob-admin-201`:
 
 ```text
-ping 10.201.100.2
-ssh -p 3001 <admin>@10.201.100.2
+ping 10.201.1.2
+ssh -p 3001 <admin>@10.201.1.2
 ```
 
 The session opens the `sw-648f-1` console even though NET1 is down. Run `get system status` in the console, then log out. Reconnect NET1.
 
 **Optional cellular test.** With NET1 and NET2 both disconnected, wait for the probe to fail. The cellular status shows an address, and an SSH login over the cellular address reaches the console server. Record the failover time.
 
-**Negative test.** From `oob-admin-201`, try to reach `10.201.10.10` or `10.201.0.1`: no route, because NET2 does not forward and has no gateway. From a host on segment 20, try `10.201.100.2`: no route either.
+**Negative test.** From `oob-admin-201`, try to reach `10.201.2.10` or `10.201.0.1`: no route, because NET2 does not forward and has no gateway. From a host on segment 3, try `10.201.1.2`: no route either.
 
 **Evidence.** The NET2 settings, the NET1-down SSH session, the failed attempts to cross segments, and, for the optional step, the cellular status and failover time.
 
@@ -439,29 +439,29 @@ The session opens the `sw-648f-1` console even though NET1 is down. Run `get sys
 **Configure.**
 
 1. Export the configuration of `og-201` and save a copy of the switch's current configuration with `show full-configuration` through the serial console, so the recovery has a known good source.
-2. From the serial console of `sw-648f-1`, change the management SVI on segment 30 so it stops answering:
+2. From the serial console of `sw-648f-1`, change the management SVI on segment 4 so it stops answering:
 
    ```text
    config system interface
        edit mgmt-svi
-           set ip 10.201.30.99/24
+           set ip 10.201.4.99/24
    end
    ```
 
-   The address on segment 30 is now `10.201.30.99`, so `10.201.30.11` no longer answers.
-3. Confirm that the in-band path is gone from `admin-201`: `ping 10.201.30.11` fails and SSH to `10.201.30.11` times out.
+   The address on segment 4 is now `10.201.4.99`, so `10.201.4.11` no longer answers.
+3. Confirm that the in-band path is gone from `admin-201`: `ping 10.201.4.11` fails and SSH to `10.201.4.11` times out.
 4. Recover through the console server. Open the port 1 session and restore the address:
 
    ```text
    config system interface
        edit mgmt-svi
-           set ip 10.201.30.11/24
+           set ip 10.201.4.11/24
    end
    ```
 
 5. Save the recovered switch configuration, and export the console server configuration again as `og-201-8.7.config`.
 
-**Positive test.** After step 4, `ping 10.201.30.11` and SSH from `admin-201` work again. The log on `syslog-201a` shows the serial login, the change, and the logout under the user's name.
+**Positive test.** After step 4, `ping 10.201.4.11` and SSH from `admin-201` work again. The log on `syslog-201a` shows the serial login, the change, and the logout under the user's name.
 
 **Negative test.** Sign in to the console server as `lab-audit` and try to open port 1: refused. Try the recovery as `lab-netops` from `oob-admin-201` with RADIUS stopped: the login fails, and the local administrator is the only way in, which is why Lab 8.3 keeps one.
 
@@ -478,7 +478,7 @@ Complete this sign-off once Labs 8.1 to 8.7 have been run end to end, including 
 
 ## Summary and Completion Checklist
 
-This chapter describes the OpenGear IM7216-2-DAC-LMV on firmware 5.5.3 and adds it to the Chapter 999 lab as an optional console path. It uses the existing `10.201.0.0/16` and `fd00:db8:201::/112` plans, puts the console server on segment 0 at `.13`, and adds one new segment, 100, for break-glass access. Seven labs cover installation, serial access, RADIUS logins, logging, hardening, break-glass and cellular access, and recovery.
+This chapter describes the OpenGear IM7216-2-DAC-LMV on firmware 5.5.3 and adds it to the Chapter 999 lab as an optional console path. It uses the existing `10.201.0.0/16` and `fd00:db8:201::/112` plans, puts the console server on segment 0 at `.13`, and adds one segment, 1, for break-glass access. Seven labs cover installation, serial access, RADIUS logins, logging, hardening, break-glass and cellular access, and recovery.
 
 - [ ] Has `og-201` on segment 0 at `10.201.0.13` and `fd00:db8:201::d`, running firmware 5.5.3.
 - [ ] Has opened both switch consoles over SSH through the console server.

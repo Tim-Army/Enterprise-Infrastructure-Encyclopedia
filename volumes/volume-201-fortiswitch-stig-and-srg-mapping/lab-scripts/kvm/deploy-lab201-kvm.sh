@@ -13,7 +13,7 @@
 #   --bridge-t1     the NIC that cables to sw-648f-1 is a port of this bridge
 #   --bridge-t2     the NIC that cables to sw-2048f-1 is a port of this bridge
 #   --bridge-oob    the NIC that cables to the switch management ports
-#   --bridge-lan220 no ports (internal)
+#   --bridge-mcast no ports (internal)
 #   --bridge-wan    reaches the internet (default virbr0, the libvirt NAT network)
 set -euo pipefail
 
@@ -23,7 +23,7 @@ seedtool="$here/../common/make-seed.py"
 resolver="$here/../common/resolve-image.py"
 
 action=deploy
-bridge_wan=virbr0 bridge_oob=br-oob bridge_t1=br-t1 bridge_t2=br-t2 bridge_lan220=br-lan220
+bridge_wan=virbr0 bridge_oob=br-oob bridge_t1=br-t1 bridge_t2=br-t2 bridge_mcast=br-mcast
 disk_dir=/var/lib/libvirt/images/lab201
 workdir=/var/tmp/lab201
 dry_run=0
@@ -44,7 +44,7 @@ Usage: $0 [options]
                            snapshot  takes the baseline snapshot of every machine (Lab 999.6)
                            restore   returns every machine to the baseline snapshot, running
   --ssh-key FILE         public key for the admin user (repeatable; needed for deploy)
-  --bridge-wan|oob|t1|t2|lan220 NAME   bridge for each lab network
+  --bridge-wan|oob|t1|t2|mcast NAME   bridge for each lab network
   --disk-dir DIR         where the machine disks go (default $disk_dir)
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (for rhel-10 flavors)
@@ -65,7 +65,7 @@ while [[ $# -gt 0 ]]; do
     --bridge-oob) bridge_oob="$2"; shift 2 ;;
     --bridge-t1) bridge_t1="$2"; shift 2 ;;
     --bridge-t2) bridge_t2="$2"; shift 2 ;;
-    --bridge-lan220) bridge_lan220="$2"; shift 2 ;;
+    --bridge-mcast) bridge_mcast="$2"; shift 2 ;;
     --disk-dir) disk_dir="$2"; shift 2 ;;
     --workdir) workdir="$2"; shift 2 ;;
     --rhel-image) rhel_image="$2"; shift 2 ;;
@@ -94,7 +94,7 @@ bridge_of() {
     lab201-oob) echo "$bridge_oob" ;;
     lab201-t1) echo "$bridge_t1" ;;
     lab201-t2) echo "$bridge_t2" ;;
-    lab201-lan220) echo "$bridge_lan220" ;;
+    lab201-mcast) echo "$bridge_mcast" ;;
     *) echo "No bridge for network $1" >&2; return 1 ;;
   esac
 }
@@ -204,7 +204,7 @@ if [[ "$action" == check ]]; then
     if plan_text="$(plan 2>&1)"; then ok "Manifest: $(grep -c . <<<"$plan_text") machines"
     else bad "The manifest cannot be built on KVM: $manifest" "$(tail -n 1 <<<"$plan_text")"; plan_text=""; fi
   fi
-  for br in "$bridge_wan" "$bridge_oob" "$bridge_t1" "$bridge_t2" "$bridge_lan220"; do
+  for br in "$bridge_wan" "$bridge_oob" "$bridge_t1" "$bridge_t2" "$bridge_mcast"; do
     if [[ -d "/sys/class/net/$br" ]]; then ok "Bridge $br"; else bad "Bridge $br does not exist" "Create it before the build (Chapter 14)"; fi
   done
   if [[ -n "$plan_text" ]]; then
@@ -346,7 +346,7 @@ need virt-install; need qemu-img
 [[ ${#ssh_keys[@]} -gt 0 ]] || { echo "--ssh-key is required for deploy." >&2; exit 2; }
 for key in "${ssh_keys[@]}"; do [[ -r "$key" ]] || { echo "Cannot read $key" >&2; exit 2; }; done
 if [[ "$dry_run" == 0 ]]; then
-  for br in "$bridge_wan" "$bridge_oob" "$bridge_t1" "$bridge_t2" "$bridge_lan220"; do
+  for br in "$bridge_wan" "$bridge_oob" "$bridge_t1" "$bridge_t2" "$bridge_mcast"; do
     [[ -d "/sys/class/net/$br" ]] || { echo "Bridge $br does not exist." >&2; exit 1; }
   done
 fi

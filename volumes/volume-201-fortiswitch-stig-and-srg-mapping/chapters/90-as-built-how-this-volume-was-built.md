@@ -197,7 +197,7 @@ files.
 
 On 2026-11-05 Chapter 08 added an optional OpenGear IM7216-2-DAC-LMV lab on
 firmware 5.5.3. It uses the existing address plans: the console server takes
-`.13` on segment 0, and one new lab segment, 100, carries its NET2 break-glass
+`.13` on segment 0, and one lab segment, 1, carries its NET2 break-glass
 network. The firmware facts come from Opengear's 5.5.3 release notes, and the service
 behavior (syslog, RADIUS, SNMP, NTP, DHCP, port logs) from the Console Server
 User Guide 5.3.1 (December 2025), the newest guide for the IM7200; hardware
@@ -262,7 +262,7 @@ The design choices that the five chapters share:
   (`fd00:db8:201::` plus the third and fourth octets in hexadecimal). The
   derived addresses were compared with the Chapter 999 host table: all 30
   addresses that table lists match, and the seven it does not list (the peer
-  link ends, the stub networks, and segment 220) follow the same rule.
+  link ends, the stub networks, and segment 12) follow the same rule.
 - **Fixed MAC addresses.** Every adapter has `00:50:56:2d:<machine>:<adapter>`, a
   range both VMware products accept for manual addresses, and the seed matches
   adapters by MAC address, so interface names never matter.
@@ -336,6 +336,26 @@ mixed configuration (a renamed Rocky gateway, five other flavors, a new address
 block, a changed VLAN, an edited address) and for VxRail were run through
 `make-seed.py` and gave valid seeds. Nothing has been built on a real host.
 
+The address plan of Chapter 999 was renumbered on 2026-11-19, and the IP
+addressing section of the Lab Builder was rebuilt around it. A segment number,
+its VLAN ID, and the third octet of its subnet are now one number, and the
+subnets are contiguous, so the whole lab fits `10.201.0.0/20`. The shared
+segments 10, 20, 30, 40, 41, 42, and 50 became 2 to 8. Console-OOB moved from
+100 to 1, the routed links from 200 to 9, the peer networks from 210 and 211 to
+10 and 11, the multicast source network from 220 to 12, VXLAN from 230 to 13,
+the loopbacks from 250 to 14, and FortiLink from 254 to 15. The routed links
+keep VLANs 2001 to 2005, and VLANs 60 and 99 keep their numbers and have no
+subnet. The network `lab201-lan220` became `lab201-mcast`, so the options
+`--bridge-lan220` and `-Lan220Vmnet` became `--bridge-mcast` and `-McastVmnet`.
+On the page, one Supernet field replaced the IPv4 block, the starting address,
+and the supernet, and a VLAN ID is the third octet of its subnet unless its
+Override box is ticked. A choices file saved before the change is read with the
+old segment numbers and moved to the new ones. The renumbered plan, and a lab
+that starts at `10.77.64.0` with one typed VLAN ID, were each built on Proxmox
+VE with three machines. The VLAN tags, the gateway's VLAN interfaces and
+firewall sets, and routed traffic between two VLANs were checked in the guests.
+The page's self-test runs 254 checks.
+
 Lessons from this work:
 
 - **Test the download code, not just its syntax.** `Invoke-WebRequest` returned
@@ -381,6 +401,14 @@ Lessons from this work:
   `/etc/raddb/certs/bootstrap` has made its test certificates. A check that reads
   `systemctl is-active` can mislead, since a unit that does not exist also prints
   `inactive`.
+- **After a renumbering, search every file for every old value.** The first pass
+  rewrote the chapters by pattern. It left the Chapter 08 diagram, a loopback
+  written as `10.201.250.<host>`, and interface names such as `lab201.10` and
+  `nic1v10` as they were, because none of them matched a pattern. A search of
+  the whole repository for each old subnet, VLAN ID, and interface name found
+  them. The walkthrough test of the Lab Builder now fails when a rewritten
+  chapter holds an address outside the subnets of the build, which would have
+  caught the loopback.
 
 ### The Word and PDF downloads
 

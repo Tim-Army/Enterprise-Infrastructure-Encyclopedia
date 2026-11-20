@@ -13,7 +13,7 @@
 
 The Layer 2 Switch SRG sets requirements for switches that forward frames inside a network: how endpoints are identified, how spanning tree and VLANs are protected, and how floods and spoofed traffic are contained. DISA publishes no FortiSwitch STIG, so a FortiSwitch is assessed against this SRG directly. Chapters 01 and 02 map each Layer 2 Switch requirement to a FortiSwitch feature and a command. This chapter turns those mappings into labs.
 
-Every lab runs on the lab network that [Chapter 999](999-shared-lab-infrastructure.md) defines: segments 40, 41, 42, and 50 for endpoints, segment 10 for the services, segment 30 for management, and the two switches `sw-648f-1` and `sw-2048f-1`. A lab names the hosts it uses, starts from the `baseline-201` snapshot, and returns to it.
+Every lab runs on the lab network that [Chapter 999](999-shared-lab-infrastructure.md) defines: segments 5, 6, 7, and 8 for endpoints, segment 2 for the services, segment 4 for management, and the two switches `sw-648f-1` and `sw-2048f-1`. A lab names the hosts it uses, starts from the `baseline-201` snapshot, and returns to it.
 
 The requirements fall into five groups. *Identification and access control* decides which endpoint may connect. *Spanning tree* keeps one device from taking over the Layer 2 topology. *Flood and spoof control* limits broadcast storms and forged DHCP, ARP, and IP traffic. *VLAN hygiene* keeps the default VLAN, untagged traffic, and trunks tidy. *Resilience and baseline* covers failing safely and running only what is needed.
 
@@ -46,13 +46,13 @@ A **requirement lab** configures the FortiSwitch setting, proves it with a posit
 
 ## Implementation and Automation
 
-Each lab lists its commands in the order to enter them. Commands come from the crosswalk workbook (Chapter 01's FortiSwitchOS 7.6.7 syntax) with the lab's values substituted: `<PORT_EP1>`, `<PORT_EP2>`, `<PORT_TRUNK>`, and `<PORT_UNUSED>` are the port names you wrote in your lab notes in Chapter 999, VLAN 40 is the user VLAN, VLAN 99 the native VLAN, VLAN 60 the unused VLAN, and VLAN 30 the management VLAN. Commands that begin with `FortiGate:` in the workbook are entered on `fgt-201`.
+Each lab lists its commands in the order to enter them. Commands come from the crosswalk workbook (Chapter 01's FortiSwitchOS 7.6.7 syntax) with the lab's values substituted: `<PORT_EP1>`, `<PORT_EP2>`, `<PORT_TRUNK>`, and `<PORT_UNUSED>` are the port names you wrote in your lab notes in Chapter 999, VLAN 5 is the user VLAN, VLAN 99 the native VLAN, VLAN 60 the unused VLAN, and VLAN 4 the management VLAN. Commands that begin with `FortiGate:` in the workbook are entered on `fgt-201`.
 
 Save the evidence for each lab in `evidence/<lab>/<date>/` on `admin-201`, as Chapter 999 describes.
 
 ## Validation and Troubleshooting
 
-Before each lab, confirm the baseline: `execute ping 10.201.10.10` from the switch, `get system status`, and `get system ntp`. After each lab, restore the baseline and re-run the first two checks.
+Before each lab, confirm the baseline: `execute ping 10.201.2.10` from the switch, `get system status`, and `get system ntp`. After each lab, restore the baseline and re-run the first two checks.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -102,7 +102,7 @@ Before each lab, confirm the baseline: `execute ping 10.201.10.10` from the swit
 | --- | --- | --- | --- | --- |
 | `SRG-NET-000148-L2S-000015` | I | Identify and authenticate every endpoint before it connects | Same requirement | FortiOS 7.6.7 CLI Reference p1269; FortiOS 7.6.7 CLI Reference p1317 |
 
-**Uses.** `sw-648f-1`, `radius-201a` and `radius-201b` (P1, P2), segments 40 (802.1X) and 41 (MAB), a laptop with a supplicant on `<PORT_EP1>` and a MAB device on `<PORT_EP2>`. Workbook prerequisites: P1, P2 (P1 Reachable RADIUS or TACACS+ servers; P2 User group that lists the authentication servers).
+**Uses.** `sw-648f-1`, `radius-201a` and `radius-201b` (P1, P2), segments 5 (802.1X) and 6 (MAB), a laptop with a supplicant on `<PORT_EP1>` and a MAB device on `<PORT_EP2>`. Workbook prerequisites: P1, P2 (P1 Reachable RADIUS or TACACS+ servers; P2 User group that lists the authentication servers).
 
 **Configure.**
 
@@ -125,7 +125,7 @@ Before each lab, confirm the baseline: `execute ping 10.201.10.10` from the swit
 
 2. In `radius-201a` and `radius-201b`, add the supplicant user and, for the MAB device, a user whose name and password are the device MAC address.
 
-**Positive test.** Connect the laptop. `diagnose switch 802-1x status` lists the port as authorized, the laptop gets a DHCP address in VLAN 40, and the FreeRADIUS log shows an Access-Accept. Connect the MAB device: it is authorized on its MAC address and lands in VLAN 41.
+**Positive test.** Connect the laptop. `diagnose switch 802-1x status` lists the port as authorized, the laptop gets a DHCP address in VLAN 5, and the FreeRADIUS log shows an Access-Accept. Connect the MAB device: it is authorized on its MAC address and lands in VLAN 6.
 
 **Negative test.** Connect a host that has no supplicant and whose MAC address is not in RADIUS. The port stays unauthorized, no DHCP address is issued, and the switch logs the failure. Repeat with a wrong password.
 
@@ -144,7 +144,7 @@ Before each lab, confirm the baseline: `execute ping 10.201.10.10` from the swit
 | `SRG-NET-000520-L2S-000105` | II | The layer 2 switch must dynamically associate security attributes with organization-defined objects in accordance with organization-defined security policies as information is created and combined. | feature row (no Cisco rule) | FortiOS 7.6.7 CLI Reference p1226; FortiOS 7.6.7 CLI Reference p2149 |
 | `SRG-NET-000715-L2S-000120` | II | The layer 2 switch must implement physically or logically separate subnetworks to isolate organization-defined critical system components and functions. | feature row (no Cisco rule) | FortiOS 7.6.7 CLI Reference p1234; FortiOS 7.6.7 CLI Reference p1335 |
 
-**Uses.** `fgt-201` (P7) on segment 254, `sw-648f-1` in FortiLink managed mode, `radius-201a`, and a test endpoint. This lab changes the switch from standalone to managed mode, so run it last and restore the standalone baseline afterward.
+**Uses.** `fgt-201` (P7) on segment 15, `sw-648f-1` in FortiLink managed mode, `radius-201a`, and a test endpoint. This lab changes the switch from standalone to managed mode, so run it last and restore the standalone baseline afterward.
 
 Managed-mode commands run on the FortiGate, not on the switch. The workbook rows for these requirements are feature rows, so the steps below apply the FortiGate objects they name. Features that need FortiClient EMS, FortiVoice, or an IoT/OT feed are tested only if you have that product; otherwise record the row as covered by procedure.
 
@@ -190,7 +190,7 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
    end
    ```
 
-**Positive test.** Plug in an endpoint that matches the NAC policy. It lands in the policy's VLAN. Add its MAC address to quarantine: it moves to the quarantine VLAN and loses access to segment 10.
+**Positive test.** Plug in an endpoint that matches the NAC policy. It lands in the policy's VLAN. Add its MAC address to quarantine: it moves to the quarantine VLAN and loses access to segment 2.
 
 **Negative test.** Plug in an endpoint that matches no policy and is not authenticated. It stays in the default (no-access) state. Try to reach another host in the same isolated VLAN: the traffic is dropped.
 
@@ -347,7 +347,7 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
 | `SRG-NET-000362-L2S-000027` | II | Enable Dynamic ARP Inspection on all user VLANs | Same requirement | FortiSwitchOS 7.6.7 CLI Reference p185; FortiSwitchOS 7.6.7 CLI Reference p185, 126 |
 | `SRG-NET-000362-L2S-000026` | II | Enable IP Source Guard on user-facing and untrusted ports | Same requirement | FortiSwitch-7.6.0-Feature-Matrix.pdf p5; FortiSwitchOS 7.6.7 CLI Reference p115 |
 
-**Uses.** `sw-2048f-1` for dynamic ARP inspection (the FS-648F-FPOE does not support it; check the Model Support sheet before you pick a switch for IP source guard), `dhcp-201` as the trusted server, `static-1` and `static-2` on segment 42 (P14), and `attacker-201` as a rogue DHCP server and ARP spoofer. Workbook prerequisites: P9, P12, P13, P14 (P9 A switch model series that supports the feature; P12 DHCP snooping enabled on the VLAN; P13 The user; P14 IP-to-MAC binding entries for statically addressed hosts).
+**Uses.** `sw-2048f-1` for dynamic ARP inspection (the FS-648F-FPOE does not support it; check the Model Support sheet before you pick a switch for IP source guard), `dhcp-201` as the trusted server, `static-1` and `static-2` on segment 7 (P14), and `attacker-201` as a rogue DHCP server and ARP spoofer. Workbook prerequisites: P9, P12, P13, P14 (P9 A switch model series that supports the feature; P12 DHCP snooping enabled on the VLAN; P13 The user; P14 IP-to-MAC binding entries for statically addressed hosts).
 
 **Configure.**
 
@@ -386,7 +386,7 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
    end
    ```
 
-**Positive test.** A normal host receives a lease from `dhcp-201`, and `get switch dhcp-snooping` shows the binding. `static-1` pings `10.201.42.1` with its bound address and MAC.
+**Positive test.** A normal host receives a lease from `dhcp-201`, and `get switch dhcp-snooping` shows the binding. `static-1` pings `10.201.7.1` with its bound address and MAC.
 
 **Negative test.** Start a rogue DHCP server on `attacker-201`: its offers are dropped on the untrusted port and no client receives them. Send a forged ARP reply claiming the gateway's address: the frame is dropped and a log line is written. Change `static-1`'s address to one with no binding: its traffic is dropped.
 
@@ -413,12 +413,12 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
 
 **Configure.**
 
-1. Make the host port an access port: native VLAN 40 and discard tagged frames.
+1. Make the host port an access port: native VLAN 5 and discard tagged frames.
 
    ```text
    config switch interface
        edit <PORT_EP1>
-           set native-vlan 40
+           set native-vlan 5
            set discard-mode all-tagged
    end
    ```
@@ -455,22 +455,22 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
    end
    ```
 
-5. Put the management SVI on VLAN 30.
+5. Put the management SVI on VLAN 4.
 
    ```text
    config system interface
        edit mgmt-svi
-           set vlanid 30
-           set ip 10.201.30.11 <MASK>
+           set vlanid 4
+           set ip 10.201.4.11 <MASK>
            set allowaccess https ssh
    end
    ```
 
-**Positive test.** `get switch interface` shows host ports untagged in VLAN 40, trunks tagged only for VLANs 10, 20, 30, 40, 41, 42, and 50 with native 99, and unused ports down in VLAN 60. SSH to `10.201.30.11` works from `admin-201`.
+**Positive test.** `get switch interface` shows host ports untagged in VLAN 5, trunks tagged only for VLANs 2, 3, 4, 5, 6, 7, and 8 with native 99, and unused ports down in VLAN 60. SSH to `10.201.4.11` works from `admin-201`.
 
-**Negative test.** From `attacker-201`, send a frame tagged with VLAN 30 into the host port: it is discarded. Send a double-tagged frame (outer 99, inner 30): it does not reach segment 30. Plug a host into an unused port: the link stays down.
+**Negative test.** From `attacker-201`, send a frame tagged with VLAN 4 into the host port: it is discarded. Send a double-tagged frame (outer 99, inner 4): it does not reach segment 4. Plug a host into an unused port: the link stays down.
 
-**Evidence.** The port configuration, the capture on the VLAN 30 host showing no tagged-frame leak, and the unused-port status.
+**Evidence.** The port configuration, the capture on the VLAN 4 host showing no tagged-frame leak, and the unused-port status.
 
 **Return to baseline.** Restore the `baseline-201` snapshots and configuration (Lab 999.6).
 

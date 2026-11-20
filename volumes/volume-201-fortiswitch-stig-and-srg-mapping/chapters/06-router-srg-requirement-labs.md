@@ -53,13 +53,13 @@ A **requirement lab** configures the FortiSwitch setting, proves it with a posit
 
 ## Implementation and Automation
 
-Each lab lists commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with lab values substituted: loopbacks `10.201.250.<host>/32`, peer links L1 to L5 from Chapter 999, and AS numbers 65201 to 65203. Where the workbook row reads "See ... Worksheet", the lab says to use the worksheet's ACL or interface rows for that ID.
+Each lab lists commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with lab values substituted: loopbacks `10.201.14.<host>/32`, peer links L1 to L5 from Chapter 999, and AS numbers 65201 to 65203. Where the workbook row reads "See ... Worksheet", the lab says to use the worksheet's ACL or interface rows for that ID.
 
 On the peers, use FRR (`vtysh`) or a FortiGate-VM to announce test prefixes. Save evidence in `evidence/<lab>/<date>/` on `admin-201`.
 
 ## Validation and Troubleshooting
 
-Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the same for the others. After each lab, remove the routing configuration and restore the baseline.
+Before each lab, confirm the links: `execute ping 10.201.9.1` for L1 and the same for the others. After each lab, remove the routing configuration and restore the baseline.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -205,7 +205,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 | `SRG-NET-000076-RTR-000001` | II | Record where each dropped-packet event occurred | Partial | FortiSwitchOS 7.6.7 CLI Reference p105 |
 | `SRG-NET-000077-RTR-000001` | II | Record the source of each dropped-packet event | Partial | FortiSwitchOS 7.6.7 CLI Reference p105 |
 
-**Uses.** `sw-648f-1`, a sender on segment 42 (`attacker-201`), a destination on segment 10, `syslog-201a`.
+**Uses.** `sw-648f-1`, a sender on segment 7 (`attacker-201`), a destination on segment 2, `syslog-201a`.
 
 **Configure.**
 
@@ -265,7 +265,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 | `SRG-NET-000512-RTR-000014` | II | Perimeter: suppress IPv6 router advertisements on external interfaces | Same requirement | FortiSwitchOS 7.6.7 CLI Reference p171; FortiSwitchOS 7.6.7 CLI Reference p243 |
 | `SRG-NET-000205-RTR-000012` | II | Permit management traffic only through the out-of-band management interface | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p244 |
 
-**Uses.** `sw-2048f-1` with L3 to `rtr-peer-2` as the external side (uRPF is not supported on the FS-648F-FPOE), `attacker-201` on segment 42, `admin-201`. Workbook prerequisites: P9, P10 (P9 A switch model series that supports the feature; P10 A management interface with an address: the management port or a management SVI on a dedicated VLAN).
+**Uses.** `sw-2048f-1` with L3 to `rtr-peer-2` as the external side (uRPF is not supported on the FS-648F-FPOE), `attacker-201` on segment 7, `admin-201`. Workbook prerequisites: P9, P10 (P9 A switch model series that supports the feature; P10 A management interface with an address: the management port or a management SVI on a dedicated VLAN).
 
 **Configure.**
 
@@ -369,9 +369,9 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 
 8. For the rows that read "See ... Worksheet" in the workbook (outbound management, IPv6 router advertisements, and management only on the out-of-band interface), apply the ACL or interface setting named in the workbook's worksheet rows for those IDs and confirm with the tests below.
 
-**Positive test.** An authorized flow from the external peer to a segment 10 service passes. SSH to the management SVI works only from `admin-201` over segment 30 or the out-of-band port.
+**Positive test.** An authorized flow from the external peer to a segment 2 service passes. SSH to the management SVI works only from `admin-201` over segment 4 or the out-of-band port.
 
-**Negative test.** From `rtr-peer-2`, send packets with source addresses `10.0.0.1`, `192.168.1.1`, and `127.0.0.1`: each is dropped. From `attacker-201`, send a packet with a spoofed source outside segment 42: the source check drops it. Try SSH to the switch from the external side and from a user VLAN: refused. Try a management connection leaving the switch toward the external side: blocked. Capture on the external link: no IPv6 router advertisements leave.
+**Negative test.** From `rtr-peer-2`, send packets with source addresses `10.0.0.1`, `192.168.1.1`, and `127.0.0.1`: each is dropped. From `attacker-201`, send a packet with a spoofed source outside segment 7: the source check drops it. Try SSH to the switch from the external side and from a user VLAN: refused. Try a management connection leaving the switch toward the external side: blocked. Capture on the external link: no IPv6 router advertisements leave.
 
 **Evidence.** The ACL and interface configuration, counters for each dropped class, and the captures.
 
@@ -457,7 +457,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
    end
    ```
 
-2. Configure the VRRP group with its authentication-related settings on the segment 30 interface.
+2. Configure the VRRP group with its authentication-related settings on the segment 4 interface.
 
    ```text
    config system interface
@@ -646,7 +646,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
    end
    ```
 
-11. On the peers (FRR), announce the test prefixes: a bogon (`192.168.99.0/24`), the switch's own prefix, an unallocated prefix, a /25, and enough prefixes to exceed the maximum. For example on `rtr-peer-1`: `router bgp 65202`, `neighbor 10.201.200.0 remote-as 65201`, `address-family ipv4 unicast`, `network 192.168.99.0/24`.
+11. On the peers (FRR), announce the test prefixes: a bogon (`192.168.99.0/24`), the switch's own prefix, an unallocated prefix, a /25, and enough prefixes to exceed the maximum. For example on `rtr-peer-1`: `router bgp 65202`, `neighbor 10.201.9.0 remote-as 65201`, `address-family ipv4 unicast`, `network 192.168.99.0/24`.
 
 **Positive test.** The eBGP session comes up with the same key on both ends, and `get router info bgp summary` shows Established. Allowed customer prefixes are installed. Only customer and local prefixes are advertised to the peer.
 
@@ -699,7 +699,7 @@ Before each lab, confirm the links: `execute ping 10.201.200.1` for L1 and the s
 | `SRG-NET-000019-RTR-000004` | II | Multicast: bind a PIM neighbor filter to PIM interfaces | Partial | FortiSwitchOS 7.6.7 CLI Reference p67 |
 | `SRG-NET-000019-RTR-000005` | III | Multicast edge: set boundaries for administratively scoped multicast | Partial | FortiSwitchOS 7.6.7 CLI Reference p104 |
 
-**Uses.** `sw-648f-1`, `rtr-peer-1`, `mcast-src-201` on segment 220, and a receiver. PIM-SSM only; the Advanced Features License (P8). Workbook prerequisites: P8, P9 (P8 FortiSwitch Advanced Features license; P9 A switch model series that supports the feature).
+**Uses.** `sw-648f-1`, `rtr-peer-1`, `mcast-src-201` on segment 12, and a receiver. PIM-SSM only; the Advanced Features License (P8). Workbook prerequisites: P8, P9 (P8 FortiSwitch Advanced Features license; P9 A switch model series that supports the feature).
 
 **Configure.**
 
@@ -763,7 +763,7 @@ Lifetimes are partial on FortiSwitchOS: key chains with send and accept lifetime
 
 **Configure.**
 
-1. Authenticate OSPF with MD5 on L5 (`10.201.200.8/31` to `10.201.200.9/31`).
+1. Authenticate OSPF with MD5 on L5 (`10.201.9.8/31` to `10.201.9.9/31`).
 
    ```text
    config router ospf
@@ -787,7 +787,7 @@ Lifetimes are partial on FortiSwitchOS: key chains with send and accept lifetime
    config router bgp
        set as 65201
        config neighbor
-           edit 10.201.200.1
+           edit 10.201.9.1
                set remote-as 65202
                set password <KEY_2>
            next
@@ -852,7 +852,7 @@ The fragmented-ICMP check drops all ICMP fragments on models that support it, no
 
 **Positive test.** `get system flan-cloud-mgr connection-info` shows no connection and `get system flan-cloud` shows the setting disabled, and a 10-minute capture on the switch's uplink at `gw-201` shows no connection to a vendor address.
 
-**Negative test.** Enable the cloud setting briefly: the capture shows the connection attempt, which proves the capture would have seen a call home. Turn it off again. From `attacker-201`, `hping3 --icmp -f 10.201.30.11 -c 50`: the switch drops the fragments and its counter rises, then disable the check and confirm the fragments arrive.
+**Negative test.** Enable the cloud setting briefly: the capture shows the connection attempt, which proves the capture would have seen a call home. Turn it off again. From `attacker-201`, `hping3 --icmp -f 10.201.4.11 -c 50`: the switch drops the fragments and its counter rises, then disable the check and confirm the fragments arrive.
 
 **Evidence.** The cloud setting, both captures, and the drop counters with the check on and off.
 
@@ -916,7 +916,7 @@ The fragmented-ICMP check drops all ICMP fragments on models that support it, no
 | `SRG-NET-000364-RTR-000205` | II | Perimeter: drop IPv6 Destination Option headers with the NSAP address option | Not supported | FortiOS-7.6.7-CLI_Reference.pdf p515 |
 | `SRG-NET-000364-RTR-000206` | II | Perimeter: drop IPv6 Hop-by-Hop or Destination Option headers with undefined option types | Not supported | FortiOS-7.6.7-CLI_Reference.pdf p515 |
 
-**Uses.** `sw-2048f-1`, a Linux host with `scapy` on segment 42 and a receiver on segment 10.
+**Uses.** `sw-2048f-1`, a Linux host with `scapy` on segment 7 and a receiver on segment 2.
 
 **Configure.**
 

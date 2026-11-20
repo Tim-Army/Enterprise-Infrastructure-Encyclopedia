@@ -14,7 +14,7 @@
     -BridgeVmnet  the one bridged network (vmnet0 by default), bridged to the NIC
                   that cables to the switches. The trunk and the out-of-band
                   network both use it, because Workstation supports one bridge.
-    -Lan220Vmnet  host-only, with the DHCP service turned off
+    -McastVmnet  host-only, with the DHCP service turned off
   -WanVmnet is the network the build NICs use (vmnet8, the NAT network, by default).
 
   Needs PowerShell 5.1 or 7, Workstation Pro 17 or later, and Python 3 with
@@ -52,7 +52,7 @@ param(
   [string] $WorkDir,
   [string] $WorkstationDir,
   [ValidatePattern('^vmnet\d+$')] [string] $BridgeVmnet = 'vmnet0',
-  [ValidatePattern('^vmnet\d+$')] [string] $Lan220Vmnet = 'vmnet5',
+  [ValidatePattern('^vmnet\d+$')] [string] $McastVmnet = 'vmnet5',
   [ValidatePattern('^vmnet\d+$')] [string] $WanVmnet = 'vmnet8',
   [string] $OvfToolPath,
   [string] $LicenseFile,
@@ -199,7 +199,7 @@ if ($Action -eq 'Check') {
     }
   }
 
-  foreach ($net in @(@($WanVmnet, 'build network (NAT)'), @($Lan220Vmnet, 'segment 220 network (host-only)'))) {
+  foreach ($net in @(@($WanVmnet, 'build network (NAT)'), @($McastVmnet, 'segment 12 network (host-only)'))) {
     $adapter = Get-NetAdapter -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq "VMware Network Adapter $($net[0].Replace('vmnet', 'VMnet'))" }
     if ($adapter) { Show-Check 'OK' "$($net[0]), the $($net[1])" }
     else { Show-Check 'WARN' "$($net[0]), the $($net[1]), has no host adapter" 'Create it in the Virtual Network Editor (Chapter 11)' }
@@ -228,7 +228,7 @@ $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
 $uplinkVm = if ($lab.PSObject.Properties['uplink'] -and $lab.uplink.vm) { [string]$lab.uplink.vm } else { '' }
 $names = @{}; $i = 0
 foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
-$vmnetOf = @{ 'lab201-t1' = $BridgeVmnet; 'lab201-t2' = $BridgeVmnet; 'lab201-oob' = $BridgeVmnet; 'lab201-lan220' = $Lan220Vmnet; 'lab201-wan' = $WanVmnet }
+$vmnetOf = @{ 'lab201-t1' = $BridgeVmnet; 'lab201-t2' = $BridgeVmnet; 'lab201-oob' = $BridgeVmnet; 'lab201-mcast' = $McastVmnet; 'lab201-wan' = $WanVmnet }
 # Workstation supports one bridged network. With T1 and T2 on it, the gateway would bridge the two NICs into a loop.
 if (@($lab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
   throw "The manifest has a second trunk (lab201-t2), but Workstation supports one bridged network. Generate the manifest with the Lab Builder for Workstation, which merges T1 and T2 into one trunk."

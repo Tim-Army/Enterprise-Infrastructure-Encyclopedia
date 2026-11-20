@@ -40,10 +40,10 @@ LAB_HEADING = re.compile(r"^### Lab (\d+\.\d+) — (.+?)\s*$")
 SRG_ROW = re.compile(r"^\| `(SRG-[A-Z]+-\d{6}-[A-Z0-9]+-\d{6})` \| (I{1,3}) \| (.*?) \|")
 # A row of the Hosts table in Chapter 999 that puts a service name on a machine: | radius-201a | RADIUS server 1 on svc-201a | ...
 HOST_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| [^|]*? on ([a-z][a-z0-9-]*) \|")
-# The same kind of row, with the IPv4 address of the service name: ... | P1, P2 | 10 | `10.201.10.10` | ...
+# The same kind of row, with the IPv4 address of the service name: ... | P1, P2 | 2 | `10.201.2.10` | ...
 SERVICE_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| ([^|]*?) on ([a-z][a-z0-9-]*) \| [^|]* \| [^|]* \| `(\d+\.\d+\.\d+\.\d+)` \|")
-# A row of the Segments table in Chapter 999: | 10 | 10 | Lab-Services | `10.201.10.0/24` | `fd00:db8:201::a00/120` | .1 gw-201 | Purpose |
-NETWORK_ROW = re.compile(r"^\| (\d+) \| ([^|]*?) \| ([A-Za-z0-9-]+) \| `\d+\.\d+\.(\d+)\.0/24` \| `[^`]*` \| ([^|]*?) \| ([^|]*?) \|\s*$")
+# A row of the Segments table in Chapter 999: | 2 | 2 | Lab-Services | `10.201.2.0/24` | `fd00:db8:201::200/120` | .1 gw-201 | Purpose |
+NETWORK_ROW = re.compile(r"^\| (\d+) \| ([^|]*?) \| ([A-Za-z0-9-]+) \| (?:`\d+\.\d+\.(\d+)\.0/24`|none) \| (?:`[^`]*`|none) \| ([^|]*?) \| ([^|]*?) \|\s*$")
 # A row of the Hosts table with an IPv4 address. The host name is empty on a row that continues the host above it.
 HOST_ADDR_ROW = re.compile(r"^\|\s*([a-z][a-z0-9-]*)?\s*\|[^|]*\|[^|]*\|[^|]*\|\s*`\d+\.\d+\.(\d+)\.\d+`\s*\|")
 TOKEN = re.compile(r"`([a-z][a-z0-9-]*)`")
@@ -102,7 +102,11 @@ def load_networks():
             m = NETWORK_ROW.match(line)
             if not m:
                 continue
-            number, vlan, name, octet, gateway, purpose = (part.strip() for part in m.groups())
+            number, vlan, name, octet, gateway, purpose = ((part or "").strip() for part in m.groups())
+            if not octet:
+                # A VLAN with no hosts and no gateway (the parking VLAN and the native VLAN) has no subnet.
+                networks.append({"id": int(number), "name": name, "vlan": vlan, "hosts": False})
+                continue
             if int(octet) != int(number):
                 WARNINGS.append("Segment %s of Chapter 999 has the subnet with third octet %s, so the Lab Builder cannot number it" % (number, octet))
                 continue

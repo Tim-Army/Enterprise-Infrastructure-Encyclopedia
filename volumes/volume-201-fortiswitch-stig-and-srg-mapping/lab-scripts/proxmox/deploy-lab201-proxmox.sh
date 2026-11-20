@@ -13,7 +13,7 @@
 #   --bridge-t2   VLAN-aware, with the NIC that cables to sw-2048f-1 as its port
 #   --bridge-oob  with the NIC that cables to the switch management ports
 #   --bridge-wan  the bridge that reaches the internet (often vmbr0)
-#   --bridge-lan220  no ports (internal)
+#   --bridge-mcast  no ports (internal)
 #
 # A machine is known by its VM ID and its name together. When a VM ID holds a
 # machine with another name, every action leaves it alone and says so.
@@ -26,7 +26,7 @@ seedtool="$here/../common/make-seed.py"
 action=deploy
 storage=local-lvm
 snip_storage=local
-bridge_wan=vmbr0 bridge_oob=vmbr1 bridge_t1=vmbr2 bridge_t2=vmbr3 bridge_lan220=vmbr4
+bridge_wan=vmbr0 bridge_oob=vmbr1 bridge_t1=vmbr2 bridge_t2=vmbr3 bridge_mcast=vmbr4
 vmid_base=20100
 workdir=/var/tmp/lab201
 dry_run=0
@@ -52,7 +52,7 @@ Usage: $0 [options]
   --ssh-key FILE         public key for the admin user (repeatable; needed for deploy)
   --storage NAME         storage for disks and cloud-init drives (default $storage)
   --snippets-storage NAME  storage with the "snippets" content type (default $snip_storage)
-  --bridge-wan|oob|t1|t2|lan220 NAME   bridge for each lab network
+  --bridge-wan|oob|t1|t2|mcast NAME   bridge for each lab network
   --vmid-base N          first VM ID; the first machine (the gateway in the default manifest) gets N+1 (default $vmid_base)
   --workdir DIR          download and render directory (default $workdir)
   --rhel-image FILE      the Red Hat Enterprise Linux 10 qcow2 image you downloaded (needed for rhel-10 flavors)
@@ -80,7 +80,7 @@ while [[ $# -gt 0 ]]; do
     --bridge-oob) bridge_oob="$2"; shift 2 ;;
     --bridge-t1) bridge_t1="$2"; shift 2 ;;
     --bridge-t2) bridge_t2="$2"; shift 2 ;;
-    --bridge-lan220) bridge_lan220="$2"; shift 2 ;;
+    --bridge-mcast) bridge_mcast="$2"; shift 2 ;;
     --vmid-base) vmid_base="$2"; shift 2 ;;
     --workdir) workdir="$2"; shift 2 ;;
     --rhel-image) rhel_image="$2"; shift 2 ;;
@@ -113,7 +113,7 @@ bridge_of() {
     lab201-oob) echo "$bridge_oob" ;;
     lab201-t1) echo "$bridge_t1" ;;
     lab201-t2) echo "$bridge_t2" ;;
-    lab201-lan220) echo "$bridge_lan220" ;;
+    lab201-mcast) echo "$bridge_mcast" ;;
     *) echo "No bridge for network $1" >&2; return 1 ;;
   esac
 }
@@ -271,7 +271,7 @@ if [[ "$action" == check ]]; then
     elif [[ "$(cat "/sys/class/net/$br/bridge/vlan_filtering" 2>/dev/null || echo 0)" != 1 ]]; then bad "Bridge $br is not VLAN-aware" "Add 'bridge-vlan-aware yes' to it in /etc/network/interfaces"
     else ok "Bridge $br (trunk, VLAN-aware)"; fi
   done
-  for br in "$bridge_wan" "$bridge_oob" "$bridge_lan220"; do
+  for br in "$bridge_wan" "$bridge_oob" "$bridge_mcast"; do
     if [[ -d "/sys/class/net/$br" ]]; then ok "Bridge $br"; else bad "Bridge $br does not exist" "Create it in the node's network configuration"; fi
   done
   if [[ -n "$plan_text" ]]; then
@@ -468,7 +468,7 @@ for br in "$bridge_t1" "$bridge_t2"; do
   [[ "$(cat "/sys/class/net/$br/bridge/vlan_filtering" 2>/dev/null || echo 0)" == 1 ]] ||
     { echo "Bridge $br is not VLAN-aware. Add 'bridge-vlan-aware yes' to it in /etc/network/interfaces." >&2; exit 1; }
 done
-for br in "$bridge_wan" "$bridge_oob" "$bridge_lan220"; do
+for br in "$bridge_wan" "$bridge_oob" "$bridge_mcast"; do
   [[ -d "/sys/class/net/$br" ]] || { echo "Bridge $br does not exist." >&2; exit 1; }
 done
 snip_dir="$(pvesm path "$snip_storage:snippets/probe" 2>/dev/null | sed 's#/probe$##')" || true

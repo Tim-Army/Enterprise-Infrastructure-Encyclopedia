@@ -8,7 +8,7 @@ the SRG and STIG terms this volume builds on.
 - **/112 lab block** — the IPv6 prefix `fd00:db8:201::/112` that holds the lab's IPv6 addresses; its last 16 bits are the segment and host, so it splits into /120 segments and cannot support SLAAC.
 - **Advanced Features License** — the Fortinet license (FS-SW-LIC-600 for the FS-648F-FPOE, FS-SW-LIC-2000 for the FS-2048F) that enables Layer 3 features such as OSPF and BGP on a FortiSwitch; rows that need it list it as a prerequisite.
 - **Baseline snapshot** — the saved state of every lab virtual machine and of both switch configurations that each requirement lab starts from and returns to.
-- **Break-glass access** — a path to a device that does not depend on the production network, used when the normal management path is lost; in this lab, NET2 of the console server on segment 100.
+- **Break-glass access** — a path to a device that does not depend on the production network, used when the normal management path is lost; in this lab, NET2 of the console server on segment 1.
 - **Build adapter** — the extra network adapter on `lab201-wan` that every lab machine has during the build, so cloud-init can install packages; it is removed afterwards.
 - **Cloud-init (NoCloud)** — the first-boot configuration tool in cloud images; the NoCloud source reads `user-data`, `meta-data`, and `network-config` from a CD-ROM labeled `cidata`, or from files a hypervisor supplies.
 - **Console server** — a device that connects to the serial console ports of other devices and offers them over the network, usually through SSH; the OpenGear IM7216-2-DAC-LMV in Chapter 08 is one.

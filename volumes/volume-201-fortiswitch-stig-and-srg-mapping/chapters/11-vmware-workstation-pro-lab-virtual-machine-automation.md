@@ -14,7 +14,7 @@
 
 The twelve machines, their addresses, and their cloud-init seeds are the same as in [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md). Read the machine table and the seed description there. Workstation differs in three ways.
 
-1. **No VLAN-aware switch.** An ESXi port group, a Proxmox VLAN-aware bridge, and a vSphere distributed port group all add and remove VLAN tags for a machine. A Workstation virtual network (a *vmnet*) is a plain Layer 2 switch with no VLAN setting. The **guests** therefore create the VLAN interfaces themselves. The script renders the seeds with `--tagging guest`, so `svc-201a`'s adapter on trunk T1 gets a netplan VLAN interface (`nic1v10`) for VLAN 10, and the adapter itself carries tagged frames.
+1. **No VLAN-aware switch.** An ESXi port group, a Proxmox VLAN-aware bridge, and a vSphere distributed port group all add and remove VLAN tags for a machine. A Workstation virtual network (a *vmnet*) is a plain Layer 2 switch with no VLAN setting. The **guests** therefore create the VLAN interfaces themselves. The script renders the seeds with `--tagging guest`, so `svc-201a`'s adapter on trunk T1 gets a netplan VLAN interface (`nic1v2`) for VLAN 2, and the adapter itself carries tagged frames.
 2. **Bridged networks reach the cable.** A vmnet bridged to a physical Windows adapter connects the machines to that adapter's cable. Workstation supports one bridged network, so the lab uses one: the trunk and the out-of-band network share it, and trunks T1 and T2 become a single trunk. The gateway then has one trunk adapter. Two trunk adapters on one bridged network would make the gateway bridge them into a loop.
 3. **The tool is `vmrun`.** Workstation has no PowerCLI. The script drives `vmrun.exe` (clone, start, stop), `ovftool.exe` (import the OVA), and `vmware-vdiskmanager.exe` (grow a disk), and edits each machine's `.vmx` file as text.
 
@@ -25,10 +25,10 @@ Create these in the Virtual Network Editor (Edit, Virtual Network Editor, then *
 | Lab network | Default vmnet | Type | Connects to |
 | --- | --- | --- | --- |
 | `lab201-t1` (the one trunk) and `lab201-oob` (segment 0) | `vmnet0` | Bridged to one Windows adapter | A switch port that carries the lab VLANs as tags and the out-of-band network untagged, and reaches both switches |
-| `lab201-lan220` (segment 220) | `vmnet5` | Host-only, DHCP off | No cable |
+| `lab201-mcast` (segment 12) | `vmnet5` | Host-only, DHCP off | No cable |
 | `lab201-wan` (build) | `vmnet8` | NAT (the default NAT network) | The internet, through the host |
 
-`vmnet0` is the automatic bridge to the host's primary adapter. The script treats `vmnet8` as NAT, `vmnet0` as automatic bridging, and every other name as a custom vmnet. You can pass different names with `-BridgeVmnet`, `-Lan220Vmnet`, and `-WanVmnet`. The script stops if the manifest still has a second trunk (`lab201-t2`), so generate the manifest with the Lab Builder for Workstation, which merges T1 and T2.
+`vmnet0` is the automatic bridge to the host's primary adapter. The script treats `vmnet8` as NAT, `vmnet0` as automatic bridging, and every other name as a custom vmnet. You can pass different names with `-BridgeVmnet`, `-McastVmnet`, and `-WanVmnet`. The script stops if the manifest still has a second trunk (`lab201-t2`), so generate the manifest with the Lab Builder for Workstation, which merges T1 and T2.
 
 ### A caution about VLAN tags on Windows
 
@@ -64,7 +64,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | --- | --- |
 | `-VmRoot` | Folder for the machines. Without it, the script uses a `lab201` folder inside Workstation's default folder for virtual machines (the one set in Preferences, or `Documents\Virtual Machines`) and prints the path. |
 | `-SshKeyFile` | Public key files for `labadmin`. |
-| `-BridgeVmnet`, `-Lan220Vmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 220, and the build vmnet. |
+| `-BridgeVmnet`, `-McastVmnet`, `-WanVmnet` | The bridged vmnet (trunk and out-of-band), the host-only vmnet for segment 12, and the build vmnet. |
 | `-WorkstationDir`, `-OvfToolPath` | Install locations, if not the defaults. |
 | `-FlavorImages`, `-LicenseFile` | OVA paths for Linux flavors that publish none, and the license file for Red Hat and Ubuntu Pro keys (Chapter 09). The script imports one base machine for each flavor in use. The ISO-based flavors (Windows, Linux Mint, Tiny Core) are not available here, because Workstation has no VLAN-aware switch and those guests cannot tag the trunks. |
 | `-Action` | `Deploy` (default), `Check`, `Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, or `Remove`. `Check` changes nothing: it tests Python and `pycdlib`, the SSH key, the Workstation tools, the manifest, memory, disk space, and the networks, and says how to fix what is missing. `Status` lists each machine, its state, whether its first boot has finished, and the `ssh` line that logs in to it. `Snapshot` takes the baseline snapshot of every machine, and refuses while a machine still has its build adapter (adapter 0). `Restore` returns every machine to that snapshot and starts it. |
@@ -81,7 +81,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 | Machines exist and run | `.\Deploy-Lab201-Workstation.ps1 -Action Status` | Twelve machines, `running` |
 | The first boot finished | The same command with `-Wait` | `ok` in the Build column of every machine. `failed` names a missing package or a lab service that does not run |
 | Cloud-init finished | On a machine: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
-| Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v10` | A VLAN interface with `id 10` |
+| Guest-tagged interfaces | On `svc-201a`: `ip -d link show nic1v2` | A VLAN interface with `id 2` |
 | Addresses | `ip -br addr` | The Chapter 999 addresses, both families |
 | Tags reach the cable | On `gw-201`: `sudo tcpdump -e -n -i nic2 vlan` while a switch sends traffic | Frames with `vlan` tags |
 
@@ -117,7 +117,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 
 **Knowledge checks:**
 
-1. Why can Workstation not give `svc-201a` an untagged adapter on VLAN 10 the way ESXi does?
+1. Why can Workstation not give `svc-201a` an untagged adapter on VLAN 2 the way ESXi does?
 2. Which `make-seed.py` option changes where the VLAN tag is applied, and what does it add to a machine's netplan?
 3. What does a custom bridged vmnet need before it connects a machine to a switch?
 4. A trunk shows no tagged frames in `tcpdump`. List two places the tags could be lost.

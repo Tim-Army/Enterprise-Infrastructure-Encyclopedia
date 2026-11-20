@@ -33,7 +33,7 @@ Proxmox puts VMs on Linux bridges defined in `/etc/network/interfaces`. The scri
 | Trunk T2 | `vmbr3` | The NIC that cables to `sw-2048f-1` | Yes | `gw-201`'s second trunk and the T2 links of the peers |
 | Out-of-band | `vmbr1` | The NIC that cables to the switch management ports | No | Segment 0 |
 | WAN (build) | `vmbr0` | Your existing uplink | As is | The build adapters and the gateway's uplink |
-| Segment 220 | `vmbr4` | None | No | Internal link between `rtr-peer-1` and `mcast-src-201` |
+| Segment 12 | `vmbr4` | None | No | Internal link between `rtr-peer-1` and `mcast-src-201` |
 
 An example for the two trunk bridges and the internal bridge, in `/etc/network/interfaces` (replace the NIC names):
 
@@ -117,7 +117,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `--wait`, `--wait-minutes N` | With `--action status`: keep checking until every machine reports that its first boot has finished, for at most N minutes (30 by default). |
 | `--snapshot-name NAME` | The snapshot that `snapshot` and `restore` use (default `baseline-201`). |
 | `--storage`, `--snippets-storage` | Storage for disks and storage for snippets. |
-| `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-lan220` | The bridge for each network. |
+| `--bridge-wan`, `--bridge-oob`, `--bridge-t1`, `--bridge-t2`, `--bridge-mcast` | The bridge for each network. |
 | `--vmid-base` | The ID offset (default 20100). |
 | `--workdir` | Where the images and the rendered seeds go (default `/var/tmp/lab201`). |
 | `--rhel-image FILE` | The Red Hat Enterprise Linux 10 qcow2 image, needed for the `rhel-10` flavors. |
@@ -184,7 +184,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 
 ### Lab 12.1: Create the bridges
 
-1. Add the bridge blocks above for T1, T2, out-of-band, and segment 220, using your NIC names, to `/etc/network/interfaces`, and run `ifreload -a` from the console.
+1. Add the bridge blocks above for T1, T2, out-of-band, and segment 12, using your NIC names, to `/etc/network/interfaces`, and run `ifreload -a` from the console.
 2. Enable the Snippets content type on the `local` storage.
 3. Check: `bridge vlan show` lists VLANs 2 to 4094 on `enp3s0` and `enp4s0` (or your names).
 

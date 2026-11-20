@@ -15,7 +15,7 @@ The Network Device Management SRG covers how an administrator reaches, authentic
 
 The labs follow the lifecycle of an administrator session. Lab 5.1 decides who may connect and with what privilege. Lab 5.2 limits what a connection can do before and after logon. Lab 5.3 sets the password rules. Labs 5.4 to 5.6 produce, time-stamp, store, and off-load the audit records. Lab 5.7 secures the channel. Lab 5.8 moves authentication and certificates to central services. Lab 5.9 keeps the configuration backed up and the software supportable. Labs 5.10 to 5.12 cover requirements that the Cisco rules cite: the audit of privileged functions and session times, replay-resistant access, and denial-of-service safeguards.
 
-All labs run on the network from [Chapter 999](999-shared-lab-infrastructure.md): the management SVI on segment 30, the admin host on segment 20, and the services on segment 10.
+All labs run on the network from [Chapter 999](999-shared-lab-infrastructure.md): the management SVI on segment 4, the admin host on segment 3, and the services on segment 2.
 
 ### Requirements and labs
 
@@ -49,7 +49,7 @@ Every requirement here has a FortiSwitch setting or a procedure behind it, so th
 
 ## Implementation and Automation
 
-Each lab lists its commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with the lab's values substituted: server addresses from Chapter 999, VLAN 30 for management, and `<LAB_ADMIN>` for a RADIUS-authenticated administrator. Where the workbook's command differs from the lab's setup (for example UDP syslog in the workbook against TLS in the lab), the lab says which to use.
+Each lab lists its commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with the lab's values substituted: server addresses from Chapter 999, VLAN 4 for management, and `<LAB_ADMIN>` for a RADIUS-authenticated administrator. Where the workbook's command differs from the lab's setup (for example UDP syslog in the workbook against TLS in the lab), the lab says which to use.
 
 Save evidence in `evidence/<lab>/<date>/` on `admin-201`, as Chapter 999 describes. For every audit lab, copy the log line from both the switch and a log server.
 
@@ -112,7 +112,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 | `SRG-APP-000142-NDM-000245` | I | Disable unnecessary and nonsecure functions and services | Same requirement | FortiSwitchOS 7.6.7 CLI Reference p193; FortiSwitchOS 7.6.7 CLI Reference p269 |
 | `SRG-APP-000148-NDM-000346` | II | Keep only one local account, as the account of last resort | Equivalent setting | FortiSwitchOS 7.6.7 CLI Reference p233 |
 
-**Uses.** `sw-648f-1`, `admin-201` on segment 20 and a second host on segment 40, `radius-201a` (P1, P10). Workbook prerequisites: P1, P10 (P1 Reachable RADIUS or TACACS+ servers; P10 A management interface with an address: the management port or a management SVI on a dedicated VLAN).
+**Uses.** `sw-648f-1`, `admin-201` on segment 3 and a second host on segment 5, `radius-201a` (P1, P10). Workbook prerequisites: P1, P10 (P1 Reachable RADIUS or TACACS+ servers; P10 A management interface with an address: the management port or a management SVI on a dedicated VLAN).
 
 **Configure.**
 
@@ -133,7 +133,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
    ```text
    config system admin
        edit admin-lab
-           set trusthost1 10.201.20.0 <MASK>
+           set trusthost1 10.201.3.0 <MASK>
    end
    config system interface
        edit mgmt-svi
@@ -180,7 +180,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 
 **Positive test.** Log in over SSH from `admin-201` as `<LAB_ADMIN>`: the session opens. The read-only user can run `get` and `show` but a `config` change is refused. A second login with the same name from another address is refused.
 
-**Negative test.** From the segment 40 host, try SSH, HTTPS, and Telnet to `10.201.30.11`: all are refused. Log in as the read-only user and try to delete a log or install an image: the switch denies it. Try to log in as `admin` from a host not on the trusted list.
+**Negative test.** From the segment 5 host, try SSH, HTTPS, and Telnet to `10.201.4.11`: all are refused. Log in as the read-only user and try to delete a log or install an image: the switch denies it. Try to log in as `admin` from a host not on the trusted list.
 
 **Evidence.** The `config system admin`, `accprofile`, and interface `allowaccess` output, the refused-login lines in the syslog, and the denied commands.
 
@@ -452,7 +452,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
    ```text
    config log syslogd setting
        set status enable
-       set server 10.201.10.20
+       set server 10.201.2.20
        set mode udp
        set enc-algorithm high
    end
@@ -529,7 +529,7 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
    end
    ```
 
-**Positive test.** `ssh -vv` from `admin-201` shows an approved cipher and MAC. `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.201.30.12 1.3.6.1.2.1.1` returns the system group.
+**Positive test.** `ssh -vv` from `admin-201` shows an approved cipher and MAC. `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.201.4.12 1.3.6.1.2.1.1` returns the system group.
 
 **Negative test.** Connect with an old cipher (`ssh -c 3des-cbc`) or MAC (`-m hmac-md5`): the switch refuses. Query with SNMPv2c or with MD5 authentication: the switch refuses.
 
@@ -555,11 +555,11 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
    ```text
    config user radius
        edit radius-201a
-           set server 10.201.10.10
+           set server 10.201.2.10
            set secret <KEY_1>
        next
        edit radius-201b
-           set server 10.201.10.11
+           set server 10.201.2.11
            set secret <KEY_2>
    end
    config user group
@@ -716,9 +716,9 @@ These three requirements come from Cisco rules (`CISC-ND-000940`, `CISC-ND-00124
    end
    ```
 
-**Positive test.** `ssh admin-lab@10.201.30.11` and `https://10.201.30.11` both work. `nmap -p 22,23,80,443 10.201.30.11` from `admin-201` shows only 22 and 443 open.
+**Positive test.** `ssh admin-lab@10.201.4.11` and `https://10.201.4.11` both work. `nmap -p 22,23,80,443 10.201.4.11` from `admin-201` shows only 22 and 443 open.
 
-**Negative test.** Capture an SSH login with `tcpdump -w replay.pcap` on `attacker-201`, then replay the file with `tcpreplay -i <NIC_ATK> replay.pcap`. The switch does not log anyone in, because each session has its own key and sequence numbers. Try `telnet 10.201.30.11` and `curl http://10.201.30.11`: both are refused.
+**Negative test.** Capture an SSH login with `tcpdump -w replay.pcap` on `attacker-201`, then replay the file with `tcpreplay -i <NIC_ATK> replay.pcap`. The switch does not log anyone in, because each session has its own key and sequence numbers. Try `telnet 10.201.4.11` and `curl http://10.201.4.11`: both are refused.
 
 **Evidence.** The `nmap` result, the capture and the failed replay, and the refused Telnet and HTTP attempts.
 
@@ -763,7 +763,7 @@ This requirement is *Partial*: the hardware checks and storm control are real, b
 
 **Positive test.** Send normal traffic from the endpoint. It passes, and the management session stays responsive.
 
-**Negative test.** From `attacker-201`, send a packet whose source and destination address are the same (`hping3 --spoof 10.201.30.11 -a 10.201.30.11 10.201.30.11 -c 100`) and fragmented ICMP (`hping3 --icmp -f 10.201.30.11 -c 100`): the switch drops them and the counters rise. Send a broadcast flood above the rate: the port stops passing the excess. Record that no setting limits packets sent to the switch's own CPU, and note the compensating control (an upstream filter).
+**Negative test.** From `attacker-201`, send a packet whose source and destination address are the same (`hping3 --spoof 10.201.4.11 -a 10.201.4.11 10.201.4.11 -c 100`) and fragmented ICMP (`hping3 --icmp -f 10.201.4.11 -c 100`): the switch drops them and the counters rise. Send a broadcast flood above the rate: the port stops passing the excess. Record that no setting limits packets sent to the switch's own CPU, and note the compensating control (an upstream filter).
 
 **Evidence.** The `config switch security-feature` output with the model's list of checks, the packet captures before and after, and the counters.
 

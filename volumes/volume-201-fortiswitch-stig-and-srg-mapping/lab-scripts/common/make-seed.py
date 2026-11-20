@@ -44,6 +44,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 V4_PREFIX = "10.201"
 V6_PREFIX = "fd00:db8:201::"
 SEGMENT_SUBNETS = {}
+# The segment of the lab services in Chapter 999 (Lab-Services). The DHCP server has no scope there, and the
+# gateway address of that segment is the DNS server that the scopes hand out.
+SERVICES_SEGMENT = 2
 # Set from the environment in main(). A plain-text password for the admin user at the console and for sudo.
 OPTIONS = {"console_password": None}
 V6_LEN = {24: 120, 31: 127, 32: 128}
@@ -52,15 +55,15 @@ FLAVOR_DATA = {"default": "ubuntu-24.04", "role_keys": [], "families": {}, "flav
 NFT_RULES = """#!/usr/sbin/nft -f
 flush ruleset
 table inet lab201 {
-  set svc4 { type ipv4_addr; flags interval; elements = { 10.201.10.0/24 } }
-  set mgmt4 { type ipv4_addr; flags interval; elements = { 10.201.0.0/24, 10.201.30.0/24 } }
-  set svc6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::a00/120 } }
-  set mgmt6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::/120, fd00:db8:201::1e00/120 } }
+  set svc4 { type ipv4_addr; flags interval; elements = { 10.201.2.0/24 } }
+  set mgmt4 { type ipv4_addr; flags interval; elements = { 10.201.0.0/24, 10.201.4.0/24 } }
+  set svc6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::200/120 } }
+  set mgmt6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::/120, fd00:db8:201::400/120 } }
   chain forward {
     type filter hook forward priority 0; policy drop;
     ct state established,related accept
-    ip saddr 10.201.20.0/24 accept
-    ip6 saddr fd00:db8:201::1400/120 accept
+    ip saddr 10.201.3.0/24 accept
+    ip6 saddr fd00:db8:201::300/120 accept
     ip saddr @mgmt4 ip daddr @svc4 tcp dport { 22, 514, 6514 } accept
     ip saddr @mgmt4 ip daddr @svc4 udp dport { 69, 123, 161, 162, 514, 1812, 1813, 2055, 4739, 6343 } accept
     ip6 saddr @mgmt6 ip6 daddr @svc6 tcp dport { 22, 514, 6514 } accept
@@ -731,12 +734,12 @@ def windows_setup_script(manifest, vm_index, vm, flavor, ssh_keys):
         if role == "DHCP server":
             L.append("Install-WindowsFeature -Name DHCP -IncludeManagementTools | Out-Null")
             for nic in nic_plan(manifest, vm_index, vm):
-                if nic["build"] or not nic["vlan"] or int(manifest.get("vlan_segments", {}).get(str(nic["vlan"]), nic["vlan"])) == 10 or not nic["addrs"]:
+                if nic["build"] or not nic["vlan"] or int(manifest.get("vlan_segments", {}).get(str(nic["vlan"]), nic["vlan"])) == SERVICES_SEGMENT or not nic["addrs"]:
                     continue
                 octets = nic["addrs"][0].split("/")[0].split(".")
                 seg, pre = octets[2], ".".join(octets[:2])
                 L += ["Add-DhcpServerv4Scope -Name 'lab201-seg%s' -StartRange %s.%s.100 -EndRange %s.%s.199 -SubnetMask 255.255.255.0 -State Active" % (seg, pre, seg, pre, seg),
-                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.1" % (pre, seg, pre, seg, seg_base(10))]
+                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.1" % (pre, seg, pre, seg, seg_base(SERVICES_SEGMENT))]
     L += ["Write-Host 'Lab 201 setup finished.'", "Stop-Transcript | Out-Null"]
     return "\r\n".join(L) + "\r\n"
 
