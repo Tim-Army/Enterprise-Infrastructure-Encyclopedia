@@ -25,7 +25,7 @@ The series combines architecture and theory with implementation guidance, automa
 
 ## Curriculum
 
-181 volumes, 1745 chapters. Each volume has a dedicated
+181 volumes, 1748 chapters. Each volume has a dedicated
 [README](#volume-first-layout), index, and glossary.
 
 | Volume | Title | Chapters |
@@ -205,7 +205,7 @@ The series combines architecture and theory with implementation guidance, automa
 | CLXXIII | [Integrated Master Schedule (IMS)](volumes/volume-173-integrated-master-schedule/README.md) | 10 |
 | CLXXIV | [NSE 5 FortiSwitch Lab (Real Switch and FortiGate-Only)](volumes/volume-174-nse-5-fortiswitch-lab/README.md) | 12 |
 | CCI | [FortiSwitch STIG and SRG Mapping](volumes/volume-201-fortiswitch-stig-and-srg-mapping/README.md) | 16 |
-| CCII | [FortiAnalyzer STIG and SRG Mapping](volumes/volume-202-fortianalyzer-stig-and-srg-mapping/README.md) | 3 |
+| CCII | [FortiAnalyzer STIG and SRG Mapping](volumes/volume-202-fortianalyzer-stig-and-srg-mapping/README.md) | 6 |
 | CCIII | [FortiManager STIG and SRG Mapping](volumes/volume-203-fortimanager-stig-and-srg-mapping/README.md) | 2 |
 | CM | [Tim's Lab Gear](volumes/volume-900-tims-lab-gear/README.md) | 3 |
 | CMXCVII | [Master Appendices](volumes/volume-997-master-appendices/README.md) | 72 |

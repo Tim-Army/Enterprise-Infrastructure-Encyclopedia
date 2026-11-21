@@ -562,7 +562,20 @@ volume's gap labs hold, and reproduces the Lab column of Chapters 01 to 03
 without a difference. On a copy of the repository it planned and scaffolded
 labs for FortiAnalyzer and FortiManager with made-up groups, added the Lab
 column, and passed its own check once the TODO comments were filled with test
-text. No product other than FortiSwitch has labs yet.
+text.
+
+Volumes with requirement labs so far:
+
+| Product | Volume | Labs | Requirements | Built | How |
+| --- | --- | --- | --- | --- | --- |
+| FortiSwitch | [CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) | 41, in Chapters 04 to 07 | 185 | 2026-11-04 and 2026-11-05 | By hand; the workflow was written from these labs |
+| FortiAnalyzer | [CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) | 17, in Chapters 03 and 04 | 65 | 2026-11-20 | `/srg-labs-for`, its first run, with `--scope map` |
+
+The FortiAnalyzer run changed the script in one place. With `--scope map` a
+lab chapter covers fewer IDs than the tables cite for its SRG, and the
+scaffold now says so in the sentence that states how many requirements the
+chapter covers. The labs of both volumes have not been run: each lab chapter
+carries a sign-off that is pending.
 
 ## Validation and Troubleshooting
 

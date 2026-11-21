@@ -6186,7 +6186,7 @@ volumes:
     number: "CCII"
     slug: volume-202-fortianalyzer-stig-and-srg-mapping
     title: "FortiAnalyzer STIG and SRG Mapping"
-    chapter_count: 3
+    chapter_count: 6
     build_eligible: true
     chapters:
       - id: 01
@@ -6195,9 +6195,18 @@ volumes:
       - id: 02
         title: "Chapter 02: FortiAnalyzer and Cisco STIG Crosswalk"
         path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/02-fortianalyzer-and-cisco-stig-crosswalk.md
+      - id: 03
+        title: "Chapter 03: Central Log Server SRG Requirement Labs"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/03-central-log-server-srg-requirement-labs.md
+      - id: 04
+        title: "Chapter 04: Network Device Management SRG Requirement Labs"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/04-network-device-management-srg-requirement-labs.md
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
+      - id: 999
+        title: "Chapter 999: Shared Lab Infrastructure"
+        path: volumes/volume-202-fortianalyzer-stig-and-srg-mapping/chapters/999-shared-lab-infrastructure.md
   - id: volume-203
     number: "CCIII"
     slug: volume-203-fortimanager-stig-and-srg-mapping

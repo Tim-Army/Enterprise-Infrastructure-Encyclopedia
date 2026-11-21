@@ -206,12 +206,17 @@ say so. Say that nothing is committed.
 
 ## Commit
 
-Commit and push only when the user asks. Volume CCI used three commits, in
-this order, and the same split works here:
+Commit and push only when the user asks. Use one commit for the labs of a
+volume, because the scaffold registers the lab chapters and Chapter 999
+together and the Lab column needs the labs:
 
-1. `Vol <ROMAN> Ch 999: shared lab infrastructure`
-2. `Vol <ROMAN> Ch NN-MM: SRG requirement labs for all <N> requirements`
-3. `Vol <ROMAN> Ch 01-NN: add a Lab column linking each SRG ID to its lab`
+`Vol <ROMAN> Ch NN, MM, 999: SRG requirement labs for all <N> <Product> requirements`
+
+The body lists the lab chapters with their counts, the gap labs, the scope
+and the `--allow` list, the Lab column, and what was checked. It says that
+the labs have not been run, and ends with the attribution line. After a
+push, watch the Validate and Deploy Pages runs, then open a lab chapter on
+the site and follow one Lab link from the map chapter.
 
 ## Keep the records current
 

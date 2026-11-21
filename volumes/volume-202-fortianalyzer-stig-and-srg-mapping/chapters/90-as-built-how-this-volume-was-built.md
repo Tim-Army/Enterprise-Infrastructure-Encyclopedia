@@ -41,6 +41,9 @@ agents, playbooks, registration), read the Volume CLXXII chapter.
 | [Chapter 02](02-fortianalyzer-and-cisco-stig-crosswalk.md), Cisco crosswalk | 2026-10-15 | One agent following the crosswalk method, as Chapter 38 of Volume CLXXII: every FortiAnalyzer requirement of Chapter 01 matched against every Cisco STIG | Prerequisites table and columns (2026-10-26) |
 | CSV files | 2026-10-08 to 2026-10-26 | Generated from the chapter tables by `scripts/python/export_srg_tables.py` | Regenerate whenever a table changes |
 | Move to Volume CCII | 2026-11-20 | Chapters and `data/` files moved with `git mv`; cross-references rewritten; pointer pages left at Chapters 12 and 38 of Volume CLXXII | None |
+| [Chapter 03](03-central-log-server-srg-requirement-labs.md) and [Chapter 04](04-network-device-management-srg-requirement-labs.md), requirement labs | 2026-11-20 | The `/srg-labs-for` workflow: the requirements grouped into 17 labs, the chapters scaffolded by its script, and each lab written from the commands of Chapters 01 and 02 | None. The labs have not been run |
+| [Chapter 999](999-shared-lab-infrastructure.md), shared lab | 2026-11-20 | Written from the prerequisites of Chapter 01 and from Volume CCI's Chapter 999, whose lab network it reuses | None. The lab has not been built |
+| The Lab column of Chapters 01 and 02 | 2026-11-20 | Added by the script of `/srg-labs-for` from the labs' requirement rows | Regenerate whenever a lab is added, renamed, or renumbered |
 | 90, this chapter | 2026-11-20 | Written directly from Volume CLXXII's Chapter 90, the two chapters, and the repository history | Updated whenever the volume changes |
 
 Each chapter commit names its chapter in the subject (`Vol CLXXII Ch NN: ...`),
@@ -216,6 +219,60 @@ writes over one.
 FortiAnalyzer has no SRG mapping workbook and no interactive table, so the
 workbook steps of the FortiSwitch move had nothing to do here.
 
+### The requirement labs of Chapters 03, 04, and 999
+
+The labs were built on 2026-11-20 with the `/srg-labs-for` workflow, which
+[Volume CLXXII's Chapter 90](../../volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md)
+describes. It was the workflow's first run on the repository. Three choices
+were made before anything was written:
+
+- **Scope.** The labs cover the 65 requirements of Chapter 01's requirement
+  reference: 60 of the Central Log Server SRG and 5 of the NDM SRG. The
+  crosswalk of Chapter 02 also cites 21 NDM IDs that belong to Cisco rules.
+  They are not requirements of FortiAnalyzer and have no lab, so the script
+  runs with `--scope map`.
+- **The unit.** The labs are written for a FortiAnalyzer-VM on release 7.6.
+  Chapter 01 checked its commands against the 8.0.0 CLI Reference, and its
+  version column shows two settings of the labs as 8.0.0 and later. Lab 3.7
+  records that NTP authentication with SHA-256 needs 8.0.0, and Lab 3.15
+  treats SHA-2 signatures for SAML as a gap on release 7.6.
+- **The lab network.** Chapter 999 reuses the lab of Volume CCI's Chapter 999
+  and adds four hosts to it.
+
+The steps were these:
+
+1. The script's plan listed the 65 requirements with the setting, the
+   command, the release, and the prerequisites that Chapter 02 gives each.
+2. The requirements were grouped into 17 labs: Labs 3.1 to 3.15 for the
+   Central Log Server SRG and Labs 4.1 and 4.2 for the NDM SRG. The order
+   follows the unit itself first, then a log record through the server, then
+   the use of the records.
+3. The script wrote the two lab chapters with each lab's requirement rows,
+   and registered Chapters 03, 04, and 999.
+4. Each lab was written from the command cells of Chapter 02, which are the
+   commands of Chapter 01. A step for which Chapter 01 has no command is given
+   in words, and says so.
+5. Chapter 999 was written by hand. It maps each of the 30 prerequisites of
+   Chapter 01 to a host, a service, or the reason it is not built.
+6. The script added the Lab column to the four SRG tables of Chapters 01 and
+   02, and the CSV export carried it into the CSV files. Every row of the
+   feature map, the requirement reference, and the crosswalk table links a
+   lab. In the table of Cisco SNA requirements with no FortiAnalyzer
+   requirement, a row links the lab of the nearest FortiAnalyzer requirement
+   it names, which is a topic match and not an alignment. Six of its 17 rows
+   name none and show a dash.
+
+Two requirements went to the gap lab, Lab 3.15. The unit has no setting that
+disables an account after 35 days of inactivity (`SRG-APP-000163-AU-002470`),
+which Chapter 01 already documents. The only feature that Chapter 01 maps to
+SHA-2 signatures (`SRG-APP-000610-AU-000050`) is a SAML setting of 8.0.0, so
+on release 7.6 the requirement has no setting. On a unit that runs 8.0.0 or
+later, that requirement belongs in a requirement lab.
+
+No lab has been run. The sign-off of each lab chapter is pending, and no host
+of Chapter 999 has been built. The tests of each lab were written from what
+the settings are documented to do, so the first run may correct them.
+
 ## Validation and Troubleshooting
 
 To check this volume:
@@ -225,6 +282,9 @@ To check this volume:
   16 prerequisites. The CSV files must match: run
   `python scripts/python/export_srg_tables.py` and confirm a clean `git status`
   afterward.
+- **The labs.** `python .claude/skills/srg-labs-for/labs.py FortiAnalyzer --check --scope map`
+  confirms that the 17 labs hold the 65 requirements, that each lab has all of
+  its parts, and that the Lab column matches the labs.
 - **Repository checks.** `scripts/bash/validate.sh` checks `book.yml`, internal
   links, markdownlint, and cspell.
 

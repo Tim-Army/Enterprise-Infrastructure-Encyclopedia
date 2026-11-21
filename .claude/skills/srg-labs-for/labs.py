@@ -395,8 +395,19 @@ def lab_chapter(volume, number, name, chapter_labs):
     ids = [row["srg_id"] for lab in chapter_labs for row in lab["rows"]]
     has_alignment = any(row["alignment"] for lab in chapter_labs for row in lab["rows"])
     first_map = volume.maps[0]
+    # With --scope map the plan leaves out the IDs that only a crosswalk cites, and the chapter has to say so.
+    srg = chapter_labs[0]["srgs"][0]
+    others = [i for i in volume.cited if volume.info[i]["srg"] == srg and i not in ids]
+    if others:
+        covered = ("Chapter 01 lists %d distinct %s SRG requirements for %s. Each one has a lab or a gap lab in this "
+                   "chapter, so none is left without a test. The crosswalk also cites %d %s IDs that belong to the "
+                   "other vendor's rules. They are not requirements of %s, and they have no lab." % (
+                       len(set(ids)), name, volume.product, len(others), srg, volume.product))
+    else:
+        covered = ("This volume's tables cite %d distinct %s SRG requirements. Each one has a lab or a gap lab in this "
+                   "chapter, so none is left without a test." % (len(set(ids)), name))
     out = ["# Chapter %02d: %s SRG Requirement Labs" % (number, name), "", "## Learning Objectives", "",
-           "- Prove each %s SRG requirement that this volume's tables cite on the Chapter 999 lab, with a positive and a "
+           "- Prove each %s SRG requirement of this volume on the Chapter 999 lab, with a positive and a "
            "negative test." % name,
            "- " + todo("add three or four objectives that name what the reader configures in these labs."),
            "- Store the evidence for each lab so it can support an assessment.", "",
@@ -404,8 +415,7 @@ def lab_chapter(volume, number, name, chapter_labs):
            todo("one paragraph on what this SRG covers for %s, and one on the order of the labs and why." % volume.product), "",
            "All labs run on the network from [Chapter 999](%s)." % SHARED, "",
            "### Requirements and labs", "",
-           "This volume's tables cite %d distinct %s SRG requirements. Each one has a lab or a gap lab in this chapter, "
-           "so none is left without a test." % (len(set(ids)), name), "",
+           covered, "",
            "| Lab | Requirements | Kind |", "| --- | --- | --- |"]
     for lab in chapter_labs:
         kind = "Gap lab" if "gap" in lab["kinds"] else "Requirement lab"
