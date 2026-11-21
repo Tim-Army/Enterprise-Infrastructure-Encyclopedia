@@ -513,6 +513,57 @@ same changes to this volume's README, index, and Chapter 90, to `book.yml`,
 and to the root `README.md` and `PROJECT_STATUS.md`. The FortiManager move
 was its first run on the repository itself.
 
+### Requirement labs for a product volume
+
+A third command, `/srg-labs-for`, builds the requirement labs of a product
+volume the way Volume CCI has them: a shared lab chapter 999, one lab chapter
+for each SRG, and a Lab column in every SRG table of the map and crosswalk
+chapters. It is a Claude Code skill stored at `.claude/skills/srg-labs-for/`,
+with one script, `labs.py`. The command takes the product of a volume that
+already exists, for example `/srg-labs-for FortiAnalyzer`.
+
+```bash
+python .claude/skills/srg-labs-for/labs.py "<product>"
+python .claude/skills/srg-labs-for/labs.py "<product>" --plan-file temp/<product>-labs/plan.tsv
+python .claude/skills/srg-labs-for/labs.py "<product>" --scaffold temp/<product>-labs/plan.tsv
+python .claude/skills/srg-labs-for/labs.py "<product>" --lab-column
+python .claude/skills/srg-labs-for/labs.py "<product>" --check
+```
+
+1. **Plan** (no option). It reads the SRG tables of the map and crosswalk
+   chapters and prints, for each SRG, how many requirements the tables cite,
+   how many only a crosswalk cites, how many have a lab, and how many are gap
+   lab candidates. It changes nothing. `--plan-file` also writes one row for
+   each requirement to a file.
+2. **Scaffold.** A person or Claude groups the requirements into labs in the
+   plan file. The script then writes the lab chapters and, if the volume has
+   none, Chapter 999, with each lab's requirement rows filled in, and
+   registers the chapters. It writes no command and no test: a comment that
+   starts `TODO srg-labs-for` marks each place to write.
+3. **Lab column.** It adds or refreshes the Lab column from the labs'
+   requirement rows and runs the CSV export.
+4. **Check.** It fails while a TODO comment remains, a lab lacks a part or a
+   requirement row, the table of requirements and labs disagrees with the
+   labs, a requirement has no lab, a link does not resolve, or the Lab column
+   is out of date.
+
+The lab format is the one of Volume CCI: a goal, a table of the requirements
+the lab proves, the hosts it uses, the configuration steps, a positive test,
+a negative test, the evidence to keep, and the return to the baseline. A gap
+lab covers requirements the product cannot meet. `SKILL.md` gives the steps
+in order and the rules, among them that every command comes from the map or
+crosswalk chapter and that a lab is not called verified until a person has
+run it.
+
+The workflow was written on 2026-11-20 from the labs of Volume CCI, and its
+script was tested in two ways. On Volume CCI itself it finds 41 labs for 185
+requirements, proposes for gap labs exactly the 48 requirements that the
+volume's gap labs hold, and reproduces the Lab column of Chapters 01 to 03
+without a difference. On a copy of the repository it planned and scaffolded
+labs for FortiAnalyzer and FortiManager with made-up groups, added the Lab
+column, and passed its own check once the TODO comments were filled with test
+text. No product other than FortiSwitch has labs yet.
+
 ## Validation and Troubleshooting
 
 To check a chapter the command built:

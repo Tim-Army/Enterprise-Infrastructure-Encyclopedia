@@ -193,6 +193,23 @@ script that matches IDs, so a lab that is renamed or renumbered needs the
 column regenerated, and `export_srg_tables.py` carries the column into the CSV
 files.
 
+That script was not kept. Since 2026-11-20 the `/srg-labs-for` workflow has
+one, which
+[Volume CLXXII's Chapter 90](../../volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md)
+describes. These two commands regenerate the column and check the labs of
+this volume:
+
+```bash
+python .claude/skills/srg-labs-for/labs.py FortiSwitch --lab-column
+python .claude/skills/srg-labs-for/labs.py FortiSwitch --check --allow SRG-APP-000373-NDM-000298,SRG-APP-000516-NDM-000351
+```
+
+On that date the workflow's script reproduced the Lab column of Chapters 01
+to 03 without a difference, and found a lab for each of the 185 requirements
+in the 41 labs of Chapters 04 to 07. The two IDs after `--allow` are the
+stale Cisco-rule IDs named above. The workflow was written from these labs,
+so that another product's volume can have labs of the same form.
+
 ### Chapter 08 and the console diagram
 
 On 2026-11-05 Chapter 08 added an optional OpenGear IM7216-2-DAC-LMV lab on
