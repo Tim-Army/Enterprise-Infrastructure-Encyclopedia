@@ -7585,6 +7585,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   // Physical switch ports the lab chapters leave as placeholders.
   var PORTS = [['PORT_TRUNK', 'Trunk port (to the hypervisor)'], ['PORT_MGMT', 'Management port'], ['PORT_EP1', 'Endpoint port 1'], ['PORT_EP2', 'Endpoint port 2'],
     ['PORT_UNUSED', 'Unused port'], ['PORT_MON', 'Monitor (mirror) port'], ['PORT_L1', 'Routed link L1 port'], ['EXTERNAL_PORT', 'External (untrusted) port']];
+  // What the external firewall text leaves as a placeholder, because only you know it. Section 11 asks for each one.
+  var FW_VARS = [['FW_LAB_INTERFACE', 'Lab-facing interface'], ['FW_INTERNET_INTERFACE', 'Internet-facing interface'], ['LAB_GATEWAY_ADDRESS', 'Lab gateway address']];
+  // What the text for a network device as the gateway leaves as a placeholder: its two ports. Section 10 asks for them.
+  var GW_VARS = [['GW_TRUNK_PORT', 'Trunk port'], ['GW_OOB_PORT', 'Out-of-band port']];
+  // A port or an interface name that can stand in a configuration text: it has no space, no quote, and no line break.
+  var IFNAME_RE = /^[A-Za-z0-9][A-Za-z0-9._\/:-]{0,62}$/;
   var OLD_V4 = BASE.ipv4_prefix || '10.200';
   var OLD_V6 = BASE.ipv6_prefix || 'fd00:db8:201::';
 
@@ -7729,14 +7735,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR, kind: '', sets: {},
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeCount: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: ''
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeCount: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}
   };
   // The lab sets a new build has, and the kind of labs they are.
   function defaultSets() { var o = {}; SETS.forEach(function (s) { if (s.selected) o[s.id] = true; }); return o; }
   function defaultKind() { var s = SETS.filter(function (x) { return x.selected; })[0] || SETS[0]; return s ? s.kind : (KINDS[0] || {}).id || ''; }
   function resetVms() {
     state.kind = defaultKind(); state.sets = defaultSets();
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeCount = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = '';
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeCount = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {};
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -8202,6 +8208,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (out.uplink.err.addr) out.errors.push('Uplink address: ' + out.uplink.err.addr + '. DHCP is used');
     if (out.uplink.err.fw) out.errors.push('Uplink, address of the external firewall: ' + out.uplink.err.fw + '. DHCP is used');
     if (out.uplink.err.dns) out.errors.push('Uplink, DNS server: ' + out.uplink.err.dns + '. DHCP is used');
+    // The values that section 11 asks for. They take the place of the placeholders in the external firewall text.
+    out.fw = fwVarCheck(out, p4v);
+    FW_VARS.forEach(function (x) { if (out.fw.err[x[0]]) out.errors.push('External firewall, ' + x[1].toLowerCase() + ': ' + out.fw.err[x[0]]); });
+    // The ports that section 10 asks for, when a network device is the gateway.
+    out.gw = gwVarCheck();
+    GW_VARS.forEach(function (x) { if (out.gw.err[x[0]]) out.errors.push('Gateway device, ' + x[1].toLowerCase() + ': ' + out.gw.err[x[0]]); });
     out.sw = swCheck();
     out.fsw = fswCheck(out.sw);
     if (!switchesOn()) { /* no lab of this build runs on the switches, so their feature support does not matter */ }
@@ -8928,6 +8940,16 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     v.range.others.forEach(function (o) { L.push('| ' + o.id + ' | ' + o.name + (o.id === NET.vxlan && v.vlan.vx !== null ? ' (VLAN and VNI ' + v.vlan.vx + ')' : '') + ' | `' + o.cidr + '` | `' + OLD_V4 + '.' + o.id + '.0/24` |'); });
     if (m.uplink) L.push('', '## Uplink to the external firewall', '', '- ' + m.uplink.vm + ' keeps its adapter on the build network as the uplink. Step 4 leaves it in place.', '- Uplink address: ' + (m.uplink.address ? '`' + m.uplink.address + '`, the external firewall is `' + m.uplink.gateway + '`, and the DNS server is `' + m.uplink.dns.join('`, `') + '`' : 'from DHCP') + '.',
       '- Addresses whose traffic ' + m.uplink.vm + ' forwards to the uplink: ' + (m.uplink.internet.map(function (a) { return '`' + a + '`'; }).join(', ') || 'none') + '.');
+    // The text for a network device as the gateway, and the ports that section 10 asks for.
+    var gwf = gatewayFile(v);
+    if (gwf) {
+      L.push('', '## Gateway device', '', '- OS type: ' + gwf.os + '. The starting configuration is in `' + gwf.path + '`' + (gwf.extra ? ', and the lines that only some devices need are in `' + gwf.extra.path + '`' : '') + '.', '', '| Placeholder in the text | Meaning | Value |', '| --- | --- | --- |');
+      gwf.vars.used.forEach(function (k) { L.push('| `<' + k + '>` | ' + gwVarText(k).meaning + ' | ' + (gwf.vars.val[k] ? '`' + gwf.vars.val[k] + '`' : 'not chosen; replace it in the text') + ' |'); });
+    }
+    // The external firewall text and the values that section 11 asks for. A placeholder that is left is named here.
+    var fwf = firewallFile(v), fwos = netOs(state.fwOs);
+    L.push('', '## External firewall', '', '- OS type: ' + fwf.os + '. The rules are in `' + fwf.path + '`' + (fwf.edited ? ', as they were edited on the page, so that text may not hold the values below' : '') + '.', '', '| Placeholder in the text | Meaning | Value |', '| --- | --- | --- |');
+    fwf.vars.used.forEach(function (k) { L.push('| `<' + k + '>` | ' + fwVarText(k, fwos).meaning + ' | ' + (fwf.vars.val[k] ? '`' + fwf.vars.val[k] + '`' + (fwf.vars.from[k] === 'uplink' ? ', the uplink address' : '') : 'not chosen; replace it in the text') + ' |'); });
     L.push('', '## Machines', '', '| Machine | Role | Flavor | Lab addresses |', '| --- | --- | --- | --- |');
     m.vms.forEach(function (vm) { L.push('| `' + vm.name + '` | ' + vm.role + ' | ' + FLAVOR[vm.flavor || m.default_flavor].name + ' | ' + (allAddrs(vm).map(function (a) { return '`' + a + '`'; }).join(', ') || 'none') + ' |'); });
     var left = vmRows().filter(function (e) { return v.included.indexOf(e.base.name) < 0; }).map(function (e) { return e.base.name; });
@@ -9190,8 +9212,31 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   function netName(m, i) { return m.lab + (i.seg ? '-seg' + i.seg : '-oob'); }
   function netUnit(i) { return i.seg ? GW_TRUNK + ' unit ' + i.seg : GW_OOB + ' unit 0'; }
 
+  // The ports that section 10 asks for. The text for a network device as the gateway holds a placeholder for the port
+  // that carries the lab VLANs, and one for the port on the out-of-band network. A port that is typed takes the place of
+  // its placeholder. With the Linux router of the scripts there is no text, so nothing is asked for and nothing is checked.
+  function gwVarCheck() {
+    var out = { used: [], val: {}, err: {} };
+    if (netPick(NET_GW, state.gwOs) === NET_GW[0][0]) return out;
+    GW_VARS.forEach(function (x) {
+      var k = x[0], t = String((state.gwVars || {})[k] || '').trim();
+      out.used.push(k);
+      if (!t) return;
+      if (!IFNAME_RE.test(t)) out.err[k] = 'Use a port name such as port1. The placeholder is kept';
+      // The text is written for two ports: one carries the lab VLANs, and the other has the out-of-band address.
+      else if (k === 'GW_OOB_PORT' && out.val.GW_TRUNK_PORT && out.val.GW_TRUNK_PORT.toLowerCase() === t.toLowerCase()) out.err[k] = 'Use another port than the trunk port, because the text is written for two ports. The placeholder is kept';
+      else out.val[k] = t;
+    });
+    return out;
+  }
+  // The label of a port of section 10, the line under its field, and what it means in LAB-VALUES.md.
+  function gwVarText(key) {
+    return key === 'GW_TRUNK_PORT' ? { label: 'Trunk port', help: 'The port of the device that carries the lab VLANs.', meaning: 'Port of the gateway device that carries the lab VLANs' }
+      : { label: 'Out-of-band port', help: 'The port of the device on the out-of-band network (segment 0).', meaning: 'Port of the gateway device on the out-of-band network (segment 0)' };
+  }
+
   // The gateway: every .1 address of the lab on one device, and a path between the lab segments.
-  function gatewayConfig(os, m) {
+  function gatewayConfig(os, m, vars) {
     os = netPick(NET_GW, os);
     // The Linux router is built by the scripts, so there is no text for it.
     if (os === NET_GW[0][0]) return { os: os, file: '', text: '', extra: null, notes: m.gwBuilt
@@ -9200,7 +9245,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       : ['This build has no gateway, because ' + PLATFORMS[state.platform].name + ' builds only the service hosts.',
         'Pick another OS type if a network device is the gateway. The page then writes a starting configuration for it, and the Diagram tab shows it.'] };
     var L = [], lab = m.lab, trunk = lab + ' trunk to the lab VLANs', first = m.ifs[1], extra = null;
-    var notes = ['Replace ' + GW_TRUNK + ' with the port that carries the lab VLANs, and ' + GW_OOB + ' with the port on the out-of-band network (segment 0).',
+    // The ports of section 10. A port that was typed stands in the text, and the first note says so. A placeholder that
+    // is left is named as something to replace.
+    vars = vars || {};
+    var uses = [], todo = [];
+    if (vars.GW_TRUNK_PORT) uses.push(vars.GW_TRUNK_PORT + ' as the port that carries the lab VLANs'); else todo.push(GW_TRUNK + ' with the port that carries the lab VLANs');
+    if (vars.GW_OOB_PORT) uses.push(vars.GW_OOB_PORT + ' as the port on the out-of-band network (segment 0)'); else todo.push(GW_OOB + ' with the port on the out-of-band network (segment 0)');
+    var notes = [(uses.length ? 'The text uses ' + uses.join(', and ') + '.' : '') + (uses.length && todo.length ? ' ' : '') + (todo.length ? 'Replace ' + todo.join(', and ') + '.' : ''),
       'Each tagged interface has the number of its segment. Its VLAN ID and its addresses are the ones of section 6.'];
     if (m.gwLeftOut) notes.push('The build leaves ' + m.gw + ' out, because the device holds its addresses.' +
       (m.twoTrunks ? ' ' + m.gw + ' joins the two trunks (T1 and T2) into one network, so the device must reach both trunks.' : ''));
@@ -9272,7 +9323,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
           [pol + ' match source-address any', pol + ' match destination-address any', pol + ' match application any', pol + ' then permit']).join('\n') + '\n' };
     }
     notes.push(NET_UNTESTED);
-    return { os: os, file: lab + '-gateway-' + os + '.txt', text: L.join('\n') + '\n', notes: notes, extra: extra };
+    // The ports stand in the text, and in the lines that only some devices need.
+    var fill = function (s) { GW_VARS.forEach(function (x) { if (vars[x[0]]) s = s.split('<' + x[0] + '>').join(vars[x[0]]); }); return s; };
+    if (extra) extra.text = fill(extra.text);
+    return { os: os, file: lab + '-gateway-' + os + '.txt', text: fill(L.join('\n') + '\n'), notes: notes, extra: extra };
   }
 
   // An IPv4 address as a number, and back. NaN when the text is no address.
@@ -9373,6 +9427,44 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return out;
   }
 
+  // The values that section 11 asks for. The external firewall text holds a placeholder for what only you know: the
+  // interface of the firewall that faces the lab, the one that faces the internet, and the address that the lab gateway
+  // has on the network between the two. A value that is typed takes the place of its placeholder. Only the FortiGate
+  // text names the interface that faces the internet, and only when a machine has internet access. The gateway address
+  // is the uplink address of section 10 when that one is set, and then the page asks for nothing.
+  function fwVarUsed(key, os, inet) { return key !== 'FW_INTERNET_INTERFACE' || (os === 'fortigate' && inet); }
+  function fwVarCheck(v, p4, hosts) {
+    var os = netOs(state.fwOs), on = hosts || inetHosts(v, p4).filter(function (h) { return h.on; }), inet = on.some(function (h) { return h.addrs.length > 0; }), out = { used: [], val: {}, err: {}, from: {} };
+    FW_VARS.forEach(function (x) {
+      var k = x[0], t = String((state.fwVars || {})[k] || '').trim();
+      // A value that the text of this OS type does not hold is not asked for and not checked.
+      if (!fwVarUsed(k, os, inet)) return;
+      out.used.push(k);
+      if (k === 'LAB_GATEWAY_ADDRESS') {
+        if (v.uplink.addr) { out.val[k] = v.uplink.addr; out.from[k] = 'uplink'; return; }
+        if (!t) return;
+        // An address with its prefix length, as section 10 takes it, is read as the address.
+        var a = ip4num(t.replace(/\/\d{1,2}$/, ''));
+        if (isNaN(a)) out.err[k] = 'Use an IPv4 address such as 192.168.50.2. The placeholder is kept';
+        else if (a >= v.range.from && a <= v.range.to) out.err[k] = 'Use an address outside the lab network range ' + v.range.cidr + '. The placeholder is kept';
+        else out.val[k] = ip4str(a);
+      } else if (t) {
+        if (IFNAME_RE.test(t)) out.val[k] = t;
+        else out.err[k] = 'Use an interface name such as port1. The placeholder is kept';
+      }
+    });
+    return out;
+  }
+  // The label of a value of section 11, the line under its field, and what it means in LAB-VALUES.md.
+  function fwVarText(key, os) {
+    os = netOs(os);
+    if (key === 'FW_LAB_INTERFACE') return os === 'asa'
+      ? { label: 'Lab-facing interface name', help: 'The name (nameif) of the interface of the firewall that faces the lab, such as inside.', meaning: 'Name (nameif) of the interface of the firewall that faces the lab' }
+      : { label: 'Lab-facing interface', help: 'The interface of the firewall that faces the lab.' + (os === 'junos' ? ' The text uses unit 0 of it.' : ''), meaning: 'Interface of the firewall that faces the lab' };
+    if (key === 'FW_INTERNET_INTERFACE') return { label: 'Internet-facing interface', help: 'The interface of the firewall that faces the internet.', meaning: 'Interface of the firewall that faces the internet' };
+    return { label: 'Lab gateway address', help: 'The address that the lab gateway has on the network between it and this firewall. The text routes the lab back to it.', meaning: 'Address of the lab gateway on the network between it and the firewall' };
+  }
+
   // The external firewall, which stands outside the lab, between the lab and the internet. Lab machines reach their own
   // supernet, the machines that need it reach the internet, and nothing else that comes from the lab is passed. The
   // first lines are the way back to the lab. f holds the supernet, the IPv6 block, and the machines with internet access.
@@ -9382,9 +9474,20 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     f.hosts.forEach(function (h) { h.addrs.forEach(function (a) { addrs.push(a); }); });
     var own = lab + ': lab machines reach their own supernet', out = lab + ': internet access for the machines that need it', rest = lab + ': nothing else leaves the lab', policy = os === 'fortigate';
     var names = f.hosts.map(function (h) { return h.name; });
-    var notes = ['This is an additional firewall, outside the lab, between the lab and the internet.' + (f.device || !f.gwBuilt ? '' : ' It does not take the place of ' + f.gw + ', which stays the lab\'s own firewall.') + ' Replace ' + FW_LAB + ' with ' + (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab' + (os === 'junos' ? ' (the text uses unit 0 of it)' : '') +
-        (policy ? (names.length ? ', and ' + FW_OUT + ' with its interface that faces the internet.' : '.') : '. That interface must carry the lab and nothing else, because the last rule drops everything else that comes in there.'),
-      'Replace ' + FW_GW + ' with the address that the lab gateway has on the network between it and this firewall. The first lines are the way back to the lab.',
+    // The values of section 11. A value that was typed stands in the text, and the notes say so. A placeholder that is
+    // left is named as something to replace.
+    var vars = f.vars || {}, from = f.from || {}, uses = [], todo = [], labWhat = (os === 'asa' ? 'the name (nameif) of ' : '') + 'its interface that faces the lab';
+    if (vars.FW_LAB_INTERFACE) uses.push(vars.FW_LAB_INTERFACE + ' as ' + labWhat + (os === 'junos' ? ', with unit 0 of it' : ''));
+    else todo.push(FW_LAB + ' with ' + labWhat + (os === 'junos' ? ' (the text uses unit 0 of it)' : ''));
+    if (fwVarUsed('FW_INTERNET_INTERFACE', os, addrs.length > 0)) {
+      if (vars.FW_INTERNET_INTERFACE) uses.push(vars.FW_INTERNET_INTERFACE + ' as its interface that faces the internet');
+      else todo.push(FW_OUT + ' with its interface that faces the internet');
+    }
+    var notes = ['This is an additional firewall, outside the lab, between the lab and the internet.' + (f.device || !f.gwBuilt ? '' : ' It does not take the place of ' + f.gw + ', which stays the lab\'s own firewall.') +
+        (uses.length ? ' The text uses ' + uses.join(', and ') + '.' : '') + (todo.length ? ' Replace ' + todo.join(', and ') + '.' : '') +
+        (policy ? '' : ' That interface must carry the lab and nothing else, because the last rule drops everything else that comes in there.'),
+      (vars.LAB_GATEWAY_ADDRESS ? 'The text uses ' + vars.LAB_GATEWAY_ADDRESS + (from.LAB_GATEWAY_ADDRESS === 'uplink' ? ', the uplink address of section 10,' : '') + ' as' : 'Replace ' + FW_GW + ' with') +
+        ' the address that the lab gateway has on the network between it and this firewall. The first lines are the way back to the lab.',
       'Lab machines reach the supernet ' + net + '/' + len + ', the lab network range of section 6, and nothing else. ' + (names.length ? 'Internet access: ' + names.join(', ') + '.' : 'No machine has internet access.') +
         (names.length ? ' A machine with internet access also reaches the other networks behind this firewall. Add a rule above its line if it must not.' : ''),
       policy ? 'FortiOS reads policies from the top, so keep these policies above any policy that lets the lab out.' + (names.length ? ' The policy ' + lab + '-internet translates the source address ("set nat enable").' : '') + ' One policy holds IPv4 and IPv6 addresses from FortiOS 6.4.'
@@ -9453,7 +9556,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         'See what was dropped with "show firewall filter ' + filter + '" and "show firewall filter ' + filter6 + '".');
     }
     notes.push(NET_UNTESTED);
-    return { os: os, file: lab + '-firewall-' + os + '.txt', text: L.join('\n') + '\n', notes: notes, extra: null };
+    var text = L.join('\n') + '\n';
+    FW_VARS.forEach(function (x) { if (vars[x[0]]) text = text.split('<' + x[0] + '>').join(vars[x[0]]); });
+    return { os: os, file: lab + '-firewall-' + os + '.txt', text: text, notes: notes, extra: null };
   }
 
   // The gateway text and the external firewall text for the choices on the page. The gateway is the Linux router of the
@@ -9462,17 +9567,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     v = v || validateAll();
     var p4 = validIpv4Prefix(state.v4) ? state.v4 : OLD_V4, p6 = validIpv6Prefix(state.v6) ? state.v6 : OLD_V6;
     var m = netModel(v), g = netPick(NET_GW, state.gwOs), f = netOs(state.fwOs), device = g !== NET_GW[0][0], all = inetHosts(v, p4), on = all.filter(function (h) { return h.on; });
-    var up = v.uplink, fwc = firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device, uplink: up.on });
-    // With an uplink address that is set, the firewall text names it.
-    if (up.addr) { fwc.text = fwc.text.split(FW_GW).join(up.addr); fwc.notes = fwc.notes.filter(function (x) { return x.indexOf('Replace ' + FW_GW) !== 0; }); }
-    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: gatewayConfig(g, m), firewall: fwc };
+    // The values of section 11 stand in the firewall text. With an uplink address that is set, the text names that one
+    // as the address of the gateway.
+    var up = v.uplink, fv = fwVarCheck(v, p4, on), gv = gwVarCheck();
+    var fwc = firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device, uplink: up.on, vars: fv.val, from: fv.from });
+    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: gatewayConfig(g, m, gv.val), firewall: fwc, fwVars: fv, gwVars: gv };
   }
 
   // The external firewall text as a file of the zip. It is the text as it stands in section 11, so an edited text goes
   // into the zip as it was edited. The notes are the ones of the page's own text.
   function firewallFile(v) {
     var n = netConfigs(v), edited = !!state.fwEdit && state.fwEdit !== n.firewall.text;
-    return { path: 'external-firewall/' + n.firewall.file, os: n.fwName, text: edited ? state.fwEdit : n.firewall.text, edited: edited, notes: n.firewall.notes };
+    return { path: 'external-firewall/' + n.firewall.file, os: n.fwName, text: edited ? state.fwEdit : n.firewall.text, edited: edited, notes: n.firewall.notes, vars: n.fwVars };
   }
 
   // The text for a network device that is the gateway, as a file of the zip. The Linux router of the scripts needs no
@@ -9481,7 +9587,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var n = netConfigs(v), g = n.gateway;
     if (!g.text) return null;
     var path = 'gateway-device/' + g.file;
-    return { path: path, os: n.gwName, gw: n.model.gw, leftOut: n.model.gwLeftOut, text: g.text, notes: g.notes,
+    return { path: path, os: n.gwName, gw: n.model.gw, leftOut: n.model.gwLeftOut, text: g.text, notes: g.notes, vars: n.gwVars,
       extra: g.extra ? { path: path.replace(/\.txt$/, '-extra.txt'), title: g.extra.title, text: g.extra.text } : null };
   }
 
@@ -9706,7 +9812,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-selector-choices', format: 2, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, count: !!state.rangeOn.count, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeCount: state.rangeCount, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-selector-choices', format: 2, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, count: !!state.rangeOn.count, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeCount: state.rangeCount, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit, firewallValues: state.fwVars, gatewayValues: state.gwVars }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -9767,6 +9873,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     state.uplink = s.uplink === true; state.uplinkSet = s.uplinkSet === true; state.uplinkAddr = typeof s.uplinkAddress === 'string' ? s.uplinkAddress : ''; state.uplinkFw = typeof s.uplinkFirewall === 'string' ? s.uplinkFirewall : ''; state.uplinkDns = typeof s.uplinkDns === 'string' ? s.uplinkDns : '';
     state.inet = {}; BASE.vms.forEach(function (b) { if (s.internet && typeof s.internet[b.name] === 'boolean') state.inet[b.name] = s.internet[b.name]; });
     state.fwEdit = typeof s.firewallText === 'string' && s.firewallText.length <= 100000 ? s.firewallText : '';
+    // The values of the firewall text. A file from before the page asked for them has none.
+    state.fwVars = {}; FW_VARS.forEach(function (x) { var t = s.firewallValues && s.firewallValues[x[0]]; if (typeof t === 'string' && t.length <= 200) state.fwVars[x[0]] = t; });
+    state.gwVars = {}; GW_VARS.forEach(function (x) { var t = s.gatewayValues && s.gatewayValues[x[0]]; if (typeof t === 'string' && t.length <= 200) state.gwVars[x[0]] = t; });
     return notes;
   }
 
@@ -9833,7 +9942,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
-    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs
+    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs, FW_VARS: FW_VARS, fwVarCheck: fwVarCheck, fwVarText: fwVarText, GW_VARS: GW_VARS, gwVarCheck: gwVarCheck, gwVarText: gwVarText
   };
 })();
 </script>
@@ -9871,13 +9980,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><div class="tscroll"><table id="lics"></table></div></div>';
     var optsOf = function (list) { return list.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + '</option>'; }).join(''); };
-    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The build then leaves gw-201 out, and the page writes a starting configuration for the device, on one 802.1Q trunk port and the out-of-band port. The zip holds that text in the folder gateway-device. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
+    h += '<div class="card"><h2><span class="n">10</span> Gateway configuration</h2><p class="hint">The gateway holds the .1 address of every shared segment and lets the lab segments reach each other. The scripts build the Linux router gw-201 for that. It is also the lab\'s own firewall, and it needs no text from this section. Tick <b>Uplink</b> to keep its way to the external firewall of section 11. Pick another OS type only if a network device takes the place of gw-201. The build then leaves gw-201 out, and the page writes a starting configuration for the device, on one 802.1Q trunk port and the out-of-band port. Type those two ports under the OS type, and the text names them. The zip holds that text in the folder gateway-device. That text lets every lab segment reach every other one, which is wider than the policy of Lab 999.1 that gw-201 applies, and it adds no route and no address translation to anything outside the lab. The Diagram tab shows your choice.</p>';
     h += '<div class="field"><label for="gwos">OS type</label><div><select id="gwos">' + optsOf(C.NET_GW) + '</select></div>';
     h += '<label for="gwuplink" id="gwuplabel">Uplink</label><div id="gwupbox"><label class="subset" style="margin-left:0;white-space:normal"><input type="checkbox" id="gwuplink"> Keep the uplink of <span id="gwupname"></span> to the external firewall</label></div>';
     h += '<label for="upaddr" id="upaddrlabel">Uplink address</label><div id="upaddrbox"><span class="sub rangeval" id="upauto"></span><span id="upstatic"><span class="small" id="upgwname"></span> <input type="text" id="upaddr" class="addr subin" autocomplete="off" placeholder="192.168.50.2/24" aria-label="Uplink address of the gateway"> <span class="small">external firewall</span> <input type="text" id="upfw" class="addr subin" autocomplete="off" placeholder="192.168.50.1" aria-label="Address of the external firewall"> <span class="small">DNS</span> <input type="text" id="updns" class="addr subin" autocomplete="off" placeholder="the external firewall" aria-label="DNS server for the gateway"></span><label class="subset small"><input type="checkbox" id="upset"> Override</label><span class="msg bad" id="upmsg"></span></div></div>';
-    h += '<div class="note info" id="gwupnote"></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
-    h += '<div class="card"><h2><span class="n">11</span> External firewall configuration <span class="badge">additional firewall</span></h2><p class="hint">An additional firewall, outside the lab, between the lab and the internet. <span id="fwnotgw"></span> This one gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 6). Pick the OS type of the firewall and the machines that need internet access. You can edit the text, for example to add a rule that your firewall needs. The zip holds the text as it stands here, in the folder external-firewall.</p>';
-    h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div><label>Internet access</label><div id="fwinet" class="inet"></div></div><textarea id="fwtext" class="cfgedit" spellcheck="false" wrap="off" aria-label="External firewall configuration"></textarea><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><button class="btn" id="fwreset" hidden>Use the page\'s text again</button><span class="small" id="fwmsg"></span></div><div class="note warn" id="fwedited" hidden></div><div class="note info" id="fwnotes"></div></div>';
+    h += '<div class="note info" id="gwupnote"></div><div id="gwvarbox"><p class="hint" style="margin-top:12px">Ports of your device: the text writes its two ports as placeholders such as <code>&lt;GW_TRUNK_PORT&gt;</code>. Type the ports and the text shows them, here and in the zip. An empty field keeps the placeholder.</p><div class="field" id="gwvars"></div></div><pre id="gwcfg" class="cfg"></pre><div id="gwextra"></div><div class="actions" id="gwacts"><button class="btn" id="gwcopy">Copy</button><button class="btn" id="gwdl">Download</button><span class="small" id="gwmsg"></span></div><div class="note info" id="gwnotes"></div></div>';
+    h += '<div class="card"><h2><span class="n">11</span> External firewall configuration <span class="badge">additional firewall</span></h2><p class="hint">An additional firewall, outside the lab, between the lab and the internet. <span id="fwnotgw"></span> This one gives internet access to the machines that need it, and blocks every other lab machine from any network except the lab\'s own supernet (section 6). Pick the OS type of the firewall and the machines that need internet access, and type the values of your firewall. You can edit the text, for example to add a rule that your firewall needs. The zip holds the text as it stands here, in the folder external-firewall.</p>';
+    h += '<div class="field"><label for="fwos">OS type</label><div><select id="fwos">' + optsOf(C.NET_FW) + '</select></div><label>Internet access</label><div id="fwinet" class="inet"></div></div><p class="hint" style="margin-top:12px">Values of your firewall: the text writes what the page cannot know as placeholders such as <code>&lt;FW_LAB_INTERFACE&gt;</code>. Type your values and the text shows them, here and in the zip. An empty field keeps the placeholder.</p><div class="field" id="fwvars"></div><textarea id="fwtext" class="cfgedit" spellcheck="false" wrap="off" aria-label="External firewall configuration"></textarea><div class="actions" id="fwacts"><button class="btn" id="fwcopy">Copy</button><button class="btn" id="fwdl">Download</button><button class="btn" id="fwreset" hidden>Use the page\'s text again</button><span class="small" id="fwmsg"></span></div><div class="note warn" id="fwedited" hidden></div><div class="note info" id="fwnotes"></div></div>';
     $('left').innerHTML = h;
     var r = '<div class="card"><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="tabbody"></div><div id="issues"></div>';
     r += '<div class="actions"><button class="btn" id="copy">Copy</button><button class="btn" id="dlmanifest">Download manifest</button><button class="btn primary" id="dlzip">Download zip</button><button class="btn" id="save">Save choices</button><button class="btn" id="load">Load choices</button><input type="file" id="loadfile" accept="application/json" hidden><button class="btn" id="loadprog">Load progress</button><input type="file" id="progfile" accept=".md,text/markdown,text/plain" hidden><button class="btn" id="startover">Start over</button></div><p class="small" id="zipnote"></p><p class="small" id="keptnote"></p><p class="small">The zip can be handed to Claude to walk the labs with you. Unzip it, open a terminal in the folder, and run <code>claude "Start the lab walkthrough."</code> The <b>Claude</b> tab has the full steps.</p></div>';
@@ -10220,6 +10329,30 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return { v: v, m: m };
   }
 
+  // The fields for the placeholders of a text: the ports of the gateway text in section 10 (kind "gw"), and the values
+  // of the firewall text in section 11 (kind "fw"). There is one field for each placeholder that the text holds. The
+  // fields are built again only when another set of them is needed, so typing in one is not disturbed. A value that the
+  // page has from section 10, the uplink address, is shown and not asked for again. The line about a field stands under
+  // it, because the column is too narrow for both side by side.
+  function varFields(box, kind, chk, typed, sig, textOf) {
+    var from = chk.from || {}, name = kind + 'var';
+    if (box.getAttribute('data-sig') !== sig) {
+      box.innerHTML = chk.used.map(function (k) {
+        var tx = textOf(k);
+        return from[k] ? '<label>' + esc(tx.label) + '</label><div><span class="rangeval" data-' + kind + 'val="' + k + '">' + esc(chk.val[k]) + '</span><span class="msg small">The uplink address that you set in section 10.</span></div>'
+          : '<label for="' + name + '_' + k + '">' + esc(tx.label) + '</label><div><input type="text" id="' + name + '_' + k + '" data-' + name + '="' + k + '" class="wide" style="max-width:220px" autocomplete="off" spellcheck="false" placeholder="&lt;' + k + '&gt;" value="' + esc(typed[k] || '') + '"><span class="msg small" data-m="' + name + '" data-k="' + k + '"></span></div>';
+      }).join('');
+      box.setAttribute('data-sig', sig);
+    }
+    chk.used.forEach(function (k) {
+      var inp = box.querySelector('[data-' + name + '="' + k + '"]'), note = box.querySelector('[data-m=' + name + '][data-k="' + k + '"]');
+      if (!inp) return;
+      if (document.activeElement !== inp && inp.value !== (typed[k] || '')) inp.value = typed[k] || '';
+      inp.className = 'wide' + (chk.err[k] ? ' err' : chk.val[k] ? ' chg' : '');
+      note.className = chk.err[k] ? 'msg bad' : 'msg small'; note.textContent = chk.err[k] || textOf(k).help;
+    });
+  }
+
   // The gateway and firewall sections: the text for the chosen operating systems, and what to know before using it.
   function renderNet(v) {
     var n = C.netConfigs(v), list = function (c) { return '<b>' + (c.text ? 'Before you use it' : 'No text needed') + '</b><ul>' + c.notes.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; };
@@ -10232,6 +10365,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     gpre.hidden = !n.gateway.text; $('gwacts').style.display = n.gateway.text ? '' : 'none';
     $('gwnotes').innerHTML = list(n.gateway);
     $('gwextra').innerHTML = ex ? '<p class="small" style="margin:10px 0 6px">' + esc(ex.title) + '</p><pre class="cfg" style="margin-top:0">' + esc(ex.text) + '</pre>' : '';
+    // The ports of the device: a field for each placeholder of the gateway text. With the Linux router of the scripts
+    // there is no text, so the fields are hidden.
+    var gv = n.gwVars;
+    $('gwvarbox').style.display = gv.used.length ? '' : 'none';
+    varFields($('gwvars'), 'gw', gv, S.gwVars, gv.used.join(' '), function (k) { return C.gwVarText(k); });
     // The uplink of the gateway, which only the Linux router of the scripts has.
     var up = n.uplink, show = function (ids, yes) { ids.forEach(function (id) { $(id).style.display = yes ? '' : 'none'; }); };
     show(['gwuplabel', 'gwupbox', 'gwupnote'], up.show); show(['upaddrlabel', 'upaddrbox'], up.on); show(['upauto'], !up.set); show(['upstatic'], up.set);
@@ -10277,11 +10415,15 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (ta.value !== want) { ta.value = want; $('fwmsg').textContent = ''; }
     ta.className = 'cfgedit' + (edited ? ' chg' : '');
     $('fwreset').hidden = !edited; $('fwedited').hidden = !edited;
-    $('fwedited').textContent = edited ? 'You edited this text, so it no longer follows the page. A change of the range, of the machines, or of the gateway does not reach it. Click "Use the page\'s text again" to get the text of the page back. '
+    $('fwedited').textContent = edited ? 'You edited this text, so it no longer follows the page. A change of the range, of the machines, of the gateway, or of the values above the text does not reach it. Click "Use the page\'s text again" to get the text of the page back. '
       + 'The page keeps your edit in this browser and in the choices file, and the zip holds the text as you edited it, so do not put a password or a key in it.' : '';
     $('fwnotes').innerHTML = list(n.firewall);
     var boxes = n.machines.map(function (h) { return '<label><input type="checkbox" data-inet="' + esc(h.base) + '"' + (h.on ? ' checked' : '') + '> ' + esc(h.name) + '</label>'; }).join('');
     if ($('fwinet').getAttribute('data-sig') !== boxes) { $('fwinet').innerHTML = boxes || '<span class="small">This build has no machine that could use it.</span>'; $('fwinet').setAttribute('data-sig', boxes); }
+    // The values of the firewall: a field for each placeholder that the text of this OS type holds. An uplink address
+    // that is set in section 10 is shown, and not asked for again.
+    var fv = n.fwVars;
+    varFields($('fwvars'), 'fw', fv, S.fwVars, n.fw + ' ' + fv.used.map(function (k) { return k + (fv.from[k] ? '=' + fv.val[k] : ''); }).join(' '), function (k) { return C.fwVarText(k, n.fw); });
     return n;
   }
 
@@ -10423,6 +10565,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       else if (t.id === 'updns') S.uplinkDns = t.value;
       else if (t.id === 'fwtext') S.fwEdit = t.value === C.netConfigs().firewall.text ? '' : t.value;
       else if (t.hasAttribute('data-inet')) S.inet[t.getAttribute('data-inet')] = t.checked;
+      else if (t.hasAttribute('data-fwvar')) S.fwVars[t.getAttribute('data-fwvar')] = t.value;
+      else if (t.hasAttribute('data-gwvar')) S.gwVars[t.getAttribute('data-gwvar')] = t.value;
       else if (t.hasAttribute('data-sub')) S.subnets[t.getAttribute('data-sub')] = t.value;
       else if (t.hasAttribute('data-lic')) S.licRefs[t.getAttribute('data-lic')] = t.value;
       else return;
@@ -10872,6 +11016,35 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       gj.text.indexOf('set interfaces <GW_OOB_PORT> unit 0 family inet address 10.77.0.1/24\n') > 0 && gj.text.indexOf('security') < 0 && gj.extra && count(gj.extra.text, 'set security zones security-zone ' + nm.lab + ' interfaces ') === nm.ifs.length &&
       gj.extra.text.indexOf(' interfaces ' + TRK + '.5\n') > 0 && gj.extra.text.slice(-13) === ' then permit\n' && osIds.every(function (o) { return o === 'junos' || C.gatewayConfig(o, nm).extra === null; }),
       'the Junos gateway text uses one unit for each segment, and keeps the SRX lines apart from it');
+    // The ports of section 10: what the text for a device as the gateway would leave as a placeholder.
+    reset(); v = C.validateAll(); var gvLinux = C.netConfigs(v).gwVars; S.gwVars = { GW_TRUNK_PORT: 'bad port!' }; var gvLinuxBad = C.validateAll();
+    ok(C.GW_VARS.map(function (x) { return x[0]; }).join() === 'GW_TRUNK_PORT,GW_OOB_PORT' && gvLinux.used.length === 0 && v.gw.used.length === 0 && !gvLinuxBad.gw.err.GW_TRUNK_PORT && !gvLinuxBad.errors.some(function (e) { return e.indexOf('Gateway device') === 0; }) &&
+      C.labValuesText(C.buildManifest(v), v).indexOf('## Gateway device') < 0, 'with the Linux router as the gateway, section 10 asks for no port and checks none');
+    reset(); S.gwVars = { GW_TRUNK_PORT: ' Gi0/0/1 ', GW_OOB_PORT: 'Gi0/0/0' };
+    var gvEach = osIds.every(function (o) {
+      S.gwOs = o; var n = C.netConfigs(C.validateAll()), g = n.gateway;
+      return clean(g) && n.gwVars.used.join() === 'GW_TRUNK_PORT,GW_OOB_PORT' && g.text.indexOf('<GW_') < 0 && (!g.extra || g.extra.text.indexOf('<GW_') < 0) && g.text.indexOf('Gi0/0/1') >= 0 && g.text.indexOf('Gi0/0/0') >= 0 &&
+        g.notes[0] === 'The text uses Gi0/0/1 as the port that carries the lab VLANs, and Gi0/0/0 as the port on the out-of-band network (segment 0).';
+    });
+    S.gwOs = 'iosxe'; var gvXe = C.netConfigs(C.validateAll()).gateway; S.gwOs = 'fortigate'; var gvFg = C.netConfigs(C.validateAll()).gateway; S.gwOs = 'junos'; var gvJun = C.netConfigs(C.validateAll()).gateway;
+    ok(gvEach && gvXe.text.indexOf('interface Gi0/0/1\n description ') > 0 && gvXe.text.indexOf('interface Gi0/0/1.2\n') > 0 && gvXe.text.indexOf('interface Gi0/0/0\n') > 0 && gvFg.text.indexOf('    edit "Gi0/0/0"\n        set mode static\n') > 0 && gvFg.text.indexOf('        set interface "Gi0/0/1"\n') > 0 &&
+      gvJun.text.indexOf('set interfaces Gi0/0/1 vlan-tagging\n') > 0 && gvJun.text.indexOf('set interfaces Gi0/0/0 unit 0 family inet address ') > 0 && gvJun.extra.text.indexOf(' interfaces Gi0/0/1.2\n') > 0 && gvJun.extra.text.indexOf(' interfaces Gi0/0/0.0\n') > 0,
+      'a port typed in section 10 takes the place of its placeholder in the gateway text of every OS type, and in the extra lines for an SRX');
+    S.gwOs = 'iosxe'; S.gwVars = { GW_TRUNK_PORT: 'Gi0/0/1', GW_OOB_PORT: 'gi0/0/1' }; var gvSame = C.validateAll(), gvSameN = C.netConfigs(gvSame).gateway; S.gwVars = { GW_TRUNK_PORT: 'bad port!' }; var gvBadV = C.validateAll(), gvBadN = C.netConfigs(gvBadV).gateway;
+    ok(gvSame.gw.val.GW_TRUNK_PORT === 'Gi0/0/1' && gvSame.gw.err.GW_OOB_PORT.indexOf('Use another port than the trunk port') === 0 && gvSameN.text.indexOf('<GW_OOB_PORT>') > 0 && gvSameN.text.indexOf('<GW_TRUNK_PORT>') < 0 &&
+      gvSameN.notes[0] === 'The text uses Gi0/0/1 as the port that carries the lab VLANs. Replace <GW_OOB_PORT> with the port on the out-of-band network (segment 0).' && gvSame.errors.some(function (e) { return e.indexOf('Gateway device, out-of-band port: Use another port') === 0; }) &&
+      gvBadV.gw.err.GW_TRUNK_PORT.indexOf('Use a port name such as port1') === 0 && gvBadV.errors.some(function (e) { return e.indexOf('Gateway device, trunk port: ') === 0; }) && gvBadN.notes[0].indexOf('Replace <GW_TRUNK_PORT> with the port that carries the lab VLANs, and <GW_OOB_PORT> with') === 0,
+      'a port that cannot be used, or the trunk port given a second time, is refused, and its placeholder stays');
+    S.gwOs = 'junos'; S.gwVars = { GW_TRUNK_PORT: 'ge-0/0/1' }; v = C.validateAll(); m = C.buildManifest(v); var gvFile = C.gatewayFile(v), gvLv = C.labValuesText(m, v), gvOwn = C.zipOwnFiles(m, v), gvCkl = C.checklistText(m, v);
+    ok(gvFile.vars.val.GW_TRUNK_PORT === 'ge-0/0/1' && gvFile.text.indexOf('set interfaces ge-0/0/1 vlan-tagging\n') > 0 && gvFile.extra.text.indexOf(' interfaces ge-0/0/1.2\n') > 0 && gvOwn.some(function (f) { return f.path === gvFile.path && f.text === gvFile.text; }) &&
+      gvOwn.some(function (f) { return f.path === gvFile.extra.path && f.text === gvFile.extra.text; }) && gvLv.indexOf('\n## Gateway device\n\n- OS type: Juniper Junos OS. The starting configuration is in `' + gvFile.path + '`, and the lines that only some devices need are in `' + gvFile.extra.path + '`.\n') > 0 &&
+      gvLv.indexOf('| `<GW_TRUNK_PORT>` | Port of the gateway device that carries the lab VLANs | `ge-0/0/1` |') > 0 && gvLv.indexOf('| `<GW_OOB_PORT>` | Port of the gateway device on the out-of-band network (segment 0) | not chosen; replace it in the text |') > 0 &&
+      gvLv.indexOf('## Gateway device') < gvLv.indexOf('## External firewall') && gvCkl.indexOf('- The text uses ge-0/0/1 as the port that carries the lab VLANs. Replace <GW_OOB_PORT> with') > 0,
+      'the lab values list the ports of the gateway text, and the zip and the checklist take them');
+    S.gwVars = { GW_TRUNK_PORT: 'ge-0/0/1', GW_OOB_PORT: 'fxp0' }; var gvSaved = JSON.parse(C.choicesText()); reset(); var gvDef = Object.keys(S.gwVars).length === 0; C.applyChoices(gvSaved);
+    var gvBack = S.gwVars.GW_TRUNK_PORT === 'ge-0/0/1' && S.gwVars.GW_OOB_PORT === 'fxp0' && S.gwOs === 'junos'; delete gvSaved.gatewayValues; C.applyChoices(gvSaved); var gvOld = Object.keys(S.gwVars).length === 0;
+    gvSaved.gatewayValues = { GW_TRUNK_PORT: 7, NO_SUCH_PORT: 'x', GW_OOB_PORT: 'fxp0' }; C.applyChoices(gvSaved);
+    ok(gvDef && gvBack && gvOld && Object.keys(S.gwVars).join() === 'GW_OOB_PORT' && S.gwVars.GW_OOB_PORT === 'fxp0', 'the choices file keeps the ports of the gateway text, and a file from before them gives none');
     // The network range of the lab: the starting IP, one /24 for each lab network, and the smallest block that holds them.
     reset(); v = C.validateAll();
     var rg = function (on, start, n, net) { S.rangeOn = on; S.rangeStart = start || ''; S.rangeCount = n || ''; S.rangeNet = net || ''; return C.validateAll().range; }, r0 = v.range, need = netIds.length;
@@ -10971,6 +11144,47 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(netDef && netBack && netOldOk && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.count && !S.rangeOn.net && S.rangeStart === '' && S.rangeCount === '' && S.rangeNet === '' && S.uplink === false && S.uplinkSet === false &&
       S.uplinkAddr === '' && S.uplinkFw === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
       'the choices file keeps the gateway, its uplink, the firewall, the range and its Override boxes, the machines with internet access, and an edited text, and an old file gives the defaults');
+    // The values of section 11: what the external firewall text would leave as a placeholder.
+    reset(); v = C.validateAll();
+    var fwKeys = C.FW_VARS.map(function (x) { return x[0]; }), holds = function (text) { return fwKeys.filter(function (k) { return text.indexOf('<' + k + '>') >= 0; }); };
+    var fvAsk = osIds.every(function (o) {
+      S.fwOs = o; var withInet = C.netConfigs(C.validateAll()); ntpHosts.forEach(function (h) { S.inet[h] = false; }); var noInet = C.netConfigs(C.validateAll()); S.inet = {};
+      return withInet.fwVars.used.join() === holds(withInet.firewall.text).join() && noInet.fwVars.used.join() === holds(noInet.firewall.text).join() && (withInet.fwVars.used.indexOf('FW_INTERNET_INTERFACE') >= 0) === (o === 'fortigate') && noInet.fwVars.used.join() === 'FW_LAB_INTERFACE,LAB_GATEWAY_ADDRESS';
+    });
+    S.fwOs = 'iosxe'; S.fwVars = { FW_INTERNET_INTERFACE: 'bad name!' }; var fvUnused = C.validateAll();
+    ok(fwKeys.join() === 'FW_LAB_INTERFACE,FW_INTERNET_INTERFACE,LAB_GATEWAY_ADDRESS' && Object.keys(v.fw.val).length === 0 && v.fw.used.length === 3 && fvAsk && !fvUnused.fw.err.FW_INTERNET_INTERFACE && !fvUnused.errors.some(function (e) { return e.indexOf('External firewall') === 0; }),
+      'section 11 asks for the placeholders that the firewall text of the OS type holds, and for no other');
+    reset(); S.fwVars = { FW_LAB_INTERFACE: ' port3 ', FW_INTERNET_INTERFACE: 'wan1', LAB_GATEWAY_ADDRESS: '192.168.50.2/24' }; v = C.validateAll();
+    var fvN = C.netConfigs(v), fvT = fvN.firewall.text, fvNotes = fvN.firewall.notes.join(' ');
+    ok(v.fw.val.FW_LAB_INTERFACE === 'port3' && v.fw.val.FW_INTERNET_INTERFACE === 'wan1' && v.fw.val.LAB_GATEWAY_ADDRESS === '192.168.50.2' && Object.keys(v.fw.err).length === 0 && Object.keys(v.fw.from).length === 0 && holds(fvT).length === 0 && clean(fvN.firewall) &&
+      fvT.indexOf('        set gateway 192.168.50.2\n        set device "port3"\n') > 0 && fvT.indexOf('        set srcintf "port3"\n        set dstintf "wan1"\n') > 0 && count(fvT, '"port3"') === 3 &&
+      fvNotes.indexOf('The text uses port3 as its interface that faces the lab, and wan1 as its interface that faces the internet.') > 0 && fvNotes.indexOf('The text uses 192.168.50.2 as the address that the lab gateway has on the network between it and this firewall.') > 0 && fvNotes.indexOf('Replace <') < 0,
+      'a value typed in section 11 takes the place of its placeholder in the firewall text, and the notes name it');
+    var fvEach = osIds.every(function (o) { S.fwOs = o; var f = C.netConfigs(C.validateAll()).firewall; return clean(f) && holds(f.text).length === 0 && f.text.indexOf('port3') >= 0 && f.text.indexOf('192.168.50.2') > 0 && f.notes[0].indexOf(' The text uses port3 as ') > 0 && f.notes[1].indexOf('The text uses 192.168.50.2 as ') === 0; });
+    S.fwOs = 'asa'; var fvAsa = C.netConfigs(C.validateAll()).firewall; S.fwOs = 'junos'; var fvJun = C.netConfigs(C.validateAll()).firewall; S.fwOs = 'iosxe'; var fvXe = C.netConfigs(C.validateAll()).firewall;
+    ok(fvEach && fvAsa.text.indexOf('route port3 ') === 0 && ends(fvAsa.text, ' in interface port3\n') && fvAsa.notes[0].indexOf('The text uses port3 as the name (nameif) of its interface that faces the lab. That interface must carry the lab') > 0 &&
+      fvJun.text.indexOf('set interfaces port3 unit 0 family inet filter input ') > 0 && fvJun.notes[0].indexOf('The text uses port3 as its interface that faces the lab, with unit 0 of it.') > 0 && fvXe.text.indexOf('\ninterface port3\n ip access-group ') > 0 && fvXe.text.indexOf('wan1') < 0,
+      'every OS type takes the values, and the ASA and Junos notes say what the interface value stands for');
+    reset(); S.fwVars = { FW_LAB_INTERFACE: 'bad name!', FW_INTERNET_INTERFACE: 'wan1', LAB_GATEWAY_ADDRESS: sub4(2, '.9') }; v = C.validateAll(); var fvBad = C.netConfigs(v).firewall; S.fwVars.LAB_GATEWAY_ADDRESS = 'gw.example'; var fvBad2 = C.validateAll();
+    ok(v.fw.err.FW_LAB_INTERFACE.indexOf('Use an interface name such as port1') === 0 && v.fw.err.LAB_GATEWAY_ADDRESS.indexOf('Use an address outside the lab network range ' + v.range.cidr) === 0 && fvBad2.fw.err.LAB_GATEWAY_ADDRESS.indexOf('Use an IPv4 address') === 0 &&
+      holds(fvBad.text).join() === 'FW_LAB_INTERFACE,LAB_GATEWAY_ADDRESS' && fvBad.text.indexOf('set dstintf "wan1"') > 0 && v.errors.some(function (e) { return e.indexOf('External firewall, lab-facing interface: Use an interface name') === 0; }) && v.errors.some(function (e) { return e.indexOf('External firewall, lab gateway address: ') === 0; }) &&
+      fvBad.notes[0].indexOf('The text uses wan1 as its interface that faces the internet. Replace <FW_LAB_INTERFACE> with its interface that faces the lab.') > 0 && fvBad.notes[1].indexOf('Replace <LAB_GATEWAY_ADDRESS> with ') === 0,
+      'a value that cannot be used is refused, its placeholder stays, and the notes still ask for it');
+    reset(); S.uplink = true; S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1'; S.fwVars = { LAB_GATEWAY_ADDRESS: '192.168.77.7' }; v = C.validateAll(); var fvUp = C.netConfigs(v).firewall;
+    S.uplinkSet = false; var fvDhcp = C.netConfigs(C.validateAll());
+    ok(v.fw.from.LAB_GATEWAY_ADDRESS === 'uplink' && v.fw.val.LAB_GATEWAY_ADDRESS === '192.168.50.2' && fvUp.text.indexOf('192.168.77.7') < 0 && fvUp.text.indexOf('        set gateway 192.168.50.2\n') > 0 && fvUp.notes[1].indexOf('The text uses 192.168.50.2, the uplink address of section 10, as the address that the lab gateway has') === 0 &&
+      !fvDhcp.fwVars.from.LAB_GATEWAY_ADDRESS && fvDhcp.firewall.text.indexOf('        set gateway 192.168.77.7\n') > 0,
+      'an uplink address that is set in section 10 is the gateway address of the firewall text, and a typed one counts while the uplink takes its address from DHCP');
+    reset(); S.fwVars = { FW_LAB_INTERFACE: 'port3' }; v = C.validateAll(); m = C.buildManifest(v); var fvLv = C.labValuesText(m, v), fvFile = C.firewallFile(v), fvCkl = C.checklistText(m, v);
+    S.fwEdit = 'my own rule\n'; var fvEd = C.firewallFile(v), fvLvEd = C.labValuesText(m, v); S.fwEdit = '';
+    ok(fvLv.indexOf('\n## External firewall\n\n- OS type: FortiGate (FortiOS). The rules are in `' + fvFile.path + '`.\n') > 0 && fvLv.indexOf('| `<FW_LAB_INTERFACE>` | Interface of the firewall that faces the lab | `port3` |') > 0 &&
+      fvLv.indexOf('| `<FW_INTERNET_INTERFACE>` | Interface of the firewall that faces the internet | not chosen; replace it in the text |') > 0 && fvLv.indexOf('| `<LAB_GATEWAY_ADDRESS>` | Address of the lab gateway on the network between it and the firewall | not chosen; replace it in the text |') > 0 &&
+      fvFile.text.indexOf('set device "port3"') > 0 && fvFile.vars.val.FW_LAB_INTERFACE === 'port3' && fvCkl.indexOf('The text uses port3 as its interface that faces the lab.') > 0 && fvEd.edited && fvEd.text === 'my own rule\n' && fvLvEd.indexOf('as they were edited on the page, so that text may not hold the values below') > 0,
+      'the lab values list the values of the firewall text, the zip and the checklist take them, and an edited text keeps its own words');
+    S.fwVars = { FW_LAB_INTERFACE: 'port3', LAB_GATEWAY_ADDRESS: '192.168.50.2' }; var fvSaved = JSON.parse(C.choicesText()); reset(); var fvDef = Object.keys(S.fwVars).length === 0; C.applyChoices(fvSaved);
+    var fvBack = S.fwVars.FW_LAB_INTERFACE === 'port3' && S.fwVars.LAB_GATEWAY_ADDRESS === '192.168.50.2' && Object.keys(S.fwVars).length === 2; delete fvSaved.firewallValues; C.applyChoices(fvSaved); var fvOld = Object.keys(S.fwVars).length === 0;
+    fvSaved.firewallValues = { FW_LAB_INTERFACE: 7, NO_SUCH_VALUE: 'x', FW_INTERNET_INTERFACE: 'wan1' }; C.applyChoices(fvSaved);
+    ok(fvDef && fvBack && fvOld && Object.keys(S.fwVars).join() === 'FW_INTERNET_INTERFACE' && S.fwVars.FW_INTERNET_INTERFACE === 'wan1', 'the choices file keeps the values of the firewall text, and a file from before them gives none');
     // A VLAN ID is the third octet of its subnet, and one Supernet text holds the block, the first address, and the size.
     reset(); C.clearSupernet(); S.rangeOn = {}; v = C.validateAll(); m = C.buildManifest(v);
     ok(C.SEGMENTS.every(function (s) { return v.vlan.eff[s] === s && v.vlan.def[s] === s && !v.vlan.on[s]; }) && !v.vlan.any && v.vlan.vx === C.NET.vxlan && !C.supernetSet() && v.range.cidr === C.OLD_V4 + '.0.0/20' && m.vlan_segments === undefined &&
@@ -11297,6 +11511,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(/err/.test(document.querySelector('input[data-vlan="6"]').className), 'a duplicate VLAN is marked');
     // The gateway section, the lab network range, and the external firewall. The block is 10.77 and segment 5 has VLAN 140 at this point.
     var gwText = function () { return $('gwcfg').textContent; }, fwText = function () { return $('fwtext').value; }, inetBox = function (n) { return document.querySelector('[data-inet="' + n + '"]'); };
+    var fwVar = function (k) { return document.querySelector('[data-fwvar="' + k + '"]'); }, fwVarMsg = function (k) { return document.querySelector('[data-m=fwvar][data-k="' + k + '"]').textContent; };
     ok($('gwos').options.length === C.NET_GW.length && $('fwos').options.length === C.NET_OS.length && $('gwos').value === 'linux' && $('fwos').value === C.NET_OS_DEFAULT && $('gwcfg').hidden && $('gwacts').style.display === 'none' && $('gwnotes').textContent.indexOf('No text needed') === 0 &&
       fwText().indexOf('config router static\n') === 0 && fwText().indexOf('set dst 10.77.0.0 ') > 0 && $('fwreset').hidden && $('fwedited').hidden && C.validateAll().range.cidr.indexOf('10.77.0.0/') === 0,
       'the gateway section starts with the Linux router, and the external firewall text follows the address block');
@@ -11313,6 +11528,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(S.uplinkSet && $('upstatic').style.display === '' && $('upauto').style.display === 'none' && body().indexOf('"address": "192.168.50.2/24"') > 0 && body().indexOf('"gateway": "192.168.50.1"') > 0 && fwText().indexOf('set gateway 192.168.50.2\n') > 0 &&
       fwText().indexOf('<LAB_GATEWAY_ADDRESS>') < 0 && $('upmsg').textContent === '' && /"dns": \[\s*"192\.168\.50\.1"\s*\]/.test(body()) && $('gwupnote').textContent.indexOf('asks 192.168.50.1, the external firewall') > 0,
       'an uplink address that is set appears in the manifest and in the firewall text, and the external firewall is the DNS server');
+    ok(!fwVar('LAB_GATEWAY_ADDRESS') && !!fwVar('FW_LAB_INTERFACE') && (document.querySelector('[data-fwval="LAB_GATEWAY_ADDRESS"]') || {}).textContent === '192.168.50.2' && $('fwvars').textContent.indexOf('The uplink address that you set in section 10.') > 0,
+      'with an uplink address that is set, section 11 shows it as the gateway address and does not ask for one');
     type('#updns', '9.9.9.9');
     ok(/"dns": \[\s*"9\.9\.9\.9"\s*\]/.test(body()) && /chg/.test($('updns').className) && $('gwupnote').textContent.indexOf('asks 9.9.9.9.') > 0, 'a DNS server that is typed takes the place of the external firewall');
     type('#updns', '');
@@ -11323,11 +11540,22 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(!S.uplink && $('gwupbox').style.display === 'none' && $('gwupnote').style.display === 'none', 'a device as the gateway has no uplink option, because it brings its own');
     ok(S.gwOs === 'junos' && !$('gwcfg').hidden && $('gwacts').style.display === '' && gwText().indexOf('set interfaces <GW_TRUNK_PORT> unit 5 vlan-id 140\n') > 0 && $('gwextra').textContent.indexOf('set security zones security-zone ' + C.BASE.lab + ' interfaces ') > 0 &&
       $('gwnotes').textContent.indexOf('Before you use it') === 0 && $('fwnotes').textContent.indexOf('give the gateway device an uplink') > 0, 'a device as the gateway gets its text, and the firewall notes follow');
+    // The ports of the device: a field for each placeholder of the gateway text.
+    var gwVar = function (k) { return document.querySelector('[data-gwvar="' + k + '"]'); };
+    type('[data-gwvar="GW_TRUNK_PORT"]', 'ge-0/0/1'); type('[data-gwvar="GW_OOB_PORT"]', 'bad port!');
+    ok($('gwvarbox').style.display === '' && gwVar('GW_TRUNK_PORT').placeholder === '<GW_TRUNK_PORT>' && gwText().indexOf('set interfaces ge-0/0/1 unit 5 vlan-id 140\n') > 0 && gwText().indexOf('set interfaces <GW_OOB_PORT> unit 0 ') > 0 && $('gwextra').textContent.indexOf(' interfaces ge-0/0/1.5\n') > 0 &&
+      /chg/.test(gwVar('GW_TRUNK_PORT').className) && /err/.test(gwVar('GW_OOB_PORT').className) && document.querySelector('[data-m=gwvar][data-k="GW_OOB_PORT"]').textContent.indexOf('Use a port name') === 0 &&
+      $('gwnotes').textContent.indexOf('The text uses ge-0/0/1 as the port that carries the lab VLANs. Replace <GW_OOB_PORT> with') > 0 && $('issues').textContent.indexOf('Gateway device, out-of-band port: Use a port name') > 0,
+      'a port typed in section 10 goes into the gateway text and its notes, and a port that cannot be used is marked');
+    type('[data-gwvar="GW_OOB_PORT"]', '');
     var gwRowName = C.BASE.vms.filter(function (x) { return x.role === 'gateway'; })[0].name, gwTr = document.querySelector('tr[data-vm="' + gwRowName + '"]'), gwCb = gwTr.querySelector('[data-f=include]'), nDev = +stat(0);
     var outDev = !gwCb.checked && gwCb.disabled && gwTr.className === 'off' && gwTr.querySelector('[data-m=avail]').textContent.indexOf('Left out: a network device is the gateway') === 0 && $('gwnotes').textContent.indexOf('The build leaves ' + gwRowName + ' out') > 0;
     pick('#gwos', 'linux');
     ok(outDev && gwCb.checked && gwCb.disabled && gwTr.className === '' && gwTr.querySelector('[data-m=avail]').textContent === '' && +stat(0) === nDev + 1, 'a device as the gateway takes the Linux router out of the machines, and it comes back with its own choice');
+    var gwVarHidden = $('gwvarbox').style.display === 'none' && !gwVar('GW_TRUNK_PORT') && S.gwVars.GW_TRUNK_PORT === 'ge-0/0/1' && $('issues').textContent.indexOf('Gateway device, ') < 0;
     pick('#gwos', 'junos');
+    ok(gwVarHidden && $('gwvarbox').style.display === '' && gwVar('GW_TRUNK_PORT').value === 'ge-0/0/1' && gwText().indexOf('set interfaces ge-0/0/1 vlan-tagging\n') > 0, 'with the Linux router, section 10 hides the port fields, and a typed port comes back with the device');
+    type('[data-gwvar="GW_TRUNK_PORT"]', '');
     // The supernet and the number of subnets are in the IP addressing section. The page picks them, and a box overrides
     // each one. The supernet is 10.77.0.0 with no size at this point.
     var rng = C.validateAll().range, need = rng.need, rbox = function (k) { return document.querySelector('[data-rangeon="' + k + '"]'); }, seg40 = function () { return document.querySelector('[data-m="subnet"][data-seg="5"]').textContent; };
@@ -11367,9 +11595,22 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(inetBox('svc-201a').checked && inetBox('svc-201b').checked && !inetBox('admin-201').checked && !inetBox('gw-201') && fwText().indexOf('set comment "svc-201a"') > 0 && fwText().indexOf('set comment "admin-201"') < 0, 'the hosts of the NTP servers have internet access from the start');
     inetBox('admin-201').click(); inetBox('svc-201a').click();
     ok(S.inet['admin-201'] === true && S.inet['svc-201a'] === false && inetBox('admin-201').checked && fwText().indexOf('set comment "admin-201"') > 0 && fwText().indexOf('set comment "svc-201a"') < 0, 'ticking a machine gives it internet access in the firewall text');
+    // The values of the firewall: a field for each placeholder of the text.
+    ok(!!fwVar('FW_LAB_INTERFACE') && !!fwVar('FW_INTERNET_INTERFACE') && !!fwVar('LAB_GATEWAY_ADDRESS') && fwVar('FW_LAB_INTERFACE').value === '' && fwVar('FW_LAB_INTERFACE').placeholder === '<FW_LAB_INTERFACE>' && fwText().indexOf('set device "<FW_LAB_INTERFACE>"') > 0 &&
+      fwVarMsg('LAB_GATEWAY_ADDRESS').indexOf('The address that the lab gateway has') === 0, 'section 11 has a field for each placeholder of the firewall text');
+    type('[data-fwvar="FW_LAB_INTERFACE"]', 'port3'); type('[data-fwvar="LAB_GATEWAY_ADDRESS"]', '192.168.50.2');
+    ok(S.fwVars.FW_LAB_INTERFACE === 'port3' && fwText().indexOf('set device "port3"') > 0 && fwText().indexOf('set gateway 192.168.50.2\n') > 0 && fwText().indexOf('<FW_LAB_INTERFACE>') < 0 && fwText().indexOf('set dstintf "<FW_INTERNET_INTERFACE>"') > 0 && /chg/.test(fwVar('FW_LAB_INTERFACE').className) &&
+      !/chg/.test(fwVar('FW_INTERNET_INTERFACE').className) && $('fwnotes').textContent.indexOf('The text uses port3 as its interface that faces the lab.') > 0 && $('fwreset').hidden && $('fwedited').hidden, 'a value typed in section 11 goes into the firewall text and its notes, and the text still follows the page');
+    type('[data-fwvar="FW_INTERNET_INTERFACE"]', 'bad name!');
+    ok(/err/.test(fwVar('FW_INTERNET_INTERFACE').className) && fwVarMsg('FW_INTERNET_INTERFACE').indexOf('Use an interface name') === 0 && fwText().indexOf('set dstintf "<FW_INTERNET_INTERFACE>"') > 0 && $('issues').textContent.indexOf('External firewall, internet-facing interface: Use an interface name') > 0,
+      'a value that cannot be used is marked and named, and its placeholder stays in the text');
+    type('[data-fwvar="FW_INTERNET_INTERFACE"]', ''); type('[data-fwvar="FW_LAB_INTERFACE"]', ''); type('[data-fwvar="LAB_GATEWAY_ADDRESS"]', '');
     // The firewall text can be edited. An edit stays until the text of the page is asked for again.
     var fwGen = fwText(); type('#fwtext', fwGen + 'set my-own-rule\n');
     ok(S.fwEdit === fwGen + 'set my-own-rule\n' && !$('fwreset').hidden && !$('fwedited').hidden && /chg/.test($('fwtext').className), 'the firewall text can be edited, and the page says that it no longer follows');
+    type('[data-fwvar="FW_LAB_INTERFACE"]', 'port9');
+    ok(fwText() === fwGen + 'set my-own-rule\n' && C.netConfigs().firewall.text.indexOf('set device "port9"') > 0 && $('fwedited').textContent.indexOf('or of the values above the text does not reach it') > 0, 'a value does not reach an edited text, and the page says so');
+    type('[data-fwvar="FW_LAB_INTERFACE"]', '');
     inetBox('admin-201').click();
     ok(fwText() === fwGen + 'set my-own-rule\n' && C.netConfigs().firewall.text !== fwGen, 'an edited text is kept when a choice changes');
     $('fwreset').click();
@@ -11379,6 +11620,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var fwKept = S.fwOs === C.NET_OS_DEFAULT && $('fwos').value === C.NET_OS_DEFAULT && S.fwEdit !== '';
     window.confirm = function () { asked++; return true; }; pick('#fwos', 'asa'); window.confirm = realConfirm;
     ok(fwKept && asked === 2 && S.fwOs === 'asa' && S.fwEdit === '' && fwText().indexOf('route <FW_LAB_INTERFACE> ') === 0, 'another OS type replaces an edited text only after a question');
+    type('[data-fwvar="FW_LAB_INTERFACE"]', 'inside');
+    ok(document.querySelector('label[for="fwvar_FW_LAB_INTERFACE"]').textContent === 'Lab-facing interface name' && !fwVar('FW_INTERNET_INTERFACE') && fwText().indexOf('route inside ') === 0 && fwVarMsg('FW_LAB_INTERFACE').indexOf('nameif') > 0,
+      'the fields follow the OS type: the ASA text asks for the name of the interface, and for no internet interface');
+    type('[data-fwvar="FW_LAB_INTERFACE"]', '');
     // The picture on the Diagram tab follows the choices.
     document.querySelector('[data-tab="diagram"]').click();
     var pic = function (n) { return document.querySelector('#tabbody svg [data-node="' + n + '"]'); }, parsed = new DOMParser().parseFromString(C.topologySvg(), 'image/svg+xml');

@@ -18,9 +18,11 @@ for the terms of the shared lab and the build scripts.
 - **Lab set** — the labs of one volume, as the catalog lists them: its requirement lab chapters and, if it has one, the Chapter 999 that builds its own hosts.
 - **Link with lab sets** — an address of the page that ends in `?sets=` and the ids of lab sets, such as `?sets=fortianalyzer`. The page starts with those lab sets ticked, once, and keeps the result.
 - **Manifest (`lab201-vms.json`)** — the file that lists the machines of the shared lab, their sizes, networks, and IPv4 addresses. The build scripts read it, and the page writes a copy with your changes.
+- **Port of the gateway device** — the trunk port or the out-of-band port of a network device that is the gateway of the lab. Section 10 of the page asks for both, and puts them into the gateway text in place of placeholders such as `<GW_TRUNK_PORT>`.
 - **Prefix** — the short name of a lab set that comes before the number of its labs and the file names of its walkthroughs, such as `faz` and `fmg`. The FortiSwitch lab set has none.
 - **Shared lab** — the gateway, the VLANs, and the service hosts of Volume CCI's Chapter 999, which every lab set runs on and which the scripts of this volume build.
 - **Short name** — the name that a lab chapter has in the zip and in the published folder, kept short so that the paths stay short on Windows.
 - **Stated number** — a count that a document gives in its text, such as the requirements of a lab set, which the sync script compares with the lab chapters.
 - **Sync script (`sync_lab_selector.py`)** — the script that copies the data files and the lab data of the lab chapters into the page, and checks the stated numbers.
+- **Value of the firewall text** — an interface of your firewall, or the address of the lab gateway, that section 11 of the page asks for. The page puts it into the external firewall text in place of a placeholder such as `<FW_LAB_INTERFACE>`.
 - **Walkthrough** — the copy of a lab chapter in the zip, rewritten with the values of the build.

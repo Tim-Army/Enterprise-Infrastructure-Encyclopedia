@@ -24,6 +24,7 @@ The volume was not written from nothing. Its page and its scripts were built ins
 | `common/lab-catalog.json` | 2026-11-20 | Written by hand, in place of the list of walkthrough chapters that the page had before | Add a lab set here |
 | The lab data of the FortiAnalyzer and FortiManager lab sets | 2026-11-20 | Read from the lab chapters of Volumes CCII and CCIII by `scripts/python/sync_lab_selector.py` | Regenerate after a chapter changes |
 | Links that tick lab sets | 2026-11-22 | The page reads `?sets=` and the ids of lab sets from its address, once. The site build and the documents of the three product volumes link to the page with their lab set ticked | None |
+| The values of the gateway text and the firewall text | 2026-11-23 | Section 10 asks for the two ports of a network device that is the gateway, and section 11 for the interfaces and the gateway address of the external firewall. The texts left them as placeholders, and the page writes them into the texts | None |
 | [Chapter 01](01-the-lab-selector.md) | 2026-11-20 | The description of the page moved from Volume CCI's Chapter 09, and the parts about the lab sets were written new | Updated whenever the page changes |
 | [Chapter 02](02-lab-data-and-how-to-add-a-lab-set.md) | 2026-11-20 | Written from the catalog and the sync script | Updated whenever the data changes |
 | 90, this chapter | 2026-11-20 | Written from the work of that day and from Volume CCI's Chapter 90 | Updated whenever the volume changes |
@@ -52,6 +53,7 @@ The published addresses changed with the folder, from `downloads/volume-201-fort
 - **Fewer networks without the switch labs.** A build with no FortiSwitch labs takes the out-of-band network and the seven shared segments only. A network that only the switch labs use takes no subnet, so the subnets of such a build are the ones the chapters print.
 - **The Labs card has no number.** It comes before section 1, so the eleven numbered sections kept their numbers, which the page, the zip, and the chapters name in many places.
 - **A link counts once.** A link with `?sets=` ticks its lab sets when the page starts. The page then keeps the result and takes the `sets` part out of its address, because a link that stayed there would undo at every reload what a reader chose afterward. On a build with no kept choices the link also matches the machines to the labs, so that a first visitor gets a build that fits the lab set. On top of kept choices it changes the lab sets only, because the machines there are choices of the reader.
+- **The page asks for what a text leaves open.** The external firewall text had placeholders for what only the reader knows, and the reader had to replace them by hand in the text. Section 11 now asks for each one, in the way section 7 asks for the switch ports. It asks only for the placeholders that the text of the chosen OS type holds, so a field that the text does not use is not shown and its value is not checked. The uplink address of section 10 already is the address of the gateway, so the page shows it and does not ask twice. A value is checked before it stands in a configuration text, because a quote or a line break in it would change what the text does. Section 10 asks in the same way for the two ports of a network device that is the gateway, and only then: with the Linux router there is no text and no field. It refuses the trunk port given a second time, because its text is written for two ports.
 
 ## Implementation and Automation
 
@@ -75,21 +77,48 @@ Each volume whose labs the page offers got a link that opens the page with its l
 
 The first version applied a link and waited for the next click to save the result. A reload then went back to the older choices, or to a FortiSwitch build for a first visitor, and the address no longer had the link. A try in the browser showed it, and the page now saves the result of a link when it applies it.
 
+### Values for the firewall text and the gateway text, 2026-11-23
+
+Section 11 got a field for each placeholder of the external firewall text. Section 10 then got the same for the two ports of a network device that is the gateway.
+
+1. **The core.** A list names the three placeholders: the interface that faces the lab, the interface that faces the internet, and the address of the lab gateway. A check reads what was typed, says which placeholders the text of the OS type holds, and refuses a value that cannot stand in a configuration text. The function that writes the firewall text takes the values, puts them in place of the placeholders, and words its notes for a value that is there and for one that is still to replace. An uplink address of section 10 goes the same way, where it had a special case before.
+2. **The page.** The fields stand under the two choices of the section, above the text. They are built again only when another set of fields is needed, so typing in one is not disturbed. A field that holds a value is marked, and one whose value was refused shows why.
+3. **The zip and the choices.** `LAB-VALUES.md` got the section *External firewall* with the placeholders and their values. The choices file and the browser keep the values, and a file from before them loads with none.
+4. **Section 10.** A second list names the two ports of the text for a network device as the gateway: the trunk port and the port on the out-of-band network. The function that writes that text takes the ports, and puts them into the text and into the extra lines for an SRX. `LAB-VALUES.md` got the section *Gateway device*, which is there only with a device as the gateway. One function of the page now draws the fields of both sections.
+5. **The documents.** Chapter 01 and the README of the `lab-scripts` folder describe the fields.
+
+The first layout put the line about a field beside it. The column is narrow, so one word stood beside the field and the rest of the line under it. A look at the page showed it, and the line stands under the field now.
+
 ### What was tested, and what was not
 
-| Check | Result on 2026-11-22 |
+The checks of this table ran on 2026-11-23, on a local copy of the published folder, except the last row.
+
+| Check | Result |
 | --- | --- |
-| The self-test of the page (`?selftest=1`) | 276 checks pass in a Chromium browser, on a local copy of the published folder. 254 of them are the checks the Lab Builder had, 18 check the lab sets, and 4 check the links |
+| The self-test of the page (`?selftest=1`) | 296 checks pass in a Chromium browser, on a local copy of the published folder. 254 of them are the checks the Lab Builder had, 18 check the lab sets, 4 check the links, 13 check the values of the firewall text, and 7 check the ports of the gateway text |
+| The fields of sections 10 and 11, tried by hand | In section 11: typing in the three fields, a reload, a value that cannot be used, another OS type, and an uplink address that was set and cleared again. In section 10: typing in the two fields, a reload, the trunk port given a second time, another OS type, and the Linux router and then a device again. Each did what Chapter 01 says, also in a window as narrow as a phone |
 | Links at the start of the page, tried by hand | A visitor with no kept choices, a reload after the link, a link on top of kept choices, and a link with names that the page does not have each did what Chapter 01 says |
 | The walkthrough test (`?walktest=1`) | 11 chapters of the three lab sets were rewritten for a changed build, and no value of the book was left |
-| A zip for a build with all three lab sets | 28 files, none missing, with the 11 lab chapters |
+| A zip for a build with all three lab sets | 28 files, none missing, with the 11 lab chapters. With a Junos device as the gateway it has 30 files, because the two files of the gateway text join them |
 | `scripts/python/check_lab_scripts.py` | The scripts parse, and 18 seed runs wrote 212 seeds |
 | `scripts/bash/validate.sh` | Passes, with the sync check and the stated numbers |
-| `scripts/bash/build-download-site.sh`, in a scratch copy with stand-in book pages | The folder, the zip, the forward at the old address, the link under **Interactive companions**, and the links with `?sets=` on the three portal pages were written, and the link check of the script passed |
+| `scripts/bash/build-download-site.sh`, in a scratch copy with stand-in book pages, on 2026-11-22 | The folder, the zip, the forward at the old address, the link under **Interactive companions**, and the links with `?sets=` on the three portal pages were written, and the link check of the script passed |
+
+The commit of the move and the links was pushed on 2026-11-22, and the published site was checked after its deploy. The page of that day did not have the fields of sections 10 and 11 yet.
+
+| Check on the published site | Result on 2026-11-22 |
+| --- | --- |
+| The `Validate` and `Deploy Pages` workflows of the commit | Both passed |
+| The published page | It is the file of the repository, byte for byte. Its self-test and its walkthrough test gave the results of the local copy, and its zip test (`?ziptest=1`) found the 23 files of a new build with none missing |
+| The published files | The page, the catalog, the diagram, the 11 lab chapters, and the zip of the scripts answer at their new addresses. The old address of the zip returns 404, as this chapter says above |
+| The forward | The old address of the Lab Builder opens the Lab Selector |
+| The link under **Interactive companions** | It is on the start page of the site, with the address of the page |
+| The links with `?sets=` | The portal pages of Volumes CCI, CCII, and CCIII each have the link with their lab set, and the book pages of the four volumes have theirs. The link on the portal page of Volume CCII was followed: it ticked the FortiAnalyzer lab set, the address lost its `sets` part, and a reload kept the result. A link with two lab sets ticked both |
 
 Not tested:
 
-- **The published site.** The page was tested on a local copy of the published folder. The new addresses, the forward at the old address, the link under **Interactive companions**, and the links with `?sets=` have to be checked after the site is deployed.
+- **A person on the published site.** The published site was checked with the test modes of the page and by reading the published files. No person has run Lab 1.1 of Chapter 01 there. No zip was saved from the published page, and the zip of the scripts was not downloaded: the check read its headers only.
+- **The fields of sections 10 and 11 on the published site.** They were tested on 2026-11-23 on a local copy of the published folder, before the change was pushed, so this chapter holds no check of them on the published site. No device and no firewall has taken a text that the page wrote.
 - **A build.** No machine was built again after the block changed to `10.200`, and no host of the FortiAnalyzer or FortiManager lab set has been built. The lab sign-offs of Volumes CCI, CCII, and CCIII are pending.
 - **Other browsers.** The page was tested in one Chromium browser.
 
@@ -98,6 +127,7 @@ Not tested:
 - **An attribute name in the page must be one that the picture does not use.** The first Labs card marked its buttons with `data-kind`. The diagram marks its boxes with the same attribute, so the page tried to restyle parts of the picture and failed. The card uses `data-labkind` and `data-labset` now.
 - **Keep the old checks, and make them mean the same.** The 254 checks of the Lab Builder ask for the labs, the walkthroughs, and the lab plan of the build. With lab sets, those three lists became *the ones of this build*, so the old checks still test a FortiSwitch build without a change, and only one check that counted the cards needed a new number.
 - **A text that is built from choices needs a build with the choice off.** The first version of the license list still asked for the switch licenses in a build with no switch labs. A check on a build with the FortiSwitch lab set cleared found it.
+- **Look at a new part of the page, and do not only test it.** The checks of the fields passed while the line beside each field wrapped in an ugly way. No check looks at the layout, so a new part needs a look at the width of a desktop and of a phone.
 - **Serve a test copy from a plain web server that writes its log to a file.** A server whose output went to a pipe stopped answering during the tests, and the browser then waited without an error.
 
 ## Validation and Troubleshooting
@@ -107,6 +137,7 @@ To check this volume:
 - **The data.** `python scripts/python/sync_lab_selector.py --check` confirms that the page holds the current manifest, flavors, catalog, and lab data, and that the numbers in the documents are right.
 - **The scripts.** `python scripts/python/check_lab_scripts.py` confirms that the build scripts parse and that the seed tool works for every flavor.
 - **The page.** Publish the folder to a scratch directory with `scripts/python/package_lab_scripts.py` and the files that `sync_lab_selector.py --package-args` lists, serve it, and open `selector/lab-selector.html?selftest=1`.
+- **The published page.** After a deploy, open the published page with `?selftest=1`, with `?walktest=1`, and with `?ziptest=1`, and compare the published file with the file of the repository. The table of the published site above shows such a check.
 - **Repository checks.** `scripts/bash/validate.sh` runs the first two, and checks `book.yml`, internal links, markdownlint, and cspell.
 
 | Symptom | Cause | Fix |
@@ -137,14 +168,15 @@ To check this volume:
 1. Where were the page and the scripts built, and when did they move here?
 2. Which names stayed after the move, and why?
 3. Why is a new build a FortiSwitch build?
-4. Which three things about the published site still need a check after a deploy?
+4. What was checked on the published site after the deploy, and what about it is not tested?
 5. Why did the first Labs card break the diagram?
 6. Which old address forwards, and which does not?
 7. What does the page do with a link that names lab sets, and why does such a link count once?
+8. Which values do sections 10 and 11 ask for, when does section 11 not ask for the address of the gateway, and when does section 10 ask for nothing?
 
 ## Summary and Completion Checklist
 
-The Lab Selector and the lab scripts were built in Volume CCI and moved here on 2026-11-20, when the page was renamed and given lab sets for FortiSwitch, FortiAnalyzer, and FortiManager. The lab network moved to `10.200.0.0/16` on the same day. Since 2026-11-22 a link can open the page with lab sets ticked. The page passes 276 checks on a local copy of the published folder. The published site, a build, and the hosts of the two new lab sets are not tested yet.
+The Lab Selector and the lab scripts were built in Volume CCI and moved here on 2026-11-20, when the page was renamed and given lab sets for FortiSwitch, FortiAnalyzer, and FortiManager. The lab network moved to `10.200.0.0/16` on the same day. Since 2026-11-22 a link can open the page with lab sets ticked, and since 2026-11-23 sections 10 and 11 ask for the values that their texts left as placeholders. The page passes 296 checks on a local copy of the published folder. On the published site, the new addresses, the forward, and the links were checked on 2026-11-22, with the page of that day. A build and the hosts of the two new lab sets are not tested yet.
 
 - [ ] Can say what moved, what was renamed, and what stayed.
 - [ ] Can explain the lab sets, the prefixes, and the hosts that no script builds.
