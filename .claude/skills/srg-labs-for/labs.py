@@ -166,7 +166,7 @@ class Volume:
                             self.cited.append(srg_id)
                         self.info.setdefault(srg_id, {"srg": "", "cat": "", "title": "", "summary": "", "alignment": [],
                                                       "features": [], "with_command": 0, "source": "crosswalk",
-                                                      "no_setting": False})
+                                                      "no_setting": False, "has_setting": False})
                     if kind == "requirement reference" and ids:
                         entry = self.info[ids[0]]
                         entry["srg"] = row[0]
@@ -189,8 +189,11 @@ class Volume:
                         alignment, summary, severity = col("alignment"), col("requirement", "summary"), col("severity")
                         command = col(self.product, "command")
                         own = SRG_ID.findall(row[0])
-                        if own and command is not None and row[command] in ("", "—", "-"):
-                            self.info[own[0]]["no_setting"] = True
+                        if own and command is not None:
+                            if row[command] in ("", "—", "-"):
+                                self.info[own[0]]["no_setting"] = True
+                            else:
+                                self.info[own[0]]["has_setting"] = True
                         for srg_id in ids:
                             entry = self.info[srg_id]
                             if alignment is not None and row[alignment] and row[alignment] not in entry["alignment"]:
@@ -283,8 +286,11 @@ def plan_rows(volume, scope):
             "srg_id": srg_id, "srg": entry["srg"], "source": entry["source"], "cat": entry["cat"],
             "requirement": entry["summary"] or entry["title"], "alignment": "; ".join(entry["alignment"]),
             "features": str(len(entry["features"])), "with_command": str(entry["with_command"]),
+            # A gap candidate: the map has no command for it, the crosswalk shows no command, every alignment
+            # says the product has no setting, or the map lists the requirement and maps no feature to it.
             "kind": "gap" if (entry["features"] and not entry["with_command"]) or entry["no_setting"] or (
-                entry["alignment"] and all(a in NO_SETTING for a in entry["alignment"])) else "requirement",
+                entry["alignment"] and all(a in NO_SETTING for a in entry["alignment"])) or (
+                entry["source"] == "map" and not entry["features"] and not entry["has_setting"]) else "requirement",
             "lab": labs[0]["id"] if labs else "", "lab_title": labs[0]["title"] if labs else ""})
     return rows
 

@@ -1,5 +1,7 @@
 # Volume CCII — FortiAnalyzer STIG and SRG Mapping
 
+**Plan a lab build:** [Lab Selector with the FortiAnalyzer labs ticked](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html?sets=fortianalyzer)
+
 > A requirement-by-requirement map of **Fortinet FortiAnalyzer** to the DISA
 > Security Requirements Guides (SRGs) that apply to it, and a crosswalk that
 > aligns its requirements with the Cisco STIGs. DISA publishes no
@@ -100,6 +102,9 @@ and `38-` no longer exist.
   for the framework (Chapters 01 to 09), the Fortinet overview (Chapter 10), the
   other Fortinet product maps, and the Cisco chapters this volume's crosswalk
   uses.
+- [Volume CMI — Lab Selector](../volume-901-lab-selector/README.md), whose page plans a lab build for the
+  requirement labs of this volume:
+  [open it with the FortiAnalyzer lab set ticked](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html?sets=fortianalyzer).
 - [Volume XIX — Fortinet NSE Certification Program](../volume-019-fortinet-network-security/README.md),
   whose security operations chapter covers FortiAnalyzer as a product.
 

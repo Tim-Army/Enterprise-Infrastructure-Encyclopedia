@@ -170,6 +170,8 @@ def check_seeds(folder, problems):
 
 def main():
     folders = sorted(glob.glob(os.path.join(ROOT, "volumes", "*", "lab-scripts")))
+    # A folder with no file in it is not a lab-scripts folder: git does not track an empty folder.
+    folders = [folder for folder in folders if any(names for _, _, names in os.walk(folder))]
     failed = False
     for folder in folders:
         problems = []

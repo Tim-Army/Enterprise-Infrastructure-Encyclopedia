@@ -52,7 +52,7 @@ Save the evidence for each lab in `evidence/<lab>/<date>/` on `admin-201`, as Ch
 
 ## Validation and Troubleshooting
 
-Before each lab, confirm the baseline: `execute ping 10.201.2.10` from the switch, `get system status`, and `get system ntp`. After each lab, restore the baseline and re-run the first two checks.
+Before each lab, confirm the baseline: `execute ping 10.200.2.10` from the switch, `get system status`, and `get system ntp`. After each lab, restore the baseline and re-run the first two checks.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -386,7 +386,7 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
    end
    ```
 
-**Positive test.** A normal host receives a lease from `dhcp-201`, and `get switch dhcp-snooping` shows the binding. `static-1` pings `10.201.7.1` with its bound address and MAC.
+**Positive test.** A normal host receives a lease from `dhcp-201`, and `get switch dhcp-snooping` shows the binding. `static-1` pings `10.200.7.1` with its bound address and MAC.
 
 **Negative test.** Start a rogue DHCP server on `attacker-201`: its offers are dropped on the untrusted port and no client receives them. Send a forged ARP reply claiming the gateway's address: the frame is dropped and a log line is written. Change `static-1`'s address to one with no binding: its traffic is dropped.
 
@@ -461,12 +461,12 @@ Managed-mode commands run on the FortiGate, not on the switch. The workbook rows
    config system interface
        edit mgmt-svi
            set vlanid 4
-           set ip 10.201.4.11 <MASK>
+           set ip 10.200.4.11 <MASK>
            set allowaccess https ssh
    end
    ```
 
-**Positive test.** `get switch interface` shows host ports untagged in VLAN 5, trunks tagged only for VLANs 2, 3, 4, 5, 6, 7, and 8 with native 99, and unused ports down in VLAN 60. SSH to `10.201.4.11` works from `admin-201`.
+**Positive test.** `get switch interface` shows host ports untagged in VLAN 5, trunks tagged only for VLANs 2, 3, 4, 5, 6, 7, and 8 with native 99, and unused ports down in VLAN 60. SSH to `10.200.4.11` works from `admin-201`.
 
 **Negative test.** From `attacker-201`, send a frame tagged with VLAN 4 into the host port: it is discarded. Send a double-tagged frame (outer 99, inner 4): it does not reach segment 4. Plug a host into an unused port: the link stays down.
 

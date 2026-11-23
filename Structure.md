@@ -83,6 +83,11 @@ Enterprise-Infrastructure-Encyclopedia/
   own in this block with the `/stig-volume-for` workflow
   (`.claude/skills/stig-volume-for/`), and volume 172 keeps a pointer page at
   each old chapter number. Material that has not moved stays in volume 172.
+- Volume **901** holds the Lab Selector, its data, and the lab build scripts,
+  for the labs of every volume that the Lab Selector offers. It follows the
+  lab gear volume (900), outside the Fortinet block, because it is not about
+  one product. A volume gets its labs into the Lab Selector with an entry in
+  `lab-scripts/common/lab-catalog.json` of volume 901.
 - The reserved block was renumbered from 97/98/99 to 997/998/999 so the
   instructional sequence can grow past 92 without colliding with it. The
   instructional volumes were subsequently widened from two digits to three so

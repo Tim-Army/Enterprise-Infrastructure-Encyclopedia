@@ -43,6 +43,7 @@ only what is specific to the FortiSwitch material. For the workflow itself
 | [Chapter 03](03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md), NX-OS crosswalk | 2026-10-15 | One agent following the crosswalk playbook, as Chapter 37 of Volume CLXXII, reusing Chapter 02's FortiSwitch side | Prerequisites and corrected model-support entries (2026-10-16); Reference and Page columns (2026-10-26) |
 | The SRG mapping workbook | 2026-11-03 saved, 2026-11-04 extended | A feature-map workbook filled in by hand, then analyzed, extended, and checked as described below | Ongoing; rows still to be verified are listed in the workbook |
 | CSV files and the interactive table | 2026-11-04 | Generated from the workbook by `scripts/python/export_srg_workbook.py` | Regenerate whenever the workbook changes |
+| Chapters 09 to 14, the lab scripts, and the Lab Builder | 2026-11-06 and after | Written and tested as *Chapters 09 to 14 and the lab scripts* below records | The address block moved to `10.200.0.0/16`, and the scripts and the page moved to Volume CMI, where the page is the Lab Selector (2026-11-20) |
 | Move to Volume CCI | 2026-11-04 | Chapters and `data/` files moved with `git mv`; cross-references rewritten; pointer pages left at Chapters 11, 33, and 37 of Volume CLXXII | None |
 | 90, this chapter | 2026-11-04 | Written directly from Volume CLXXII's Chapter 90 and the repository history | Updated whenever the volume changes |
 
@@ -356,7 +357,7 @@ block, a changed VLAN, an edited address) and for VxRail were run through
 The address plan of Chapter 999 was renumbered on 2026-11-19, and the IP
 addressing section of the Lab Builder was rebuilt around it. A segment number,
 its VLAN ID, and the third octet of its subnet are now one number, and the
-subnets are contiguous, so the whole lab fits `10.201.0.0/20`. The shared
+subnets are contiguous, so the whole lab fits `10.200.0.0/20`. The shared
 segments 10, 20, 30, 40, 41, 42, and 50 became 2 to 8. Console-OOB moved from
 100 to 1, the routed links from 200 to 9, the peer networks from 210 and 211 to
 10 and 11, the multicast source network from 220 to 12, VXLAN from 230 to 13,
@@ -485,7 +486,7 @@ Lessons from this work:
   `inactive`.
 - **After a renumbering, search every file for every old value.** The first pass
   rewrote the chapters by pattern. It left the Chapter 08 diagram, a loopback
-  written as `10.201.250.<host>`, and interface names such as `lab201.10` and
+  written as `10.200.250.<host>`, and interface names such as `lab201.10` and
   `nic1v10` as they were, because none of them matched a pattern. A search of
   the whole repository for each old subnet, VLAN ID, and interface name found
   them. The walkthrough test of the Lab Builder now fails when a rewritten
@@ -502,6 +503,47 @@ Lessons from this work:
   and the run shows whether a preview only previews. Run it for an empty host
   as well as a built one: the port group lines were missing only on the empty
   one.
+
+### The address block and the move of the lab scripts to Volume CMI
+
+Two things changed on 2026-11-20.
+
+**The address block.** The plan of Chapter 999 moved from `10.201.0.0/16` to
+`10.200.0.0/16`. Every `10.201` address became `10.200`: 446 replacements in
+21 files, which are the chapters of this volume and of Volume CCII, the two
+diagrams, the manifest, the seed tool, and the Lab Builder page. The IPv6
+prefix `fd00:db8:201::` and the host names that end in `-201` stayed, because
+they do not carry the block. The replacement reached this chapter too, so an
+address that an earlier record above gives started with `10.201` on the date
+of that record. One value in the self-test of the page was changed by hand: a
+supernet that the test uses as a wrong one started at the first subnet of the
+new block. A choices file that was saved before that date keeps its `10.201`
+block, so a lab that was built from it keeps its addresses. No machine was
+built again after the change. The seed check of the scripts ran for every
+flavor.
+
+**The move.** The `lab-scripts` folder moved to
+[Volume CMI — Lab Selector](../../volume-901-lab-selector/README.md) with the
+Lab Builder, which is the Lab Selector there. The page now offers the labs of
+this volume, of Volume CCII, and of Volume CCIII, so it no longer belongs to
+one product volume.
+[Volume CMI's as-built chapter](../../volume-901-lab-selector/chapters/90-as-built-how-this-volume-was-built.md)
+records the move and the changes to the page. For this volume it means:
+
+- Chapters 09 to 14 stay here, and so do Chapter 999 and its diagram. The
+  scripts and the manifest that those chapters explain are in Volume CMI.
+- The description of the page moved from Chapter 09 to Volume CMI's Chapter
+  01. Chapter 09 keeps a short section that points there.
+- The published addresses changed from
+  `downloads/volume-201-fortiswitch-stig-and-srg-mapping/` to
+  `downloads/volume-901-lab-selector/`. A page at the old address of the Lab
+  Builder forwards to the Lab Selector. The old address of the zip does not
+  forward.
+- `scripts/python/sync_lab_builder.py`, which the records above name, is
+  `scripts/python/sync_lab_selector.py` now. It still checks the numbers of
+  SRG requirements that this volume's README and Chapters 04 to 07 state.
+- The records above keep the name Lab Builder, because that was the name of
+  the page when they were written.
 
 ### The Word and PDF downloads
 

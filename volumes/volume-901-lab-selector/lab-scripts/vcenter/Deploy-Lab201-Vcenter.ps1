@@ -1,43 +1,53 @@
 <#
 .SYNOPSIS
-  Creates the Volume CCI lab virtual machines on a standalone VMware ESXi 7, 8, or 9 host.
+  Creates the Volume CCI lab virtual machines through VMware vCenter Server 7, 8, or 9.
 
 .DESCRIPTION
-  Reads ..\common\lab201-vms.json, builds the virtual switches and port groups,
-  imports the Ubuntu cloud image OVA once for each virtual machine, sets its
-  hardware, network adapters, and cloud-init seed ISO, and powers it on.
+  Reads ..\common\lab201-vms.json, builds the lab networks on one ESXi host that
+  vCenter manages (standard switches, or a distributed switch), imports the
+  Ubuntu cloud image OVA once as a template, clones each virtual machine from
+  it, sets its hardware, network adapters, and cloud-init seed ISO, and powers
+  it on.
 
   Needs PowerShell 5.1 or 7, PowerCLI (Install-Module VMware.PowerCLI; use the release that supports your vSphere version, 13.3 for 7 and 8, and Broadcom's newer VCF PowerCLI for 9),
-  and Python 3 with pycdlib (pip install pycdlib) for the seed ISOs. The host
-  needs a license that allows the API to write. The free ESXi license makes the
-  API read-only, so this script stops with a clear message on that license.
-  ESXi 9 is licensed only through vSphere Foundation or Cloud Foundation and has no
-  free edition.
+  and Python 3 with pycdlib (pip install pycdlib) for the seed ISOs.
+
+  For a managed cluster such as Dell VxRail, use -ClusterName, -UseExistingSwitch with the
+  name of the existing distributed switch, and -NoUplinkChanges. The script then adds only
+  port groups, and changes no switch, uplink, or physical NIC. Build the lab with one trunk
+  (the Lab Selector does this for you), because the VxRail switch has one set of uplinks.
 
   -Action picks what the script does:
     Deploy           builds and starts the machines (the default)
-    Check            tests what a deploy needs on this computer and on the host, and changes nothing
+    Check            tests what a deploy needs on this computer and in vCenter, and changes nothing
     Status           shows each machine and whether its first boot has finished.
                      With -Wait it keeps checking until every machine has finished
     RemoveBuildNics  removes the build network adapter of each machine
     Snapshot         takes the baseline snapshot of every machine (Lab 999.6)
     Restore          returns every machine to the baseline snapshot and powers it on
     Remove           powers off and deletes the machines
+  Status, RemoveBuildNics, Snapshot, Restore, and Remove look for the machines only in the
+  lab folder (-FolderName), so a machine with the same name elsewhere in vCenter is never touched.
 
 .EXAMPLE
-  .\Deploy-Lab201-Esxi.ps1 -EsxiHost esxi01.example.net -Datastore datastore1 `
-    -VsphereVersion 8 -SshKeyFile ~\.ssh\id_ed25519.pub `
+  .\Deploy-Lab201-Vcenter.ps1 -VcenterServer vc01.example.net -Datacenter DC1 `
+    -VMHostName esxi01.example.net -Datastore datastore1 -VsphereVersion 8 `
+    -NetworkType Distributed -SshKeyFile ~\.ssh\id_ed25519.pub `
     -Trunk1Nic vmnic1 -Trunk2Nic vmnic2 -OobNic vmnic3 -WanNic vmnic0 -WhatIf
-
-.EXAMPLE
-  .\Deploy-Lab201-Esxi.ps1 -Action RemoveBuildNics -EsxiHost esxi01.example.net
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-  [Parameter(Mandatory)] [string] $EsxiHost,
+  [Parameter(Mandatory)] [string] $VcenterServer,
   [PSCredential] $Credential,
+  [string] $Datacenter,
+  [string] $VMHostName,
+  [string] $ClusterName,
+  [string] $UseExistingSwitch,
+  [switch] $NoUplinkChanges,
   [string] $Datastore,
+  [string] $FolderName = 'lab201',
   [ValidateSet(7, 8, 9)] [int] $VsphereVersion = 8,
+  [ValidateSet('Standard', 'Distributed')] [string] $NetworkType = 'Standard',
   [ValidateSet('Deploy', 'Check', 'Status', 'RemoveBuildNics', 'Snapshot', 'Restore', 'Remove')] [string] $Action = 'Deploy',
   [switch] $Wait,
   [ValidateRange(1, 600)] [int] $WaitMinutes = 30,
@@ -48,6 +58,7 @@ param(
   [string] $WorkDir,
   [string] $Trunk1Nic, [string] $Trunk2Nic, [string] $OobNic, [string] $WanNic,
   [string] $HardwareVersion,
+  [string] $VdsVersion,
   [string] $LicenseFile,
   [hashtable] $FlavorImages = @{},
   [hashtable] $IsoImages = @{},
@@ -181,7 +192,7 @@ function Get-IsoNicType {
 }
 
 function Get-DefaultHardwareVersion {
-  # ESXi 7.0 U2 and later: vmx-19. ESXi 8.0 and 8.0 U1: vmx-20. ESXi 8.0 U2 and U3: vmx-21. ESXi 9.0: vmx-22.
+  # vSphere 7.0 U2 and later: vmx-19. vSphere 8.0 and 8.0 U1: vmx-20. vSphere 8.0 U2 and U3: vmx-21. vSphere 9.0: vmx-22.
   param([version] $HostVersion, [int] $Major)
   if ($Major -eq 9) { return 'vmx-22' }
   if ($Major -eq 7) { if ($HostVersion -ge [version]'7.0.2') { return 'vmx-19' } else { return 'vmx-17' } }
@@ -197,8 +208,16 @@ function Get-LabBuildState {
   return @{ State = 'unknown'; Detail = '' }
 }
 
+function Get-LabVm {
+  # A lab machine by name, in the lab folder only. A machine with the same name elsewhere in vCenter is not returned.
+  param($Server, [string] $Name, [string] $Folder)
+  $labFolder = Get-Folder -Server $Server -Name $Folder -Type VM -ErrorAction SilentlyContinue | Select-Object -First 1
+  if (-not $labFolder) { return $null }
+  return (Get-VM -Server $Server -Name $Name -Location $labFolder -ErrorAction SilentlyContinue | Select-Object -First 1)
+}
+
 if ($Action -eq 'Check') {
-  # Tests what a deploy needs on this computer and on the host, and changes nothing.
+  # Tests what a deploy needs on this computer and in vCenter, and changes nothing.
   $script:failed = 0
   function Show-Check {
     param([string] $State, [string] $What, [string] $Fix)
@@ -207,7 +226,7 @@ if ($Action -eq 'Check') {
     Write-Host ('[{0,-4}] {1}' -f $State, $What) -ForegroundColor $color
     if ($Fix -and $State -ne 'OK') { Write-Host "       $Fix" }
   }
-  Write-Host 'Checking this computer and the host for the lab build. Nothing is changed.'
+  Write-Host 'Checking this computer and vCenter for the lab build. Nothing is changed.'
   Show-Check 'OK' "PowerShell $($PSVersionTable.PSVersion)"
 
   if ($pyExe) {
@@ -236,7 +255,7 @@ if ($Action -eq 'Check') {
 
   $checkLab = $null
   if (Test-Path $Manifest) {
-    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Builder again' }
+    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Selector again' }
   } else {
     Show-Check 'FAIL' "The manifest was not found: $Manifest" 'Keep the script and the common folder together, as they are in the zip'
   }
@@ -245,13 +264,16 @@ if ($Action -eq 'Check') {
     Show-Check 'OK' "Manifest: $(@($checkLab.vms).Count) machines"
     $needGb = ($checkLab.vms | Measure-Object -Property disk_gb -Sum).Sum
     $needMb = ($checkLab.vms | Measure-Object -Property memory_mb -Sum).Sum
+    if ($UseExistingSwitch -and @($checkLab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
+      Show-Check 'WARN' 'The manifest has a second trunk (lab201-t2), and an existing switch has one set of uplinks' 'For VxRail, make the manifest with the Lab Selector for Dell VxRail'
+    }
     $seen = @{}
     foreach ($vmDef in $checkLab.vms) {
       $fid = Get-FlavorId $vmDef $checkLab
       if ($seen[$fid]) { continue }
       $seen[$fid] = $true
       $rec = $flavorCatalog.flavors | Where-Object { $_.id -eq $fid } | Select-Object -First 1
-      if (-not $rec) { Show-Check 'FAIL' "The manifest names a flavor this script does not know: $fid" 'Download the zip from the Lab Builder again'; continue }
+      if (-not $rec) { Show-Check 'FAIL' "The manifest names a flavor this script does not know: $fid" 'Download the zip from the Lab Selector again'; continue }
       if ($rec.iso) {
         if ($IsoImages.ContainsKey($fid)) { Show-Check 'OK' "Install ISO for ${fid}: $($IsoImages[$fid]). Compare it with the publisher's checksum before you upload it" }
         else { Show-Check 'FAIL' "$fid installs from an ISO, and -IsoImages has no entry for it" "Upload the ISO to a datastore and pass: -IsoImages @{ '$fid' = '[datastore] folder/file.iso' }" }
@@ -267,46 +289,74 @@ if ($Action -eq 'Check') {
       }
     }
   }
+  if ($UseExistingSwitch -and -not $NoUplinkChanges) { Show-Check 'FAIL' '-UseExistingSwitch needs -NoUplinkChanges' 'Add -NoUplinkChanges to confirm that the script changes no uplinks' }
+  if (-not $VMHostName -and -not $ClusterName) { Show-Check 'FAIL' 'Neither -VMHostName nor -ClusterName was given' 'Pass the host that owns the trunk NICs, or the cluster' }
 
   if (-not (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) {
-    Show-Check 'FAIL' 'VMware PowerCLI is not installed, so the host was not checked' 'Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
+    Show-Check 'FAIL' 'VMware PowerCLI is not installed, so vCenter was not checked' 'Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
   } else {
     Show-Check 'OK' 'VMware PowerCLI is installed'
     try {
       Import-Module VMware.VimAutomation.Core -ErrorAction Stop | Out-Null
+      if ($UseExistingSwitch -or $NetworkType -eq 'Distributed') { Import-Module VMware.VimAutomation.Vds -ErrorAction Stop | Out-Null }
       if ($SkipCertificateCheck) { Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false | Out-Null }
       Set-PowerCLIConfiguration -Scope Session -ParticipateInCeip $false -Confirm:$false | Out-Null
-      if (-not $Credential) { $Credential = Get-Credential -Message "Account on $EsxiHost" }
-      $checkServer = Connect-VIServer -Server $EsxiHost -Credential $Credential -ErrorAction Stop
+      if (-not $Credential) { $Credential = Get-Credential -Message "Account on $VcenterServer" }
+      $checkServer = Connect-VIServer -Server $VcenterServer -Credential $Credential -ErrorAction Stop
       try {
-        $checkHost = Get-VMHost -Server $checkServer | Select-Object -First 1
-        if ($checkHost.Version -like "$VsphereVersion.*") { Show-Check 'OK' "Host $($checkHost.Name): ESXi $($checkHost.Version)" }
-        else { Show-Check 'FAIL' "The host runs ESXi $($checkHost.Version), but -VsphereVersion is $VsphereVersion" 'Pass the major version the host runs' }
-        Show-Check 'WARN' 'The check cannot tell whether the host license allows API writes' 'The free ESXi license makes the API read-only. A deploy then stops with a clear message'
-        if (-not $Datastore) { Show-Check 'FAIL' 'No datastore was given (-Datastore)' 'Pass the name of the datastore for the machines' }
+        if ($checkServer.Version -like "$VsphereVersion.*") { Show-Check 'OK' "vCenter $VcenterServer reports version $($checkServer.Version)" }
+        else { Show-Check 'FAIL' "vCenter reports version $($checkServer.Version), but -VsphereVersion is $VsphereVersion" 'Pass the major version vCenter runs' }
+        $checkDc = $null
+        if (-not $Datacenter) { Show-Check 'FAIL' 'No datacenter was given (-Datacenter)' 'Pass the name of the datacenter' }
         else {
-          $checkDs = Get-Datastore -Server $checkServer -Name $Datastore -ErrorAction SilentlyContinue | Select-Object -First 1
-          if (-not $checkDs) { Show-Check 'FAIL' "Datastore $Datastore was not found on the host" 'Check the name with: Get-Datastore' }
+          $checkDc = Get-Datacenter -Server $checkServer -Name $Datacenter -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($checkDc) { Show-Check 'OK' "Datacenter $Datacenter" } else { Show-Check 'FAIL' "Datacenter $Datacenter was not found" 'Check the name with: Get-Datacenter' }
+        }
+        $checkHost = $null
+        if ($checkDc -and $ClusterName) {
+          $checkCluster = Get-Cluster -Server $checkServer -Name $ClusterName -Location $checkDc -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $checkCluster) { Show-Check 'FAIL' "Cluster $ClusterName was not found in $Datacenter" 'Check the name with: Get-Cluster' }
+          else {
+            $checkHost = Get-VMHost -Server $checkServer -Location $checkCluster | Where-Object { $_.ConnectionState -eq 'Connected' } | Select-Object -First 1
+            if ($checkHost) { Show-Check 'OK' "Cluster $ClusterName, with the connected host $($checkHost.Name)" } else { Show-Check 'FAIL' "Cluster $ClusterName has no connected host" }
+          }
+        } elseif ($checkDc -and $VMHostName) {
+          $checkHost = Get-VMHost -Server $checkServer -Name $VMHostName -Location $checkDc -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($checkHost) { Show-Check 'OK' "Host ${VMHostName}: ESXi $($checkHost.Version)" } else { Show-Check 'FAIL' "Host $VMHostName was not found in $Datacenter" 'Check the name with: Get-VMHost' }
+        }
+        if (-not $Datastore) { Show-Check 'FAIL' 'No datastore was given (-Datastore)' 'Pass the name of the datastore for the machines' }
+        elseif ($checkDc) {
+          $checkDs = Get-Datastore -Server $checkServer -Name $Datastore -Location $checkDc -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $checkDs) { Show-Check 'FAIL' "Datastore $Datastore was not found in $Datacenter" 'Check the name with: Get-Datastore' }
           elseif ($checkDs.FreeSpaceGB -ge $needGb) { Show-Check 'OK' ("Datastore {0}: {1:N0} GB free. The thin disks can grow to {2} GB" -f $Datastore, $checkDs.FreeSpaceGB, $needGb) }
           else { Show-Check 'WARN' ("Datastore {0}: {1:N0} GB free, and the thin disks can grow to {2} GB" -f $Datastore, $checkDs.FreeSpaceGB, $needGb) 'Free some space, or use a larger datastore' }
         }
-        foreach ($pair in @(@('-Trunk1Nic', $Trunk1Nic), @('-Trunk2Nic', $Trunk2Nic), @('-OobNic', $OobNic), @('-WanNic', $WanNic))) {
-          if (-not $pair[1]) { Show-Check 'WARN' "$($pair[0]) was not given, so that lab network has no uplink and stays inside the host"; continue }
-          if (Get-VMHostNetworkAdapter -VMHost $checkHost -Physical -Name $pair[1] -ErrorAction SilentlyContinue) { Show-Check 'OK' "$($pair[0]) $($pair[1])" }
-          else { Show-Check 'FAIL' "$($pair[0]) $($pair[1]) is not a physical NIC of the host" 'List them with: Get-VMHostNetworkAdapter -Physical' }
+        if ($UseExistingSwitch) {
+          if (Get-VDSwitch -Server $checkServer -Name $UseExistingSwitch -ErrorAction SilentlyContinue) { Show-Check 'OK' "Distributed switch $UseExistingSwitch" }
+          else { Show-Check 'FAIL' "Distributed switch $UseExistingSwitch was not found" 'Check the name with: Get-VDSwitch' }
+        } elseif ($checkHost) {
+          foreach ($pair in @(@('-Trunk1Nic', $Trunk1Nic), @('-Trunk2Nic', $Trunk2Nic), @('-OobNic', $OobNic), @('-WanNic', $WanNic))) {
+            if (-not $pair[1]) { Show-Check 'WARN' "$($pair[0]) was not given, so that lab network has no uplink and stays inside the host"; continue }
+            if (Get-VMHostNetworkAdapter -VMHost $checkHost -Physical -Name $pair[1] -ErrorAction SilentlyContinue) { Show-Check 'OK' "$($pair[0]) $($pair[1])" }
+            else { Show-Check 'FAIL' "$($pair[0]) $($pair[1]) is not a physical NIC of $($checkHost.Name)" 'List them with: Get-VMHostNetworkAdapter -Physical' }
+          }
         }
-        $freeMb = ($checkHost.MemoryTotalGB - $checkHost.MemoryUsageGB) * 1024
-        if ($freeMb -ge $needMb) { Show-Check 'OK' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) }
-        else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) 'Leave machines out in the Lab Builder, or make them smaller' }
+        if ($checkHost -and -not $ClusterName) {
+          $freeMb = ($checkHost.MemoryTotalGB - $checkHost.MemoryUsageGB) * 1024
+          if ($freeMb -ge $needMb) { Show-Check 'OK' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) }
+          else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB, and {1:N1} GB is free on the host" -f ($needMb / 1024), ($freeMb / 1024)) 'Leave machines out in the Lab Selector, or make them smaller' }
+        }
         if ($checkLab) {
-          $existing = @(Get-VM -Server $checkServer -Name $checkLab.vms.name -ErrorAction SilentlyContinue)
-          if ($existing.Count) { Show-Check 'OK' "$($existing.Count) machine(s) with a lab name already exist. A deploy skips them" }
+          $existing = @($checkLab.vms | Where-Object { Get-LabVm -Server $checkServer -Name $_.name -Folder $FolderName })
+          if ($existing.Count) { Show-Check 'OK' "$($existing.Count) machine(s) of the lab already exist in the folder $FolderName. A deploy skips them" }
+          $elsewhere = @(Get-VM -Server $checkServer -Name $checkLab.vms.name -ErrorAction SilentlyContinue | Where-Object { $_.Folder.Name -ne $FolderName })
+          if ($elsewhere.Count) { Show-Check 'WARN' "Machines with a lab name exist outside the folder ${FolderName}: $(($elsewhere | ForEach-Object { $_.Name } | Sort-Object -Unique) -join ', ')" 'A deploy skips a name that exists anywhere in vCenter. Rename the lab machines in the Lab Selector' }
         }
       }
       finally { Disconnect-VIServer -Server $checkServer -Confirm:$false -ErrorAction SilentlyContinue }
     }
     catch {
-      Show-Check 'FAIL' "The host $EsxiHost could not be checked: $($_.Exception.Message)" 'Check the host name and the account. For a first run on a lab network, add -SkipCertificateCheck'
+      Show-Check 'FAIL' "vCenter $VcenterServer could not be checked: $($_.Exception.Message)" 'Check the server name and the account. For a first run on a lab network, add -SkipCertificateCheck'
     }
   }
 
@@ -319,26 +369,24 @@ if (-not (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) {
   throw 'VMware PowerCLI is not installed. Run: Install-Module VMware.PowerCLI -Scope CurrentUser'
 }
 Import-Module VMware.VimAutomation.Core -ErrorAction Stop | Out-Null
+if ($UseExistingSwitch) { $NetworkType = 'Distributed' }
+if ($NetworkType -eq 'Distributed') { Import-Module VMware.VimAutomation.Vds -ErrorAction Stop | Out-Null }
 if ($SkipCertificateCheck) {
   Set-PowerCLIConfiguration -Scope Session -InvalidCertificateAction Ignore -Confirm:$false | Out-Null
 }
 Set-PowerCLIConfiguration -Scope Session -ParticipateInCeip $false -Confirm:$false | Out-Null
 
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
-# The machine whose first adapter stays as the uplink to the external firewall. The Lab Builder writes "uplink" into
+# The machine whose first adapter stays as the uplink to the external firewall. The Lab Selector writes "uplink" into
 # the manifest when the build keeps one. RemoveBuildNics and Snapshot then leave that adapter alone.
 $uplinkVm = if ($lab.PSObject.Properties['uplink'] -and $lab.uplink.vm) { [string]$lab.uplink.vm } else { '' }
-if (-not $Credential) { $Credential = Get-Credential -Message "Account on $EsxiHost" }
-$server = Connect-VIServer -Server $EsxiHost -Credential $Credential
+if (-not $Credential) { $Credential = Get-Credential -Message "Account on $VcenterServer" }
+$server = Connect-VIServer -Server $VcenterServer -Credential $Credential
 
 try {
-  $vmhost = Get-VMHost -Server $server | Select-Object -First 1
-  if ($vmhost.Version -notlike "$VsphereVersion.*") {
-    throw "The host runs ESXi $($vmhost.Version), but -VsphereVersion is $VsphereVersion."
+  if ($server.Version -notlike "$VsphereVersion.*") {
+    throw "vCenter reports version $($server.Version), but -VsphereVersion is $VsphereVersion."
   }
-  if (-not $HardwareVersion) { $HardwareVersion = Get-DefaultHardwareVersion -HostVersion ([version]$vmhost.Version) -Major $VsphereVersion }
-  Write-Host "Host $($vmhost.Name): ESXi $($vmhost.Version), virtual hardware $HardwareVersion"
-
   $names = @{}
   $i = 0
   foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
@@ -350,6 +398,12 @@ try {
     return $nic.net
   }
 
+  if ($Action -in 'Status', 'RemoveBuildNics', 'Snapshot', 'Restore', 'Remove') {
+    if (-not (Get-Folder -Server $server -Name $FolderName -Type VM -ErrorAction SilentlyContinue)) {
+      Write-Host "The folder $FolderName does not exist in vCenter, so no lab machine was found. Pass -FolderName if the lab uses another folder."
+      return
+    }
+  }
   if ($Action -eq 'Status') {
     # Each machine, whether its first boot has finished, and its addresses.
     $started = Get-Date
@@ -358,7 +412,7 @@ try {
     while ($true) {
       $rows = @(); $pending = @(); $failedNames = @(); $notChecked = @()
       foreach ($vmDef in $lab.vms) {
-        $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+        $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
         if (-not $vm) { $notChecked += $vmDef.name; $rows += [pscustomobject]@{ Machine = $vmDef.name; Power = 'missing'; Build = ''; Detail = ''; Addresses = '' }; continue }
         $build = ''; $detail = ''
         if ($vm.PowerState -eq 'PoweredOn') {
@@ -381,7 +435,7 @@ try {
     }
     $rows | Format-Table -AutoSize -Wrap
     if (-not ($rows | Where-Object { $_.Power -eq 'PoweredOn' })) {
-      Write-Host 'No lab machine is powered on on this host.'
+      Write-Host "No lab machine is powered on in the folder $FolderName."
       return
     }
     if ($failedNames.Count) { throw "These machines report a problem (a failed first boot, or a lab service that is not running): $($failedNames -join ', '). Log in to one and run: lab201-status" }
@@ -399,7 +453,6 @@ try {
     elseif ($Wait) { Write-Host 'Every machine has finished its first boot.' -ForegroundColor Green }
     return
   }
-
   if ($Action -eq 'Snapshot') {
     # A snapshot keeps the machine's adapters. With the build adapter still there, a restore would bring it back,
     # and with it the machine's path to the internet. So the build adapters have to go first.
@@ -407,7 +460,7 @@ try {
     foreach ($vmDef in $lab.vms) {
       # The first adapter of the uplink machine is its uplink to the external firewall, and it stays.
       if ($vmDef.name -eq $uplinkVm) { continue }
-      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+      $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if (-not $vm) { continue }
       $mac = & $macOf $vmDef.name 0
       if (Get-NetworkAdapter -VM $vm | Where-Object { $_.MacAddress -ieq $mac }) { $withBuildNic += $vmDef.name }
@@ -416,7 +469,7 @@ try {
       throw "These machines still have their build adapter: $($withBuildNic -join ', '). A snapshot keeps that adapter, and a restore would bring it back with its path to the internet. Run -Action RemoveBuildNics first. No snapshot was taken."
     }
     foreach ($vmDef in $lab.vms) {
-      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue | Select-Object -First 1
+      $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if (-not $vm) { continue }
       if (Get-Snapshot -VM $vm -Name $SnapshotName -ErrorAction SilentlyContinue) { Write-Host "$($vmDef.name) has the snapshot $SnapshotName. Skipped."; continue }
       if (-not $PSCmdlet.ShouldProcess($vmDef.name, "Take the snapshot $SnapshotName")) { continue }
@@ -425,7 +478,6 @@ try {
     }
     return
   }
-
   if ($Action -eq 'Restore') {
     # The gateway first, then the rest. The snapshot holds no memory, so each machine boots from its disk.
     $gwFirst = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
@@ -433,24 +485,23 @@ try {
     $noSnapshot = @()
     foreach ($name in $restoreOrder) {
       if (-not $name) { continue }
-      $vm = Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue | Select-Object -First 1
+      $vm = Get-LabVm -Server $server -Name $name -Folder $FolderName
       if (-not $vm) { continue }
       $snap = Get-Snapshot -VM $vm -Name $SnapshotName -ErrorAction SilentlyContinue | Select-Object -First 1
       if (-not $snap) { Write-Warning "$name has no snapshot $SnapshotName. It is left as it is."; $noSnapshot += $name; continue }
       if (-not $PSCmdlet.ShouldProcess($name, "Return to the snapshot $SnapshotName and power on")) { continue }
       Write-Host "Returning $name to the snapshot $SnapshotName"
       Set-VM -VM $vm -Snapshot $snap -Confirm:$false | Out-Null
-      $vm = Get-VM -Server $server -Name $name | Select-Object -First 1
+      $vm = Get-LabVm -Server $server -Name $name -Folder $FolderName
       if ($vm.PowerState -ne 'PoweredOn') { Start-VM -VM $vm | Out-Null }
     }
     if ($noSnapshot.Count) { throw "No snapshot $SnapshotName on: $($noSnapshot -join ', '). Take it first with -Action Snapshot." }
     return
   }
-
   if ($Action -eq 'RemoveBuildNics') {
     foreach ($vmDef in $lab.vms) {
       if ($vmDef.name -eq $uplinkVm) { Write-Host "$($vmDef.name) keeps its first adapter: it is the uplink to the external firewall."; continue }
-      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue
+      $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if (-not $vm) { continue }
       $mac = & $macOf $vmDef.name 0
       $nic = Get-NetworkAdapter -VM $vm | Where-Object { $_.MacAddress -ieq $mac }
@@ -460,10 +511,9 @@ try {
     }
     return
   }
-
   if ($Action -eq 'Remove') {
     foreach ($vmDef in $lab.vms) {
-      $vm = Get-VM -Server $server -Name $vmDef.name -ErrorAction SilentlyContinue
+      $vm = Get-LabVm -Server $server -Name $vmDef.name -Folder $FolderName
       if ($vm -and $PSCmdlet.ShouldProcess($vmDef.name, 'Power off and delete from disk')) {
         if ($vm.PowerState -eq 'PoweredOn') { Stop-VM -VM $vm -Confirm:$false | Out-Null }
         Remove-VM -VM $vm -DeletePermanently -Confirm:$false
@@ -473,71 +523,146 @@ try {
   }
 
   # ---- Deploy ----
-  if (-not $Datastore) { throw '-Datastore is required for -Action Deploy.' }
+  foreach ($need in 'Datacenter', 'Datastore') {
+    if (-not (Get-Variable $need -ValueOnly)) { throw "-$need is required for -Action Deploy." }
+  }
+  if (-not $VMHostName -and -not $ClusterName) { throw '-VMHostName or -ClusterName is required for -Action Deploy.' }
+  if ($UseExistingSwitch -and -not $NoUplinkChanges) { throw '-UseExistingSwitch changes no uplinks. Add -NoUplinkChanges to confirm that you want that.' }
   if (-not $SshKeyFile) { throw '-SshKeyFile is required for -Action Deploy.' }
-  $ds = Get-Datastore -Server $server -Name $Datastore
+  $dc = Get-Datacenter -Server $server -Name $Datacenter
+  $cluster = $null
+  if ($ClusterName) {
+    # A cluster (for example VxRail): the machines can run on any host. Templates are imported through the first connected host.
+    $cluster = Get-Cluster -Server $server -Name $ClusterName -Location $dc
+    $vmhost = Get-VMHost -Server $server -Location $cluster | Where-Object { $_.ConnectionState -eq 'Connected' } | Select-Object -First 1
+    $placement = @{ ResourcePool = $cluster }
+  }
+  else {
+    $vmhost = Get-VMHost -Server $server -Name $VMHostName -Location $dc
+    $placement = @{ VMHost = $vmhost }
+  }
+  $ds = Get-Datastore -Server $server -Name $Datastore -Location $dc
+  if (-not $HardwareVersion) { $HardwareVersion = Get-DefaultHardwareVersion -HostVersion ([version]$vmhost.Version) -Major $VsphereVersion }
+  if (-not $VdsVersion) { $VdsVersion = switch ($VsphereVersion) { 7 { '7.0.3' } 8 { '8.0.0' } default { '9.0.0' } } }
+  Write-Host "vCenter $($server.Version), host $($vmhost.Name) ESXi $($vmhost.Version), virtual hardware $HardwareVersion"
   New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
 
-  # Virtual switches, with the physical uplinks you name. A network without an uplink stays internal.
+  $folder = Get-Folder -Server $server -Name $FolderName -Type VM -Location $dc -ErrorAction SilentlyContinue
+  if (-not $folder -and $PSCmdlet.ShouldProcess($FolderName, 'Create the virtual machine folder')) {
+    $folder = New-Folder -Name $FolderName -Location (Get-Folder -Name vm -Type VM -Location $dc | Select-Object -First 1)
+  }
+
+  # Networks
   $uplink = @{ 'lab201-t1' = $Trunk1Nic; 'lab201-t2' = $Trunk2Nic; 'lab201-oob' = $OobNic; 'lab201-wan' = $WanNic }
   $portGroups = @{}
   foreach ($vmDef in $lab.vms) { foreach ($nic in $vmDef.nics) { $portGroups[(& $pgOf $nic)] = $nic } }
-  foreach ($net in $lab.networks) {
-    $vsName = "vSwitch-$($net.name)"
-    $vs = Get-VirtualSwitch -VMHost $vmhost -Standard -Name $vsName -ErrorAction SilentlyContinue
-    if (-not $vs -and $PSCmdlet.ShouldProcess($vsName, 'Create the virtual switch')) {
-      $vsArgs = @{ VMHost = $vmhost; Name = $vsName; Mtu = 1500 }
-      if ($uplink[$net.name]) { $vsArgs.Nic = $uplink[$net.name] } else { Write-Warning "$($net.name) has no uplink. It is internal to the host." }
-      $vs = New-VirtualSwitch @vsArgs
-    }
-    if ($vs -and $net.kind -eq 'trunk') {
-      # gw-201 bridges the two trunks, so its port groups must accept promiscuous mode, forged transmits, and MAC changes.
-      Get-SecurityPolicy -VirtualSwitch $vs | Set-SecurityPolicy -AllowPromiscuous $true -ForgedTransmits $true -MacChanges $true | Out-Null
-    }
-    foreach ($pg in @($portGroups.Keys | Where-Object { $portGroups[$_].net -eq $net.name })) {
-      if (Get-VirtualPortGroup -VMHost $vmhost -Name $pg -ErrorAction SilentlyContinue) { continue }
-      $vlanId = if ($portGroups[$pg].trunk) { 4095 } elseif ($portGroups[$pg].vlan) { [int]$portGroups[$pg].vlan } else { 0 }
-      # A preview makes no switch, so $vs is empty there. The port groups are listed all the same.
-      if (($vs -or $WhatIfPreference) -and $PSCmdlet.ShouldProcess($pg, "Create the port group (VLAN $vlanId)")) {
-        New-VirtualPortGroup -VirtualSwitch $vs -Name $pg -VLanId $vlanId | Out-Null
+  if ($UseExistingSwitch) {
+    # Reuse an existing distributed switch (for example the VxRail switch). No switch, uplink, or physical NIC changes.
+    # Only port groups are added. The switch's uplinks must already reach the hardware switches.
+    $vds = Get-VDSwitch -Server $server -Name $UseExistingSwitch
+    foreach ($pg in @($portGroups.Keys)) {
+      if (Get-VDPortgroup -VDSwitch $vds -Name $pg -ErrorAction SilentlyContinue) { continue }
+      if (-not $PSCmdlet.ShouldProcess($pg, "Create the distributed port group on $UseExistingSwitch")) { continue }
+      if ($portGroups[$pg].trunk) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanTrunkRange '0-4094' }
+      elseif ($portGroups[$pg].vlan) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanId ([int]$portGroups[$pg].vlan) }
+      else { $new = New-VDPortgroup -VDSwitch $vds -Name $pg }
+      if ($portGroups[$pg].trunk) {
+        Get-VDSecurityPolicy -VDPortgroup $new | Set-VDSecurityPolicy -AllowPromiscuous $true -ForgedTransmits $true -MacChanges $true | Out-Null
       }
     }
   }
+  else {
+  foreach ($net in $lab.networks) {
+    $swName = if ($NetworkType -eq 'Standard') { "vSwitch-$($net.name)" } else { "dvs-$($net.name)" }
+    if ($NetworkType -eq 'Standard') {
+      $vs = Get-VirtualSwitch -VMHost $vmhost -Standard -Name $swName -ErrorAction SilentlyContinue
+      if (-not $vs -and $PSCmdlet.ShouldProcess($swName, 'Create the standard switch')) {
+        $vsArgs = @{ VMHost = $vmhost; Name = $swName; Mtu = 1500 }
+        if ($uplink[$net.name]) { $vsArgs.Nic = $uplink[$net.name] } else { Write-Warning "$($net.name) has no uplink. It is internal to the host." }
+        $vs = New-VirtualSwitch @vsArgs
+      }
+      if ($vs -and $net.kind -eq 'trunk') {
+        Get-SecurityPolicy -VirtualSwitch $vs | Set-SecurityPolicy -AllowPromiscuous $true -ForgedTransmits $true -MacChanges $true | Out-Null
+      }
+      foreach ($pg in @($portGroups.Keys | Where-Object { $portGroups[$_].net -eq $net.name })) {
+        if (Get-VirtualPortGroup -VMHost $vmhost -Name $pg -ErrorAction SilentlyContinue) { continue }
+        $vlanId = if ($portGroups[$pg].trunk) { 4095 } elseif ($portGroups[$pg].vlan) { [int]$portGroups[$pg].vlan } else { 0 }
+        # A preview makes no switch, so $vs is empty there. The port groups are listed all the same.
+        if (($vs -or $WhatIfPreference) -and $PSCmdlet.ShouldProcess($pg, "Create the port group (VLAN $vlanId)")) {
+          New-VirtualPortGroup -VirtualSwitch $vs -Name $pg -VLanId $vlanId | Out-Null
+        }
+      }
+    }
+    else {
+      $vds = Get-VDSwitch -Server $server -Name $swName -ErrorAction SilentlyContinue
+      if (-not $vds -and $PSCmdlet.ShouldProcess($swName, "Create the distributed switch (version $VdsVersion)")) {
+        $vds = New-VDSwitch -Server $server -Name $swName -Location $dc -Version $VdsVersion -NumUplinkPorts 1 -Mtu 1500
+        Add-VDSwitchVMHost -VDSwitch $vds -VMHost $vmhost
+        if ($uplink[$net.name]) {
+          $pnic = Get-VMHostNetworkAdapter -VMHost $vmhost -Physical -Name $uplink[$net.name]
+          Add-VDSwitchPhysicalNetworkAdapter -DistributedSwitch $vds -VMHostPhysicalNic $pnic -Confirm:$false
+        }
+        else { Write-Warning "$($net.name) has no uplink. It is internal to the host." }
+      }
+      foreach ($pg in @($portGroups.Keys | Where-Object { $portGroups[$_].net -eq $net.name })) {
+        # A preview makes no switch, so $vds is empty there. The lookup needs a switch, so it is skipped then,
+        # and the port groups are listed all the same.
+        if ($vds -and (Get-VDPortgroup -VDSwitch $vds -Name $pg -ErrorAction SilentlyContinue)) { continue }
+        if (-not (($vds -or $WhatIfPreference) -and $PSCmdlet.ShouldProcess($pg, 'Create the distributed port group'))) { continue }
+        if ($portGroups[$pg].trunk) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanTrunkRange '0-4094' }
+        elseif ($portGroups[$pg].vlan) { $new = New-VDPortgroup -VDSwitch $vds -Name $pg -VlanId ([int]$portGroups[$pg].vlan) }
+        else { $new = New-VDPortgroup -VDSwitch $vds -Name $pg }
+        if ($net.kind -eq 'trunk') {
+          Get-VDSecurityPolicy -VDPortgroup $new | Set-VDSecurityPolicy -AllowPromiscuous $true -ForgedTransmits $true -MacChanges $true | Out-Null
+        }
+      }
+    }
+  }
+  }
 
-  # Images: one OVA for each flavor in use (Ubuntu publishes OVAs; pass others with -FlavorImages).
-  $imageOf = @{}
+  # Images and templates: one template for each image flavor in use (hardened flavors share their base's template).
+  Set-LabVsphereLicense -Server $server -VmHost $vmhost -Path $LicenseFile -IsVcenter $true
+  $templateOf = @{}
   foreach ($vmDef in $lab.vms) {
     $fid = Get-FlavorId $vmDef $lab
     if ((Get-FlavorRecord $fid).iso) { $null = Get-IsoPath -Id $fid -Supplied $IsoImages; continue }
-    if (-not $imageOf.ContainsKey($fid)) { $imageOf[$fid] = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages }
+    $imageId = Get-ImageFlavorId $fid
+    if ($templateOf.ContainsKey($imageId)) { continue }
+    $tplName = "lab201-$imageId-template"
+    $tpl = Get-Template -Server $server -Name $tplName -ErrorAction SilentlyContinue
+    if (-not $tpl -and $PSCmdlet.ShouldProcess($tplName, 'Import the cloud image as a template')) {
+      $ova = Resolve-FlavorOva -Id $fid -WorkDir $WorkDir -Supplied $FlavorImages
+      $base = Import-VApp -Source $ova -VMHost $vmhost -Datastore $ds -Location $folder -Name $tplName -DiskStorageFormat Thin -Force
+      Set-VM -VM $base -GuestId (Get-FlavorRecord $imageId).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
+      $tpl = Set-VM -VM $base -ToTemplate -Confirm:$false
+    }
+    $templateOf[$imageId] = $tpl
   }
-  Set-LabVsphereLicense -Server $server -VmHost $vmhost -Path $LicenseFile -IsVcenter $false
 
-  # Seeds: one ISO per virtual machine, rendered by the shared tool.
+  # Seeds
   $licenseArgs = @(); if ($LicenseFile) { $licenseArgs = '--license-file', (Resolve-Path $LicenseFile).Path }
   $keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
   $seedDir = Join-Path $WorkDir 'seeds'
   & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging hypervisor @keys @licenseArgs
   if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }
-
   $psDrive = New-PSDrive -Name lab201ds -PSProvider VimDatastore -Root '\' -Location $ds
   New-Item -Path 'lab201ds:\lab201-seeds' -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
   foreach ($vmDef in $lab.vms) {
     $name = $vmDef.name
     if (Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue) { Write-Host "$name exists. Skipped."; continue }
-    if (-not $PSCmdlet.ShouldProcess($name, 'Import the cloud image and configure the virtual machine')) { continue }
+    if (-not $PSCmdlet.ShouldProcess($name, 'Clone from the template and configure')) { continue }
     Write-Host "Creating $name"
     $fid = Get-FlavorId $vmDef $lab
     $isIso = [bool](Get-FlavorRecord $fid).iso
     if ($isIso) {
       # An empty machine. The install ISO and the answer or first-login CD are attached below.
-      $vm = New-VM -Name $name -VMHost $vmhost -Datastore $ds -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -DiskGB $vmDef.disk_gb -DiskStorageFormat Thin -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion
+      $vm = New-VM -Name $name @placement -Datastore $ds -Location $folder -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -DiskGB $vmDef.disk_gb -DiskStorageFormat Thin -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion
       $nicType = Get-IsoNicType $fid
     }
     else {
-      $vm = Import-VApp -Source $imageOf[$fid] -VMHost $vmhost -Datastore $ds -Name $name -DiskStorageFormat Thin -Force
-      Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -GuestId (Get-FlavorRecord $fid).guest_id -HardwareVersion $HardwareVersion -Confirm:$false | Out-Null
+      $vm = New-VM -Name $name -Template $templateOf[(Get-ImageFlavorId $fid)] @placement -Datastore $ds -Location $folder -DiskStorageFormat Thin
+      Set-VM -VM $vm -NumCpu $vmDef.vcpu -MemoryMB $vmDef.memory_mb -Confirm:$false | Out-Null
       # A disk cannot shrink. When the image is already larger than the manifest's size, the disk keeps the size of the image.
       $hd = Get-HardDisk -VM $vm | Select-Object -First 1
       if ($hd.CapacityGB -lt $vmDef.disk_gb) { Set-HardDisk -HardDisk $hd -CapacityGB $vmDef.disk_gb -Confirm:$false | Out-Null }
@@ -546,29 +671,29 @@ try {
     }
     Get-NetworkAdapter -VM $vm | Remove-NetworkAdapter -Confirm:$false
     for ($n = 0; $n -lt $vmDef.nics.Count; $n++) {
-      New-NetworkAdapter -VM $vm -NetworkName (& $pgOf $vmDef.nics[$n]) -Type $nicType -MacAddress (& $macOf $name $n) -StartConnected | Out-Null
+      $pg = & $pgOf $vmDef.nics[$n]
+      $mac = & $macOf $name $n
+      if ($NetworkType -eq 'Standard') {
+        New-NetworkAdapter -VM $vm -NetworkName $pg -Type $nicType -MacAddress $mac -StartConnected | Out-Null
+      }
+      else {
+        $vdpg = Get-VDPortgroup -Server $server -Name $pg
+        New-NetworkAdapter -VM $vm -Portgroup $vdpg -Type $nicType -MacAddress $mac -StartConnected | Out-Null
+      }
     }
-    $iso = Join-Path $seedDir "$name-seed.iso"
-    Copy-DatastoreItem -Item $iso -Destination 'lab201ds:\lab201-seeds\' -Force
+    Copy-DatastoreItem -Item (Join-Path $seedDir "$name-seed.iso") -Destination 'lab201ds:\lab201-seeds\' -Force
     Get-CDDrive -VM $vm | Remove-CDDrive -Confirm:$false
     if ($isIso) { New-CDDrive -VM $vm -IsoPath (Get-IsoPath -Id $fid -Supplied $IsoImages) -StartConnected | Out-Null }
     New-CDDrive -VM $vm -IsoPath "[$($ds.Name)] lab201-seeds/$name-seed.iso" -StartConnected | Out-Null
   }
   Remove-PSDrive -Name lab201ds -ErrorAction SilentlyContinue
 
-  # Power on the gateway first, then the rest.
   $gwName = ($lab.vms | Where-Object { $_.role -eq 'gateway' } | Select-Object -First 1).name
   $order = @($gwName) + ($lab.vms.name | Where-Object { $_ -ne $gwName })
   foreach ($name in $order) {
     $vm = Get-VM -Server $server -Name $name -ErrorAction SilentlyContinue
     if ($vm -and $vm.PowerState -ne 'PoweredOn' -and $PSCmdlet.ShouldProcess($name, 'Power on')) { Start-VM -VM $vm | Out-Null }
   }
-}
-catch {
-  if ($_.Exception.Message -match 'license or ESXi version prohibits') {
-    throw 'The host license does not allow API writes (the free ESXi license makes the API read-only). Apply an evaluation or paid license, or build the virtual machines in the ESXi host client by hand.'
-  }
-  throw
 }
 finally {
   Disconnect-VIServer -Server $server -Confirm:$false -ErrorAction SilentlyContinue

@@ -1,0 +1,121 @@
+{
+  "description": "The lab kinds and lab sets that the Lab Selector offers. A lab kind groups lab sets (SRG labs, certification labs, learning labs). A lab set is the labs of one volume: its requirement lab chapters and, if it has one, the Chapter 999 that builds its own hosts. scripts/python/sync_lab_selector.py reads this file, the lab chapters it names, and their Chapter 999 tables, and copies the result into the Lab Selector page. A kind with no lab set is shown on the page and cannot be chosen yet.",
+  "kinds": [
+    {
+      "id": "srg",
+      "name": "SRG labs",
+      "sub": "Prove the DISA SRG requirements of a product"
+    },
+    {
+      "id": "certification",
+      "name": "Certification labs",
+      "sub": "Labs that follow a vendor certification track"
+    },
+    {
+      "id": "learning",
+      "name": "Learning labs",
+      "sub": "Hands-on labs of the instructional volumes"
+    }
+  ],
+  "base": {
+    "volume": "volume-201-fortiswitch-stig-and-srg-mapping",
+    "roman": "CCI",
+    "chapter": "999-shared-lab-infrastructure.md",
+    "short": "999-shared-lab.md",
+    "diagram": "diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg",
+    "always": ["999.1", "999.2"],
+    "set": "fortiswitch",
+    "note": "The shared lab that every lab set runs on. The labs named in always build the gateway, the VLANs, and the service hosts, so every build has them. The other labs of the chapter prepare the switches, so they belong to the lab set named in set."
+  },
+  "sets": [
+    {
+      "id": "fortiswitch",
+      "kind": "srg",
+      "name": "FortiSwitch",
+      "volume": "volume-201-fortiswitch-stig-and-srg-mapping",
+      "roman": "CCI",
+      "prefix": "",
+      "selected": true,
+      "switches": true,
+      "about": "Requirement labs on two FortiSwitch units: Layer 2 switch, network device management, router, and AAA services. Chapter 08 adds optional console server labs.",
+      "chapters": [
+        {
+          "file": "04-layer-2-switch-srg-requirement-labs.md",
+          "short": "04-layer-2-labs.md",
+          "name": "Layer 2 switch labs"
+        },
+        {
+          "file": "05-network-device-management-srg-requirement-labs.md",
+          "short": "05-management-labs.md",
+          "name": "Network device management labs"
+        },
+        {
+          "file": "06-router-srg-requirement-labs.md",
+          "short": "06-router-labs.md",
+          "name": "Router labs"
+        },
+        {
+          "file": "07-aaa-services-srg-requirement-labs.md",
+          "short": "07-aaa-labs.md",
+          "name": "AAA services labs"
+        },
+        {
+          "file": "08-opengear-im7216-console-server-and-optional-console-lab.md",
+          "short": "08-console-lab.md",
+          "name": "Console server labs (optional)"
+        }
+      ]
+    },
+    {
+      "id": "fortianalyzer",
+      "kind": "srg",
+      "name": "FortiAnalyzer",
+      "volume": "volume-202-fortianalyzer-stig-and-srg-mapping",
+      "roman": "CCII",
+      "prefix": "faz",
+      "selected": false,
+      "switches": false,
+      "about": "Requirement labs on a FortiAnalyzer-VM: the Central Log Server SRG and its Network Device Management requirements. The labs reuse the service hosts of the shared lab.",
+      "shared": {
+        "file": "999-shared-lab-infrastructure.md",
+        "short": "faz-999-lab-hosts.md",
+        "name": "Build the FortiAnalyzer lab hosts"
+      },
+      "chapters": [
+        {
+          "file": "03-central-log-server-srg-requirement-labs.md",
+          "short": "faz-03-log-server-labs.md",
+          "name": "Central log server labs"
+        },
+        {
+          "file": "04-network-device-management-srg-requirement-labs.md",
+          "short": "faz-04-management-labs.md",
+          "name": "Network device management labs"
+        }
+      ]
+    },
+    {
+      "id": "fortimanager",
+      "kind": "srg",
+      "name": "FortiManager",
+      "volume": "volume-203-fortimanager-stig-and-srg-mapping",
+      "roman": "CCIII",
+      "prefix": "fmg",
+      "selected": false,
+      "switches": false,
+      "about": "Requirement labs on a FortiManager-VM that manages a FortiGate-VM: the Network Device Management SRG. The labs reuse the service hosts of the shared lab.",
+      "shared": {
+        "file": "999-shared-lab-infrastructure.md",
+        "short": "fmg-999-lab-hosts.md",
+        "name": "Build the FortiManager lab hosts"
+      },
+      "chapters": [
+        {
+          "file": "02-network-device-management-srg-requirement-labs.md",
+          "short": "fmg-02-management-labs.md",
+          "name": "Network device management labs"
+        }
+      ]
+    }
+  ]
+}

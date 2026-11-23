@@ -6,7 +6,7 @@ Usage: build_fortiswitch_features.py VERSION=MATRIX.txt [VERSION=MATRIX.txt ...]
 Fortinet publishes the Feature Matrix for each FortiSwitchOS release as a PDF.
 It lists every feature and, in one column for each model series, whether the
 series supports it. This script reads the text of that PDF and keeps the rows
-the Volume CCI labs use, so the Lab Builder can say which lab features a switch
+the Volume CCI labs use, so the Lab Selector can say which lab features a switch
 model supports.
 
 Make each MATRIX.txt from the PDF with xpdf's pdftotext in table mode:
@@ -27,7 +27,7 @@ import re
 import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-OUT = os.path.join(ROOT, "volumes", "volume-201-fortiswitch-stig-and-srg-mapping", "lab-scripts", "common", "fortiswitch-features.json")
+OUT = os.path.join(ROOT, "volumes", "volume-901-lab-selector", "lab-scripts", "common", "fortiswitch-features.json")
 
 # The column layouts Fortinet has used. Each entry is the start of a header label as
 # pdftotext prints it, and the column name used in the output. The first layout whose

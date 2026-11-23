@@ -8,6 +8,7 @@
 - Say what changed in the chapter after the first build.
 - Regenerate the CSV downloads and check their row counts.
 - Name what the move changed, and what it left where it was.
+- Describe how the requirement labs of Chapters 02 and 999 were built.
 
 ## Theory and Architecture
 
@@ -35,6 +36,9 @@ agents, playbooks, registration), read the Volume CLXXII chapter.
 | [Chapter 01](01-fortimanager-feature-version-and-srg-map.md), FortiManager feature, version, and SRG map | 2026-10-07 | One agent, as Chapter 13 of Volume CLXXII, from the five FortiManager New Features Guides (7.0 to 8.0), the FortiManager 8.0.1 CLI Reference, and the October 2026 DISA library. The method was written down afterward as `PLAYBOOK.txt` | CSV downloads for the SRG map tables (2026-10-08); FortiManager prerequisites table and column (2026-10-16) |
 | CSV files | With the chapter | Generated from the chapter tables by `scripts/python/export_srg_tables.py` | Regenerate whenever a table changes |
 | Move to Volume CCIII | 2026-11-20 | Chapter and `data/` files moved with `git mv` by the `/stig-volume-for` workflow; cross-references rewritten; pointer page left at Chapter 13 of Volume CLXXII | None |
+| [Chapter 02](02-network-device-management-srg-requirement-labs.md), requirement labs | 2026-11-20 | The `/srg-labs-for` workflow: the requirements grouped into 17 labs, the chapter scaffolded by its script, and each lab written from the commands of Chapter 01 | None. The labs have not been run |
+| [Chapter 999](999-shared-lab-infrastructure.md), shared lab | 2026-11-20 | Written from the prerequisites of Chapter 01 and from the Chapter 999 of Volumes CCI and CCII, whose lab network and hosts it reuses | None. The lab has not been built |
+| The Lab column of Chapter 01 | 2026-11-20 | Added by the script of `/srg-labs-for` from the labs' requirement rows | Regenerate whenever a lab is added, renamed, or renumbered |
 | 90, this chapter | 2026-11-20 | Started by the `/stig-volume-for` workflow, then completed from Volume CLXXII's Chapter 90, the chapter, and the repository history | Updated whenever the volume changes |
 
 Each chapter commit names its chapter in the subject (`Vol CLXXII Ch NN: ...`),
@@ -161,6 +165,62 @@ are not tracked, and their scripts still name the Volume CLXXII paths. Change
 those paths before you run one of them again, or it reads a pointer page or
 writes over one.
 
+### The requirement labs of Chapters 02 and 999
+
+The labs were built on 2026-11-20 with the `/srg-labs-for` workflow, which
+[Volume CLXXII's Chapter 90](../../volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md)
+describes. It was the workflow's second run, after the FortiAnalyzer labs of
+Volume CCII. Three choices were made before anything was written:
+
+- **Scope.** The labs cover the 79 requirements of Chapter 01's requirement
+  reference, all of the NDM SRG. The volume has no crosswalk, so every SRG ID
+  in its tables is a requirement of FortiManager and the script ran with its
+  default scope.
+- **The unit.** The labs are written for a FortiManager-VM on release 7.6.
+  Chapter 01 checked its commands against the 8.0.1 CLI Reference, and its
+  version column shows one setting of the labs as 8.0.0 and later: NTP
+  authentication with SHA-256, which Lab 2.12 records.
+- **The lab network.** Chapter 999 reuses the lab of Volume CCI's Chapter 999
+  and two hosts of Volume CCII's Chapter 999, the FortiGate-VM and the mail
+  server, and adds one host, `fmg-203`.
+
+The steps were these:
+
+1. The script's plan listed the 79 requirements with the features of Chapter
+   01 that cite each one, and whether any of those features has a command.
+2. The requirements were grouped into 17 labs, Labs 2.1 to 2.17. The order
+   follows an administrator's work: who may connect, the logon, the audit
+   records, time and cryptography, change control for managed devices,
+   backup, and the software release.
+3. The script wrote the lab chapter with each lab's requirement rows, and
+   registered Chapters 02 and 999.
+4. Each lab was written from the command cells of Chapter 01. A step for
+   which Chapter 01 has no command is given in words, and says so.
+5. Chapter 999 was written by hand. It maps each of the 23 prerequisites of
+   Chapter 01 to a host, a service, or the reason it is not built.
+6. The script added the Lab column to the feature map and the requirement
+   reference of Chapter 01, and the CSV export carried it into the CSV files.
+   All 487 feature rows and all 79 requirement rows link a lab, and 65
+   feature rows link more than one.
+
+One requirement went to the gap lab, Lab 2.17. The unit has no setting that
+checks a new password against a list of commonly used or compromised
+passwords (`SRG-APP-000845-NDM-000220`), which Chapter 01 documents, and no
+feature row cites that requirement. The gap test of the script was extended
+for this run, so that it offers a requirement of the requirement reference
+that no feature row cites as a gap.
+
+Five requirements are met only in part or by procedure, and their labs say
+so: a password change of four characters where the SRG asks for eight (Lab
+2.4), one local account kept by review (Lab 2.5), a revocation list that is
+imported by hand (Lab 2.6), the full text of commands only through TACACS+
+accounting (Lab 2.9), and NTP authentication with SHA-256, which needs 8.0.0
+(Lab 2.12).
+
+No lab has been run. The sign-off of each lab chapter is pending, and no host
+of Chapter 999 has been built. The tests of each lab were written from what
+the settings are documented to do, so the first run may correct them.
+
 ## Validation and Troubleshooting
 
 To check this volume:
@@ -171,6 +231,9 @@ To check this volume:
 - **The move.** `python .claude/skills/stig-volume-for/move_product.py "FortiManager" --check`
   looks for chapter references that were not rewritten, links of this volume
   that do not resolve, and an export that changes a file.
+- **The labs.** `python .claude/skills/srg-labs-for/labs.py FortiManager --check`
+  confirms that the 17 labs hold the 79 requirements, that each lab has all of
+  its parts, and that the Lab column matches the labs.
 - **Repository checks.** `scripts/bash/validate.sh` checks `book.yml`, internal
   links, markdownlint, and cspell.
 
@@ -200,9 +263,11 @@ Common problems:
 **References:**
 
 - [Volume CLXXII, Chapter 90](../../volume-172-disa-srgs-and-stigs/chapters/90-as-built-how-this-volume-was-built.md)
-  for the `/srg-mapping-for` workflow that built the chapter and the
-  `/stig-volume-for` workflow that moved it.
-- `scripts/python/export_srg_tables.py` and `.claude/skills/stig-volume-for/` in this repository.
+  for the `/srg-mapping-for` workflow that built the chapter, the
+  `/stig-volume-for` workflow that moved it, and the `/srg-labs-for` workflow
+  that built the labs.
+- `scripts/python/export_srg_tables.py`, `.claude/skills/stig-volume-for/`, and
+  `.claude/skills/srg-labs-for/` in this repository.
 - Fortinet, *FortiManager New Features Guide* for release trains 7.0, 7.2,
   7.4, 7.6, and 8.0, and *FortiManager 8.0.1 CLI Reference* (Fortinet
   Document Library).
@@ -222,6 +287,8 @@ Common problems:
    the most weight for a FortiManager?
 5. Which source gave the feature titles of the 7.6 release train, and why?
 6. Why must the paths in a scratch script be changed before it is run again?
+7. Which requirement went to the gap lab, and why did the script not offer
+   it as a gap before this run?
 
 ## Summary and Completion Checklist
 
@@ -230,9 +297,12 @@ moved here on 2026-11-20 with three CSV files.
 It maps 487 FortiManager features to the release that introduced them, to the
 requirement of the Network Device Management SRG that each one implements or
 must be configured to meet, and to the command or GUI location that meets it.
-Volume CLXXII keeps a pointer page at Chapter 13.
+Volume CLXXII keeps a pointer page at Chapter 13. Seventeen requirement labs
+in Chapter 02 test the 79 requirements on the lab of Chapter 999, and none
+has been run yet.
 
 - [ ] Can say how each part of the volume was built, and when.
 - [ ] Can explain why the chapter moved and what Volume CLXXII keeps.
 - [ ] Can run the export script and check the row counts.
+- [ ] Can run the labs check and say what it confirms.
 - [ ] Knows that SRG and STIG releases need confirmation with DISA.

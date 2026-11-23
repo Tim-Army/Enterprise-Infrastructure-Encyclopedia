@@ -38,7 +38,7 @@ It is not a way to test the switches. A hardware switch cannot reach these addre
 
 Each host's `lab201-net.sh` script (written by `make-seed.py --wsl`) creates one **dummy** interface, `lab201`, and a VLAN interface on it for each VLAN the host uses (`lab201.2`, `lab201.5`, and so on). It then adds the host's IPv4 and IPv6 addresses from the manifest to the right VLAN interface. The script runs again each time a distribution starts, through the `[boot] command` setting in `/etc/wsl.conf`, and is safe to repeat, because WSL forgets interface changes when its virtual machine stops.
 
-Because the namespace is shared, every distribution sees every host's addresses, and a service that listens on all addresses (`0.0.0.0`) answers on all of them. To keep the hosts distinct, configure each service to listen only on its own address (`radius-201a` on `10.201.2.10`, and so on). If the WSL kernel lacks 802.1Q support, the script puts the addresses on the dummy interface itself and the VLAN structure is lost, which does not matter for service testing.
+Because the namespace is shared, every distribution sees every host's addresses, and a service that listens on all addresses (`0.0.0.0`) answers on all of them. To keep the hosts distinct, configure each service to listen only on its own address (`radius-201a` on `10.200.2.10`, and so on). If the WSL kernel lacks 802.1Q support, the script puts the addresses on the dummy interface itself and the VLAN structure is lost, which does not matter for service testing.
 
 ### Requirements
 
@@ -50,10 +50,10 @@ In the default NAT mode, Windows can reach the WSL virtual machine's own address
 
 ```powershell
 $wsl = (wsl -d lab201-svc-201a -- hostname -I).Split(' ')[0]
-route add 10.201.0.0 mask 255.255.0.0 $wsl
+route add 10.200.0.0 mask 255.255.0.0 $wsl
 ```
 
-Run it from an elevated PowerShell, and delete the route with `route delete 10.201.0.0` when you finish. This was not tested for the book. WSL's *mirrored* and *bridged* networking modes change how Windows and WSL share addresses, and they are reported to have problems with some builds, so the script assumes the default.
+Run it from an elevated PowerShell, and delete the route with `route delete 10.200.0.0` when you finish. This was not tested for the book. WSL's *mirrored* and *bridged* networking modes change how Windows and WSL share addresses, and they are reported to have problems with some builds, so the script assumes the default.
 
 ## Design Considerations
 
@@ -90,8 +90,8 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 | --- | --- | --- |
 | Distributions exist | `.\Deploy-Lab201-Wsl.ps1 -Action Status` | Eight `lab201-…` distributions |
 | Hostname | `wsl -d lab201-svc-201a -- hostname` | `svc-201a` |
-| Addresses | `wsl -d lab201-svc-201a -- ip -br addr` | `lab201.2` with the `10.201.2.x` addresses of the host |
-| Hosts reach each other | `wsl -d lab201-admin-201 -- ping -c2 10.201.2.10` | Replies (every address is local to the shared namespace) |
+| Addresses | `wsl -d lab201-svc-201a -- ip -br addr` | `lab201.2` with the `10.200.2.x` addresses of the host |
+| Hosts reach each other | `wsl -d lab201-admin-201 -- ping -c2 10.200.2.10` | Replies (every address is local to the shared namespace) |
 | systemd | `wsl -d lab201-svc-201a -- systemctl is-system-running` | `running` or `degraded` |
 | A service listens | `wsl -d lab201-svc-201a -- ss -lntu` | The service's ports |
 
@@ -150,9 +150,9 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 
 ### Lab 13.2: Rehearse Lab 999.2 on the hosts
 
-1. The packages are installed, and FreeRADIUS started on both `lab201-svc-201a` and `lab201-svc-201b`. Because the distributions share one network namespace, both want port 1812 on every address, so one of them reports "address already in use". Fix that first: in each distribution, edit the `listen` sections in `/etc/freeradius/3.0/sites-enabled/default` and set `ipaddr = 10.201.2.10` in `svc-201a` and `ipaddr = 10.201.2.11` in `svc-201b`, then run `sudo systemctl restart freeradius`.
+1. The packages are installed, and FreeRADIUS started on both `lab201-svc-201a` and `lab201-svc-201b`. Because the distributions share one network namespace, both want port 1812 on every address, so one of them reports "address already in use". Fix that first: in each distribution, edit the `listen` sections in `/etc/freeradius/3.0/sites-enabled/default` and set `ipaddr = 10.200.2.10` in `svc-201a` and `ipaddr = 10.200.2.11` in `svc-201b`, then run `sudo systemctl restart freeradius`.
 2. Configure the client and a test user as in Lab 999.2, step 4, and test locally with `radtest`.
-3. From `lab201-admin-201`, send a test RADIUS request to `10.201.2.10` and to `10.201.2.11`.
+3. From `lab201-admin-201`, send a test RADIUS request to `10.200.2.10` and to `10.200.2.11`.
 
 **Expected result.** Each server answers only on its own address, and `ss -lnu` in either distribution shows both listeners.
 
@@ -160,7 +160,7 @@ The provisioning script writes `/etc/wsl.conf` (systemd, hostname, default user,
 
 ### Lab 13.3: Reach the lab from Windows (optional)
 
-1. Add the route shown in the chapter and ping `10.201.2.10` from Windows.
+1. Add the route shown in the chapter and ping `10.200.2.10` from Windows.
 2. Delete the route.
 
 **Evidence.** The `Status` output, `ip -br addr` from two hosts, the accepted and rejected RADIUS requests, and (optionally) the Windows ping.

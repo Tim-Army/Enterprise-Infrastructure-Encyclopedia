@@ -41,7 +41,7 @@ import sys
 from xml.sax.saxutils import escape as xml_escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V4_PREFIX = "10.201"
+V4_PREFIX = "10.200"
 V6_PREFIX = "fd00:db8:201::"
 SEGMENT_SUBNETS = {}
 # The segment of the lab services in Chapter 999 (Lab-Services). The DHCP server has no scope there, and the
@@ -55,14 +55,14 @@ FLAVOR_DATA = {"default": "ubuntu-24.04", "role_keys": [], "families": {}, "flav
 NFT_RULES = """#!/usr/sbin/nft -f
 flush ruleset
 table inet lab201 {
-  set svc4 { type ipv4_addr; flags interval; elements = { 10.201.2.0/24 } }
-  set mgmt4 { type ipv4_addr; flags interval; elements = { 10.201.0.0/24, 10.201.4.0/24 } }
+  set svc4 { type ipv4_addr; flags interval; elements = { 10.200.2.0/24 } }
+  set mgmt4 { type ipv4_addr; flags interval; elements = { 10.200.0.0/24, 10.200.4.0/24 } }
   set svc6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::200/120 } }
   set mgmt6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::/120, fd00:db8:201::400/120 } }
   chain forward {
     type filter hook forward priority 0; policy drop;
     ct state established,related accept
-    ip saddr 10.201.3.0/24 accept
+    ip saddr 10.200.3.0/24 accept
     ip6 saddr fd00:db8:201::300/120 accept
     ip saddr @mgmt4 ip daddr @svc4 tcp dport { 22, 514, 6514 } accept
     ip saddr @mgmt4 ip daddr @svc4 udp dport { 69, 123, 161, 162, 514, 1812, 1813, 2055, 4739, 6343 } accept
@@ -236,14 +236,14 @@ def source_builds_for(missing, fam):
 
 
 def seg_base(seg):
-    """First three octets of a shared segment's IPv4 subnet. The Lab Builder follows the VLAN ID by default."""
+    """First three octets of a shared segment's IPv4 subnet. The Lab Selector follows the VLAN ID by default."""
     return SEGMENT_SUBNETS.get(str(seg)) or "%s.%d" % (V4_PREFIX, seg)
 
 
 def uplink_of(manifest, vm):
     """The uplink of this machine to the external firewall, or None.
 
-    The Lab Builder writes "uplink" into the manifest when the build keeps one: "vm" names the gateway, and
+    The Lab Selector writes "uplink" into the manifest when the build keeps one: "vm" names the gateway, and
     "internet" lists the lab addresses whose traffic the gateway forwards to the uplink. "address", "gateway",
     and "dns" are there when the address was set. Without them the uplink takes its address from DHCP, like a
     build NIC. The uplink is the build NIC of that machine, which the platform scripts then leave in place.
@@ -382,7 +382,7 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
                 "      set-name: %s" % name]
         up = uplink_of(manifest, vm) if nic.get("build") else None
         if up and up.get("address"):
-            # The uplink of the gateway to the external firewall, with the address that was set on the Lab Builder.
+            # The uplink of the gateway to the external firewall, with the address that was set on the Lab Selector.
             body += ["      dhcp4: false", "      dhcp6: false", "      accept-ra: false", "      addresses:", "        - %s" % q(up["address"])]
             if up.get("dns"):
                 body += ["      nameservers:", "        addresses: [%s]" % ", ".join(q(a) for a in up["dns"])]

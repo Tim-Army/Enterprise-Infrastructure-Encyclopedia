@@ -6211,15 +6211,21 @@ volumes:
     number: "CCIII"
     slug: volume-203-fortimanager-stig-and-srg-mapping
     title: "FortiManager STIG and SRG Mapping"
-    chapter_count: 2
+    chapter_count: 4
     build_eligible: true
     chapters:
       - id: 01
         title: "Chapter 01: FortiManager Feature, Version, and SRG Map"
         path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/01-fortimanager-feature-version-and-srg-map.md
+      - id: 02
+        title: "Chapter 02: Network Device Management SRG Requirement Labs"
+        path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/02-network-device-management-srg-requirement-labs.md
       - id: 90
         title: "Chapter 90: As-Built — How This Volume Was Built"
         path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/90-as-built-how-this-volume-was-built.md
+      - id: 999
+        title: "Chapter 999: Shared Lab Infrastructure"
+        path: volumes/volume-203-fortimanager-stig-and-srg-mapping/chapters/999-shared-lab-infrastructure.md
   - id: volume-900
     number: "CM"
     slug: volume-900-tims-lab-gear
@@ -6239,6 +6245,22 @@ volumes:
       - id: 04
         title: "Chapter 04: Current Device Configurations"
         path: volumes/volume-900-tims-lab-gear/chapters/04-current-device-configurations.md
+  - id: volume-901
+    number: "CMI"
+    slug: volume-901-lab-selector
+    title: "Lab Selector"
+    chapter_count: 3
+    build_eligible: true
+    chapters:
+      - id: 01
+        title: "Chapter 01: The Lab Selector"
+        path: volumes/volume-901-lab-selector/chapters/01-the-lab-selector.md
+      - id: 02
+        title: "Chapter 02: Lab Data and How to Add a Lab Set"
+        path: volumes/volume-901-lab-selector/chapters/02-lab-data-and-how-to-add-a-lab-set.md
+      - id: 90
+        title: "Chapter 90: As-Built — How This Volume Was Built"
+        path: volumes/volume-901-lab-selector/chapters/90-as-built-how-this-volume-was-built.md
   - id: volume-997
     number: "CMXCVII"
     slug: volume-997-master-appendices

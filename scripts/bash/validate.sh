@@ -48,11 +48,12 @@ fi
 
 python3 scripts/python/check_internal_links.py || fail=1
 
-# The Lab Builder page carries a copy of the lab manifest. It must match lab201-vms.json.
-# The same script compares the numbers that the volume states in its text (SRG requirements,
+# The Lab Selector page carries a copy of the lab manifest, the flavors, and the lab data of the
+# lab chapters that lab-catalog.json names. The copies must match their sources.
+# The same script compares the numbers that the volumes state in their text (SRG requirements,
 # self-test checks) with the lab chapters and the page.
-if [[ -f scripts/python/sync_lab_builder.py ]]; then
-  python3 scripts/python/sync_lab_builder.py --check || fail=1
+if [[ -f scripts/python/sync_lab_selector.py ]]; then
+  python3 scripts/python/sync_lab_selector.py --check || fail=1
 fi
 
 # The lab automation scripts: Python compiles, Bash and PowerShell parse, and

@@ -105,7 +105,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 ## Security and Best Practices
 
 - **Run as root only when needed.** Use the `libvirt` group where you can.
-- **Remove the build NICs.** `--action remove-build-nics` takes the lab off the internet. The gateway's uplink is also its build adapter, so it loses its internet access too. When the manifest has `uplink` (the **Uplink** box of the Lab Builder, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `remove-build-nics` and `snapshot` leave the first NIC of the gateway in place, because it is the uplink to the external firewall.
+- **Remove the build NICs.** `--action remove-build-nics` takes the lab off the internet. The gateway's uplink is also its build adapter, so it loses its internet access too. When the manifest has `uplink` (the **Uplink** box of the Lab Selector, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `remove-build-nics` and `snapshot` leave the first NIC of the gateway in place, because it is the uplink to the external firewall.
 - **Keep keys out of the repository.** The license file holds a Red Hat activation key, an Ubuntu Pro token, or both. Keep it outside the repository (it is ignored by git), and never put it in a zip. The keys are written only into the seed of the machines that need them.
 - **Hardened flavors need a password hash.** The STIG forbids passwordless `sudo`. Set `LAB201_ADMIN_PASSWORD_HASH` to a crypt hash before building.
 - **Isolate the lab bridges.** Do not give the host an address on `br-t1`, `br-t2`, or `br-oob` unless you mean to reach the lab from it.
@@ -118,7 +118,7 @@ A Linux host with hardware virtualization (check `egrep -c '(vmx|svm)' /proc/cpu
 - libvirt documentation, and the `virt-install`, `virsh`, and `qemu-img` manual pages (`--cloud-init`, `--import`, `detach-interface`, `undefine`).
 - Canonical, Debian, Rocky Linux, AlmaLinux, and Fedora, for the cloud images and checksum files that `resolve-image.py` reads.
 - Cloud-init documentation, the NoCloud data source and network configuration version 2.
-- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest, seeds, flavors, licensing, and the Lab Builder, [Chapter 12](12-proxmox-ve-lab-virtual-machine-automation.md) for the other Linux-host platform, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
+- [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest, seeds, flavors, licensing, and the Lab Selector, [Chapter 12](12-proxmox-ve-lab-virtual-machine-automation.md) for the other Linux-host platform, and [Chapter 999](999-shared-lab-infrastructure.md) for the lab.
 
 **Knowledge checks:**
 

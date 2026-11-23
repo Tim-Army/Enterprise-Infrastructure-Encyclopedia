@@ -110,9 +110,10 @@ one:
 - `lab_title`: the lab's title, on at least one row of the lab.
 - `kind`: `requirement` or `gap`. The script proposes `gap` when no feature
   of the map has a command for the requirement, when the crosswalk shows no
-  command for it, or when every alignment is *Not supported* or *Not
-  applicable*. Read the map before you accept or change it. A lab holds
-  rows of one kind.
+  command for it, when every alignment is *Not supported* or *Not
+  applicable*, or when the requirement reference lists the requirement and
+  no feature row cites it. Read the map before you accept or change it. A
+  lab holds rows of one kind.
 
 Group the way Volume CCI does. Follow a sequence the reader can run, for
 example the life of an administrator session in its Chapter 05: who may
@@ -140,7 +141,11 @@ that starts `TODO srg-labs-for` wherever you have to write.
 Model: Chapter 999 of Volume CCI. Write the product under test, the
 topology, the address plan, the host or service for each prerequisite, the
 build labs, and the baseline lab that the requirement labs return to. Name
-every host, because the labs refer to hosts by these names.
+every host, because the labs refer to hosts by these names. Give the address
+plan as a table with the columns Host, Role, From, IPv4, and IPv6, where From
+is *This volume* for a host the volume adds and *Volume* with the Roman numeral
+for a reused host, as Volumes CCII and CCIII do. The Lab Selector reads the
+hosts of a lab set from that table.
 
 ### 6. Write the labs
 
@@ -203,6 +208,12 @@ link does not resolve, or the Lab column is out of date. Fix every failure.
 Tell the user how many labs cover how many requirements, which requirements
 went to gap labs, and what is not verified. The labs have not been run, and
 say so. Say that nothing is committed.
+
+Say too that the Lab Selector of Volume CMI can offer the new labs. It needs
+one entry for the volume in `lab-scripts/common/lab-catalog.json`, and an
+**Address plan** table with a From column in the volume's Chapter 999 if the
+labs add hosts. Volume CMI, Chapter 02 has the steps. Do it only if the user
+asks for it.
 
 ## Commit
 

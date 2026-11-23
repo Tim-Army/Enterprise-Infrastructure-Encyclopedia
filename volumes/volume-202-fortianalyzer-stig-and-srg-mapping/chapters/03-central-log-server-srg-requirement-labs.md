@@ -137,7 +137,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    ```text
    config system admin radius
        edit radius-201a
-           set server 10.201.2.10
+           set server 10.200.2.10
            set secret <SECRET>
            set protocol tls
            set message-authenticator require
@@ -156,12 +156,12 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    ```text
    config system admin user
        edit <LAB_ADMIN>
-           set trusthost1 10.201.3.0 255.255.255.0
+           set trusthost1 10.200.3.0 255.255.255.0
    end
    config system local-in-policy
        edit 1
            set intf <PORT>
-           set src 10.201.3.0 255.255.255.0
+           set src 10.200.3.0 255.255.255.0
            set dport 443
            set action accept
    end
@@ -426,7 +426,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
        set status enable
        config ntpserver
            edit 1
-               set server 10.201.2.30
+               set server 10.200.2.30
                set authentication enable
                set key-type sha256
                set key-id <ID>
@@ -435,7 +435,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    end
    ```
 
-2. Add `ntp-201b` (`10.201.2.31`) as server 2 in the same way.
+2. Add `ntp-201b` (`10.200.2.31`) as server 2 in the same way.
 3. Check that `fgt-202` takes its time from the same two servers.
 
 **Positive test.** The time that `get system status` shows on `faz-202` is within one second of `ntp-201a`. A log from `fgt-202` arrives with a receipt time stamp that maps to UTC and is within one second of the time the device gave the record.
@@ -594,7 +594,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    end
    config system mail
        edit mail-202
-           set server 10.201.2.120
+           set server 10.200.2.120
            set secure-option starttls
            set auth enable
    end
@@ -638,7 +638,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
        edit 1
            set mode forwarding
            set fwd-server-type syslog
-           set server-addr 10.201.2.20
+           set server-addr 10.200.2.20
            set fwd-reliable enable
            set fwd-secure enable
            set fwd-max-delay realtime
@@ -648,7 +648,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
 2. Back up the logs of the device to `files-201`. The SRG asks for a backup at least weekly. Chapter 01 gives this command and no schedule for it, so run it weekly by procedure and keep the dated files as the record.
 
    ```text
-   execute backup logs <DEVICE> sftp 10.201.2.60 <USER> <PASSWORD> <DIRECTORY>
+   execute backup logs <DEVICE> sftp 10.200.2.60 <USER> <PASSWORD> <DIRECTORY>
    ```
 
 3. If the lab has `faz-202b`, make it a collector that aggregates to `faz-202`. On `faz-202b`:
@@ -660,7 +660,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    config system log-forward
        edit 1
            set mode aggregation
-           set server-addr 10.201.2.100
+           set server-addr 10.200.2.100
    end
    ```
 
@@ -706,7 +706,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    end
    config system mail
        edit mail-202
-           set server 10.201.2.120
+           set server 10.200.2.120
            set secure-option starttls
            set auth enable
    end
@@ -785,8 +785,8 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
 3. To install a release, take the snapshot and a configuration backup first. Download the image from the vendor with your own account, put it on `files-201`, and load it.
 
    ```text
-   execute backup all-settings sftp 10.201.2.60 <FILE> <USER> <PASSWORD>
-   execute restore image sftp <IMAGE_PATH> 10.201.2.60 <USER> <PASSWORD>
+   execute backup all-settings sftp 10.200.2.60 <FILE> <USER> <PASSWORD>
+   execute restore image sftp <IMAGE_PATH> 10.200.2.60 <USER> <PASSWORD>
    ```
 
 **Positive test.** The release of `faz-202` is on the vendor's list of supported releases, and the patch record shows each security update installed within 30 days. If you run step 3, the unit installs the vendor's image and starts on the new release.

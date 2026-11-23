@@ -53,13 +53,13 @@ A **requirement lab** configures the FortiSwitch setting, proves it with a posit
 
 ## Implementation and Automation
 
-Each lab lists commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with lab values substituted: loopbacks `10.201.14.<host>/32`, peer links L1 to L5 from Chapter 999, and AS numbers 65201 to 65203. Where the workbook row reads "See ... Worksheet", the lab says to use the worksheet's ACL or interface rows for that ID.
+Each lab lists commands in the order to enter them. Commands come from the crosswalk workbook (FortiSwitchOS 7.6.7 syntax) with lab values substituted: loopbacks `10.200.14.<host>/32`, peer links L1 to L5 from Chapter 999, and AS numbers 65201 to 65203. Where the workbook row reads "See ... Worksheet", the lab says to use the worksheet's ACL or interface rows for that ID.
 
 On the peers, use FRR (`vtysh`) or a FortiGate-VM to announce test prefixes. Save evidence in `evidence/<lab>/<date>/` on `admin-201`.
 
 ## Validation and Troubleshooting
 
-Before each lab, confirm the links: `execute ping 10.201.9.1` for L1 and the same for the others. After each lab, remove the routing configuration and restore the baseline.
+Before each lab, confirm the links: `execute ping 10.200.9.1` for L1 and the same for the others. After each lab, remove the routing configuration and restore the baseline.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -646,7 +646,7 @@ Before each lab, confirm the links: `execute ping 10.201.9.1` for L1 and the sam
    end
    ```
 
-11. On the peers (FRR), announce the test prefixes: a bogon (`192.168.99.0/24`), the switch's own prefix, an unallocated prefix, a /25, and enough prefixes to exceed the maximum. For example on `rtr-peer-1`: `router bgp 65202`, `neighbor 10.201.9.0 remote-as 65201`, `address-family ipv4 unicast`, `network 192.168.99.0/24`.
+11. On the peers (FRR), announce the test prefixes: a bogon (`192.168.99.0/24`), the switch's own prefix, an unallocated prefix, a /25, and enough prefixes to exceed the maximum. For example on `rtr-peer-1`: `router bgp 65202`, `neighbor 10.200.9.0 remote-as 65201`, `address-family ipv4 unicast`, `network 192.168.99.0/24`.
 
 **Positive test.** The eBGP session comes up with the same key on both ends, and `get router info bgp summary` shows Established. Allowed customer prefixes are installed. Only customer and local prefixes are advertised to the peer.
 
@@ -763,7 +763,7 @@ Lifetimes are partial on FortiSwitchOS: key chains with send and accept lifetime
 
 **Configure.**
 
-1. Authenticate OSPF with MD5 on L5 (`10.201.9.8/31` to `10.201.9.9/31`).
+1. Authenticate OSPF with MD5 on L5 (`10.200.9.8/31` to `10.200.9.9/31`).
 
    ```text
    config router ospf
@@ -787,7 +787,7 @@ Lifetimes are partial on FortiSwitchOS: key chains with send and accept lifetime
    config router bgp
        set as 65201
        config neighbor
-           edit 10.201.9.1
+           edit 10.200.9.1
                set remote-as 65202
                set password <KEY_2>
            next
@@ -852,7 +852,7 @@ The fragmented-ICMP check drops all ICMP fragments on models that support it, no
 
 **Positive test.** `get system flan-cloud-mgr connection-info` shows no connection and `get system flan-cloud` shows the setting disabled, and a 10-minute capture on the switch's uplink at `gw-201` shows no connection to a vendor address.
 
-**Negative test.** Enable the cloud setting briefly: the capture shows the connection attempt, which proves the capture would have seen a call home. Turn it off again. From `attacker-201`, `hping3 --icmp -f 10.201.4.11 -c 50`: the switch drops the fragments and its counter rises, then disable the check and confirm the fragments arrive.
+**Negative test.** Enable the cloud setting briefly: the capture shows the connection attempt, which proves the capture would have seen a call home. Turn it off again. From `attacker-201`, `hping3 --icmp -f 10.200.4.11 -c 50`: the switch drops the fragments and its counter rises, then disable the check and confirm the fragments arrive.
 
 **Evidence.** The cloud setting, both captures, and the drop counters with the check on and off.
 

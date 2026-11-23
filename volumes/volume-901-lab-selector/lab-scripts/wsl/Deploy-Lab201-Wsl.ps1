@@ -114,16 +114,16 @@ if ($Action -eq 'Check') {
 
   $checkLab = $null
   if (Test-Path $Manifest) {
-    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Builder again' }
+    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Selector again' }
   } else {
     Show-Check 'FAIL' "The manifest was not found: $Manifest" 'Keep the script and the common folder together, as they are in the zip'
   }
   if ($checkLab) {
     $checkHosts = @($checkLab.vms | Where-Object { $_.wsl })
     if ($checkHosts.Count) { Show-Check 'OK' "Manifest: $($checkHosts.Count) hosts that WSL can build" }
-    else { Show-Check 'FAIL' 'The manifest has no host that WSL can build' 'Make the manifest with the Lab Builder for WSL 2' }
+    else { Show-Check 'FAIL' 'The manifest has no host that WSL can build' 'Make the manifest with the Lab Selector for WSL 2' }
     $notUbuntu = @($checkHosts | Where-Object { ($_.flavor -and $_.flavor -ne 'ubuntu-24.04') -or (-not $_.flavor -and $checkLab.default_flavor -and $checkLab.default_flavor -ne 'ubuntu-24.04') } | ForEach-Object { $_.name })
-    if ($notUbuntu.Count) { Show-Check 'FAIL' "WSL builds Ubuntu 24.04 only, and these hosts ask for another flavor: $($notUbuntu -join ', ')" 'Pick Ubuntu 24.04 for them in the Lab Builder' }
+    if ($notUbuntu.Count) { Show-Check 'FAIL' "WSL builds Ubuntu 24.04 only, and these hosts ask for another flavor: $($notUbuntu -join ', ')" 'Pick Ubuntu 24.04 for them in the Lab Selector' }
     if ($haveWsl) {
       $have = @(wsl.exe --list --quiet 2>$null | ForEach-Object { "$_".Trim() } | Where-Object { $_ })
       $existing = @($checkHosts | Where-Object { $have -contains "lab201-$($_.name)" })

@@ -1,8 +1,12 @@
-# Lab automation scripts for Volume CCI
+# Lab Selector and lab automation scripts
 
-These scripts create the virtual machines of the shared lab in Chapter 999 of
-Volume CCI (FortiSwitch STIG and SRG Mapping). Each platform has a chapter that
-explains it, and all of them read the same manifest.
+This folder belongs to Volume CMI (Lab Selector). It holds the Lab Selector
+page, the data the page works from, and the scripts that create the virtual
+machines of the shared lab. The shared lab is Chapter 999 of Volume CCI
+(FortiSwitch STIG and SRG Mapping), and every lab set of the Lab Selector runs
+on it. Each platform has a chapter in Volume CCI that explains it, and all of
+the scripts read the same manifest. A chapter number in this file is a chapter
+of Volume CCI, unless the line names another volume.
 
 | Folder | Platform | Chapter | Run it with |
 | --- | --- | --- | --- |
@@ -12,18 +16,24 @@ explains it, and all of them read the same manifest.
 | `proxmox/` | Proxmox VE 8.1 or later | 12 | Bash, as root on the node |
 | `wsl/` | WSL 2 on Windows 11 (service hosts only) | 13 | PowerShell |
 | `kvm/` | KVM and libvirt on Linux | 14 | Bash, as root or a libvirt user |
-| `common/` | The manifest, the Linux flavor catalog, the seed tool, and the image resolver | 09 | Used by all of them |
-| `builder/` | The Lab Builder page | 09 | A web browser |
+| `common/` | The manifest, the Linux flavor catalog, the lab catalog, the seed tool, and the image resolver | 09 | Used by all of them |
+| `selector/` | The Lab Selector page | Volume CMI, Chapter 01 | A web browser |
 
-## The Lab Builder
+## The Lab Selector
 
-`builder/lab-builder.html` is a single page that runs in your browser. Pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. The zip also holds `lab-builder-choices.json`, the same file that **Save choices** makes. Use **Load choices** with it to get the same build back on the page. Load that file and not the manifest (`lab201-vms.json`), which the page refuses. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
+`selector/lab-selector.html` is a single page that runs in your browser. Until 2026-11-20 it was the Lab Builder of Volume CCI.
+
+Start with the **Labs** card. It offers three kinds of labs: SRG labs, certification labs, and learning labs. Only the SRG labs have lab sets so far: FortiSwitch (Volume CCI), FortiAnalyzer (Volume CCII), and FortiManager (Volume CCIII). Tick the lab sets to build for. A new build has FortiSwitch. Every lab set runs on the shared lab, so the scripts build the same machines for each one, and the page names the machines that the labs you plan do not use. FortiAnalyzer and FortiManager add hosts that no script builds, such as the FortiAnalyzer-VM itself. The page lists those hosts under **Machines and sizes**, with their addresses and the walkthrough that builds each one, and the zip holds the lab chapters of every lab set you ticked. `common/lab-catalog.json` lists the kinds and the lab sets, and Volume CMI, Chapter 02 says how to add one.
+
+A link can tick lab sets for you: add `?sets=fortianalyzer` to the address of the page, or several ids with commas between them, such as `?sets=fortianalyzer,fortimanager`. On a new build the page also matches the machines to the labs of those sets. The **Labs** card shows the link for the lab sets of your build. Volume CMI, Chapter 01 says what such a link does.
+
+Then pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. The zip also holds `lab-selector-choices.json`, the same file that **Save choices** makes. Use **Load choices** with it to get the same build back on the page. A choices file that the Lab Builder made loads too. Load that file and not the manifest (`lab201-vms.json`), which the page refuses. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
 
 The page keeps your choices in the browser, so a reload does not lose them. It does not keep a console password you type, because the browser store is plain text. **Start over** clears the kept choices and goes back to the defaults.
 
-Under **Machines and sizes** you can clear the box of each lab you will not run. The page then names the machines those labs no longer use, and **Match the machines to these labs** leaves them out. The gateway, the service hosts, the certificate authority, the DHCP server, and the administrator workstation are always kept, because the shared lab of Chapter 999 needs them, and the page names them. The machines of a lab are the ones its text names, so check the list before you build.
+In the lab plan of the **Labs** card you can clear the box of each lab you will not run. The page then names the machines those labs no longer use, and **Match the machines to these labs** leaves them out. The gateway, the service hosts, the certificate authority, the DHCP server, and the administrator workstation are always kept, because the shared lab of Chapter 999 needs them, and the page names them. The machines of a lab are the ones its text names, so check the list before you build.
 
-The page gives the lab contiguous subnets, so the lab needs the fewest. Each network of the Segments table in Chapter 999 that the build uses takes the next `/24` from the first address of the supernet. A full build uses 16 of them, which fit `10.201.0.0/20`, and it is the plan that Chapter 999 prints. A VLAN ID is the third octet of its subnet, so a build that starts at another address has other VLAN IDs too, and a build that leaves a network out has subnets of its own. The walkthroughs in the zip, `LAB-VALUES.md`, and `CHANGES.md` show the values of your build. The IP addressing section has one **Supernet** field, which holds the block, the first address, and the size of the lab. The page picks it and the number of subnets, and an **Override** box beside each of them, and beside each VLAN ID, lets you set it.
+The page gives the lab contiguous subnets, so the lab needs the fewest. Each network of the Segments table in Chapter 999 that the build uses takes the next `/24` from the first address of the supernet. A full build uses 16 of them, which fit `10.200.0.0/20`, and it is the plan that Chapter 999 prints. A VLAN ID is the third octet of its subnet, so a build that starts at another address has other VLAN IDs too, and a build that leaves a network out has subnets of its own. The walkthroughs in the zip, `LAB-VALUES.md`, and `CHANGES.md` show the values of your build. The IP addressing section has one **Supernet** field, which holds the block, the first address, and the size of the lab. The page picks it and the number of subnets, and an **Override** box beside each of them, and beside each VLAN ID, lets you set it.
 
 Section 10 of the page holds the gateway of the lab. The list starts with what the scripts build, the Linux router `gw-201`, which is also the lab's own firewall and needs no text. Tick **Uplink** to keep its adapter on the build network as the way to the external firewall. The removal of the build adapters then leaves that adapter, and `gw-201` forwards to it only the traffic of the machines with internet access. `gw-201` itself takes only answers, ping, neighbor discovery, and its DHCP answer from the uplink, so its SSH does not answer there. Pick another OS type only if a network device takes the place of `gw-201`: Cisco ASA, Cisco Nexus (NX-OS), Cisco IOS XE, Cisco IOS XR, FortiGate (FortiOS), or Juniper Junos OS. The gateway text gives the device the `.1` address of every shared segment and lets the lab segments reach each other, which is wider than the policy of Lab 999.1 that `gw-201` applies. It follows your address block, VLAN IDs, and subnets. Port names are placeholders such as `<GW_TRUNK_PORT>`. The zip holds the text as `gateway-device/lab201-gateway-asa.txt` for a Cisco ASA, with the OS type of your device in the name, and `CHECKLIST.md` in the zip has the notes of the section. With `gw-201` as the gateway, the zip has no such file. With a device as the gateway, the build leaves `gw-201` out, because the device holds its addresses.
 
@@ -35,13 +45,16 @@ The **Diagram** tab draws the lab from your choices: the platform, the machines 
 
 ## Walk the labs with Claude
 
-The zip that the Lab Builder makes is ready for a Claude session. Besides the
+The zip that the Lab Selector makes is ready for a Claude session. Besides the
 scripts and the manifest, it holds:
 
-- `LAB-VALUES.md`: the values of your build in one place (switch models and
-  host names, VLAN IDs, subnets, and machine names and addresses).
-- `walkthroughs/`: the lab chapters this build is for (Chapter 999 and the
-  requirement labs in Chapters 04 to 08), rewritten with those values.
+- `LAB-VALUES.md`: the values of your build in one place (the lab sets, switch
+  models and host names, VLAN IDs, subnets, machine names and addresses, and
+  the hosts that no script builds).
+- `walkthroughs/`: the lab chapters this build is for (the chapter of the
+  shared lab and the lab chapters of the lab sets you chose), rewritten with
+  those values. A chapter of another volume than Volume CCI has a prefix in
+  its name, such as `faz-03-log-server-labs.md`.
 - `CLAUDE.md`: instructions that tell Claude what the folder holds and how to
   walk the labs, starting with Lab 999.1.
 - `START-CLAUDE.txt`: the line to start with.
@@ -53,7 +66,7 @@ scripts and the manifest, it holds:
 
 The walkthrough files have short names in the zip, such as
 `walkthroughs/999-shared-lab.md`, so that the paths stay short on Windows.
-On the Lab Builder you can pick the FortiSwitchOS release (7.6.7, 8.0.0, or 8.0.1) and your
+On the Lab Selector you can pick the FortiSwitchOS release (7.6.7, 8.0.0, or 8.0.1) and your
 two switch models. `LAB-VALUES.md` then lists the lab features that Fortinet's
 Feature Matrix marks as not supported on those models, with the planned labs
 that use each one on that switch, and `CLAUDE.md` tells Claude to record such
@@ -69,7 +82,7 @@ chapter expects 7.6.x, and says that the commands and page numbers still come
 from the 7.6.7 reference. `CLAUDE.md` then tells Claude not to guess when a
 switch refuses a command.
 
-On the Lab Builder you can also type the switch ports you use, which replace
+On the Lab Selector you can also type the switch ports you use, which replace
 placeholders such as `<PORT_EP1>` in the walkthroughs, and pick the lab that
 Claude starts with.
 
@@ -81,9 +94,11 @@ Result, Date, Note, and Evidence). It saves the output that each lab's
 passwords, keys, and secrets with `<SECRET>` first. Read an evidence file
 before you share it, because that rule depends on Claude following it.
 
-Click **Load progress** on the Lab Builder and pick `PROGRESS.md`. The
+Click **Load progress** on the Lab Selector and pick `PROGRESS.md`. The
 **Progress** tab then shows which labs passed and how far each of the 185 SRG
-requirements has been tested. A requirement takes its result from its own row,
+requirements of FortiSwitch has been tested, with those of every other lab set
+in the build. A lab of another lab set has its prefix before its number in
+`PROGRESS.md`, such as `faz-3.1`. A requirement takes its result from its own row,
 the one with its SRG ID and its lab. A row that names no lab counts for every
 lab that tests the requirement. Without a row, a requirement follows the steps
 of its lab. **Download results (CSV)** saves one row for each requirement, with
@@ -109,13 +124,13 @@ without your go-ahead, and never to ask for a password or a license key.
 The walkthroughs are rewritten by pattern (`VLAN 5`, `set vlanid 5`,
 `vlan5`, and the lab addresses). If a step and `LAB-VALUES.md` differ,
 `LAB-VALUES.md` is right. The chapters in `walkthroughs/` of the lab-scripts
-zip are the unchanged originals. `walkthroughs.list` names them.
+zip are the unchanged originals. `common/lab-catalog.json` names them.
 
 ## Before you run anything
 
 Start with the readiness check. Every script has one, and it changes nothing.
 It tests what a deploy needs and says how to fix what is missing. Give it the
-same arguments as the build. The Lab Builder's Command tab and `RUN.txt` show
+same arguments as the build. The Lab Selector's Command tab and `RUN.txt` show
 the whole line:
 
 ```powershell
@@ -245,7 +260,7 @@ with two machines, and on Workstation against stand-in `.vmx` files only.
 
 The scripts check each cloud image they download against the checksum file of
 its publisher. An install ISO you supply (Windows, Linux Mint, or Tiny Core)
-is yours to check. Type the checksum its publisher gives on the Lab Builder
+is yours to check. Type the checksum its publisher gives on the Lab Selector
 (card 8). SHA-256, SHA-512, SHA-1, and MD5 are told apart by their length.
 
 - On Proxmox VE, the command then carries `--iso-sum FLAVOR=CHECKSUM`. The
@@ -351,7 +366,7 @@ To build the machines, run the same line without `-WhatIf`:
 ```
 
 Pass `id_ed25519.pub` and not `id_ed25519`, which is the private key. Other
-options, such as `-BridgeVmnet vmnet0`, go on the same line. The Lab Builder's
+options, such as `-BridgeVmnet vmnet0`, go on the same line. The Lab Selector's
 Command tab and `RUN.txt` in its zip give the whole command with `-SshKeyFile`
 already filled in. The Bash scripts take the same file with `--ssh-key`.
 
@@ -399,7 +414,7 @@ $env:LAB201_CONSOLE_PASSWORD = '<LAB_ONLY_PASSWORD>'
 
 In Bash, use `export LAB201_CONSOLE_PASSWORD='<LAB_ONLY_PASSWORD>'`. The
 password works at the console and for `sudo`. SSH still takes only the key,
-because password login over SSH stays off. The Lab Builder proposes a console
+because password login over SSH stays off. The Lab Selector proposes a console
 password and puts this line in the commands. That default is published with
 the page, so change it or clear it for anything but a closed lab. The seed
 file holds the password as plain text, so use a lab-only value. This was
@@ -434,7 +449,7 @@ empty. To list them:
 
 The script can also open each machine in Workstation after the build, which
 lists it in the Library. Add `-AddToLibrary` to the deploy command, or tick
-the box in the Lab Builder. This option has not been tested yet, so use the
+the box in the Lab Selector. This option has not been tested yet, so use the
 scan if a machine is missing.
 
 When a machine starts, Workstation may warn that the value `preset` for
@@ -482,12 +497,12 @@ Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
   addresses. The IPv6 addresses are derived from the IPv4 addresses.
-- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Windows 11, Windows Server, Linux Mint, and Tiny Core install from an ISO you supply, and are available on Proxmox VE, ESXi, vCenter, and VxRail. A flavor can set a minimum size (`min`). A disk cannot be smaller than its cloud image, so Rocky Linux, AlmaLinux, and Red Hat set a 10 GB disk and Fedora sets 5 GB, and the Lab Builder raises a smaller machine to that size. The scripts never shrink a disk: when a manifest asks for less than the image holds, the machine keeps the size of the image.
+- `flavors.json` lists the Linux flavors (Ubuntu, Debian, Rocky, Alma, Fedora, Red Hat, and the hardened Ubuntu and Red Hat), their package names, and which machine types each can run. Windows 11, Windows Server, Linux Mint, and Tiny Core install from an ISO you supply, and are available on Proxmox VE, ESXi, vCenter, and VxRail. A flavor can set a minimum size (`min`). A disk cannot be smaller than its cloud image, so Rocky Linux, AlmaLinux, and Red Hat set a 10 GB disk and Fedora sets 5 GB, and the Lab Selector raises a smaller machine to that size. The scripts never shrink a disk: when a manifest asks for less than the image holds, the machine keeps the size of the image.
 - `resolve-image.py` finds, downloads, and checks the cloud image for a flavor.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.
 
-The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder. The zip that the Lab Builder makes holds a picture of your own build in their place, which the page draws.
+The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder. The zip that the Lab Selector makes holds a picture of your own build in their place, which the page draws.
 
 Check the downloaded files against `SHA256SUMS` in this folder.
 

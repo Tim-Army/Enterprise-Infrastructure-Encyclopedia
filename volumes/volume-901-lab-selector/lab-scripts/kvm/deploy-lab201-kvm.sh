@@ -114,7 +114,7 @@ for i, vm in enumerate(m["vms"]):
 PY
 }
 
-# The machine whose first NIC stays as the uplink to the external firewall. The Lab Builder writes "uplink" into the
+# The machine whose first NIC stays as the uplink to the external firewall. The Lab Selector writes "uplink" into the
 # manifest when the build keeps one. remove-build-nics and snapshot then leave that NIC alone.
 uplink_vm() {
   "$python" -c 'import json, sys; print((json.load(open(sys.argv[1], encoding="utf-8")).get("uplink") or {}).get("vm", ""))' "$manifest"
@@ -212,7 +212,7 @@ if [[ "$action" == check ]]; then
     need_gb="$(awk -F'|' '{ s += $4 } END { print s + 0 }' <<<"$plan_text")"
     avail_mb=$(( $(awk '/^MemAvailable:/ { print $2 }' /proc/meminfo) / 1024 ))
     if (( avail_mb >= need_mb )); then ok "Memory: the machines use $need_mb MB, and $avail_mb MB is available"
-    else warn "Memory: the machines use $need_mb MB, and $avail_mb MB is available" "Leave machines out in the Lab Builder, or make them smaller"; fi
+    else warn "Memory: the machines use $need_mb MB, and $avail_mb MB is available" "Leave machines out in the Lab Selector, or make them smaller"; fi
     probe="$disk_dir"; while [[ ! -d "$probe" && "$probe" != / ]]; do probe="$(dirname "$probe")"; done
     free_gb=$(( $(df -Pk "$probe" | awk 'NR == 2 { print $4 }') / 1024 / 1024 ))
     if (( free_gb >= need_gb )); then ok "Disk: $free_gb GB free under $probe. The thin disks can grow to $need_gb GB"

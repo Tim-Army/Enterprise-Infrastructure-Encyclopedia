@@ -570,12 +570,17 @@ Volumes with requirement labs so far:
 | --- | --- | --- | --- | --- | --- |
 | FortiSwitch | [CCI](../../volume-201-fortiswitch-stig-and-srg-mapping/README.md) | 41, in Chapters 04 to 07 | 185 | 2026-11-04 and 2026-11-05 | By hand; the workflow was written from these labs |
 | FortiAnalyzer | [CCII](../../volume-202-fortianalyzer-stig-and-srg-mapping/README.md) | 17, in Chapters 03 and 04 | 65 | 2026-11-20 | `/srg-labs-for`, its first run, with `--scope map` |
+| FortiManager | [CCIII](../../volume-203-fortimanager-stig-and-srg-mapping/README.md) | 17, in Chapter 02 | 79 | 2026-11-20 | `/srg-labs-for`, its second run |
 
 The FortiAnalyzer run changed the script in one place. With `--scope map` a
 lab chapter covers fewer IDs than the tables cite for its SRG, and the
 scaffold now says so in the sentence that states how many requirements the
-chapter covers. The labs of both volumes have not been run: each lab chapter
-carries a sign-off that is pending.
+chapter covers. The FortiManager run changed the gap proposal. A requirement
+that a map's requirement reference lists and no feature row cites is now
+proposed for a gap lab, unless a crosswalk row gives a command for it. On
+Volume CCI the script still proposes the same 48 requirements. The labs of
+the FortiAnalyzer and FortiManager volumes have not been run: each lab
+chapter carries a sign-off that is pending.
 
 ## Validation and Troubleshooting
 

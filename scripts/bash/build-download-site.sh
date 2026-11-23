@@ -51,36 +51,58 @@ fi
 # Lab automation scripts. A volume that keeps a lab-scripts folder gets it
 # published as plain files plus one zip at
 # downloads/<volume>/lab-scripts/ and downloads/<volume>/<volume>-lab-scripts.zip.
-# The volume's shared lab topology diagram (diagrams/<volume>/chapter-999-shared-lab-topology.svg)
-# is added as diagrams/lab-topology.svg, with a PNG copy when rsvg-convert is installed.
+# The folder of the Lab Selector (the one with common/lab-catalog.json) also gets
+# the lab diagram of the shared lab as diagrams/lab-topology.svg, with a PNG copy
+# when rsvg-convert is installed, and the lab chapters that the catalog names as
+# walkthroughs/<short name>, so the Lab Selector can put them in its zip.
+# scripts/python/sync_lab_selector.py --package-args lists those files.
+# set_links holds one line for each lab set of the Lab Selector (the folder of its
+# volume, its id, and its name), for the links on the portal pages of those volumes.
+set_links=""
 for scripts_dir in volumes/*/lab-scripts; do
   [[ -d "$scripts_dir" ]] || continue
+  # A folder with no file in it is skipped: git does not track an empty folder.
+  [[ -n "$(find "$scripts_dir" -type f -print -quit)" ]] || continue
   vol="$(basename "$(dirname "$scripts_dir")")"
   mkdir -p "$output/downloads/$vol"
   extra_args=()
-  topology="diagrams/$vol/chapter-999-shared-lab-topology.svg"
-  if [[ -f "$topology" ]]; then
-    extra_args+=(--add "$topology=diagrams/lab-topology.svg")
-  fi
-  # Lab chapters named in lab-scripts/walkthroughs.list are published as
-  # walkthroughs/<file>, so the Lab Builder can put them in its zip.
-  if [[ -f "$scripts_dir/walkthroughs.list" ]]; then
-    while IFS= read -r chapter || [[ -n "$chapter" ]]; do
-      chapter="${chapter%$'\r'}"
-      [[ -z "$chapter" || "$chapter" == \#* ]] && continue
-      # A line is CHAPTER-FILE = SHORT-NAME. Only the chapter file matters here.
-      chapter="${chapter%%=*}"
-      chapter="${chapter%"${chapter##*[![:space:]]}"}"
-      if [[ -f "volumes/$vol/chapters/$chapter" ]]; then
-        extra_args+=(--add "volumes/$vol/chapters/$chapter=walkthroughs/$chapter")
-      else
-        echo "build-download-site.sh: $scripts_dir/walkthroughs.list names a missing chapter: $chapter" >&2
-        exit 1
-      fi
-    done < "$scripts_dir/walkthroughs.list"
+  if [[ -f "$scripts_dir/common/lab-catalog.json" ]]; then
+    package_args="$(python3 scripts/python/sync_lab_selector.py --package-args)"
+    while IFS= read -r spec; do
+      spec="${spec%$'\r'}"
+      [[ -z "$spec" ]] && continue
+      extra_args+=(--add "$spec")
+    done <<< "$package_args"
+    set_links="$(python3 scripts/python/sync_lab_selector.py --set-links)"
+  else
+    topology="diagrams/$vol/chapter-999-shared-lab-topology.svg"
+    if [[ -f "$topology" ]]; then
+      extra_args+=(--add "$topology=diagrams/lab-topology.svg")
+    fi
   fi
   python3 scripts/python/package_lab_scripts.py "$scripts_dir" "$output/downloads/$vol" "$vol-lab-scripts.zip" ${extra_args[@]+"${extra_args[@]}"}
 done
+
+# The Lab Selector was the Lab Builder of volume 201 until 2026-11-20. A page at
+# the old address sends a reader on to the new one.
+selector_page="downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html"
+if [[ -f "$output/$selector_page" ]]; then
+  old_dir="$output/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder"
+  mkdir -p "$old_dir"
+  cat > "$old_dir/lab-builder.html" <<HTML
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="refresh" content="0; url=../../../volume-901-lab-selector/lab-scripts/selector/lab-selector.html" />
+<title>Lab Selector</title>
+</head>
+<body>
+<p>The Lab Builder is now the <a href="../../../volume-901-lab-selector/lab-scripts/selector/lab-selector.html">Lab Selector</a>, in Volume CMI.</p>
+</body>
+</html>
+HTML
+fi
 
 # Self-contained interactive companion pages (searchable/sortable catalogs
 # and the like). These are hand-authored, fully offline HTML — served as-is
@@ -150,6 +172,9 @@ volume_title() {
     if [[ -f "$output/interactive/fortigate-administrator-quiz.html" ]]; then
       echo "<li><a href=\"interactive/fortigate-administrator-quiz.html\">FortiGate 7.6 Administrator (NSE 4) Study Quiz &mdash; interactive self-check</a> (companion to <a href=\"html/volume-019-fortinet-network-security/Enterprise-Infrastructure-Encyclopedia.html#c16\">Fortinet NSE, Chapter 16</a>)</li>"
     fi
+    if [[ -f "$output/$selector_page" ]]; then
+      echo "<li><a href=\"$selector_page\">Lab Selector &mdash; choose certification, learning, or SRG labs and get the build for them</a> (companion to <a href=\"html/volume-901-lab-selector/Enterprise-Infrastructure-Encyclopedia.html\">Lab Selector, Volume CMI</a>)</li>"
+    fi
     if [[ -f "$output/interactive/fortiswitch-srg-crosswalk.html" ]]; then
       echo "<li><a href=\"interactive/fortiswitch-srg-crosswalk.html\">FortiSwitch SRG Crosswalk &mdash; searchable, sortable table with CSV downloads</a> (companion to <a href=\"html/volume-201-fortiswitch-stig-and-srg-mapping/Enterprise-Infrastructure-Encyclopedia.html\">FortiSwitch STIG and SRG Mapping, Volume CCI</a>)</li>"
     fi
@@ -187,8 +212,16 @@ for volume_dir in volumes/*/; do
     if [[ -f "$output/downloads/$slug/$slug-lab-scripts.zip" ]]; then
       echo "<li><a href=\"../../downloads/$slug/$slug-lab-scripts.zip\">Download the lab automation scripts (.zip)</a></li>"
     fi
-    if [[ -f "$output/downloads/$slug/lab-scripts/builder/lab-builder.html" ]]; then
-      echo "<li><a href=\"../../downloads/$slug/lab-scripts/builder/lab-builder.html\">Lab Builder: choose a platform and options, get the manifest, command, and checklist</a></li>"
+    if [[ -f "$output/downloads/$slug/lab-scripts/selector/lab-selector.html" ]]; then
+      echo "<li><a href=\"../../downloads/$slug/lab-scripts/selector/lab-selector.html\">Lab Selector: choose the labs, a platform, and options, and get the manifest, the commands, the checklist, and the walkthroughs</a></li>"
+    fi
+    # A volume whose labs the Lab Selector offers gets a link that opens the page with those labs ticked.
+    if [[ -n "$set_links" && -f "$output/$selector_page" ]]; then
+      while IFS=$'\t' read -r set_volume set_id set_name; do
+        set_name="${set_name%$'\r'}"
+        [[ "$set_volume" == "$slug" ]] || continue
+        echo "<li><a href=\"../../$selector_page?sets=$set_id\">Lab Selector: plan a lab build for the $set_name labs of this volume</a></li>"
+      done <<< "$set_links"
     fi
     echo "</ul>"
     echo "<h2>Chapters</h2>"
@@ -210,6 +243,8 @@ while IFS= read -r -d '' html_file; do
   dir="$(dirname "$html_file")"
   while IFS= read -r href; do
     target="${href%%#*}"
+    # A link can carry choices for its page after a question mark. The file is what has to exist.
+    target="${target%%\?*}"
     [[ -z "$target" ]] && continue
     case "$target" in http://*|https://*|mailto:*) continue ;; esac
     if [[ ! -e "$dir/$target" ]]; then

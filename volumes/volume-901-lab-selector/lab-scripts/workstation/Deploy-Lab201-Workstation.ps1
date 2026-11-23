@@ -166,26 +166,26 @@ if ($Action -eq 'Check') {
 
   $checkLab = $null
   if (Test-Path $Manifest) {
-    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Builder again' }
+    try { $checkLab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json } catch { Show-Check 'FAIL' "The manifest is not valid JSON: $Manifest" 'Download the zip from the Lab Selector again' }
   } else {
     Show-Check 'FAIL' "The manifest was not found: $Manifest" 'Keep the script and the common folder together, as they are in the zip'
   }
   if ($checkLab) {
     Show-Check 'OK' "Manifest: $(@($checkLab.vms).Count) machines"
     if (@($checkLab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
-      Show-Check 'FAIL' 'The manifest has a second trunk (lab201-t2), and Workstation supports one bridged network' 'Make the manifest with the Lab Builder for VMware Workstation Pro'
+      Show-Check 'FAIL' 'The manifest has a second trunk (lab201-t2), and Workstation supports one bridged network' 'Make the manifest with the Lab Selector for VMware Workstation Pro'
     }
     $catalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json
     $isoMachines = @($checkLab.vms | Where-Object {
         $fid = if ($_.flavor) { $_.flavor } elseif ($checkLab.default_flavor) { $checkLab.default_flavor } else { $catalog.default }
         ($catalog.flavors | Where-Object { $_.id -eq $fid } | Select-Object -First 1).iso
       } | ForEach-Object { $_.name })
-    if ($isoMachines.Count) { Show-Check 'FAIL' "ISO-based flavors cannot run on Workstation: $($isoMachines -join ', ')" 'Pick a cloud-image flavor for these machines in the Lab Builder' }
+    if ($isoMachines.Count) { Show-Check 'FAIL' "ISO-based flavors cannot run on Workstation: $($isoMachines -join ', ')" 'Pick a cloud-image flavor for these machines in the Lab Selector' }
     $needGb = ($checkLab.vms | Measure-Object -Property disk_gb -Sum).Sum
     $needMb = ($checkLab.vms | Measure-Object -Property memory_mb -Sum).Sum
     $totalMb = [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB)
     if ($totalMb -ge $needMb + 4096) { Show-Check 'OK' ("Memory: the machines use {0:N1} GB of {1:N1} GB" -f ($needMb / 1024), ($totalMb / 1024)) }
-    else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB and this computer has {1:N1} GB" -f ($needMb / 1024), ($totalMb / 1024)) 'Leave machines out in the Lab Builder, or make them smaller' }
+    else { Show-Check 'WARN' ("Memory: the machines use {0:N1} GB and this computer has {1:N1} GB" -f ($needMb / 1024), ($totalMb / 1024)) 'Leave machines out in the Lab Selector, or make them smaller' }
   }
 
   if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + '\'))) {
@@ -223,7 +223,7 @@ if (-not $ovftool) { throw "ovftool.exe was not found in $WorkstationDir\OVFTool
 foreach ($exe in $vmrun, $ovftool, $vdisk) { if (-not (Test-Path $exe)) { throw "Not found: $exe. Is Workstation Pro installed, is -WorkstationDir right, and is OVF Tool installed (-OvfToolPath)?" } }
 
 $lab = Get-Content -Raw -Path $Manifest | ConvertFrom-Json
-# The machine whose first adapter stays as the uplink to the external firewall. The Lab Builder writes "uplink" into
+# The machine whose first adapter stays as the uplink to the external firewall. The Lab Selector writes "uplink" into
 # the manifest when the build keeps one. RemoveBuildNics and Snapshot then leave that adapter alone.
 $uplinkVm = if ($lab.PSObject.Properties['uplink'] -and $lab.uplink.vm) { [string]$lab.uplink.vm } else { '' }
 $names = @{}; $i = 0
@@ -231,7 +231,7 @@ foreach ($vm in $lab.vms) { $i++; $names[$vm.name] = $i }
 $vmnetOf = @{ 'lab201-t1' = $BridgeVmnet; 'lab201-t2' = $BridgeVmnet; 'lab201-oob' = $BridgeVmnet; 'lab201-mcast' = $McastVmnet; 'lab201-wan' = $WanVmnet }
 # Workstation supports one bridged network. With T1 and T2 on it, the gateway would bridge the two NICs into a loop.
 if (@($lab.vms | ForEach-Object { $_.nics } | Where-Object { $_.net -eq 'lab201-t2' }).Count -gt 0) {
-  throw "The manifest has a second trunk (lab201-t2), but Workstation supports one bridged network. Generate the manifest with the Lab Builder for Workstation, which merges T1 and T2 into one trunk."
+  throw "The manifest has a second trunk (lab201-t2), but Workstation supports one bridged network. Generate the manifest with the Lab Selector for Workstation, which merges T1 and T2 into one trunk."
 }
 
 $flavorCatalog = Get-Content -Raw -Path (Join-Path $PSScriptRoot '..\common\flavors.json') | ConvertFrom-Json

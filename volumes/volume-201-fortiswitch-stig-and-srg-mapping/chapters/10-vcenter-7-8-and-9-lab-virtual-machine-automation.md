@@ -59,7 +59,7 @@ A vCenter of one major version can manage hosts of the previous version, so the 
 
 ### Dell VxRail
 
-Dell VxRail runs vSphere and vSAN on Dell nodes and is managed by VxRail Manager. VxRail 8.0.x runs vSphere 8 and VxRail 9.0.x runs vSphere 9, so the same script builds the lab on it. VxRail needs three changes, which the script has as options and the [Lab Builder](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-201-fortiswitch-stig-and-srg-mapping/lab-scripts/builder/lab-builder.html) sets when you choose Dell VxRail.
+Dell VxRail runs vSphere and vSAN on Dell nodes and is managed by VxRail Manager. VxRail 8.0.x runs vSphere 8 and VxRail 9.0.x runs vSphere 9, so the same script builds the lab on it. VxRail needs three changes, which the script has as options and the [Lab Selector](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html) sets when you choose Dell VxRail.
 
 - **An existing switch.** `-UseExistingSwitch <name>` reuses VxRail's distributed switch and adds only port groups to it (`lab201-...`). The script changes no switch, uplink, or physical NIC, and `-NoUplinkChanges` confirms that. VxRail Manager owns the uplinks.
 - **A cluster, not a host.** `-ClusterName` places the machines in the cluster, so they can run on any host. The script imports the template through the first connected host. Cable the trunk uplinks on every host, or keep the lab on one host with a VM-Host rule, because a machine that moves to a host with no trunk loses it.
@@ -105,7 +105,7 @@ With `-WhatIf`, the script downloads no image and applies no license key, as in 
 
 The other parameters (`-VsphereVersion`, `-SshKeyFile`, `-Datastore`, the four `-…Nic` uplinks, `-Action`, `-Wait`, `-WaitMinutes`, `-SnapshotName`, `-HardwareVersion`, `-SkipCertificateCheck`) work as in Chapter 09, and the actions `Check`, `Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` do the same. `Check` also tests the datacenter, the host or cluster, and, with `-UseExistingSwitch`, the distributed switch.
 
-`Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` look for the machines only in the lab folder (`-FolderName`). A machine with the same name elsewhere in vCenter is never touched. If you built the lab in another folder, pass the same `-FolderName` to these actions. When the manifest has `uplink` (the **Uplink** box of the Lab Builder, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `RemoveBuildNics` and `Snapshot` leave the first adapter of the gateway in place, because it is the uplink to the external firewall.
+`Status`, `RemoveBuildNics`, `Snapshot`, `Restore`, and `Remove` look for the machines only in the lab folder (`-FolderName`). A machine with the same name elsewhere in vCenter is never touched. If you built the lab in another folder, pass the same `-FolderName` to these actions. When the manifest has `uplink` (the **Uplink** box of the Lab Selector, [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md)), `RemoveBuildNics` and `Snapshot` leave the first adapter of the gateway in place, because it is the uplink to the external firewall.
 
 Example for vCenter 8 with distributed switches:
 
