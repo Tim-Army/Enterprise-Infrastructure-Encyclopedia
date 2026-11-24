@@ -25,6 +25,7 @@ The volume was not written from nothing. Its page and its scripts were built ins
 | The lab data of the FortiAnalyzer and FortiManager lab sets | 2026-11-20 | Read from the lab chapters of Volumes CCII and CCIII by `scripts/python/sync_lab_selector.py` | Regenerate after a chapter changes |
 | Links that tick lab sets | 2026-11-22 | The page reads `?sets=` and the ids of lab sets from its address, once. The site build and the documents of the three product volumes link to the page with their lab set ticked | None |
 | The values of the gateway text and the firewall text | 2026-11-23 | Section 10 asks for the two ports of a network device that is the gateway, and section 11 for the interfaces and the gateway address of the external firewall. The texts left them as placeholders, and the page writes them into the texts | None |
+| The table of the lab networks | 2026-11-24 | The table of the IP addressing section has a row for every lab network of the build, in the order of their addresses. It had a row for each shared segment only, so it started at the third subnet of the lab | None |
 | [Chapter 01](01-the-lab-selector.md) | 2026-11-20 | The description of the page moved from Volume CCI's Chapter 09, and the parts about the lab sets were written new | Updated whenever the page changes |
 | [Chapter 02](02-lab-data-and-how-to-add-a-lab-set.md) | 2026-11-20 | Written from the catalog and the sync script | Updated whenever the data changes |
 | 90, this chapter | 2026-11-20 | Written from the work of that day and from Volume CCI's Chapter 90 | Updated whenever the volume changes |
@@ -54,6 +55,7 @@ The published addresses changed with the folder, from `downloads/volume-201-fort
 - **The Labs card has no number.** It comes before section 1, so the eleven numbered sections kept their numbers, which the page, the zip, and the chapters name in many places.
 - **A link counts once.** A link with `?sets=` ticks its lab sets when the page starts. The page then keeps the result and takes the `sets` part out of its address, because a link that stayed there would undo at every reload what a reader chose afterward. On a build with no kept choices the link also matches the machines to the labs, so that a first visitor gets a build that fits the lab set. On top of kept choices it changes the lab sets only, because the machines there are choices of the reader.
 - **The page asks for what a text leaves open.** The external firewall text had placeholders for what only the reader knows, and the reader had to replace them by hand in the text. Section 11 now asks for each one, in the way section 7 asks for the switch ports. It asks only for the placeholders that the text of the chosen OS type holds, so a field that the text does not use is not shown and its value is not checked. The uplink address of section 10 already is the address of the gateway, so the page shows it and does not ask twice. A value is checked before it stands in a configuration text, because a quote or a line break in it would change what the text does. Section 10 asks in the same way for the two ports of a network device that is the gateway, and only then: with the Linux router there is no text and no field. It refuses the trunk port given a second time, because its text is written for two ports.
+- **The table of section 6 shows the whole plan.** The lab always started at the first subnet of its supernet, which OOB-Mgmt takes. The table listed the seven shared segments only, because only they have fields, so its first row was `10.200.2.0/24`, and the other networks stood in one line of small text under it. A reader could take that for a plan that leaves the first subnets unused. The table now has a row for every network of the build, and only the rows of the shared segments have fields. The rows follow the addresses and not the segment numbers. In a build that has the routing peers and no Console-OOB network, the routed links take the second subnet, and a subnet that the reader sets can lie anywhere. A row does not move while the reader works in the table, because a row that jumps away under the cursor is worse than a row that is out of order for a moment.
 
 ## Implementation and Automation
 
@@ -89,14 +91,25 @@ Section 11 got a field for each placeholder of the external firewall text. Secti
 
 The first layout put the line about a field beside it. The column is narrow, so one word stood beside the field and the rest of the line under it. A look at the page showed it, and the line stands under the field now.
 
+### The table of the lab networks, 2026-11-24
+
+A reader reported that the IP addressing section does not start at the first subnet. The table of the section got a row for every lab network of the build.
+
+1. **The core.** A function returns the networks of the build in the order of their addresses, each with its name, its subnet, and its VLAN: the VLAN ID of a shared segment, the VLAN ID and the VNI of the VXLAN tenant network, and for every other network the text of the Segments table in Chapter 999.
+2. **The page.** The table is drawn from that list. Its rows are written again when the networks of the build or their order change, and not while the focus is in the table. When the focus leaves the table, the rows take their order. The line *Other lab networks* under the table is gone, and a short note says which rows have fields.
+3. **The documents.** Chapter 01 and the README of the `lab-scripts` folder describe the table.
+
+With all the networks in the table, the names wrapped whenever a row showed the field for a subnet. A look at the page showed it. The names stay on one line now in a window wider than 640 pixels. In a narrower window they wrap as before, because the table would be wider otherwise.
+
 ### What was tested, and what was not
 
-The checks of this table ran on 2026-11-23, on a local copy of the published folder, except the last row.
+The checks of this table ran on 2026-11-23, on a local copy of the published folder, except the last row. On 2026-11-24 the self-test, the walkthrough test, the check of the lab scripts, and `validate.sh` ran again, and the table of section 6 was tried by hand.
 
 | Check | Result |
 | --- | --- |
-| The self-test of the page (`?selftest=1`) | 296 checks pass in a Chromium browser, on a local copy of the published folder. 254 of them are the checks the Lab Builder had, 18 check the lab sets, 4 check the links, 13 check the values of the firewall text, and 7 check the ports of the gateway text |
+| The self-test of the page (`?selftest=1`) | 301 checks pass in a Chromium browser, on a local copy of the published folder. 254 of them are the checks the Lab Builder had, 18 check the lab sets, 4 check the links, 13 check the values of the firewall text, 7 check the ports of the gateway text, and 5 check the table of the lab networks |
 | The fields of sections 10 and 11, tried by hand | In section 11: typing in the three fields, a reload, a value that cannot be used, another OS type, and an uplink address that was set and cleared again. In section 10: typing in the two fields, a reload, the trunk port given a second time, another OS type, and the Linux router and then a device again. Each did what Chapter 01 says, also in a window as narrow as a phone |
+| The table of section 6, tried by hand | A new build, a build with the FortiAnalyzer lab set from a link, a subnet typed for a segment, a reload, and a window as narrow as a phone. The first row was the first subnet of the lab each time. The row of the segment stayed in place during the typing and moved to the place of its address when the focus left the table |
 | Links at the start of the page, tried by hand | A visitor with no kept choices, a reload after the link, a link on top of kept choices, and a link with names that the page does not have each did what Chapter 01 says |
 | The walkthrough test (`?walktest=1`) | 11 chapters of the three lab sets were rewritten for a changed build, and no value of the book was left |
 | A zip for a build with all three lab sets | 28 files, none missing, with the 11 lab chapters. With a Junos device as the gateway it has 30 files, because the two files of the gateway text join them |
@@ -119,6 +132,7 @@ Not tested:
 
 - **A person on the published site.** The published site was checked with the test modes of the page and by reading the published files. No person has run Lab 1.1 of Chapter 01 there. No zip was saved from the published page, and the zip of the scripts was not downloaded: the check read its headers only.
 - **The fields of sections 10 and 11 on the published site.** They were tested on 2026-11-23 on a local copy of the published folder, before the change was pushed, so this chapter holds no check of them on the published site. No device and no firewall has taken a text that the page wrote.
+- **The table of section 6 on the published site.** It was tested on 2026-11-24 on a local copy of the published folder, before the change was pushed, so this chapter holds no check of it on the published site.
 - **A build.** No machine was built again after the block changed to `10.200`, and no host of the FortiAnalyzer or FortiManager lab set has been built. The lab sign-offs of Volumes CCI, CCII, and CCIII are pending.
 - **Other browsers.** The page was tested in one Chromium browser.
 
@@ -128,6 +142,7 @@ Not tested:
 - **Keep the old checks, and make them mean the same.** The 254 checks of the Lab Builder ask for the labs, the walkthroughs, and the lab plan of the build. With lab sets, those three lists became *the ones of this build*, so the old checks still test a FortiSwitch build without a change, and only one check that counted the cards needed a new number.
 - **A text that is built from choices needs a build with the choice off.** The first version of the license list still asked for the switch licenses in a build with no switch labs. A check on a build with the FortiSwitch lab set cleared found it.
 - **Look at a new part of the page, and do not only test it.** The checks of the fields passed while the line beside each field wrapped in an ugly way. No check looks at the layout, so a new part needs a look at the width of a desktop and of a phone.
+- **A table that shows part of a plan is read as the plan.** The table of section 6 had the seven segments that a reader can change, and the nine other networks stood in small text under it. The plan was complete, and a reader still saw it start at the third subnet. Show every row where the reader looks, and mark the rows that can be changed.
 - **Serve a test copy from a plain web server that writes its log to a file.** A server whose output went to a pipe stopped answering during the tests, and the browser then waited without an error.
 
 ## Validation and Troubleshooting
@@ -173,10 +188,11 @@ To check this volume:
 6. Which old address forwards, and which does not?
 7. What does the page do with a link that names lab sets, and why does such a link count once?
 8. Which values do sections 10 and 11 ask for, when does section 11 not ask for the address of the gateway, and when does section 10 ask for nothing?
+9. Why do the rows of the table in section 6 follow the addresses and not the segment numbers, and when does a row not move?
 
 ## Summary and Completion Checklist
 
-The Lab Selector and the lab scripts were built in Volume CCI and moved here on 2026-11-20, when the page was renamed and given lab sets for FortiSwitch, FortiAnalyzer, and FortiManager. The lab network moved to `10.200.0.0/16` on the same day. Since 2026-11-22 a link can open the page with lab sets ticked, and since 2026-11-23 sections 10 and 11 ask for the values that their texts left as placeholders. The page passes 296 checks on a local copy of the published folder. On the published site, the new addresses, the forward, and the links were checked on 2026-11-22, with the page of that day. A build and the hosts of the two new lab sets are not tested yet.
+The Lab Selector and the lab scripts were built in Volume CCI and moved here on 2026-11-20, when the page was renamed and given lab sets for FortiSwitch, FortiAnalyzer, and FortiManager. The lab network moved to `10.200.0.0/16` on the same day. Since 2026-11-22 a link can open the page with lab sets ticked, and since 2026-11-23 sections 10 and 11 ask for the values that their texts left as placeholders. Since 2026-11-24 the table of section 6 lists every lab network of the build, from the first subnet on. The page passes 301 checks on a local copy of the published folder. On the published site, the new addresses, the forward, and the links were checked on 2026-11-22, with the page of that day. A build and the hosts of the two new lab sets are not tested yet.
 
 - [ ] Can say what moved, what was renamed, and what stayed.
 - [ ] Can explain the lab sets, the prefixes, and the hosts that no script builds.

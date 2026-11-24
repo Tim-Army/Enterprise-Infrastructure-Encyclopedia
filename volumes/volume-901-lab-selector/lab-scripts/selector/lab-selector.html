@@ -84,7 +84,7 @@ td select{display:block;margin-top:4px;max-width:100%;font-size:12px}
 input.addr{width:170px;font-size:12px}
 input.addr.err{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
 input.addr.chg{border-color:var(--accent)}
-table.prog td,table.prog th{font-size:12px;padding:3px 6px}.okc{color:var(--ok);font-weight:600}.badc{color:var(--bad);font-weight:600}input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.rangeval{font:12.5px ui-monospace,Consolas,monospace;font-weight:600}.sub.chgtext{color:var(--accent);font-weight:600}
+table.prog td,table.prog th{font-size:12px;padding:3px 6px}.okc{color:var(--ok);font-weight:600}.badc{color:var(--bad);font-weight:600}input.subin{width:150px}.subset{margin-left:10px;white-space:nowrap;cursor:pointer}.subset input{vertical-align:middle}.sub{font-size:12px}.rangeval{font:12.5px ui-monospace,Consolas,monospace;font-weight:600}.sub.chgtext{color:var(--accent);font-weight:600}@media (min-width:641px){#vlans td:nth-child(2){white-space:nowrap}}
 details summary.small{margin-top:4px}
 .planch{margin:8px 0 0}.planch .labs{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px;margin:4px 0 0 22px;font-size:12px}.planch label{cursor:pointer}
 @media (max-width:900px){.planch .labs{grid-template-columns:1fr}}
@@ -9382,12 +9382,23 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     return { start: ip4str(start), count: count, need: need, net: ip4str(b.net), len: b.len, cidr: cidr(b), last: ip4str(b.net + b.size - 1), holds: b.size / 256, from: b.net, to: b.net + b.size - 1,
       // What the page picks for a value whose box is not ticked.
       auto: { start: p4 + '.0.0', count: need, cidr: cidr(auto) }, used: used,
-      // The lab networks that the table of segments does not show.
+      // The lab networks that are not shared segments.
       others: sub.inUse.filter(function (id) { return SEGMENTS.indexOf(id) < 0; }).map(function (id) { return { id: id, name: NET_NAME[id], cidr: sub.cidr[id] }; }),
       // A subnet that you set, or a supernet that you set, can leave a lab subnet outside the supernet.
       outside: used.filter(function (n) { return n < b.net || n > b.net + b.size - 1; }).map(function (n) { return ip4str(n) + '/24'; }),
       // A supernet that is set can be smaller than the range above it.
       short: b.net > auto.net || b.net + b.size < auto.net + auto.size, typed: !!(on.start || on.count || on.net), err: err };
+  }
+
+  // The lab networks of a build in the order of their addresses, for the table of the IP addressing section. Its first
+  // row is the first subnet of the lab. A shared segment has the VLAN ID that follows its subnet or that you set. The
+  // VXLAN tenant network has the one that follows its subnet, and each other network has what Chapter 999 says.
+  function netTable(v) {
+    return v.sub.inUse.map(function (id) {
+      var n = NETS.filter(function (x) { return x.id === id; })[0] || {}, seg = SEGMENTS.indexOf(id) >= 0;
+      return { id: id, name: NET_NAME[id] || '', cidr: v.sub.cidr[id], at: ip4num(v.sub.base[id] + '.0'), segment: seg,
+        vlan: seg ? String(v.vlan.eff[id]) : id === NET.vxlan && v.vlan.vx !== null ? v.vlan.vx + ' (VNI ' + v.vlan.vx + ')' : String(n.vlan || '') };
+    }).sort(function (a, b) { return a.at - b.at || a.id - b.id; });
   }
 
   // The uplink of the gateway. Without it, step 4 removes the adapter with the other build adapters, and no lab traffic
@@ -9942,7 +9953,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
-    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs, FW_VARS: FW_VARS, fwVarCheck: fwVarCheck, fwVarText: fwVarText, GW_VARS: GW_VARS, gwVarCheck: gwVarCheck, gwVarText: gwVarText
+    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, netTable: netTable, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs, FW_VARS: FW_VARS, fwVarCheck: fwVarCheck, fwVarText: fwVarText, GW_VARS: GW_VARS, gwVarCheck: gwVarCheck, gwVarText: gwVarText
   };
 })();
 </script>
@@ -9969,13 +9980,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<p class="small" id="plannote"></p><div class="actions" style="margin-top:6px;margin-bottom:10px"><button class="btn" id="planapply">Match the machines to these labs</button></div>';
     h += '<div class="tscroll"><table id="machines"></table></div><div id="handhosts"></div></div>';
-    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The lab takes one /24 subnet for each of its networks. The subnets are contiguous from the first address of the supernet, so the lab needs the fewest subnets and the smallest supernet. A VLAN ID is the third octet of its subnet: <span id="vlanex"></span>. Tick <b>Override</b> to set a value yourself, or <b>Set subnet</b> to type a different /24 for a segment. A build with every network in 10.200.0.0/20 is the plan of Chapter 999. For any other build, the walkthroughs in the zip are rewritten with its values. Change a machine\'s address in step 5. The gateway is always .1.</p>';
+    h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The lab takes one /24 subnet for each of its networks. The subnets are contiguous from the first address of the supernet, so the lab needs the fewest subnets and the smallest supernet. The table lists every network of this build in the order of their addresses, so it starts at the first subnet. A VLAN ID is the third octet of its subnet: <span id="vlanex"></span>. Tick <b>Override</b> to set a value yourself, or <b>Set subnet</b> to type a different /24 for a segment. A build with every network in 10.200.0.0/20 is the plan of Chapter 999. For any other build, the walkthroughs in the zip are rewritten with its values. Change a machine\'s address in step 5. The gateway is always .1.</p>';
     h += '<div class="field" id="rangebox">';
     h += '<label for="rnet">Supernet</label><div><span class="sub rangeval" id="rnetv"></span><input type="text" id="rnet" class="addr subin" autocomplete="off" aria-label="Supernet of the lab"><label class="subset small"><input type="checkbox" data-rangeon="net"> Override</label><span class="msg bad" id="rnetmsg"></span><span class="msg small" id="rnetnote"></span></div>';
     h += '<label for="rcount">How many subnets</label><div><span class="sub rangeval" id="rcountv"></span><input type="text" id="rcount" class="num" autocomplete="off"><label class="subset small"><input type="checkbox" data-rangeon="count"> Override</label><span class="msg bad" id="rcountmsg"></span><span class="msg small" id="rcountnote"></span></div>';
     h += '<label for="v6">IPv6 prefix</label><div><input type="text" id="v6" class="wide" style="max-width:220px"> <span class="small" id="v6note"></span></div>';
     h += '<label>Subnet allocation</label><div><span class="sub rangeval" id="rplanv"></span><span class="msg small" id="rplannote"></span></div></div><div id="rangewarn"></div>';
-    h += '<div class="tscroll"><table id="vlans" style="margin-top:14px"></table></div><p class="small" id="othernets" style="margin:10px 0 0"></p><p class="small" id="addrpreview"></p></div>';
+    h += '<div class="tscroll"><table id="vlans" style="margin-top:14px"></table></div><p class="small" id="netnote" style="margin:10px 0 0">A shared segment, ' + SEGMENTS[0] + ' to ' + SEGMENTS[SEGMENTS.length - 1] + ', has fields for its subnet and its VLAN ID. The page places every other network, and the routed links keep VLANs 2001 to 2005.</p><p class="small" id="addrpreview"></p></div>';
     h += '<div class="card"><h2><span class="n">7</span> Switches under test</h2><div class="note info" id="swnote" hidden style="margin:0 0 10px">No lab set of this build runs on the switches, so nothing in this section changes the build. It matters once you choose a lab set that does, such as FortiSwitch.</div><p class="hint">The labs were written for an FS-648F-FPOE (access) and an FS-2048F (aggregation). Pick or type the models you have. The lab walkthroughs in the zip then name your models and their host names. Features differ between model series, so check the feature matrix for your model (Chapter 01, prerequisite P9).</p><div class="field" id="switches"></div><div class="field" style="margin-top:12px"><label for="fswver">FortiSwitchOS version</label><div><select id="fswver"></select> <span class="small">Sets which Fortinet feature matrix the page reads. The lab chapters cite the FortiSwitchOS 7.6.7 CLI Reference, so another release adds a note to the walkthroughs.</span></div></div><div id="fswtable"></div><div id="fswcompare"></div><p class="hint" style="margin-top:12px">Switch ports: the labs write the ports as placeholders such as <code>&lt;PORT_EP1&gt;</code>. Type the ports you use and the walkthroughs in the zip show them. An empty field keeps the placeholder. One name serves both switches, so leave a field empty where the two differ.</p><div class="field" id="ports"></div><div class="field" style="margin-top:12px"><label for="startlab">Start Claude at lab</label><div><select id="startlab"></select> <span class="small">The lab that CLAUDE.md in the zip tells Claude to begin with.</span></div></div></div>';
     h += '<div class="card" id="imagecard" hidden><h2><span class="n">8</span> Images you supply</h2><p class="hint" id="imagehint"></p><div class="field" id="images"></div></div>';
     h += '<div class="card"><h2><span class="n">9</span> Licensing</h2><p class="hint">Products your choices need a license for. <b>Do not type a license key here.</b> The scripts that can apply keys read them from a JSON file on your computer, and this page writes a template for it. Here you record only where you keep each key.</p><div class="field" style="margin-bottom:10px"><label for="licfile">License file the script reads</label><div><input type="text" id="licfile" class="wide"></div></div><div class="tscroll"><table id="lics"></table></div></div>';
@@ -10117,15 +10128,24 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     $('startlab').innerHTML = C.LABS.map(function (l) { return '<option value="' + l.id + '"' + (l.id === S.startLab ? ' selected' : '') + '>' + esc(C.labName(l)) + ' — ' + esc(l.title) + '</option>'; }).join('');
   }
 
-  var lastSub = null, lastVlan = null;
-  function renderVlans() {
+  var lastSub = null, lastVlan = null, sigNets = '', netsLeft = false;
+  // The table of section 6 has one row for each lab network of the build, in the order of their addresses, so its
+  // first row is the first subnet of the lab. renderVlans asks for new rows, and netRows writes them once the build is
+  // known. A shared segment has fields for its subnet and its VLAN ID. The page places every other network.
+  function renderVlans() { sigNets = ''; }
+  function netRows(rows) {
+    var box = $('vlans'), sig = rows.map(function (r) { return r.id; }).join(' ');
+    // The rows stay where they are while you work in one of them, and take their new order when you leave the table.
+    if (sig === sigNets || (sigNets && !netsLeft && box.contains(document.activeElement))) return;
     var h = '<tr><th>Segment</th><th>Name</th><th>IPv4 subnet</th><th>VLAN ID</th></tr>';
-    SEGMENTS.forEach(function (s) {
-      h += '<tr><td>' + s + '</td><td>' + SEGNAMES[s] + '</td>' +
+    rows.forEach(function (r) {
+      var s = r.id;
+      if (!r.segment) { h += '<tr data-net="' + s + '"><td>' + s + '</td><td>' + esc(r.name) + '</td><td><span class="sub" data-m="netsub" data-net="' + s + '"></span></td><td><span class="sub" data-m="netvlan" data-net="' + s + '"></span></td></tr>'; return; }
+      h += '<tr data-net="' + s + '"><td>' + s + '</td><td>' + SEGNAMES[s] + '</td>' +
         '<td><span class="sub" data-m="subnet" data-seg="' + s + '"></span><input type="text" class="addr subin" data-sub="' + s + '" value="' + esc(S.subnets[s] || '') + '" aria-label="IPv4 subnet of segment ' + s + '"><label class="subset small"><input type="checkbox" data-subon="' + s + '"' + (S.subnetOn[s] ? ' checked' : '') + '> Set subnet</label><span class="msg" data-m="submsg" data-seg="' + s + '"></span></td>' +
         '<td><span class="sub rangeval" data-m="vlanval" data-seg="' + s + '"></span><input type="text" class="num" data-vlan="' + s + '" value="' + esc(S.vlans[s] || '') + '" aria-label="VLAN ID of segment ' + s + '"><label class="subset small"><input type="checkbox" data-vlanon="' + s + '"' + (S.vlanOn[s] ? ' checked' : '') + '> Override</label><span class="msg" data-m="vlan" data-seg="' + s + '"></span></td></tr>';
     });
-    $('vlans').innerHTML = h;
+    box.innerHTML = h; sigNets = sig;
   }
 
   function renderDependent(m, v) {
@@ -10191,6 +10211,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var v6ok = C.validIpv6Prefix(S.v6);
     $('v6').className = 'wide' + (v6ok ? (S.v6 !== C.OLD_V6 ? ' chg' : '') : ' err');
     $('v6note').textContent = v6ok ? (S.v6 !== C.OLD_V6 ? 'was ' + C.OLD_V6 : '') : 'Use a unique local prefix ending in ::. The default is used';
+    var nets = C.netTable(v);
+    netRows(nets);
+    nets.forEach(function (r) {
+      var a = document.querySelector('[data-m=netsub][data-net="' + r.id + '"]'), b = document.querySelector('[data-m=netvlan][data-net="' + r.id + '"]');
+      if (a && a.textContent !== r.cidr) a.textContent = r.cidr;
+      if (b && b.textContent !== r.vlan) b.textContent = r.vlan;
+    });
     SEGMENTS.forEach(function (s) {
       var inp = document.querySelector('[data-vlan="' + s + '"]'), val = document.querySelector('[data-m=vlanval][data-seg="' + s + '"]'), msg = document.querySelector('[data-m=vlan][data-seg="' + s + '"]'), sub = document.querySelector('[data-m=subnet][data-seg="' + s + '"]');
       var bad = v.vlan.err[s], von = !!S.vlanOn[s];
@@ -10406,7 +10433,6 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ' The first subnet starts at its first address. The external firewall of section 11 lets a lab machine reach this range and nothing else, unless you give the machine internet access.';
     var free = SEGMENTS.filter(function (s) { return !v.vlan.on[s] && !v.vlan.err[s]; })[0];
     $('vlanex').textContent = free === undefined ? 'VLAN 2 is 10.200.2.0/24 in the plan of Chapter 999' : 'VLAN ' + v.vlan.eff[free] + ' is ' + v.sub.cidr[free];
-    $('othernets').innerHTML = '<b>Other lab networks:</b> ' + r.others.map(function (o) { return esc(o.name) + ' ' + esc(o.cidr) + (o.id === C.NET.vxlan && v.vlan.vx !== null ? ' (VLAN and VNI ' + v.vlan.vx + ')' : ''); }).join(', ') + '. The routed links keep VLANs 2001 to 2005.';
     $('rangewarn').innerHTML = (r.short ? '<div class="note warn">The supernet ' + esc(r.cidr) + ' is smaller than the range above it: ' + plural(r.count, 'subnet') + ' from ' + esc(r.start) + ' take ' + esc(r.auto.cidr) + '.</div>' : '') +
       (r.outside.length ? '<div class="note warn">This range does not hold ' + plural(r.outside.length, 'subnet') + ' that the lab uses: ' + esc(r.outside.join(', ')) + '. The external firewall would block ' + (r.outside.length === 1 ? 'it' : 'them') + ' like any other network.</div>' : '');
     // The external firewall. An edited text stays in its box until the text of the page is asked for again.
@@ -10574,6 +10600,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     }
     document.addEventListener('input', onInput);
     document.addEventListener('change', function (ev) { if (ev.target.tagName === 'SELECT') onInput(ev); });
+    // When you leave the table of section 6, its rows take the order of their addresses again.
+    $('vlans').addEventListener('focusout', function (ev) {
+      if ($('vlans').contains(ev.relatedTarget) || C.netTable(C.validateAll()).map(function (r) { return r.id; }).join(' ') === sigNets) return;
+      netsLeft = true;
+      try { refresh(); } finally { netsLeft = false; }
+    });
     $('copy').addEventListener('click', function () {
       var r = refresh(), text = activeTab === 'manifest' ? JSON.stringify(r.m, null, 2) : activeTab === 'checklist' ? C.checklistText(r.m, r.v) : activeTab === 'licenses' ? C.licensesExample(r.m) : activeTab === 'claude' ? C.claudeHelpText() : C.commandText(r.m);
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { $('zipnote').textContent = 'Copied.'; }, function () { $('zipnote').textContent = 'Copy failed. Select the text and copy it by hand.'; });
@@ -11053,6 +11085,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(r0.start === C.OLD_V4 + '.0.0' && r0.count === need && r0.need === need && r0.cidr === fit(0, need).cidr && r0.holds === fit(0, need).holds && !r0.typed && !r0.short && r0.outside.length === 0 && !r0.err.start && !r0.err.count && !r0.err.net &&
       r0.others.length === need - C.SEGMENTS.length && !v.sub.any && !v.warnings.some(function (w) { return w.indexOf('The subnets of this build are contiguous') === 0; }),
       'with nothing set, the lab range starts at the block, has one /24 for each lab network, and its supernet is the smallest block that holds them');
+    // The table of the IP addressing section: every lab network of the build, in the order of the addresses.
+    var nt = C.netTable(v), rising = function (t) { return t.every(function (r, i) { return !i || t[i - 1].at < r.at; }); };
+    ok(nt.length === need && nt.every(function (r, i) { return r.id === netIds[i] && r.cidr === C.OLD_V4 + '.' + i + '.0/24' && r.segment === (C.SEGMENTS.indexOf(r.id) >= 0) && r.name === C.NETS[i].name; }) && nt[idx(2)].vlan === String(idx(2)) &&
+      nt[idx(C.NET.vxlan)].vlan === idx(C.NET.vxlan) + ' (VNI ' + idx(C.NET.vxlan) + ')' && nt[idx(C.NET.links)].vlan === C.NETS[idx(C.NET.links)].vlan && nt[0].vlan === C.NETS[0].vlan,
+      'the table of the lab networks starts at the first subnet of the lab, and in the plan of Chapter 999 it has every network in the order of the Segments table');
+    // Without the lab set of the switches, a network without a VLAN takes the second subnet, so the order of the
+    // addresses is not the order of the Segments table. Then a subnet that you set, and a supernet that starts elsewhere.
+    S.sets = {}; var ntNo = C.netTable(C.validateAll());
+    reset(); S.subnetOn[3] = true; S.subnets[3] = C.OLD_V4 + '.40.0/24'; var ntSet = C.netTable(C.validateAll());
+    reset(); C.setSupernet(C.OLD_V4 + '.64.0'); var ntAt = C.netTable(C.validateAll());
+    reset(); v = C.validateAll();
+    ok(rising(ntNo) && ntNo[0].id === 0 && ntNo[0].cidr === C.OLD_V4 + '.0.0/24' && ntNo[1].id === C.NET.links && ntNo[1].cidr === C.OLD_V4 + '.1.0/24' && ntNo[2].id === 2 && ntNo.length < need &&
+      rising(ntSet) && ntSet.length === need && ntSet[need - 1].id === 3 && ntSet[need - 1].cidr === C.OLD_V4 + '.40.0/24' && ntSet[3].id === 4 && ntSet[3].vlan === '3' &&
+      rising(ntAt) && ntAt[0].id === 0 && ntAt[0].cidr === C.OLD_V4 + '.64.0/24' && ntAt[idx(2)].vlan === String(64 + idx(2)),
+      'the rows of that table follow the addresses when a network takes the place of another, when you set a subnet, and when the supernet starts elsewhere');
     var r64 = rg({ start: true }, C.OLD_V4 + '.64.0'), b64 = C.validateAll().sub.base[2], r8 = rg({ start: true }, C.OLD_V4 + '.8.0'), r2n = rg({ count: true }, '', String(2 * need)), rnet = rg({ net: true }, '', '', C.OLD_V4 + '.0.0/16');
     ok(r64.cidr === fit(64, need).cidr && r64.net === C.OLD_V4 + '.64.0' && !r64.err.start && r64.typed && b64 === C.OLD_V4 + '.' + (64 + idx(2)) && !!r8.err.start && r8.err.start.indexOf('cannot start at ' + C.OLD_V4 + '.8.0. Start at ' + C.OLD_V4 + '.0.0 or ' + C.OLD_V4 + '.16.0') > 0 && r2n.count === 2 * need && r2n.need === need && r2n.cidr === fit(0, 2 * need).cidr &&
       rnet.cidr === C.OLD_V4 + '.0.0/16' && rnet.holds === 256 && !rnet.short && rnet.auto.cidr === fit(0, need).cidr,
@@ -11438,9 +11485,28 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     function body() { return document.getElementById('tabbody').textContent; }
     // The lab networks in the order of the Segments table: the contiguous numbering gives each one its place in that order.
     var netIds = C.NETS.map(function (n) { return n.id; }), idx = function (id) { return netIds.indexOf(id); };
+    // The rows of the table of section 6, and the text of one of them.
+    var netRowIds = function () { return Array.prototype.map.call(document.querySelectorAll('#vlans tr[data-net]'), function (tr) { return +tr.getAttribute('data-net'); }); }, netRow = function (id) { var tr = document.querySelector('#vlans tr[data-net="' + id + '"]'); return tr ? tr.textContent : ''; };
     C.resetVms(); S.platform = 'vcenter'; S.version = '8'; S.defaultFlavor = C.DEFAULT_FLAVOR; S.v4 = C.OLD_V4; S.v6 = C.OLD_V6; S.images = {}; C.resetParams(); sigDeps = '';
     renderPlatforms(); renderMachines(); renderVlans(); $('v6').value = S.v6; refresh();
     ok(stat(0) === '12' && stat(1) === '17', 'the page starts with 12 machines and 17 vCPUs');
+    // The table of the IP addressing section has every lab network of the build, from the first subnet of the lab on.
+    var firstRow = document.querySelector('#vlans tr[data-net]');
+    ok(netRowIds().join() === netIds.join() && firstRow.getAttribute('data-net') === '0' && netRow(0).indexOf(C.OLD_V4 + '.0.0/24') > 0 && !firstRow.querySelector('input') && !!document.querySelector('#vlans tr[data-net="2"] input[data-sub="2"]') &&
+      netRow(C.NET.links).indexOf(C.OLD_V4 + '.' + idx(C.NET.links) + '.0/24') > 0 && netRow(C.NET.vxlan).indexOf(idx(C.NET.vxlan) + ' (VNI ' + idx(C.NET.vxlan) + ')') > 0 && !$('othernets') && $('netnote').textContent.indexOf('The page places every other network') > 0,
+      'the table of the IP addressing section starts at the first subnet of the lab and has a row for every lab network');
+    // A subnet that you set puts its segment at the place of that address, once you have left the table.
+    document.querySelector('[data-subon="3"]').click();
+    var subIn = document.querySelector('input[data-sub="3"]'); subIn.focus();
+    var inRow = document.activeElement === subIn;
+    type('input[data-sub="3"]', C.OLD_V4 + '.40.0/24');
+    var keptOrder = netRowIds().join(), lastWhile = C.netTable(C.validateAll()).slice(-1)[0].id;
+    subIn.blur(); $('vlans').dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    var movedIds = netRowIds();
+    ok((!inRow || keptOrder === netIds.join()) && lastWhile === 3 && movedIds[0] === 0 && movedIds[movedIds.length - 1] === 3 && movedIds.length === netIds.length && document.querySelector('[data-m="subnet"][data-seg="3"]').textContent === C.OLD_V4 + '.40.0/24' &&
+      document.querySelector('input[data-sub="3"]').value === C.OLD_V4 + '.40.0/24', 'a subnet that you set moves its row to the place of its address when you leave the table, and the rows stay in place while you type');
+    type('input[data-sub="3"]', ''); document.querySelector('[data-subon="3"]').click();
+    ok(netRowIds().join() === netIds.join() && !S.subnetOn[3] && S.subnets[3] === '' && netRow(3).indexOf(C.OLD_V4 + '.' + idx(3) + '.0/24') > 0, 'with the subnet handed back to the page, the rows are in the order of the plan again');
     // the lab plan. What the checks expect comes from the lab data (planFacts), as in the core checks.
     var pf = planFacts('06'), nAll = Number(stat(0)), planCh = document.querySelector('[data-planch="06"]');
     planCh.click();
@@ -11562,7 +11628,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var vlanOf = function (s) { return document.querySelector('[data-m=vlanval][data-seg="' + s + '"]').textContent; };
     ok($('rangebox').closest('.card').querySelector('h2').textContent.indexOf('IP addressing') > 0 && !$('v4') && !$('rstart') && !Array.prototype.some.call(document.querySelectorAll('#left .card h2'), function (h) { return h.textContent.indexOf('Lab network range') >= 0; }) &&
       $('rcountv').textContent === String(need) && $('rcount').style.display === 'none' && $('rnet').style.display === '' && $('rnet').value === '10.77.0.0' && rbox('net').checked && !rbox('count').checked && rng.cidr === '10.77.0.0/20' &&
-      $('rplanv').textContent === 'Contiguous' && $('othernets').textContent.indexOf('Loopbacks 10.77.' + idx(14) + '.0/24') > 0 && $('othernets').textContent.indexOf('(VLAN and VNI ' + idx(13) + ')') > 0 && $('rnetnote').textContent.indexOf('You set its first address, and the page picks the size.') > 0 &&
+      $('rplanv').textContent === 'Contiguous' && netRow(14).indexOf('Loopbacks10.77.' + idx(14) + '.0/24') > 0 && netRow(13).indexOf(idx(13) + ' (VNI ' + idx(13) + ')') > 0 && $('rnetnote').textContent.indexOf('You set its first address, and the page picks the size.') > 0 &&
       seg40() === '10.77.' + idx(5) + '.0/24', 'one Supernet field holds the block, the first address, and the size of the lab, and the page picks the size when none is typed');
     rbox('count').click();
     var sameAsPage = $('rcount').value === String(need) && $('rcount').style.display === '' && $('rcountv').style.display === 'none' && C.validateAll().range.cidr === rng.cidr && S.rangeOn.count === true;
@@ -11576,7 +11642,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       $('rnetnote').textContent.indexOf('You set it. The page would pick ' + rng.cidr) > 0 && fwText().indexOf('set dst 10.77.0.0 255.255.255.0\n') > 0, 'a supernet that is set and too small is used, with a warning that names the lab subnets it does not hold');
     type('#rnet', '10.77.64.0');
     ok(C.validateAll().range.cidr === '10.77.64.0/20' && seg40() === '10.77.' + (64 + idx(5)) + '.0/24' && fwText().indexOf('set dst 10.77.64.0 ') > 0 && vlanOf(2) === String(64 + idx(2)) && vlanOf(8) === String(64 + idx(8)) &&
-      $('vlanex').textContent === 'VLAN ' + (64 + idx(2)) + ' is 10.77.' + (64 + idx(2)) + '.0/24' && $('othernets').textContent.indexOf('(VLAN and VNI ' + (64 + idx(13)) + ')') > 0 && body().indexOf('"' + (64 + idx(2)) + '": 2') > 0,
+      $('vlanex').textContent === 'VLAN ' + (64 + idx(2)) + ' is 10.77.' + (64 + idx(2)) + '.0/24' && netRow(13).indexOf((64 + idx(13)) + ' (VNI ' + (64 + idx(13)) + ')') > 0 && netRowIds()[0] === 0 && netRow(0).indexOf('10.77.64.0/24') > 0 && body().indexOf('"' + (64 + idx(2)) + '": 2') > 0,
       'a supernet that starts elsewhere moves the subnets of the lab, and the VLAN IDs follow them');
     type('#rnet', '10.77.8.0');
     ok(/err/.test($('rnet').className) && $('rnetmsg').textContent.indexOf('cannot start at 10.77.8.0. Start at 10.77.0.0 or 10.77.16.0') > 0, 'a first address that cannot hold the subnets of the lab is refused, with the nearest ones that can');
