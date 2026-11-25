@@ -133,7 +133,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
    ```text
    config system admin
        edit admin-lab
-           set trusthost1 10.200.3.0 <MASK>
+           set trusthost1 10.200.0.64 <MASK>
    end
    config system interface
        edit mgmt-svi
@@ -180,7 +180,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
 
 **Positive test.** Log in over SSH from `admin-201` as `<LAB_ADMIN>`: the session opens. The read-only user can run `get` and `show` but a `config` change is refused. A second login with the same name from another address is refused.
 
-**Negative test.** From the segment 5 host, try SSH, HTTPS, and Telnet to `10.200.4.11`: all are refused. Log in as the read-only user and try to delete a log or install an image: the switch denies it. Try to log in as `admin` from a host not on the trusted list.
+**Negative test.** From the segment 5 host, try SSH, HTTPS, and Telnet to `10.200.0.91`: all are refused. Log in as the read-only user and try to delete a log or install an image: the switch denies it. Try to log in as `admin` from a host not on the trusted list.
 
 **Evidence.** The `config system admin`, `accprofile`, and interface `allowaccess` output, the refused-login lines in the syslog, and the denied commands.
 
@@ -452,7 +452,7 @@ Before each lab, confirm the baseline: login through RADIUS, `get system ntp`, a
    ```text
    config log syslogd setting
        set status enable
-       set server 10.200.2.20
+       set server 10.200.0.45
        set mode udp
        set enc-algorithm high
    end
@@ -529,7 +529,7 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
    end
    ```
 
-**Positive test.** `ssh -vv` from `admin-201` shows an approved cipher and MAC. `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.200.4.12 1.3.6.1.2.1.1` returns the system group.
+**Positive test.** `ssh -vv` from `admin-201` shows an approved cipher and MAC. `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.200.0.92 1.3.6.1.2.1.1` returns the system group.
 
 **Negative test.** Connect with an old cipher (`ssh -c 3des-cbc`) or MAC (`-m hmac-md5`): the switch refuses. Query with SNMPv2c or with MD5 authentication: the switch refuses.
 
@@ -555,11 +555,11 @@ Enabling FIPS-CC mode resets the unit and restricts it to approved algorithms. T
    ```text
    config user radius
        edit radius-201a
-           set server 10.200.2.10
+           set server 10.200.0.42
            set secret <KEY_1>
        next
        edit radius-201b
-           set server 10.200.2.11
+           set server 10.200.0.43
            set secret <KEY_2>
    end
    config user group
@@ -716,9 +716,9 @@ These three requirements come from Cisco rules (`CISC-ND-000940`, `CISC-ND-00124
    end
    ```
 
-**Positive test.** `ssh admin-lab@10.200.4.11` and `https://10.200.4.11` both work. `nmap -p 22,23,80,443 10.200.4.11` from `admin-201` shows only 22 and 443 open.
+**Positive test.** `ssh admin-lab@10.200.0.91` and `https://10.200.0.91` both work. `nmap -p 22,23,80,443 10.200.0.91` from `admin-201` shows only 22 and 443 open.
 
-**Negative test.** Capture an SSH login with `tcpdump -w replay.pcap` on `attacker-201`, then replay the file with `tcpreplay -i <NIC_ATK> replay.pcap`. The switch does not log anyone in, because each session has its own key and sequence numbers. Try `telnet 10.200.4.11` and `curl http://10.200.4.11`: both are refused.
+**Negative test.** Capture an SSH login with `tcpdump -w replay.pcap` on `attacker-201`, then replay the file with `tcpreplay -i <NIC_ATK> replay.pcap`. The switch does not log anyone in, because each session has its own key and sequence numbers. Try `telnet 10.200.0.91` and `curl http://10.200.0.91`: both are refused.
 
 **Evidence.** The `nmap` result, the capture and the failed replay, and the refused Telnet and HTTP attempts.
 
@@ -763,7 +763,7 @@ This requirement is *Partial*: the hardware checks and storm control are real, b
 
 **Positive test.** Send normal traffic from the endpoint. It passes, and the management session stays responsive.
 
-**Negative test.** From `attacker-201`, send a packet whose source and destination address are the same (`hping3 --spoof 10.200.4.11 -a 10.200.4.11 10.200.4.11 -c 100`) and fragmented ICMP (`hping3 --icmp -f 10.200.4.11 -c 100`): the switch drops them and the counters rise. Send a broadcast flood above the rate: the port stops passing the excess. Record that no setting limits packets sent to the switch's own CPU, and note the compensating control (an upstream filter).
+**Negative test.** From `attacker-201`, send a packet whose source and destination address are the same (`hping3 --spoof 10.200.0.91 -a 10.200.0.91 10.200.0.91 -c 100`) and fragmented ICMP (`hping3 --icmp -f 10.200.0.91 -c 100`): the switch drops them and the counters rise. Send a broadcast flood above the rate: the port stops passing the excess. Record that no setting limits packets sent to the switch's own CPU, and note the compensating control (an upstream filter).
 
 **Evidence.** The `config switch security-feature` output with the model's list of checks, the packet captures before and after, and the counters.
 

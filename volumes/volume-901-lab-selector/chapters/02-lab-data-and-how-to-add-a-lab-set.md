@@ -18,7 +18,7 @@ The Lab Selector, its data, and the build scripts are in the `lab-scripts` folde
 | --- | --- |
 | `selector/lab-selector.html` | The page. It carries a copy of the four data files below and of the lab data, so it works with no server |
 | `common/lab-catalog.json` | The catalog: the kinds of labs, the shared lab, and the lab sets with the lab chapters of each one |
-| `common/lab201-vms.json` | The manifest: the twelve machines of the shared lab, their sizes, networks, and IPv4 addresses. The build scripts read it |
+| `common/lab201-vms.json` | The manifest: the twelve machines of the shared lab, their sizes, networks, and IPv4 addresses, and the IPv4 block of every lab network (`segments`). The build scripts read it |
 | `common/flavors.json` | The Linux flavors, their package names, and the machine types each one can run |
 | `common/fortiswitch-features.json` | Which FortiSwitch model series support the features that the FortiSwitch labs use |
 | `common/make-seed.py`, `common/resolve-image.py` | The seed tool and the image resolver of the build scripts |
@@ -54,7 +54,7 @@ A short name keeps the paths in the zip short for Windows, and it has to be uniq
 | The switch a lab runs on | The **Uses.** line of a FortiSwitch lab | The host name of a switch in backticks, or the words *both switches* |
 | The machines a lab uses | The whole text of the lab | The name of a machine of the manifest, or a service name of the shared lab, in backticks |
 | The hosts a lab uses that no script builds | The **Uses.** line | The name of such a host in backticks |
-| The lab networks a lab uses | The whole text of the lab | An address of the lab block, or the name of a host that has one |
+| The lab networks a lab uses | The whole text of the lab | An address in the block of a lab network, or the name of a host that has one |
 | The service names and the networks of the shared lab | The Hosts table and the Segments table of its Chapter 999 | The columns of those two tables |
 | The hosts of a lab set | The **Address plan** table of the Chapter 999 of the set | The columns Host, Role, From, IPv4, and IPv6 |
 
@@ -131,7 +131,7 @@ The catalog already lists certification labs and learning labs, with no lab set.
 1. Decide which labs the set holds, and bring their chapters into the form above. A lab of a certification volume has no SRG table, so it has no requirement rows, like the console server labs of Volume CCI.
 2. Decide what the labs run on. If they run on the shared lab, add the set as above with the `kind` of the labs. The kind can then be chosen on the page.
 3. If the labs need machines that the manifest does not have, a catalog entry is not enough. List those machines as hosts that no script builds, in an **Address plan** table. To have the scripts build them, extend the manifest and the seed tool, and test the build on a hypervisor before you publish it.
-4. If the labs need a network that the shared lab does not have, add it to the Segments table of the shared lab first. The page gives a subnet only to a network of that table.
+4. If the labs need a network that the shared lab does not have, add it to the Segments table of the shared lab first. The page gives a subnet only to a network of that table. Give the network the lowest free block that holds its hosts, a /28 unless it needs another size, and add the same block to the `segments` list of the manifest. The sync script compares the two and reports a difference. The first row of the Segments table is the supernet of the lab, with its first and its last address. It is no network, and its first cell is no number, so the script and the page do not read it as one. When a new network makes the lab larger than that block, correct the row by hand: the script names the supernet that the networks need.
 
 ## Validation and Troubleshooting
 
@@ -142,7 +142,8 @@ The catalog already lists certification labs and learning labs, with no lab set.
 | `two labs have the id ...` | Two lab sets have the same prefix, or two have an empty one | Give one lab set another prefix |
 | `gives the short name ... to more than one chapter` | Two chapters of the catalog have the same short name | Change one short name |
 | `Lab ... has no Uses line` | A requirement lab does not say what it runs on | Add the **Uses.** line |
-| `... has the address ..., which is in no network of the shared lab` | A host of a lab set is outside the Segments table | Move the host, or add the network to the shared lab |
+| `address plan: WRONG` | The Segments table of the shared lab, the `segments` list of the manifest, and the addresses do not agree. The lines under the message name each case: two blocks that overlap, a block that differs between the two, an address in no block, or a supernet row that is not the supernet of the networks under it | Correct the table, the manifest, or the address |
+| `... has the address ..., which is in no block of the Segments table of the shared lab` | A host of a lab set is outside every lab network | Move the host, or add the network to the shared lab |
 | A lab set has no host on the page | Its Chapter 999 has no **Address plan** table, or the **From** cells have other words | Use *This volume* or *Volume* and the Roman numeral |
 | The zip has `MISSING-FILES.txt` after a new lab set | The published folder does not have the new chapters yet | Deploy the site, or publish the folder to a scratch directory for the test |
 

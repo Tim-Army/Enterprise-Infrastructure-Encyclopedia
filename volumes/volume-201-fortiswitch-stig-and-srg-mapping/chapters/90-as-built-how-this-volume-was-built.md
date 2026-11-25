@@ -43,7 +43,7 @@ only what is specific to the FortiSwitch material. For the workflow itself
 | [Chapter 03](03-cisco-nx-os-switch-and-fortiswitch-stig-crosswalk.md), NX-OS crosswalk | 2026-10-15 | One agent following the crosswalk playbook, as Chapter 37 of Volume CLXXII, reusing Chapter 02's FortiSwitch side | Prerequisites and corrected model-support entries (2026-10-16); Reference and Page columns (2026-10-26) |
 | The SRG mapping workbook | 2026-11-03 saved, 2026-11-04 extended | A feature-map workbook filled in by hand, then analyzed, extended, and checked as described below | Ongoing; rows still to be verified are listed in the workbook |
 | CSV files and the interactive table | 2026-11-04 | Generated from the workbook by `scripts/python/export_srg_workbook.py` | Regenerate whenever the workbook changes |
-| Chapters 09 to 14, the lab scripts, and the Lab Builder | 2026-11-06 and after | Written and tested as *Chapters 09 to 14 and the lab scripts* below records | The address block moved to `10.200.0.0/16`, and the scripts and the page moved to Volume CMI, where the page is the Lab Selector (2026-11-20) |
+| Chapters 09 to 14, the lab scripts, and the Lab Builder | 2026-11-06 and after | Written and tested as *Chapters 09 to 14 and the lab scripts* below records | The address block moved to `10.200.0.0/16`, and the scripts and the page moved to Volume CMI, where the page is the Lab Selector (2026-11-20). Each lab network took a block of its own size (2026-11-24) |
 | Move to Volume CCI | 2026-11-04 | Chapters and `data/` files moved with `git mv`; cross-references rewritten; pointer pages left at Chapters 11, 33, and 37 of Volume CLXXII | None |
 | 90, this chapter | 2026-11-04 | Written directly from Volume CLXXII's Chapter 90 and the repository history | Updated whenever the volume changes |
 
@@ -544,6 +544,41 @@ records the move and the changes to the page. For this volume it means:
   SRG requirements that this volume's README and Chapters 04 to 07 state.
 - The records above keep the name Lab Builder, because that was the name of
   the page when they were written.
+
+### A block of its own size for each lab network
+
+On 2026-11-24 the plan of Chapter 999 changed again. Each lab network takes
+the smallest block that holds its hosts, a /28 unless it needs another size.
+Before, each one was a /24 whose third octet was the segment number. The lab
+went from `10.200.0.0/20` to `10.200.0.0/22`.
+
+- **Chapter 999.** The address plan, the Segments table, the Hosts table, the
+  routed links, and the labs have the new blocks and addresses. The rule that a
+  segment number, its VLAN ID, and the third octet of its subnet are one number
+  is gone. The segment number is still the VLAN ID. A host has a host number,
+  which is its place in the block of its segment, and the IPv6 addresses carry
+  it. A host with a number up to 14 kept it. The service names of Lab-Services,
+  `attacker-201`, and the loopbacks of the two peers got new numbers, and a
+  DHCP scope went from 100 addresses to 7.
+- **The sizes.** Lab-Services is a /27, because it holds 18 addresses across
+  this volume and Volumes CCII and CCIII. Peer1-Nets and Peer2-Nets stay a /24
+  each, because Lab 6.6 accepts no BGP prefix longer than a /24. FortiLink is a
+  /30, for `fgt-201` and the one switch of Lab 4.2. Every other network is a
+  /28.
+- **The supernet.** The Segments table starts with a row for the supernet of
+  the lab, `10.200.0.0/22`, with its first and its last address. The table in
+  section 6 of the Lab Selector starts with the same row.
+- **Chapters 04 to 09, 13, and 14, and the two diagrams.** Every address moved
+  with its network, and the console lab of Chapter 08 has the masks of the new
+  blocks.
+
+The records above this section give the addresses of the plan of their day,
+with a /24 for each network. A choices file from before 2026-11-24 loads with
+the new subnets, so a lab that was built from it has other addresses than the
+page shows.
+[Volume CMI's as-built chapter](../../volume-901-lab-selector/chapters/90-as-built-how-this-volume-was-built.md)
+records how the scripts and the page changed, and what was tested. No machine
+has been built with the new plan.
 
 ### The Word and PDF downloads
 

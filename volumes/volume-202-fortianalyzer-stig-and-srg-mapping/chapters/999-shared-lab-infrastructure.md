@@ -30,7 +30,7 @@ A hardware FortiAnalyzer can take the place of `faz-202`. The commands are the s
 
 ### Topology
 
-`faz-202` has one management port on the Lab-Services segment of Volume CCI (segment 2, VLAN 2, `10.200.2.0/24`). Everything reaches it there:
+`faz-202` has one management port on the Lab-Services segment of Volume CCI (segment 2, VLAN 2, `10.200.0.32/27`). Everything reaches it there:
 
 - **Administrators** connect from `admin-201` on the Admin segment, through the gateway `gw-201`.
 - **Log sources** send to it: `fgt-202` sends FortiGate logs, and `admin-201` sends syslog over TLS.
@@ -41,26 +41,26 @@ This volume has no diagram of its own yet. The diagram of Volume CCI's Chapter 9
 
 ### Address plan
 
-The addresses follow the plan of Volume CCI: the IPv6 address of a host ends in the hexadecimal form of the last octet of its IPv4 address. The four new hosts take addresses from `.100` up, which Volume CCI leaves free on segment 2.
+The addresses follow the plan of Volume CCI: the IPv6 address of a host ends in the hexadecimal form of its host number, which is its place in the block of its segment. The four new hosts take host numbers 22 to 25 of segment 2, which Volume CCI leaves free.
 
 | Host | Role | From | IPv4 | IPv6 |
 | --- | --- | --- | --- | --- |
-| faz-202 | FortiAnalyzer-VM 7.6 under test | This volume | `10.200.2.100` | `fd00:db8:201::264` |
-| faz-202b | Second FortiAnalyzer-VM, a collector for the aggregation step of Lab 3.11 (optional) | This volume | `10.200.2.101` | `fd00:db8:201::265` |
-| fgt-202 | FortiGate-VM that sends its logs to `faz-202` | This volume | `10.200.2.110` | `fd00:db8:201::26e` |
-| mail-202 | SMTP server with STARTTLS and an account, for alert email | This volume | `10.200.2.120` | `fd00:db8:201::278` |
-| gw-201 | Default gateway of the segment | Volume CCI | `10.200.2.1` | See Volume CCI |
-| radius-201a | RADIUS server 1 | Volume CCI | `10.200.2.10` | `fd00:db8:201::20a` |
-| radius-201b | RADIUS server 2 | Volume CCI | `10.200.2.11` | `fd00:db8:201::20b` |
-| tacacs-201 | TACACS+ server | Volume CCI | `10.200.2.12` | `fd00:db8:201::20c` |
-| syslog-201a | Central syslog 1, TLS over TCP | Volume CCI | `10.200.2.20` | `fd00:db8:201::214` |
-| syslog-201b | Central syslog 2 | Volume CCI | `10.200.2.21` | `fd00:db8:201::215` |
-| ntp-201a | Authenticated NTP server 1 | Volume CCI | `10.200.2.30` | `fd00:db8:201::21e` |
-| ntp-201b | Authenticated NTP server 2 | Volume CCI | `10.200.2.31` | `fd00:db8:201::21f` |
-| nms-201 | SNMPv3 manager | Volume CCI | `10.200.2.40` | `fd00:db8:201::228` |
-| files-201 | SFTP server | Volume CCI | `10.200.2.60` | `fd00:db8:201::23c` |
-| ca-201 | Lab certificate authority, which stands in for the DoD PKI | Volume CCI | `10.200.2.70` | `fd00:db8:201::246` |
-| admin-201 | Administrator workstation, and the syslog test source | Volume CCI | `10.200.3.10` | `fd00:db8:201::30a` |
+| faz-202 | FortiAnalyzer-VM 7.6 under test | This volume | `10.200.0.54` | `fd00:db8:201::216` |
+| faz-202b | Second FortiAnalyzer-VM, a collector for the aggregation step of Lab 3.11 (optional) | This volume | `10.200.0.55` | `fd00:db8:201::217` |
+| fgt-202 | FortiGate-VM that sends its logs to `faz-202` | This volume | `10.200.0.56` | `fd00:db8:201::218` |
+| mail-202 | SMTP server with STARTTLS and an account, for alert email | This volume | `10.200.0.57` | `fd00:db8:201::219` |
+| gw-201 | Default gateway of the segment | Volume CCI | `10.200.0.33` | See Volume CCI |
+| radius-201a | RADIUS server 1 | Volume CCI | `10.200.0.42` | `fd00:db8:201::20a` |
+| radius-201b | RADIUS server 2 | Volume CCI | `10.200.0.43` | `fd00:db8:201::20b` |
+| tacacs-201 | TACACS+ server | Volume CCI | `10.200.0.44` | `fd00:db8:201::20c` |
+| syslog-201a | Central syslog 1, TLS over TCP | Volume CCI | `10.200.0.45` | `fd00:db8:201::20d` |
+| syslog-201b | Central syslog 2 | Volume CCI | `10.200.0.46` | `fd00:db8:201::20e` |
+| ntp-201a | Authenticated NTP server 1 | Volume CCI | `10.200.0.47` | `fd00:db8:201::20f` |
+| ntp-201b | Authenticated NTP server 2 | Volume CCI | `10.200.0.48` | `fd00:db8:201::210` |
+| nms-201 | SNMPv3 manager | Volume CCI | `10.200.0.49` | `fd00:db8:201::211` |
+| files-201 | SFTP server | Volume CCI | `10.200.0.51` | `fd00:db8:201::213` |
+| ca-201 | Lab certificate authority, which stands in for the DoD PKI | Volume CCI | `10.200.0.52` | `fd00:db8:201::214` |
+| admin-201 | Administrator workstation, and the syslog test source | Volume CCI | `10.200.0.74` | `fd00:db8:201::30a` |
 
 ### How prerequisites map to this lab
 
@@ -112,7 +112,7 @@ Each prerequisite of [Chapter 01](01-fortianalyzer-feature-version-and-srg-map.m
 
 ### Addressing and naming rules
 
-Host names end in `-202` for hosts this volume adds and in `-201` for hosts of Volume CCI. New hosts take addresses from `10.200.2.100` up. The ADOM of the labs is `lab-202`, the read-only profile is `lab-readonly`, and the snapshot is `baseline-202`.
+Host names end in `-202` for hosts this volume adds and in `-201` for hosts of Volume CCI. New hosts take addresses from `10.200.0.54` up. The ADOM of the labs is `lab-202`, the read-only profile is `lab-readonly`, and the snapshot is `baseline-202`.
 
 The lab scripts of [Volume CMI](../../volume-901-lab-selector/README.md) build the reused hosts, and its Lab Selector plans a build for the labs of this volume. [Open it with the FortiAnalyzer lab set ticked](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html?sets=fortianalyzer), or tick that lab set on the page. The scripts do not build the four hosts of this volume, which you deploy by hand in Labs 999.2 and 999.3. The Lab Selector lists them with their addresses in your build.
 
@@ -131,10 +131,10 @@ The lab is at its baseline when these checks pass without an edit:
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `faz-202` cannot be reached from `admin-201` | The port has no address, the wrong VLAN, or no default route to `10.200.2.1` | Check the port from the console and the port group or bridge of the virtual machine |
+| `faz-202` cannot be reached from `admin-201` | The port has no address, the wrong VLAN, or no default route to `10.200.0.33` | Check the port from the console and the port group or bridge of the virtual machine |
 | The GUI asks for registration and offers nothing else | The unit is not registered with FortiCloud | Register it with your own account (Lab 999.2) |
-| `fgt-202` does not appear in Device Manager | The FortiGate does not send to `10.200.2.100`, or the two cannot reach each other | Check the log setting on the FortiGate and ping between the two |
-| A reused server refuses `faz-202` | The server has no client entry for `10.200.2.100` | Add the entry (Lab 999.1) |
+| `fgt-202` does not appear in Device Manager | The FortiGate does not send to `10.200.0.54`, or the two cannot reach each other | Check the log setting on the FortiGate and ping between the two |
+| A reused server refuses `faz-202` | The server has no client entry for `10.200.0.54` | Add the entry (Lab 999.1) |
 
 ## Security and Best Practices
 
@@ -167,23 +167,23 @@ The lab is at its baseline when these checks pass without an edit:
 
 **Goal.** Each reused server accepts `faz-202` as a client before the unit exists, so the requirement labs do not stop at the server.
 
-1. Confirm that the lab of Volume CCI runs: from `admin-201`, ping `10.200.2.1` and each reused host of the address plan.
-2. On `radius-201a` and `radius-201b`, add `10.200.2.100` as a client with a shared secret, and make the servers accept RADIUS over TLS, because the commands of Chapter 01 use `set protocol tls`. Add a test administrator.
-3. On `tacacs-201`, which is optional in Volume CCI and needed here for Lab 4.1, add `10.200.2.100` as a client with a key, and add a test administrator.
+1. Confirm that the lab of Volume CCI runs: from `admin-201`, ping `10.200.0.33` and each reused host of the address plan.
+2. On `radius-201a` and `radius-201b`, add `10.200.0.54` as a client with a shared secret, and make the servers accept RADIUS over TLS, because the commands of Chapter 01 use `set protocol tls`. Add a test administrator.
+3. On `tacacs-201`, which is optional in Volume CCI and needed here for Lab 4.1, add `10.200.0.54` as a client with a key, and add a test administrator.
 4. On `ntp-201a` and `ntp-201b`, note the key ID and the key that the unit will use.
 5. On `syslog-201a` and `syslog-201b`, confirm that the listener takes TLS on TCP, and that its certificate comes from `ca-201`.
 6. On `nms-201`, plan the SNMPv3 user, with SHA-256 authentication and AES-256 privacy.
 7. On `files-201`, create an account and a directory for the backups of `faz-202`.
 8. On `ca-201`, note where the CA certificate and the certificate revocation list are published, and issue a client certificate for `admin-201` and one for a test administrator.
 
-**Expected result.** Every reused server has an entry for `10.200.2.100`, and you hold the secrets, keys, and certificates the labs name.
+**Expected result.** Every reused server has an entry for `10.200.0.54`, and you hold the secrets, keys, and certificates the labs name.
 
 ### Lab 999.2 — Deploy the FortiAnalyzer-VM
 
 **Goal.** `faz-202` runs release 7.6, is registered, and is reachable from `admin-201` over HTTPS and SSH only.
 
 1. Deploy the FortiAnalyzer-VM image on the hypervisor, with one port on the Lab-Services segment and a virtual disk for the logs. Follow the vendor's installation guide for your hypervisor.
-2. From the hypervisor console, give the port the address `10.200.2.100/24`, set the default route to `10.200.2.1`, and set the host name `faz-202`. Chapter 01 has no command for these three settings, so take them from the Administration Guide.
+2. From the hypervisor console, give the port the address `10.200.0.54/27`, set the default route to `10.200.0.33`, and set the host name `faz-202`. Chapter 01 has no command for these three settings, so take them from the Administration Guide.
 3. Allow only HTTPS and SSH on the port.
 
    ```text
@@ -207,7 +207,7 @@ The lab is at its baseline when these checks pass without an edit:
    end
    ```
 
-7. If you want the aggregation step of Lab 3.11, deploy `faz-202b` at `10.200.2.101` in the same way.
+7. If you want the aggregation step of Lab 3.11, deploy `faz-202b` at `10.200.0.55` in the same way.
 
 **Expected result.** `faz-202` answers HTTPS and SSH from `admin-201` and nothing else, shows release 7.6, and is registered.
 
@@ -215,7 +215,7 @@ The lab is at its baseline when these checks pass without an edit:
 
 **Goal.** `faz-202` receives logs from a FortiGate and from a syslog host, and a mail server takes its alerts.
 
-1. Deploy `fgt-202`, a FortiGate-VM, with a port at `10.200.2.110/24` on the Lab-Services segment. On the FortiGate, send the logs to `10.200.2.100`. The command is in the FortiOS documentation, not in this volume.
+1. Deploy `fgt-202`, a FortiGate-VM, with a port at `10.200.0.56/27` on the Lab-Services segment. On the FortiGate, send the logs to `10.200.0.54`. The command is in the FortiOS documentation, not in this volume.
 2. Authorize `fgt-202` on `faz-202` in the GUI under Device Manager, put it in the ADOM `lab-202`, and check it.
 
    ```text
@@ -223,7 +223,7 @@ The lab is at its baseline when these checks pass without an edit:
    ```
 
 3. On `admin-201`, set up a syslog sender that uses TLS on TCP port 6514 with the client certificate from Lab 999.1. The requirement labs send test messages with it.
-4. Deploy `mail-202`, a small Linux host at `10.200.2.120/24`, with an SMTP server that offers STARTTLS and requires an account. Create a mailbox for the SA and one for the ISSO, and an account for `faz-202`.
+4. Deploy `mail-202`, a small Linux host at `10.200.0.57/27`, with an SMTP server that offers STARTTLS and requires an account. Create a mailbox for the SA and one for the ISSO, and an account for `faz-202`.
 5. Point both `fgt-202` and `faz-202` at the same time sources, `ntp-201a` and `ntp-201b`. Lab 3.7 adds the authentication.
 
 **Expected result.** A log caused on `fgt-202` appears in Log View on `faz-202`, a test syslog message from `admin-201` is ready to send, and a test email reaches a mailbox on `mail-202`.
@@ -235,7 +235,7 @@ The lab is at its baseline when these checks pass without an edit:
 1. Save the configuration of `faz-202` off the unit.
 
    ```text
-   execute backup all-settings sftp 10.200.2.60 <FILE> <USER> <PASSWORD>
+   execute backup all-settings sftp 10.200.0.51 <FILE> <USER> <PASSWORD>
    ```
 
 2. Snapshot `faz-202`, `fgt-202`, and `mail-202`, and `faz-202b` if you built it. Name each snapshot `baseline-202`.
@@ -246,7 +246,7 @@ The lab is at its baseline when these checks pass without an edit:
 
 ### Cleanup
 
-When a run of labs ends, delete the lab's secrets from every host, remove the client entries for `10.200.2.100` from the reused servers if the unit will not return, and shut the four virtual machines down.
+When a run of labs ends, delete the lab's secrets from every host, remove the client entries for `10.200.0.54` from the reused servers if the unit will not return, and shut the four virtual machines down.
 
 ## Lab Verification
 

@@ -9,6 +9,7 @@ for the terms of the shared lab and the build scripts.
 - **Build** — one set of choices on the Lab Selector: the lab sets, the labs, the platform, the machines, and the addresses. The page writes a manifest, the commands, a checklist, and the walkthroughs for it.
 - **Catalog (`lab-catalog.json`)** — the file that lists the kinds of labs, the shared lab, and the lab sets with their lab chapters.
 - **Choices file (`lab-selector-choices.json`)** — the file that holds a build, which the page saves and loads. A file that the Lab Builder saved loads too.
+- **Host number** — the place of a lab host in the IPv4 block of its segment, counted from the address of the network. The IPv4 address of the host is that address plus the host number, and its IPv6 address ends in the number of the segment and the host number.
 - **Host that no script builds** — a host of a lab set that you build by hand, such as a FortiAnalyzer-VM, because its image comes from the vendor under a license. The page lists it with its address and does not size it.
 - **Kind of labs** — a group of lab sets: SRG labs, certification labs, or learning labs. A kind can be chosen on the page when it has a lab set.
 - **Lab Builder** — the name of the Lab Selector until 2026-11-20, when it was a page of Volume CCI and built for the FortiSwitch labs only.
@@ -17,7 +18,7 @@ for the terms of the shared lab and the build scripts.
 - **Lab Selector** — the page of this volume that plans a lab build for the labs you choose.
 - **Lab set** — the labs of one volume, as the catalog lists them: its requirement lab chapters and, if it has one, the Chapter 999 that builds its own hosts.
 - **Link with lab sets** — an address of the page that ends in `?sets=` and the ids of lab sets, such as `?sets=fortianalyzer`. The page starts with those lab sets ticked, once, and keeps the result.
-- **Manifest (`lab201-vms.json`)** — the file that lists the machines of the shared lab, their sizes, networks, and IPv4 addresses. The build scripts read it, and the page writes a copy with your changes.
+- **Manifest (`lab201-vms.json`)** — the file that lists the machines of the shared lab, their sizes, networks, and IPv4 addresses, and the IPv4 block of every lab network. The build scripts read it, and the page writes a copy with your changes.
 - **Port of the gateway device** — the trunk port or the out-of-band port of a network device that is the gateway of the lab. Section 10 of the page asks for both, and puts them into the gateway text in place of placeholders such as `<GW_TRUNK_PORT>`.
 - **Prefix** — the short name of a lab set that comes before the number of its labs and the file names of its walkthroughs, such as `faz` and `fmg`. The FortiSwitch lab set has none.
 - **Shared lab** — the gateway, the VLANs, and the service hosts of Volume CCI's Chapter 999, which every lab set runs on and which the scripts of this volume build.

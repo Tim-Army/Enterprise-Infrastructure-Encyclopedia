@@ -38,7 +38,7 @@ The scripts are in one folder and are downloadable as a unit. The folder is `lab
 
 | File | Purpose |
 | --- | --- |
-| `common/lab201-vms.json` | The manifest: networks, machines, sizes, adapters, and IPv4 addresses. The IPv6 address of each IPv4 address is derived (`fd00:db8:201::` plus the third and fourth octets in hexadecimal), so the two families cannot drift apart. |
+| `common/lab201-vms.json` | The manifest: networks, machines, sizes, adapters, and IPv4 addresses. The IPv6 address of each IPv4 address is derived (`fd00:db8:201::` plus the segment number and the host number in hexadecimal), so the two families cannot drift apart. |
 | `common/make-seed.py` | Renders the cloud-init files for each machine and, with `--iso`, writes a seed ISO labeled `cidata`. |
 | `selector/lab-selector.html` | The [Lab Selector](https://tim-army.github.io/Enterprise-Infrastructure-Encyclopedia/downloads/volume-901-lab-selector/lab-scripts/selector/lab-selector.html), a page that runs in your browser. It writes a manifest for your choices, the commands for each platform, and a checklist, and downloads them as a zip with the lab walkthroughs. |
 | `common/lab-catalog.json` | The lab kinds and the lab sets that the Lab Selector offers, with the lab chapters of each set. |
@@ -124,7 +124,7 @@ Each network adapter gets a fixed MAC address, `00:50:56:2d:<machine number>:<ad
 
 ESXi has two ways to carry VLANs. With **virtual switch tagging (VST)**, a port group has one VLAN ID and the switch adds and removes the tag, so the guest sees untagged frames. With **virtual guest tagging (VGT)**, the port group has VLAN ID 4095 and the guest sees every tag. The script uses VST for every machine except `gw-201`, and VGT for the gateway's two trunk adapters.
 
-Chapter 999 shows two trunks, T1 to `sw-648f-1` and T2 to `sw-2048f-1`, and a gateway that holds `.1` on every segment. An ESXi virtual switch cannot join two uplinks into one Layer 2 network, because it never forwards frames from one uplink to another. So the script creates one virtual switch for each trunk, `vSwitch-lab201-t1` and `vSwitch-lab201-t2`, and `gw-201` joins them: its `network-config` creates a Linux bridge, `br-trunk`, from its two trunk adapters and puts the VLAN interfaces (`vlan2`, `vlan3`, and so on) on the bridge. Every `.1` address then exists once and answers on both trunks.
+Chapter 999 shows two trunks, T1 to `sw-648f-1` and T2 to `sw-2048f-1`, and a gateway that holds the first host address of every segment. An ESXi virtual switch cannot join two uplinks into one Layer 2 network, because it never forwards frames from one uplink to another. So the script creates one virtual switch for each trunk, `vSwitch-lab201-t1` and `vSwitch-lab201-t2`, and `gw-201` joins them: its `network-config` creates a Linux bridge, `br-trunk`, from its two trunk adapters and puts the VLAN interfaces (`vlan2`, `vlan3`, and so on) on the bridge. Every gateway address then exists once and answers on both trunks.
 
 A bridge inside a guest sees frames whose source MAC address is not its own. ESXi rejects those unless the port group allows them, so the script sets **promiscuous mode, forged transmits, and MAC address changes** to *accept* on the two trunk virtual switches, and nowhere else.
 
@@ -196,9 +196,9 @@ After a deploy, give the machines about three minutes for cloud-init, then check
 | The first boot finished | The same command with `-Wait` | `ok` in the Build column of every machine. `failed` names a missing package or a lab service that does not run |
 | Cloud-init finished | On a machine: `lab201-status`, then `cloud-init status --long` | A line that starts `lab201 ok`, and `status: done` |
 | Hostname and addresses | `hostnamectl; ip -br addr` | The name and the Chapter 999 addresses (both families) |
-| Gateway bridge | On `gw-201`: `bridge link; ip -br addr show type vlan` | `nic2` and `nic3` in `br-trunk`, seven VLAN interfaces with `.1` addresses |
+| Gateway bridge | On `gw-201`: `bridge link; ip -br addr show type vlan` | `nic2` and `nic3` in `br-trunk`, seven VLAN interfaces, each with the gateway address of its segment |
 | Forwarding policy | On `gw-201`: `sudo nft list ruleset` | The `inet lab201` table from Lab 999.1 |
-| Segment 2 reachable | From `admin-201`: `ping -c2 10.200.2.1` and `ping -c2 fd00:db8:201::201` | Both answer, once the switch trunk allows VLANs 2 and 3 |
+| Segment 2 reachable | From `admin-201`: `ping -c2 10.200.0.33` and `ping -c2 fd00:db8:201::201` | Both answer, once the switch trunk allows VLANs 2 and 3 |
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |

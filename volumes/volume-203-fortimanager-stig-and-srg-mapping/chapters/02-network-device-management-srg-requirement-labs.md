@@ -69,7 +69,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
 | --- | --- | --- |
 | A command is rejected | The option belongs to a later release than 7.6 | Type `set ?` in that context, use what the release offers, and record the difference |
 | The RADIUS administrator cannot log on | `fmg-203` is not a client of `radius-201a`, the secret differs, or the server does not accept RADIUS over TLS | Check the client entry and the secret on `radius-201a`, and the protocol under `config system admin radius` |
-| `fgt-202` does not appear in Device Manager | The FortiGate does not point at `10.200.2.130`, or registration is disabled and the device was not added first | Check central management on the FortiGate, and add the device in Device Manager |
+| `fgt-202` does not appear in Device Manager | The FortiGate does not point at `10.200.0.58`, or registration is disabled and the device was not added first | Check central management on the FortiGate, and add the device in Device Manager |
 | An install to `fgt-202` is refused | The ADOM or the policy package is locked by another session, or the change is waiting for approval | Unlock it, or approve the change (Lab 2.14) |
 | No alert email arrives | `mail-202` is unreachable, or the account or the STARTTLS setting is wrong | Check `config system mail` and the mail log on `mail-202` |
 | You are locked out after a lockout or trusted-host test | The test hit your own account or address | Use the console of `fmg-203`, or restore the baseline |
@@ -188,7 +188,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    ```text
    config system admin user
        edit <LAB_ADMIN>
-           set trusthost1 10.200.3.0 255.255.255.0
+           set trusthost1 10.200.0.64 255.255.255.240
    end
    ```
 
@@ -198,7 +198,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    config system local-in-policy
        edit 1
            set intf <PORT>
-           set src 10.200.3.0 255.255.255.0
+           set src 10.200.0.64 255.255.255.240
            set dport 443
            set protocol tcp
            set action accept
@@ -350,8 +350,8 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    ```text
    config system admin radius
        edit radius-201
-           set server 10.200.2.10
-           set secondary-server 10.200.2.11
+           set server 10.200.0.42
+           set secondary-server 10.200.0.43
            set secret <SECRET>
            set protocol tls
            set message-authenticator require
@@ -363,7 +363,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    ```text
    config system admin tacacs
        edit tacacs-201
-           set server 10.200.2.12
+           set server 10.200.0.44
            set key <KEY>
            set protocol tls
            set authorization enable
@@ -634,7 +634,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    ```text
    config system mail
        edit mail-202
-           set server 10.200.2.120
+           set server 10.200.0.57
            set secure-option starttls
            set auth enable
    end
@@ -666,7 +666,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    ```text
    config system syslog
        edit syslog-201a
-           set ip 10.200.2.20
+           set ip 10.200.0.45
            set reliable enable
            set secure-connection enable
    end
@@ -677,13 +677,13 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    end
    ```
 
-2. Add `syslog-201b` (`10.200.2.21`) under `config system syslog` in the same way. Chapter 01 gives one `syslogd` setting. Type `config system locallog ?` to see whether your release has a second one. If it has, point it at `syslog-201b`. If it has not, record that the unit sends its own log to one syslog server.
+2. Add `syslog-201b` (`10.200.0.46`) under `config system syslog` in the same way. Chapter 01 gives one `syslogd` setting. Type `config system locallog ?` to see whether your release has a second one. If it has, point it at `syslog-201b`. If it has not, record that the unit sends its own log to one syslog server.
 3. If the lab has `faz-202`, send the event log to it in real time as well, and authorize `fmg-203` on it as a log source.
 
    ```text
    config system locallog fortianalyzer setting
        set status realtime
-       set server 10.200.2.100
+       set server 10.200.0.54
        set secure-connection enable
        set reliable enable
    end
@@ -720,7 +720,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
        set status enable
        config ntpserver
            edit 1
-               set server 10.200.2.30
+               set server 10.200.0.47
                set authentication enable
                set key-type sha256
                set key-id <ID>
@@ -729,7 +729,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    end
    ```
 
-2. Add `ntp-201b` (`10.200.2.31`) as server 2 in the same way.
+2. Add `ntp-201b` (`10.200.0.48`) as server 2 in the same way.
 
 **Positive test.** The time that `get system status` shows on `fmg-203` is within one second of `ntp-201a`. Set the clock of `fmg-203` a few minutes off by hand: the unit corrects it from the server. An event log record written afterward carries a time that maps to UTC.
 
@@ -775,7 +775,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
            set security-level auth-priv
            set auth-proto sha256
            set priv-proto aes256
-           set notify-hosts 10.200.2.40
+           set notify-hosts 10.200.0.49
            set queries enable
    end
    ```
@@ -881,7 +881,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
    config system backup all-settings
        set status enable
        set protocol sftp
-       set server 10.200.2.60
+       set server 10.200.0.51
        set user <USER>
        set passwd <PASSWORD>
        set crptpasswd <ENCRYPTION_PASSWORD>
@@ -893,7 +893,7 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
 2. The SRG asks for a backup when changes occur. After a change, run the backup at once.
 
    ```text
-   execute backup all-settings sftp 10.200.2.60 <FILE> <USER> <PASSWORD>
+   execute backup all-settings sftp 10.200.0.51 <FILE> <USER> <PASSWORD>
    ```
 
 3. Keep the documents that describe the unit, such as the security plan and this lab's notes, with the backup files. No setting covers that part of the requirement.
@@ -927,8 +927,8 @@ Before each lab, confirm the baseline: `get system status` on `fmg-203` shows th
 3. To install a release, take the snapshot and a configuration backup first. Download the image from the vendor with your own account, put it on `files-201`, and load it.
 
    ```text
-   execute backup all-settings sftp 10.200.2.60 <FILE> <USER> <PASSWORD>
-   execute restore image sftp <IMAGE_PATH> 10.200.2.60 <USER> <PASSWORD>
+   execute backup all-settings sftp 10.200.0.51 <FILE> <USER> <PASSWORD>
+   execute restore image sftp <IMAGE_PATH> 10.200.0.51 <USER> <PASSWORD>
    ```
 
 **Positive test.** The release of `fmg-203` is on the vendor's list of supported releases, and the patch record shows each security update installed within 30 days. If you run step 3 as a privileged administrator, the unit installs the vendor's image and starts on the new release.

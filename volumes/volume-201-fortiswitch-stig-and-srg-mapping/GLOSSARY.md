@@ -29,11 +29,12 @@ the SRG and STIG terms this volume builds on.
 - **RadSec** — RADIUS carried inside a TLS session (RFC 6614), used to encrypt credentials between a switch and a RADIUS server.
 - **Requirement lab** — a lab that configures the FortiSwitch setting for an SRG requirement and proves it with a positive and a negative test.
 - **Routed link** — a point-to-point link (L1 to L5) between two routers in the lab, addressed with a /31 in IPv4 and a /127 in IPv6.
-- **Segment (lab)** — one /24 IPv4 network and one /120 IPv6 network whose number is shared by the VLAN ID, the third octet, and the IPv6 address group.
+- **Segment (lab)** — one IPv4 network, a /28 unless it needs another size, and one /120 IPv6 network. The number of the segment is its VLAN ID and the address group of its IPv6 network.
 - **Serial pinout (X1 and X2)** — the OpenGear per-port setting that matches the RJ45 wiring of a console cable; X2 is Cisco Straight (the default) and X1 is Cisco Rolled.
 - **SRG mapping workbook** — the Excel workbook that holds the FortiSwitch crosswalk of SRG requirements to FortiSwitch settings, commands, documentation references, and verification status.
 - **STIG crosswalk** — an alignment of one vendor's STIG rules with another platform's settings through the SRG requirement each rule implements, used where the second platform, such as FortiSwitch, has no STIG of its own.
 - **STIG-hardened flavor** — a Red Hat or Ubuntu flavor that applies the DISA STIG on its first boot, then reboots once. It asks for a password for `sudo` and records the findings the lab accepts.
+- **Supernet (lab)** — the block that holds every lab network: `10.200.0.0/22` in the plan of Chapter 999, from `10.200.0.0` to `10.200.3.255`. One route to it covers the lab. It is the first row of the Segments table.
 - **Virtual hardware version (vmx-N)** — the VMware virtual machine hardware level, which limits the hosts that can run the machine.
 - **Virtual switch tagging (VST)** — VLAN tagging done by the virtual switch, so the guest sees untagged frames.
 - **vPC (virtual port channel)** — a Cisco Nexus feature that lets two switches present one port channel to a downstream device; FortiSwitch provides the same function with MCLAG.

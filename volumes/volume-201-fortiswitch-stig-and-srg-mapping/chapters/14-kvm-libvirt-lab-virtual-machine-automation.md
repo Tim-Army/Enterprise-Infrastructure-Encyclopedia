@@ -24,7 +24,7 @@ The twelve machines, their sizes, addresses, cloud-init content, and the Linux f
 
 ### Guest tagging
 
-libvirt can place a guest on a bridge, but it cannot tag a Linux bridge port the way a Proxmox VLAN-aware bridge can. So the guests create their own VLAN interfaces, exactly as on VMware Workstation ([Chapter 11](11-vmware-workstation-pro-lab-virtual-machine-automation.md)). A plain Linux bridge passes 802.1Q frames, so the bridges need no VLAN settings. `gw-201` still bridges its two trunk adapters inside the guest and holds `.1` on every segment, as in the other chapters.
+libvirt can place a guest on a bridge, but it cannot tag a Linux bridge port the way a Proxmox VLAN-aware bridge can. So the guests create their own VLAN interfaces, exactly as on VMware Workstation ([Chapter 11](11-vmware-workstation-pro-lab-virtual-machine-automation.md)). A plain Linux bridge passes 802.1Q frames, so the bridges need no VLAN settings. `gw-201` still bridges its two trunk adapters inside the guest and holds the gateway address of every segment, as in the other chapters.
 
 ### The bridges
 

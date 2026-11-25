@@ -4,7 +4,7 @@ Alphabetized topical index for **Volume CMI — Lab Selector**.
 See also the [volume glossary](GLOSSARY.md) for term definitions and the
 [master index](../../INDEX.md) for cross-volume topics.
 
-- **Address plan (`10.200.0.0/16`, contiguous subnets)** — [Chapter 01](chapters/01-the-lab-selector.md)
+- **Address plan (`10.200.0.0/16`, a block of its own size for each lab network)** — [Chapter 01](chapters/01-the-lab-selector.md), [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **Address plan, table of the lab networks (section 6)** — [Chapter 01](chapters/01-the-lab-selector.md), [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **Address plan table of a Chapter 999 (hosts of a lab set)** — [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md)
 - **Build scripts (ESXi, vCenter, Workstation Pro, Proxmox VE, KVM, WSL)** — [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md), [Volume CCI Chapter 09](../volume-201-fortiswitch-stig-and-srg-mapping/chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md)

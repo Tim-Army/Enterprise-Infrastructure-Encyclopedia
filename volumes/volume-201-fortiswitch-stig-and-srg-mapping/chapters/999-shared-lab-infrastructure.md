@@ -61,8 +61,29 @@ All lab addresses come from two blocks.
 
 | Block | Use |
 | --- | --- |
-| `10.200.0.0/16` | IPv4. The third octet is the segment number, so `10.200.5.0/24` is segment 5. |
+| `10.200.0.0/16` | IPv4. Each lab network takes a small block of it, from its first address on. |
 | `fd00:db8:201::/112` | IPv6. The last 16 bits are `<segment><host>` in hexadecimal, so segment 5 (`0x05`) is `fd00:db8:201::500/120`. |
+
+An IPv4 network takes the smallest block that holds its hosts. That is a /28,
+with 14 host addresses, unless the network needs another size. Four networks
+do:
+
+- **Lab-Services is a /27.** It holds 18 addresses: the gateway, the 12
+  service addresses of this volume, and the 5 hosts that Volumes CCII and CCIII
+  add. A /28 has room for 14.
+- **Peer1-Nets and Peer2-Nets are a /24 each.**
+  [Lab 6.6](06-router-srg-requirement-labs.md) accepts no BGP prefix longer
+  than a /24 and tests that with a /25, so a peer has to advertise a /24.
+- **FortiLink is a /30.** It holds `fgt-201` and the one switch that
+  [Lab 4.2](04-layer-2-switch-srg-requirement-labs.md) puts in managed mode.
+  The switch takes its address from `fgt-201`.
+
+Each network takes the lowest free block of its size, in the order of the
+Segments table, from `10.200.0.0`. The 14 small networks fill `10.200.0.0`
+to `10.200.0.227`, the two peer networks take the next two /24 blocks, and
+the whole lab fits `10.200.0.0/22`. That block is the supernet of the lab, so
+one route to it covers every lab network. The first row of the Segments table
+gives its first and its last address.
 
 The IPv6 block is a /112, which holds 65,536 addresses, enough for 256 /120
 segments of 256 addresses each. A /112 cannot be split into /64 subnets, and
@@ -72,107 +93,124 @@ lab that needs router advertisements uses a link-local test as described in
 its own chapter. The prefix is in the unique local range (`fc00::/7`), so it is
 never routed on the internet.
 
-In every segment the host part follows one convention, so a host keeps the same
-number in IPv4 and IPv6 (`.10` is `::a` in the host group).
+A host has a host number: its place in the block of its network, counted from
+the address of the network. Its IPv4 address is the address of the network plus
+the host number, and the last two hexadecimal digits of its IPv6 address are
+the host number. So host 10 of segment 3 is `10.200.0.74`, which is
+`10.200.0.64` plus 10, and `fd00:db8:201::30a`. A host keeps one number in IPv4
+and IPv6. The host numbers follow one convention in every segment.
 
-| Host part | Use |
+| Host number | Use |
 | --- | --- |
-| `.1` | Default gateway (`gw-201`, or the peer router on a routed segment) |
-| `.2` to `.9` | Infrastructure that shares a segment with hosts (for example `dhcp-201`) |
-| `.10` to `.99` | Static servers and hosts |
-| `.100` to `.199` | DHCP scope |
-| `.200` to `.254` | Test endpoints and attackers |
+| 1 | Default gateway (`gw-201`, or the peer router on a routed segment) |
+| 2 | Infrastructure that shares a segment with hosts (`dhcp-201`) |
+| 3 to 9 | DHCP scope of a user segment |
+| 10 to 14 | Static servers and hosts. Test endpoints and attackers take the highest numbers |
+
+Lab-Services has host numbers up to 30. Numbers 10 to 21 are the service
+addresses of this volume, and the hosts that other volumes add start at 22.
+The routed links and the loopbacks have no gateway and no broadcast address,
+so they can use every address of their block.
 
 #### Segments
 
 | Segment | VLAN | Name | IPv4 | IPv6 | Gateway | Purpose |
 | --- | --- | --- | --- | --- | --- | --- |
-| 0 | none (physical) | OOB-Mgmt | `10.200.0.0/24` | `fd00:db8:201::/120` | .1 gw-201 | Switch management ports, gateway management port |
-| 1 | none (isolated LAN) | Console-OOB | `10.200.1.0/24` | `fd00:db8:201::100/120` | none | Optional: break-glass network for the console server's NET2 and `oob-admin-201` (Chapter 08) |
-| 2 | 2 | Lab-Services | `10.200.2.0/24` | `fd00:db8:201::200/120` | .1 gw-201 | RADIUS, syslog, NTP, SNMP, flow, files, CA, DHCP |
-| 3 | 3 | Admin | `10.200.3.0/24` | `fd00:db8:201::300/120` | .1 gw-201 | Administrator workstation and jump host |
-| 4 | 4 | Switch-Mgmt | `10.200.4.0/24` | `fd00:db8:201::400/120` | .1 gw-201 | In-band management SVIs of the switches (P10) |
-| 5 | 5 | Users-8021X | `10.200.5.0/24` | `fd00:db8:201::500/120` | .1 gw-201 | 802.1X authenticated endpoints |
-| 6 | 6 | Users-MAB | `10.200.6.0/24` | `fd00:db8:201::600/120` | .1 gw-201 | MAC authentication bypass endpoints |
-| 7 | 7 | Static-Hosts | `10.200.7.0/24` | `fd00:db8:201::700/120` | .1 gw-201 | Hosts without DHCP; IP-to-MAC bindings (P14); test attacker |
-| 8 | 8 | Guest-AuthFail | `10.200.8.0/24` | `fd00:db8:201::800/120` | .1 gw-201 | Guest and authentication-failure VLAN |
-| 9 | 2001-2005 | Routed-Links | `10.200.9.0/24` | `fd00:db8:201::900/120` | none | Point-to-point links, one /31 (IPv4) and /127 (IPv6) each |
-| 10 | behind rtr-peer-1 | Peer1-Nets | `10.200.10.0/24` | `fd00:db8:201::a00/120` | rtr-peer-1 | Prefixes advertised by rtr-peer-1 (AS 65202) |
-| 11 | behind rtr-peer-2 | Peer2-Nets | `10.200.11.0/24` | `fd00:db8:201::b00/120` | rtr-peer-2 | Prefixes advertised by rtr-peer-2 (AS 65203) |
-| 12 | behind rtr-peer-1 | Mcast-Source | `10.200.12.0/24` | `fd00:db8:201::c00/120` | rtr-peer-1 | Multicast source network for PIM-SSM labs |
-| 13 | 13 (VNI 13) | VXLAN-Tenant | `10.200.13.0/24` | `fd00:db8:201::d00/120` | none | Tenant network carried over VXLAN between the two switches |
-| 14 | none (loopbacks) | Loopbacks | `10.200.14.0/24` | `fd00:db8:201::e00/120` | none | One /32 and /128 per router |
-| 15 | FortiLink | FortiLink | `10.200.15.0/24` | `fd00:db8:201::f00/120` | .1 fgt-201 | FortiLink interface of fgt-201 (managed-mode labs only) |
+| all | all | Supernet | `10.200.0.0/22` | `fd00:db8:201::/112` | none | The whole lab, from its first IPv4 address `10.200.0.0` to its last, `10.200.3.255` |
+| 0 | none (physical) | OOB-Mgmt | `10.200.0.0/28` | `fd00:db8:201::/120` | `10.200.0.1` gw-201 | Switch management ports, gateway management port |
+| 1 | none (isolated LAN) | Console-OOB | `10.200.0.16/28` | `fd00:db8:201::100/120` | none | Optional: break-glass network for the console server's NET2 and `oob-admin-201` (Chapter 08) |
+| 2 | 2 | Lab-Services | `10.200.0.32/27` | `fd00:db8:201::200/120` | `10.200.0.33` gw-201 | RADIUS, syslog, NTP, SNMP, flow, files, CA, DHCP |
+| 3 | 3 | Admin | `10.200.0.64/28` | `fd00:db8:201::300/120` | `10.200.0.65` gw-201 | Administrator workstation and jump host |
+| 4 | 4 | Switch-Mgmt | `10.200.0.80/28` | `fd00:db8:201::400/120` | `10.200.0.81` gw-201 | In-band management SVIs of the switches (P10) |
+| 5 | 5 | Users-8021X | `10.200.0.96/28` | `fd00:db8:201::500/120` | `10.200.0.97` gw-201 | 802.1X authenticated endpoints |
+| 6 | 6 | Users-MAB | `10.200.0.112/28` | `fd00:db8:201::600/120` | `10.200.0.113` gw-201 | MAC authentication bypass endpoints |
+| 7 | 7 | Static-Hosts | `10.200.0.128/28` | `fd00:db8:201::700/120` | `10.200.0.129` gw-201 | Hosts without DHCP; IP-to-MAC bindings (P14); test attacker |
+| 8 | 8 | Guest-AuthFail | `10.200.0.144/28` | `fd00:db8:201::800/120` | `10.200.0.145` gw-201 | Guest and authentication-failure VLAN |
+| 9 | 2001-2005 | Routed-Links | `10.200.0.160/28` | `fd00:db8:201::900/120` | none | Point-to-point links, one /31 (IPv4) and /127 (IPv6) each |
+| 10 | behind rtr-peer-1 | Peer1-Nets | `10.200.1.0/24` | `fd00:db8:201::a00/120` | rtr-peer-1 | Prefixes advertised by rtr-peer-1 (AS 65202) |
+| 11 | behind rtr-peer-2 | Peer2-Nets | `10.200.2.0/24` | `fd00:db8:201::b00/120` | rtr-peer-2 | Prefixes advertised by rtr-peer-2 (AS 65203) |
+| 12 | behind rtr-peer-1 | Mcast-Source | `10.200.0.176/28` | `fd00:db8:201::c00/120` | rtr-peer-1 | Multicast source network for PIM-SSM labs |
+| 13 | 13 (VNI 13) | VXLAN-Tenant | `10.200.0.192/28` | `fd00:db8:201::d00/120` | none | Tenant network carried over VXLAN between the two switches |
+| 14 | none (loopbacks) | Loopbacks | `10.200.0.208/28` | `fd00:db8:201::e00/120` | none | One /32 and /128 per router |
+| 15 | FortiLink | FortiLink | `10.200.0.224/30` | `fd00:db8:201::f00/120` | `10.200.0.225` fgt-201 | FortiLink interface of fgt-201 (managed-mode labs only) |
 | 60 | 60 | Unused | none | none | none | Parking VLAN for unused ports; no hosts, no gateway |
 | 99 | 99 | Native-Dead | none | none | none | Native VLAN on trunks; no hosts, no gateway |
+
+The first row is the supernet of the lab and no segment: every network of the
+rows under it lies in that block.
 
 Segment 0 is the out-of-band network: it is reached through the switches'
 management ports (and, in the optional console lab of
 [Chapter 08](08-opengear-im7216-console-server-and-optional-console-lab.md),
 the console server's NET1) and never carries test traffic.
 
-A segment number, its VLAN ID, and the third octet of its subnet are one
-number. The subnets are contiguous, so the whole lab fits `10.200.0.0/20`.
-No VLAN has the number 1, because VLAN 1 is the default VLAN of a switch, so
-segment 1 is a network without a VLAN. Segments 60 and 99 are VLANs that carry
-no hosts, and they take no subnet. The routed links share one subnet and keep
-VLANs 2001 to 2005. A lab that needs its own segment takes the next free
-number after 15 and records it in its own chapter.
+A segment number and its VLAN ID are one number. No VLAN has the number 1,
+because VLAN 1 is the default VLAN of a switch, so segment 1 is a network
+without a VLAN. Segments 60 and 99 are VLANs that carry no hosts, and they take
+no subnet. The routed links share one block and keep VLANs 2001 to 2005.
+
+An IPv4 address does not show its segment: find the block that holds the
+address in the table. The IPv6 address does show it, in the digits before the
+host number. A lab that needs its own segment takes the next free number after
+15 and records it in its own chapter.
 
 The Lab Selector ([Volume CMI, Chapter 01](../../volume-901-lab-selector/chapters/01-the-lab-selector.md))
 builds this plan as it stands when a build uses every network of the table
-and starts at `10.200.0.0`. A build that leaves a network out, or that starts
-at another address, gets contiguous subnets of its own: each network takes the
-next `/24` in the order of this table, and a VLAN ID is the third octet of its
-subnet there too. The copy of this chapter in the Lab Selector's zip then holds
-the values of that build, and so does `LAB-VALUES.md`.
+and starts at `10.200.0.0`. A build that leaves a network out keeps the
+out-of-band network and the shared segments in the blocks they have here,
+because every build has them, and places each other network that it uses in
+the lowest free block of its size. A build that starts at another address
+moves every network by the same distance. The VLAN IDs and the IPv6 addresses
+are the ones of this chapter in every build, because they come from the
+segment number and the host number. The copy of this chapter in the Lab
+Selector's zip holds the values of its build, and so does `LAB-VALUES.md`.
 
 #### Hosts
 
 | Host | Role | Prerequisite | Segment | IPv4 | IPv6 |
 | --- | --- | --- | --- | --- | --- |
 | gw-201 | Default gateway and firewall: FortiGate-VM or a Linux router VM | P7 (if a FortiGate) | 0 (management port) | `10.200.0.1` | `fd00:db8:201::1` |
-|  |  |  | 2 | `10.200.2.1` | `fd00:db8:201::201` |
-|  |  |  | 3 | `10.200.3.1` | `fd00:db8:201::301` |
-|  |  |  | 4 | `10.200.4.1` | `fd00:db8:201::401` |
-|  |  |  | 5 | `10.200.5.1` | `fd00:db8:201::501` |
-|  |  |  | 6 | `10.200.6.1` | `fd00:db8:201::601` |
-|  |  |  | 7 | `10.200.7.1` | `fd00:db8:201::701` |
-|  |  |  | 8 | `10.200.8.1` | `fd00:db8:201::801` |
-| radius-201a | RADIUS server 1 (FreeRADIUS) on svc-201a | P1, P2 | 2 | `10.200.2.10` | `fd00:db8:201::20a` |
-| radius-201b | RADIUS server 2 on svc-201b | P1, P2 | 2 | `10.200.2.11` | `fd00:db8:201::20b` |
-| tacacs-201 | TACACS+ server (optional) on svc-201a | P1 | 2 | `10.200.2.12` | `fd00:db8:201::20c` |
-| syslog-201a | Central syslog 1 (rsyslog, TLS over TCP) on svc-201a | P4 | 2 | `10.200.2.20` | `fd00:db8:201::214` |
-| syslog-201b | Central syslog 2 on svc-201b | P4 | 2 | `10.200.2.21` | `fd00:db8:201::215` |
-| ntp-201a | Authenticated NTP server 1 (chrony) on svc-201a | P5 | 2 | `10.200.2.30` | `fd00:db8:201::21e` |
-| ntp-201b | Authenticated NTP server 2 on svc-201b | P5 | 2 | `10.200.2.31` | `fd00:db8:201::21f` |
-| nms-201 | SNMPv3 manager on svc-201a | P6 | 2 | `10.200.2.40` | `fd00:db8:201::228` |
-| flow-201 | sFlow, NetFlow, and IPFIX collector on svc-201b | P17 | 2 | `10.200.2.50` | `fd00:db8:201::232` |
-| files-201 | SFTP and TFTP server on svc-201b | P15, P16 | 2 | `10.200.2.60` | `fd00:db8:201::23c` |
-| ca-201 | Lab certificate authority with SCEP (stands in for the DoD CA) | P3 | 2 | `10.200.2.70` | `fd00:db8:201::246` |
-| dhcp-201 | DHCP server (Kea); also on VLANs 5, 6, and 8 | P12 | 2 (management) | `10.200.2.80` | `fd00:db8:201::250` |
-|  |  |  | 5 (scope .100-.199) | `10.200.5.2` | `fd00:db8:201::502` |
-|  |  |  | 6 (scope .100-.199) | `10.200.6.2` | `fd00:db8:201::602` |
-|  |  |  | 8 (scope .100-.199) | `10.200.8.2` | `fd00:db8:201::802` |
-| admin-201 | Administrator workstation and jump host |  | 3 | `10.200.3.10` | `fd00:db8:201::30a` |
+|  |  |  | 2 | `10.200.0.33` | `fd00:db8:201::201` |
+|  |  |  | 3 | `10.200.0.65` | `fd00:db8:201::301` |
+|  |  |  | 4 | `10.200.0.81` | `fd00:db8:201::401` |
+|  |  |  | 5 | `10.200.0.97` | `fd00:db8:201::501` |
+|  |  |  | 6 | `10.200.0.113` | `fd00:db8:201::601` |
+|  |  |  | 7 | `10.200.0.129` | `fd00:db8:201::701` |
+|  |  |  | 8 | `10.200.0.145` | `fd00:db8:201::801` |
+| radius-201a | RADIUS server 1 (FreeRADIUS) on svc-201a | P1, P2 | 2 | `10.200.0.42` | `fd00:db8:201::20a` |
+| radius-201b | RADIUS server 2 on svc-201b | P1, P2 | 2 | `10.200.0.43` | `fd00:db8:201::20b` |
+| tacacs-201 | TACACS+ server (optional) on svc-201a | P1 | 2 | `10.200.0.44` | `fd00:db8:201::20c` |
+| syslog-201a | Central syslog 1 (rsyslog, TLS over TCP) on svc-201a | P4 | 2 | `10.200.0.45` | `fd00:db8:201::20d` |
+| syslog-201b | Central syslog 2 on svc-201b | P4 | 2 | `10.200.0.46` | `fd00:db8:201::20e` |
+| ntp-201a | Authenticated NTP server 1 (chrony) on svc-201a | P5 | 2 | `10.200.0.47` | `fd00:db8:201::20f` |
+| ntp-201b | Authenticated NTP server 2 on svc-201b | P5 | 2 | `10.200.0.48` | `fd00:db8:201::210` |
+| nms-201 | SNMPv3 manager on svc-201a | P6 | 2 | `10.200.0.49` | `fd00:db8:201::211` |
+| flow-201 | sFlow, NetFlow, and IPFIX collector on svc-201b | P17 | 2 | `10.200.0.50` | `fd00:db8:201::212` |
+| files-201 | SFTP and TFTP server on svc-201b | P15, P16 | 2 | `10.200.0.51` | `fd00:db8:201::213` |
+| ca-201 | Lab certificate authority with SCEP (stands in for the DoD CA) | P3 | 2 | `10.200.0.52` | `fd00:db8:201::214` |
+| dhcp-201 | DHCP server (Kea); also on VLANs 5, 6, and 8 | P12 | 2 (management) | `10.200.0.53` | `fd00:db8:201::215` |
+|  |  |  | 5 (scope: host numbers 3 to 9) | `10.200.0.98` | `fd00:db8:201::502` |
+|  |  |  | 6 (scope: host numbers 3 to 9) | `10.200.0.114` | `fd00:db8:201::602` |
+|  |  |  | 8 (scope: host numbers 3 to 9) | `10.200.0.146` | `fd00:db8:201::802` |
+| admin-201 | Administrator workstation and jump host |  | 3 | `10.200.0.74` | `fd00:db8:201::30a` |
 | sw-648f-1 | FS-648F-FPOE under test | P8, P9, P10 | 0 (management port) | `10.200.0.11` | `fd00:db8:201::b` |
-|  |  |  | 4 (management SVI) | `10.200.4.11` | `fd00:db8:201::40b` |
-|  |  |  | 14 (loopback) | `10.200.14.11` | `fd00:db8:201::e0b` |
+|  |  |  | 4 (management SVI) | `10.200.0.91` | `fd00:db8:201::40b` |
+|  |  |  | 14 (loopback) | `10.200.0.219` | `fd00:db8:201::e0b` |
 | sw-2048f-1 | FS-2048F under test | P8, P9, P10 | 0 (management port) | `10.200.0.12` | `fd00:db8:201::c` |
-|  |  |  | 4 (management SVI) | `10.200.4.12` | `fd00:db8:201::40c` |
-|  |  |  | 14 (loopback) | `10.200.14.12` | `fd00:db8:201::e0c` |
-| fgt-201 | FortiGate for FortiLink managed mode (optional) | P7 | 15 (FortiLink interface) | `10.200.15.1` | `fd00:db8:201::f01` |
-| rtr-peer-1 | Routing peer 1 (FRR VM or FortiGate-VM), AS 65202 | P11 | 14 (loopback) | `10.200.14.21` | `fd00:db8:201::e15` |
-| rtr-peer-2 | Routing peer 2, AS 65203 | P11 | 14 (loopback) | `10.200.14.22` | `fd00:db8:201::e16` |
-| static-1 | Statically addressed host | P14 | 7 | `10.200.7.10` | `fd00:db8:201::70a` |
-| static-2 | Statically addressed host | P14 | 7 | `10.200.7.11` | `fd00:db8:201::70b` |
-| attacker-201 | Test host for spoofing and flooding tests |  | 7 | `10.200.7.200` | `fd00:db8:201::7c8` |
+|  |  |  | 4 (management SVI) | `10.200.0.92` | `fd00:db8:201::40c` |
+|  |  |  | 14 (loopback) | `10.200.0.220` | `fd00:db8:201::e0c` |
+| fgt-201 | FortiGate for FortiLink managed mode (optional) | P7 | 15 (FortiLink interface) | `10.200.0.225` | `fd00:db8:201::f01` |
+| rtr-peer-1 | Routing peer 1 (FRR VM or FortiGate-VM), AS 65202 | P11 | 14 (loopback) | `10.200.0.221` | `fd00:db8:201::e0d` |
+| rtr-peer-2 | Routing peer 2, AS 65203 | P11 | 14 (loopback) | `10.200.0.222` | `fd00:db8:201::e0e` |
+| static-1 | Statically addressed host | P14 | 7 | `10.200.0.138` | `fd00:db8:201::70a` |
+| static-2 | Statically addressed host | P14 | 7 | `10.200.0.139` | `fd00:db8:201::70b` |
+| attacker-201 | Test host for spoofing and flooding tests |  | 7 | `10.200.0.142` | `fd00:db8:201::70e` |
 | og-201 | Optional OpenGear console server (Chapter 08) |  | 0 (NET1) | `10.200.0.13` | `fd00:db8:201::d` |
-|  |  |  | 1 (NET2) | `10.200.1.2` | `fd00:db8:201::102` |
-| oob-admin-201 | Optional break-glass laptop (Chapter 08) |  | 1 | `10.200.1.10` | `fd00:db8:201::10a` |
-| mcast-src-201 | Multicast source behind rtr-peer-1 |  | 12 | `10.200.12.10` | `fd00:db8:201::c0a` |
-| vx-host-a | VXLAN tenant host on sw-648f-1 |  | 13 | `10.200.13.10` | `fd00:db8:201::d0a` |
-| vx-host-b | VXLAN tenant host on sw-2048f-1 |  | 13 | `10.200.13.11` | `fd00:db8:201::d0b` |
+|  |  |  | 1 (NET2) | `10.200.0.18` | `fd00:db8:201::102` |
+| oob-admin-201 | Optional break-glass laptop (Chapter 08) |  | 1 | `10.200.0.26` | `fd00:db8:201::10a` |
+| mcast-src-201 | Multicast source behind rtr-peer-1 |  | 12 | `10.200.0.186` | `fd00:db8:201::c0a` |
+| vx-host-a | VXLAN tenant host on sw-648f-1 |  | 13 | `10.200.0.202` | `fd00:db8:201::d0a` |
+| vx-host-b | VXLAN tenant host on sw-2048f-1 |  | 13 | `10.200.0.203` | `fd00:db8:201::d0b` |
 
 The service hosts are two Linux virtual machines (`svc-201a` and `svc-201b`)
 that each carry several of the service addresses as secondary addresses. Two
@@ -187,11 +225,11 @@ Each link between two routers is a /31 in IPv4 (RFC 3021) and a /127 in IPv6
 
 | Link | VLAN | Lower address (IPv4) | Upper address (IPv4) | Lower address (IPv6) | Upper address (IPv6) | Ends |
 | --- | --- | --- | --- | --- | --- | --- |
-| L1 | 2001 | `10.200.9.0/31` (sw-648f-1) | `10.200.9.1/31` (rtr-peer-1) | `fd00:db8:201::900/127` | `fd00:db8:201::901/127` | sw-648f-1 to rtr-peer-1 |
-| L2 | 2002 | `10.200.9.2/31` (sw-648f-1) | `10.200.9.3/31` (rtr-peer-2) | `fd00:db8:201::902/127` | `fd00:db8:201::903/127` | sw-648f-1 to rtr-peer-2 |
-| L3 | 2003 | `10.200.9.4/31` (sw-2048f-1) | `10.200.9.5/31` (rtr-peer-1) | `fd00:db8:201::904/127` | `fd00:db8:201::905/127` | sw-2048f-1 to rtr-peer-1 |
-| L4 | 2004 | `10.200.9.6/31` (sw-2048f-1) | `10.200.9.7/31` (rtr-peer-2) | `fd00:db8:201::906/127` | `fd00:db8:201::907/127` | sw-2048f-1 to rtr-peer-2 |
-| L5 | 2005 | `10.200.9.8/31` (sw-648f-1) | `10.200.9.9/31` (sw-2048f-1) | `fd00:db8:201::908/127` | `fd00:db8:201::909/127` | sw-648f-1 to sw-2048f-1 |
+| L1 | 2001 | `10.200.0.160/31` (sw-648f-1) | `10.200.0.161/31` (rtr-peer-1) | `fd00:db8:201::900/127` | `fd00:db8:201::901/127` | sw-648f-1 to rtr-peer-1 |
+| L2 | 2002 | `10.200.0.162/31` (sw-648f-1) | `10.200.0.163/31` (rtr-peer-2) | `fd00:db8:201::902/127` | `fd00:db8:201::903/127` | sw-648f-1 to rtr-peer-2 |
+| L3 | 2003 | `10.200.0.164/31` (sw-2048f-1) | `10.200.0.165/31` (rtr-peer-1) | `fd00:db8:201::904/127` | `fd00:db8:201::905/127` | sw-2048f-1 to rtr-peer-1 |
+| L4 | 2004 | `10.200.0.166/31` (sw-2048f-1) | `10.200.0.167/31` (rtr-peer-2) | `fd00:db8:201::906/127` | `fd00:db8:201::907/127` | sw-2048f-1 to rtr-peer-2 |
+| L5 | 2005 | `10.200.0.168/31` (sw-648f-1) | `10.200.0.169/31` (sw-2048f-1) | `fd00:db8:201::908/127` | `fd00:db8:201::909/127` | sw-648f-1 to sw-2048f-1 |
 
 Each link is a VLAN (2001 to 2005) with a Layer 3 interface on each end. Routed
 protocol labs use these links and no others.
@@ -204,7 +242,7 @@ protocol labs use these links and no others.
 | `rtr-peer-1` | AS 65202 |
 | `rtr-peer-2` | AS 65203 |
 | OSPF and OSPFv3 | Area `0.0.0.0` on L5; per-lab areas are set in the lab |
-| Router ID | The router's IPv4 loopback (`10.200.14.<host>`) |
+| Router ID | The router's IPv4 loopback in the Hosts table |
 | Multicast | PIM-SSM range `232.0.0.0/8` and `ff3e::/32`; source `mcast-src-201` |
 | VXLAN | VNI 13 carries segment 13 |
 | Routing keys | One key per lab, generated for that lab; never reused between labs |
@@ -236,15 +274,25 @@ one with a host or a baseline setting, so a lab chapter can say "P4" and mean
 
 ## Design Considerations
 
-- **Segment numbers equal VLAN IDs and third octets.** A reader who sees
-  `10.200.6.150` knows it is in VLAN 6 and in IPv6 segment `0x29`. The
-  convention is worth more than a tidy address plan.
+- **A network takes the smallest block that holds it.** Until 2026-11-24 every
+  lab network was a /24 whose third octet was the segment number, so an address
+  showed its VLAN. That plan spent 4,096 addresses on a lab that uses about 60
+  and made the lab a /20. With a /28 for a network unless it needs another
+  size, the lab is 740 addresses in a /22, and a build without the routing
+  peers fits a /24. The price is that an IPv4 address no longer shows its
+  segment. The segment number is still the VLAN ID, and it is still in the IPv6
+  address.
+- **FortiLink is a /30 and not a /31.** A /31 has the two addresses that
+  FortiLink needs here. This lab has not tested a FortiLink interface on a /31,
+  where the switch takes its address by DHCP, so it uses the smallest subnet
+  that works like every other one.
 - **IPv4 and IPv6 are dual-stack from the start.** Several requirements name
   IPv6 (for example the Router SRG's IPv6 requirements and the IPv6 forms of the
   FortiSwitch features), and adding a second address family to a finished lab is
   harder than building both at once.
-- **One gateway, not one per segment.** `gw-201` holds `.1` on every shared
-  segment. The switches carry only the management SVI in the baseline, so a
+- **One gateway, not one per segment.** `gw-201` holds host number 1, the
+  first host address, on every shared segment. The switches carry only the
+  management SVI in the baseline, so a
   Layer 2 lab proves its own switch behavior and a Layer 3 lab adds interfaces
   deliberately. If the switches also routed the user segments, a failed test
   could not be separated from a routing side effect.
@@ -277,13 +325,16 @@ one with a host or a baseline setting, so a lab chapter can say "P4" and mean
 1. Take the segment from the table above. Do not create a segment in 0 to 15
    without adding it to this chapter first.
 2. A lab that needs its own segment takes the next free number after 15, but
-   not 60 or 99, which are VLANs of the lab. It uses that number as the VLAN ID
-   and as the third octet, and records the VLAN, the IPv4 /24, and the IPv6
-   /120 in its own chapter.
+   not 60 or 99, which are VLANs of the lab. It uses that number as the VLAN ID,
+   takes the lowest free IPv4 block that holds its hosts (a /28 unless it needs
+   another size), and records the VLAN, the IPv4 block, and the IPv6 /120 in
+   its own chapter.
 3. Hostnames are lowercase, end in the instance number (`-1`, `-201a`), and
    match the DNS-style names in the host table. Set them with
    `config system global` and `set hostname` on a switch.
-4. Never use the first or last address of a /24 for a host (`.0` and `.255`).
+4. Never give a host the first or the last address of its block. They are the
+   network address and the broadcast address. A routed link and a loopback are
+   the exception, because a /31 and a /32 have neither.
 
 ### Lab design for each requirement
 
@@ -315,13 +366,13 @@ you run a requirement lab.
 
 | Step | Check | Expected |
 | --- | --- | --- |
-| 1 | From `admin-201`, `ping 10.200.4.11` and `ping -6 fd00:db8:201::40b` | Replies from `sw-648f-1` |
-| 2 | From `sw-648f-1`, `execute ping 10.200.2.10` | Replies from `radius-201a` |
+| 1 | From `admin-201`, `ping 10.200.0.91` and `ping -6 fd00:db8:201::40b` | Replies from `sw-648f-1` |
+| 2 | From `sw-648f-1`, `execute ping 10.200.0.42` | Replies from `radius-201a` |
 | 3 | `get system status` on each switch | The model you expect and a 7.6.x FortiSwitchOS release |
 | 4 | `execute license status` on each switch | The Advanced Features License is valid |
-| 5 | `get system ntp` | Synchronized to `10.200.2.30` or `10.200.2.31` |
+| 5 | `get system ntp` | Synchronized to `10.200.0.47` or `10.200.0.48` |
 | 6 | Log in with a RADIUS account | The login appears in the FreeRADIUS log and in `syslog-201a` |
-| 7 | `execute backup config sftp <FILE> 10.200.2.60 <USER>` | The file appears on `files-201` |
+| 7 | `execute backup config sftp <FILE> 10.200.0.51 <USER>` | The file appears on `files-201` |
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -373,8 +424,8 @@ you run a requirement lab.
 
 **Knowledge checks:**
 
-1. What does the third octet of a lab IPv4 address tell you, and how does it
-   map to the IPv6 address?
+1. What is the host number of a lab host, and where is it in the IPv4 address
+   and in the IPv6 address?
 2. Why can the IPv6 block not use SLAAC, and how do hosts get addresses?
 3. Which host satisfies P4, and why are there two of them?
 4. Why are the routed peers separate from `gw-201`?
@@ -408,7 +459,8 @@ steps of Lab 999.1 for the gateway if you use them.
 
 ### Lab 999.1 — Build the gateway and the VLANs
 
-Goal: a gateway that holds `.1` on every shared segment, routes between them,
+Goal: a gateway that holds the first host address of every shared segment,
+routes between them,
 and allows only the traffic the baseline needs.
 
 1. Create the virtual machine `gw-201` with a NIC on the lab trunk and a second
@@ -424,17 +476,17 @@ and allows only the traffic the baseline needs.
      ethernets:
        eth1: {}
      vlans:
-       vlan2: { id: 2, link: eth1, addresses: ["10.200.2.1/24", "fd00:db8:201::201/120"] }
-       vlan3: { id: 3, link: eth1, addresses: ["10.200.3.1/24", "fd00:db8:201::301/120"] }
-       vlan4: { id: 4, link: eth1, addresses: ["10.200.4.1/24", "fd00:db8:201::401/120"] }
-       vlan5: { id: 5, link: eth1, addresses: ["10.200.5.1/24", "fd00:db8:201::501/120"] }
-       vlan6: { id: 6, link: eth1, addresses: ["10.200.6.1/24", "fd00:db8:201::601/120"] }
-       vlan7: { id: 7, link: eth1, addresses: ["10.200.7.1/24", "fd00:db8:201::701/120"] }
-       vlan8: { id: 8, link: eth1, addresses: ["10.200.8.1/24", "fd00:db8:201::801/120"] }
+       vlan2: { id: 2, link: eth1, addresses: ["10.200.0.33/27", "fd00:db8:201::201/120"] }
+       vlan3: { id: 3, link: eth1, addresses: ["10.200.0.65/28", "fd00:db8:201::301/120"] }
+       vlan4: { id: 4, link: eth1, addresses: ["10.200.0.81/28", "fd00:db8:201::401/120"] }
+       vlan5: { id: 5, link: eth1, addresses: ["10.200.0.97/28", "fd00:db8:201::501/120"] }
+       vlan6: { id: 6, link: eth1, addresses: ["10.200.0.113/28", "fd00:db8:201::601/120"] }
+       vlan7: { id: 7, link: eth1, addresses: ["10.200.0.129/28", "fd00:db8:201::701/120"] }
+       vlan8: { id: 8, link: eth1, addresses: ["10.200.0.145/28", "fd00:db8:201::801/120"] }
    ```
 
    Run `sudo netplan apply`. Segment 0 (out-of-band) is a separate NIC
-   attached to the switches' management ports; give it `10.200.0.1/24` and
+   attached to the switches' management ports; give it `10.200.0.1/28` and
    `fd00:db8:201::1/120` the same way.
 3. Turn on forwarding for both address families:
 
@@ -452,14 +504,14 @@ and allows only the traffic the baseline needs.
    ```bash
    sudo nft -f - <<'EOF'
    table inet lab201 {
-     set svc4 { type ipv4_addr; flags interval; elements = { 10.200.2.0/24 } }
-     set mgmt4 { type ipv4_addr; flags interval; elements = { 10.200.0.0/24, 10.200.4.0/24 } }
+     set svc4 { type ipv4_addr; flags interval; elements = { 10.200.0.32/27 } }
+     set mgmt4 { type ipv4_addr; flags interval; elements = { 10.200.0.0/28, 10.200.0.80/28 } }
      set svc6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::200/120 } }
      set mgmt6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::/120, fd00:db8:201::400/120 } }
      chain forward {
        type filter hook forward priority 0; policy drop;
        ct state established,related accept
-       ip saddr 10.200.3.0/24 accept
+       ip saddr 10.200.0.64/28 accept
        ip6 saddr fd00:db8:201::300/120 accept
        ip saddr @mgmt4 ip daddr @svc4 tcp dport { 22, 514, 6514 } accept
        ip saddr @mgmt4 ip daddr @svc4 udp dport { 69, 123, 161, 162, 514, 1812, 1813, 2055, 4739, 6343 } accept
@@ -484,8 +536,8 @@ and allows only the traffic the baseline needs.
 5. Add masquerading on the internet NIC only if you want package installs from
    the lab, and remove it when the build is done.
 
-**Expected result.** From `admin-201`, every `.1` on segments 2 to 8 answers a
-ping over IPv4 and IPv6.
+**Expected result.** From `admin-201`, the gateway address of each segment from
+2 to 8 answers a ping over IPv4 and IPv6.
 
 ### Lab 999.2 — Build the service hosts
 
@@ -501,21 +553,22 @@ address in the host table.
      ethernets:
        ens18:
          addresses:
-           - 10.200.2.10/24
-           - 10.200.2.12/24
-           - 10.200.2.20/24
-           - 10.200.2.30/24
-           - 10.200.2.40/24
+           - 10.200.0.42/27
+           - 10.200.0.44/27
+           - 10.200.0.45/27
+           - 10.200.0.47/27
+           - 10.200.0.49/27
            - fd00:db8:201::20a/120
            - fd00:db8:201::20c/120
-           - fd00:db8:201::214/120
-           - fd00:db8:201::21e/120
-           - fd00:db8:201::228/120
+           - fd00:db8:201::20d/120
+           - fd00:db8:201::20f/120
+           - fd00:db8:201::211/120
          routes:
-           - { to: default, via: 10.200.2.1 }
+           - { to: default, via: 10.200.0.33 }
    ```
 
-   `svc-201b` carries `.11`, `.21`, `.31`, `.50`, and `.60` the same way.
+   `svc-201b` carries `10.200.0.43`, `10.200.0.46`, `10.200.0.48`,
+   `10.200.0.50`, and `10.200.0.51` the same way.
 2. **Time (P5).** On both hosts install chrony and make each an authenticated
    server for the lab. In `/etc/chrony/chrony.conf` keep the upstream `pool`
    or `server` lines, then add:
@@ -525,11 +578,11 @@ address in the host table.
    allow fd00:db8:201::/112
    keyfile /etc/chrony/chrony.keys
    local stratum 10 orphan
-   server 10.200.2.31 iburst
+   server 10.200.0.48 iburst
    ```
 
    That is the text for `svc-201a`. On `svc-201b` the last line names the
-   other server, `server 10.200.2.30 iburst`. In `/etc/chrony/chrony.keys`
+   other server, `server 10.200.0.47 iburst`. In `/etc/chrony/chrony.keys`
    add one key line, `1 SHA1 <SECRET>`, then restart `chrony`.
 
    The `local` line lets chrony serve the clock of its own machine when it
@@ -565,8 +618,8 @@ address in the host table.
    a different `<SECRET>` per lab:
 
    ```text
-   client switches-oob  { ipaddr = 10.200.0.0/24;  secret = <SECRET> }
-   client switches-mgmt { ipaddr = 10.200.4.0/24; secret = <SECRET> }
+   client switches-oob  { ipaddr = 10.200.0.0/28;  secret = <SECRET> }
+   client switches-mgmt { ipaddr = 10.200.0.80/28; secret = <SECRET> }
    ```
 
    Add a test user to `/etc/freeradius/3.0/users`, restart `freeradius`, and
@@ -589,9 +642,17 @@ address in the host table.
    export the CA certificate to `/etc/ssl/lab201/ca.pem` on every host that
    needs it. This CA is for the lab only.
 7. **DHCP (P12), on `dhcp-201`.** Give the machine NICs on
-   VLANs 2, 5, 6, and 8, with `.80` on VLAN 2 and `.2` on the others. Install
-   `kea-dhcp4-server` and define one subnet per user VLAN, each with a pool of
-   `.100` to `.199`, router `.1`, and DNS `10.200.2.1`.
+   VLANs 2, 5, 6, and 8, with `10.200.0.53` on VLAN 2 and host number 2 on the
+   others. Install `kea-dhcp4-server` and define one subnet per user VLAN. The
+   pool is host numbers 3 to 9 of the segment, the router is the gateway of the
+   segment, and the DNS server is `10.200.0.33`:
+
+   | VLAN | Subnet | Pool | Router |
+   | --- | --- | --- | --- |
+   | 5 | `10.200.0.96/28` | `10.200.0.99` to `10.200.0.105` | `10.200.0.97` |
+   | 6 | `10.200.0.112/28` | `10.200.0.115` to `10.200.0.121` | `10.200.0.113` |
+   | 8 | `10.200.0.144/28` | `10.200.0.147` to `10.200.0.153` | `10.200.0.145` |
+
 8. **SNMPv3 manager (P6), on `svc-201a`.** Install `snmp` (for `snmpwalk`) and
    `snmptrapd`. The user you create on the switch in Lab 999.4 is the one you
    query with.
@@ -604,7 +665,7 @@ listeners on the right addresses.
 Goal: both switches have a hostname, the Advanced Features License, the
 shared VLANs, a trunk, and a management SVI that `gw-201` can reach. Run this
 on each switch, with the values for `sw-648f-1` shown (`sw-2048f-1` uses
-`.12`).
+host number 12: `10.200.0.92` and `fd00:db8:201::40c`).
 
 1. Connect to the console, then set the hostname and read the model:
 
@@ -655,7 +716,7 @@ on each switch, with the values for `sw-648f-1` shown (`sw-2048f-1` uses
        edit mgmt-svi
            set interface internal
            set vlanid 4
-           set ip 10.200.4.11 255.255.255.0
+           set ip 10.200.0.91 255.255.255.240
            set allowaccess ping ssh
            config ipv6
                set ip6-address fd00:db8:201::40b/120
@@ -665,7 +726,7 @@ on each switch, with the values for `sw-648f-1` shown (`sw-2048f-1` uses
    config router static
        edit 1
            set dst 0.0.0.0 0.0.0.0
-           set gateway 10.200.4.1
+           set gateway 10.200.0.81
        next
    end
    config router static6
@@ -677,14 +738,14 @@ on each switch, with the values for `sw-648f-1` shown (`sw-2048f-1` uses
    ```
 
 6. Address the out-of-band management port the same way
-   (`10.200.0.11/24`, `fd00:db8:201::b/120`), reading its name from
+   (`10.200.0.11/28`, `fd00:db8:201::b/120`), reading its name from
    `get system interface physical`.
 7. Park the unused ports (`<PORT_UNUSED>`) in VLAN 60 and set them down. Keep
    the list in your lab notes.
 
-**Expected result.** `execute ping 10.200.4.1` and `execute ping6
+**Expected result.** `execute ping 10.200.0.81` and `execute ping6
 fd00:db8:201::401` succeed from the switch, and `admin-201` reaches
-`10.200.4.11` over SSH.
+`10.200.0.91` over SSH.
 
 ### Lab 999.4 — Connect the switch to the services
 
@@ -696,11 +757,11 @@ proven.
    ```text
    config user radius
        edit radius-201a
-           set server 10.200.2.10
+           set server 10.200.0.42
            set secret <SECRET>
        next
        edit radius-201b
-           set server 10.200.2.11
+           set server 10.200.0.43
            set secret <SECRET>
        next
    end
@@ -716,14 +777,14 @@ proven.
    ```text
    config log syslogd setting
        set status enable
-       set server 10.200.2.20
+       set server 10.200.0.45
        set mode reliable
        set port 6514
        set enc-algorithm high
    end
    config log syslogd2 setting
        set status enable
-       set server 10.200.2.21
+       set server 10.200.0.46
        set mode reliable
        set port 6514
        set enc-algorithm high
@@ -738,13 +799,13 @@ proven.
        set authentication enable
        config ntpserver
            edit 1
-               set server 10.200.2.30
+               set server 10.200.0.47
                set authentication enable
                set key-id 1
                set key <SECRET>
            next
            edit 2
-               set server 10.200.2.31
+               set server 10.200.0.48
                set authentication enable
                set key-id 1
                set key <SECRET>
@@ -764,7 +825,7 @@ proven.
            set priv-proto aes256
            set priv-pwd <SECRET>
            set queries enable
-           set notify-hosts 10.200.2.40
+           set notify-hosts 10.200.0.49
        next
    end
    ```
@@ -775,7 +836,7 @@ proven.
    config system sflow
        config collectors
            edit 1
-               set ip 10.200.2.50
+               set ip 10.200.0.50
            next
        end
    end
@@ -783,7 +844,7 @@ proven.
        set format ipfix
        config collectors
            edit 1
-               set ip 10.200.2.50
+               set ip 10.200.0.50
                set port 4739
                set transport udp
            next
@@ -808,10 +869,10 @@ proven.
    - Log in over SSH as `<LAB_ADMIN>` with the RADIUS password; confirm the
      access request in the FreeRADIUS log.
    - `get system ntp` and `chronyc clients` on `svc-201a`.
-   - From `svc-201a`: `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.200.4.11 1.3.6.1.2.1.1`.
+   - From `svc-201a`: `snmpwalk -v3 -l authPriv -u lab-snmp -a SHA-256 -A <SECRET> -x AES-256 -X <SECRET> 10.200.0.91 1.3.6.1.2.1.1`.
    - Confirm a configuration-change log line in
      `/var/log/lab201/sw-648f-1.log` on both log servers.
-   - `execute backup config sftp baseline-648f.conf 10.200.2.60 <USER>
+   - `execute backup config sftp baseline-648f.conf 10.200.0.51 <USER>
      <PASSWORD>`, and confirm the file on `files-201`.
 
 **Expected result.** All the checks pass on `sw-648f-1` and again on
@@ -832,7 +893,7 @@ Goal: L1 to L5 up, with each peer reachable by its loopback.
        edit l1
            set interface internal
            set vlanid 2001
-           set ip 10.200.9.0 255.255.255.254
+           set ip 10.200.0.160 255.255.255.254
            config ipv6
                set ip6-address fd00:db8:201::900/127
            end
@@ -840,14 +901,14 @@ Goal: L1 to L5 up, with each peer reachable by its loopback.
    end
    ```
 
-   and give `sw-2048f-1` the other end of L5 (`10.200.9.9/31`,
+   and give `sw-2048f-1` the other end of L5 (`10.200.0.169/31`,
    `fd00:db8:201::909/127`).
 3. Build `rtr-peer-1` and `rtr-peer-2` as small FRR virtual machines (or
    FortiGate-VMs). Give each its link addresses, its loopback
-   (`10.200.14.21/32` and `fd00:db8:201::e15/128` for peer 1;
-   `10.200.14.22/32` and `fd00:db8:201::e16/128` for peer 2), and the stub
-   prefixes `10.200.10.0/24` (peer 1) and `10.200.11.0/24` (peer 2).
-4. Verify reachability only: `execute ping 10.200.9.1` from `sw-648f-1`, and
+   (`10.200.0.221/32` and `fd00:db8:201::e0d/128` for peer 1;
+   `10.200.0.222/32` and `fd00:db8:201::e0e/128` for peer 2), and the stub
+   prefixes `10.200.1.0/24` (peer 1) and `10.200.2.0/24` (peer 2).
+4. Verify reachability only: `execute ping 10.200.0.161` from `sw-648f-1`, and
    the same for every link. Do not enable a routing protocol in this lab. Each
    routing lab turns on the protocol it tests and the keys it uses.
 
@@ -861,7 +922,7 @@ Goal: a saved state that every lab starts from.
 
    ```text
    execute backup config flash baseline-201
-   execute backup config sftp baseline-648f.conf 10.200.2.60 <USER> <PASSWORD>
+   execute backup config sftp baseline-648f.conf 10.200.0.51 <USER> <PASSWORD>
    ```
 
 2. Snapshot every virtual machine and name the snapshot `baseline-201`.
@@ -895,13 +956,14 @@ not run.
 ## Summary and Completion Checklist
 
 This chapter defines the lab every requirement lab in this volume runs in. The
-address plan splits `10.200.0.0/16` into segments whose third octet is the VLAN
-ID and splits `fd00:db8:201::/112` into /120 segments with the same numbers.
+address plan gives each segment the smallest IPv4 block that holds it, from the
+start of `10.200.0.0/16`, and splits `fd00:db8:201::/112` into /120 segments
+with the segment numbers, which are the VLAN IDs.
 Two switches, a gateway, two service hosts, a CA, a DHCP server, an admin
 workstation, and two routing peers satisfy prerequisites P1 to P17, and a
 baseline snapshot lets each lab start from a known state.
 
-- [ ] Can read an address and name its segment and VLAN.
+- [ ] Can find the segment and the VLAN of an address in the Segments table.
 - [ ] Can say why the IPv6 block uses static addresses and not SLAAC.
 - [ ] Can map each prerequisite P1 to P17 to a host.
 - [ ] Has built the gateway, the service hosts, and both switch baselines.

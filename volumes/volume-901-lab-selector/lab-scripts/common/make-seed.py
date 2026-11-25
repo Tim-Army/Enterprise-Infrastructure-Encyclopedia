@@ -5,10 +5,12 @@ Reads lab201-vms.json and writes, for each virtual machine, the three files a
 NoCloud seed needs (user-data, meta-data, network-config) and, with --iso, a
 seed ISO named <vm>-seed.iso with the volume label "cidata".
 
-The addresses come only from the IPv4 values in the manifest. The IPv6 address
-of every IPv4 address is fd00:db8:201::<third octet><fourth octet> in
-hexadecimal, with a prefix length of 120 for a /24, 127 for a /31, and 128 for
-a /32, exactly as in Chapter 999.
+The addresses come only from the IPv4 values in the manifest and from its
+segments list, which gives the IPv4 block of every lab network. An IPv4 address
+belongs to the segment whose block holds it, and its host number is its place
+in that block. Its IPv6 address is fd00:db8:201::<segment><host number> in
+hexadecimal, with a prefix length of 127 for a /31, 128 for a /32, and 120 for
+every other network, exactly as in Chapter 999.
 
 Each machine can use its own Linux flavor (flavor in the manifest, or
 default_flavor). flavors.json lists the flavors, the package names for each
@@ -41,29 +43,34 @@ import sys
 from xml.sax.saxutils import escape as xml_escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V4_PREFIX = "10.200"
 V6_PREFIX = "fd00:db8:201::"
-SEGMENT_SUBNETS = {}
+# The IPv4 block of each lab network of the manifest, by segment number. configure() fills it.
+SEGMENTS = {}
 # The segment of the lab services in Chapter 999 (Lab-Services). The DHCP server has no scope there, and the
 # gateway address of that segment is the DNS server that the scopes hand out.
 SERVICES_SEGMENT = 2
+# The other segments that the firewall of the gateway names (Lab 999.1): the switches are managed from the
+# out-of-band network and from Switch-Mgmt, and the administrator workstation is in Admin.
+MGMT_SEGMENTS = (0, 4)
+ADMIN_SEGMENT = 3
+# The DHCP scope of a user segment: its first and its last host number (Chapter 999).
+DHCP_SCOPE = (3, 9)
 # Set from the environment in main(). A plain-text password for the admin user at the console and for sudo.
 OPTIONS = {"console_password": None}
-V6_LEN = {24: 120, 31: 127, 32: 128}
 FLAVOR_DATA = {"default": "ubuntu-24.04", "role_keys": [], "families": {}, "flavors": {}}
 
 NFT_RULES = """#!/usr/sbin/nft -f
 flush ruleset
 table inet lab201 {
-  set svc4 { type ipv4_addr; flags interval; elements = { 10.200.2.0/24 } }
-  set mgmt4 { type ipv4_addr; flags interval; elements = { 10.200.0.0/24, 10.200.4.0/24 } }
-  set svc6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::200/120 } }
-  set mgmt6 { type ipv6_addr; flags interval; elements = { fd00:db8:201::/120, fd00:db8:201::400/120 } }
+  set svc4 { type ipv4_addr; flags interval; elements = { __SVC4__ } }
+  set mgmt4 { type ipv4_addr; flags interval; elements = { __MGMT4__ } }
+  set svc6 { type ipv6_addr; flags interval; elements = { __SVC6__ } }
+  set mgmt6 { type ipv6_addr; flags interval; elements = { __MGMT6__ } }
   chain forward {
     type filter hook forward priority 0; policy drop;
     ct state established,related accept
-    ip saddr 10.200.3.0/24 accept
-    ip6 saddr fd00:db8:201::300/120 accept
+    ip saddr __ADMIN4__ accept
+    ip6 saddr __ADMIN6__ accept
     ip saddr @mgmt4 ip daddr @svc4 tcp dport { 22, 514, 6514 } accept
     ip saddr @mgmt4 ip daddr @svc4 udp dport { 69, 123, 161, 162, 514, 1812, 1813, 2055, 4739, 6343 } accept
     ip6 saddr @mgmt6 ip6 daddr @svc6 tcp dport { 22, 514, 6514 } accept
@@ -162,11 +169,16 @@ WantedBy=timers.target
 
 
 def configure(manifest):
-    """Take the address blocks from the manifest (the defaults are the Chapter 999 plan)."""
-    global V4_PREFIX, V6_PREFIX, SEGMENT_SUBNETS
-    V4_PREFIX = manifest.get("ipv4_prefix", V4_PREFIX)
+    """Take the IPv6 prefix and the IPv4 block of every lab network from the manifest."""
+    global V6_PREFIX, SEGMENTS
     V6_PREFIX = manifest.get("ipv6_prefix", V6_PREFIX)
-    SEGMENT_SUBNETS = manifest.get("segment_subnets", {})
+    if "segments" not in manifest:
+        raise SystemExit("make-seed: the manifest has no segments list, so it was made for an older make-seed.py. "
+                         "Use the manifest that came with this script, or make the zip again with the Lab Selector.")
+    try:
+        SEGMENTS = dict((int(s["id"]), ipaddress.IPv4Network(s["ipv4"])) for s in manifest["segments"])
+    except (KeyError, TypeError, ValueError) as err:
+        raise SystemExit("make-seed: the segments list of the manifest cannot be used: %s" % err)
 
 
 def load_flavors(path):
@@ -235,9 +247,31 @@ def source_builds_for(missing, fam):
     return out
 
 
-def seg_base(seg):
-    """First three octets of a shared segment's IPv4 subnet. The Lab Selector follows the VLAN ID by default."""
-    return SEGMENT_SUBNETS.get(str(seg)) or "%s.%d" % (V4_PREFIX, seg)
+def segment_block(seg):
+    """The IPv4 block of a lab network of the manifest."""
+    if seg not in SEGMENTS:
+        raise SystemExit("make-seed: the segments list of the manifest has no block for segment %s" % seg)
+    return SEGMENTS[seg]
+
+
+def segment_gateway(seg):
+    """The gateway address of a segment with its prefix length. The gateway is host number 1 (Chapter 999)."""
+    net = segment_block(seg)
+    return "%s/%d" % (net.network_address + 1, net.prefixlen)
+
+
+def segment_v6(seg):
+    """The IPv6 /120 of a segment."""
+    return "%s/120" % ipaddress.IPv6Address("%s%x" % (V6_PREFIX, seg << 8))
+
+
+def host_of(address):
+    """The segment of a lab IPv4 address and its host number, which is its place in the block of the segment."""
+    ip = ipaddress.IPv4Address(str(address).split("/")[0])
+    for seg, net in SEGMENTS.items():
+        if ip in net:
+            return seg, int(ip) - int(net.network_address)
+    raise SystemExit("make-seed: %s is in no lab network of the segments list of the manifest" % ip)
 
 
 def uplink_of(manifest, vm):
@@ -290,18 +324,10 @@ def nft_rules(uplink=None, ifname=None):
     takes from the uplink only answers, ping, neighbor discovery, and the DHCP answer when its address comes from
     DHCP, so its own services, such as SSH, do not answer there.
     """
-    def v4(m):
-        seg = int(m.group(1))
-        return (seg_base(seg) if str(seg) in SEGMENT_SUBNETS else "%s.%d" % (V4_PREFIX, seg)) + "."
-
-    def v6(m):
-        third = int(m.group(1) or "0", 16) >> 8
-        if str(third) in SEGMENT_SUBNETS:
-            return "%s%x/120" % (V6_PREFIX, int(SEGMENT_SUBNETS[str(third)].split(".")[2]) << 8)
-        return "%s%s/120" % (V6_PREFIX, m.group(1))
-    text = re.sub(r"10\.201\.(\d+)\.", v4, NFT_RULES)
-    text = re.sub(r"fd00:db8:201::([0-9a-f]*)/120", v6, text)
-    text = text.replace("fd00:db8:201::", V6_PREFIX)
+    text = NFT_RULES
+    for mark, segs in (("SVC", [SERVICES_SEGMENT]), ("MGMT", MGMT_SEGMENTS), ("ADMIN", [ADMIN_SEGMENT])):
+        text = text.replace("__%s4__" % mark, ", ".join(str(segment_block(s)) for s in segs))
+        text = text.replace("__%s6__" % mark, ", ".join(segment_v6(s) for s in segs))
     if uplink and ifname:
         hosts = [str(ipaddress.IPv4Address(a)) for a in uplink.get("internet", [])]
         rules = ["    # The uplink to the external firewall: only the machines with internet access go out, and nothing new comes in."]
@@ -331,17 +357,15 @@ def q(value):
 def v6_of(v4_cidr):
     """Return the Chapter 999 IPv6 address (with prefix length) for an IPv4 CIDR."""
     iface = ipaddress.ip_interface(v4_cidr)
-    octets = iface.ip.packed
-    prefix = V6_LEN.get(iface.network.prefixlen)
-    if prefix is None:
-        raise ValueError("no IPv6 prefix rule for " + v4_cidr)
-    addr = ipaddress.IPv6Address("%s%02x%02x" % (V6_PREFIX, octets[2], octets[3]))
+    seg, host = host_of(iface.ip)
+    prefix = {31: 127, 32: 128}.get(iface.network.prefixlen, 120)
+    addr = ipaddress.IPv6Address("%s%x" % (V6_PREFIX, (seg << 8) | host))
     return "%s/%d" % (addr, prefix)
 
 
 def gateway_v6(gateway4):
-    octets = ipaddress.ip_address(gateway4).packed
-    return str(ipaddress.IPv6Address("%s%02x%02x" % (V6_PREFIX, octets[2], octets[3])))
+    seg, host = host_of(gateway4)
+    return str(ipaddress.IPv6Address("%s%x" % (V6_PREFIX, (seg << 8) | host)))
 
 
 def mac_of(manifest, vm_index, nic_index):
@@ -418,7 +442,7 @@ def network_config(manifest, vm_index, vm, tagging, flavor=None):
                         "      accept-ra: false", "      link-local: []"])
         for vid in trunk["vlans"]:
             seg = int(manifest.get("vlan_segments", {}).get(str(vid), vid))
-            v4 = "%s.1/24" % seg_base(seg)
+            v4 = segment_gateway(seg)
             vlans.append(["    vlan%d:" % vid, "      id: %d" % vid, "      link: %s" % trunk["name"],
                           "      dhcp6: false", "      accept-ra: false", "      addresses:"]
                          + [x.rstrip("\n") for x in yaml_list(addresses_of([v4]), 8).splitlines()])
@@ -736,10 +760,13 @@ def windows_setup_script(manifest, vm_index, vm, flavor, ssh_keys):
             for nic in nic_plan(manifest, vm_index, vm):
                 if nic["build"] or not nic["vlan"] or int(manifest.get("vlan_segments", {}).get(str(nic["vlan"]), nic["vlan"])) == SERVICES_SEGMENT or not nic["addrs"]:
                     continue
-                octets = nic["addrs"][0].split("/")[0].split(".")
-                seg, pre = octets[2], ".".join(octets[:2])
-                L += ["Add-DhcpServerv4Scope -Name 'lab201-seg%s' -StartRange %s.%s.100 -EndRange %s.%s.199 -SubnetMask 255.255.255.0 -State Active" % (seg, pre, seg, pre, seg),
-                      "Set-DhcpServerv4OptionValue -ScopeId %s.%s.0 -Router %s.%s.1 -DnsServer %s.1" % (pre, seg, pre, seg, seg_base(SERVICES_SEGMENT))]
+                # The scope of a user segment: its host numbers from the first to the last of DHCP_SCOPE.
+                net = ipaddress.ip_interface(nic["addrs"][0]).network
+                seg, base = host_of(net.network_address)[0], net.network_address
+                L += ["Add-DhcpServerv4Scope -Name 'lab201-seg%s' -StartRange %s -EndRange %s -SubnetMask %s -State Active"
+                      % (seg, base + DHCP_SCOPE[0], base + DHCP_SCOPE[1], net.netmask),
+                      "Set-DhcpServerv4OptionValue -ScopeId %s -Router %s -DnsServer %s"
+                      % (base, base + 1, segment_block(SERVICES_SEGMENT).network_address + 1)]
     L += ["Write-Host 'Lab 201 setup finished.'", "Stop-Transcript | Out-Null"]
     return "\r\n".join(L) + "\r\n"
 

@@ -19,7 +19,8 @@ SRG requirements in its table, the switch its Uses line names, the machines it
 uses, the hosts it uses that no script builds, and the lab networks it uses.
 From the shared lab (the base of the catalog, Chapter 999 of Volume CCI) it
 reads the service names of the Hosts table with their hosts and addresses, and
-the networks of the Segments table. From the Chapter 999 of every other lab set
+the networks of the Segments table, each with its IPv4 block. From the Chapter
+999 of every other lab set
 it reads the Address plan table: the hosts that the set adds, which no script
 builds, and the hosts of another set that it reuses.
 
@@ -33,6 +34,11 @@ the lab chapters and the page give. STATED lists those numbers. The script never
 changes a document. It names the document, the line, and both numbers, and exits
 with status 1, with or without --check.
 
+The script checks the address plan too: the blocks of the Segments table do not
+overlap, the segments list of the manifest gives the same blocks, and every
+address of a machine, of a service name, and of a host of a lab set lies in the
+block of a lab network. A problem is printed, and the script exits with status 1.
+
 With --package-args the script prints one SOURCE=DEST line for each file that
 the site build adds to the published lab-scripts folder: the lab diagram and the
 lab chapters, each under the short name it has in the zip of the Lab Selector.
@@ -43,6 +49,7 @@ portal page of each such volume a link that opens the Lab Selector with that
 lab set ticked (lab-selector.html?sets=<id>).
 """
 
+import ipaddress
 import json
 import os
 import re
@@ -62,21 +69,26 @@ LAB_HEADING = re.compile(r"^### Lab (\d+\.\d+) — (.+?)\s*$")
 SRG_ROW = re.compile(r"^\| `(SRG-[A-Z]+-\d{6}-[A-Z0-9]+-\d{6})` \| (I{1,3}) \| (.*?) \|")
 # A row of the Hosts table in Chapter 999 that puts a service name on a machine: | radius-201a | RADIUS server 1 on svc-201a | ...
 HOST_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| [^|]*? on ([a-z][a-z0-9-]*) \|")
-# The same kind of row, with the IPv4 address of the service name: ... | P1, P2 | 2 | `10.200.2.10` | ...
+# The same kind of row, with the IPv4 address of the service name: ... | P1, P2 | 2 | `10.200.0.42` | ...
 SERVICE_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| ([^|]*?) on ([a-z][a-z0-9-]*) \| [^|]* \| [^|]* \| `(\d+\.\d+\.\d+\.\d+)` \|")
-# A row of the Segments table in Chapter 999: | 2 | 2 | Lab-Services | `10.200.2.0/24` | `fd00:db8:201::200/120` | .1 gw-201 | Purpose |
-NETWORK_ROW = re.compile(r"^\| (\d+) \| ([^|]*?) \| ([A-Za-z0-9-]+) \| (?:`\d+\.\d+\.(\d+)\.0/24`|none) \| (?:`[^`]*`|none) \| ([^|]*?) \| ([^|]*?) \|\s*$")
+# A row of the Segments table in Chapter 999: | 2 | 2 | Lab-Services | `10.200.0.32/27` | `fd00:db8:201::200/120` | `10.200.0.33` gw-201 | Purpose |
+NETWORK_ROW = re.compile(r"^\| (\d+) \| ([^|]*?) \| ([A-Za-z0-9-]+) \| (?:`(\d+\.\d+\.\d+\.\d+/\d+)`|none) \| (?:`[^`]*`|none) \| ([^|]*?) \| ([^|]*?) \|\s*$")
+# The first row of the Segments table, which is the supernet of the lab and no network:
+# | all | all | Supernet | `10.200.0.0/22` | `fd00:db8:201::/112` | none | The whole lab, from ... `10.200.0.0` to its last, `10.200.3.255` |
+SUPERNET_ROW = re.compile(r"^\| [^|]*? \| [^|]*? \| Supernet \| `(\d+\.\d+\.\d+\.\d+/\d+)` \| [^|]* \| [^|]* \| ([^|]*?) \|\s*$")
 # A row of the Hosts table with an IPv4 address. The host name is empty on a row that continues the host above it.
-HOST_ADDR_ROW = re.compile(r"^\|\s*([a-z][a-z0-9-]*)?\s*\|[^|]*\|[^|]*\|[^|]*\|\s*`\d+\.\d+\.(\d+)\.\d+`\s*\|")
+HOST_ADDR_ROW = re.compile(r"^\|\s*([a-z][a-z0-9-]*)?\s*\|[^|]*\|[^|]*\|[^|]*\|\s*`(\d+\.\d+\.\d+\.\d+)`\s*\|")
 # A row of the Address plan table in the Chapter 999 of a lab set that reuses the shared lab:
-# | faz-202 | FortiAnalyzer-VM 7.6 under test | This volume | `10.200.2.100` | `fd00:db8:201::264` |
-PLAN_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| ([^|]*?) \| (This volume|Volume [CDILMVX]+) \| `(\d+\.\d+\.(\d+)\.\d+)` \| (?:`([^`]*)`|[^|]*?) \|\s*$")
+# | faz-202 | FortiAnalyzer-VM 7.6 under test | This volume | `10.200.0.54` | `fd00:db8:201::216` |
+PLAN_ROW = re.compile(r"^\| ([a-z][a-z0-9-]*) \| ([^|]*?) \| (This volume|Volume [CDILMVX]+) \| `(\d+\.\d+\.\d+\.\d+)` \| (?:`([^`]*)`|[^|]*?) \|\s*$")
 TOKEN = re.compile(r"`([a-z][a-z0-9-]*)`")
 # The host names of the two switches under test in the lab chapters (SW_DEFAULT in the Lab Selector page).
 SWITCHES = {"sw-648f-1": "a", "sw-2048f-1": "b"}
 # Names in the lab text that look like hosts and are not.
 NOT_HOSTS = {"baseline-201", "baseline-202", "baseline-203", "lab-202", "lab-203"}
 WARNINGS = []
+# What is wrong with the address plan. The script exits with status 1 when the list is not empty.
+PLAN_PROBLEMS = []
 
 
 def load_json(path):
@@ -126,30 +138,75 @@ def load_services(catalog):
 
 
 def load_networks(catalog):
-    """The networks of the Segments table of the shared lab, in the order of the table.
+    """The networks of the Segments table of the shared lab, in the order of the table, each with its IPv4 block.
 
-    The Lab Selector gives each one that a build uses the next /24 of the lab network range, so the order of the
-    table is the order of the subnets. A network with no host and no gateway (the parking VLAN and the native
-    VLAN) takes no subnet, and "hosts" is false for it.
+    The Lab Selector gives each one that a build uses the lowest free block of its size, in the order of the
+    table, so the size of a network is the size of its block in the table. A network with no host and no gateway
+    (the parking VLAN and the native VLAN) takes no subnet, and "hosts" is false for it.
     """
     networks = []
     for line in base_lines(catalog):
         m = NETWORK_ROW.match(line)
         if not m:
             continue
-        number, vlan, name, octet, gateway, purpose = ((part or "").strip() for part in m.groups())
-        if not octet:
+        number, vlan, name, cidr, gateway, purpose = ((part or "").strip() for part in m.groups())
+        if not cidr:
             # A VLAN with no hosts and no gateway (the parking VLAN and the native VLAN) has no subnet.
             networks.append({"id": int(number), "name": name, "vlan": vlan, "hosts": False})
             continue
-        if int(octet) != int(number):
-            WARNINGS.append("Segment %s of the shared lab has the subnet with third octet %s, so the Lab Selector cannot number it" % (number, octet))
+        try:
+            block = ipaddress.IPv4Network(cidr)
+        except ValueError:
+            PLAN_PROBLEMS.append("Segment %s of the shared lab has the subnet %s, which is not the address of a network with its prefix length" % (number, cidr))
             continue
-        networks.append({"id": int(number), "name": name, "vlan": vlan, "hosts": not (gateway == "none" and "no hosts" in purpose)})
+        networks.append({"id": int(number), "name": name, "vlan": vlan, "cidr": str(block), "hosts": not (gateway == "none" and "no hosts" in purpose)})
     return networks
 
 
-def load_host_nets(catalog):
+def check_supernet_row(catalog, networks, prefix):
+    """Compare the supernet row of the Segments table with the networks under it.
+
+    The supernet is the smallest block that starts at the first address of the IPv4 block of the lab and holds
+    every lab network, as BOOK_RANGE in the Lab Selector page. The row is written by hand, so a network that is
+    added to the table can make it wrong. The page puts the supernet of a build in the row of a chapter copy,
+    and it finds the values to replace only when the row is right.
+    """
+    blocks = [ipaddress.IPv4Network(n["cidr"]) for n in networks if n.get("cidr")]
+    if not blocks:
+        return
+    start, end, length, size = int(ipaddress.IPv4Address(prefix + ".0.0")), max(int(b.broadcast_address) for b in blocks) + 1, 32, 1
+    while length > 0 and start + size < end:
+        length, size = length - 1, size * 2
+    want = "%s/%d" % (ipaddress.IPv4Address(start), length)
+    first, last = str(ipaddress.IPv4Address(start)), str(ipaddress.IPv4Address(start + size - 1))
+    lines = base_lines(catalog)
+    rows = [i for i, line in enumerate(lines) if SUPERNET_ROW.match(line)]
+    if len(rows) != 1:
+        PLAN_PROBLEMS.append("The Segments table of the shared lab has %d rows for the supernet that can be read. It needs one, as its first row: "
+                             "| all | all | Supernet | `%s` | ... | with `%s` and `%s` in its last cell" % (len(rows), want, first, last))
+        return
+    m = SUPERNET_ROW.match(lines[rows[0]])
+    said = re.findall(r"`(\d+\.\d+\.\d+\.\d+)`", m.group(2))
+    if m.group(1) != want or said != [first, last]:
+        PLAN_PROBLEMS.append("The supernet row of the Segments table of the shared lab gives %s with the addresses %s. The networks under it need %s, from %s to %s"
+                             % (m.group(1), " and ".join(said) or "none", want, first, last))
+    if any(NETWORK_ROW.match(line) for line in lines[:rows[0]]):
+        PLAN_PROBLEMS.append("The supernet row of the Segments table of the shared lab has to be the first row of the table")
+
+
+def net_of(address, networks):
+    """The number of the lab network whose block holds an IPv4 address, or None."""
+    try:
+        ip = ipaddress.IPv4Address(address)
+    except ValueError:
+        return None
+    for n in networks:
+        if n.get("cidr") and ip in ipaddress.IPv4Network(n["cidr"]):
+            return n["id"]
+    return None
+
+
+def load_host_nets(catalog, networks):
     """The lab networks in which each host of the Hosts table of the shared lab has an address."""
     nets, name = {}, None
     for line in base_lines(catalog):
@@ -159,12 +216,15 @@ def load_host_nets(catalog):
                 name = None
             continue
         name = m.group(1) or name
-        if name:
-            nets.setdefault(name, set()).add(int(m.group(2)))
+        net = net_of(m.group(2), networks)
+        if net is None:
+            PLAN_PROBLEMS.append("The Hosts table of the shared lab gives %s the address %s, which is in no block of the Segments table" % (name or "a host", m.group(2)))
+        elif name:
+            nets.setdefault(name, set()).add(net)
     return nets
 
 
-def load_set_hosts(catalog, net_ids):
+def load_set_hosts(catalog, networks):
     """What the Address plan table of each lab set's own Chapter 999 says.
 
     A row that is from "This volume" is a host that the set adds. No script builds it. A row that is from the volume
@@ -182,16 +242,17 @@ def load_set_hosts(catalog, net_ids):
                 m = PLAN_ROW.match(line)
                 if not m:
                     continue
-                name, role, source, ipv4, octet, ipv6 = m.groups()
+                name, role, source, ipv4, ipv6 = m.groups()
                 optional = "(optional)" in role
                 role = role.replace("(optional)", "").replace("`", "").strip()
                 if source == "This volume":
-                    if int(octet) not in net_ids:
-                        WARNINGS.append("%s of %s has the address %s, which is in no network of the shared lab, so the Lab Selector cannot place it"
-                                        % (name, entry["name"], ipv4))
+                    net = net_of(ipv4, [n for n in networks if n["hosts"]])
+                    if net is None:
+                        PLAN_PROBLEMS.append("%s of %s has the address %s, which is in no block of the Segments table of the shared lab, so the Lab Selector cannot place it"
+                                             % (name, entry["name"], ipv4))
                         continue
                     hosts.append({"name": name, "role": role, "ipv4": ipv4, "ipv6": ipv6 or "",
-                                  "net": int(octet), "optional": optional})
+                                  "net": net, "optional": optional})
                 elif source != "Volume " + base_roman:
                     owner = by_roman.get(source[len("Volume "):])
                     if owner is None:
@@ -209,7 +270,7 @@ def load_set_hosts(catalog, net_ids):
     return found
 
 
-def lab_facts(lab, body, patterns, machines, aliases, other, host_nets, net_ids, block, switches_set):
+def lab_facts(lab, body, patterns, machines, aliases, other, host_nets, networks, block, switches_set):
     """What one lab's text says: the features it names, its SRG rows, the switch it runs on, the hosts it uses,
     and the lab networks it uses.
 
@@ -245,9 +306,11 @@ def lab_facts(lab, body, patterns, machines, aliases, other, host_nets, net_ids,
     # line, so its whole text counts.
     named = TOKEN.findall(text if lab["shared"] and lab["set"] and not switches_set else uses)
     lab["other"] = [name for name in other if name in named]
-    nets = set(int(n) for n in re.findall(r"(?<![0-9.])%s\.(\d{1,3})\.\d" % re.escape(block), text))
+    with_hosts = [n for n in networks if n["hosts"]]
+    nets = set(net_of(a, with_hosts) for a in re.findall(r"(?<![0-9.])(%s\.\d{1,3}\.\d{1,3})(?![0-9])" % re.escape(block), text))
     for token in TOKEN.findall(text):
         nets |= host_nets.get(token, set())
+    net_ids = set(n["id"] for n in with_hosts)
     lab["nets"] = sorted(n for n in nets if n in net_ids)
     if not lab["shared"] and not uses:
         WARNINGS.append("Lab %s has no Uses line, so the Lab Selector cannot tell which %s it runs on" % (lab["id"], "switch" if switches_set else "hosts"))
@@ -297,9 +360,11 @@ def load_labs():
     patterns = [(key, re.compile(words, re.I)) for key, words in keywords.items()]
     machines, aliases, other = load_hosts(catalog)
     del WARNINGS[:]
-    networks, host_nets = load_networks(catalog), load_host_nets(catalog)
-    net_ids = set(n["id"] for n in networks if n["hosts"])
-    set_hosts = load_set_hosts(catalog, net_ids)
+    del PLAN_PROBLEMS[:]
+    networks = load_networks(catalog)
+    check_supernet_row(catalog, networks, load_json(MANIFEST).get("ipv4_prefix", "10.200"))
+    host_nets = load_host_nets(catalog, networks)
+    set_hosts = load_set_hosts(catalog, networks)
     for entry in catalog["sets"]:
         for host in set_hosts[entry["id"]][0]:
             if host["name"] not in other:
@@ -317,7 +382,7 @@ def load_labs():
 
         def close():
             if lab is not None:
-                lab_facts(lab, body, patterns, machines, aliases, other, host_nets, net_ids, block, bool(entry.get("switches")))
+                lab_facts(lab, body, patterns, machines, aliases, other, host_nets, networks, block, bool(entry.get("switches")))
                 labs.append(lab)
 
         with open(chapter_path(item["volume"], item["file"]), "r", encoding="utf-8") as chapter:
@@ -471,6 +536,51 @@ def stated_problems(data, page):
     return problems, len(texts)
 
 
+def plan_problems(data, manifest):
+    """What is wrong with the address plan, beyond what was found while the chapters were read.
+
+    The Segments table of the shared lab is the plan. The segments list of the manifest has to give the same
+    blocks, because the lab scripts read the manifest and not the chapter. No two blocks may overlap. The first
+    row of the table names the supernet that holds them, which check_supernet_row compared with them. Every
+    address of a machine has to lie in a block, with the prefix length of the block unless the address is one
+    end of a routed link (/31) or a loopback (/32), and it may not be the network or the broadcast address.
+    """
+    problems = list(PLAN_PROBLEMS)
+    blocks = dict((n["id"], ipaddress.IPv4Network(n["cidr"])) for n in data["networks"] if n.get("cidr"))
+    ids = sorted(blocks)
+    for i, a in enumerate(ids):
+        for b in ids[i + 1:]:
+            if blocks[a].overlaps(blocks[b]):
+                problems.append("Segments %d and %d of the shared lab overlap: %s and %s" % (a, b, blocks[a], blocks[b]))
+    listed = dict((int(s["id"]), s.get("ipv4")) for s in manifest.get("segments", []))
+    for seg in sorted(set(ids) | set(listed)):
+        want, has = (str(blocks[seg]) if seg in blocks else None), listed.get(seg)
+        if want != has:
+            problems.append("Segment %d is %s in the Segments table of the shared lab and %s in the segments list of lab201-vms.json"
+                            % (seg, want or "missing", has or "missing"))
+    for vm in manifest.get("vms", []):
+        slots = [(a, nic.get("gateway4")) for nic in vm.get("nics", []) for a in nic.get("ipv4", [])]
+        slots += [(a, None) for d in vm.get("dummies", []) for a in d.get("ipv4", [])]
+        for cidr, gateway in slots:
+            iface = ipaddress.IPv4Interface(cidr)
+            seg = net_of(str(iface.ip), data["networks"])
+            if seg is None:
+                problems.append("%s has the address %s, which is in no block of the Segments table" % (vm["name"], cidr))
+                continue
+            block, length = blocks[seg], iface.network.prefixlen
+            if length not in (31, 32):
+                if length != block.prefixlen:
+                    problems.append("%s has the address %s, and segment %d is %s" % (vm["name"], cidr, seg, block))
+                elif iface.ip in (block.network_address, block.broadcast_address):
+                    problems.append("%s has the address %s, which is the network or the broadcast address of segment %d" % (vm["name"], cidr, seg))
+            if gateway and net_of(gateway, data["networks"]) != seg:
+                problems.append("%s has the gateway %s, which is not in segment %d with its address %s" % (vm["name"], gateway, seg, cidr))
+    for service in data["services"]:
+        if net_of(service["ipv4"], data["networks"]) is None:
+            problems.append("The service name %s has the address %s, which is in no block of the Segments table" % (service["name"], service["ipv4"]))
+    return problems, len(blocks)
+
+
 def pattern(block_id):
     return re.compile(r'(<script id="%s" type="application/json">\n)(.*?)(\n</script>)' % re.escape(block_id), re.S)
 
@@ -547,6 +657,15 @@ def main(argv):
         status = 1
     else:
         print("stated numbers: OK (%d numbers in %d documents match the lab chapters and the page)" % (len(STATED), documents))
+    # The address plan: the blocks of the Segments table, the same blocks in the manifest, and every address in a block.
+    problems, blocks = plan_problems(loaded["lab201-labs"], loaded["lab201-manifest"])
+    if problems:
+        print("address plan: WRONG. The Segments table of the shared lab, the manifest, and the addresses do not agree:", file=sys.stderr)
+        for problem in problems:
+            print("  %s" % problem, file=sys.stderr)
+        status = 1
+    else:
+        print("address plan: OK (%d lab networks, no two overlap, and every address of the manifest and of the chapters lies in a block)" % blocks)
     return status
 
 

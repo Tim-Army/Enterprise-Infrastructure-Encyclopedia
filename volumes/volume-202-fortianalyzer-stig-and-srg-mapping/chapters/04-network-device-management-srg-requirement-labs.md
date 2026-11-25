@@ -103,7 +103,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
            set security-level auth-priv
            set auth-proto sha256
            set priv-proto aes256
-           set notify-hosts 10.200.2.40
+           set notify-hosts 10.200.0.49
            set queries enable
    end
    ```
@@ -114,21 +114,21 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    ```text
    config system admin radius
        edit radius-201a
-           set server 10.200.2.10
+           set server 10.200.0.42
            set secret <SECRET>
            set protocol tls
            set message-authenticator require
    end
    config system admin radius
        edit radius-201b
-           set server 10.200.2.11
+           set server 10.200.0.43
            set secret <SECRET>
            set protocol tls
            set message-authenticator require
    end
    config system admin tacacs
        edit tacacs-201
-           set server 10.200.2.12
+           set server 10.200.0.44
            set key <KEY>
            set authorization enable
    end
@@ -161,12 +161,12 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    config system backup all-settings
        set status enable
        set protocol sftp
-       set server 10.200.2.60
+       set server 10.200.0.51
        set user <USER>
        set passwd <PASSWORD>
        set crptpasswd <ENCRYPTION_PASSWORD>
    end
-   execute backup all-settings sftp 10.200.2.60 <FILE> <USER> <PASSWORD>
+   execute backup all-settings sftp 10.200.0.51 <FILE> <USER> <PASSWORD>
    ```
 
 2. Send the unit's own event log to `syslog-201a` over TCP with TLS.
@@ -174,7 +174,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    ```text
    config system syslog
        edit syslog-201a
-           set ip 10.200.2.20
+           set ip 10.200.0.45
            set reliable enable
            set secure-connection enable
    end
@@ -184,7 +184,7 @@ Before each lab, confirm the baseline: `get system status` on `faz-202` shows th
    end
    ```
 
-3. Add `syslog-201b` (`10.200.2.21`) under `config system syslog` in the same way. Chapter 01 gives one `syslogd` setting. Type `config system locallog ?` to see whether your release has a second one. If it has, point it at `syslog-201b`. If it has not, record that the unit sends its own log to one server.
+3. Add `syslog-201b` (`10.200.0.46`) under `config system syslog` in the same way. Chapter 01 gives one `syslogd` setting. Type `config system locallog ?` to see whether your release has a second one. If it has, point it at `syslog-201b`. If it has not, record that the unit sends its own log to one server.
 
 **Positive test.** Change a setting, for example add a test account, and run the backup: a dated, encrypted file appears on `files-201`. Log on and log off: the records appear on `syslog-201a`, received over TLS on TCP, with `faz-202` as their source.
 

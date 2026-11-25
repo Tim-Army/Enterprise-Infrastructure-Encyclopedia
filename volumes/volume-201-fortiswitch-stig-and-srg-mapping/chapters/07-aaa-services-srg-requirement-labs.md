@@ -201,7 +201,7 @@ Account management is automated on the server: a user created, disabled, or remo
            config acct-server
                edit 1
                    set status enable
-                   set server 10.200.2.10
+                   set server 10.200.0.42
                    set secret <KEY_1>
            end
    end
@@ -240,7 +240,7 @@ Account management is automated on the server: a user created, disabled, or remo
    ```text
    config user radius
        edit radius-201a
-           set server 10.200.2.10
+           set server 10.200.0.42
            set secret <KEY_1>
    end
    ```

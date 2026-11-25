@@ -12,13 +12,16 @@ a hypervisor:
 - when the folder has common/make-seed.py, the seed generator writes a seed for
   every machine of the manifest with every cloud-image flavor, with the VLAN
   tags made by the hypervisor and by the guest, and every seed carries the
-  lab201-status script, which passes "bash -n" (one seed of each run is checked).
+  lab201-status script, which passes "bash -n" (one seed of each run is checked);
+- the seeds of a build in another address block hold no address of the block of
+  the manifest, and the firewall of its gateway names the blocks of the build.
 
 It prints one line for each group and exits with status 1 if anything failed,
 which validate.sh uses.
 """
 
 import glob
+import ipaddress
 import json
 import os
 import re
@@ -165,7 +168,70 @@ def check_seeds(folder, problems):
                         result = subprocess.run([bash, "-n", script], capture_output=True, text=True)
                         if result.returncode != 0:
                             problems.append("%s: the lab201-status script of %s fails bash -n: %s" % (label, name, (result.stderr.strip().splitlines() or ["error"])[-1]))
-    return "%d seed run(s) wrote %d seeds, each with a status script: every cloud-image flavor with the machines it can run, both tagging modes" % (runs, seeds)
+        moved = check_moved_build(tool, manifest, flavors_path, key, env, tmp, problems)
+    return ("%d seed run(s) wrote %d seeds, each with a status script: every cloud-image flavor with the machines it can run, both tagging modes%s"
+            % (runs, seeds, "; " + moved if moved else ""))
+
+
+def check_moved_build(tool, manifest, flavors_path, key, env, tmp, problems):
+    """A build in another address block: its seeds hold no address of the block of the manifest.
+
+    The Lab Selector moves the lab networks when a build starts at another address. Every address of a seed comes
+    from the manifest, so a seed of a moved manifest that still holds an address of the old block has taken it from
+    the script. The firewall of the gateway is the text that names lab networks, so it is checked by name too.
+    """
+    segments = manifest.get("segments")
+    old_block = manifest.get("ipv4_prefix")
+    if not segments or not old_block:
+        return None
+    first = min(int(ipaddress.ip_network(s["ipv4"]).network_address) for s in segments)
+    shift = int(ipaddress.ip_address("10.77.64.0")) - first
+
+    def move(node):
+        if isinstance(node, list):
+            return [move(x) for x in node]
+        if isinstance(node, dict):
+            return dict((k, move(v)) for k, v in node.items())
+        if isinstance(node, str) and node.startswith(old_block + "."):
+            address, slash, length = node.partition("/")
+            try:
+                return str(ipaddress.ip_address(int(ipaddress.ip_address(address)) + shift)) + slash + length
+            except ValueError:
+                return node
+        return node
+
+    trial = move(dict(manifest, ipv4_prefix="10.77"))
+    trial_path = os.path.join(tmp, "manifest-moved.json")
+    with open(trial_path, "w", encoding="utf-8") as fh:
+        json.dump(trial, fh)
+    out = os.path.join(tmp, "moved")
+    result = subprocess.run([sys.executable, tool, "--manifest", trial_path, "--flavors", flavors_path, "--out", out,
+                             "--ssh-key", key, "--tagging", "hypervisor"], capture_output=True, text=True, env=env)
+    label = "make-seed.py, a build in another address block"
+    if result.returncode != 0:
+        problems.append("%s failed: %s" % (label, (result.stderr.strip().splitlines() or ["no message"])[-1]))
+        return None
+    kept = re.compile(r"(?<![0-9.])%s\.\d+\.\d+" % re.escape(old_block))
+    files = 0
+    for base, _, names in os.walk(out):
+        for name in names:
+            path = os.path.join(base, name)
+            with open(path, "r", encoding="utf-8", errors="replace") as fh:
+                text = fh.read()
+            files += 1
+            found = kept.search(text)
+            if found:
+                problems.append("%s: %s of %s keeps %s, an address of the block of the manifest" % (label, name, os.path.basename(base), found.group(0)))
+    gateway = next((vm for vm in trial["vms"] if vm.get("role") == "gateway"), None)
+    if gateway:
+        with open(os.path.join(out, gateway["name"], "user-data"), "r", encoding="utf-8") as fh:
+            text = fh.read()
+        # The firewall names the block of the lab services, of the two management networks, and of the administrator.
+        for seg in (0, 2, 3, 4):
+            block = next((s["ipv4"] for s in trial["segments"] if int(s["id"]) == seg), None)
+            if block and block not in text:
+                problems.append("%s: the firewall of %s does not name %s, the block of segment %d" % (label, gateway["name"], block, seg))
+    return "a build in another address block keeps no address of the manifest's block in %d seed files" % files
 
 
 def main():
