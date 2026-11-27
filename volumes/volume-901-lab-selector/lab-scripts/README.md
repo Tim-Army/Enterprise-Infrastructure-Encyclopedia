@@ -29,7 +29,7 @@ A link can tick lab sets for you: add `?sets=fortianalyzer` to the address of th
 
 Then pick a platform and version, set the host and network names, rename machines, change their sizes (a size below the proposed minimum is refused unless you tick Override), leave machines out, and move the lab to another address block. It then shows the manifest, the commands, and a checklist, and can download them in a zip. The zip also holds `lab-selector-choices.json`, the same file that **Save choices** makes. Use **Load choices** with it to get the same build back on the page. A choices file that the Lab Builder made loads too. Load that file and not the manifest (`lab201-vms.json`), which the page refuses. Open it from the published site so it can add the scripts to the zip. Nothing you type leaves the page, and it never asks for a license key: it writes a `licenses.example.json` template for the keys the scripts can apply (Red Hat, Ubuntu Pro, vSphere, and Proxmox), and you fill in `licenses.local.json` on your own computer.
 
-The page keeps your choices in the browser, so a reload does not lose them. It does not keep a console password you type, because the browser store is plain text. **Start over** clears the kept choices and goes back to the defaults.
+The page keeps your choices in the browser, so a reload does not lose them. It keeps no password, because the browser store is plain text, and neither does a choices file. **Start over** clears the kept choices and goes back to the defaults.
 
 In the lab plan of the **Labs** card you can clear the box of each lab you will not run. The page then names the machines those labs no longer use, and **Match the machines to these labs** leaves them out. The gateway, the service hosts, the certificate authority, the DHCP server, and the administrator workstation are always kept, because the shared lab of Chapter 999 needs them, and the page names them. The machines of a lab are the ones its text names, so check the list before you build.
 
@@ -181,8 +181,11 @@ Then follow this list.
    found". To pick the command or version yourself, pass `-PythonCommand` (for
    example `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash
    scripts, which use `python3` by default. See *Install Python on Windows* below.
-3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
-   with `-SshKeyFile` (or `--ssh-key`). See *Make an SSH key on Windows* below.
+3. Pass a public key file with `-SshKeyFile` (or `--ssh-key`). When the file
+   does not exist and its name ends in `.pub`, the deploy makes the folder and
+   an Ed25519 key pair with `ssh-keygen`, with no passphrase unless
+   `LAB201_SSH_KEY_PASSPHRASE` is set or `LAB201_PROMPT` names `key`. See
+   *Make an SSH key on Windows* below to make one yourself.
 4. Keep the scripts and the `common` folder together, because each script finds
    `..\common\lab201-vms.json` and `make-seed.py` relative to itself.
 
@@ -440,8 +443,20 @@ $env:LAB201_ADMIN_PASSWORD_HASH = '<CRYPT_HASH>'
 In Bash, use `export LAB201_ADMIN_PASSWORD_HASH='<CRYPT_HASH>'`. The password
 then works at the console and over SSH. Machines that are already built keep
 their setup, so this applies to machines you build afterwards. The hardened
-(STIG) flavors always need this hash, because their `sudo` asks for the
-password.
+(STIG) flavors always need a password, because their `sudo` asks for it. Give
+them the password itself in `LAB201_ADMIN_PASSWORD`, as the commands of the Lab
+Selector do, and `make-seed.py` makes the SHA-512 crypt hash, or set the hash
+as above.
+
+To have the build ask for a password instead of reading it from a variable,
+name it in `LAB201_PROMPT`: `console`, `windows`, `hardened`, or `key` (the
+passphrase of a key that the build makes), separated by commas.
+`make-seed.py` asks with hidden input when it writes the seeds, and a preview
+asks for nothing:
+
+```powershell
+$env:LAB201_PROMPT = 'console,key'
+```
 
 ## VMware Workstation: see the machines in the library
 

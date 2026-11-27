@@ -143,7 +143,12 @@ if ($Action -eq 'Check') {
     Show-Check 'FAIL' 'No SSH public key was given (-SshKeyFile)' 'Make one with: ssh-keygen -t ed25519   Then pass: -SshKeyFile ~\.ssh\id_ed25519.pub'
   } else {
     foreach ($k in $SshKeyFile) {
-      if (-not (Test-Path $k)) { Show-Check 'FAIL' "SSH public key not found: $k" 'Make one with: ssh-keygen -t ed25519'; continue }
+      if (-not (Test-Path $k)) {
+        # A missing key is made by the deploy (make-seed.py --make-keys), with its folder.
+        if ($k -like '*.pub') { Show-Check 'OK' "SSH public key $k does not exist yet. The deploy makes it with ssh-keygen" }
+        else { Show-Check 'FAIL' "SSH public key not found: $k" 'Pass a file name that ends in .pub, and the deploy makes the key' }
+        continue
+      }
       $first = (Get-Content -Path $k -TotalCount 1)
       if ($first -match '^(ssh-|ecdsa-|sk-)') { Show-Check 'OK' "SSH public key: $k" }
       elseif ($first -match 'PRIVATE KEY') { Show-Check 'FAIL' "$k is a private key" 'Pass the public key, the file that ends in .pub' }
@@ -473,7 +478,8 @@ foreach ($vmDef in $lab.vms) {
 }
 
 $licenseArgs = @(); if ($LicenseFile) { $licenseArgs = '--license-file', (Resolve-Path $LicenseFile).Path }
-$keys = @(); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += (Resolve-Path $k).Path }
+# A key that does not exist is made here, and a preview leaves it out.
+$keys = @(if ($WhatIfPreference) { '--preview' } else { '--make-keys' }); foreach ($k in $SshKeyFile) { $keys += '--ssh-key'; $keys += $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($k) }
 $seedDir = Join-Path $WorkDir 'seeds'
 & $pyExe @pyArgs (Join-Path $PSScriptRoot '..\common\make-seed.py') --manifest $Manifest --out $seedDir --iso --guest-agent vmware --tagging guest @keys @licenseArgs
 if ($LASTEXITCODE -ne 0) { throw 'make-seed.py failed.' }

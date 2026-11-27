@@ -5373,7 +5373,8 @@
     "e1000e",
     "OOBE",
     "firstlogin",
-    "guestinfo"
+    "guestinfo",
+    "getpass"
   ],
   "ignorePaths": [
     "node_modules/**",

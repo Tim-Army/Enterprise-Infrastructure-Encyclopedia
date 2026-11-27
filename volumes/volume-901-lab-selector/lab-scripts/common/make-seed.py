@@ -27,12 +27,28 @@ Linux Mint gets lab201-firstlogin.sh, and Tiny Core gets lab201-tc.sh. With --is
 these go on a CD labeled LAB201 that the platform script attaches beside the
 install ISO.
 
+The passwords come from environment variables: LAB201_CONSOLE_PASSWORD (console
+and sudo), LAB201_WINDOWS_ADMIN_PASSWORD, and, for a hardened flavor, either
+LAB201_ADMIN_PASSWORD_HASH (a crypt hash) or LAB201_ADMIN_PASSWORD, which is
+turned into a SHA-512 crypt hash here. LAB201_PROMPT names the ones to ask for
+instead, with hidden input, as a comma-separated list of console, windows,
+hardened, and key.
+
+An SSH public key file that does not exist is made with --make-keys: its folder
+is created and ssh-keygen makes an Ed25519 key pair, with the passphrase in
+LAB201_SSH_KEY_PASSPHRASE (none when it is empty or unset), or asked for when
+LAB201_PROMPT names key. With --preview a missing key is left out instead, so a
+preview changes nothing.
+
 Only the Python standard library is needed, except for --iso, which uses the
 pycdlib package (pip install pycdlib) or, if it is missing, xorriso,
 genisoimage, or mkisofs from the PATH.
 """
 
 import argparse
+import base64
+import getpass
+import hashlib
 import ipaddress
 import json
 import os
@@ -953,12 +969,112 @@ def wsl_provision(manifest, vm, ssh_keys):
     return "\n".join(L) + "\n"
 
 
-def read_keys(paths):
+PROMPT_ENV = "LAB201_PROMPT"
+KEY_PASSPHRASE_ENV = "LAB201_SSH_KEY_PASSPHRASE"
+
+
+def prompts():
+    """The passwords that LAB201_PROMPT says to ask for: console, windows, hardened, key."""
+    return {x.strip().lower() for x in os.environ.get(PROMPT_ENV, "").split(",") if x.strip()}
+
+
+def ask(what):
+    """Ask for a password twice, with hidden input, until the two agree and it is not empty."""
+    while True:
+        first = getpass.getpass("%s: " % what)
+        if first and first == getpass.getpass("%s (again): " % what):
+            return first
+        print("make-seed: the two did not agree, or the password was empty. Try again.", file=sys.stderr)
+
+
+def make_key(pub):
+    """Make the SSH key pair of the public key file pub, and its folder."""
+    if not pub.endswith(".pub"):
+        raise SystemExit("make-seed: %s does not exist. A key is made only for a public key file name that ends in .pub" % pub)
+    keygen = shutil.which("ssh-keygen")
+    if not keygen:
+        raise SystemExit("make-seed: %s does not exist, and ssh-keygen was not found to make it. Install the OpenSSH client" % pub)
+    priv = pub[:-4]
+    os.makedirs(os.path.dirname(pub) or ".", exist_ok=True)
+    phrase = None if "key" in prompts() else os.environ.get(KEY_PASSPHRASE_ENV, "")
+    if os.path.exists(priv):
+        # The private key is there without its public key: write the public key from it. ssh-keygen asks for the
+        # passphrase of the key when it has one and none is given.
+        cmd = [keygen, "-y", "-f", priv] + (["-P", phrase] if phrase else [])
+        out = subprocess.run(cmd, check=True, stdout=subprocess.PIPE).stdout
+        with open(pub, "wb") as fh:
+            fh.write(out)
+        print("make-seed: wrote %s from the private key beside it" % pub, file=sys.stderr)
+    else:
+        # Without -N, ssh-keygen asks for the passphrase itself.
+        subprocess.run([keygen, "-q", "-t", "ed25519", "-f", priv] + ([] if phrase is None else ["-N", phrase]), check=True)
+        print("make-seed: made the SSH key pair %s and %s" % (priv, pub), file=sys.stderr)
+
+
+def read_keys(paths, make=False, preview=False):
     keys = []
     for p in paths:
-        with open(os.path.expanduser(p), "r", encoding="utf-8") as fh:
+        p = os.path.expanduser(p)
+        if not os.path.exists(p):
+            if preview:
+                print("make-seed: note: %s does not exist yet. The build makes it." % p, file=sys.stderr)
+                continue
+            if make:
+                make_key(p)
+        with open(p, "r", encoding="utf-8") as fh:
             keys += [ln.strip() for ln in fh if ln.strip() and not ln.startswith("#")]
     return keys
+
+
+B64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+
+def sha512_crypt(password, salt=None, rounds=5000):
+    """The SHA-512 crypt hash of a password ($6$), as openssl passwd -6 and mkpasswd write it."""
+    if salt is None:
+        salt = "".join(B64[b % 64] for b in os.urandom(16))
+    salt = salt[:16]
+    pw, sl = password.encode("utf-8"), salt.encode("ascii")
+    b = hashlib.sha512(pw + sl + pw).digest()
+    a = hashlib.sha512(pw + sl)
+    n = len(pw)
+    while n > 64:
+        a.update(b)
+        n -= 64
+    a.update(b[:n])
+    n = len(pw)
+    while n:
+        a.update(b if n & 1 else pw)
+        n >>= 1
+    a = a.digest()
+    dp = hashlib.sha512(pw * len(pw)).digest()
+    p = (dp * (len(pw) // 64 + 1))[:len(pw)]
+    ds = hashlib.sha512(sl * (16 + a[0])).digest()
+    s = (ds * (len(sl) // 64 + 1))[:len(sl)]
+    c = a
+    for i in range(rounds):
+        h = hashlib.sha512()
+        h.update(p if i & 1 else c)
+        if i % 3:
+            h.update(s)
+        if i % 7:
+            h.update(p)
+        h.update(c if i & 1 else p)
+        c = h.digest()
+    order = [(0, 21, 42), (22, 43, 1), (44, 2, 23), (3, 24, 45), (25, 46, 4), (47, 5, 26), (6, 27, 48), (28, 49, 7),
+             (50, 8, 29), (9, 30, 51), (31, 52, 10), (53, 11, 32), (12, 33, 54), (34, 55, 13), (56, 14, 35), (15, 36, 57),
+             (37, 58, 16), (59, 17, 38), (18, 39, 60), (40, 61, 19), (62, 20, 41)]
+    out = ""
+    for x, y, z in order:
+        v = (c[x] << 16) | (c[y] << 8) | c[z]
+        for _ in range(4):
+            out += B64[v & 63]
+            v >>= 6
+    v = c[63]
+    for _ in range(2):
+        out += B64[v & 63]
+        v >>= 6
+    return ("$6$%s$" if rounds == 5000 else "$6$rounds=%d$%%s$" % rounds) % salt + out
 
 
 def main():
@@ -982,6 +1098,11 @@ def main():
     ap.add_argument("--flavors", default=os.path.join(HERE, "flavors.json"), help="flavor catalog (default: flavors.json beside this script)")
     ap.add_argument("--license-file", help="JSON file with keys to apply (never printed or copied elsewhere)")
     ap.add_argument("--windows-password-env", default="LAB201_WINDOWS_ADMIN_PASSWORD", help="environment variable that holds the Windows admin password")
+    ap.add_argument("--password-env", default="LAB201_ADMIN_PASSWORD",
+                    help="environment variable with a plain-text password for a hardened flavor, used when the hash is not set")
+    ap.add_argument("--make-keys", action="store_true", help="make a --ssh-key file that does not exist, with ssh-keygen")
+    ap.add_argument("--preview", action="store_true",
+                    help="a preview: leave out a --ssh-key file that does not exist, and ask for no password")
     a = ap.parse_args()
 
     with open(a.manifest, "r", encoding="utf-8") as fh:
@@ -996,9 +1117,22 @@ def main():
     if a.list:
         print("\n".join(v["name"] for v in manifest["vms"]))
         return 0
-    keys = read_keys(a.ssh_key)
+    keys = read_keys(a.ssh_key, make=a.make_keys, preview=a.preview)
+    ask_for = set() if a.preview else prompts()
+    flavors_used = [flavor_of(manifest, vm) for vm in manifest["vms"] if not a.vm or vm["name"] in a.vm]
     pw = os.environ.get(a.password_hash_env) or None
-    OPTIONS["console_password"] = os.environ.get(a.console_password_env) or None
+    if not pw and any(f.get("needs_password") for f in flavors_used):
+        plain = ask("Password of the admin user on the hardened machines") if "hardened" in ask_for else os.environ.get(a.password_env)
+        if a.preview and not plain and "hardened" in prompts():
+            plain = "preview"
+        pw = sha512_crypt(plain) if plain else None
+    OPTIONS["console_password"] = ask("Console password of the admin user") if "console" in ask_for else (os.environ.get(a.console_password_env) or None)
+    win_pw = os.environ.get(a.windows_password_env)
+    if any(f.get("iso") and f.get("family") == "windows" for f in flavors_used):
+        if "windows" in ask_for:
+            win_pw = ask("Windows admin password")
+        elif a.preview and not win_pw and "windows" in prompts():
+            win_pw = "preview"
     if a.wsl:
         for vm in manifest["vms"]:
             if not vm.get("wsl") or (a.vm and vm["name"] not in a.vm):
@@ -1011,7 +1145,7 @@ def main():
                 fh.write(wsl_provision(manifest, vm, keys))
             print("rendered %s (WSL)" % vm["name"])
         return 0
-    if not keys and not pw:
+    if not keys and not pw and not a.preview:
         raise SystemExit("make-seed: give at least one --ssh-key file, or set %s" % a.password_hash_env)
     agent = None if a.guest_agent == "none" else a.guest_agent
     wanted = set(a.vm or [])
@@ -1024,7 +1158,7 @@ def main():
         if rating(flavor, vm["role"]) == "n":
             raise SystemExit("make-seed: %s cannot run %s (%s). Pick another flavor for it." % (flavor["name"], vm["name"], vm["role"]))
         if flavor.get("iso"):
-            media = iso_media(manifest, i, vm, flavor, keys, licenses, os.environ.get(a.windows_password_env))
+            media = iso_media(manifest, i, vm, flavor, keys, licenses, win_pw)
             d = os.path.join(a.out, vm["name"])
             os.makedirs(d, exist_ok=True)
             files = {}
@@ -1038,7 +1172,7 @@ def main():
             print("rendered %s (%s)" % (vm["name"], flavor["name"]))
             continue
         if flavor.get("needs_password") and not pw:
-            raise SystemExit("make-seed: %s is hardened, so sudo needs a password. Set %s to a crypt hash (openssl passwd -6)." % (vm["name"], a.password_hash_env))
+            raise SystemExit("make-seed: %s is hardened, so sudo needs a password. Set %s, or %s to a crypt hash, or add hardened to %s." % (vm["name"], a.password_env, a.password_hash_env, PROMPT_ENV))
         if flavor.get("subscription") and not (licenses.get("redhat") or {}).get("activation_key"):
             print("make-seed: warning: %s needs a Red Hat subscription. Pass --license-file with a redhat activation_key and org, or register by hand." % vm["name"], file=sys.stderr)
         if flavor.get("ubuntu_pro") and not (licenses.get("ubuntu_pro") or {}).get("token"):

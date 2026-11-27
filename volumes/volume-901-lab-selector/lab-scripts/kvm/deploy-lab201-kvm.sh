@@ -193,7 +193,8 @@ if [[ "$action" == check ]]; then
     bad "No SSH public key was given (--ssh-key)" "Make one with: ssh-keygen -t ed25519   Then pass: --ssh-key ~/.ssh/id_ed25519.pub"
   else
     for key in "${ssh_keys[@]}"; do
-      if [[ ! -r "$key" ]]; then bad "SSH public key not found: $key" "Make one with: ssh-keygen -t ed25519"
+      if [[ ! -e "$key" && "$key" == *.pub ]]; then ok "SSH public key $key does not exist yet. The deploy makes it with ssh-keygen"
+      elif [[ ! -r "$key" ]]; then bad "SSH public key not found: $key" "Pass a file name that ends in .pub, and the deploy makes the key"
       elif head -n 1 "$key" | grep -Eq '^(ssh-|ecdsa-|sk-)'; then ok "SSH public key: $key"
       elif head -n 1 "$key" | grep -q 'PRIVATE KEY'; then bad "$key is a private key" "Pass the public key, the file that ends in .pub"
       else bad "$key does not look like an SSH public key" "Pass the file that ends in .pub"; fi
@@ -344,7 +345,8 @@ esac
 
 need virt-install; need qemu-img
 [[ ${#ssh_keys[@]} -gt 0 ]] || { echo "--ssh-key is required for deploy." >&2; exit 2; }
-for key in "${ssh_keys[@]}"; do [[ -r "$key" ]] || { echo "Cannot read $key" >&2; exit 2; }; done
+# A missing key that ends in .pub is made by make-seed.py --make-keys, with its folder.
+for key in "${ssh_keys[@]}"; do [[ -r "$key" || ( ! -e "$key" && "$key" == *.pub ) ]] || { echo "Cannot read $key" >&2; exit 2; }; done
 if [[ "$dry_run" == 0 ]]; then
   for br in "$bridge_wan" "$bridge_oob" "$bridge_t1" "$bridge_t2" "$bridge_mcast"; do
     [[ -d "/sys/class/net/$br" ]] || { echo "Bridge $br does not exist." >&2; exit 1; }
@@ -371,7 +373,7 @@ while IFS='|' read -r _ _ _ _ _ flv _; do
 done < <(plan)
 
 # Seeds. VLAN tags are made inside the guests.
-key_args=(); for key in "${ssh_keys[@]}"; do key_args+=(--ssh-key "$key"); done
+key_args=(--make-keys); for key in "${ssh_keys[@]}"; do key_args+=(--ssh-key "$key"); done
 seed_args=(--manifest "$manifest" --out "$workdir/seeds" --tagging guest --guest-agent qemu)
 [[ -z "$license_file" ]] || seed_args+=(--license-file "$license_file")
 run "$python" "$seedtool" "${seed_args[@]}" "${key_args[@]}"

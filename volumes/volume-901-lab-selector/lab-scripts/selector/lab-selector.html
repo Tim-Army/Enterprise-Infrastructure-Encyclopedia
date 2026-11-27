@@ -7879,8 +7879,20 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR, kind: '', sets: {},
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: true, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}, labTag: DEFAULT_TAG
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: true, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}, labTag: DEFAULT_TAG,
+    labPw: DEFAULT_CONSOLE_PW, winPw: DEFAULT_CONSOLE_PW, hardPw: DEFAULT_CONSOLE_PW, keyPw: '', prompt: { console: false, key: false, windows: false, hardened: false }
   };
+  // The passwords of a build. The lab password is the one every password field starts with, and a field follows it
+  // until you type another value there. The SSH key passphrase starts empty and follows nothing. A field whose Prompt
+  // box is ticked is asked for by the build script instead.
+  function setLabPw(pw) {
+    ['consolePw', 'winPw', 'hardPw'].forEach(function (k) { if (state[k] === state.labPw) state[k] = pw; });
+    state.labPw = pw;
+  }
+  // Whether a password differs from the page's default lab password, so the page can say that it is not kept.
+  function passwordsTyped() {
+    return state.labPw !== DEFAULT_CONSOLE_PW || state.keyPw !== '' || [state.consolePw, state.winPw, state.hardPw].some(function (x) { return x !== '' && x !== state.labPw; });
+  }
   // The lab name of this build, and a text with its names. tag names another lab name than the one of the page.
   function labTag() { return TAG_RE.test(String(state.labTag || '')) ? state.labTag : DEFAULT_TAG; }
   function retag(s, tag) {
@@ -7908,6 +7920,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   function resetVms() {
     state.kind = defaultKind(); state.sets = defaultSets();
     state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = true; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {}; state.labTag = DEFAULT_TAG;
+    state.labPw = DEFAULT_CONSOLE_PW; state.winPw = DEFAULT_CONSOLE_PW; state.hardPw = DEFAULT_CONSOLE_PW; state.keyPw = ''; state.prompt = { console: false, key: false, windows: false, hardened: false };
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -8425,7 +8438,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       var f = FLAVOR[fid];
       if (out.isoSumErr[fid]) out.errors.push(f.name + ' checksum: ' + out.isoSumErr[fid]);
       if (f.status === 'experimental') out.warnings.push(f.name + ' is experimental: its seed is generated and checked, but few or no machines have been built from it. Chapter 09 lists what was built.');
-      if (f.needs_password) out.warnings.push(f.name + ' is hardened, so sudo asks for a password. Set LAB201_ADMIN_PASSWORD_HASH to a crypt hash before building.');
+      if (f.needs_password) out.warnings.push(f.name + ' is hardened, so sudo asks for a password. The commands set LAB201_ADMIN_PASSWORD, and make-seed.py makes the crypt hash from it.');
       if (flavorOnPlatform(fid, state.platform) === 'image' && !userSupplied(fid)) out.warnings.push(f.name + ' has no OVA to download. Convert its qcow2 image to an OVA and give the path below.');
       if (f.iso) out.warnings.push(f.name + ' installs from an ISO you supply. ' + (f.manual ? 'A person still runs part of the install (see the checklist).' : 'The answer file holds the admin password, so delete the answer CD after the first boot.'));
       if (fid === 'win-11') out.warnings.push('Windows 11 is installed with the TPM and Secure Boot checks bypassed (a registry setting in the answer file), so no virtual TPM is needed. Microsoft does not support that.');
@@ -8586,20 +8599,26 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var blocks = [];
     if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, use one of these.\n# Both apply to one PowerShell process only, so nothing changes for the\n# rest of the computer. Neither works if Group Policy sets the execution\n# policy. In that case, ask your administrator.\n#\n# Allow scripts for the rest of this window, then run the commands below:',
       'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting, from any folder.\n# The path is the one of the zip extracted into Downloads. Add the script\'s other\n# parameters after it. A table parameter (@{ ... }) cannot be passed this way.\n# In Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~.\n' + bypassLine() + '\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
+    // A password line, and the passwords that the build script asks for instead (LAB201_PROMPT, read by make-seed.py).
+    var setPw = function (name, pw) { return ps ? '$env:' + name + " = '" + pw.replace(/'/g, "''") + "'" : 'export ' + name + "='" + pw.replace(/'/g, "'\\''") + "'"; }, pr = state.prompt, asks = [];
     var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
-    if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', ps ? "$env:LAB201_WINDOWS_ADMIN_PASSWORD = '<LAB_ONLY_PASSWORD>'" : "export LAB201_WINDOWS_ADMIN_PASSWORD='<LAB_ONLY_PASSWORD>'"]);
+    if (winUsed && pr.windows) asks.push('windows');
+    else if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', setPw('LAB201_WINDOWS_ADMIN_PASSWORD', state.winPw || '<LAB_ONLY_PASSWORD>')]);
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
-    if (hardened) {
-      blocks.push(['0. A hardened flavor needs the admin password hash (make one with: openssl passwd -6).', ps ? "$env:LAB201_ADMIN_PASSWORD_HASH = '<CRYPT_HASH>'" : "export LAB201_ADMIN_PASSWORD_HASH='<CRYPT_HASH>'"]);
-    }
+    if (hardened && pr.hardened) asks.push('hardened');
+    else if (hardened) blocks.push(['0. The hardened flavors need a password for the admin user. make-seed.py makes the crypt hash from it.', setPw('LAB201_ADMIN_PASSWORD', state.hardPw || '<LAB_ONLY_PASSWORD>')]);
     function line(extra) {
       var q = ps ? psQuote : shQuote, head = ps ? '.\\' + p.exe : './' + p.exe, cont = ps ? ' `' : ' \\';
       var parts = args.map(function (a) { return a[1] === null ? a[0] : a[0] + ' ' + (a[2] ? a[1] : q(a[1])); }).concat(extra);
       return head + cont + '\n' + parts.map(function (x, i) { return '  ' + x + (i < parts.length - 1 ? cont : ''); }).join('\n');
     }
     var conPw = String(state.consolePw || '');
-    if (conPw && state.platform !== 'wsl') blocks.push(['Console password for the admin user. It works at the machine console and for sudo. SSH still takes\n# only your key. Leave this line out for key-only login. The hardened flavors use the password hash instead.',
-      ps ? "$env:LAB201_CONSOLE_PASSWORD = '" + conPw.replace(/'/g, "''") + "'" : "export LAB201_CONSOLE_PASSWORD='" + conPw.replace(/'/g, "'\\''") + "'"]);
+    if (conPw && state.platform !== 'wsl' && pr.console) asks.push('console');
+    else if (conPw && state.platform !== 'wsl') blocks.push(['Console password for the admin user. It works at the machine console and for sudo. SSH still takes\n# only your key. Leave this line out for key-only login. The hardened flavors use their own password instead.', setPw('LAB201_CONSOLE_PASSWORD', conPw)]);
+    // The SSH key: the script makes it when the file does not exist, with this passphrase, or none.
+    if (pr.key) asks.push('key');
+    else if (state.keyPw) blocks.push(['Passphrase of the SSH key, if the build makes the key because the file does not exist yet.', setPw('LAB201_SSH_KEY_PASSPHRASE', state.keyPw)]);
+    if (asks.length) blocks.push(['The build asks for ' + listAnd(asks.map(function (a) { return PW_WHAT[a]; })) + ', with hidden input, when it writes the seeds.', setPw('LAB201_PROMPT', asks.join(','))]);
     // An install ISO on a datastore cannot be read back to check it, so the local copy is checked before the upload.
     if (isos.length && p.vsphere) blocks.push(['Compare each install ISO with the checksum its publisher gives, before you upload it to the datastore.\n# Put the path of your copy in place of <LOCAL_COPY>. Type a checksum on the page (card 8) to have it filled in here.',
       isos.map(function (id) {
@@ -8617,6 +8636,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     blocks.push(['Check that ' + chk[state.platform] + ', and says how to fix what is missing.', line([ps ? '-Action Check' : '--action check'])]);
     blocks.push(['1. Preview. This changes nothing.', line([ps ? '-WhatIf' : '--dry-run'])]);
     blocks.push(['2. Build the machines.', line([])]);
+    // A key with a passphrase asks for it at every login, unless ssh-agent holds the key.
+    if (state.keyPw || pr.key) {
+      var priv = String(state.params.key || (ps ? DEFAULT_KEY_WIN : '~/.ssh/id_ed25519.pub')).trim().replace(/\.pub$/, '');
+      blocks.push(['The SSH key has a passphrase. Let ssh-agent hold the key, so that SSH asks for the passphrase once.' + (ps ? '\n# Run the first line once, in a PowerShell window opened as administrator.' : ''),
+        ps ? 'Get-Service ssh-agent | Set-Service -StartupType Automatic\nStart-Service ssh-agent\nssh-add ' + priv : 'eval "$(ssh-agent -s)"\nssh-add ' + priv]);
+    }
     // The later actions need only the arguments that find the machines again.
     var tail = '';
     if (ps) {
@@ -8640,6 +8665,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var p = PLATFORMS[state.platform], key = String(state.params.key || DEFAULT_KEY_WIN).trim();
     return 'pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\' + p.script.replace(/\//g, '\\') + ' -SshKeyFile ' + (/^[~\w.:\\\/-]+$/.test(key) ? key : psQuote(key));
   }
+  var PW_WHAT = { console: 'the console password', key: 'the passphrase of a new SSH key', windows: 'the Windows admin password', hardened: 'the password of the hardened machines' };
   function commandText(m) { return commandBlocks(m).map(function (b) { return '# ' + b[0] + '\n' + b[1]; }).join('\n\n') + '\n'; }
 
   /* ------------------------------------------------------ notes and files */
@@ -8766,7 +8792,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         (noSum.length ? ' No checksum was typed for: ' + noSum.join(', ') + '.' : ''));
     }
     if (isoFlavorsNeeded(m).some(function (id) { return FLAVOR[id].family === 'windows'; })) L.push('- Windows: remove the install ISO and the answer CD when the install finishes, and delete the answer CD file, because it holds the admin password. Check the image index in the answer file against your ISO (the default is 1 for Windows 11 and 2 for Windows Server).');
-    if (usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; })) L.push('- Hardened flavors: set LAB201_ADMIN_PASSWORD_HASH to a crypt hash first. The machines reboot once after hardening, and each has /root/LAB201-STIG-NOTES.txt that lists the findings the lab accepts.');
+    if (usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; })) L.push('- Hardened flavors: the password of the admin user comes from LAB201_ADMIN_PASSWORD, or the script asks for it, and make-seed.py makes the crypt hash. The machines reboot once after hardening, and each has /root/LAB201-STIG-NOTES.txt that lists the findings the lab accepts.');
     L.push('');
     L.push('## Run it');
     L.push('Use the commands in RUN.txt. Run the readiness check first, then the preview. Neither changes anything.');
@@ -9988,7 +10014,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-selector-choices', format: 3, labName: state.labTag, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit, firewallValues: state.fwVars, gatewayValues: state.gwVars }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-selector-choices', format: 3, labName: state.labTag, passwords: { console: state.consolePw === '' ? 'none' : 'set', prompt: state.prompt, typed: passwordsTyped() }, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit, firewallValues: state.fwVars, gatewayValues: state.gwVars }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -10045,7 +10071,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (typeof s.labKind === 'string' && KINDS.some(function (k) { return k.id === s.labKind; }) && SETS.some(function (x) { return x.kind === s.labKind; })) state.kind = s.labKind;
     state.labsOff = {}; ALL_LABS.forEach(function (l) { if (!isSharedLab(l) && s.labsOff && s.labsOff[l.id]) state.labsOff[l.id] = true; });
     state.licFile = s.licFile || (p.shell === 'ps' ? '.\\licenses.local.json' : './licenses.local.json'); state.licRefs = s.licRefs || {};
+    // The file keeps no password, only the Prompt boxes and whether the console password is empty (key-only login).
+    // A file from before has the console password itself.
+    state.labPw = DEFAULT_CONSOLE_PW; state.winPw = DEFAULT_CONSOLE_PW; state.hardPw = DEFAULT_CONSOLE_PW; state.keyPw = '';
     state.consolePw = typeof s.consolePw === 'string' ? s.consolePw : DEFAULT_CONSOLE_PW;
+    var spw = s.passwords && typeof s.passwords === 'object' ? s.passwords : {};
+    if (spw.console === 'none') state.consolePw = '';
+    state.prompt = {}; ['console', 'key', 'windows', 'hardened'].forEach(function (k) { state.prompt[k] = !!(spw.prompt && spw.prompt[k] === true); });
+    if (spw.typed === true) notes.push('the file keeps no password, so the page proposes its default lab password. Type yours again');
     state.labTag = typeof s.labName === 'string' ? s.labName : DEFAULT_TAG;
     if (state.labTag !== labTag()) notes.push('the lab name ' + state.labTag + ' is not a valid name, so ' + DEFAULT_TAG + ' is used');
     state.ports = {}; PORTS.forEach(function (p) { if (s.ports && typeof s.ports[p[0]] === 'string') state.ports[p[0]] = s.ports[p[0]]; });
@@ -10130,6 +10163,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   }
 
   window.LabSelectorCore = {
+    setLabPw: setLabPw, passwordsTyped: passwordsTyped,
     BASE: BASE, FL: FL, retag: retag, labTag: labTag, DEFAULT_TAG: DEFAULT_TAG, TAG_RE: TAG_RE, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
     choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: tagged(labValuesText), claudeText: tagged(claudeText), startText: tagged(startText), claudeHelpText: tagged(claudeHelpText),
     fswFor: fswFor, fswCompare: fswCompare, FSW_BOOK: FSW_BOOK, FSW_DEFAULT: FSW_DEFAULT, get PLAN_LABS() { return planLabs(); }, PLAN_CHAPTERS: PLAN_CHAPTERS, BASE_MACHINES: BASE_MACHINES, labPlanned: labPlanned, planCheck: planCheck, applyPlan: applyPlan,
@@ -10163,7 +10197,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card"><h2><span class="n">2</span> Version</h2><p class="hint" id="verhint"></p><div class="pills" id="versions"></div></div>';
     h += '<div class="card"><h2><span class="n">3</span> Platform settings</h2><p class="hint">Names of the hosts, storage, and network connections the script needs. Empty fields show a placeholder in the command.</p><div class="field" id="params"></div></div>';
     h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files, but few or no machines have been built from them, and Chapter 09 lists what was built. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
-    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div><label for="conpw">Console password</label><div><input type="text" id="conpw" class="wide" style="max-width:220px" autocomplete="off"> <span class="small" id="conpwnote"></span></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
+    h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div></div>';
+    h += '<div class="field" id="pwbox" style="margin-bottom:10px"><label for="labpw">Lab password</label><div><input type="text" id="labpw" class="wide" style="max-width:220px" autocomplete="off" spellcheck="false"> <span class="small" id="labpwnote"></span></div>' +
+      [['conpw', 'console', 'Console and sudo'], ['keypw', 'key', 'SSH key passphrase'], ['winpw', 'windows', 'Windows admin'], ['hardpw', 'hardened', 'Hardened flavors']].map(function (x) {
+        return '<label for="' + x[0] + '" data-pwrow="' + x[1] + '">' + x[2] + '</label><div data-pwrow="' + x[1] + '"><input type="text" id="' + x[0] + '" class="wide" style="max-width:220px" autocomplete="off" spellcheck="false"> <label class="small"><input type="checkbox" data-prompt="' + x[1] + '"> Prompt when the script runs</label><span class="small" style="display:block" id="' + x[0] + 'note"></span></div>';
+      }).join('') + '</div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
     h += '<div class="field" style="margin-bottom:10px"><label for="labtag">Lab name</label><div><input type="text" id="labtag" class="wide" style="max-width:120px" autocomplete="off" spellcheck="false"> <span class="small" id="labtagnote"></span></div></div>';
     h += '<p class="small" id="plannote"></p><div class="actions" style="margin-top:6px;margin-bottom:10px"><button class="btn" id="planapply">Match the machines to these labs</button></div>';
@@ -10445,7 +10483,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       smsg.textContent = serr || '';
     });
     lastSub = v.sub; lastVlan = v.vlan;
-    if (document.activeElement !== $('conpw') && $('conpw').value !== S.consolePw) $('conpw').value = S.consolePw;
+    [['labpw', 'labPw'], ['conpw', 'consolePw'], ['keypw', 'keyPw'], ['winpw', 'winPw'], ['hardpw', 'hardPw']].forEach(function (x) { if (document.activeElement !== $(x[0]) && $(x[0]).value !== S[x[1]]) $(x[0]).value = S[x[1]]; });
     if (document.activeElement !== $('labtag') && $('labtag').value !== S.labTag) $('labtag').value = S.labTag;
     // The labs you plan, and the machines they use.
     Array.prototype.forEach.call(document.querySelectorAll('[data-planlab]'), function (cb) { cb.checked = !S.labsOff[cb.getAttribute('data-planlab')]; });
@@ -10519,11 +10557,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       pin.className = 'wide' + (pe ? ' err' : v.ports[p[0]] ? ' chg' : ''); document.querySelector('[data-m=port][data-k="' + p[0] + '"]').textContent = pe || '';
     });
     $('conpw').className = 'wide' + (S.consolePw !== C.DEFAULT_CONSOLE_PW ? ' chg' : '');
+    var usedF = C.usedFlavors(m), pwUsed = { console: S.platform !== 'wsl', key: true, windows: usedF.some(function (f) { return C.FLAVOR[f].family === 'windows'; }), hardened: usedF.some(function (f) { return C.FLAVOR[f].needs_password; }) };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-pwrow]'), function (el) { el.style.display = pwUsed[el.getAttribute('data-pwrow')] ? '' : 'none'; });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-prompt]'), function (el) { var k = el.getAttribute('data-prompt'); el.checked = !!S.prompt[k]; });
+    [['conpw', 'console'], ['keypw', 'key'], ['winpw', 'windows'], ['hardpw', 'hardened']].forEach(function (x) { $(x[0]).disabled = !!S.prompt[x[1]]; });
+    ['labpw', 'winpw', 'hardpw'].forEach(function (id) { $(id).className = 'wide' + ($(id).value !== C.DEFAULT_CONSOLE_PW ? ' chg' : ''); });
+    $('keypw').className = 'wide' + (S.keyPw ? ' chg' : '');
+    $('labpwnote').textContent = 'Each password below starts with this one until you type another. ' + (S.labPw === C.DEFAULT_CONSOLE_PW ? 'This default is published with the page, so change it outside a closed lab.' : '') + ' Choices files and this browser keep no password.';
+    $('keypwnote').textContent = S.prompt.key ? 'The build asks for it when it makes the key.' : S.keyPw ? 'Used when the build makes the key because the file does not exist. ssh-agent then holds the key (see the commands).' : 'Empty: a key the build makes has no passphrase.';
+    $('winpwnote').textContent = S.prompt.windows ? 'The build asks for it.' : 'Written into the answer file of each Windows machine. Use a lab-only value.';
+    $('hardpwnote').textContent = S.prompt.hardened ? 'The build asks for it.' : 'The password of the admin user on a hardened flavor. make-seed.py makes the crypt hash.';
     var tagOk = S.labTag === C.labTag();
     $('labtag').className = 'wide' + (!tagOk ? ' err' : S.labTag !== C.DEFAULT_TAG ? ' chg' : '');
     $('labtagnote').textContent = !tagOk ? 'Use 1 to 5 lowercase letters and digits. ' + C.DEFAULT_TAG + ' is used.' :
       'Every name of the build carries it: ' + ['lab201', 'gw-201', 'LAB201_CONSOLE_PASSWORD', 'baseline-201'].map(function (x) { return C.retag(x); }).join(', ') + ', and the script and zip names. ' + (S.labTag === C.DEFAULT_TAG ? 'The chapters use 201.' : 'The chapters use 201, and the walkthroughs in the zip use ' + S.labTag + '.');
-    $('conpwnote').textContent = S.platform === 'wsl' ? 'Not used on WSL.' : S.consolePw ? 'For the admin user at the machine console and for sudo. SSH still takes only your key. ' + (S.consolePw === C.DEFAULT_CONSOLE_PW ? 'This default is published with the page, so change it outside a closed lab.' : '') : 'Empty: key-only login, and no console login.';
+    $('conpwnote').textContent = S.platform === 'wsl' ? 'Not used on WSL.' : S.prompt.console ? 'The build asks for it. SSH still takes only your key.' : S.consolePw ? 'For the admin user at the machine console and for sudo. SSH still takes only your key. ' + (S.consolePw === C.DEFAULT_CONSOLE_PW ? 'This default is published with the page, so change it outside a closed lab.' : '') : 'Empty: key-only login, and no console login.';
     ['a', 'b'].forEach(function (k) {
       var swi = document.querySelector('[data-sw="' + k + '"]'), swn = document.querySelector('[data-m=sw][data-k="' + k + '"]'), swe = v.sw.err[k];
       swi.className = 'wide' + (swe ? ' err' : v.sw.changed[k] ? ' chg' : '');
@@ -10677,7 +10725,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   var storeKey = 'lab201-builder-choices', storeOn = false;
   function storable() {
     var c = JSON.parse(C.choicesText());
-    if (c.consolePw !== '') { if (c.consolePw !== C.DEFAULT_CONSOLE_PW) c.pwCustom = true; delete c.consolePw; }
+    if (c.passwords && c.passwords.typed) { c.pwCustom = true; delete c.passwords.typed; }
     return c;
   }
   function saveLocal() {
@@ -10696,7 +10744,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     } catch (e) { return null; }
   }
   function keptText(kept) {
-    return kept ? 'Your choices from last time were put back from this browser.' + (kept.notes && kept.notes.length ? ' Note: ' + kept.notes.join('; ') + '.' : '') + (kept.pwCustom ? ' The console password is not kept there, so type yours again.' : '') + ' Click Start over to go back to the defaults.'
+    return kept ? 'Your choices from last time were put back from this browser.' + (kept.notes && kept.notes.length ? ' Note: ' + kept.notes.join('; ') + '.' : '') + (kept.pwCustom ? ' Passwords are not kept there, so type yours again.' : '') + ' Click Start over to go back to the defaults.'
       : 'This browser keeps your choices, so a reload does not lose them. It does not keep a console password you type. Start over clears them.';
   }
   // What a link that names lab sets did, for the note under the lab sets.
@@ -10765,6 +10813,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       else if (t.id === 'v6') S.v6 = t.value.trim();
       else if (t.id === 'licfile') S.licFile = t.value;
       else if (t.id === 'conpw') S.consolePw = t.value;
+      else if (t.id === 'labpw') C.setLabPw(t.value);
+      else if (t.id === 'keypw') S.keyPw = t.value;
+      else if (t.id === 'winpw') S.winPw = t.value;
+      else if (t.id === 'hardpw') S.hardPw = t.value;
+      else if (t.hasAttribute('data-prompt')) S.prompt[t.getAttribute('data-prompt')] = t.checked;
       else if (t.id === 'labtag') S.labTag = t.value.trim().toLowerCase();
       else if (t.id === 'rhelimg') S.rhelImage = t.value;
       else if (t.hasAttribute('data-image')) S.images[t.getAttribute('data-image')] = t.value;
@@ -10972,7 +11025,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     reset('proxmox'); S.vms['admin-201'].flavor = 'rhel-10'; m = man(); cmd = C.commandText(m);
     ok(cmd.indexOf('--rhel-image <PATH_TO_RHEL_10_QCOW2>') > 0 && cmd.indexOf('--license-file') > 0, 'Proxmox with Red Hat asks for the image and a license file');
     reset('proxmox'); S.vms['gw-201'].flavor = 'ubuntu-24.04-stig'; cmd = C.commandText(man());
-    ok(cmd.indexOf('LAB201_ADMIN_PASSWORD_HASH') > 0, 'a hardened flavor asks for the admin password hash');
+    ok(cmd.indexOf("export LAB201_ADMIN_PASSWORD='" + C.DEFAULT_CONSOLE_PW + "'") > 0 && cmd.indexOf('openssl') < 0, 'a hardened flavor gets the lab password, and make-seed.py makes its hash');
     reset('kvm'); cmd = C.commandText(man());
     ok(cmd.indexOf('./deploy-lab201-kvm.sh') > 0 && cmd.indexOf('--bridge-t1 br-t1') > 0 && cmd.indexOf('--dry-run') > 0, 'KVM command');
     // VLAN renumbering and addresses
@@ -11076,8 +11129,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf("export LAB201_CONSOLE_PASSWORD='" + C.DEFAULT_CONSOLE_PW + "'") > 0 && cmd.indexOf('-Action Check') < 0, 'a console password is proposed for the admin user');
     S.consolePw = "it's"; var cmdQ = C.commandText(man()); S.consolePw = ''; 
     ok(cmdQ.indexOf("export LAB201_CONSOLE_PASSWORD='it'\\''s'") > 0 && C.commandText(man()).indexOf('LAB201_CONSOLE_PASSWORD') < 0, 'the console password is quoted, and an empty one is left out');
-    reset('vcenter'); S.consolePw = 'x1'; var pwSaved = C.choicesText(); reset('vcenter'); C.applyChoices(JSON.parse(pwSaved));
-    ok(S.consolePw === 'x1' && C.commandText(man()).indexOf("$env:LAB201_CONSOLE_PASSWORD = 'x1'") > 0, 'the choices file keeps the console password');
+    reset('vcenter'); S.consolePw = 'x1'; S.prompt.key = true; var pwSaved = C.choicesText(); reset('vcenter'); var pwNotes = C.applyChoices(JSON.parse(pwSaved));
+    ok(pwSaved.indexOf('"x1"') < 0 && S.consolePw === C.DEFAULT_CONSOLE_PW && S.prompt.key === true && pwNotes.some(function (n) { return n.indexOf('the file keeps no password') === 0; }), 'the choices file keeps the Prompt boxes and no password');
+    reset('vcenter'); S.consolePw = ''; pwSaved = C.choicesText(); reset('vcenter'); C.applyChoices(JSON.parse(pwSaved));
+    ok(S.consolePw === '', 'the choices file keeps an empty console password, because it is no secret');
+    // The passwords: one lab password, a field for each, and Prompt
+    reset('proxmox'); S.vms['gw-201'].flavor = 'ubuntu-24.04-stig'; S.vms['dhcp-201'].flavor = 'win-2025'; C.setLabPw('Lab-Pw1'); S.hardPw = 'Hard-2'; cmd = C.commandText(man());
+    ok(S.consolePw === 'Lab-Pw1' && S.winPw === 'Lab-Pw1' && cmd.indexOf("export LAB201_CONSOLE_PASSWORD='Lab-Pw1'") > 0 && cmd.indexOf("export LAB201_WINDOWS_ADMIN_PASSWORD='Lab-Pw1'") > 0 && cmd.indexOf("export LAB201_ADMIN_PASSWORD='Hard-2'") > 0 &&
+      cmd.indexOf('LAB201_SSH_KEY_PASSPHRASE') < 0 && cmd.indexOf('LAB201_PROMPT') < 0 && cmd.indexOf('ssh-agent') < 0, 'every password starts with the lab password, a typed one stays, and a new key has no passphrase');
+    C.setLabPw('Lab-Pw2');
+    ok(S.consolePw === 'Lab-Pw2' && S.winPw === 'Lab-Pw2' && S.hardPw === 'Hard-2', 'a new lab password changes the fields that still follow it');
+    S.prompt.console = true; S.prompt.hardened = true; S.keyPw = "k'1"; cmd = C.commandText(man());
+    ok(cmd.indexOf('LAB201_CONSOLE_PASSWORD') < 0 && cmd.indexOf('export LAB201_ADMIN_PASSWORD=') < 0 && cmd.indexOf("export LAB201_PROMPT='hardened,console'") > 0 && cmd.indexOf("export LAB201_SSH_KEY_PASSPHRASE='k'\\''1'") > 0 &&
+      cmd.indexOf('eval "$(ssh-agent -s)"\nssh-add ~/.ssh/id_ed25519\n') > 0, 'a prompted password leaves its line out and is named in LAB201_PROMPT, and a passphrase adds ssh-agent');
+    reset('workstation'); S.prompt.key = true; cmd = C.commandText(man());
+    ok(cmd.indexOf("$env:LAB201_PROMPT = 'key'") > 0 && cmd.indexOf('Start-Service ssh-agent\nssh-add ~\\.ssh\\id_ed25519\n') > 0, 'PowerShell asks for a key passphrase and starts ssh-agent');
     // The line that runs the script past the execution policy, from the zip extracted into Downloads
     reset('workstation'); cmd = C.commandText(man());
     ok(cmd.indexOf('\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub\n') > 0 &&
