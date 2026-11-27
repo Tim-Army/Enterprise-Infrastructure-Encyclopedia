@@ -7750,14 +7750,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   // IPv6 prefix is an address, not a name, so it keeps its own field. Five characters keep the longest machine name,
   // mcast-src-<name>, within the 15 characters of a Windows computer name.
   var DEFAULT_TAG = '201', TAG_RE = /^[a-z0-9]{1,5}$/;
-  // The names that end in the lab name: the machines, the hosts built by hand, and the service names of the lab data.
-  var TAG_HOSTS = (function () {
-    var seen = { baseline: true }, re = /(?<![\w.\/-])([a-z][a-z0-9]*(?:-[a-z0-9]+)*?)-201[ab]?(?![\w-])/g, q;
-    var text = JSON.stringify(BASE) + JSON.stringify(LABDATA) + JSON.stringify(FL);
-    while ((q = re.exec(text))) seen[q[1]] = true;
-    return Object.keys(seen).sort(function (a, b) { return b.length - a.length; });
-  })();
-  var TAG_TOKEN = new RegExp('(LAB|Lab|lab)201(?![0-9])|\\b(Lab|lab) 201\\b(?![.0-9])|(?<![\\w.])(' + TAG_HOSTS.join('|') + ')-201([ab]?)(?![\\w-])', 'g');
+  // The words with the lab name: lab201, Lab201, and LAB201, and Lab 201 in a sentence. Then every name that ends in
+  // -201, -201a, or -201b: the machines, the hosts built by hand, the service names, and the names the lab chapters
+  // give, such as baseline-201, mirror-201, and lab-crl-201. The second pass runs after the first, so lab201-svc-201a
+  // gets both. A number such as 201.3 and a name that goes on after 201 (volume-201-...) are no such names.
+  var TAG_WORD = /(LAB|Lab|lab)201(?![0-9])|\b(Lab|lab) 201\b(?![.0-9])/g;
+  var TAG_NAME = /(?<![\w.\/])([a-z][a-z0-9]*(?:-[a-z0-9]+)*?)-201([ab]?)(?![\w-])/g;
   // Links and the node names of the topology picture keep their text: a link points at a file of the repository, and
   // the page finds a node of the picture by its name.
   var TAG_KEEP = /(https?:\/\/[^\s"'<>)\]`]+|data-node="[^"]*")/;
@@ -7899,11 +7897,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var t = tag || labTag();
     if (t === DEFAULT_TAG || typeof s !== 'string') return s;
     return s.split(TAG_KEEP).map(function (part, i) {
-      return i % 2 ? part : part.replace(TAG_TOKEN, function (all, a, b, h, ab) {
-        if (a) return a + (a === 'LAB' ? t.toUpperCase() : t);
-        if (b) return b + ' ' + t;
-        return h + '-' + t + ab;
-      });
+      return i % 2 ? part : part.replace(TAG_WORD, function (all, a, b) { return a ? a + (a === 'LAB' ? t.toUpperCase() : t) : b + ' ' + t; })
+        .replace(TAG_NAME, function (all, h, ab) { return h + '-' + t + ab; });
     }).join('');
   }
   function retagObj(o) { return labTag() === DEFAULT_TAG || !o ? o : JSON.parse(retag(JSON.stringify(o))); }
@@ -11152,11 +11147,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf("\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab305-build\\workstation\\Deploy-Lab305-Workstation.ps1 -SshKeyFile 'C:\\My Keys\\lab.pub'\n") > 0, 'the bypass line follows the lab name and quotes a key path with a space');
     // The lab name
     reset('workstation');
-    var tagText = 'gw-201 svc-201a oob-admin-201 radius-201b lab201-svc-201a LAB201_KEYS Deploy-Lab201-Workstation.ps1 baseline-201 Lab 201 setup';
+    var tagText = 'gw-201 svc-201a oob-admin-201 radius-201b lab201-svc-201a LAB201_KEYS Deploy-Lab201-Workstation.ps1 baseline-201 Lab 201 setup lab-crl-201 mirror-201';
     var tagKeep = 'Lab 201.3 fd00:db8:201::1 volume-201-fortiswitch https://x/lab201-vms.json <g data-node="gw-201">';
     ok(C.labTag() === '201' && C.retag(tagText) === tagText && C.retag(tagKeep) === tagKeep, 'the lab name 201 changes nothing');
     S.labTag = '305'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(C.retag(tagText) === 'gw-305 svc-305a oob-admin-305 radius-305b lab305-svc-305a LAB305_KEYS Deploy-Lab305-Workstation.ps1 baseline-305 Lab 305 setup' && C.retag(tagKeep) === tagKeep, 'another lab name renames the names, and keeps lab numbers, IPv6 addresses, links, and picture nodes');
+    ok(C.retag(tagText) === 'gw-305 svc-305a oob-admin-305 radius-305b lab305-svc-305a LAB305_KEYS Deploy-Lab305-Workstation.ps1 baseline-305 Lab 305 setup lab-crl-305 mirror-305' && C.retag(tagKeep) === tagKeep, 'another lab name renames the names, and keeps lab numbers, IPv6 addresses, links, and picture nodes');
     var tagAll = [C.commandText(m), C.checklistText(m, v), C.labValuesText(m, v), C.claudeText(m, v, C.WALKTHROUGHS), C.startText(), C.claudeHelpText(), C.retag(JSON.stringify(m)), C.platformNotes().join('\n'),
       C.topologySvg(m, v).replace(/data-node="[^"]*"/g, ''), C.netConfigs(v).gateway.text || '', C.netConfigs(v).firewall.text, C.netConfigs(v).firewall.file].join('\n');
     ok(!v.errors.length && !/[A-Za-z0-9_.\/-]*201[A-Za-z0-9_.-]*/.test(tagAll.replace(/fd00:db8:201::[0-9a-f]*/g, '')) && tagAll.indexOf('lab305-t1') > 0 && tagAll.indexOf('gw-305') > 0 &&
