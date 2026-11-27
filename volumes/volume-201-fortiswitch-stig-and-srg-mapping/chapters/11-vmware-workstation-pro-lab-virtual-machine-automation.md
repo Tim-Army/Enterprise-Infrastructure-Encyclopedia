@@ -55,7 +55,7 @@ The scripts are written for Workstation Pro 26H1 U1 (build 25688693, 3 September
 2. Downloads the Ubuntu cloud image OVA and checks its SHA-256 sum.
 3. Renders seed ISOs with `--guest-agent vmware --tagging guest`.
 4. Imports the OVA once with `ovftool` as `lab201-base` under `-VmRoot`.
-5. For each machine: `vmrun clone` to a new folder, then rewrite the clone's `.vmx` with the name, memory, CPU count, the network adapters (VMXNET 3, custom or NAT, the static MAC address), and the seed ISO on `ide1:0`, then grow the disk with `vmware-vdiskmanager -x`.
+5. For each machine: `vmrun clone` to a new folder, then rewrite the clone's `.vmx` with the name, memory, CPU count, the network adapters (VMXNET 3, custom or NAT, the static MAC address), and the seed ISO on `ide1:0`, with the floppy drive of the image turned off (`floppy0.present = "FALSE"`), then grow the disk with `vmware-vdiskmanager -x`.
 6. Starts `gw-201` first and then the rest, with `vmrun start ... nogui`.
 
 ### Parameters

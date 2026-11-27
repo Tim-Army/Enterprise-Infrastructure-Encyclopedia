@@ -163,7 +163,7 @@ Hardware version 22 runs only on ESXi 9.0. Pass `-HardwareVersion` to override t
 3. Creates a virtual switch for each network, sets the trunk security policy, and creates a port group for each network and VLAN combination in the manifest. Names follow `lab201-t1-v2` for VLAN 2 on trunk T1 and `lab201-t1-trunk` for a gateway trunk.
 4. Downloads the OVA if it is not in `work/` and checks its SHA-256 sum.
 5. Renders a seed ISO for each machine with `make-seed.py`, using `--guest-agent vmware` (the machines get `open-vm-tools`) and `--tagging hypervisor`.
-6. For each machine: imports the OVA under the machine's name, sets the vCPU count, memory, guest OS (`ubuntu64Guest`), and hardware version, grows the disk, replaces the network adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/` on the datastore, and attaches it.
+6. For each machine: imports the OVA under the machine's name, sets the vCPU count, memory, guest OS (`ubuntu64Guest`), and hardware version, grows the disk, replaces the network adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/` on the datastore, attaches it, and removes the floppy drive that the image brings.
 7. Powers on `gw-201` first, then the rest.
 
 Every action in step 3 and later honors `-WhatIf`. A preview downloads no image and applies no license key. In place of step 4 it names the image file that the build fetches, and it names the products whose license key the build applies. Step 5 still runs, so a preview leaves the seed ISOs in `work/seeds`.

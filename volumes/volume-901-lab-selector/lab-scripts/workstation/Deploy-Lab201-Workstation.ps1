@@ -502,7 +502,9 @@ foreach ($vmDef in $lab.vms) {
   }
   $iso = (Resolve-Path (Join-Path $seedDir "$name-seed.iso")).Path
   $add += 'ide1:0.present = "TRUE"', 'ide1:0.deviceType = "cdrom-image"', "ide1:0.fileName = `"$iso`"", 'ide1:0.startConnected = "TRUE"'
-  Edit-Vmx -Path $vmx -Add $add -Drop { param($l) $l -match '^(ethernet\d+\.|ide1:0\.|powerType\.|displayName|memsize|numvcpus|guestOS)\b' }
+  # The cloud image brings a floppy drive, which no lab machine uses.
+  $add += 'floppy0.present = "FALSE"'
+  Edit-Vmx -Path $vmx -Add $add -Drop { param($l) $l -match '^(ethernet\d+\.|ide1:0\.|floppy0\.|powerType\.|displayName|memsize|numvcpus|guestOS)\b' }
 
   $disk = (Get-Content $vmx | Where-Object { $_ -match '^scsi0:0\.fileName' } | Select-Object -First 1) -replace '^[^"]*"([^"]+)".*$', '$1'
   & $vdisk -x "$($vmDef.disk_gb)GB" (Join-Path $dir $disk) | Out-Null

@@ -86,7 +86,7 @@ Storage goes on the vSAN datastore, and with the default mirroring policy the th
 4. Creates the networks, as standard or distributed switches. Trunk networks get the promiscuous, forged transmit, and MAC change settings.
 5. Downloads the OVA (checking its SHA-256 sum) and imports it as the template.
 6. Renders the seed ISOs with `--guest-agent vmware --tagging hypervisor`.
-7. For each machine: clones the template onto the host and datastore, sets the CPU and memory, grows the disk, replaces the adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/`, and attaches it.
+7. For each machine: clones the template onto the host and datastore, sets the CPU and memory, grows the disk, replaces the adapters with VMXNET 3 adapters that have the manifest's MAC addresses, uploads the seed ISO to `lab201-seeds/`, attaches it, and removes the floppy drive that the image brings.
 8. Powers on `gw-201` first, then the rest.
 
 With `-WhatIf`, the script downloads no image and applies no license key, as in Chapter 09.

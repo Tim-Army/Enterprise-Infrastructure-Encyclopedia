@@ -33,6 +33,7 @@ The volume was not written from nothing. Its page and its scripts were built ins
 | Passwords and the SSH key | 2026-11-27 | One lab password with a field for each password, Prompt boxes, and an SSH key that the build makes when it is missing | — |
 | The Windows user name | 2026-11-27 | Section 3 asks for the user that runs the script, and the commands write `C:\Users\<name>` in place of `~` | — |
 | Disks of at least 10 GB | 2026-11-27 | The smallest disk of every machine is the 10 GiB of the Ubuntu cloud image | — |
+| No floppy drive | 2026-11-27 | The VMware scripts remove the floppy drive that the Ubuntu image brings | — |
 | [Chapter 01](01-the-lab-selector.md) | 2026-11-20 | The description of the page moved from Volume CCI's Chapter 09, and the parts about the lab sets were written new | Updated whenever the page changes |
 | [Chapter 02](02-lab-data-and-how-to-add-a-lab-set.md) | 2026-11-20 | Written from the catalog and the sync script | Updated whenever the data changes |
 | 90, this chapter | 2026-11-20 | Written from the work of that day and from Volume CCI's Chapter 90 | Updated whenever the volume changes |
@@ -174,6 +175,10 @@ The owner pasted the bypass line with `~` and Windows did not find the script, w
 ### Disks of at least 10 GB, 2026-11-27
 
 The owner's first build on Workstation, a lab named 202, built all 12 machines. Workstation refused to resize three disks, of `mcast-src-202`, `static-1`, and `static-2`, because the manifest asked for 8 GB and the disk of the Ubuntu 24.04 OVA is 10 GiB (`ovf:capacity` 10737418240 in its OVF, read on this day, and the same for the 26.04 OVA). A disk cannot shrink, so the machines kept 10 GB. The owner asked that the minimum sizes match the image. In `lab201-vms.json`, every minimum disk below 10 GB is now 10 (`ca`, `dhcp`, both routing peers, `mcast-src`, `static-1`, `static-2`), and the three 8 GB disks are 10 GB, so a new build asks for 254 GB of thin disk instead of 248. The flavor minimums of `flavors.json` could have done it for Ubuntu alone, but the page would then have marked those machines as raised by the flavor in every build. Three self-test checks were rewritten for the new sizes. The same build made the SSH key of the user `admin` with no passphrase, which was the first run of that step on a real host.
+
+### No floppy drive, 2026-11-27
+
+The owner asked that the machines have no floppy device. The OVF of the Ubuntu cloud image describes a floppy drive (`Floppy 1`), and the imports keep it. The Workstation script now drops the `floppy0.` lines of each clone's `.vmx` and writes `floppy0.present = "FALSE"`, and the ESXi and vCenter scripts remove the drive with `Remove-FloppyDrive`, which also covers the floppy that `New-VM` gives a machine that installs from an ISO. Proxmox VE, KVM, and WSL add no floppy. The Workstation edit was tried on a sample `.vmx` with the script's own `Edit-Vmx`. The ESXi and vCenter lines were checked only for syntax, because no vSphere host was at hand. Machines built before the change keep their floppy drive.
 
 ### What was tested, and what was not
 

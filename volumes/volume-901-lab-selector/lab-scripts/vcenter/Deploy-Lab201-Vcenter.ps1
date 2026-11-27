@@ -689,6 +689,8 @@ try {
     }
     Copy-DatastoreItem -Item (Join-Path $seedDir "$name-seed.iso") -Destination 'lab201ds:\lab201-seeds\' -Force
     Get-CDDrive -VM $vm | Remove-CDDrive -Confirm:$false
+    # The cloud image and New-VM bring a floppy drive, which no lab machine uses.
+    Get-FloppyDrive -VM $vm | Remove-FloppyDrive -Confirm:$false
     if ($isIso) { New-CDDrive -VM $vm -IsoPath (Get-IsoPath -Id $fid -Supplied $IsoImages) -StartConnected | Out-Null }
     New-CDDrive -VM $vm -IsoPath "[$($ds.Name)] lab201-seeds/$name-seed.iso" -StartConnected | Out-Null
   }
