@@ -490,14 +490,17 @@ PowerShell process only, so nothing changes for the rest of the computer.
 To run one script past the execution policy without changing any setting:
 
 ```powershell
-pwsh -ExecutionPolicy Bypass -File ~\Downloads\lab201-build\vcenter\Deploy-Lab201-Vcenter.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
+pwsh -ExecutionPolicy Bypass -File C:\Users\admin\Downloads\lab201-build\vcenter\Deploy-Lab201-Vcenter.ps1 -SshKeyFile C:\Users\admin\.ssh\id_ed25519.pub -WhatIf
 ```
 
-The path is the one of the zip extracted into Downloads, so the line works from
-any folder. Use the script for your platform, and add its other parameters
-after it. In Windows PowerShell 5.1, use `powershell` and `$HOME` in place of
-`pwsh` and `~`, because Windows PowerShell does not expand `~` in the path that
-`-File` takes. A table parameter such as `-FlavorImages @{ ... }` cannot be
+The path is the one of the zip extracted into the Downloads folder of the user
+`admin`, so the line works from any folder. Put your own user name in place of
+`admin`: the Lab Selector does it when you type the name in **Windows user
+name** in section 3. The paths are written out because a pasted `~` is not
+expanded by Command Prompt, by Windows PowerShell 5.1 in the path that `-File`
+takes, or by a script that gets it as a parameter. Typed in PowerShell and
+completed with Tab, `~` is expanded before the command runs. Use the script for
+your platform, and add its other parameters after it. A table parameter such as `-FlavorImages @{ ... }` cannot be
 passed this way, so use the next command for those.
 
 To allow scripts for the rest of the current window instead, and then run the

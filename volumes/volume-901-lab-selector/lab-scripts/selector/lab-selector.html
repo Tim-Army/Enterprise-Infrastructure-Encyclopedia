@@ -7770,6 +7770,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       versions: [['7', 'ESXi 7.0'], ['8', 'ESXi 8.0'], ['9', 'ESXi 9.0']], defVersion: '8',
       script: 'esxi/Deploy-Lab201-Esxi.ps1', exe: 'Deploy-Lab201-Esxi.ps1', versionFlag: '-VsphereVersion',
       fields: [
+        { id: 'user', label: 'Windows user name', def: 'admin', noFlag: true, help: 'The account that runs the script. Its folder is C:\\Users\\<name>, which the paths below use in place of ~' },
         { id: 'host', label: 'ESXi host', ph: '<ESXI_HOST>', flag: '-EsxiHost' },
         { id: 'datastore', label: 'Datastore', ph: '<DATASTORE>', flag: '-Datastore' },
         { id: 't1', label: 'Trunk T1 uplink (to sw-648f-1)', def: 'vmnic1', flag: '-Trunk1Nic' },
@@ -7786,6 +7787,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       versions: [['7', 'vCenter 7.0'], ['8', 'vCenter 8.0'], ['9', 'vCenter 9.0']], defVersion: '8',
       script: 'vcenter/Deploy-Lab201-Vcenter.ps1', exe: 'Deploy-Lab201-Vcenter.ps1', versionFlag: '-VsphereVersion',
       fields: [
+        { id: 'user', label: 'Windows user name', def: 'admin', noFlag: true, help: 'The account that runs the script. Its folder is C:\\Users\\<name>, which the paths below use in place of ~' },
         { id: 'vc', label: 'vCenter Server', ph: '<VCENTER>', flag: '-VcenterServer' },
         { id: 'dc', label: 'Datacenter', ph: '<DATACENTER>', flag: '-Datacenter' },
         { id: 'vmhost', label: 'Host that owns the trunk NICs', ph: '<HOST>', flag: '-VMHostName' },
@@ -7806,6 +7808,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       script: 'vcenter/Deploy-Lab201-Vcenter.ps1', exe: 'Deploy-Lab201-Vcenter.ps1', versionFlag: '-VsphereVersion',
       fixed: [['-NoUplinkChanges', null]],
       fields: [
+        { id: 'user', label: 'Windows user name', def: 'admin', noFlag: true, help: 'The account that runs the script. Its folder is C:\\Users\\<name>, which the paths below use in place of ~' },
         { id: 'vc', label: 'VxRail vCenter Server', ph: '<VXRAIL_VCENTER>', flag: '-VcenterServer' },
         { id: 'dc', label: 'Datacenter', ph: '<DATACENTER>', flag: '-Datacenter' },
         { id: 'cluster', label: 'VxRail cluster', ph: '<VXRAIL_CLUSTER>', flag: '-ClusterName' },
@@ -7821,6 +7824,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       versions: [['26H1U1', 'Workstation Pro 26H1 U1']], defVersion: '26H1U1',
       script: 'workstation/Deploy-Lab201-Workstation.ps1', exe: 'Deploy-Lab201-Workstation.ps1',
       fields: [
+        { id: 'user', label: 'Windows user name', def: 'admin', noFlag: true, help: 'The account that runs the script. Its folder is C:\\Users\\<name>, which the paths below use in place of ~' },
         { id: 'vmroot', label: 'Folder for the machines', def: '', ph: '(default: lab201 in the Workstation virtual machine folder)', flag: '-VmRoot', optional: true },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
         { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
@@ -7867,6 +7871,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       versions: [['2', 'WSL 2 on Windows 11']], defVersion: '2',
       script: 'wsl/Deploy-Lab201-Wsl.ps1', exe: 'Deploy-Lab201-Wsl.ps1',
       fields: [
+        { id: 'user', label: 'Windows user name', def: 'admin', noFlag: true, help: 'The account that runs the script. Its folder is C:\\Users\\<name>, which the paths below use in place of ~' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
         { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'root', label: 'Folder for the distributions', def: '', ph: '(default: %USERPROFILE%\\wsl-lab201)', flag: '-InstallRoot', optional: true }
@@ -8352,6 +8357,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ['vcpu', 'mem', 'disk'].forEach(function (k) { if (res[k].err) out.errors.push(nm + ': ' + res[k].err); });
       if (r.override && (res.vcpu.below || res.mem.below || res.disk.below)) out.warnings.push(nm + ' is below its proposed minimum by Override. Package installs may fail or run out of memory.');
     });
+    if (PLATFORMS[state.platform].shell === 'ps' && String(state.params.user || '').trim() && !winUser()) out.errors.push('Windows user name ' + String(state.params.user).trim() + ': a Windows user name has no \\ / : * ? " < > | and at most 64 characters. ~ is used');
     if (String(state.labTag || '') !== labTag()) out.errors.push('Lab name ' + state.labTag + ': use 1 to 5 lowercase letters and digits. ' + DEFAULT_TAG + ' is used');
     var v4ok = validIpv4Prefix(state.v4), v6ok = validIpv6Prefix(state.v6);
     if (!v4ok) out.errors.push('IPv4 block ' + state.v4 + '. Use the first two octets of a private range, such as 10.77');
@@ -8568,9 +8574,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if (p.versionFlag) args.push([p.versionFlag, state.version]);
     p.fields.forEach(function (f) {
       var v = state.params[f.id];
+      if (f.noFlag) return;
       if (f.type === 'check') { if (v) args.push([f.flag, null]); return; }
       if (!v && f.optional) return;
-      args.push([f.flag, v || f.ph || '']);
+      args.push([f.flag, ps && v ? homePath(v) : v || f.ph || '']);
     });
     (p.fixed || []).forEach(function (x) { args.push(x); });
     if (p.vmware && !p.wslOnly) {
@@ -8593,7 +8600,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var names = m.vms.map(function (x) { return x.name; });
     var blocks = [];
     if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, use one of these.\n# Both apply to one PowerShell process only, so nothing changes for the\n# rest of the computer. Neither works if Group Policy sets the execution\n# policy. In that case, ask your administrator.\n#\n# Allow scripts for the rest of this window, then run the commands below:',
-      'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting, from any folder.\n# The path is the one of the zip extracted into Downloads. Add the script\'s other\n# parameters after it. A table parameter (@{ ... }) cannot be passed this way.\n# In Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~.\n' + bypassLine() + '\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
+      'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting, from any folder.\n# The path is the one of the zip extracted into Downloads. Add the script\'s other\n# parameters after it. A table parameter (@{ ... }) cannot be passed this way.' + (winUser() ? '' : '\n# In Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~.') + '\n' + bypassLine() + '\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
     // A password line, and the passwords that the build script asks for instead (LAB201_PROMPT, read by make-seed.py).
     var setPw = function (name, pw) { return ps ? '$env:' + name + " = '" + pw.replace(/'/g, "''") + "'" : 'export ' + name + "='" + pw.replace(/'/g, "'\\''") + "'"; }, pr = state.prompt, asks = [];
     var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
@@ -8633,7 +8640,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     blocks.push(['2. Build the machines.', line([])]);
     // A key with a passphrase asks for it at every login, unless ssh-agent holds the key.
     if (state.keyPw || pr.key) {
-      var priv = String(state.params.key || (ps ? DEFAULT_KEY_WIN : '~/.ssh/id_ed25519.pub')).trim().replace(/\.pub$/, '');
+      var priv = (ps ? keyPath() : String(state.params.key || '~/.ssh/id_ed25519.pub').trim()).replace(/\.pub$/, '');
       blocks.push(['The SSH key has a passphrase. Let ssh-agent hold the key, so that SSH asks for the passphrase once.' + (ps ? '\n# Run the first line once, in a PowerShell window opened as administrator.' : ''),
         ps ? 'Get-Service ssh-agent | Set-Service -StartupType Automatic\nStart-Service ssh-agent\nssh-add ' + priv : 'eval "$(ssh-agent -s)"\nssh-add ' + priv]);
     }
@@ -8655,10 +8662,24 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     blocks.push(['Between labs: return every machine to the baseline. Each requirement lab ends with "Return to baseline".\n# This discards what changed on the machines since the snapshot. Reload the baseline configuration\n# of the switches too (Lab 999.6).', act('Restore', 'restore')]);
     return blocks;
   }
+  // The folder of the Windows user that runs the script. Windows does not expand ~ everywhere (Command Prompt, the Run
+  // box, and Windows PowerShell 5.1 with -File do not), so the commands write C:\Users\<name> for it. An empty or
+  // unusable name keeps ~.
+  var WIN_USER_RE = /^[^\\\/:*?"<>|\s][^\\\/:*?"<>|]{0,63}$/;
+  function winUser() { var u = String(state.params.user || '').trim(); return WIN_USER_RE.test(u) ? u : ''; }
+  function winHome() { return winUser() ? 'C:\\Users\\' + winUser() : '~'; }
+  // A path of the Windows platforms with ~ at its start written out as the user's folder.
+  function homePath(v) {
+    v = String(v);
+    return /^~([\\\/]|$)/.test(v) && winUser() ? winHome() + v.slice(1).replace(/\//g, '\\') : v;
+  }
+  function argPath(v) { return /^[~\w.:\\\/-]+$/.test(v) ? v : psQuote(v); }
+  // The script of the platform in the zip extracted into Downloads, and the SSH key file of the commands.
+  function scriptPath() { return winHome() + '\\Downloads\\lab201-build\\' + PLATFORMS[state.platform].script.replace(/\//g, '\\'); }
+  function keyPath() { return homePath(String(state.params.key || DEFAULT_KEY_WIN).trim()); }
   // The line that runs the script of the platform past the execution policy, from the zip extracted into Downloads.
   function bypassLine() {
-    var p = PLATFORMS[state.platform], key = String(state.params.key || DEFAULT_KEY_WIN).trim();
-    return 'pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\' + p.script.replace(/\//g, '\\') + ' -SshKeyFile ' + (/^[~\w.:\\\/-]+$/.test(key) ? key : psQuote(key));
+    return 'pwsh -ExecutionPolicy Bypass -File ' + argPath(scriptPath()) + ' -SshKeyFile ' + argPath(keyPath());
   }
   var PW_WHAT = { console: 'the console password', key: 'the passphrase of a new SSH key', windows: 'the Windows admin password', hardened: 'the password of the hardened machines' };
   function commandText(m) { return commandBlocks(m).map(function (b) { return '# ' + b[0] + '\n' + b[1]; }).join('\n\n') + '\n'; }
@@ -8705,7 +8726,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         n.push('Bind each service to its own address, because two copies of a service collide on the shared network.');
         break;
     }
-    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: ' + bypassLine() + ' (the path of the zip extracted into Downloads; in Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
+    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: ' + bypassLine() + ' (the path of the zip extracted into Downloads' + (winUser() ? '' : '; in Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~') + '). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
     n.push(state.platform === 'proxmox' || state.platform === 'workstation'
       ? 'This script has built the lab machines on a real host, but only with the choices that were tested (Chapter 09 says which). Run the preview first.'
       : 'This script has not been run on a real host. Run the preview first.');
@@ -10158,7 +10179,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   }
 
   window.LabSelectorCore = {
-    setLabPw: setLabPw, passwordsTyped: passwordsTyped,
+    setLabPw: setLabPw, passwordsTyped: passwordsTyped, winUser: winUser, homePath: homePath, scriptPath: scriptPath, keyPath: keyPath, bypassLine: bypassLine,
     BASE: BASE, FL: FL, retag: retag, labTag: labTag, DEFAULT_TAG: DEFAULT_TAG, TAG_RE: TAG_RE, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
     choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: tagged(labValuesText), claudeText: tagged(claudeText), startText: tagged(startText), claudeHelpText: tagged(claudeHelpText),
     fswFor: fswFor, fswCompare: fswCompare, FSW_BOOK: FSW_BOOK, FSW_DEFAULT: FSW_DEFAULT, get PLAN_LABS() { return planLabs(); }, PLAN_CHAPTERS: PLAN_CHAPTERS, BASE_MACHINES: BASE_MACHINES, labPlanned: labPlanned, planCheck: planCheck, applyPlan: applyPlan,
@@ -10249,7 +10270,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       var id = 'p_' + fd.id;
       if (fd.type === 'check') f += '<label for="' + id + '">' + fd.label + '</label><div><input type="checkbox" id="' + id + '" data-param="' + fd.id + '"' + (S.params[fd.id] ? ' checked' : '') + '> <span class="small">' + esc(fd.help || '') + '</span></div>';
       else if (fd.type === 'select') f += '<label for="' + id + '">' + fd.label + '</label><div><select id="' + id + '" data-param="' + fd.id + '">' + fd.options.map(function (o) { return '<option' + (S.params[fd.id] === o ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select></div>';
-      else f += '<label for="' + id + '">' + fd.label + '</label><div><input type="text" class="wide" id="' + id + '" data-param="' + fd.id + '" placeholder="' + esc(fd.ph || fd.def || '') + '" value="' + esc(S.params[fd.id]) + '"></div>';
+      else f += '<label for="' + id + '">' + fd.label + '</label><div><input type="text" class="wide" id="' + id + '" data-param="' + fd.id + '" placeholder="' + esc(fd.ph || fd.def || '') + '" value="' + esc(S.params[fd.id]) + '"' + (fd.help && fd.noFlag ? '> <span class="small" style="display:block">' + esc(fd.help) + '</span></div>' : '></div>');
+      if (fd.id === 'user') f += '<div style="grid-column:1/-1"><p class="small" style="margin:4px 0"><b>Full paths of this build</b></p><pre id="userpv" style="margin:0;white-space:pre-wrap;word-break:break-all"></pre></div>';
     });
     $('params').innerHTML = f;
   }
@@ -10408,6 +10430,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         var want = C.retag(pageText.get(n));
         if (n.nodeValue !== want) n.nodeValue = want;
       }
+      Array.prototype.forEach.call($(id).querySelectorAll('[placeholder]'), function (el) {
+        if (!el.hasAttribute('data-ph')) el.setAttribute('data-ph', el.getAttribute('placeholder'));
+        var ph = C.retag(el.getAttribute('data-ph'));
+        if (el.getAttribute('placeholder') !== ph) el.setAttribute('placeholder', ph);
+      });
     });
   }
   function refresh() {
@@ -10552,6 +10579,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       pin.className = 'wide' + (pe ? ' err' : v.ports[p[0]] ? ' chg' : ''); document.querySelector('[data-m=port][data-k="' + p[0] + '"]').textContent = pe || '';
     });
     $('conpw').className = 'wide' + (S.consolePw !== C.DEFAULT_CONSOLE_PW ? ' chg' : '');
+    if ($('userpv')) $('userpv').textContent = C.retag('Script:  ' + C.scriptPath() + '\nSSH key: ' + C.keyPath() + '\n\n' + C.bypassLine());
+    if ($('p_user')) $('p_user').className = 'wide' + (String(S.params.user || '').trim() && !C.winUser() ? ' err' : '');
+    if ($('p_key') && C.PLATFORMS[S.platform].shell === 'ps' && document.activeElement !== $('p_key') && $('p_key').value !== C.homePath(S.params.key)) $('p_key').value = C.homePath(S.params.key);
     var usedF = C.usedFlavors(m), pwUsed = { console: S.platform !== 'wsl', key: true, windows: usedF.some(function (f) { return C.FLAVOR[f].family === 'windows'; }), hardened: usedF.some(function (f) { return C.FLAVOR[f].needs_password; }) };
     Array.prototype.forEach.call(document.querySelectorAll('[data-pwrow]'), function (el) { el.style.display = pwUsed[el.getAttribute('data-pwrow')] ? '' : 'none'; });
     Array.prototype.forEach.call(document.querySelectorAll('[data-prompt]'), function (el) { var k = el.getAttribute('data-prompt'); el.checked = !!S.prompt[k]; });
@@ -10796,7 +10826,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     });
     function onInput(ev) {
       var t = ev.target;
-      if (t.hasAttribute('data-param')) S.params[t.getAttribute('data-param')] = t.type === 'checkbox' ? t.checked : t.value;
+      if (t.hasAttribute('data-param')) S.params[t.getAttribute('data-param')] = t.type === 'checkbox' ? t.checked : t.getAttribute('data-param') === 'key' && t.value.trim() === C.homePath(C.PLATFORMS[S.platform].fields.filter(function (x) { return x.id === 'key'; })[0].def) ? C.PLATFORMS[S.platform].fields.filter(function (x) { return x.id === 'key'; })[0].def : t.value;
       else if (t.hasAttribute('data-vm')) {
         var row = S.vms[t.getAttribute('data-vm')], f = t.getAttribute('data-f');
         if (f === 'include' || f === 'override') row[f] = t.checked;
@@ -11080,7 +11110,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset('vcenter'); cmd = C.commandText(man());
-    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\vcenter\\Deploy-Lab201-Vcenter.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub\n') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('pwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab201-build\\vcenter\\Deploy-Lab201-Vcenter.ps1 -SshKeyFile C:\\Users\\admin\\.ssh\\id_ed25519.pub\n') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
     // Switch models and lab walkthroughs
     var wsrc = '# T\n\nVLAN 5 and VLANs 2, 5, and 6 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`). `set vlanid 5`, `vlan5`, ' + sub4(5, 2, pl(5)) + ', gateway ' + sub4(2, 1) + ', fd00:db8:201::502, fd00:db8:201::201, `svc-201a` at ' + sub4(2, 10) + '. See [Chapter 999](999-x.md), [Chapter 01](01-y.md#top), and ![d](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg). VLAN 2005 and 10.30.1.1 stay.\n';
     reset(); v = C.validateAll(); m = C.buildManifest(v);
@@ -11138,13 +11168,21 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf('LAB201_CONSOLE_PASSWORD') < 0 && cmd.indexOf('export LAB201_ADMIN_PASSWORD=') < 0 && cmd.indexOf("export LAB201_PROMPT='hardened,console'") > 0 && cmd.indexOf("export LAB201_SSH_KEY_PASSPHRASE='k'\\''1'") > 0 &&
       cmd.indexOf('eval "$(ssh-agent -s)"\nssh-add ~/.ssh/id_ed25519\n') > 0, 'a prompted password leaves its line out and is named in LAB201_PROMPT, and a passphrase adds ssh-agent');
     reset('workstation'); S.prompt.key = true; cmd = C.commandText(man());
-    ok(cmd.indexOf("$env:LAB201_PROMPT = 'key'") > 0 && cmd.indexOf('Start-Service ssh-agent\nssh-add ~\\.ssh\\id_ed25519\n') > 0, 'PowerShell asks for a key passphrase and starts ssh-agent');
+    ok(cmd.indexOf("$env:LAB201_PROMPT = 'key'") > 0 && cmd.indexOf('Start-Service ssh-agent\nssh-add C:\\Users\\admin\\.ssh\\id_ed25519\n') > 0, 'PowerShell asks for a key passphrase and starts ssh-agent');
     // The line that runs the script past the execution policy, from the zip extracted into Downloads
     reset('workstation'); cmd = C.commandText(man());
-    ok(cmd.indexOf('\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub\n') > 0 &&
-      C.platformNotes().some(function (x) { return x.indexOf('use: pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub (') > 0; }), 'the bypass line runs the script of the extracted zip with the SSH key');
+    ok(cmd.indexOf('\npwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile C:\\Users\\admin\\.ssh\\id_ed25519.pub\n') > 0 &&
+      cmd.indexOf('-SshKeyFile C:\\Users\\admin\\.ssh\\id_ed25519.pub `') > 0 && cmd.indexOf('~') < 0 &&
+      C.platformNotes().some(function (x) { return x.indexOf('use: pwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile C:\\Users\\admin\\.ssh\\id_ed25519.pub (') > 0; }), 'the commands write the folder of the user admin in place of ~');
+    S.params.user = 'Tim'; cmd = C.commandText(man());
+    ok(cmd.indexOf('-File C:\\Users\\Tim\\Downloads\\lab201-build\\workstation\\') > 0 && cmd.indexOf('C:\\Users\\admin') < 0 && cmd.indexOf('-Wait') > 0, 'another Windows user name changes every path');
+    S.params.user = ''; cmd = C.commandText(man());
+    ok(cmd.indexOf('-File ~\\Downloads\\lab201-build\\') > 0 && cmd.indexOf('use powershell and $HOME in place of pwsh and ~') > 0, 'with no user name the commands keep ~');
+    S.params.user = 'a:b'; v = C.validateAll();
+    ok(v.errors.some(function (e) { return e.indexOf('Windows user name a:b') === 0; }) && C.commandText(C.buildManifest(v)).indexOf('-File ~\\') > 0, 'a user name Windows cannot have is refused, and ~ is used');
+    S.params.user = 'admin';
     S.labTag = '305'; S.params.key = 'C:\\My Keys\\lab.pub'; cmd = C.commandText(man());
-    ok(cmd.indexOf("\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab305-build\\workstation\\Deploy-Lab305-Workstation.ps1 -SshKeyFile 'C:\\My Keys\\lab.pub'\n") > 0, 'the bypass line follows the lab name and quotes a key path with a space');
+    ok(cmd.indexOf("\npwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab305-build\\workstation\\Deploy-Lab305-Workstation.ps1 -SshKeyFile 'C:\\My Keys\\lab.pub'\n") > 0, 'the bypass line follows the lab name and quotes a key path with a space');
     // The lab name
     reset('workstation');
     var tagText = 'gw-201 svc-201a oob-admin-201 radius-201b lab201-svc-201a LAB201_KEYS Deploy-Lab201-Workstation.ps1 baseline-201 Lab 201 setup lab-crl-201 mirror-201';
