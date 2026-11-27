@@ -7779,7 +7779,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
         { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
+        { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'skipcert', label: 'Accept the host certificate', type: 'check', flag: '-SkipCertificateCheck', help: 'Only for a first run on a lab network' }
       ]
     },
@@ -7798,7 +7798,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         { id: 'oob', label: 'Out-of-band uplink', def: 'vmnic3', flag: '-OobNic' },
         { id: 'wan', label: 'Build uplink (internet)', def: 'vmnic0', flag: '-WanNic' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
+        { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'skipcert', label: 'Accept the vCenter certificate', type: 'check', flag: '-SkipCertificateCheck' }
       ]
     },
@@ -7814,18 +7814,18 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         { id: 'datastore', label: 'vSAN datastore', ph: '<VSAN_DATASTORE>', flag: '-Datastore' },
         { id: 'vds', label: 'Existing distributed switch', ph: '<VXRAIL_VDS>', flag: '-UseExistingSwitch' },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
+        { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'skipcert', label: 'Accept the vCenter certificate', type: 'check', flag: '-SkipCertificateCheck' }
       ]
     },
     workstation: {
       name: 'VMware Workstation Pro', sub: 'Windows, vmrun and ovftool', shell: 'ps', vmware: true, singleTrunk: true,
-      versions: [['17', 'Workstation Pro 17'], ['25H2', 'Workstation Pro 25H2'], ['26H1U1', 'Workstation Pro 26H1 U1']], defVersion: '25H2',
+      versions: [['26H1U1', 'Workstation Pro 26H1 U1']], defVersion: '26H1U1',
       script: 'workstation/Deploy-Lab201-Workstation.ps1', exe: 'Deploy-Lab201-Workstation.ps1',
       fields: [
         { id: 'vmroot', label: 'Folder for the machines', def: '', ph: '(default: lab201 in the Workstation virtual machine folder)', flag: '-VmRoot', optional: true },
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
+        { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'bridge', label: 'Bridged network (trunk and out-of-band)', def: 'vmnet0', flag: '-BridgeVmnet' },
         { id: 'lan', label: 'Segment 12 network (host-only)', def: 'vmnet5', flag: '-McastVmnet' },
         { id: 'wan', label: 'Build network (NAT)', def: 'vmnet8', flag: '-WanVmnet' },
@@ -7870,7 +7870,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       script: 'wsl/Deploy-Lab201-Wsl.ps1', exe: 'Deploy-Lab201-Wsl.ps1',
       fields: [
         { id: 'key', label: 'SSH public key file', def: DEFAULT_KEY_WIN, flag: '-SshKeyFile' },
-        { id: 'python', label: 'Python command', def: '', ph: '(default: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15' },
+        { id: 'python', label: 'Python command', def: 'python', ph: '(empty: python3, then py -3, then python)', flag: '-PythonCommand', optional: true, help: 'For example python3.15 or py -3.15. Empty lets the script try python3, then py -3, then python' },
         { id: 'root', label: 'Folder for the distributions', def: '', ph: '(default: %USERPROFILE%\\wsl-lab201)', flag: '-InstallRoot', optional: true }
       ]
     }
@@ -7879,7 +7879,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR, kind: '', sets: {},
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}, labTag: DEFAULT_TAG
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: true, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}, labTag: DEFAULT_TAG
   };
   // The lab name of this build, and a text with its names. tag names another lab name than the one of the page.
   function labTag() { return TAG_RE.test(String(state.labTag || '')) ? state.labTag : DEFAULT_TAG; }
@@ -7907,7 +7907,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   function defaultKind() { var s = SETS.filter(function (x) { return x.selected; })[0] || SETS[0]; return s ? s.kind : (KINDS[0] || {}).id || ''; }
   function resetVms() {
     state.kind = defaultKind(); state.sets = defaultSets();
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {}; state.labTag = DEFAULT_TAG;
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = true; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {}; state.labTag = DEFAULT_TAG;
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -8731,7 +8731,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var fl = []; vmRows().forEach(function (e) { var f = v.flavors[e.base.name]; if (f && f !== DEFAULT_FLAVOR) fl.push((v.names[e.base.name]) + ': ' + FLAVOR[f].name); });
     if (fl.length) lines.push('Linux flavors: ' + fl.join('; ') + '. All others use ' + FLAVOR[DEFAULT_FLAVOR].name + '.');
     if (PLATFORMS[state.platform].singleTrunk) lines.push('One trunk: T1 and T2 are one network on ' + (state.platform === 'workstation' ? 'Workstation, which supports one bridged network' : 'VxRail') + '. The gateway has one trunk NIC, and the peers\' T2 links (VLANs 2003 and 2004) use it too.');
-    if (v.uplink.on) lines.push('Uplink: ' + v.uplink.gw + ' keeps its uplink to the external firewall, ' + (v.uplink.addr ? 'with the address ' + v.uplink.cidr + ' and the firewall at ' + v.uplink.fw : 'with an address from DHCP') + '. Step 4 leaves its adapter in place.');
+    // The uplink is ticked in a new build, so the list of your own changes names it only with an address you set.
+    if (v.uplink.on && !(yours && !v.uplink.addr)) lines.push('Uplink: ' + v.uplink.gw + ' keeps its uplink to the external firewall, ' + (v.uplink.addr ? 'with the address ' + v.uplink.cidr + ' and the firewall at ' + v.uplink.fw : 'with an address from DHCP') + '. Step 4 leaves its adapter in place.');
     return lines;
   }
   function changesText(m, v) {
@@ -10063,7 +10064,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     if ((ro.count || (!s.rangeOn && s.rangeCount)) && String(s.rangeCount === undefined || s.rangeCount === null ? '' : s.rangeCount).trim()) notes.push('the number of subnets that was set is left out: the lab network range is as large as its networks need, or as large as the supernet that you type');
     // The supernet comes back as it was typed. Reading the text again also says again why one cannot be used.
     if (typeof s.supernetText === 'string' && s.supernetText) setSupernet(s.supernetText);
-    state.uplink = s.uplink === true; state.uplinkSet = s.uplinkSet === true; state.uplinkAddr = typeof s.uplinkAddress === 'string' ? s.uplinkAddress : ''; state.uplinkFw = typeof s.uplinkFirewall === 'string' ? s.uplinkFirewall : ''; state.uplinkDns = typeof s.uplinkDns === 'string' ? s.uplinkDns : '';
+    state.uplink = s.uplink !== false; state.uplinkSet = s.uplinkSet === true; state.uplinkAddr = typeof s.uplinkAddress === 'string' ? s.uplinkAddress : ''; state.uplinkFw = typeof s.uplinkFirewall === 'string' ? s.uplinkFirewall : ''; state.uplinkDns = typeof s.uplinkDns === 'string' ? s.uplinkDns : '';
     state.inet = {}; BASE.vms.forEach(function (b) { if (s.internet && typeof s.internet[b.name] === 'boolean') state.inet[b.name] = s.internet[b.name]; });
     state.fwEdit = typeof s.firewallText === 'string' && s.firewallText.length <= 100000 ? s.firewallText : '';
     // The values of the firewall text. A file from before the page asked for them has none.
@@ -10913,7 +10914,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   function selftest() {
     var out = [], fails = 0;
     function ok(c, msg) { out.push((c ? 'PASS ' : 'FAIL ') + msg); if (!c) fails++; }
-    function reset(platform) { C.resetVms(); S.platform = platform || 'proxmox'; S.version = P[S.platform].defVersion; S.v4 = C.OLD_V4; S.v6 = C.OLD_V6; S.defaultFlavor = C.DEFAULT_FLAVOR; S.images = {}; S.rhelImage = ''; C.resetParams(); }
+    function reset(platform) { C.resetVms(); S.platform = platform || 'proxmox'; S.version = P[S.platform].defVersion; S.v4 = C.OLD_V4; S.v6 = C.OLD_V6; S.defaultFlavor = C.DEFAULT_FLAVOR; S.images = {}; S.rhelImage = ''; C.resetParams();  S.uplink = false; }
     function man() { return C.buildManifest(C.validateAll()); }
     function vm(m, n) { return m.vms.filter(function (x) { return x.name === n; })[0]; }
     reset();
@@ -11150,8 +11151,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var refused = 0; [C.BASE, [1], { platform: 'nope' }].forEach(function (x) { try { C.applyChoices(x); } catch (e) { refused++; } });
     ok(refused === 3, 'a manifest or another JSON file is refused as a choices file');
     reset('vcenter'); cmd = C.commandText(man()); S.params.python = 'py -3.15'; var cmdPy = C.commandText(man());
-    reset('proxmox'); S.params.python = 'python3.15';
-    ok(cmd.indexOf('-PythonCommand') < 0 && cmdPy.indexOf("-PythonCommand 'py -3.15'") > 0 && C.commandText(man()).indexOf('--python python3.15') > 0, 'the Python command can be chosen, and is left out by default');
+    S.params.python = ''; var cmdNoPy = C.commandText(man());
+    reset('proxmox'); var cmdSh = C.commandText(man()); S.params.python = 'python3.15';
+    ok(cmd.indexOf('-PythonCommand python `') > 0 && cmdPy.indexOf("-PythonCommand 'py -3.15'") > 0 && cmdNoPy.indexOf('-PythonCommand') < 0 && cmdSh.indexOf('--python') < 0 && C.commandText(man()).indexOf('--python python3.15') > 0,
+      'the Python command is python on Windows by default, can be chosen or cleared, and is left out on Linux by default');
     reset('proxmox'); cmd = C.commandText(man());
     ok(cmd.indexOf('ExecutionPolicy') < 0 && !C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'Bash platforms do not show the PowerShell note');
     reset(); S.vms['svc-201a'].addr['n1.0'] = sub4(2, 27, pl(2)); v = C.validateAll(); m = C.buildManifest(v);
@@ -11407,7 +11410,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(rsmall.cidr === C.OLD_V4 + '.0.0/24' && rsmall.short && outNow.length > 0 && outNow.length < need && rsmall.outside.join() === outNow.map(function (id) { return cidr4(id); }).join() && rsmall.outside.indexOf(cidr4(0)) < 0 &&
       smallWarn.filter(function (w) { return w.indexOf('The lab network range ' + C.OLD_V4 + '.0.0/24 does not hold') === 0; }).length === 1 && smallWarn.filter(function (w) { return w.indexOf('The supernet ' + C.OLD_V4 + '.0.0/24 is smaller') === 0; }).length === 1,
       'a supernet that is too small names the lab subnets it does not hold');
-    // The uplink of the gateway to the external firewall.
+    // The uplink of the gateway to the external firewall. A new build keeps it; the tests below start without it.
+    C.resetVms(); S.platform = 'proxmox'; S.version = P.proxmox.defVersion; v = C.validateAll(); m = C.buildManifest(v);
+    ok(S.uplink === true && v.uplink.on && !!m.uplink && !C.changeLines(m, v, true).some(function (l) { return l.indexOf('Uplink:') === 0; }) && C.changeLines(m, v).some(function (l) { return l.indexOf('Uplink:') === 0; }),
+      'a new build keeps the uplink of the gateway, and the review before the download does not list it as a change');
     reset(); v = C.validateAll(); m = C.buildManifest(v);
     ok(!v.uplink.on && v.uplink.show && m.uplink === undefined && C.commandText(m).indexOf('keeps its') < 0 && C.netConfigs(v).firewall.notes.some(function (x) { return x.indexOf('Tick Uplink in section 10 to keep it') > 0; }),
       'without the uplink, the manifest keeps no adapter for the gateway, and the firewall notes say what is missing');
@@ -11415,7 +11421,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     S.uplink = true; v = C.validateAll(); m = C.buildManifest(v); var upNet = C.netConfigs(v), gwName = v.uplink.gw;
     ok(v.uplink.on && !v.uplink.set && upOf(m).vm === gwName && upOf(m).address === undefined && upOf(m).internet.join() === upNet.internet.map(function (h) { return h.addrs.join(); }).join() && upOf(m).internet.indexOf(svcIp('ntp-201a')) >= 0 &&
       C.commandText(m).indexOf('# ' + gwName + ' keeps its NIC, which is the uplink to the external firewall.') > 0 && C.checklistText(m, v).indexOf('reserve the DHCP address of ' + gwName) > 0 && upNet.firewall.text.indexOf('<LAB_GATEWAY_ADDRESS>') > 0 &&
-      upNet.firewall.notes.some(function (x) { return x.indexOf('keeps its uplink (section 10)') > 0 && x.indexOf('after step 4') > 0; }) && C.changeLines(m, v, true).some(function (l) { return l.indexOf('Uplink: ' + gwName + ' keeps its uplink') === 0; }),
+      upNet.firewall.notes.some(function (x) { return x.indexOf('keeps its uplink (section 10)') > 0 && x.indexOf('after step 4') > 0; }) && C.changeLines(m, v).some(function (l) { return l.indexOf('Uplink: ' + gwName + ' keeps its uplink') === 0; }),
       'with the uplink, the manifest names the gateway and the addresses it forwards, step 4 leaves its adapter, and the firewall notes say to put the rules in place after step 4');
     S.uplinkSet = true; S.uplinkAddr = '192.168.50.2/24'; S.uplinkFw = '192.168.50.1'; v = C.validateAll(); m = C.buildManifest(v); upNet = C.netConfigs(v);
     ok(v.uplink.addr === '192.168.50.2' && upOf(m).address === '192.168.50.2/24' && upOf(m).gateway === '192.168.50.1' && upNet.firewall.text.indexOf('<LAB_GATEWAY_ADDRESS>') < 0 && upNet.firewall.text.indexOf('192.168.50.2') > 0 &&
@@ -11483,7 +11489,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var netOldOk = S.rangeOn.start === true && S.rangeOn.net === false && S.rangeStart === '10.77.64.0' && S.rangeNet === '';
     delete netSaved.gatewayOs; netSaved.firewallOs = 'no-such-os'; delete netSaved.rangeOn; delete netSaved.rangeStart; netSaved.rangeSupernet = 5; netSaved.uplink = 'yes'; delete netSaved.uplinkSet; netSaved.uplinkAddress = 7; delete netSaved.uplinkFirewall;
     netSaved.internet = { 'no-such-machine': true }; netSaved.firewallText = 7; C.applyChoices(netSaved);
-    ok(netDef && netBack && netOldOk && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.net && S.rangeStart === '' && S.rangeNet === '' && S.uplink === false && S.uplinkSet === false &&
+    ok(netDef && netBack && netOldOk && S.gwOs === 'linux' && S.fwOs === C.NET_OS_DEFAULT && !S.rangeOn.start && !S.rangeOn.net && S.rangeStart === '' && S.rangeNet === '' && S.uplink === true && S.uplinkSet === false &&
       S.uplinkAddr === '' && S.uplinkFw === '' && Object.keys(S.inet).length === 0 && S.fwEdit === '',
       'the choices file keeps the gateway, its uplink, the firewall, the range and its Override boxes, the machines with internet access, and an edited text, and an old file gives the defaults');
     // The values of section 11: what the external firewall text would leave as a placeholder.
@@ -11922,7 +11928,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       $('gwos').closest('.card').querySelector('h2 .n').textContent === '10' && document.querySelectorAll('#left > .card').length === 12 && document.querySelector('#left > .card').id === 'labcard' && $('fwnotes').textContent.indexOf('This is an additional firewall') > 0,
       'the external firewall is section 11 and is marked as an additional firewall, which is not the gateway');
     // The uplink of the gateway. The Manifest tab is open at this point.
-    ok($('gwupbox').style.display === '' && !$('gwuplink').checked && $('upaddrbox').style.display === 'none' && $('gwupnote').textContent.indexOf('Without the uplink') === 0 && body().indexOf('"uplink": {') < 0, 'the uplink of the gateway is offered for the Linux router, and it is off at the start');
+    ok($('gwupbox').style.display === '' && $('gwuplink').checked && $('gwupnote').textContent.indexOf('With the uplink kept') === 0 && body().indexOf('"uplink": {') > 0, 'the uplink of the gateway is offered for the Linux router, and it is ticked at the start');
+    $('gwuplink').click();
+    ok(!S.uplink && $('upaddrbox').style.display === 'none' && $('gwupnote').textContent.indexOf('Without the uplink') === 0 && body().indexOf('"uplink": {') < 0, 'unticking Uplink leaves the adapter of the gateway out of the manifest');
     $('gwuplink').click();
     ok(S.uplink === true && $('upaddrbox').style.display === '' && $('upauto').textContent.indexOf('DHCP') === 0 && $('upstatic').style.display === 'none' && $('gwupnote').textContent.indexOf('With the uplink kept') === 0 && body().indexOf('"uplink": {') > 0 &&
       body().indexOf('"vm": "' + gwNow + '"') > 0 && $('fwnotes').textContent.indexOf('keeps its uplink (section 10)') > 0, 'ticking Uplink keeps the adapter of the gateway in the manifest, and the firewall notes follow');

@@ -36,7 +36,7 @@ For a trunk to work, 802.1Q tags must pass between the guest, the vmnet, the Win
 
 ### Workstation versions
 
-The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 17 puts all three under its install folder, in `OVFTool\` for the last. Workstation 26.0 installs under `C:\Program Files\VMware\VMware Workstation` instead of `Program Files (x86)`, and one 26.0.0 install that was checked has all three tools there, with OVF Tool in `OVFTool\`. The script looks in both folders, and `-WorkstationDir` names another one. On Workstation Pro 17, use the `Program Files (x86)` path in the snapshot command of Lab 11.3. Whether 25H2 bundles OVF Tool was not confirmed when this chapter was written. If it does not, install OVF Tool separately and pass `-OvfToolPath`. Broadcom has made Workstation Pro available free of charge, and its terms for commercial use differ between sources, so read the current license terms before you use it for work.
+The scripts are written for Workstation Pro 26H1 U1 (build 25688693, 3 September 2026), the release that the Lab Selector offers. The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Workstation Pro 26H1 is a 64-bit program and installs under `C:\Program Files\VMware\VMware Workstation`, and one 26H1 install that was checked has all three tools there, with OVF Tool in `OVFTool\`. Broadcom's release notes do not name the install folder or say whether OVF Tool is included, so `-Action Check` tests both, `-WorkstationDir` names another install folder, and `-OvfToolPath` names an OVF Tool that is installed separately. Broadcom's release notes say that Workstation Pro is free for commercial, educational, and personal use and needs no license key. The download needs a login to the Broadcom Support Portal.
 
 ## Design Considerations
 
@@ -110,7 +110,7 @@ The script needs `vmrun.exe`, `vmware-vdiskmanager.exe`, and `ovftool.exe`. Work
 **References:**
 
 - Broadcom, VMware Workstation Pro documentation: the Virtual Network Editor, the `vmrun` command, and the `vmware-vdiskmanager` command.
-- Broadcom, [VMware Workstation Pro 25H2 release information](https://www.neowin.net/amp/vmware-workstation-pro-25h2-is-out-with-new-command-line-tool-usb-32-support-and-more/) (a news summary; check Broadcom's release notes for the exact tools included).
+- Broadcom, [VMware Workstation Pro 26H1u1 release notes](https://techdocs.broadcom.com/us/en/vmware-cis/desktop-hypervisors/workstation-pro/26H1/release-notes/vmware-workstation-pro-26h1u1-release-notes.html) (build, date, free use, and download).
 - Broadcom, OVF Tool documentation.
 - Canonical, [Ubuntu cloud images](https://cloud-images.ubuntu.com/noble/current/).
 - [Chapter 09](09-esxi-7-8-and-9-lab-virtual-machine-automation.md) for the manifest and seeds, [Chapter 999](999-shared-lab-infrastructure.md) for the lab.

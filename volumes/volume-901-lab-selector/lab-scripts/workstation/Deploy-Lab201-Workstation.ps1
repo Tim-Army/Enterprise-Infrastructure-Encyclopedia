@@ -17,7 +17,7 @@
     -McastVmnet  host-only, with the DHCP service turned off
   -WanVmnet is the network the build NICs use (vmnet8, the NAT network, by default).
 
-  Needs PowerShell 5.1 or 7, Workstation Pro 17 or later, and Python 3 with
+  Needs PowerShell 5.1 or 7, Workstation Pro 26H1 U1 or later, and Python 3 with
   pycdlib (pip install pycdlib) for the seed ISOs.
 
   -Action picks what the script does:
@@ -106,9 +106,9 @@ function Get-DefaultVmRoot {
 }
 
 function Find-WorkstationDir {
-  # Workstation Pro 17 installs under Program Files (x86). Later releases (26.0 was checked) install under Program Files.
-  return (@('C:\Program Files\VMware\VMware Workstation', 'C:\Program Files (x86)\VMware\VMware Workstation') |
-    Where-Object { Test-Path (Join-Path $_ 'vmrun.exe') } | Select-Object -First 1)
+  # Workstation Pro 26H1 is a 64-bit program and installs under Program Files (26H1 was checked).
+  $dir = Join-Path $env:ProgramFiles 'VMware\VMware Workstation'
+  if (Test-Path (Join-Path $dir 'vmrun.exe')) { return $dir }
 }
 
 if (-not $VmRoot) { $VmRoot = Get-DefaultVmRoot }
@@ -215,7 +215,7 @@ if ($VmRoot -match '^[A-Za-z]:' -and -not (Test-Path ($VmRoot.Substring(0, 2) + 
   throw "Drive $($VmRoot.Substring(0, 2)) in the machines folder ($VmRoot) does not exist. Pass -VmRoot with a folder on a drive this computer has."
 }
 Write-Host "Machines folder: $VmRoot"
-if (-not $WorkstationDir) { throw 'vmrun.exe was not found under Program Files or Program Files (x86). Is Workstation Pro installed? Pass -WorkstationDir with its install folder.' }
+if (-not $WorkstationDir) { throw 'vmrun.exe was not found under Program Files. Is Workstation Pro installed? Pass -WorkstationDir with its install folder.' }
 $vmrun = Join-Path $WorkstationDir 'vmrun.exe'
 $ovftool = if ($OvfToolPath) { $OvfToolPath } elseif (Test-Path (Join-Path $WorkstationDir 'OVFTool\ovftool.exe')) { Join-Path $WorkstationDir 'OVFTool\ovftool.exe' } else { (Get-Command ovftool.exe -ErrorAction SilentlyContinue).Source }
 $vdisk = Join-Path $WorkstationDir 'vmware-vdiskmanager.exe'

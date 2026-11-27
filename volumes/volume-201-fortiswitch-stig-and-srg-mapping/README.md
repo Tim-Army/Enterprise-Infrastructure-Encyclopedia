@@ -145,8 +145,8 @@ before assessing against it.
 
 The lab automation in Chapters 09 to 14 targets VMware ESXi and vCenter 7.0,
 8.0, and 9.0 (PowerCLI 13.3 for 7 and 8, and the PowerCLI release that
-supports vSphere 9 for 9.0), Dell VxRail 8.0.x and 9.0.x, Workstation Pro 17,
-25H2, and 26H1 U1, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and
+supports vSphere 9 for 9.0), Dell VxRail 8.0.x and 9.0.x, Workstation Pro
+26H1 U1, Proxmox VE 8.1 and later, KVM with virt-install 4.0 and
 later, WSL 2, and the Ubuntu Server 24.04 LTS cloud image (other flavors are
 experimental). To use another flavor, pick it in the Lab Selector, or set
 `flavor` on a machine (or `default_flavor` for all machines) in

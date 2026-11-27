@@ -175,11 +175,12 @@ Then follow this list.
    all of them as a starting point to check, not a finished tool.
 2. Install Python 3.8 or later. For the seed ISOs (every platform except
    Proxmox and WSL), also run `python -m pip install pycdlib`. The PowerShell
-   scripts look for `python3`, then the `py` launcher, then `python`, and skip
-   the Microsoft Store stubs that only print "Python was not found". To pick
-   the command or version yourself, pass `-PythonCommand` (for example
-   `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash scripts,
-   which use `python3` by default. See *Install Python on Windows* below.
+   commands of the Lab Selector pass `-PythonCommand python` by default. Clear
+   the field to let the scripts look for `python3`, then the `py` launcher, then
+   `python`, skipping the Microsoft Store stubs that only print "Python was not
+   found". To pick the command or version yourself, pass `-PythonCommand` (for
+   example `-PythonCommand 'py -3.15'`), or `--python python3.15` to the Bash
+   scripts, which use `python3` by default. See *Install Python on Windows* below.
 3. Make an SSH key pair (`ssh-keygen -t ed25519`) and pass the public key file
    with `-SshKeyFile` (or `--ssh-key`). See *Make an SSH key on Windows* below.
 4. Keep the scripts and the `common` folder together, because each script finds
