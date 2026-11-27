@@ -3,7 +3,7 @@
 ## Learning Objectives
 
 - Enable hardware virtualization and confirm the host can run nested guests.
-- Install VMware Workstation Pro 17.6.3 (or 26H1) cleanly.
+- Install VMware Workstation Pro 26H1 U1 cleanly.
 - Recognize and resolve the Hyper-V / Virtualization-Based Security (VBS) contention that silently halves VM performance.
 - Lay down a predictable directory structure for the five VMs and their snapshots.
 
@@ -32,11 +32,11 @@ systeminfo | Select-String "Hyper-V", "Virtualization"
 
 ### Lab 2.2 — Install VMware Workstation Pro
 
-**Objective.** Install Workstation Pro 17.6.3 and verify the Virtual Network Editor is present.
+**Objective.** Install Workstation Pro 26H1 U1 and verify the Virtual Network Editor is present.
 
 **Walkthrough**
 
-**Step 1.** Download **VMware Workstation Pro 17.6.3** from the Broadcom Support Portal and install as Administrator. No license key is required.
+**Step 1.** Download **VMware Workstation Pro 26H1 U1** from the Broadcom Support Portal and install as Administrator. No license key is required.
 
 **Step 2.** Launch it once, then confirm the network services:
 

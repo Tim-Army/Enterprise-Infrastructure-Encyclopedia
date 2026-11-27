@@ -71,7 +71,7 @@ answer.
 ## Prerequisites
 
 - A Windows 11 host: 4+ cores, 16 GB RAM (32 GB comfortable), 250 GB free SSD.
-- VMware Workstation Pro 17.6.3 or 26H1 (free), Ubuntu Server 22.04.5 LTS, Windows Server 2022 Evaluation.
+- VMware Workstation Pro 26H1 U1 (free), Ubuntu Server 22.04.5 LTS, Windows Server 2022 Evaluation.
 - Optional for Track 1: access to an Akamai Guardicore Centra environment and agent.
 
 ## See also

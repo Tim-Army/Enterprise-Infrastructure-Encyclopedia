@@ -93,7 +93,7 @@ A text-only rendering of the same topology follows for reference:
 ```text
                     +----------------------------------------------+
                     |   Windows 11 Education host                  |
-                    |   VMware Workstation Pro 17.6.3              |
+                    |   VMware Workstation Pro 26H1 U1             |
                     |   Roles: admin console + "IT laptop"         |
                     |          (the untrusted lateral-movement     |
                     |           source in Lab 5.3)                 |
@@ -180,13 +180,13 @@ Download everything before you begin. Total download is roughly 8 GB.
 
 | Item | Where | Size | Notes |
 |:---|:---|:---|:---|
-| VMware Workstation Pro 17.6.3 for Windows | Broadcom Support Portal | ~600 MB | **Free**, no license key, for commercial, educational, and personal use. Requires a free Broadcom account. |
+| VMware Workstation Pro 26H1 U1 for Windows | Broadcom Support Portal | ~270 MB | **Free**, no license key, for commercial, educational, and personal use. Requires a free Broadcom account. |
 | Ubuntu Server 22.04.5 LTS ISO | `releases.ubuntu.com/jammy/` | ~2.0 GB | File: `ubuntu-22.04.5-live-server-amd64.iso` |
 | Windows Server 2022 Evaluation ISO | Microsoft Evaluation Center | ~5.0 GB | 180-day evaluation |
 | PuTTY or Windows Terminal + OpenSSH | Built into Windows 11 | — | `ssh` is present by default on Windows 11 |
 | Illumio VEN + PCE access | Illumio (SaaS trial or partner tenant) | — | **Track 1 only.** Obtain the VEN package and pairing key from **Infrastructure → Ventura/Pairing Profiles** in the PCE. Track 2 needs none of this. |
 
-**A note on Workstation versions.** This guide targets **Workstation Pro 17.6.3**, the final 17.x release. Broadcom shipped the successor, **VMware Workstation Pro 26H1** (build 25388281), on **14 May 2026**; everything in this lab works identically on it — the Virtual Network Editor, the NAT service, host-only networks, and snapshots are unchanged in every respect this lab touches. Both are free. Since **11 November 2024**, VMware Workstation Pro has required no license key for commercial, educational, or personal use.
+**A note on Workstation versions.** This guide targets **VMware Workstation Pro 26H1 U1** (build 25688693, 3 September 2026), a maintenance update of 26H1, which Broadcom shipped on 14 May 2026 and which made the Windows application a 64-bit program. Use 26H1 U1 or a later release. Broadcom's release notes say that Workstation Pro is free for commercial, educational, and personal use and needs no license key.
 
 ## Summary and Completion Checklist
 

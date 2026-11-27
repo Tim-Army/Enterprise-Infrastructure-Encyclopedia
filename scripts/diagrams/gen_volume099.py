@@ -35,7 +35,7 @@ def ch01():
                  "5432 and aw-win01 to the PLC on Modbus TCP 502 and denies the compromised-HMI-to-database flow.")
 
     c.node_box(300, 68, 360, 54, "mgmt", [
-        Line("Windows 11 Host · Workstation Pro 17", 12.5, 700, "#111827"),
+        Line("Windows 11 Host · Workstation Pro 26H1 U1", 12.5, 700, "#111827"),
         Line("Airwall admin + 'IT laptop' (attacker, Lab 5.3)", 9.5, 400, "#374151"),
     ])
     c.plane_bar(60, 140, 840, 30, "mgmt",

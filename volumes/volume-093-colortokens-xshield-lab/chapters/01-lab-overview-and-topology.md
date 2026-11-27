@@ -194,7 +194,7 @@ A text-only rendering of the same topology follows for reference:
 ```text
                     ┌──────────────────────────────────────────────┐
                     │   Windows 11 Education host                  │
-                    │   VMware Workstation Pro 17.6.3              │
+                    │   VMware Workstation Pro 26H1 U1             │
                     │   Roles: admin console + "IT laptop"         │
                     │          (the untrusted lateral-movement     │
                     │           source in Lab 5.3)             │
@@ -306,25 +306,20 @@ Download everything before you begin. Total download is roughly 8 GB.
 
 | Item | Where | Size | Notes |
 |:---|:---|:---|:---|
-| VMware Workstation Pro 17.6.3 for Windows | Broadcom Support Portal | ~600 MB | **Free**, no license key, for commercial, educational, and personal use. Requires a free Broadcom account. |
+| VMware Workstation Pro 26H1 U1 for Windows | Broadcom Support Portal | ~270 MB | **Free**, no license key, for commercial, educational, and personal use. Requires a free Broadcom account. |
 | Ubuntu Server 22.04.5 LTS ISO | `releases.ubuntu.com/jammy/` | ~2.0 GB | File: `ubuntu-22.04.5-live-server-amd64.iso` |
 | Windows Server 2022 Evaluation ISO | Microsoft Evaluation Center | ~5.0 GB | 180-day evaluation |
 | PuTTY or Windows Terminal + OpenSSH | Built into Windows 11 | — | `ssh` is present by default on Windows 11 |
 
 **A note on Workstation versions**
 
-You asked for **Workstation Pro 17**, and that is what this guide
-targets — specifically **17.6.3**, the final 17.x release. You should
-know that Broadcom shipped the successor, **VMware Workstation Pro
-26H1** (build 25388281), on **14 May 2026**; it moved the Windows
-application to a 64-bit binary and added remote connection to ARM-based
-ESX hosts. Everything in this lab works identically on 26H1 — the
-Virtual Network Editor, the NAT service, host-only networks, and
-snapshots are unchanged in every respect this lab touches. Use 17.6.3 as
-written, or 26H1 if you prefer to be current; no step needs
-modification.
+This guide targets **VMware Workstation Pro 26H1 U1** (build 25688693,
+3 September 2026), a maintenance update of **26H1**, which Broadcom
+shipped on **14 May 2026**. 26H1 moved the Windows application to a
+64-bit binary and added remote connection to ARM-based ESX hosts. Use
+26H1 U1 or a later release.
 
-Both are free. Since **11 November 2024**, VMware Workstation Pro has
+It is free. Since **11 November 2024**, VMware Workstation Pro has
 required no license key for commercial, educational, or personal use.
 
 ## Summary and Completion Checklist

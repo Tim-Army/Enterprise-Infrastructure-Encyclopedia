@@ -243,7 +243,7 @@ Then re-enable Memory Integrity in Windows Security. Do this when you
 finish the lab if you disabled it on a machine you also use for anything
 else.
 
-### Lab 2.3 — Install VMware Workstation Pro 17.6.3
+### Lab 2.3 — Install VMware Workstation Pro 26H1 U1
 
 **Objective.** Get a working, license-free Workstation Pro installation.
 
@@ -255,12 +255,12 @@ VMware downloads behind this portal; there is no anonymous download
 link, which surprises people expecting the old vmware.com experience.
 
 **Step 2.** In the portal, choose **VMware Cloud Foundation** as the
-division, then navigate to **My Downloads → VMware Workstation Pro →
-17.x** and select **17.6.3** for Windows. The file is named similarly
+division, then navigate to **My Downloads → VMware Workstation Pro** and select
+**26H1u1** (build 25688693) for Windows. The file is named similarly
 to:
 
 ```text
-VMware-workstation-full-17.6.3-<build>.exe
+VMware-Workstation-Full-26H1u1-<build>.exe
 
 ```
 
@@ -268,7 +268,7 @@ VMware-workstation-full-17.6.3-<build>.exe
 checksum shown on the portal download page:
 
 ```powershell
-Get-FileHash -Algorithm SHA256 .\VMware-workstation-full-17.6.3-*.exe
+Get-FileHash -Algorithm SHA256 .\VMware-Workstation-Full-26H1u1-*.exe
 
 ```
 
@@ -278,7 +278,7 @@ driver.
 **Step 4.** Run the installer elevated:
 
 ```powershell
-Start-Process -FilePath .\VMware-workstation-full-17.6.3-<build>.exe -Verb RunAs
+Start-Process -FilePath .\VMware-Workstation-Full-26H1u1-<build>.exe -Verb RunAs
 
 ```
 
@@ -328,7 +328,7 @@ GB across your profile. **Edit → Preferences → Workspace → Default
 location for virtual machines.** Set it to something like
 `D:\VMs\ColorTokens-Lab\` on your fastest drive with the most space.
 
-**Expected result.** Workstation Pro 17.6.3 launches, reports itself
+**Expected result.** Workstation Pro 26H1 U1 launches, reports itself
 licensed for free use, and all five VMware services are running.
 
 **Negative test.** Try to power on any 64-bit VM with VT-x disabled in

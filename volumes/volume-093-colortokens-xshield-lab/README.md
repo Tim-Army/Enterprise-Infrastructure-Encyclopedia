@@ -85,8 +85,8 @@ rather than a suggestion.
 
 - A Windows 11 host: **minimum** 4 physical cores, 16 GB RAM, 250 GB free SSD; **comfortable** 8
   cores, 32 GB RAM, 400 GB free NVMe.
-- VMware Workstation Pro (17.6.3 as written; 26H1 works identically for every step this lab
-  touches). Free for commercial, educational, and personal use since 11 November 2024.
+- VMware Workstation Pro 26H1 U1. Free for commercial, educational, and personal use since 11 November
+  2024.
 - Ubuntu Server 22.04.5 LTS and Windows Server 2022 Evaluation ISOs (~8 GB of downloads total).
 - Budget two comfortable days or four evenings; Chapter 04 is the long pole and is mostly waiting.
 

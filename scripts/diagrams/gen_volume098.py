@@ -40,7 +40,7 @@ def ch01():
 
     # Host at top
     c.node_box(320, 58, 330, 44, "mgmt", [
-        Line("Windows 11 Host · Workstation Pro 17", 12, 700, "#111827"),
+        Line("Windows 11 Host · Workstation Pro 26H1 U1", 12, 700, "#111827"),
         Line("Elisity admin + 'IT laptop' (attacker, Lab 5.3)", 9.5, 400, "#374151"),
     ])
     c.connector(485, 102, 485, 132, "mgmt")

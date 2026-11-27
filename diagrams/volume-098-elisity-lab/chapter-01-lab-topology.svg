@@ -14,7 +14,7 @@
   <text x="480.0" y="50" text-anchor="middle" font-size="8.6" fill="#4b5563">el-gw is the network enforcement point (Elisity access-switch stand-in) every cross-segment flow crosses; the database is isolated behind it; policy is written by identity, enforced with no endpoint agents</text>
   <g transform="translate(0,8)">
   <rect x="320" y="58" width="330" height="44" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
-  <text x="485.0" y="77.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
+  <text x="485.0" y="77.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 26H1 U1</text>
   <text x="485.0" y="91.2" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">Elisity admin + 'IT laptop' (attacker, Lab 5.3)</text>
   <line x1="485" y1="102" x2="485" y2="132" stroke="#33415c" stroke-width="1.75" marker-end="url(#arrow-mgmt)"/>
   <rect x="55" y="150" width="170" height="470" rx="8" fill="#f4f7fb" stroke="#33415c" stroke-width="2"/>

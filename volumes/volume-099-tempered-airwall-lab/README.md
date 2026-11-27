@@ -69,7 +69,7 @@ lifecycle, revocation, and scale — are marked **Design Exercise** with a model
 ## Prerequisites
 
 - A Windows 11 host: 4+ cores, 16 GB RAM (32 GB comfortable), 250 GB free SSD.
-- VMware Workstation Pro 17.6.3 or 26H1 (free), Ubuntu Server 22.04.5 LTS, Windows Server 2022 Evaluation.
+- VMware Workstation Pro 26H1 U1 (free), Ubuntu Server 22.04.5 LTS, Windows Server 2022 Evaluation.
 - WireGuard (free, open source) for Track 2; optional Airwall deployment for Track 1.
 
 ## See also

@@ -12,7 +12,7 @@
   <text x="480.0" y="30" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">Chapter 1 Lab Topology: Illumio Segmentation Across an IT/OT Estate</text>
   <text x="480.0" y="50" text-anchor="middle" font-size="13" fill="#4b5563">VENs on the router and servers, unmanaged-workload protection for the PLC — il-gw is the one routing choke point between three segments</text>
   <rect x="300" y="68" width="360" height="54" rx="8" fill="#eaf2ff" stroke="#1d4ed8" stroke-width="2"/>
-  <text x="480.0" y="90.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 17</text>
+  <text x="480.0" y="90.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#111827">Windows 11 Host · Workstation Pro 26H1 U1</text>
   <text x="480.0" y="108.4" text-anchor="middle" font-size="9.5" font-weight="400" fill="#374151">Illumio admin (PCE access) + 'IT laptop' (attacker, Lab 5.3)</text>
   <rect x="60" y="140" width="840" height="30" rx="6" fill="#eef2f8" stroke="#33415c" stroke-width="1.5"/>
   <text x="480.0" y="160.0" text-anchor="middle" font-size="14" font-weight="600" fill="#1f2937">VMnet8 — NAT · 'IT / Corporate' · 192.168.170.0/24 · DHCP .128–.254</text>

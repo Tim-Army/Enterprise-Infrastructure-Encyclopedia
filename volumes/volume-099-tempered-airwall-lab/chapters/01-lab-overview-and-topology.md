@@ -89,7 +89,7 @@ A text-only rendering of the same topology follows for reference:
 ```text
                     +----------------------------------------------+
                     |   Windows 11 Education host                  |
-                    |   VMware Workstation Pro 17.6.3              |
+                    |   VMware Workstation Pro 26H1 U1             |
                     |   Roles: admin console + "IT laptop"         |
                     |          (the untrusted lateral-movement     |
                     |           source in Lab 5.3)             |
@@ -162,13 +162,13 @@ DNS for all guests: `192.168.170.2`.
 
 | Item | Where | Size | Notes |
 |:---|:---|:---|:---|
-| VMware Workstation Pro 17.6.3 for Windows | Broadcom Support Portal | ~600 MB | **Free**, no license key. |
+| VMware Workstation Pro 26H1 U1 for Windows | Broadcom Support Portal | ~270 MB | **Free**, no license key. |
 | Ubuntu Server 22.04.5 LTS ISO | `releases.ubuntu.com/jammy/` | ~2.0 GB | `ubuntu-22.04.5-live-server-amd64.iso` |
 | Windows Server 2022 Evaluation ISO | Microsoft Evaluation Center | ~5.0 GB | 180-day evaluation |
 | WireGuard | Ubuntu repo (`wireguard`), Windows installer | small | **Track 2** — the native overlay. Free and open source. |
 | Airwall Conductor + Agents/Gateways | Johnson Controls | — | **Track 1 only.** |
 
-Both Workstation 17.6.3 and 26H1 (14 May 2026) work identically here; both are free and need no license key since 11 November 2024.
+This guide targets **VMware Workstation Pro 26H1 U1** (build 25688693, 3 September 2026), a maintenance update of 26H1, which Broadcom shipped on 14 May 2026 and which made the Windows application a 64-bit program. Use 26H1 U1 or a later release. Broadcom's release notes say that Workstation Pro is free for commercial, educational, and personal use and needs no license key.
 
 ## Summary and Completion Checklist
 

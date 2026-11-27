@@ -3,7 +3,7 @@
 ## Learning Objectives
 
 - Enable hardware virtualization and confirm the host can run nested guests.
-- Install VMware Workstation Pro 17.6.3 (or 26H1) cleanly.
+- Install VMware Workstation Pro 26H1 U1 cleanly.
 - Recognize and resolve the Hyper-V / Virtualization-Based Security (VBS) contention that silently halves VM performance.
 - Lay down a predictable directory structure for the five VMs and their snapshots.
 
@@ -33,11 +33,11 @@ systeminfo | Select-String "Hyper-V", "Virtualization"
 
 ### Lab 2.2 — Install VMware Workstation Pro
 
-**Objective.** Install Workstation Pro 17.6.3 and verify the Virtual Network Editor is present (you need it in Chapter 03).
+**Objective.** Install Workstation Pro 26H1 U1 and verify the Virtual Network Editor is present (you need it in Chapter 03).
 
 **Walkthrough**
 
-**Step 1.** Sign in to the Broadcom Support Portal, download **VMware Workstation Pro 17.6.3 for Windows**, and run the installer as Administrator. Accept the defaults. No license key is required.
+**Step 1.** Sign in to the Broadcom Support Portal, download **VMware Workstation Pro 26H1 U1 for Windows**, and run the installer as Administrator. Accept the defaults. No license key is required.
 
 **Step 2.** Launch Workstation once so it registers its virtual network services. Then confirm the services are running:
 
@@ -57,7 +57,7 @@ Get-Service -Name "VMware*" |
 
 **Objective.** Ensure Workstation runs with full hardware acceleration rather than falling back to the slow **User Level Monitor (ULM)** it uses when the Microsoft hypervisor holds VT-x.
 
-**Background.** Windows 11 enables **Virtualization-Based Security (VBS)** and **Memory Integrity (HVCI)** by default on many machines. These run the Microsoft hypervisor beneath Windows, which then owns VT-x. Workstation 17 can still run under the Windows Hypervisor Platform, but in a reduced-performance ULM mode. For a five-VM lab you want the native monitor.
+**Background.** Windows 11 enables **Virtualization-Based Security (VBS)** and **Memory Integrity (HVCI)** by default on many machines. These run the Microsoft hypervisor beneath Windows, which then owns VT-x. Workstation Pro can still run under the Windows Hypervisor Platform, but in a reduced-performance ULM mode. For a five-VM lab you want the native monitor.
 
 **Walkthrough**
 

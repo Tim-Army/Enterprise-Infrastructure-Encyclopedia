@@ -330,7 +330,7 @@ Check before starting each part.
 
 - [ ] VT-x/AMD-V enabled in firmware (Lab 2.1)
 - [ ] Conscious VBS decision made and documented (Lab 2.2)
-- [ ] Workstation 17.6.3 installed, licensed-for-free (Lab 2.3)
+- [ ] Workstation 26H1 U1 installed, licensed-for-free (Lab 2.3)
 - [ ] VMnet2 (host-only, no DHCP, 10.10.20.0/24) and VMnet3 (host-only, NO host
   adapter, no DHCP, 10.10.30.0/24) created (Labs 3.2 and 3.3)
 

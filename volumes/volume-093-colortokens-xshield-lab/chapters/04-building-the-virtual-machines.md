@@ -36,7 +36,7 @@ segments and will later act as the agentless Gatekeeper for the OT cell.
 Typical path does not let you choose the SCSI controller or add multiple
 NICs cleanly.
 
-**Step 3.** Hardware compatibility: **Workstation 17.x** → **Next**.
+**Step 3.** Hardware compatibility: keep the newest that the list offers, the default → **Next**.
 
 **Step 4.** **Installer disc image file (iso)** → **Browse…** → select
 `ubuntu-22.04.5-live-server-amd64.iso`.
@@ -673,7 +673,7 @@ legitimately talks to the PLC.
 
 **Step 1.** **File → New Virtual Machine → Custom (advanced) → Next**.
 
-**Step 2.** Hardware compatibility: **Workstation 17.x** → **Next**.
+**Step 2.** Hardware compatibility: keep the newest that the list offers, the default → **Next**.
 
 **Step 3.** **I will install the operating system later** → **Next**.
 Declining Easy Install is important here: Workstation’s Windows Easy

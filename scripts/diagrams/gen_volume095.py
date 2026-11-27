@@ -37,7 +37,7 @@ def ch01():
                  "only by routing through gc-gw.")
 
     c.node_box(300, 68, 360, 54, "mgmt", [
-        Line("Windows 11 Host · Workstation Pro 17", 12.5, 700, "#111827"),
+        Line("Windows 11 Host · Workstation Pro 26H1 U1", 12.5, 700, "#111827"),
         Line("Guardicore admin (Centra access) + 'IT laptop' (attacker, Lab 5.3)", 9, 400, "#374151"),
     ])
     c.plane_bar(60, 140, 840, 30, "mgmt",
