@@ -8585,7 +8585,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var names = m.vms.map(function (x) { return x.name; });
     var blocks = [];
     if (ps) blocks.push(['Before you start. If PowerShell says that running scripts is disabled,\n# or that the file is not digitally signed, use one of these.\n# Both apply to one PowerShell process only, so nothing changes for the\n# rest of the computer. Neither works if Group Policy sets the execution\n# policy. In that case, ask your administrator.\n#\n# Allow scripts for the rest of this window, then run the commands below:',
-      'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting. Add the\n# script\'s parameters after the file name. Use pwsh instead of powershell\n# for PowerShell 7. A table parameter (@{ ... }) cannot be passed this way.\npowershell -ExecutionPolicy Bypass -File .\\' + p.exe + ' -WhatIf\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
+      'Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n\n# Or run one script past the policy without changing any setting, from any folder.\n# The path is the one of the zip extracted into Downloads. Add the script\'s other\n# parameters after it. A table parameter (@{ ... }) cannot be passed this way.\n# In Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~.\n' + bypassLine() + '\n\n# Bypass also skips the "downloaded from the internet" prompt. Under a\n# policy such as RemoteSigned, unblock the downloaded scripts instead:\nGet-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File']);
     var winUsed = usedFlavors(m).some(function (f) { return FLAVOR[f].family === 'windows'; });
     if (winUsed) blocks.push(['0a. Windows machines need an admin password. It is written into the answer file, so use a lab-only value.', ps ? "$env:LAB201_WINDOWS_ADMIN_PASSWORD = '<LAB_ONLY_PASSWORD>'" : "export LAB201_WINDOWS_ADMIN_PASSWORD='<LAB_ONLY_PASSWORD>'"]);
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
@@ -8635,6 +8635,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     blocks.push(['Between labs: return every machine to the baseline. Each requirement lab ends with "Return to baseline".\n# This discards what changed on the machines since the snapshot. Reload the baseline configuration\n# of the switches too (Lab 999.6).', act('Restore', 'restore')]);
     return blocks;
   }
+  // The line that runs the script of the platform past the execution policy, from the zip extracted into Downloads.
+  function bypassLine() {
+    var p = PLATFORMS[state.platform], key = String(state.params.key || DEFAULT_KEY_WIN).trim();
+    return 'pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\' + p.script.replace(/\//g, '\\') + ' -SshKeyFile ' + (/^[~\w.:\\\/-]+$/.test(key) ? key : psQuote(key));
+  }
   function commandText(m) { return commandBlocks(m).map(function (b) { return '# ' + b[0] + '\n' + b[1]; }).join('\n\n') + '\n'; }
 
   /* ------------------------------------------------------ notes and files */
@@ -8679,7 +8684,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         n.push('Bind each service to its own address, because two copies of a service collide on the shared network.');
         break;
     }
-    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: powershell -ExecutionPolicy Bypass -File .\\' + PLATFORMS[state.platform].exe + ' (pwsh for PowerShell 7). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
+    if (PLATFORMS[state.platform].shell === 'ps') n.push('Windows blocks downloaded PowerShell scripts by default. To run one script past the policy without changing any setting, use: ' + bypassLine() + ' (the path of the zip extracted into Downloads; in Windows PowerShell 5.1, use powershell and $HOME in place of pwsh and ~). To allow scripts for the rest of the window, use: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force. Both apply to one process only. Neither works if Group Policy sets the execution policy, so ask your administrator. The Command tab and README.md show both.');
     n.push(state.platform === 'proxmox' || state.platform === 'workstation'
       ? 'This script has built the lab machines on a real host, but only with the choices that were tested (Chapter 09 says which). Run the preview first.'
       : 'This script has not been run on a real host. Run the preview first.');
@@ -9205,8 +9210,9 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var p = PLATFORMS[state.platform];
     return ['Walk the labs with Claude', '',
       '1. Set your choices on this page, then click Download zip.',
-      '2. Unzip lab201-build.zip. On Windows, unzip into a short folder such as C:\\lab201,',
-      '   because long folder names can make the unzip fail.',
+      '2. Extract lab201-build.zip into a folder named lab201-build. Extract All in Windows makes',
+      '   that folder by itself. In PowerShell: Expand-Archive .\\lab201-build.zip -DestinationPath .\\lab201-build',
+      '   If the extract fails on long file names, extract into a short folder such as C:\\lab201-build.',
       '3. Open a terminal in the lab201-build folder.',
       '4. Claude Code: run this line.', '',
       'claude "Start the lab walkthrough."', '',
@@ -10091,9 +10097,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   }
 
   function buildZip() {
-    var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), dec = new TextDecoder(), root = retag('lab201-build/');
-    // Every file and file name of the zip carries the lab name. The choices file is the page's own record, so it keeps
-    // the names the page uses inside.
+    var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), dec = new TextDecoder(), root = '';
+    // The files sit at the top of the zip, with no folder around them: extracting the zip makes its folder, so a folder
+    // inside would be a second one (lab201-build\lab201-build). Every file and file name of the zip carries the lab
+    // name. The choices file is the page's own record, so it keeps the names the page uses inside.
     var own = zipOwnFiles(m, v), files = own.map(function (f) { return { path: root + retag(f.path), bytes: enc.encode(f.path === 'lab-selector-choices.json' ? f.text : retag(f.text)) }; });
     var renamed = function (b) { return labTag() === DEFAULT_TAG ? b : enc.encode(retag(dec.decode(b))); };
     var wanted = [
@@ -11024,7 +11031,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf('-BridgeVmnet vmnet0') > 0 && cmd.indexOf('-T1Vmnet') < 0 && !m.networks.some(function (n) { return n.name === 'lab201-t2'; }) && vm(m, 'gw-201').nics.filter(function (n) { return n.trunk; }).length === 1, 'Workstation uses one bridged network and one trunk');
     ok(C.PLATFORMS.workstation.versions.some(function (x) { return x[0] === '26H1U1'; }), 'Workstation Pro 26H1 U1 is offered');
     reset('vcenter'); cmd = C.commandText(man());
-    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('powershell -ExecutionPolicy Bypass -File .\\Deploy-Lab201-Vcenter.ps1') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
+    ok(cmd.indexOf('Unblock-File') > 0 && cmd.indexOf('Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass') > 0 && cmd.indexOf('pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\vcenter\\Deploy-Lab201-Vcenter.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub\n') > 0 && cmd.indexOf('Set-ExecutionPolicy') < cmd.indexOf('# 1. Preview') && C.platformNotes().some(function (x) { return x.indexOf('Group Policy') > 0; }), 'PowerShell platforms explain how to get past script blocking');
     // Switch models and lab walkthroughs
     var wsrc = '# T\n\nVLAN 5 and VLANs 2, 5, and 6 on `sw-648f-1` (FS-648F-FPOE, license `FS-SW-LIC-600`). `set vlanid 5`, `vlan5`, ' + sub4(5, 2, pl(5)) + ', gateway ' + sub4(2, 1) + ', fd00:db8:201::502, fd00:db8:201::201, `svc-201a` at ' + sub4(2, 10) + '. See [Chapter 999](999-x.md), [Chapter 01](01-y.md#top), and ![d](../../../diagrams/volume-201-fortiswitch-stig-and-srg-mapping/chapter-999-shared-lab-topology.svg). VLAN 2005 and 10.30.1.1 stay.\n';
     reset(); v = C.validateAll(); m = C.buildManifest(v);
@@ -11070,6 +11077,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmdQ.indexOf("export LAB201_CONSOLE_PASSWORD='it'\\''s'") > 0 && C.commandText(man()).indexOf('LAB201_CONSOLE_PASSWORD') < 0, 'the console password is quoted, and an empty one is left out');
     reset('vcenter'); S.consolePw = 'x1'; var pwSaved = C.choicesText(); reset('vcenter'); C.applyChoices(JSON.parse(pwSaved));
     ok(S.consolePw === 'x1' && C.commandText(man()).indexOf("$env:LAB201_CONSOLE_PASSWORD = 'x1'") > 0, 'the choices file keeps the console password');
+    // The line that runs the script past the execution policy, from the zip extracted into Downloads
+    reset('workstation'); cmd = C.commandText(man());
+    ok(cmd.indexOf('\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub\n') > 0 &&
+      C.platformNotes().some(function (x) { return x.indexOf('use: pwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1 -SshKeyFile ~\\.ssh\\id_ed25519.pub (') > 0; }), 'the bypass line runs the script of the extracted zip with the SSH key');
+    S.labTag = '305'; S.params.key = 'C:\\My Keys\\lab.pub'; cmd = C.commandText(man());
+    ok(cmd.indexOf("\npwsh -ExecutionPolicy Bypass -File ~\\Downloads\\lab305-build\\workstation\\Deploy-Lab305-Workstation.ps1 -SshKeyFile 'C:\\My Keys\\lab.pub'\n") > 0, 'the bypass line follows the lab name and quotes a key path with a space');
     // The lab name
     reset('workstation');
     var tagText = 'gw-201 svc-201a oob-admin-201 radius-201b lab201-svc-201a LAB201_KEYS Deploy-Lab201-Workstation.ps1 baseline-201 Lab 201 setup';
@@ -12136,13 +12149,13 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       C.resetVms(); S.platform = 'proxmox'; S.version = '8'; C.resetParams();
       C.SETS.forEach(function (s) { S.sets[s.id] = true; });
       // A VLAN ID is the number of its segment unless it is set, so every shared segment gets one that is set.
-      C.setSupernet('10.77.64.0'); S.v6 = 'fd77:1:2::'; SEGMENTS.forEach(function (s) { S.vlanOn[s] = true; S.vlans[s] = String(100 + 10 * s); }); S.vms['svc-201a'].name = 'radius-a';
+      C.setSupernet('10.77.64.0'); S.v6 = 'fd77:1:2::'; SEGMENTS.forEach(function (s) { S.vlanOn[s] = true; S.vlans[s] = String(100 + 10 * s); }); S.vms['svc-201a'].name = 'radius-a'; S.labTag = '305';
       S.sw.a = 'FS-424E-FPOE'; S.sw.b = 'FS-1048E'; C.PORTS.forEach(function (p, i) { S.ports[p[0]] = 'port' + (i + 1); }); S.fswVersion = '8.0.1';
       var wv = C.validateAll(), wm = C.buildManifest(wv), bad = [], done = 0;
       // A check with true as its third item is for a chapter of the lab set that runs on the switches only.
       var checks = [[/7\.6\.x/g, 'release the chapters expect', true], [/10\.200\./g, 'old IPv4 block'], [/fd00:db8:201::/g, 'old IPv6 prefix'], [/\b(?:VLAN|vlanid|native-vlan) [2-8]\b/g, 'old VLAN ID'], [/\bvlan[2-8]\b/g, 'old VLAN interface'],
         [/^\| (\d+) \| \1(?: \(VNI \d+\))? \| (?:Lab-Services|Admin|Switch-Mgmt|Users-8021X|Users-MAB|Static-Hosts|Guest-AuthFail) \|/gm, 'old VLAN in the Segments table'], [/Repeat the block for [2-8],/g, 'old VLAN list'], [/^\s*edit [2-8]\n\s*set description [A-Z]/gm, 'old VLAN in a switch block'], [/\binner [2-8]\b/g, 'old inner VLAN'],
-        [/svc-201a/g, 'old machine name'], [/sw-648f-1|sw-2048f-1|FS-648F-FPOE|FS-2048F/g, 'old switch', true], [/<PORT_[A-Z0-9]+>|<EXTERNAL_PORT>/g, 'port placeholder', true], [/\]\((?:\.\.\/|\d\d-|9\d\d?-)[^)]*\)/g, 'link out of the zip']];
+        [/svc-201a/g, 'old machine name'], [/sw-648f-1|sw-2048f-1|FS-648F-FPOE|FS-2048F/g, 'old switch', true], [/<PORT_[A-Z0-9]+>|<EXTERNAL_PORT>/g, 'port placeholder', true], [/\]\((?:\.\.\/|\d\d-|9\d\d?-)[^)]*\)/g, 'link out of the zip'], [/\b(?:lab|Lab|LAB)201(?![0-9])|(?<![\w.\/-])[a-z]+(?:-[a-z]+)*-201[ab]?(?![\w-])/g, 'old lab name']];
       // Every lab address of a rewritten chapter has to be in a subnet of the build. One that is not came from an
       // address that is in no block of the plan of Chapter 999. The one exception is the last address of the supernet,
       // which the supernet row of the Segments table names. An IPv6 address has to have the number of a network of
@@ -12151,10 +12164,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       Promise.all(C.WALKTHROUGHS.map(function (w) {
         var onSw = !w.set || !!(C.SET[w.set] || {}).switches;
         return fetch('../walkthroughs/' + w.short).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (t) {
-          var out = C.adaptWalkthrough(t, wm, wv, C.WALKTHROUGHS, w).split('\n').filter(function (l) { return l.indexOf('> **Lab Selector copy.**') !== 0; }).join('\n');
+          var out = C.retag(C.adaptWalkthrough(t, wm, wv, C.WALKTHROUGHS, w)).split('\n').filter(function (l) { return l.indexOf('> **Lab Selector copy.**') !== 0; }).join('\n');
           out = out.replace(/\]\(\.\.\/diagrams\/lab-topology\.svg\)/g, '](ok)');
           C.WALKTHROUGHS.forEach(function (x) { out = out.split('](' + x.short).join('](ok'); });
-          checks.forEach(function (c) { var hit = c[2] && !onSw ? null : out.match(c[0]); if (hit) bad.push(w.short + ': ' + hit.length + ' ' + c[1] + ' (' + hit[0] + ')'); });
+          var noLinks = out.replace(/https?:\/\/\S+/g, '');
+          checks.forEach(function (c) { var hit = c[2] && !onSw ? null : (c[1] === 'old lab name' ? noLinks : out).match(c[0]); if (hit) bad.push(w.short + ': ' + hit.length + ' ' + c[1] + ' (' + hit[0] + ')'); });
           var stray = (out.match(/\b10\.77\.\d+\.\d+/g) || []).filter(function (a) { return !inBuild(a); })
             .concat((out.match(/fd77:1:2::[0-9a-f]{3,4}\b/g) || []).filter(function (a) { return !inBuild6(a); }));
           if (stray.length) bad.push(w.short + ': ' + stray.length + ' address outside the subnets of the build (' + stray[0] + ')');

@@ -110,8 +110,11 @@ page never reads or writes a worksheet.
 `common/make-ckl.py` turns that file into checklists for DISA STIG Viewer. See
 *Make checklists for STIG Viewer* below.
 
-With Claude Code, unzip the file, open a terminal in the `lab201-build`
-folder, and run:
+With Claude Code, extract the zip into a folder named after it, such as
+`lab201-build`. **Extract All** in Windows makes that folder by itself, and the
+zip has no folder of its own inside. In PowerShell, use
+`Expand-Archive .\lab201-build.zip -DestinationPath .\lab201-build`. Then open
+a terminal in that folder, and run:
 
 ```powershell
 claude "Start the lab walkthrough."
@@ -471,13 +474,15 @@ PowerShell process only, so nothing changes for the rest of the computer.
 To run one script past the execution policy without changing any setting:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\Deploy-Lab201-Vcenter.ps1 -WhatIf
+pwsh -ExecutionPolicy Bypass -File ~\Downloads\lab201-build\vcenter\Deploy-Lab201-Vcenter.ps1 -SshKeyFile ~\.ssh\id_ed25519.pub -WhatIf
 ```
 
-Use the script for your platform, and add its parameters after the file name.
-Use `pwsh` instead of `powershell` if you run PowerShell 7. A table parameter
-such as `-FlavorImages @{ ... }` cannot be passed this way, so use the next
-command for those.
+The path is the one of the zip extracted into Downloads, so the line works from
+any folder. Use the script for your platform, and add its other parameters
+after it. In Windows PowerShell 5.1, use `powershell` and `$HOME` in place of
+`pwsh` and `~`, because Windows PowerShell does not expand `~` in the path that
+`-File` takes. A table parameter such as `-FlavorImages @{ ... }` cannot be
+passed this way, so use the next command for those.
 
 To allow scripts for the rest of the current window instead, and then run the
 scripts as the chapters show:
