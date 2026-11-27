@@ -22,9 +22,10 @@ The Lab Selector, its data, and the build scripts are in the `lab-scripts` folde
 | `common/flavors.json` | The Linux flavors, their package names, and the machine types each one can run |
 | `common/fortiswitch-features.json` | Which FortiSwitch model series support the features that the FortiSwitch labs use |
 | `common/make-seed.py`, `common/resolve-image.py` | The seed tool and the image resolver of the build scripts |
+| `common/make-ckl.py` | Writes checklists for DISA STIG Viewer from the results file of the page, the benchmark files of DISA, and the lab chapters |
 | `esxi/`, `vcenter/`, `workstation/`, `proxmox/`, `kvm/`, `wsl/` | One build script for each platform |
 | `scripts/python/sync_lab_selector.py` | Copies the data files and the lab data into the page, and checks the numbers that the documents state |
-| `scripts/python/check_lab_scripts.py` | Checks that the build scripts parse and that the seed tool writes a seed for every machine |
+| `scripts/python/check_lab_scripts.py` | Checks that the build scripts parse, that the seed tool writes a seed for every machine, and that the checklist script passes its self-test and reads the requirement rows that the page holds |
 | `scripts/python/package_lab_scripts.py` | Publishes the folder as files and as one zip, with a `SHA256SUMS` file |
 | `scripts/python/build_fortiswitch_features.py` | Builds `fortiswitch-features.json` from Fortinet's feature matrix |
 | `scripts/bash/build-download-site.sh` | Calls the packaging script, and links the page on the portal |
@@ -61,6 +62,8 @@ A short name keeps the paths in the zip short for Windows, and it has to be uniq
 The **Address plan** table decides what a lab set adds. A row whose **From** cell is *This volume* is a host that the set adds. A row from the volume of another lab set is a host of that set which this one reuses. A row from the volume of the shared lab is one of its machines or service names, which the lab text already ties to the set. The word *(optional)* in the **Role** cell marks a host that only an optional step needs.
 
 The script says what it could not use: a lab with no **Uses.** line, a host name in a **Uses.** line that it does not know, a host whose address is in no network of the shared lab, and a reused host that its own volume does not add.
+
+The checklist script, `common/make-ckl.py`, reads the lab chapters too, with code of its own, because a reader runs it without this repository. It reads two things that the page does not hold. The first is the title of a lab: a title that starts with *Gaps* marks a gap lab, whose requirements the product cannot meet. The second is the fourth cell of a requirement row, when the header of its column starts with *Alignment*: the words *Partial*, *Not supported*, and *Not applicable* there decide the status that a passed lab gives. In a table with another fourth column, such as a list of features, the cell is not read. `check_lab_scripts.py` compares the requirement rows that the checklist script finds with the rows of the page.
 
 ### Lab ids and prefixes
 
@@ -117,7 +120,7 @@ python scripts/python/sync_lab_selector.py --set-links
 
 ### Add a lab set
 
-1. **Check the lab chapters.** Each lab has a heading in the form `### Lab N.M — Title`, a **Uses.** line, and, for a requirement lab, a table of SRG IDs. The `/srg-labs-for` workflow writes chapters in this form, and its check confirms it.
+1. **Check the lab chapters.** Each lab has a heading in the form `### Lab N.M — Title`, a **Uses.** line, and, for a requirement lab, a table of SRG IDs. The `/srg-labs-for` workflow writes chapters in this form, and its check confirms it. Start the title of a gap lab with *Gaps:*, because the checklist script takes a passed gap lab as a finding and a passed requirement lab as a requirement that is met.
 2. **Check the Chapter 999 of the volume.** If the labs need hosts of their own, the chapter needs an **Address plan** table with the columns Host, Role, From, IPv4, and IPv6. Give each new host an address in a network of the shared lab, and say *(optional)* in the role of a host that only an optional step needs.
 3. **Add the lab set to `common/lab-catalog.json`.** Choose a prefix that no other lab set has, and short names that start with it. Leave `selected` false, unless a new build should have the set.
 4. **Run the sync,** and read its notes. Fix a chapter that it could not read.
@@ -142,6 +145,7 @@ The catalog already lists certification labs and learning labs, with no lab set.
 | `two labs have the id ...` | Two lab sets have the same prefix, or two have an empty one | Give one lab set another prefix |
 | `gives the short name ... to more than one chapter` | Two chapters of the catalog have the same short name | Change one short name |
 | `Lab ... has no Uses line` | A requirement lab does not say what it runs on | Add the **Uses.** line |
+| `make-ckl.py does not find ... in the lab chapters, and the Lab Selector page has it` | The checklist script and the sync script read a requirement row or a lab heading in different ways | Write the row and the heading in the form of the table above. If the form is right, correct `SRG_ROW` or `LAB_HEADING` in `make-ckl.py` |
 | `address plan: WRONG` | The Segments table of the shared lab, the `segments` list of the manifest, and the addresses do not agree. The lines under the message name each case: two blocks that overlap, a block that differs between the two, an address in no block, or a supernet row that is not the supernet of the networks under it | Correct the table, the manifest, or the address |
 | `... has the address ..., which is in no block of the Segments table of the shared lab` | A host of a lab set is outside every lab network | Move the host, or add the network to the shared lab |
 | A lab set has no host on the page | Its Chapter 999 has no **Address plan** table, or the **From** cells have other words | Use *This volume* or *Volume* and the Roman numeral |

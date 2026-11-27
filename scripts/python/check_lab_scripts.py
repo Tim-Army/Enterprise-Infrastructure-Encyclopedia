@@ -14,13 +14,17 @@ a hypervisor:
   tags made by the hypervisor and by the guest, and every seed carries the
   lab201-status script, which passes "bash -n" (one seed of each run is checked);
 - the seeds of a build in another address block hold no address of the block of
-  the manifest, and the firewall of its gateway names the blocks of the build.
+  the manifest, and the firewall of its gateway names the blocks of the build;
+- when the folder has common/make-ckl.py, the checklist script passes its
+  self-test, and it reads the same requirement rows from the lab chapters as the
+  Lab Selector page holds.
 
 It prints one line for each group and exits with status 1 if anything failed,
 which validate.sh uses.
 """
 
 import glob
+import importlib.util
 import ipaddress
 import json
 import os
@@ -234,6 +238,49 @@ def check_moved_build(tool, manifest, flavors_path, key, env, tmp, problems):
     return "a build in another address block keeps no address of the manifest's block in %d seed files" % files
 
 
+def check_checklists(folder, problems):
+    """The checklist script: its self-test, and the requirement rows that it reads from the lab chapters.
+
+    make-ckl.py reads the lab chapters with code of its own, to learn what a passed lab means for a requirement.
+    The Lab Selector page holds the same rows, which sync_lab_selector.py read. A requirement that only one of the
+    two finds would get no status from a passed lab, so the two are compared.
+    """
+    tool = os.path.join(folder, "common", "make-ckl.py")
+    if not os.path.isfile(tool):
+        return None
+    result = subprocess.run([sys.executable, tool, "--selftest"], capture_output=True, text=True)
+    if result.returncode != 0:
+        problems.append("make-ckl.py --selftest failed: %s" % (result.stderr.strip().splitlines() or ["no message"])[-1])
+        return None
+    count = re.search(r"\((\d+) checks\)", result.stdout)
+    part = "make-ckl.py passes its self-test%s" % (" (%s checks)" % count.group(1) if count else "")
+    page, catalog = os.path.join(folder, "selector", "lab-selector.html"), os.path.join(folder, "common", "lab-catalog.json")
+    if not (os.path.isfile(page) and os.path.isfile(catalog)):
+        return part
+    spec = importlib.util.spec_from_file_location("make_ckl", tool)
+    module = importlib.util.module_from_spec(spec)
+    keep, sys.dont_write_bytecode = sys.dont_write_bytecode, True
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.dont_write_bytecode = keep
+    chapters, missing = module.chapter_files(catalog, None)
+    known = module.read_requirements(chapters)
+    with open(page, "r", encoding="utf-8") as fh:
+        block = re.search(r'<script id="lab201-labs" type="application/json">\n(.*?)\n</script>', fh.read(), re.S)
+    if not block:
+        problems.append("make-ckl.py: the Lab Selector page has no lab data to compare with")
+        return part
+    held = set((lab["id"], srg["id"]) for lab in json.loads(block.group(1))["labs"] for srg in lab.get("srg", []))
+    for lab, srg in sorted(held - set(known))[:5]:
+        problems.append("make-ckl.py does not find %s of Lab %s in the lab chapters, and the Lab Selector page has it" % (srg, lab))
+    for lab, srg in sorted(set(known) - held)[:5]:
+        problems.append("make-ckl.py finds %s in Lab %s of the lab chapters, and the Lab Selector page does not have it" % (srg, lab))
+    if missing:
+        problems.append("make-ckl.py does not find these lab chapters of the catalog: %s" % ", ".join(missing))
+    return "%s and reads the %d requirement rows of the Lab Selector page from the lab chapters" % (part, len(held))
+
+
 def main():
     folders = sorted(glob.glob(os.path.join(ROOT, "volumes", "*", "lab-scripts")))
     # A folder with no file in it is not a lab-scripts folder: git does not track an empty folder.
@@ -245,6 +292,9 @@ def main():
         seeds = check_seeds(folder, problems)
         if seeds:
             parts.append(seeds)
+        checklists = check_checklists(folder, problems)
+        if checklists:
+            parts.append(checklists)
         if problems:
             failed = True
             print("lab scripts: FAILED in %s" % rel(folder), file=sys.stderr)

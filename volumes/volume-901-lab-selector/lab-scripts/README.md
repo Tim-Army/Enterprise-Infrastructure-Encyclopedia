@@ -107,6 +107,9 @@ the lab, the switch model, the release, the result, where the result comes
 from, and the evidence. It is a file of its own, keyed by SRG ID and lab. The
 page never reads or writes a worksheet.
 
+`common/make-ckl.py` turns that file into checklists for DISA STIG Viewer. See
+*Make checklists for STIG Viewer* below.
+
 With Claude Code, unzip the file, open a terminal in the `lab201-build`
 folder, and run:
 
@@ -494,6 +497,40 @@ a platform folder such as `esxi`:
 Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File
 ```
 
+## Make checklists for STIG Viewer
+
+`common/make-ckl.py` writes one checklist (`.cklb`) for each device under test and each SRG, in the format of DISA STIG Viewer 3. A checklist holds every rule of the SRG, with its check text and its fix text. The script takes three things:
+
+- **The results file.** On the Lab Selector, click **Download results (CSV)**. Without a loaded `PROGRESS.md`, every requirement is *not tested* and every rule of the checklists is Not Reviewed.
+- **The benchmark files of DISA.** Get the SRG zips, or the whole SRG and STIG library, from the DoD Cyber Exchange. The script reads the zips as they are and downloads nothing. The labs use five SRGs: Layer 2 Switch, Network Device Management, Router, AAA Services, and Central Log Server.
+- **The lab chapters.** They are in `walkthroughs/` beside `common/`, and `common/lab-catalog.json` names them. The script reads from them which lab is a gap lab and how the crosswalk aligns a requirement.
+
+```text
+python common/make-ckl.py --results lab201-results.csv --disa <folder with the zips of DISA> --lab-values LAB-VALUES.md --out checklists
+```
+
+`--lab-values` takes the `LAB-VALUES.md` of the Lab Selector zip. It gives the checklists the host names of the two switches and the addresses of the other hosts. `--asset "Access switch=sw-648f-1,10.200.0.11"` sets the host name and the address of one device. `--marking CUI` writes a marking. `--format ckl` writes `.ckl` files, the XML format of STIG Viewer 2, and `--format both` writes both kinds. The script prints each checklist with a count of its statuses, and it writes the same list to `checklists-summary.txt`.
+
+A lab result becomes a status in this way:
+
+| Result of the lab | What the lab chapters say | Status |
+| --- | --- | --- |
+| pass | The product meets the requirement | Not a Finding |
+| pass | The product meets part of it (alignment *Partial*) | Open |
+| pass | Gap lab: the product cannot meet it | Open |
+| pass | Gap lab, alignment *Not applicable* | Not Applicable |
+| fail | Anything | Open |
+| blocked, skipped, or not tested | Anything | Not Reviewed |
+
+A gap lab passes when it shows that the setting is absent and that the compensating control works. So its pass is a finding for the requirement. The finding details of a rule name the lab, the date, the device, the evidence, and the reason for the status. The comments name the lab that tests the rule. A rule that no lab tests on the device stays Not Reviewed.
+
+Read this before you use a checklist:
+
+- **A status is a proposal.** It says what the lab showed on the lab device on the day of the test, and the labs return the device to its baseline afterwards. Read the finding details and the lab before you sign a checklist.
+- **Two requirements have no rule.** `SRG-NET-000331-L2S-000001` and `SRG-NET-000332-L2S-000002` come from the Cisco NX-OS STIG and are no rules of the Layer 2 Switch SRG, so no checklist has them. The script names every such requirement.
+- **DISA publishes no schema for `.cklb`.** The script follows a file that STIG Viewer 3 saved: the same keys in the same order, and the same values in the fields of a rule. It checks each `.ckl` file against the checklist schema 2.5 of STIG Viewer 2. No checklist had been opened in STIG Viewer when this was written, so open one before you rely on them.
+- **The zip of the Lab Selector does not hold this script.** It is in the published folder and in the zip of the scripts, with the catalog and the lab chapters that it needs.
+
 ## What is in `common/`
 
 - `lab201-vms.json` lists the twelve machines, their sizes, networks, and IPv4
@@ -502,6 +539,9 @@ Get-ChildItem -Path .. -Recurse -Filter *.ps1 | Unblock-File
 - `resolve-image.py` finds, downloads, and checks the cloud image for a flavor.
 - `make-seed.py` writes the cloud-init files (and, with `--iso`, a seed ISO) for
   each machine, or with `--wsl` the provisioning script for a WSL host.
+- `make-ckl.py` writes checklists for DISA STIG Viewer from the results file of
+  the Lab Selector and the benchmark files of DISA. `lab-catalog.json` names the
+  lab chapters that it reads.
 
 The published copy of this folder also has `diagrams/lab-topology.svg` and `lab-topology.png`, the Chapter 999 network diagram. The site build adds them, so they are not in the repository copy of this folder. The zip that the Lab Selector makes holds a picture of your own build in their place, which the page draws.
 

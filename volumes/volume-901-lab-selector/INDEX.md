@@ -10,6 +10,7 @@ See also the [volume glossary](GLOSSARY.md) for term definitions and the
 - **Build scripts (ESXi, vCenter, Workstation Pro, Proxmox VE, KVM, WSL)** — [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md), [Volume CCI Chapter 09](../volume-201-fortiswitch-stig-and-srg-mapping/chapters/09-esxi-7-8-and-9-lab-virtual-machine-automation.md)
 - **Catalog of lab kinds and lab sets (`lab-catalog.json`)** — [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md)
 - **Certification labs and learning labs (kinds with no lab set yet)** — [Chapter 01](chapters/01-the-lab-selector.md), [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md)
+- **Checklists for DISA STIG Viewer (`make-ckl.py`, `.cklb`, `.ckl`)** — [Chapter 01](chapters/01-the-lab-selector.md), [Chapter 02](chapters/02-lab-data-and-how-to-add-a-lab-set.md), [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
 - **Choices file (`lab-selector-choices.json`)** — [Chapter 01](chapters/01-the-lab-selector.md)
 - **Claude, walking the labs with the zip (`CLAUDE.md`, `PROGRESS.md`)** — [Chapter 01](chapters/01-the-lab-selector.md)
 - **External firewall text and the values it asks for (section 11, `<FW_LAB_INTERFACE>`)** — [Chapter 01](chapters/01-the-lab-selector.md), [Chapter 90](chapters/90-as-built-how-this-volume-was-built.md)
