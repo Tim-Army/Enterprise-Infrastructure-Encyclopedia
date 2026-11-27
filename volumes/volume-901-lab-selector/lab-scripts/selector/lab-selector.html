@@ -7744,6 +7744,23 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     'FSR-108F', 'FSR-112F-POE', 'FSR-216F-POE', 'FSR-424F-POE'];
   // The console password the page proposes for the admin user. It is published with this page, so it suits a closed lab only.
   var DEFAULT_CONSOLE_PW = 'ISEisC00L123!';
+  // The lab name. 201 is the lab of the book. Another name renames everything a build writes: lab201 becomes
+  // lab<name>, LAB201_ and Lab201 follow, and the machines (gw-201 and the rest) and the snapshot (baseline-201) end in
+  // it. The page keeps the 201 names inside and renames its output, so a build named 201 is the same as before. The
+  // IPv6 prefix is an address, not a name, so it keeps its own field. Five characters keep the longest machine name,
+  // mcast-src-<name>, within the 15 characters of a Windows computer name.
+  var DEFAULT_TAG = '201', TAG_RE = /^[a-z0-9]{1,5}$/;
+  // The names that end in the lab name: the machines, the hosts built by hand, and the service names of the lab data.
+  var TAG_HOSTS = (function () {
+    var seen = { baseline: true }, re = /(?<![\w.\/-])([a-z][a-z0-9]*(?:-[a-z0-9]+)*?)-201[ab]?(?![\w-])/g, q;
+    var text = JSON.stringify(BASE) + JSON.stringify(LABDATA) + JSON.stringify(FL);
+    while ((q = re.exec(text))) seen[q[1]] = true;
+    return Object.keys(seen).sort(function (a, b) { return b.length - a.length; });
+  })();
+  var TAG_TOKEN = new RegExp('(LAB|Lab|lab)201(?![0-9])|\\b(Lab|lab) 201\\b(?![.0-9])|(?<![\\w.])(' + TAG_HOSTS.join('|') + ')-201([ab]?)(?![\\w-])', 'g');
+  // Links and the node names of the topology picture keep their text: a link points at a file of the repository, and
+  // the page finds a node of the picture by its name.
+  var TAG_KEEP = /(https?:\/\/[^\s"'<>)\]`]+|data-node="[^"]*")/;
   var REPO_BLOB = 'https://github.com/Tim-Army/Enterprise-Infrastructure-Encyclopedia/blob/main/';
   var VOLUME_DIR = 'volumes/volume-201-fortiswitch-stig-and-srg-mapping/';
   var RESERVED_VLANS = [1, 2001, 2002, 2003, 2004, 2005, 4095].concat(NOHOST.map(function (n) { return n.id; }));
@@ -7862,14 +7879,35 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* --------------------------------------------------------------- state */
   var state = {
     platform: 'vcenter', version: '8', params: {}, defaultFlavor: DEFAULT_FLAVOR, kind: '', sets: {},
-    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}
+    v4: OLD_V4, v6: OLD_V6, vlans: {}, vlanOn: {}, netText: '', netErr: '', subnetOn: {}, subnets: {}, sw: { a: 'FS-648F-FPOE', b: 'FS-2048F' }, consolePw: 'ISEisC00L123!', ports: {}, startLab: '999.1', fswVersion: '7.6.7', labsOff: {}, progress: null, vms: {}, images: {}, isos: {}, isoSums: {}, rhelImage: '', licFile: '.\\licenses.local.json', licRefs: {}, gwOs: NET_GW[0][0], fwOs: NET_OS_DEFAULT, rangeOn: {}, rangeStart: '', rangeNet: '', uplink: false, uplinkSet: false, uplinkAddr: '', uplinkFw: '', uplinkDns: '', inet: {}, fwEdit: '', fwVars: {}, gwVars: {}, labTag: DEFAULT_TAG
   };
+  // The lab name of this build, and a text with its names. tag names another lab name than the one of the page.
+  function labTag() { return TAG_RE.test(String(state.labTag || '')) ? state.labTag : DEFAULT_TAG; }
+  function retag(s, tag) {
+    var t = tag || labTag();
+    if (t === DEFAULT_TAG || typeof s !== 'string') return s;
+    return s.split(TAG_KEEP).map(function (part, i) {
+      return i % 2 ? part : part.replace(TAG_TOKEN, function (all, a, b, h, ab) {
+        if (a) return a + (a === 'LAB' ? t.toUpperCase() : t);
+        if (b) return b + ' ' + t;
+        return h + '-' + t + ab;
+      });
+    }).join('');
+  }
+  function retagObj(o) { return labTag() === DEFAULT_TAG || !o ? o : JSON.parse(retag(JSON.stringify(o))); }
+  // A text function of the page with its output renamed for the lab name: a text, or a list of texts.
+  function tagged(fn) {
+    return function () {
+      var r = fn.apply(null, arguments);
+      return Array.isArray(r) ? r.map(function (x) { return retag(x); }) : retag(r);
+    };
+  }
   // The lab sets a new build has, and the kind of labs they are.
   function defaultSets() { var o = {}; SETS.forEach(function (s) { if (s.selected) o[s.id] = true; }); return o; }
   function defaultKind() { var s = SETS.filter(function (x) { return x.selected; })[0] || SETS[0]; return s ? s.kind : (KINDS[0] || {}).id || ''; }
   function resetVms() {
     state.kind = defaultKind(); state.sets = defaultSets();
-    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {};
+    state.vms = {}; state.sw = { a: SW_DEFAULT.a, b: SW_DEFAULT.b }; state.consolePw = DEFAULT_CONSOLE_PW; state.ports = {}; state.startLab = '999.1'; state.fswVersion = FSW_DEFAULT; state.labsOff = {}; state.gwOs = NET_GW[0][0]; state.fwOs = NET_OS_DEFAULT; state.rangeOn = {}; state.rangeStart = ''; state.rangeNet = ''; state.netText = ''; state.netErr = ''; state.uplink = false; state.uplinkSet = false; state.uplinkAddr = ''; state.uplinkFw = ''; state.uplinkDns = ''; state.inet = {}; state.fwEdit = ''; state.fwVars = {}; state.gwVars = {}; state.labTag = DEFAULT_TAG;
     BASE.vms.forEach(function (vm) {
       state.vms[vm.name] = { include: true, name: vm.name, vcpu: String(vm.vcpu), mem: String(vm.memory_mb / 1024), disk: String(vm.disk_gb), override: false, flavor: '', addr: {}, touched: {} };
     });
@@ -8297,8 +8335,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       out.included.push(b.name);
       var nm = r.name.trim();
       if (!NAME_RE.test(nm)) { res.name.err = 'Use lowercase letters, digits, and hyphens. The default name is kept'; nm = b.name; }
-      else if (seen[nm]) { res.name.err = 'Another machine already uses this name. The default name is kept'; nm = b.name; }
-      seen[nm] = true;
+      else if (seen[retag(nm)]) { res.name.err = 'Another machine already uses this name. The default name is kept'; nm = b.name; }
+      seen[retag(nm)] = true;
       out.names[b.name] = nm;
       out.flavors[b.name] = res.eff.flavor;
       if (res.name.err) out.errors.push(b.name + ': ' + res.name.err);
@@ -8306,6 +8344,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       ['vcpu', 'mem', 'disk'].forEach(function (k) { if (res[k].err) out.errors.push(nm + ': ' + res[k].err); });
       if (r.override && (res.vcpu.below || res.mem.below || res.disk.below)) out.warnings.push(nm + ' is below its proposed minimum by Override. Package installs may fail or run out of memory.');
     });
+    if (String(state.labTag || '') !== labTag()) out.errors.push('Lab name ' + state.labTag + ': use 1 to 5 lowercase letters and digits. ' + DEFAULT_TAG + ' is used');
     var v4ok = validIpv4Prefix(state.v4), v6ok = validIpv6Prefix(state.v6);
     if (!v4ok) out.errors.push('IPv4 block ' + state.v4 + '. Use the first two octets of a private range, such as 10.77');
     if (!v6ok) out.errors.push('IPv6 prefix ' + state.v6 + '. Use a unique local prefix that ends in ::, such as fd00:db8:201::');
@@ -9321,7 +9360,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var nets4 = [{ net: v.range.net, len: v.range.len }];
     v.sub.typed.forEach(function (s) { var n = v.sub.at[s]; if (n < v.range.from || n + BOOK[s].size - 1 > v.range.to) nets4.push({ net: ip4str(n), len: v.sub.len[s] }); });
     var plat = PLATFORMS[state.platform];
-    return { lab: BASE.lab || 'lab201', gw: gw ? v.names[gw.name] || gw.name : '', gwBuilt: !!gw && rowIncluded(gw, state.vms[gw.name]), gwLeftOut: !!gw && gwLeftOut(gw), twoTrunks: !plat.singleTrunk && !plat.wslOnly,
+    return { lab: retag(BASE.lab || 'lab201'), gw: gw ? v.names[gw.name] || gw.name : '', gwBuilt: !!gw && rowIncluded(gw, state.vms[gw.name]), gwLeftOut: !!gw && gwLeftOut(gw), twoTrunks: !plat.singleTrunk && !plat.wslOnly,
       ifs: ifs, nets4: nets4, nets6: [{ net: p6, len: 112 }] };
   }
   function netDesc(m, i) { return m.lab + ' segment ' + i.seg + ' ' + i.name; }
@@ -9695,7 +9734,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     // as the address of the gateway.
     var up = v.uplink, fv = fwVarCheck(v, p4, on), gv = gwVarCheck();
     var fwc = firewallConfig(f, { lab: m.lab, net: v.range.net, len: v.range.len, sup6: p6 + '/112', hosts: on, gw: m.gw, gwBuilt: m.gwBuilt, device: device, uplink: up.on, vars: fv.val, from: fv.from });
-    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: gatewayConfig(g, m, gv.val), firewall: fwc, fwVars: fv, gwVars: gv };
+    return { model: m, gw: g, fw: f, device: device, gwName: netLabel(g), fwName: netLabel(f), range: v.range, machines: all, internet: on, uplink: up, gateway: retagObj(gatewayConfig(g, m, gv.val)), firewall: retagObj(fwc), fwVars: fv, gwVars: gv };
   }
 
   // The external firewall text as a file of the zip. It is the text as it stands in section 11, so an edited text goes
@@ -9942,7 +9981,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   /* -------------------------------------------------------------- choices */
   // Everything you chose on the page, as the file that Load choices reads back.
   function choicesText() {
-    return JSON.stringify({ kind: 'lab-selector-choices', format: 3, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit, firewallValues: state.fwVars, gatewayValues: state.gwVars }, null, 2) + '\n';
+    return JSON.stringify({ kind: 'lab-selector-choices', format: 3, labName: state.labTag, labKind: state.kind, sets: state.sets, platform: state.platform, version: state.version, params: state.params, defaultFlavor: state.defaultFlavor, v4: state.v4, v6: state.v6, vlans: state.vlans, vlanOn: state.vlanOn, supernetText: state.netText, subnetOn: state.subnetOn, subnets: state.subnets, vms: state.vms, images: state.images, isos: state.isos, rhelImage: state.rhelImage, licFile: state.licFile, licRefs: state.licRefs, switches: state.sw, consolePw: state.consolePw, ports: state.ports, startLab: state.startLab, fswVersion: state.fswVersion, labsOff: state.labsOff, isoSums: state.isoSums, gatewayOs: state.gwOs, firewallOs: state.fwOs, rangeOn: { start: !!state.rangeOn.start, net: !!state.rangeOn.net }, rangeStart: state.rangeStart, rangeSupernet: state.rangeNet, uplink: state.uplink, uplinkSet: state.uplinkSet, uplinkAddress: state.uplinkAddr, uplinkFirewall: state.uplinkFw, uplinkDns: state.uplinkDns, internet: state.inet, firewallText: state.fwEdit, firewallValues: state.fwVars, gatewayValues: state.gwVars }, null, 2) + '\n';
   }
   // Put a saved choices file back into the page state. Returns notes about values it could not use.
   function applyChoices(s) {
@@ -10000,6 +10039,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     state.labsOff = {}; ALL_LABS.forEach(function (l) { if (!isSharedLab(l) && s.labsOff && s.labsOff[l.id]) state.labsOff[l.id] = true; });
     state.licFile = s.licFile || (p.shell === 'ps' ? '.\\licenses.local.json' : './licenses.local.json'); state.licRefs = s.licRefs || {};
     state.consolePw = typeof s.consolePw === 'string' ? s.consolePw : DEFAULT_CONSOLE_PW;
+    state.labTag = typeof s.labName === 'string' ? s.labName : DEFAULT_TAG;
+    if (state.labTag !== labTag()) notes.push('the lab name ' + state.labTag + ' is not a valid name, so ' + DEFAULT_TAG + ' is used');
     state.ports = {}; PORTS.forEach(function (p) { if (s.ports && typeof s.ports[p[0]] === 'string') state.ports[p[0]] = s.ports[p[0]]; });
     state.startLab = labsNow().some(function (l) { return l.id === s.startLab; }) ? s.startLab : '999.1';
     state.fswVersion = FSW_VERSIONS.some(function (x) { return x[0] === s.fswVersion; }) ? s.fswVersion : FSW_DEFAULT;
@@ -10050,45 +10091,48 @@ textarea.cfgedit.chg{border-color:var(--accent)}
   }
 
   function buildZip() {
-    var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), root = 'lab201-build/';
-    var own = zipOwnFiles(m, v), files = own.map(function (f) { return { path: root + f.path, bytes: enc.encode(f.text) }; });
+    var v = validateAll(), m = buildManifest(v), p = PLATFORMS[state.platform], enc = new TextEncoder(), dec = new TextDecoder(), root = retag('lab201-build/');
+    // Every file and file name of the zip carries the lab name. The choices file is the page's own record, so it keeps
+    // the names the page uses inside.
+    var own = zipOwnFiles(m, v), files = own.map(function (f) { return { path: root + retag(f.path), bytes: enc.encode(f.path === 'lab-selector-choices.json' ? f.text : retag(f.text)) }; });
+    var renamed = function (b) { return labTag() === DEFAULT_TAG ? b : enc.encode(retag(dec.decode(b))); };
     var wanted = [
       ['../' + p.script, p.script], ['../common/make-seed.py', 'common/make-seed.py'], ['../common/flavors.json', 'common/flavors.json'],
       ['../common/resolve-image.py', 'common/resolve-image.py'], ['../README.md', 'README.md']
     ];
     // A PNG copy of the picture goes beside it where the browser can make one.
     var svg = own.filter(function (f) { return f.path === 'diagrams/lab-topology.svg'; })[0].text;
-    var png = svgPng(svg, 1.5).then(function (b) { if (b) files.push({ path: root + 'diagrams/lab-topology.png', bytes: b }); });
+    var png = svgPng(retag(svg), 1.5).then(function (b) { if (b) files.push({ path: root + 'diagrams/lab-topology.png', bytes: b }); });
     var missing = [], walkNames = [], walks = walkthroughsNow();
     function fetchText(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
     var base = Promise.all(wanted.map(function (w) {
-      return fetchBytes(w[0]).then(function (b) { files.push({ path: root + w[1], bytes: b }); }, function () { missing.push(w[1]); });
+      return fetchBytes(w[0]).then(function (b) { files.push({ path: root + retag(w[1]), bytes: renamed(b) }); }, function () { missing.push(w[1]); });
     }));
     // The lab chapters this build is for, rewritten with its values.
     var walk = Promise.all(walks.map(function (w) {
       return fetchText('../walkthroughs/' + w.short).then(function (t) {
-        walkNames.push(w); files.push({ path: root + 'walkthroughs/' + w.short, bytes: enc.encode(adaptWalkthrough(t, m, v, walks, w)) });
+        walkNames.push(w); files.push({ path: root + 'walkthroughs/' + w.short, bytes: enc.encode(retag(adaptWalkthrough(t, m, v, walks, w))) });
       }, function () { missing.push('walkthroughs/' + w.short); });
     })).then(function () { walkNames = walks.filter(function (w) { return walkNames.indexOf(w) >= 0; }); });
     return Promise.all([base, walk, png]).then(function () {
-      files.push({ path: root + 'CLAUDE.md', bytes: enc.encode(claudeText(m, v, walkNames)) });
+      files.push({ path: root + 'CLAUDE.md', bytes: enc.encode(retag(claudeText(m, v, walkNames))) });
       if (missing.length) files.push({ path: root + 'MISSING-FILES.txt', bytes: enc.encode('This page could not fetch these files from the site:\n' + missing.map(function (x) { return '  ' + x; }).join('\n') + '\n\nDownload the lab-scripts zip from the Volume CMI page and copy them next to common/lab201-vms.json.\nOpening the page from a local file blocks the fetch. Open it from the published site instead.\n') });
       return { blob: makeZip(files), missing: missing, count: files.length, names: files.map(function (f) { return f.path; }) };
     });
   }
 
   window.LabSelectorCore = {
-    BASE: BASE, FL: FL, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
-    choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: labValuesText, claudeText: claudeText, startText: startText, claudeHelpText: claudeHelpText,
+    BASE: BASE, FL: FL, retag: retag, labTag: labTag, DEFAULT_TAG: DEFAULT_TAG, TAG_RE: TAG_RE, FLAVOR: FLAVOR, FLAVORS: FLAVORS, PLATFORMS: PLATFORMS, SEGMENTS: SEGMENTS, state: state, OLD_V4: OLD_V4, OLD_V6: OLD_V6, DEFAULT_FLAVOR: DEFAULT_FLAVOR,
+    choicesText: choicesText, applyChoices: applyChoices, adaptWalkthrough: adaptWalkthrough, labValuesText: tagged(labValuesText), claudeText: tagged(claudeText), startText: tagged(startText), claudeHelpText: tagged(claudeHelpText),
     fswFor: fswFor, fswCompare: fswCompare, FSW_BOOK: FSW_BOOK, FSW_DEFAULT: FSW_DEFAULT, get PLAN_LABS() { return planLabs(); }, PLAN_CHAPTERS: PLAN_CHAPTERS, BASE_MACHINES: BASE_MACHINES, labPlanned: labPlanned, planCheck: planCheck, applyPlan: applyPlan,
     isoSumOf: isoSumOf, reqStatus: reqStatus, requirementRows: requirementRows, resultsCsv: resultsCsv, csvCell: csvCell,
     swCheck: swCheck, swSeries: swSeries, fswCheck: fswCheck, FSW: FSW, FSW_VERSIONS: FSW_VERSIONS, parseProgress: parseProgress, labStatus: labStatus, get LABS() { return labsNow(); }, get WALKTHROUGHS() { return walkthroughsNow(); }, ALL_LABS: ALL_LABS, ALL_WALKTHROUGHS: ALL_WALKTHROUGHS, KINDS: KINDS, SETS: SETS, SET: SET, setOn: setOn, switchesOn: switchesOn, labName: labName, planKey: planKey, linkSets: linkSets, applyLinkSets: applyLinkSets, setsLink: setsLink, handHostList: handHostList, defaultSets: defaultSets, defaultKind: defaultKind, listAnd: listAnd, BASE_DOC: BASE_DOC, PORTS: PORTS, DEFAULT_CONSOLE_PW: DEFAULT_CONSOLE_PW, SW_DEFAULT: SW_DEFAULT, SW_MODELS: SW_MODELS, SW_ROLE: SW_ROLE, SEGNAMES: SEGNAMES,
-    resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: commandText, commandBlocks: commandBlocks,
-    checklistText: checklistText, changesText: changesText, changeLines: changeLines, NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: licensesExample, licenseNeeds: licenseNeeds, platformNotes: platformNotes, buildZip: buildZip, zipOwnFiles: zipOwnFiles, firewallFile: firewallFile, gatewayFile: gatewayFile, gwLeftOut: gwLeftOut, gwIsDevice: gwIsDevice, setSupernet: setSupernet, clearSupernet: clearSupernet, supernetSet: supernetSet, supernetText: supernetText, NET: NET, VLAN_NETS: VLAN_NETS, BOOK: BOOK, BOOK_RANGE: BOOK_RANGE, bookCidr: bookCidr, bookNet: bookNet, subNet: subNet, ip6of: ip6of, ip4num: ip4num, ip4str: ip4str, maskOf: maskOf, makeZip: makeZip, crc32: crc32,
+    resetVms: resetVms, resetParams: resetParams, validateAll: validateAll, buildManifest: buildManifest, totals: totals, commandText: tagged(commandText), commandBlocks: commandBlocks,
+    checklistText: tagged(checklistText), changesText: tagged(changesText), changeLines: tagged(changeLines), NETS: NETS, mapIp: mapIp, netsInUse: netsInUse, uplinkCheck: uplinkCheck, licensesExample: tagged(licensesExample), licenseNeeds: licenseNeeds, platformNotes: tagged(platformNotes), buildZip: buildZip, zipOwnFiles: zipOwnFiles, firewallFile: firewallFile, gatewayFile: gatewayFile, gwLeftOut: gwLeftOut, gwIsDevice: gwIsDevice, setSupernet: setSupernet, clearSupernet: clearSupernet, supernetSet: supernetSet, supernetText: supernetText, NET: NET, VLAN_NETS: VLAN_NETS, BOOK: BOOK, BOOK_RANGE: BOOK_RANGE, bookCidr: bookCidr, bookNet: bookNet, subNet: subNet, ip6of: ip6of, ip4num: ip4num, ip4str: ip4str, maskOf: maskOf, makeZip: makeZip, crc32: crc32,
     vmRows: vmRows, rowIncluded: rowIncluded, rowAvailable: rowAvailable, addrSlots: addrSlots, swapPrefix: swapPrefix, mapDef: mapDef, subnetCheck: subnetCheck, offered: offered, ratingOf: ratingOf, flavorOnPlatform: flavorOnPlatform,
     imageFlavorId: imageFlavorId, imageFlavorsNeedingFile: imageFlavorsNeedingFile, validIpv4Prefix: validIpv4Prefix, validIpv6Prefix: validIpv6Prefix, effectiveFlavor: effectiveFlavor,
     usedFlavors: usedFlavors, roleKey: roleKey, isoFlavorsNeeded: isoFlavorsNeeded, needsRhelImage: needsRhelImage, isIso: isIso,
-    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: topologySvg, rangeCheck: rangeCheck, netTable: netTable, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs, FW_VARS: FW_VARS, fwVarCheck: fwVarCheck, fwVarText: fwVarText, GW_VARS: GW_VARS, gwVarCheck: gwVarCheck, gwVarText: gwVarText
+    NET_OS: NET_OS, NET_OS_DEFAULT: NET_OS_DEFAULT, NET_GW: NET_GW, NET_FW: NET_FW, SERVICES: SERVICES, topologySvg: tagged(topologySvg), rangeCheck: rangeCheck, netTable: netTable, inetHosts: inetHosts, netModel: netModel, gatewayConfig: gatewayConfig, firewallConfig: firewallConfig, netConfigs: netConfigs, FW_VARS: FW_VARS, fwVarCheck: fwVarCheck, fwVarText: fwVarText, GW_VARS: GW_VARS, gwVarCheck: gwVarCheck, gwVarText: gwVarText
   };
 })();
 </script>
@@ -10113,6 +10157,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     h += '<div class="card"><h2><span class="n">4</span> Linux flavor</h2><p class="hint">The default for every Linux machine. Each machine can use its own flavor in the table below. A flavor that cannot run a machine type is left out of that machine\'s list, with a note. Experimental flavors have generated, checked files, but few or no machines have been built from them, and Chapter 09 lists what was built. Windows, Linux Mint, and Tiny Core install from an ISO you supply.</p>';
     h += '<div class="field" style="margin-bottom:10px"><label for="defflavor">Default flavor</label><div><select id="defflavor"></select></div><label for="conpw">Console password</label><div><input type="text" id="conpw" class="wide" style="max-width:220px" autocomplete="off"> <span class="small" id="conpwnote"></span></div></div><div class="opts" id="flavors"></div><p class="small" id="flavornote"></p><details><summary>Which flavors can run which machines (proposed)</summary><div id="matrix"></div></details></div>';
     h += '<div class="card"><h2><span class="n">5</span> Machines and sizes</h2><p class="hint">Untick a machine the lab does not need. Change a name, flavor, size, or address by editing it. A size below the proposed minimum is refused unless that machine\'s Override box is ticked, and the default stays in use.</p>';
+    h += '<div class="field" style="margin-bottom:10px"><label for="labtag">Lab name</label><div><input type="text" id="labtag" class="wide" style="max-width:120px" autocomplete="off" spellcheck="false"> <span class="small" id="labtagnote"></span></div></div>';
     h += '<p class="small" id="plannote"></p><div class="actions" style="margin-top:6px;margin-bottom:10px"><button class="btn" id="planapply">Match the machines to these labs</button></div>';
     h += '<div class="tscroll"><table id="machines"></table></div><div id="handhosts"></div></div>';
     h += '<div class="card"><h2><span class="n">6</span> IP addressing</h2><p class="hint">The lab takes one subnet for each of its networks. A network takes the smallest block that holds its hosts: a /28 unless it needs another size. The out-of-band network and the shared segments have the same blocks in every build, and each other network takes the lowest free block, so the supernet of the lab stays small. The table starts with the supernet and its first and last address. Under it the table lists every network of this build in the order of their addresses, from the first subnet on. A VLAN ID is the number of its segment: <span id="vlanex"></span>. Tick <b>Override</b> to set a value yourself, or <b>Set subnet</b> to type another block of the same size for a segment. A build with every network in ' + C.BOOK_RANGE.cidr + ' is the plan of Chapter 999. For any other build, the walkthroughs in the zip are rewritten with its values. Change a machine\'s address in step 5. The gateway of a subnet is its first host address.</p>';
@@ -10311,6 +10356,19 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     $('lics').innerHTML = t;
   }
 
+  // The text of the page names the machines of the lab name too. Each text keeps its words as the page wrote them,
+  // so a later lab name starts again from those.
+  var pageText = new WeakMap();
+  function retagPage() {
+    ['left', 'right'].forEach(function (id) {
+      var walk = document.createTreeWalker($(id), NodeFilter.SHOW_TEXT, { acceptNode: function (n) { return n.parentNode.closest('textarea, script') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } }), n;
+      while ((n = walk.nextNode())) {
+        if (!pageText.has(n)) { if (n.nodeValue.indexOf('201') < 0) continue; pageText.set(n, n.nodeValue); }
+        var want = C.retag(pageText.get(n));
+        if (n.nodeValue !== want) n.nodeValue = want;
+      }
+    });
+  }
   function refresh() {
     var v = C.validateAll(), m = C.buildManifest(v), tt = C.totals(m);
     C.vmRows().forEach(function (e) {
@@ -10320,7 +10378,8 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       var cb = tr.querySelector('[data-f=include]'); cb.checked = inc; cb.disabled = !avail || (b.role === 'gateway' && !P[S.platform].wslOnly);
       tr.querySelector('[data-f=override]').checked = r.override;
       tr.querySelector('[data-m=avail]').textContent = !avail ? 'Not built on WSL' : C.gwLeftOut(b) ? 'Left out: a network device is the gateway (section 10)' : '';
-      var nameIn = tr.querySelector('[data-f=name]');
+      var nameIn = tr.querySelector('[data-f=name]'), shown = r.name === b.name ? C.retag(b.name) : r.name;
+      if (document.activeElement !== nameIn && nameIn.value !== shown) nameIn.value = shown;
       nameIn.className = 'name' + (res.name.err && inc ? ' err' : (inc && r.name.trim() !== b.name ? ' chg' : ''));
       tr.querySelector('[data-m=name]').className = 'msg bad'; tr.querySelector('[data-m=name]').textContent = inc ? res.name.err : '';
       var fsel = tr.querySelector('[data-f=flavor]'); fsel.disabled = !inc;
@@ -10379,6 +10438,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     });
     lastSub = v.sub; lastVlan = v.vlan;
     if (document.activeElement !== $('conpw') && $('conpw').value !== S.consolePw) $('conpw').value = S.consolePw;
+    if (document.activeElement !== $('labtag') && $('labtag').value !== S.labTag) $('labtag').value = S.labTag;
     // The labs you plan, and the machines they use.
     Array.prototype.forEach.call(document.querySelectorAll('[data-planlab]'), function (cb) { cb.checked = !S.labsOff[cb.getAttribute('data-planlab')]; });
     Array.prototype.forEach.call(document.querySelectorAll('[data-planch]'), function (cb) {
@@ -10451,6 +10511,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       pin.className = 'wide' + (pe ? ' err' : v.ports[p[0]] ? ' chg' : ''); document.querySelector('[data-m=port][data-k="' + p[0] + '"]').textContent = pe || '';
     });
     $('conpw').className = 'wide' + (S.consolePw !== C.DEFAULT_CONSOLE_PW ? ' chg' : '');
+    var tagOk = S.labTag === C.labTag();
+    $('labtag').className = 'wide' + (!tagOk ? ' err' : S.labTag !== C.DEFAULT_TAG ? ' chg' : '');
+    $('labtagnote').textContent = !tagOk ? 'Use 1 to 5 lowercase letters and digits. ' + C.DEFAULT_TAG + ' is used.' :
+      'Every name of the build carries it: ' + ['lab201', 'gw-201', 'LAB201_CONSOLE_PASSWORD', 'baseline-201'].map(function (x) { return C.retag(x); }).join(', ') + ', and the script and zip names. ' + (S.labTag === C.DEFAULT_TAG ? 'The chapters use 201.' : 'The chapters use 201, and the walkthroughs in the zip use ' + S.labTag + '.');
     $('conpwnote').textContent = S.platform === 'wsl' ? 'Not used on WSL.' : S.consolePw ? 'For the admin user at the machine console and for sudo. SSH still takes only your key. ' + (S.consolePw === C.DEFAULT_CONSOLE_PW ? 'This default is published with the page, so change it outside a closed lab.' : '') : 'Empty: key-only login, and no console login.';
     ['a', 'b'].forEach(function (k) {
       var swi = document.querySelector('[data-sw="' + k + '"]'), swn = document.querySelector('[data-m=sw][data-k="' + k + '"]'), swe = v.sw.err[k];
@@ -10465,7 +10529,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.className = b.getAttribute('data-tab') === activeTab ? 'on' : ''; });
     var net = renderNet(v), body = '';
     if (activeTab === 'command') body = '<pre>' + esc(C.commandText(m)) + '</pre>';
-    else if (activeTab === 'manifest') body = '<pre>' + esc(JSON.stringify(m, null, 2)) + '</pre>';
+    else if (activeTab === 'manifest') body = '<pre>' + esc(C.retag(JSON.stringify(m, null, 2))) + '</pre>';
     else if (activeTab === 'checklist') body = '<pre>' + esc(C.checklistText(m, v)) + '</pre>';
     else if (activeTab === 'changes') body = '<pre>' + esc(C.changesText(m, v) || 'No changes from the Chapter 999 defaults.') + '</pre>';
     else if (activeTab === 'progress') {
@@ -10492,10 +10556,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     else body = '<div class="diag">' + C.topologySvg(m, v, net) + '</div><p class="small">This picture is drawn from your choices: the platform, the machines and their names, the addresses, the VLAN IDs, the switch models and ports, the gateway of section 10, and the external firewall of section 11. It is small here, so open it in a new tab to read it. The zip holds it as diagrams/lab-topology.svg.</p><div class="actions" style="margin-top:6px"><button class="btn" data-act="svgopen">Open it in a new tab</button><button class="btn" data-act="svg">Download diagram (SVG)</button></div>';
     $('tabbody').innerHTML = body;
     var iss = '';
-    if (v.errors.length) iss += '<div class="note bad"><b>Refused changes (defaults kept)</b><ul>' + v.errors.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
-    iss += '<div class="note warn"><b>Check before you run</b><ul>' + C.platformNotes().concat(v.warnings).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+    if (v.errors.length) iss += '<div class="note bad"><b>Refused changes (defaults kept)</b><ul>' + v.errors.map(function (x) { return '<li>' + esc(C.retag(x)) + '</li>'; }).join('') + '</ul></div>';
+    iss += '<div class="note warn"><b>Check before you run</b><ul>' + C.platformNotes().concat(v.warnings).map(function (x) { return '<li>' + esc(C.retag(x)) + '</li>'; }).join('') + '</ul></div>';
     $('issues').innerHTML = iss; $('zipnote').textContent = '';
     renderDependent(m, v);
+    retagPage();
     saveLocal();
     return { v: v, m: m };
   }
@@ -10654,12 +10719,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       if (act) {
         if (act.getAttribute('data-act') === 'csv') {
           var rr = refresh();
-          download('lab201-results.csv', new Blob([C.resultsCsv(rr.v, S.progress)], { type: 'text/csv' }));
+          download(C.retag('lab201-results.csv'), new Blob([C.resultsCsv(rr.v, S.progress)], { type: 'text/csv' }));
           $('zipnote').textContent = 'Saved lab201-results.csv: one row for each SRG requirement of the lab chapters.';
         }
         if (act.getAttribute('data-act') === 'svg') {
           var rs = refresh();
-          download('lab201-topology.svg', new Blob([C.topologySvg(rs.m, rs.v)], { type: 'image/svg+xml' }));
+          download(C.retag('lab201-topology.svg'), new Blob([C.topologySvg(rs.m, rs.v)], { type: 'image/svg+xml' }));
           $('zipnote').textContent = 'Saved lab201-topology.svg: the lab as you chose it.';
         }
         // The picture is small beside the choices, so it can be opened at full size.
@@ -10685,12 +10750,14 @@ textarea.cfgedit.chg{border-color:var(--accent)}
         var row = S.vms[t.getAttribute('data-vm')], f = t.getAttribute('data-f');
         if (f === 'include' || f === 'override') row[f] = t.checked;
         else if (f === 'addr') { var slot = t.getAttribute('data-slot'); if (t.value.trim()) row.addr[slot] = t.value; else delete row.addr[slot]; }
+        else if (f === 'name' && t.value.trim() === C.retag(t.getAttribute('data-vm'))) row.name = t.getAttribute('data-vm');
         else { row[f] = t.value; if (f === 'vcpu' || f === 'mem' || f === 'disk') row.touched[f] = true; }
       }
       else if (t.id === 'defflavor') { S.defaultFlavor = t.value; renderFlavors(); }
       else if (t.id === 'v6') S.v6 = t.value.trim();
       else if (t.id === 'licfile') S.licFile = t.value;
       else if (t.id === 'conpw') S.consolePw = t.value;
+      else if (t.id === 'labtag') S.labTag = t.value.trim().toLowerCase();
       else if (t.id === 'rhelimg') S.rhelImage = t.value;
       else if (t.hasAttribute('data-image')) S.images[t.getAttribute('data-image')] = t.value;
       else if (t.hasAttribute('data-iso')) S.isos[t.getAttribute('data-iso')] = t.value;
@@ -10750,10 +10817,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       try { refresh(); } finally { netsLeft = false; }
     });
     $('copy').addEventListener('click', function () {
-      var r = refresh(), text = activeTab === 'manifest' ? JSON.stringify(r.m, null, 2) : activeTab === 'checklist' ? C.checklistText(r.m, r.v) : activeTab === 'licenses' ? C.licensesExample(r.m) : activeTab === 'claude' ? C.claudeHelpText() : C.commandText(r.m);
+      var r = refresh(), text = activeTab === 'manifest' ? C.retag(JSON.stringify(r.m, null, 2)) : activeTab === 'checklist' ? C.checklistText(r.m, r.v) : activeTab === 'licenses' ? C.licensesExample(r.m) : activeTab === 'claude' ? C.claudeHelpText() : C.commandText(r.m);
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { $('zipnote').textContent = 'Copied.'; }, function () { $('zipnote').textContent = 'Copy failed. Select the text and copy it by hand.'; });
     });
-    $('dlmanifest').addEventListener('click', function () { var r = refresh(); download('lab201-vms.json', new Blob([JSON.stringify(r.m, null, 2) + '\n'], { type: 'application/json' })); });
+    $('dlmanifest').addEventListener('click', function () { var r = refresh(); download(C.retag('lab201-vms.json'), new Blob([C.retag(JSON.stringify(r.m, null, 2)) + '\n'], { type: 'application/json' })); });
     $('planapply').addEventListener('click', function () { C.applyPlan(); refresh(); $('zipnote').textContent = 'The machines of this build now match the labs you plan.'; });
     $('startover').addEventListener('click', function () {
       if (!window.confirm('Clear every choice on this page and go back to the defaults?')) return;
@@ -10779,7 +10846,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       }
       $('zipnote').textContent = 'Building the zip...';
       C.buildZip().then(function (z) {
-        download('lab201-build.zip', z.blob);
+        download(C.retag('lab201-build.zip'), z.blob);
         $('zipnote').textContent = z.missing.length ? 'The zip has ' + z.count + ' files. ' + z.missing.length + ' could not be fetched (see MISSING-FILES.txt in the zip). Open this page from the published site to include them.' : 'The zip has ' + z.count + ' files.';
       });
     });
@@ -11003,6 +11070,23 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmdQ.indexOf("export LAB201_CONSOLE_PASSWORD='it'\\''s'") > 0 && C.commandText(man()).indexOf('LAB201_CONSOLE_PASSWORD') < 0, 'the console password is quoted, and an empty one is left out');
     reset('vcenter'); S.consolePw = 'x1'; var pwSaved = C.choicesText(); reset('vcenter'); C.applyChoices(JSON.parse(pwSaved));
     ok(S.consolePw === 'x1' && C.commandText(man()).indexOf("$env:LAB201_CONSOLE_PASSWORD = 'x1'") > 0, 'the choices file keeps the console password');
+    // The lab name
+    reset('workstation');
+    var tagText = 'gw-201 svc-201a oob-admin-201 radius-201b lab201-svc-201a LAB201_KEYS Deploy-Lab201-Workstation.ps1 baseline-201 Lab 201 setup';
+    var tagKeep = 'Lab 201.3 fd00:db8:201::1 volume-201-fortiswitch https://x/lab201-vms.json <g data-node="gw-201">';
+    ok(C.labTag() === '201' && C.retag(tagText) === tagText && C.retag(tagKeep) === tagKeep, 'the lab name 201 changes nothing');
+    S.labTag = '305'; v = C.validateAll(); m = C.buildManifest(v);
+    ok(C.retag(tagText) === 'gw-305 svc-305a oob-admin-305 radius-305b lab305-svc-305a LAB305_KEYS Deploy-Lab305-Workstation.ps1 baseline-305 Lab 305 setup' && C.retag(tagKeep) === tagKeep, 'another lab name renames the names, and keeps lab numbers, IPv6 addresses, links, and picture nodes');
+    var tagAll = [C.commandText(m), C.checklistText(m, v), C.labValuesText(m, v), C.claudeText(m, v, C.WALKTHROUGHS), C.startText(), C.claudeHelpText(), C.retag(JSON.stringify(m)), C.platformNotes().join('\n'),
+      C.topologySvg(m, v).replace(/data-node="[^"]*"/g, ''), C.netConfigs(v).gateway.text || '', C.netConfigs(v).firewall.text, C.netConfigs(v).firewall.file].join('\n');
+    ok(!v.errors.length && !/[A-Za-z0-9_.\/-]*201[A-Za-z0-9_.-]*/.test(tagAll.replace(/fd00:db8:201::[0-9a-f]*/g, '')) && tagAll.indexOf('lab305-t1') > 0 && tagAll.indexOf('gw-305') > 0 &&
+      /^lab305-firewall-/.test(C.netConfigs(v).firewall.file), 'a build named 305 has no name with 201 left in its texts');
+    var tagSaved = C.choicesText(); reset('workstation'); C.applyChoices(JSON.parse(tagSaved));
+    ok(S.labTag === '305', 'the choices file keeps the lab name');
+    S.labTag = 'Lab_1'; v = C.validateAll();
+    ok(C.labTag() === '201' && v.errors.some(function (e) { return e.indexOf('Lab name Lab_1') === 0; }) && /Lab201/.test(C.commandText(C.buildManifest(v))), 'an invalid lab name is refused, and 201 is used');
+    S.labTag = '123456'; ok(C.labTag() === '201', 'a lab name longer than five characters is refused');
+    reset('workstation');
     // FortiSwitchOS release and feature support by model series
     reset(); S.fswVersion = '8.0.1'; v = C.validateAll();
     var noA = v.fsw.sw.a.no.map(function (r) { return r.key; }), noB = v.fsw.sw.b.no.map(function (r) { return r.key; });
