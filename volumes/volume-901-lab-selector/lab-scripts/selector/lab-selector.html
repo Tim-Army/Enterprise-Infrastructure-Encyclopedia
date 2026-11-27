@@ -8609,8 +8609,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     var hardened = usedFlavors(m).some(function (f) { return FLAVOR[f].needs_password; });
     if (hardened && pr.hardened) asks.push('hardened');
     else if (hardened) blocks.push(['0. The hardened flavors need a password for the admin user. make-seed.py makes the crypt hash from it.', setPw('LAB201_ADMIN_PASSWORD', state.hardPw || '<LAB_ONLY_PASSWORD>')]);
+    // A PowerShell line starts with the full path of the script, run past the execution policy, so it works from any
+    // window and folder. A table parameter (@{ ... }) cannot pass through -File, so a line with one calls the script
+    // itself, which needs the Set-ExecutionPolicy line of the first block.
+    var psRun = function (table) { return table ? '& ' + psQuote(scriptPath()) : 'pwsh -ExecutionPolicy Bypass -File ' + argPath(scriptPath()); };
     function line(extra) {
-      var q = ps ? psQuote : shQuote, head = ps ? '.\\' + p.exe : './' + p.exe, cont = ps ? ' `' : ' \\';
+      var q = ps ? psQuote : shQuote, head = ps ? psRun(args.some(function (a) { return a[2]; })) : './' + p.exe, cont = ps ? ' `' : ' \\';
       var parts = args.map(function (a) { return a[1] === null ? a[0] : a[0] + ' ' + (a[2] ? a[1] : q(a[1])); }).concat(extra);
       return head + cont + '\n' + parts.map(function (x, i) { return '  ' + x + (i < parts.length - 1 ? cont : ''); }).join('\n');
     }
@@ -8650,7 +8654,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       tail = args.filter(function (a) { return ['-EsxiHost', '-VcenterServer', '-VsphereVersion', '-VmRoot', '-SkipCertificateCheck'].indexOf(a[0]) >= 0; })
         .map(function (a) { return a[1] === null ? a[0] : a[0] + ' ' + psQuote(a[1]); }).join(' ');
     } else if (state.platform === 'proxmox') tail = '--vmid-base ' + shQuote(state.params.vmid || '20100');
-    var act = function (psName, shName, extra) { return (ps ? '.\\' + p.exe + ' -Action ' + psName : './' + p.exe + ' --action ' + shName) + (extra ? ' ' + extra : '') + (tail ? ' ' + tail : ''); };
+    var act = function (psName, shName, extra) { return (ps ? psRun(false) + ' -Action ' + psName : './' + p.exe + ' --action ' + shName) + (extra ? ' ' + extra : '') + (tail ? ' ' + tail : ''); };
     if (state.platform === 'wsl') {
       blocks.push(['3. Check the hosts.', act('Status')]);
       blocks.push(['4. Take the baseline (Lab 999.6).', '# WSL has no snapshots. Export a distribution with: wsl --export lab201-<host> <file>.tar']);
@@ -11386,9 +11390,10 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     ok(cmd.indexOf('--action check') > 0 && cmd.indexOf('--action check') < cmd.indexOf('# 1. Preview') && cmd.indexOf('./deploy-lab201-proxmox.sh --action status --wait --vmid-base 20100') > cmd.indexOf('# 2. Build') && cmd.indexOf('--action remove-build-nics --vmid-base 20100') > cmd.indexOf('# 3. Wait') &&
       cmd.indexOf('--action snapshot --vmid-base 20100') > cmd.indexOf('# 4. Remove') && cmd.indexOf('--action restore --vmid-base 20100') > cmd.indexOf('# 5. Take') && cmd.indexOf('qm snapshot') < 0 && cmd.indexOf('It refuses while a machine still has its build NIC,') > cmd.indexOf('# 5. Take'), 'Proxmox commands check the node, wait for the build, take the baseline, and restore it');
     reset('vcenter'); S.params.skipcert = true; cmd = C.commandText(man());
-    ok(cmd.indexOf('-Action Check') > 0 && cmd.indexOf('.\\Deploy-Lab201-Vcenter.ps1 -Action Status -Wait -VsphereVersion 8 -VcenterServer <VCENTER> -SkipCertificateCheck') > 0 && cmd.indexOf('-Action Snapshot -VsphereVersion 8 -VcenterServer <VCENTER>') > 0 && cmd.indexOf('-Action Restore -VsphereVersion 8') > 0 && cmd.indexOf('New-Snapshot') < 0, 'vCenter commands use the same actions, with the arguments that find the machines');
+    ok(cmd.indexOf('-Action Check') > 0 && cmd.indexOf('pwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab201-build\\vcenter\\Deploy-Lab201-Vcenter.ps1 -Action Status -Wait -VsphereVersion 8 -VcenterServer <VCENTER> -SkipCertificateCheck') > 0 && cmd.indexOf('-Action Snapshot -VsphereVersion 8 -VcenterServer <VCENTER>') > 0 && cmd.indexOf('-Action Restore -VsphereVersion 8') > 0 && cmd.indexOf('New-Snapshot') < 0, 'vCenter commands use the same actions, with the arguments that find the machines');
     reset('workstation'); cmd = C.commandText(man());
-    ok(cmd.indexOf('.\\Deploy-Lab201-Workstation.ps1 -Action Status -Wait\n') > 0 && cmd.indexOf('.\\Deploy-Lab201-Workstation.ps1 -Action Snapshot\n') > 0 && cmd.indexOf('.\\Deploy-Lab201-Workstation.ps1 -Action Restore\n') > 0 && cmd.indexOf('vmrun') < 0 && cmd.indexOf('It refuses while a machine still has its build adapter,') > 0, 'Workstation commands no longer guess the machines folder');
+    var wsRun = 'pwsh -ExecutionPolicy Bypass -File C:\\Users\\admin\\Downloads\\lab201-build\\workstation\\Deploy-Lab201-Workstation.ps1';
+    ok(cmd.indexOf('\n' + wsRun + ' -Action Status -Wait\n') > 0 && cmd.indexOf('\n' + wsRun + ' -Action Snapshot\n') > 0 && cmd.indexOf('\n' + wsRun + ' -Action Restore\n') > 0 && cmd.indexOf('\n' + wsRun + ' `\n') > 0 && cmd.indexOf('.\\Deploy') < 0 && cmd.indexOf('vmrun') < 0 && cmd.indexOf('It refuses while a machine still has its build adapter,') > 0, 'Workstation commands no longer guess the machines folder');
     reset('kvm'); cmd = C.commandText(man()); reset('wsl'); var cmdWsl = C.commandText(man());
     ok(cmd.indexOf('./deploy-lab201-kvm.sh --action restore\n') > 0 && cmd.indexOf('--action check') > 0 && cmdWsl.indexOf('-Action Check') > 0 && cmdWsl.indexOf('-Action Snapshot') < 0 && cmdWsl.indexOf('wsl --export') > 0, 'KVM has the actions too, and WSL has the check but no snapshots');
     reset('proxmox'); v = C.validateAll(); m = C.buildManifest(v);
