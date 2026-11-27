@@ -392,7 +392,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "openssl"
@@ -422,7 +422,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "kea-dhcp4-server"
@@ -508,7 +508,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "frr"
@@ -564,7 +564,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "frr"
@@ -610,11 +610,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "role": "multicast source",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "iperf3",
@@ -640,11 +640,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "role": "static host",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "tcpdump",
@@ -671,11 +671,11 @@ textarea.cfgedit.chg{border-color:var(--accent)}
       "role": "static host",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "tcpdump",
@@ -10998,7 +10998,7 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     reset();
     var v = C.validateAll(), m = C.buildManifest(v), t = C.totals(m);
     ok(m.vms.length === 12 && v.errors.length === 0, 'default build has 12 machines and no errors');
-    ok(t.cpu === 17 && t.mem === 22016 && t.disk === 248, 'default totals are 17 vCPU, 21.5 GB, 248 GB');
+    ok(t.cpu === 17 && t.mem === 22016 && t.disk === 254, 'default totals are 17 vCPU, 21.5 GB, 254 GB');
     ok(m.vms.every(function (x) { return !x.flavor; }), 'default flavor leaves the machines without a flavor field');
     S.vms['svc-201b'].mem = '1'; S.vms['svc-201b'].touched.mem = true; v = C.validateAll(); m = C.buildManifest(v);
     ok(v.rows['svc-201b'].mem.err && vm(m, 'svc-201b').memory_mb === 4096, 'memory below the minimum is refused and the default stays');
@@ -11283,12 +11283,12 @@ textarea.cfgedit.chg{border-color:var(--accent)}
     reset('kvm'); ok(!C.offered('mint-22', 'static host', 'kvm'), 'ISO flavors are not offered on KVM');
     // A cloud image sets the smallest disk
     reset('proxmox'); S.vms['static-2'].flavor = 'rocky-10'; S.vms['static-1'].flavor = 'fedora-43'; v = C.validateAll(); m = C.buildManifest(v);
-    ok(vm(m, 'static-2').disk_gb === 10 && vm(m, 'static-2').memory_mb === 512 && vm(m, 'static-2').vcpu === 1 && vm(m, 'static-1').disk_gb === 8 && vm(m, 'mcast-src-201').disk_gb === 8 && !v.errors.length, 'the Rocky image raises a small machine to a 10 GB disk and leaves its memory and vCPUs alone');
+    ok(vm(m, 'static-2').disk_gb === 10 && vm(m, 'static-2').memory_mb === 512 && vm(m, 'static-2').vcpu === 1 && vm(m, 'static-1').disk_gb === 10 && vm(m, 'mcast-src-201').disk_gb === 10 && !v.errors.length, 'the 10 GB Rocky image fits the 10 GB disk of a small machine and leaves its memory and vCPUs alone');
     S.vms['static-1'].disk = '4'; S.vms['static-1'].touched.disk = true; S.vms['static-2'].disk = '8'; S.vms['static-2'].touched.disk = true; v = C.validateAll();
-    ok(!!v.rows['static-1'].disk.err && !!v.rows['static-2'].disk.err && v.rows['static-1'].mins.disk === 5 && v.rows['static-2'].mins.disk === 10, 'a disk smaller than the image of its flavor is refused without Override');
+    ok(!!v.rows['static-1'].disk.err && !!v.rows['static-2'].disk.err && v.rows['static-1'].mins.disk === 10 && v.rows['static-2'].mins.disk === 10, 'a disk smaller than the 10 GB minimum (the size of the Ubuntu image) is refused without Override');
     reset('vcenter'); S.vms['static-1'].flavor = 'tinycore'; S.vms['static-2'].flavor = 'mint-22'; m = man(); cmd = C.commandText(m);
     ok(cmd.indexOf("-IsoImages @{ 'tinycore' = '<[DATASTORE] FOLDER/tinycore.iso>'; 'mint-22' =") > 0 || cmd.indexOf("-IsoImages @{ 'mint-22'") > 0, 'vCenter asks for the install ISOs on a datastore');
-    ok(vm(m, 'static-2').disk_gb === 25 && vm(m, 'static-2').memory_mb === 4096 && vm(m, 'static-1').disk_gb === 8, 'Mint raises the default size and Tiny Core keeps its own');
+    ok(vm(m, 'static-2').disk_gb === 25 && vm(m, 'static-2').memory_mb === 4096 && vm(m, 'static-1').disk_gb === 10, 'Mint raises the default size and Tiny Core keeps its own');
     reset('vcenter'); S.vms['dhcp-201'].flavor = 'mint-22'; v = C.validateAll(); ok(!!v.rows['dhcp-201'].flavor.err, 'Mint is not offered for the DHCP server');
     reset('vxrail'); S.vms['admin-201'].flavor = 'win-11'; ok(C.offered('win-11', 'administrator workstation', 'vxrail'), 'VxRail offers Windows');
     // licenses

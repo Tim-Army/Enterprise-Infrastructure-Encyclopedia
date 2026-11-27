@@ -32,6 +32,7 @@ The volume was not written from nothing. Its page and its scripts were built ins
 | Workstation 26H1 U1, Python, and the uplink | 2026-11-27 | Workstation Pro 26H1 U1 is the one Workstation release the page offers, the Windows scripts are given `-PythonCommand python`, and the uplink of `gw-201` is ticked in a new build | — |
 | Passwords and the SSH key | 2026-11-27 | One lab password with a field for each password, Prompt boxes, and an SSH key that the build makes when it is missing | — |
 | The Windows user name | 2026-11-27 | Section 3 asks for the user that runs the script, and the commands write `C:\Users\<name>` in place of `~` | — |
+| Disks of at least 10 GB | 2026-11-27 | The smallest disk of every machine is the 10 GiB of the Ubuntu cloud image | — |
 | [Chapter 01](01-the-lab-selector.md) | 2026-11-20 | The description of the page moved from Volume CCI's Chapter 09, and the parts about the lab sets were written new | Updated whenever the page changes |
 | [Chapter 02](02-lab-data-and-how-to-add-a-lab-set.md) | 2026-11-20 | Written from the catalog and the sync script | Updated whenever the data changes |
 | 90, this chapter | 2026-11-20 | Written from the work of that day and from Volume CCI's Chapter 90 | Updated whenever the volume changes |
@@ -169,6 +170,10 @@ The owner asked that the build make the SSH folder and keys, and that the passwo
 ### The Windows user name, 2026-11-27
 
 The owner pasted the bypass line with `~` and Windows did not find the script, while the same line typed with `~` and completed with Tab worked: Tab completion writes out the folder before the command runs, and a pasted `~` reaches the program as it is. The owner asked for a field for the user that runs the script, with a preview of the full path, saw a picture of the section first, and chose `admin` as the default. Section 3 of the platforms that run a PowerShell script now starts with **Windows user name**. The commands write `C:\Users\<name>` in place of a `~` at the start of a path of section 3, of the SSH key file, of the script path of the bypass line, and of the `ssh-add` line, and a box under the field shows the script path, the key, and the bypass line. The SSH key field shows the key with that folder. An empty name keeps `~`, with the note for Windows PowerShell 5.1, and a name with a character that Windows does not allow is refused. Three self-test checks came with it. The text of the page renames the placeholders of its fields with the lab name too.
+
+### Disks of at least 10 GB, 2026-11-27
+
+The owner's first build on Workstation, a lab named 202, built all 12 machines. Workstation refused to resize three disks, of `mcast-src-202`, `static-1`, and `static-2`, because the manifest asked for 8 GB and the disk of the Ubuntu 24.04 OVA is 10 GiB (`ovf:capacity` 10737418240 in its OVF, read on this day, and the same for the 26.04 OVA). A disk cannot shrink, so the machines kept 10 GB. The owner asked that the minimum sizes match the image. In `lab201-vms.json`, every minimum disk below 10 GB is now 10 (`ca`, `dhcp`, both routing peers, `mcast-src`, `static-1`, `static-2`), and the three 8 GB disks are 10 GB, so a new build asks for 254 GB of thin disk instead of 248. The flavor minimums of `flavors.json` could have done it for Ubuntu alone, but the page would then have marked those machines as raised by the flavor in every build. Three self-test checks were rewritten for the new sizes. The same build made the SSH key of the user `admin` with no passphrase, which was the first run of that step on a real host.
 
 ### What was tested, and what was not
 

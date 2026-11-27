@@ -144,7 +144,7 @@ The script uses `qm set ... --scsi0 <storage>:0,import-from=<image>`, which impo
 | `Bridge vmbr2 is not VLAN-aware` | `bridge-vlan-aware yes` missing | Add it and run `ifreload -a` |
 | `Storage local has no snippets content type` | Snippets not enabled | Enable the content type on the storage |
 | `qm set ... import-from` is not accepted | Proxmox VE older than the script expects | Upgrade, or use `qm importdisk` |
-| `its image is 10G, larger than the 8 GB the manifest asks for` | The manifest asks for a disk smaller than the cloud image of the flavor. The Rocky Linux and AlmaLinux images are 10 GB | Nothing to fix. A disk cannot shrink, so the machine keeps the size of the image. The Lab Selector raises such a disk to the image size for you |
+| `its image is <SIZE>, larger than the <N> GB the manifest asks for` | The manifest asks for a disk smaller than the cloud image of the flavor. Every machine has at least 10 GB, the size of the Ubuntu OVA, so this comes only from a smaller size set with **Override** or from a larger image | Nothing to fix. A disk cannot shrink, so the machine keeps the size of the image. The Lab Selector raises such a disk to the image size for you |
 | A machine boots with the wrong network settings | A custom snippet was ignored or overridden | Compare `qm cloudinit dump` with the snippet; clear fields in the web interface's Cloud-Init tab |
 | `gw-201` passes no tagged frames | `trunks=` did not apply, or the bridge is not VLAN-aware | Run `bridge vlan show dev tap20101i2`; check the NIC line with `qm config 20101` |
 | The lab loops or floods | Both trunk NICs were put in one host bridge | Give each NIC its own bridge |

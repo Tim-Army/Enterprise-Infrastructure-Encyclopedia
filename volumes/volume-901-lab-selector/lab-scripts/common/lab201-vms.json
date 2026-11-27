@@ -265,7 +265,7 @@
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "openssl"
@@ -295,7 +295,7 @@
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "kea-dhcp4-server"
@@ -381,7 +381,7 @@
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "frr"
@@ -437,7 +437,7 @@
       "min": {
         "vcpu": 1,
         "memory_mb": 1024,
-        "disk_gb": 8
+        "disk_gb": 10
       },
       "packages": [
         "frr"
@@ -483,11 +483,11 @@
       "role": "multicast source",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "iperf3",
@@ -513,11 +513,11 @@
       "role": "static host",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "tcpdump",
@@ -544,11 +544,11 @@
       "role": "static host",
       "vcpu": 1,
       "memory_mb": 512,
-      "disk_gb": 8,
+      "disk_gb": 10,
       "min": {
         "vcpu": 1,
         "memory_mb": 512,
-        "disk_gb": 4
+        "disk_gb": 10
       },
       "packages": [
         "tcpdump",

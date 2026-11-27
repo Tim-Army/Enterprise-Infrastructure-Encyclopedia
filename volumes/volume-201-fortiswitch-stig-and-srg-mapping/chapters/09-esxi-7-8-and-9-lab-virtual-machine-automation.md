@@ -24,8 +24,8 @@
 | `admin-201` | Administrator workstation | 2 | 4096 | 40 | T1 VLAN 3 |
 | `rtr-peer-1` | Routing peer, AS 65202 | 1 | 1024 | 16 | T1 VLAN 2001, T2 VLAN 2003, segment 12 |
 | `rtr-peer-2` | Routing peer, AS 65203 | 1 | 1024 | 16 | T1 VLAN 2002, T2 VLAN 2004 |
-| `mcast-src-201` | Multicast source | 1 | 512 | 8 | segment 12 |
-| `static-1`, `static-2` | Statically addressed hosts | 1 each | 512 each | 8 each | T1 VLAN 7 |
+| `mcast-src-201` | Multicast source | 1 | 512 | 10 | segment 12 |
+| `static-1`, `static-2` | Statically addressed hosts | 1 each | 512 each | 10 each | T1 VLAN 7 |
 | `attacker-201` | Spoofing and flooding test host | 2 | 2048 | 20 | T1 VLAN 7 |
 
 Every machine also has a **build** network adapter on the `lab201-wan` network, first in its adapter list. It gets an address by DHCP so that cloud-init can install packages, and it is removed when the build is done. The twelve machines need 17 vCPUs, 21.5 GiB of memory, and up to 248 GB of thin-provisioned disk.
@@ -149,7 +149,7 @@ Hardware version 22 runs only on ESXi 9.0. Pass `-HardwareVersion` to override t
 - **One import for each machine.** A standalone ESXi host cannot clone a virtual machine through PowerCLI (cloning is a vCenter feature), so the script imports the OVA once for each machine. It downloads the OVA once and reuses the local copy, but ESXi still receives about 600 MB twelve times. [Chapter 10](10-vcenter-7-8-and-9-lab-virtual-machine-automation.md) imports it once and clones.
 - **Uplinks are yours to name.** A network without `-Trunk1Nic`, `-Trunk2Nic`, `-OobNic`, or `-WanNic` becomes an internal-only virtual switch and the script warns. That is useful for a dry run with no hardware switches, because the machines still start and cloud-init still runs on any network that has an uplink.
 - **Do not move the management uplink.** Give each network a spare physical NIC. Taking `vmnic0` away from the management virtual switch cuts off the host.
-- **Thin disks.** The script imports with thin provisioning, so the 248 GB maximum is not allocated up front. A datastore that cannot hold the maximum can still run the lab until the guests fill their disks.
+- **Thin disks.** The script imports with thin provisioning, so the 254 GB maximum is not allocated up front. A datastore that cannot hold the maximum can still run the lab until the guests fill their disks.
 - **Idempotence.** A machine that already exists is skipped, and switches and port groups are created only if missing. Re-run the script after a failure and it carries on.
 - **Packages need the build adapter.** Machines such as `rtr-peer-1` have no route to the internet through `gw-201`, so every machine gets the build adapter instead of relying on masquerading. Chapter 999 offers masquerading as an option and this avoids it. The cost is that, until you remove the adapters, every lab machine can reach the internet.
 - **Secrets.** The manifest holds no passwords. The admin user (`labadmin`) has key-based SSH and passwordless `sudo`, and the guest password is locked. To also allow a console password, set the environment variable `LAB201_ADMIN_PASSWORD_HASH` to a crypt hash (`openssl passwd -6`) before you run the script.
